@@ -122,7 +122,7 @@
                                                                     ],
                                                                     "properties": {
                                                                         "url": {
-                                                                            "description": "Publicly accessible URL of the attachment.",
+                                                                            "description": "Contains the URL of the attachment. The developer has to make sure that the URL is accessible while calling the data_import API. The API will be downloading the attachment from its current location and upload it to CometChat’s attachment storage.",
                                                                             "type": "string"
                                                                         },
                                                                         "name": {
@@ -389,7 +389,7 @@
                                                         "type": "object"
                                                     },
                                                     "mentionedUserDetails": {
-                                                        "description": "Optional field that provides user details when data.text includes a mention, formatted using CometChat’s mention template (<@uid:UID>).",
+                                                        "description": "A map of users mentioned in the message text (data.text). Each key is the mentioned user’s unique identifier (UID), and the value is an object containing that user’s details.",
                                                         "properties": {
                                                             "<uid>": {
                                                                 "description": "A map where each key is a user’s unique identifier (UID) and the value is that user’s details. The &lt;uid&gt; will be replaced by the mentioned user’s primary key.",
@@ -467,7 +467,7 @@
                                                 "type": "text",
                                                 "category": "message",
                                                 "data": {
-                                                    "text": "Hi there",
+                                                    "text": "Hi there, <@uid:example-uid-new>",
                                                     "attachments": [
                                                         {
                                                             "name": "hi.png",
@@ -2971,22 +2971,6 @@
                     },
                     "maxPerDayPerConversation": {
                         "type": "integer"
-                    },
-                    "includeMessageObjectSetting": {
-                        "description": "Includes the message object in the email payload",
-                        "type": "boolean"
-                    },
-                    "includeSenderMetadataSetting": {
-                        "description": "Includes sender metadata in the message object",
-                        "type": "boolean"
-                    },
-                    "includeReceiverMetadataSetting": {
-                        "description": "Includes receiver metadata in the message object",
-                        "type": "boolean"
-                    },
-                    "includeMessageMetadataSetting": {
-                        "description": "Includes message metadata in the message object",
-                        "type": "boolean"
                     }
                 },
                 "type": "object"
@@ -4813,22 +4797,6 @@
                     },
                     "maxPerDayPerConversation": {
                         "type": "integer"
-                    },
-                    "includeMessageObjectSetting": {
-                        "description": "Includes the message object in the SMS payload",
-                        "type": "boolean"
-                    },
-                    "includeSenderMetadataSetting": {
-                        "description": "Includes sender metadata in the message object",
-                        "type": "boolean"
-                    },
-                    "includeReceiverMetadataSetting": {
-                        "description": "Includes receiver metadata in the message object",
-                        "type": "boolean"
-                    },
-                    "includeMessageMetadataSetting": {
-                        "description": "Includes message metadata in the message object",
-                        "type": "boolean"
                     }
                 },
                 "type": "object"

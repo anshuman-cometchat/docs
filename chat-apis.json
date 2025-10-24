@@ -9162,21 +9162,13 @@
                                                 "notifyForUnreadOnly": true,
                                                 "intervalInSeconds": 7200,
                                                 "maxPerDay": 20,
-                                                "maxPerDayPerConversation": 2,
-                                                "includeMessageObjectSetting": false,
-                                                "includeSenderMetadataSetting": true,
-                                                "includeReceiverMetadataSetting": true,
-                                                "includeMessageMetadataSetting": true
+                                                "maxPerDayPerConversation": 2
                                             },
                                             "sms": {
                                                 "notifyForUnreadOnly": true,
                                                 "intervalInSeconds": 7200,
                                                 "maxPerDay": 20,
-                                                "maxPerDayPerConversation": 2,
-                                                "includeMessageObjectSetting": false,
-                                                "includeSenderMetadataSetting": true,
-                                                "includeReceiverMetadataSetting": true,
-                                                "includeMessageMetadataSetting": true
+                                                "maxPerDayPerConversation": 2
                                             },
                                             "push": {
                                                 "includeMessageObjectSetting": false,
@@ -14370,6 +14362,436 @@
                 ]
             }
         },
+        "/moderation/reasons": {
+            "post": {
+                "tags": [
+                    "Moderation"
+                ],
+                "summary": "Create Reasons",
+                "description": "This endpoint is used to submit a message for moderation before it is delivered to the recipient. The message is scanned against the moderation rules configured for the app.",
+                "operationId": "chat-api-create-reasons",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id",
+                                    "name",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "description": "Unique identifier for the content type.",
+                                        "type": "string",
+                                        "example": "unfiltered-content"
+                                    },
+                                    "name": {
+                                        "description": "Display name for the content type.",
+                                        "type": "string",
+                                        "example": "RawContent"
+                                    },
+                                    "description": {
+                                        "description": "Description of the content type.",
+                                        "type": "string",
+                                        "example": "Content delivered without moderation or filtering."
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "examples": {
+                                "Send Moderation Reason": {
+                                    "summary": "Send Moderation Message",
+                                    "value": {
+                                        "id": "unfiltered-content",
+                                        "name": "RawContent",
+                                        "description": "Content delivered without moderation or filtering."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Create Reasons",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": "unfiltered-content",
+                                        "name": "RawContent",
+                                        "description": "Content delivered without moderation or filtering.",
+                                        "createdAt": 1760449410,
+                                        "updatedAt": 1760449410
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            },
+            "get": {
+                "tags": [
+                    "Moderation"
+                ],
+                "summary": "List Reasons",
+                "description": "Retrieves a list of moderation reasons configured for the app. Each reason defines a specific rule or category used during content moderation.",
+                "operationId": "chat-api-list-reasons",
+                "responses": {
+                    "200": {
+                        "description": "List Reasons",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": "unfiltered-content",
+                                            "name": "RawContent",
+                                            "description": "Content delivered without moderation or filtering.",
+                                            "createdAt": "1760449410",
+                                            "updatedAt": "1760449410"
+                                        },
+                                        {
+                                            "id": "spam",
+                                            "name": "Spam / Unwanted Content",
+                                            "description": "Repeated, promotional, or irrelevant content",
+                                            "createdAt": "1760443648",
+                                            "updatedAt": "1760443648",
+                                            "default": true
+                                        },
+                                        {
+                                            "id": "sexual",
+                                            "name": "Sexual Content",
+                                            "createdAt": "1758000762",
+                                            "updatedAt": "1758000762",
+                                            "description": "Explicit or inappropriate content"
+                                        },
+                                        {
+                                            "id": "harassment",
+                                            "name": "Harassment / Bullying",
+                                            "createdAt": "1758000761",
+                                            "updatedAt": "1758000761",
+                                            "description": "Insulting or threatening behavior"
+                                        }
+                                    ],
+                                    "meta": {
+                                        "current": {
+                                            "limit": 10,
+                                            "count": 4
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/moderation/reasons/spam": {
+            "get": {
+                "tags": [
+                    "Moderation"
+                ],
+                "summary": "Get Reason details",
+                "description": "Retrieves detailed information about a specific moderation reason configured in the app, including its purpose and associated moderation rules.",
+                "operationId": "chat-api-get-reasons-details",
+                "responses": {
+                    "200": {
+                        "description": "List Reasons",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": "spam",
+                                        "name": "Spam / Unwanted Content",
+                                        "description": "Repeated, promotional, or irrelevant content",
+                                        "createdAt": 1760443648,
+                                        "updatedAt": 1760443648,
+                                        "default": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Moderation"
+                ],
+                "summary": "Delete Reasons",
+                "description": "Deletes one or more moderation reasons from the app configuration, removing their associated rules from future content moderation checks.",
+                "operationId": "chat-api-delete-reason",
+                "responses": {
+                    "200": {
+                        "description": "Delete Reasons",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "success": true,
+                                    "message": "The reason with id spam has been deleted successfully."
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/moderation/reasons/unfiltered-content": {
+            "put": {
+                "tags": [
+                    "Moderation"
+                ],
+                "summary": "Update Reason details",
+                "description": "Updates the details of an existing moderation reason, allowing modification of its name, description, or associated moderation rules.",
+                "operationId": "chat-api-update-reasons-details",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Updated display name for the content type.",
+                                        "type": "string",
+                                        "example": "Updated name for unfiltered content."
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "examples": {
+                                "Send Moderation Reason": {
+                                    "summary": "Send Moderation Message",
+                                    "value": {
+                                        "name": "Updated name for unfiltered content."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update Reasons Details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "data": {
+                                        "id": "spam",
+                                        "name": "Spam / Unwanted Content",
+                                        "description": "Repeated, promotional, or irrelevant content",
+                                        "createdAt": 1760443648,
+                                        "updatedAt": 1760443648,
+                                        "default": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/messages/{id}/flagged": {
+            "post": {
+                "tags": [
+                    "Moderation"
+                ],
+                "summary": "Flag a message",
+                "description": "Flags a specific message for moderation review. The flagged message is evaluated against the app's configured moderation rules to determine if it violates any policies.",
+                "operationId": "chat-api-flag-message",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the message of the message to be flagged.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "string": {
+                                "summary": "Message ID",
+                                "value": ""
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "description": "Unique identifier of the moderation reason used to flag the message.",
+                                        "type": "string",
+                                        "example": "spam"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "examples": {
+                                "Flag Message": {
+                                    "summary": "Flag a message for moderation",
+                                    "value": {
+                                        "id": "spam"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Delete Reasons",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "success": true,
+                                    "message": "Message 540092 has been flagged successfully."
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/moderation/blocked-messages/{id}": {
+            "patch": {
+                "tags": [
+                    "Moderation"
+                ],
+                "summary": "Review Blocked Message",
+                "description": "Updates the review status of a previously flagged or blocked message. This endpoint allows approving or rejecting the message based on the moderation evaluation results.",
+                "operationId": "chat-api-review-blocked-message",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the message of the message to be flagged.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "string": {
+                                "summary": "Message ID",
+                                "value": ""
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status",
+                                    "reviewed"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "description": "Indicates the review decision for the moderated message. Possible values: approved, rejected.",
+                                        "type": "string",
+                                        "example": "approved"
+                                    },
+                                    "reviewed": {
+                                        "description": "Specifies whether the moderation request has been reviewed.",
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "examples": {
+                                "Review Moderation Request": {
+                                    "summary": "Approve or reject a moderated message",
+                                    "value": {
+                                        "status": "approved",
+                                        "reviewed": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Review Blocked Reasons",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "data": {
+                                        "success": true,
+                                        "message": "Message with ID 540185 has been reviewed successfully."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
         "/stats": {
             "get": {
                 "tags": [
@@ -16226,22 +16648,6 @@
                     },
                     "maxPerDayPerConversation": {
                         "type": "integer"
-                    },
-                    "includeMessageObjectSetting": {
-                        "description": "Includes the message object in the email payload",
-                        "type": "boolean"
-                    },
-                    "includeSenderMetadataSetting": {
-                        "description": "Includes sender metadata in the message object",
-                        "type": "boolean"
-                    },
-                    "includeReceiverMetadataSetting": {
-                        "description": "Includes receiver metadata in the message object",
-                        "type": "boolean"
-                    },
-                    "includeMessageMetadataSetting": {
-                        "description": "Includes message metadata in the message object",
-                        "type": "boolean"
                     }
                 },
                 "type": "object"
@@ -18068,22 +18474,6 @@
                     },
                     "maxPerDayPerConversation": {
                         "type": "integer"
-                    },
-                    "includeMessageObjectSetting": {
-                        "description": "Includes the message object in the SMS payload",
-                        "type": "boolean"
-                    },
-                    "includeSenderMetadataSetting": {
-                        "description": "Includes sender metadata in the message object",
-                        "type": "boolean"
-                    },
-                    "includeReceiverMetadataSetting": {
-                        "description": "Includes receiver metadata in the message object",
-                        "type": "boolean"
-                    },
-                    "includeMessageMetadataSetting": {
-                        "description": "Includes message metadata in the message object",
-                        "type": "boolean"
                     }
                 },
                 "type": "object"
