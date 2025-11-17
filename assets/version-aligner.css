@@ -14,8 +14,8 @@
 
 /* Constrain technology dropdown width when aligned */
 html.cc-version-aligned #sidebar-content .cc-version-aligned-row .nav-dropdown-trigger {
-  flex: 0 0 auto;
-  max-width: 230px !important;
+  flex: 0 0 15rem;
+  max-width: 15rem;
   margin-bottom: 0 !important;
 }
 
@@ -28,8 +28,16 @@ html.cc-version-aligned #sidebar-content .cc-version-aligned-row [data-version-a
 
 /* Hide the navbar version dropdown once the sidebar is aligned (desktop only) */
 @media (min-width: 1024px) {
-  html.cc-version-aligned #navbar .hidden.lg\:flex.items-center.gap-x-2 > button[aria-haspopup="menu"] {
+  html.cc-version-aligned #navbar .hidden.lg\:flex.items-center.gap-x-2 > button[aria-haspopup="menu"][data-version-aligner-button] {
     display: none !important;
+  }
+
+  /* Fix technology dropdown width to accommodate adjacent version trigger */
+  #sidebar-content .nav-dropdown-trigger {
+    width: 15rem;
+    max-width: 15rem;
+    min-width: 15rem;
+    flex: 0 0 15rem;
   }
 }
 
@@ -38,6 +46,10 @@ html.cc-version-aligned #sidebar-content .cc-version-aligned-row [data-version-a
   border-radius: 999px !important;
   border: 1px solid rgba(15, 23, 42, 0.15);
   transition: border-color 0.2s ease, background-color 0.2s ease;
+  width: 10rem;
+  max-width: 10rem;
+  flex: 0 0 10rem;
+  overflow: visible;
 }
 
 html.dark .nav-dropdown-products-selector-trigger {
@@ -47,4 +59,34 @@ html.dark .nav-dropdown-products-selector-trigger {
 .nav-dropdown-products-selector-trigger:hover,
 .nav-dropdown-products-selector-trigger[aria-expanded="true"] {
   border-color: rgba(104, 81, 214, 0.7);
+}
+
+/* Hide version trigger while it's still in the navbar (desktop only) */
+@media (min-width: 1024px) {
+  #navbar [data-version-aligner-button] {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+/* Smoothly fade the relocated version trigger into the sidebar row */
+#sidebar-content [data-version-aligner-button] {
+  opacity: 0;
+  transform: translateY(-2px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+html.cc-version-aligned #sidebar-content [data-version-aligner-button] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Ensure product dropdown label is never truncated */
+.nav-dropdown-products-selector-trigger > span {
+  max-width: none !important;
+  white-space: normal !important;
+  -webkit-line-clamp: unset !important;
+  display: inline !important;
 }

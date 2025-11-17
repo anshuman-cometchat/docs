@@ -12,6 +12,9 @@
     
     // Expose debug control globally
     window.VERSION_ALIGNER_DEBUG = DEBUG_MODE;
+
+    // Pre-mark any version buttons so CSS can hide them before alignment completes
+    try { getAllVersionButtons(); } catch (_) {}
     
     // Debug logging function
     function debugLog(...args) {
@@ -148,7 +151,14 @@
     function getAllVersionButtons() {
         try {
             var all = Array.from(document.querySelectorAll('button[aria-haspopup="menu"]'));
-            return all.filter(function(b){ return isVersionLabelText(b.innerText || b.textContent || ''); });
+            return all.filter(function(b){
+                return isVersionLabelText(b.innerText || b.textContent || '');
+            }).map(function(btn){
+                if (!btn.dataset.versionAlignerButton) {
+                    btn.dataset.versionAlignerButton = 'pending';
+                }
+                return btn;
+            });
         } catch(_) { return []; }
     }
 
@@ -258,7 +268,7 @@
                 if (verBtn && placeholder.parentNode) {
                     placeholder.parentNode.insertBefore(verBtn, placeholder);
                     verBtn.style.display = '';
-                    try { delete verBtn.dataset.versionAlignerButton; } catch(_) {}
+                    try { verBtn.dataset.versionAlignerButton = 'pending'; } catch(_) {}
                     debugLog('[version-aligner] Version button moved back to original position');
                 }
             } catch(_) {}
@@ -411,7 +421,15 @@
         debugLog('[version-aligner] Creating placeholder for version button...');
         const placeholder = document.createElement('div');
         placeholder.id = PLACEHOLDER_ID;
+        placeholder.setAttribute('aria-hidden', 'true');
+        placeholder.setAttribute('role', 'presentation');
         placeholder.style.display = 'none';
+        placeholder.style.width = '0px';
+        placeholder.style.height = '0px';
+        placeholder.style.margin = '0px';
+        placeholder.style.flex = '0 0 auto';
+        placeholder.style.visibility = 'hidden';
+        placeholder.style.pointerEvents = 'none';
         try { verBtn.parentNode.insertBefore(placeholder, verBtn); } catch(_) {}
 
         debugLog('[version-aligner] Setting up version button...');
@@ -485,8 +503,10 @@
         try {
             _realign();
         } finally {
-            observer.observe(document.body, { childList: true, subtree: true });
-        debugLog('[version-aligner] Observer reconnected');
+            if (observer) {
+                observer.observe(document.body, { childList: true, subtree: true });
+                debugLog('[version-aligner] Observer reconnected');
+            }
         }
         debugLog('[version-aligner] ===== REALIGN COMPLETE =====');
     }
@@ -523,6 +543,7 @@
             
             if (relevantMutation) {
                 debugLog('[version-aligner] Relevant DOM mutation detected, triggering realign...');
+                try { getAllVersionButtons(); } catch(_) {}
                 triggerRealign();
                 // In case a Radix dropdown just opened, enforce version menu width
                 enforceVersionMenuWidth(65);
@@ -555,6 +576,11 @@
     // Initial run
     debugLog('[version-aligner] ===== SCRIPT INITIALIZATION =====');
     debugLog('[version-aligner] Starting initial alignment...');
+    try {
+        _realign();
+    } catch (e) {
+        debugLog('[version-aligner] Initial alignment error', e);
+    }
     triggerRealign();
 
     // Listen for SPA navigation changes (guard against double patching)
