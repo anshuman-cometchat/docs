@@ -419,18 +419,18 @@
         } catch(_) {}
 
         debugLog('[version-aligner] Creating placeholder for version button...');
-        const placeholder = document.createElement('div');
-        placeholder.id = PLACEHOLDER_ID;
-        placeholder.setAttribute('aria-hidden', 'true');
-        placeholder.setAttribute('role', 'presentation');
-        placeholder.style.display = 'none';
-        placeholder.style.width = '0px';
-        placeholder.style.height = '0px';
-        placeholder.style.margin = '0px';
-        placeholder.style.flex = '0 0 auto';
-        placeholder.style.visibility = 'hidden';
-        placeholder.style.pointerEvents = 'none';
-        try { verBtn.parentNode.insertBefore(placeholder, verBtn); } catch(_) {}
+        // const placeholder = document.createElement('div');
+        // placeholder.id = PLACEHOLDER_ID;
+        // placeholder.setAttribute('aria-hidden', 'true');
+        // placeholder.setAttribute('role', 'presentation');
+        // placeholder.style.display = 'none';
+        // placeholder.style.width = '0px';
+        // placeholder.style.height = '0px';
+        // placeholder.style.margin = '0px';
+        // placeholder.style.flex = '0 0 auto';
+        // placeholder.style.visibility = 'hidden';
+        // placeholder.style.pointerEvents = 'none';
+        // try { verBtn.parentNode.insertBefore(placeholder, verBtn); } catch(_) {}
 
         debugLog('[version-aligner] Setting up version button...');
         verBtn.dataset.versionAlignerButton = 'true';

@@ -1,5 +1,10 @@
 /* Version aligner styles – scoped to sidebar + navbar elements */
 
+/* Force-hide the navbar utility group regardless of breakpoints */
+#navbar .hidden.lg\:flex.items-center.gap-x-2 {
+  width: 0 !important;
+}
+
 /* Hide chevron icon on the moved version trigger */
 #sidebar-content [data-version-aligner-button] svg {
   display: none !important;
