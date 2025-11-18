@@ -173,37 +173,3 @@ In every snippet, edit only the text inside quotes such as "YOUR_APP_ID".
 </script>
 ```
 
----
-
-## How `cometchat-auth.js` Works
-
-All three snippets above import a single helper file.
-
-At a high level it:
-
-1. Reads your `COMETCHAT_WIDGET_CONFIG` object  
-2. Validates required fields based on the selected `mode`  
-3. Initializes the CometChat Embed SDK with `appID` + `region`  
-4. Logs the user in:
-   - **guest:** creates a guest user (can be stored via cookie/localStorage)  
-   - **uid:** creates or updates the user for the provided `uid`, then logs in using `authKey`  
-   - **authToken:** logs in directly with the backend-generated auth token  
-5. Launches the widget inside the element selected via `mount` (`#cometChatMount` in these examples)
-
----
-
-## Reusable Pattern (Mental Model)
-
-Across all modes, the pattern stays the same:
-
-1. Load the `@cometchat/chat-embed` script in the `<head>`  
-2. Add a `<div>` where the widget should mount  
-3. Define one `COMETCHAT_WIDGET_CONFIG` object  
-4. Call `CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);`
-
-Switching from guest → UID → auth token only requires changing:
-
-- `mode`  
-- The auth field (`authKey`, `uid`, or `authToken`)  
-
-The rest of the page stays exactly the same.
