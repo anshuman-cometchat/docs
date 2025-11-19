@@ -67,7 +67,11 @@ Add the CometChat Widget by pasting one small HTML snippet. It drops in like any
     mount: "#cometChatMount",
     width: "450px",
     height: "80vh",
-    isDocked: true               // true = docked widget (recommended)
+    isDocked: true,               // true = docked widget (recommended)
+    //variantID: "YOUR_VARIANT_ID",
+    //chatType: "user" | "group",
+    //defaultChatID: "uid_or_guid",
+    //dockedAlignment: "left" | "right"
   };
 
   CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
@@ -81,7 +85,10 @@ Add the CometChat Widget by pasting one small HTML snippet. It drops in like any
 | `appID`, `region`, `authKey` | Copy from **[Dashboard](https://app.cometchat.com)** |
 | `user.name`, `user.avatar`, `user.link` | Optional guest display info—leave blank if you don’t need it. |
 | `width`, `height`, `isDocked` | <p>Adjust the widget width & height.</p><p>**isDocked = true** - appears as icon on page and expands when clicked.</p> <p>**isDocked = false** - appears embedded on the page.</p> |
-
+| `variantID` | Specifies a particular version or snapshot of your widget configuration. If omitted, the first available variant is used. |
+| `chatType` | Determines the type of conversation the widget initiates by default (one-on-one user chat or a group chat). |
+| `defaultChatID` | The specific chat with user (`uid`) or group (`guid`) that should automatically open when the widget loads. |
+| `dockedAlignment` | Controls the position of the docked widget interface on the page (left side or right side). |
 
 ## 2. Create + Log In User On The Fly
 
@@ -126,7 +133,11 @@ Add the CometChat Widget by pasting one small HTML snippet. It drops in like any
     mount: "#cometChatMount",
     width: "450px",
     height: "80vh",
-    isDocked: true
+    isDocked: true,
+    //variantID: "YOUR_VARIANT_ID",
+    //chatType: "user" | "group",
+    //defaultChatID: "uid_or_guid",
+    //dockedAlignment: "left" | "right"
   };
 
   CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
@@ -142,7 +153,10 @@ Add the CometChat Widget by pasting one small HTML snippet. It drops in like any
 | `user.name`, `user.avatar`, `user.link` | Optional profile info you already store for that person. |
 | `mode` | Keep this as `"uid"` so the widget knows you’re logging in with IDs. |
 | `width`, `height`, `isDocked` | <p>Adjust the widget width & height.</p><p>**isDocked = true** - appears as icon on page and expands when clicked.</p> <p>**isDocked = false** - appears embedded on the page.</p> |
-
+| `variantID` | Specifies a particular version or snapshot of your widget configuration. If omitted, the first available variant is used. |
+| `chatType` | Determines the type of conversation the widget initiates by default (one-on-one user chat or a group chat). |
+| `defaultChatID` | The specific chat with user (`uid`) or group (`guid`) that should automatically open when the widget loads. |
+| `dockedAlignment` | Controls the position of the docked widget interface on the page (left side or right side). |
 
 ## 3. Backend-Created User (Auth Token Login)
 
@@ -183,7 +197,11 @@ Add the CometChat Widget by pasting one small HTML snippet. It drops in like any
     mount: "#cometChatMount",
     width: "450px",
     height: "80vh",
-    isDocked: true
+    isDocked: true,
+    //variantID: "YOUR_VARIANT_ID",
+    //chatType: "user" | "group",
+    //defaultChatID: "uid_or_guid",
+    //dockedAlignment: "left" | "right"
   };
 
   CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
@@ -198,3 +216,7 @@ Add the CometChat Widget by pasting one small HTML snippet. It drops in like any
 | `mode` | Keep as `"authToken"` so the widget expects a server-issued token. |
 | `authToken` | Generate on your **server**: (1) call the CometChat Auth Token API with your API key, (2) get the token for that user, (3) send it to the page and place it here. |
 | `width`, `height`, `isDocked` | <p>Adjust the widget width & height.</p><p>**isDocked = true** - appears as icon on page and expands when clicked.</p> <p>**isDocked = false** - appears embedded on the page.</p> |
+| `variantID` | Specifies a particular version or snapshot of your widget configuration. If omitted, the first available variant is used. |
+| `chatType` | Determines the type of conversation the widget initiates by default (one-on-one user chat or a group chat). |
+| `defaultChatID` | The specific chat with user (`uid`) or group (`guid`) that should automatically open when the widget loads. |
+| `dockedAlignment` | Controls the position of the docked widget interface on the page (left side or right side). |
