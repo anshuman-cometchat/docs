@@ -4,17 +4,23 @@ sidebarTitle: "Integration"
 description: "Learn how to integrate the CometChat Widget into a static HTML website with step-by-step instructions."
 ---
 
-You can embed the CometChat Widget into any page with a small HTML snippet.
-There are three common integration scenarios depending on how you want users to access chat:
+import { Steps, Step } from 'mintlify';
 
-1. Guest / Anonymous Users (No Login)
-When you want any visitor to start chatting instantly without logging in.
+You can add the CometChat Widget to any page by pasting a short HTML snippet. Think of it as a ready-made chat window—drop it where you want it, then decide how people should get into the chat. Pick the option below that feels closest to your website:
 
-2. Create User on the Fly (UID Login)
-When your application has unique user IDs and you want users to have a stable identity in chat.
+<Steps className="mt-6">
+  <Step title="1. Guest / Anonymous Users (No Login)">
+    <p>Use this when you want visitors to chat right away on a marketing page, help center, or event site. CometChat uses the Guest Auth Key from your dashboard to spin up a temporary profile, and you can still set a friendly display name or avatar so messages stay clear.</p>
+  </Step>
 
-3. App With Its Own Backend (Auth Token Login)
-When your app has its own backend and generates CometChat auth tokens for logged-in users.
+  <Step title="2. Create User on the Fly (UID Login)">
+    <p>Choose this if you already give each customer a unique ID (maybe an email, customer number, or username). Drop that ID into the config and CometChat creates the user the first time they open chat. They’ll see the same name, avatar, and conversation history every time they return—no extra backend work needed.</p>
+  </Step>
+
+  <Step title="3. App With Its Own Backend (Auth Token Login)">
+    <p>Pick this when your app already has its own login and a backend team. After a user signs in, your server requests a CometChat auth token for them. The widget uses that token to log in, which keeps your secret keys off the browser and lets you control who can chat and for how long.</p>
+  </Step>
+</Steps>
 
 ---
 
