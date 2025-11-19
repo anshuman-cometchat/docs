@@ -6,19 +6,19 @@ description: "Learn how to integrate the CometChat Widget into a static HTML web
 
 import { Steps, Step } from 'mintlify';
 
-You can add the CometChat Widget to any page by pasting a short HTML snippet. Think of it as a ready-made chat window—drop it where you want it, then decide how people should get into the chat. Pick the option below that feels closest to your website:
+Add the CometChat Widget by pasting one small HTML snippet. It’s a plug-and-play chat window—just decide how people should enter the chat and follow the matching option below:
 
 <Steps className="mt-6">
-  <Step title="1. Guest / Anonymous Users (No Login)">
-    <p>Use this when you want visitors to chat right away on a marketing page, help center, or event site. CometChat uses the Guest Auth Key from your dashboard to spin up a temporary profile, and you can still set a friendly display name or avatar so messages stay clear.</p>
+  <Step title="Guest / Anonymous Users">
+    <p>Best for quick chats on a marketing page, help center, or event site. Paste your Guest Auth Key and we create a temporary visitor profile. You can still type in a friendly name or avatar.</p>
   </Step>
 
-  <Step title="2. Create User on the Fly (UID Login)">
-    <p>Choose this if you already give each customer a unique ID (maybe an email, customer number, or username). Drop that ID into the config and CometChat creates the user the first time they open chat. They’ll see the same name, avatar, and conversation history every time they return—no extra backend work needed.</p>
+  <Step title="Create and Login User on the Fly">
+    <p>Use this if each customer already has something like an email, username, or customer number. Add that ID to the widget config and we create the user the first time they open chat, so they always show up the same way.</p>
   </Step>
 
-  <Step title="3. App With Its Own Backend (Auth Token Login)">
-    <p>Pick this when your app already has its own login and a backend team. After a user signs in, your server requests a CometChat auth token for them. The widget uses that token to log in, which keeps your secret keys off the browser and lets you control who can chat and for how long.</p>
+  <Step title="App With Its Own Backend">
+    <p>Pick this when your app already has a login screen and a server team. After someone signs in, your server requests a CometChat auth token and hands it to the widget. That keeps your secret keys safe and lets you decide who can chat.</p>
   </Step>
 </Steps>
 
@@ -28,8 +28,8 @@ You can add the CometChat Widget to any page by pasting a short HTML snippet. Th
 
 **Use this when:**
 
-- Any visitor should be able to start chatting instantly  
-- You do not have (or do not want to wire up) your own login/registration yet  
+- Anyone should be able to chat right away  
+- You do not have (or do not want) your own login form yet  
 
 ### 1.1 Code for `<head>`
 
@@ -77,8 +77,8 @@ You can add the CometChat Widget to any page by pasting a short HTML snippet. Th
 
 **Use this when:**
 
-- Your application already has unique user IDs  
-- You want every user to appear with a stable identity in chat  
+- You already give each person a unique ID (email, username, etc.)  
+- You want them to look the same every time they chat  
 
 ### 2.1 Code for `<head>`
 
@@ -129,8 +129,8 @@ You can add the CometChat Widget to any page by pasting a short HTML snippet. Th
 
 **Use this when:**
 
-- Your users already sign in through your backend  
-- Your backend generates CometChat auth tokens for logged-in users  
+- People log in through your own backend  
+- Your backend can request CometChat auth tokens after login  
 
 ### 3.1 Code for `<head>`
 
