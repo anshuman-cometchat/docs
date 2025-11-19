@@ -1,0 +1,109 @@
+---
+title: "Tools"
+sidebarTitle: "Tools"
+description: "Extend your agent with custom APIs, Google Suite integrations, and MCP-powered skills."
+---
+
+import { Callout } from 'mintlify';
+
+Tools extend your agent’s capabilities by letting it call external services and APIs. Within Agent Builder you can create reusable tools, connect them to multiple agents, and reference them directly inside instructions with the `@` menu.
+
+## Custom API tools
+
+Custom API tools connect your agent to any REST endpoint so it can fetch data, trigger workflows, or hand off complex tasks.
+
+### General configuration
+
+1. **Name** – A descriptive label the agent can reference.
+2. **Icon URL** – An image that appears alongside the tool in the dashboard.
+3. **Slug** – A URL-friendly identifier (for example `example-api-tool`).
+4. **Description** – Explain what the tool does and when to use it.
+5. **Method** – Pick the HTTP verb (`GET`, `POST`, `PUT`, `DELETE`, etc.).
+6. **Endpoint URL** – Provide the full URL to your API.
+
+### Headers
+
+Add headers in JSON format to send with every request:
+
+```json
+{
+  "Content-Type": "application/json"
+}
+```
+
+### Body template
+
+For `POST` or `PUT` requests, define a body template. Templates support [Handlebars](https://handlebarsjs.com/) so you can inject data from the CometChat context:
+
+- `{{uid}}` – Sender’s user ID.
+- `{{role}}` – Sender’s role.
+- Custom fields from `messageMetadata` (for example `{{customMetadataField}}`).
+
+JSON example:
+
+```json
+{
+  "userId": "{{uid}}",
+  "userRole": "{{role}}",
+  "customField": "{{customMetadataField}}"
+}
+```
+
+String example:
+
+```
+User {{uid}} with role {{role}} sent a message
+```
+
+### Authentication (Basic Auth)
+
+1. Toggle **Enable** under Basic Authentication.
+2. Enter the **User Name**.
+3. Enter the **Password** or token.
+
+### Parameters
+
+Define each parameter so the agent understands what to supply at run-time:
+
+- **Key** – Parameter name passed to your API.
+- **Type** – Data type (`string`, `number`, `boolean`, etc.).
+- **Description** – Plain-language guidance for the agent.
+- **Required** – Mark mandatory fields to prevent incomplete requests.
+
+Use **+ Add Parameter** to create as many inputs as you need.
+
+### Reference in instructions
+
+Once saved, the custom API tool appears in the `@` tool list. Embed it within instructions to explain when and how the agent should call it. Example: “When users ask for weather information, use @weather-api-tool with the city parameter.”
+
+<Callout type="warning" title="Test before going live">
+Send sample conversations through the Test console to confirm your tool receives well-formed payloads and responses. Update instructions if the agent needs extra context.
+</Callout>
+
+## Google Suite tools
+
+Coming soon!
+
+{/* Google Suite tools handle OAuth and service accounts so the agent can interact with Gmail, Calendar, Drive, and more.
+
+1. Create or reuse a Google Cloud project and enable the APIs you need.
+2. Generate a service account with domain-wide delegation and download the JSON key.
+3. In Agent Builder, choose **Google Suite** as the tool type.
+4. Paste the service account email, client ID, private key, and required scopes (for example `https://www.googleapis.com/auth/calendar`).
+5. Specify the user to impersonate (often a shared inbox or admin).
+6. Configure parameters so the agent collects required context—recipient, subject, start time, etc.
+7. Save and test using the Agent Builder console to verify authentication and response formats.
+
+<Callout type="info" title="Security tip">
+Store the JSON key in a secrets manager and rotate it regularly. You can update credentials in the dashboard without recreating the tool.
+</Callout> */}
+
+{/* ## MCP-powered tools
+
+MCP endpoints can expose tools in addition to context. After connecting an MCP server, any tools it provides appear in the same `@` picker—treat them like first-class actions and document how the agent should use them. */}
+
+{/* ## Using tools across agents
+
+- Tools are reusable; assign them to multiple agents without redefining configuration.
+- Update a tool once and every agent using it stays in sync.
+- Review tool analytics in the dashboard to track latency, error rates, and usage volume. */}

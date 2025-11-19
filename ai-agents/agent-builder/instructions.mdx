@@ -1,0 +1,44 @@
+---
+title: "Configure Instructions"
+sidebarTitle: "Instructions"
+description: "Shape your agent’s personality, boundaries, and tool usage inside the Agent Builder."
+---
+
+Instructions define how your agent behaves, what it knows, and how it should respond to users. Treat them as a living playbook that sets the agent’s personality, expertise, and operating rules.
+
+### What are Instructions?
+
+- Detailed prompts that guide behaviour and tone.
+- A place to declare expertise, escalation paths, or compliance requirements.
+- Guardrails that spell out what the agent should or shouldn’t do.
+
+## Adding tools to instructions
+
+1. Inside the instructions editor, type `@` to open the list of available tools and MCP resources.
+2. Click the tool you want to reference—it is embedded directly into the prompt.
+3. Describe when the agent should call that tool so usage is unambiguous.
+4. Repeat for each tool you want the agent to understand. Embedded references stay synced if you rename the underlying tool.
+
+Embedding tools in context eliminates guesswork; the agent knows exactly which capability to reach for and under which circumstances.
+
+## Best practices
+
+### Writing effective instructions
+
+- Be explicit about the agent’s role, expertise, and tone.
+- Provide concrete examples of the behaviour you expect.
+- Set hard boundaries for topics or actions that are off limits.
+- Use the `@` menu to anchor instructions to specific tools or MCP resources.
+
+### Tool configuration
+
+- Document why a tool exists and the scenarios it supports.
+- Test the API or integration outside of Agent Builder before wiring it in.
+- Choose meaningful names and slugs so @mentions stay readable.
+- Configure authentication up front—agents can only call tools that succeed end-to-end.
+
+### MCP integration
+
+- Connect reliable MCP servers with predictable latency and uptime.
+- Note the context each endpoint returns so teammates know when to enable it.
+- Monitor responses over time and adjust endpoints or filters if the returned data drifts.

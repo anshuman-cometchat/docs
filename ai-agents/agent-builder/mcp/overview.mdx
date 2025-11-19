@@ -1,0 +1,38 @@
+---
+title: "MCP"
+sidebarTitle: "MCP"
+description: "Connect Model Context Protocol endpoints to enrich your agent with external knowledge and tools."
+---
+
+import { Callout } from 'mintlify';
+
+## What is MCP?
+
+Model Context Protocol (MCP) expands your agent’s context, tools, and integrations. It provides a standard way to connect agents with external services and data sources—ideal for knowledge bases, internal systems, or advanced workflows that go beyond simple API calls.
+
+## Add an MCP endpoint
+
+1. In Agent Builder, open the **MCP** section of your agent configuration.
+2. Click **+ Add Endpoint**.
+3. Supply the endpoint details:
+   - **Endpoint Name*** – descriptive label for teammates.
+   - **Endpoint URL*** – full URL to your MCP server (for example `https://example.com/mcp-server`).
+   - **Description** – explain what the endpoint provides so you can distinguish multiple connections later.
+   - **Icon URL** – optional image to represent the endpoint (for example `https://example.com/icon.png`).
+4. Save to register the endpoint with your agent.
+
+## Using MCP-powered tools and context
+
+- Once configured, MCP endpoints and the tools they expose appear in the `@` picker alongside native tools.
+- Embed MCP resources directly in instructions to show the agent when to use them.
+- During conversations, the agent can automatically discover MCP-provided tools and contextual data.
+
+{/* <Callout type="info" title="Chain MCP with tools">
+Reference identifiers returned from MCP (like `order_id` or `ticket_number`) inside your custom API tools so the agent can complete the workflow end-to-end.
+</Callout> */}
+
+## Best practices
+
+- Choose MCP servers with reliable uptime and predictable response times.
+- Document each endpoint’s capabilities so teammates know when to enable it.
+- Monitor responses in the Test console and update endpoints or filters as data changes.
