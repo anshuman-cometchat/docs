@@ -4,40 +4,44 @@ sidebarTitle: "Integration"
 description: "Learn how to integrate the CometChat Widget into a static HTML website with step-by-step instructions."
 ---
 
-import { Steps, Step } from 'mintlify';
+import { CardGroup, Card, Callout } from 'mintlify';
 
-Add the CometChat Widget by pasting one small HTML snippet. It’s a plug-and-play chat window—just decide how people should enter the chat and follow the matching option below:
+Add the CometChat Widget by pasting one small HTML snippet. It drops in like any other embed—copy the code, paste it into your page, then tell the widget how people should sign in.
 
-<Steps className="mt-6">
-  <Step title="Guest / Anonymous Users">
-    <p>Best for quick chats on a marketing page, help center, or event site. Paste your Guest Auth Key and we create a temporary visitor profile. You can still type in a friendly name or avatar.</p>
-  </Step>
+<Callout>
+Need a zero-code path? Use the <a href="https://app.cometchat.com/" target="_blank" rel="noreferrer">Visual Builder ↗</a> to configure the widget and copy the embed it generates.
+</Callout>
 
-  <Step title="Create and Login User on the Fly">
-    <p>Use this if each customer already has something like an email, username, or customer number. Add that ID to the widget config and we create the user the first time they open chat, so they always show up the same way.</p>
-  </Step>
+**Choose the sign-in option that matches your site:**
 
-  <Step title="App With Its Own Backend">
-    <p>Pick this when your app already has a login screen and a server team. After someone signs in, your server requests a CometChat auth token and hands it to the widget. That keeps your secret keys safe and lets you decide who can chat.</p>
-  </Step>
-</Steps>
+<CardGroup rows={3} className="mt-6">
+  <Card title="Guest chat (no login)" href="#1-guest-chat-no-login">
+    Let anyone chat without creating an account. Perfect for marketing pages, help centers, or demo sites.
+  </Card>
+  <Card title="Log in with UID" href="#2-log-in-with-uid-create-user-automatically">
+    Reuse an ID you already have (email, username, customer number) so returning visitors keep the same name and history.
+  </Card>
+  <Card title="Log in with your backend" href="#3-log-in-with-your-backend-auth-token-login">
+    Your server verifies users and hands the widget a CometChat auth token. Keeps secrets off the browser.
+  </Card>
+</CardGroup>
 
 ---
 
-## 1. Guest / Anonymous Users (No Login)
+## 1. Guest chat (no login)
 
 **Use this when:**
 
-- Anyone should be able to chat right away  
+- Anyone should be able to start chatting instantly  
 - You do not have (or do not want) your own login form yet  
 
-### 1.1 Code for `<head>`
+### Copy this into `<head>`
 
 ```html
 <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
 ```
 
-### 1.2 Code for `<body>`
+### Copy this into `<body>`
 
 ```html lines highlight={9-10, 12, 16-18, 23-25}
 <!-- Where the chat widget should appear -->
@@ -71,22 +75,29 @@ Add the CometChat Widget by pasting one small HTML snippet. It’s a plug-and-pl
 </script>
 ```
 
+### Update these values
+
+- `appID`, `region` – copy them from **Dashboard → Settings → App Details**.  
+- `authKey` – use the **Guest Auth Key** from **Dashboard → Settings → API & Auth Keys**.  
+- `user.name`, `user.avatar`, `user.link` – optional display info for the visitor.  
+- `width`, `height`, `isDocked` – tweak how the widget looks on the page.
+
 ---
 
-## 2. Create User on the Fly (UID Login)
+## 2. Log in with UID (create user automatically)
 
 **Use this when:**
 
-- You already give each person a unique ID (email, username, etc.)  
-- You want them to look the same every time they chat  
+- Every person already has an ID inside your product (email, username, order number, etc.)  
+- You want that ID to drive their chat identity automatically  
 
-### 2.1 Code for `<head>`
+### Copy this into `<head>`
 
 ```html
 <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
 ```
 
-### 2.2 Code for `<body>`
+### Copy this into `<body>`
 
 ```html lines highlight={9-10, 12, 15, 19-21, 26-28}
 <!-- Where the chat widget should appear -->
@@ -123,22 +134,29 @@ Add the CometChat Widget by pasting one small HTML snippet. It’s a plug-and-pl
 </script>
 ```
 
+### Update these values
+
+- `appID`, `region`, `authKey` – same as the guest flow.  
+- `uid` – pass the unique ID from the page (for example `customer.id`). CometChat will create the user the first time it sees that ID.  
+- `user.name`, `user.avatar`, `user.link` – optional profile info your visitors already have.  
+- Keep `mode: "uid"` so CometChat knows you are logging people in with IDs.
+
 ---
 
-## 3. App With Its Own Backend (Auth Token Login)
+## 3. Log in with your backend (auth token login)
 
 **Use this when:**
 
-- People log in through your own backend  
-- Your backend can request CometChat auth tokens after login  
+- People sign in to your product through your own backend  
+- You can create a CometChat auth token on the server after they sign in  
 
-### 3.1 Code for `<head>`
+### Copy this into `<head>`
 
 ```html
 <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
 ```
 
-### 3.2 Code for `<body>`
+### Copy this into `<body>`
 
 ```html lines highlight={9-10, 14, 18-19}
 <!-- Where the chat widget should appear -->
@@ -166,3 +184,13 @@ Add the CometChat Widget by pasting one small HTML snippet. It’s a plug-and-pl
   CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
 </script>
 ```
+
+### Update these values
+
+- `appID`, `region` – from **Dashboard → Settings → App Details**.  
+- Keep `mode: "authToken"`.  
+- `authToken` – **generate this on your server** after the user logs in:  
+  1. Your server calls the CometChat Auth Token API (or server SDK) using the REST API key.  
+  2. CometChat returns an auth token tied to that user.  
+  3. Send the token to your page (template variable, AJAX call, etc.) and place it in `authToken`.  
+- The rest of the config (`mount`, `width`, `height`, `isDocked`) controls layout just like the other flows.
