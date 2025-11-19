@@ -1,4 +1,4 @@
-### Create users or groups without the dashboard
+### Create/Update users without the dashboard
 
 If you collect names, avatars, or profile links on your site, you can push them straight into CometChat. Replace the placeholders and run the snippet after the widget loads.
 
@@ -12,7 +12,11 @@ user.setLink("https://example.com/profile");
 CometChatApp.createOrUpdateUser(user).then((result) => {
   console.log("User saved:", result);
 });
+```
 
+### Create/Update groups without the dashboard
+
+```js
 // Create or update a group
 const group = new CometChatApp.CometChat.Group("GUID", "GROUP_NAME", "public");
 
