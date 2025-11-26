@@ -3681,9 +3681,22 @@
                     {
                         "name": "onlyAgentic",
                         "in": "query",
-                        "description": "Includes only agentic conversations in the list.",
+                        "description": "Shows only agentic conversations in the list.",
                         "schema": {
                             "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "useCursoredIndex",
+                        "in": "query",
+                        "description": "Enables cursor-based pagination for more efficient conversations listing.",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "enum": [
+                                0,
+                                1
+                            ]
                         }
                     }
                 ],
@@ -6317,6 +6330,11 @@
                                         "items": {
                                             "type": "string"
                                         }
+                                    },
+                                    "addToConversations": {
+                                        "description": "When enabled, automatically creates chat conversations between users when they become friends.",
+                                        "type": "boolean",
+                                        "default": false
                                     }
                                 },
                                 "type": "object"
@@ -9104,6 +9122,7 @@
                                                 "memberScopeChangedOverride": true
                                             },
                                             "bypassPreferencesForMentions": false,
+                                            "bypassPreferencesForGroupMentions": false,
                                             "call": {
                                                 "busySetting": 1,
                                                 "cancelledSetting": 1,
@@ -15059,6 +15078,65 @@
                 ]
             }
         },
+        "/moderation/flagged-messages/2": {
+            "patch": {
+                "tags": [
+                    "Moderation"
+                ],
+                "summary": "Block/Review Flagged Message",
+                "description": "Marks blocked messages as reviewed, allowing a moderator to approve them or keep them blocked, and then moves them from the blocked list to the reviewed list.",
+                "operationId": "chat-api-review-block-flagged-message",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "data": {
+                                        "$ref": "#/components/schemas/moderationMessageData"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "examples": {
+                                "Disapprove Flagged Message": {
+                                    "summary": "Disapprove Flagged Message",
+                                    "value": {
+                                        "status": "disapproved"
+                                    }
+                                },
+                                "Approve Flagged Message": {
+                                    "summary": "Approve Flagged Message",
+                                    "value": {
+                                        "status": "approved"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Review and Flag Message(s)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "success": true,
+                                    "message": "Message with id 2 has been unflagged successfully."
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
         "/stats": {
             "get": {
                 "tags": [
@@ -16002,6 +16080,9 @@
                         "type": "object"
                     },
                     "bypassPreferencesForMentions": {
+                        "type": "boolean"
+                    },
+                    "bypassPreferencesForGroupMentions": {
                         "type": "boolean"
                     },
                     "group": {
@@ -17839,11 +17920,7 @@
                     },
                     "quotedMessageId": {
                         "description": "ID of the message being quoted.\nIf provided, the send message response will include a `quotedMessage` node\nin the response containing the referenced message object.",
-                        "type": "string",
-                        "default": "message",
-                        "enum": [
-                            "message"
-                        ]
+                        "type": "string"
                     },
                     "type": {
                         "description": "Type of the message. The available values are text, image, file, audio, video.",
