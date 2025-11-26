@@ -15091,8 +15091,13 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "data": {
-                                        "$ref": "#/components/schemas/moderationMessageData"
+                                    "status": {
+                                        "description": "Specifies the moderation action to apply to the flagged message (approve or disapprove.",
+                                        "type": "string",
+                                        "enum": [
+                                            "approved",
+                                            "disapproved"
+                                        ]
                                     }
                                 },
                                 "type": "object"
