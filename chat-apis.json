@@ -15084,7 +15084,7 @@
                     "Moderation"
                 ],
                 "summary": "Block/Review Flagged Message",
-                "description": "Marks blocked messages as reviewed, allowing a moderator to approve them or keep them blocked, and then moves them from the blocked list to the reviewed list.",
+                "description": "Enables moderators to review flagged messages and take action by either approving acceptable content or blocking policy violations, automatically transferring flagged messages to the reviewed list for tracking purposes.",
                 "operationId": "chat-api-review-block-flagged-message",
                 "requestBody": {
                     "content": {
@@ -15092,7 +15092,7 @@
                             "schema": {
                                 "properties": {
                                     "status": {
-                                        "description": "Specifies the moderation action to apply to the flagged message (approve or disapprove.",
+                                        "description": "Specifies the moderation action to apply to the flagged message (approve or disapprove).",
                                         "type": "string",
                                         "enum": [
                                             "approved",
