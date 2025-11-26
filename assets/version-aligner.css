@@ -1,24 +1,103 @@
-/* IMPORTANT: Scope rules to version aligner only; do not affect product dropdown */
+/* Version aligner styles – scoped to sidebar + navbar elements */
 
-/* Hide chevron on the moved version trigger only */
+/* Force-hide the navbar utility group regardless of breakpoints */
+#navbar .hidden.lg\:flex.items-center.gap-x-2 {
+  width: 0 !important;
+}
+
+/* Hide chevron icon on the moved version trigger */
 #sidebar-content [data-version-aligner-button] svg {
   display: none !important;
 }
 
-/* Constrain technology dropdown width when version is aligned */
-html.cc-version-aligned #sidebar-content .nav-dropdown-trigger {
-  max-width: 230px !important;
-  /* Remove bottom spacing when version sits on the same row */
+/* Keep technology + version triggers on a single row */
+#sidebar-content .cc-version-aligned-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Constrain technology dropdown width when aligned */
+html.cc-version-aligned #sidebar-content .cc-version-aligned-row .nav-dropdown-trigger {
+  flex: 0 0 14rem;
+  max-width: 14rem;
   margin-bottom: 0 !important;
 }
 
-/* Ensure moved version button displays consistently */
-html.cc-version-aligned #sidebar-content [data-version-aligner-button] {
+/* Ensure the moved version trigger renders inline with the technology trigger */
+html.cc-version-aligned #sidebar-content .cc-version-aligned-row [data-version-aligner-button] {
   display: flex !important;
   align-items: center;
+  flex: 0 0 auto;
 }
 
-/* On large screens, hide any duplicate version buttons tagged in the navbar */
+/* Hide the navbar version dropdown once the sidebar is aligned (desktop only) */
 @media (min-width: 1024px) {
-  #navbar .cc-dup-version { display: none !important; }
+  html.cc-version-aligned #navbar .hidden.lg\:flex.items-center.gap-x-2 > button[aria-haspopup="menu"][data-version-aligner-button] {
+    display: none !important;
+  }
+
+  /* Fix technology dropdown width to accommodate adjacent version trigger */
+  #sidebar-content .nav-dropdown-trigger {
+    width: 14rem;
+    max-width: 14rem;
+    min-width: 14rem;
+    flex: 0 0 14rem;
+  }
+}
+
+/* Product dropdown styling tweaks */
+.nav-dropdown-products-selector-trigger {
+  border-radius: 999px !important;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  width: 10rem;
+  max-width: 10rem;
+  flex: 0 0 10rem;
+  overflow: visible;
+}
+
+html.dark .nav-dropdown-products-selector-trigger {
+  border-color: rgba(226, 232, 240, 0.2);
+}
+
+.nav-dropdown-products-selector-trigger:hover,
+.nav-dropdown-products-selector-trigger[aria-expanded="true"] {
+  border-color: rgba(104, 81, 214, 0.7);
+}
+
+/* Hide version trigger while it's still in the navbar (desktop only) */
+@media (min-width: 1024px) {
+  #navbar [data-version-aligner-button] {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+/* Smoothly fade the relocated version trigger into the sidebar row */
+#sidebar-content [data-version-aligner-button] {
+  opacity: 0;
+  transform: translateY(-2px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+html.cc-version-aligned #sidebar-content [data-version-aligner-button] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Ensure product dropdown label is never truncated */
+.nav-dropdown-products-selector-trigger > span {
+  max-width: none !important;
+  white-space: normal !important;
+  -webkit-line-clamp: unset !important;
+  display: inline !important;
+}
+
+
+.prose :where(img):not(:where([class~=not-prose],[class~=not-prose] *)) {
+    margin-top: 0em;
+    margin-bottom: 0em;
 }
