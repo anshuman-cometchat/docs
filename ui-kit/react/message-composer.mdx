@@ -177,6 +177,66 @@ export function MessageComposerDemo() {
 
 </Tabs>
 
+##### 4. Custom Mentions Request Builders
+
+You can customize how mentioned users and group members are fetched by providing custom request builders.
+
+<Tabs>
+<Tab title="MessageComposerDemo.tsx">
+```tsx
+import React from "react";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
+
+export function MessageComposerDemo() {
+  const [chatUser, setChatUser] = React.useState<CometChat.User>();
+  const [chatGroup, setChatGroup] = React.useState<CometChat.Group>();
+
+  React.useEffect(() => {
+    CometChat.getUser("uid").then((user) => {
+      setChatUser(user);
+    });
+    CometChat.getGroup("guid").then((group) => {
+      setChatGroup(group);
+    });
+  }, []);
+
+  // Custom Users Request Builder for mentions
+  const mentionsUsersRequestBuilder = new CometChat.UsersRequestBuilder()
+    .setLimit(10)
+    .setSearchKeyword("")
+    .setRoles(["default", "moderator"]);
+
+  // Custom Group Members Request Builder for group mentions
+  const mentionsGroupMembersRequestBuilder = new CometChat.GroupMembersRequestBuilder("guid")
+    .setLimit(15)
+    .setSearchKeyword("")
+    .setScopes(["admin", "moderator", "participant"]);
+
+  return chatUser ? (
+    <div>
+      {/* For user chat with custom users mentions */}
+      <CometChatMessageComposer
+        user={chatUser}
+        mentionsUsersRequestBuilder={mentionsUsersRequestBuilder}
+      />
+      
+      {/* For group chat with custom group members mentions */}
+      {chatGroup && (
+        <CometChatMessageComposer
+          group={chatGroup}
+          mentionsGroupMembersRequestBuilder={mentionsGroupMembersRequestBuilder}
+        />
+      )}
+    </div>
+  ) : null;
+}
+```
+
+</Tab>
+
+</Tabs>
+
 ***
 
 ### Filters
@@ -311,6 +371,10 @@ Below is a list of customizations along with corresponding code snippets
 | **Initial Composer Text**         | The initial text pre-filled in the message input when the component mounts.             | `initialComposerText="Hello"`                     |
 | **Disable Typing Events**         | Disables the typing indicator for the current message composer.                         | `disableTypingEvents={true}`                      |
 | **Disable Mentions**              | Disables the mentions functionality in the message composer.                            | `disableMentions={true}`                          |
+| **Disable Mention All**           | Controls whether group mentions like @all appear in suggestions.                        | `disableMentionAll={true}`                        |
+| **Mention All Label**             | Allows setting a custom alias label for group mentions (@channel, @everyone, etc.).     | `mentionAllLabel="all"`                           |
+| **Mentions Users Request Builder** | Provides a custom UsersRequestBuilder to control how the mentioned users list is fetched. | `mentionsUsersRequestBuilder={usersRequestBuilder}` |
+| **Mentions Group Members Request Builder** | Provides a custom GroupMembersRequestBuilder to customize how mentioned group members are retrieved. | `mentionsGroupMembersRequestBuilder={groupMembersRequestBuilder}` |
 | **Hide Image Attachment Option**  | Hides the image attachment option in the message composer.                              | `hideImageAttachmentOption={true}`                |
 | **Hide Video Attachment Option**  | Hides the video attachment option in the message composer.                              | `hideVideoAttachmentOption={true}`                |
 | **Hide Audio Attachment Option**  | Hides the audio attachment option in the message composer.                              | `hideAudioAttachmentOption={true}`                |

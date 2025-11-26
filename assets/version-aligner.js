@@ -8,10 +8,14 @@
         window.__ccVersionAlignerInitialized__ = true;
     } catch (_) {}
     // Debug mode - can be controlled from console via: window.VERSION_ALIGNER_DEBUG = true
-    let DEBUG_MODE = false;
-    
-    // Expose debug control globally
-    window.VERSION_ALIGNER_DEBUG = DEBUG_MODE;
+    const initialDebug =
+        typeof window.VERSION_ALIGNER_DEBUG === 'boolean'
+            ? window.VERSION_ALIGNER_DEBUG
+            : false;
+    window.VERSION_ALIGNER_DEBUG = initialDebug;
+
+    // Pre-mark any version buttons so CSS can hide them before alignment completes
+    try { getAllVersionButtons(); } catch (_) {}
     
     // Debug logging function
     function debugLog(...args) {
@@ -19,8 +23,6 @@
             console.log(...args);
         }
     }
-    
-
     
     let observer;
     const ALIGNER_ROW_CLASS = 'version-aligner-row';
@@ -38,6 +40,28 @@
         window.addEventListener('cc:route-change', function(){ NAV_READY = false; }, true);
         window.addEventListener('cc:nav-revealed', function(){ NAV_READY = true; }, true);
     } catch(_) {}
+
+    function ensureNavReady() {
+        if (NAV_READY) return true;
+        try {
+            const html = document.documentElement;
+            if (html && html.classList.contains('cc-nav-ready')) {
+                NAV_READY = true;
+                return true;
+            }
+            const sidebar = document.getElementById('sidebar-content');
+            if (!sidebar) return false;
+
+            // Mintlify recently reordered the sidebar; check for any visible dropdown trigger.
+            const navRoot = sidebar.querySelector('#navigation-items') || sidebar;
+            const hasDropdown = navRoot && navRoot.querySelector('button[aria-haspopup="menu"]');
+            if (hasDropdown) {
+                NAV_READY = true;
+                return true;
+            }
+        } catch (_) {}
+        return false;
+    }
 
     function findVersionSelector() {
         debugLog('[version-aligner] Finding version selector...');
@@ -128,7 +152,14 @@
     function getAllVersionButtons() {
         try {
             var all = Array.from(document.querySelectorAll('button[aria-haspopup="menu"]'));
-            return all.filter(function(b){ return isVersionLabelText(b.innerText || b.textContent || ''); });
+            return all.filter(function(b){
+                return isVersionLabelText(b.innerText || b.textContent || '');
+            }).map(function(btn){
+                if (!btn.dataset.versionAlignerButton) {
+                    btn.dataset.versionAlignerButton = 'pending';
+                }
+                return btn;
+            });
         } catch(_) { return []; }
     }
 
@@ -149,7 +180,7 @@
         // Look for any visible non-version dropdown in the sidebar
         try {
             const sidebar = document.getElementById('sidebar-content');
-            const nav = sidebar && sidebar.querySelector('#navigation-items');
+            const nav = sidebar && (sidebar.querySelector('#navigation-items') || sidebar);
             if (nav) {
                 const candidates = Array.from(nav.querySelectorAll('button[aria-haspopup="menu"]'))
                     .filter(b => b.id !== 'cc-product-dropdown-button')
@@ -188,40 +219,14 @@
         p = p.replace(/\/+$/, '') || '/';
         return p;
     }
-    function hasNativeTechDropdown() {
-        try {
-            const sidebar = document.getElementById('sidebar-content');
-            const nav = sidebar && sidebar.querySelector('#navigation-items');
-            if (!nav) return false;
-            const candidates = Array.from(nav.querySelectorAll('button[aria-haspopup="menu"]'))
-                .filter(b => b.id !== 'cc-product-dropdown-button')
-                .filter(b => !b.hasAttribute('data-cc-home-product-button'))
-                .filter(b => {
-                    const txt = (b.textContent || '').trim().replace(/[\u200E\u200F\u2060\u00A0\s]/g, '');
-                    return !/^v\d+([\.-]\w+)*$/i.test(txt);
-                })
-                .filter(b => {
-                    const r = b.getBoundingClientRect();
-                    return r.width > 0 && r.height > 0;
-                });
-            return candidates.length > 0;
-        } catch (_) { return false; }
-    }
-
-    function isVersionedPage() {
-        let currentPath = window.location.pathname;
-        currentPath = stripBase(currentPath);
-        const dropdownPaths = ['/chat-builder', '/ui-kit', '/sdk', '/widget', '/ai-agents'];
-        const inSection = dropdownPaths.some(prefix => currentPath === prefix || currentPath.startsWith(prefix + '/'));
-        const native = hasNativeTechDropdown();
-        debugLog('[version-aligner] routeHasTech:', inSection, 'hasNativeTech:', native);
-        return inSection || native;
-    }
-    
     function restoreOriginalLayout() {
         debugLog('[version-aligner] Restoring original layout (version only)');
         const placeholder = document.getElementById(PLACEHOLDER_ID);
         const moved = document.querySelectorAll('#sidebar-content [data-version-aligner-button]');
+        try {
+            document.querySelectorAll('#sidebar-content .cc-version-aligned-row')
+                .forEach(function(row){ row.classList.remove('cc-version-aligned-row'); });
+        } catch(_) {}
         if (!placeholder) {
             // Fallback: if placeholder is missing (nav re-render), remove any moved instances to avoid duplicates
             if (moved && moved.length) {
@@ -234,7 +239,7 @@
                 if (verBtn && placeholder.parentNode) {
                     placeholder.parentNode.insertBefore(verBtn, placeholder);
                     verBtn.style.display = '';
-                    try { delete verBtn.dataset.versionAlignerButton; } catch(_) {}
+                    try { verBtn.dataset.versionAlignerButton = 'pending'; } catch(_) {}
                     debugLog('[version-aligner] Version button moved back to original position');
                 }
             } catch(_) {}
@@ -242,27 +247,10 @@
         }
         try {
             document.documentElement.classList.remove('cc-version-aligned');
-            document.querySelectorAll('#navbar .cc-dup-version').forEach(el => el.classList.remove('cc-dup-version'));
         } catch(_) {}
 
         // Remove any inline margin adjustments applied to the technology trigger
         try { const fw = findForwardButton(); if (fw) fw.style.removeProperty('margin-bottom'); } catch(_) {}
-    }
-
-    function markDuplicateVersionButtons() {
-        try {
-            const navbar = document.getElementById('navbar');
-            if (!navbar) return;
-            const buttons = [...navbar.querySelectorAll('button[aria-haspopup="menu"]')]
-                .filter(el => el.id !== 'cc-product-dropdown-button')
-                .filter(el => !el.hasAttribute('data-cc-home-product-button'));
-            buttons.forEach(btn => {
-                const clean = (btn.textContent || '').trim().replace(/[\u200E\u200F\u2060\u00A0\s]/g, '');
-                if (/^v\d+([\.-]\w+)*$/i.test(clean)) {
-                    btn.classList.add('cc-dup-version');
-                }
-            });
-        } catch(_) {}
     }
 
     function setAlignedFlag(on) {
@@ -349,7 +337,7 @@
         }
         debugLog('[version-aligner] Screen width >= 1024px, proceeding with alignment');
         // Wait for nav reveal to avoid racing hydration
-        if (!NAV_READY) {
+        if (!ensureNavReady()) {
             debugLog('[version-aligner] Nav not ready; skipping alignment');
             return;
         }
@@ -402,10 +390,25 @@
         } catch(_) {}
 
         debugLog('[version-aligner] Creating placeholder for version button...');
-        const placeholder = document.createElement('div');
-        placeholder.id = PLACEHOLDER_ID;
-        placeholder.style.display = 'none';
-        try { verBtn.parentNode.insertBefore(placeholder, verBtn); } catch(_) {}
+        let placeholder = document.getElementById(PLACEHOLDER_ID);
+        if (!placeholder) {
+            placeholder = document.createElement('div');
+            placeholder.id = PLACEHOLDER_ID;
+            placeholder.setAttribute('aria-hidden', 'true');
+            placeholder.setAttribute('role', 'presentation');
+            placeholder.style.display = 'none';
+            placeholder.style.width = '0px';
+            placeholder.style.height = '0px';
+            placeholder.style.margin = '0px';
+            placeholder.style.flex = '0 0 auto';
+            placeholder.style.visibility = 'hidden';
+            placeholder.style.pointerEvents = 'none';
+        }
+        try {
+            if (verBtn.parentNode) {
+                verBtn.parentNode.insertBefore(placeholder, verBtn);
+            }
+        } catch (_) {}
 
         debugLog('[version-aligner] Setting up version button...');
         verBtn.dataset.versionAlignerButton = 'true';
@@ -454,6 +457,11 @@
         debugLog('[version-aligner] Inserting version button after technology dropdown...');
         try {
             fwBtn.parentNode.insertBefore(verBtn, fwBtn.nextSibling);
+            try {
+                if (fwBtn && fwBtn.parentNode && fwBtn.parentNode.classList) {
+                    fwBtn.parentNode.classList.add('cc-version-aligned-row');
+                }
+            } catch(_) {}
             // Normalize vertical alignment: remove bottom margin from the technology trigger
             try { if (fwBtn) fwBtn.style.marginBottom = '0px'; } catch(_) {}
             setAlignedFlag(true);
@@ -462,6 +470,30 @@
             debugLog('[version-aligner] Failed to insert version button into sidebar', e);
             setAlignedFlag(false);
         }
+    }
+
+    function attachObserverTargets(options = {}) {
+        const { log = true } = options;
+        if (!observer) return;
+        try {
+            const navbar = document.getElementById('navbar');
+            if (navbar) {
+                observer.observe(navbar, { childList: true, subtree: true });
+                if (log) debugLog('[version-aligner] Observing navbar for changes');
+            }
+            const sidebar = document.getElementById('sidebar-content');
+            if (sidebar) {
+                observer.observe(sidebar, { childList: true, subtree: true });
+                if (log) debugLog('[version-aligner] Observing sidebar for changes');
+            }
+            if (document.body) {
+                observer.observe(document.body, { childList: true, subtree: false });
+                if (log) debugLog('[version-aligner] Observing body for structural changes');
+            }
+            if (log) {
+                debugLog('[version-aligner] Observer reconnected');
+            }
+        } catch (_) {}
     }
 
     function realign() {
@@ -473,8 +505,7 @@
         try {
             _realign();
         } finally {
-            observer.observe(document.body, { childList: true, subtree: true });
-        debugLog('[version-aligner] Observer reconnected');
+            attachObserverTargets();
         }
         debugLog('[version-aligner] ===== REALIGN COMPLETE =====');
     }
@@ -511,38 +542,25 @@
             
             if (relevantMutation) {
                 debugLog('[version-aligner] Relevant DOM mutation detected, triggering realign...');
+                try { getAllVersionButtons(); } catch(_) {}
                 triggerRealign();
                 // In case a Radix dropdown just opened, enforce version menu width
                 enforceVersionMenuWidth(65);
             }
         });
 
-        // Observe more selectively - target specific areas instead of entire body
-        const navbar = document.getElementById('navbar');
-        const sidebar = document.getElementById('sidebar-content');
-        
-        if (navbar) {
-            observer.observe(navbar, { childList: true, subtree: true });
-            debugLog('[version-aligner] Observing navbar for changes');
-        }
-        
-        if (sidebar) {
-            observer.observe(sidebar, { childList: true, subtree: true });
-            debugLog('[version-aligner] Observing sidebar for changes');
-        }
-        
-        // Also observe body for high-level navigation changes, but with less sensitivity
-        observer.observe(document.body, { 
-            childList: true, 
-            subtree: false  // Only direct children, not deep subtree
-        });
-        
+        attachObserverTargets();
         debugLog('[version-aligner] MutationObserver started with selective targeting');
     }
 
     // Initial run
     debugLog('[version-aligner] ===== SCRIPT INITIALIZATION =====');
     debugLog('[version-aligner] Starting initial alignment...');
+    try {
+        _realign();
+    } catch (e) {
+        debugLog('[version-aligner] Initial alignment error', e);
+    }
     triggerRealign();
 
     // Listen for SPA navigation changes (guard against double patching)
