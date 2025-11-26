@@ -14545,7 +14545,7 @@
                 ]
             }
         },
-        "/moderation/reasons/spam": {
+        "/moderation/reasons/{id}": {
             "get": {
                 "tags": [
                     "Moderation"
@@ -14553,6 +14553,23 @@
                 "summary": "Get Reason details",
                 "description": "Retrieves detailed information about a specific moderation reason configured in the app.",
                 "operationId": "chat-api-get-reasons-details",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the reason which needs to be fetched.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "string": {
+                                "summary": "Reason ID",
+                                "value": ""
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "List Reasons",
@@ -14581,37 +14598,6 @@
                     }
                 ]
             },
-            "delete": {
-                "tags": [
-                    "Moderation"
-                ],
-                "summary": "Delete Reasons",
-                "description": "Deletes moderation reasons from the app configuration.",
-                "operationId": "chat-api-delete-reason",
-                "responses": {
-                    "200": {
-                        "description": "Delete Reasons",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object"
-                                },
-                                "example": {
-                                    "success": true,
-                                    "message": "The reason with id spam has been deleted successfully."
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ]
-            }
-        },
-        "/moderation/reasons/unfiltered-content": {
             "put": {
                 "tags": [
                     "Moderation"
@@ -14619,6 +14605,23 @@
                 "summary": "Update Reason details",
                 "description": "Updates the details of an existing moderation reason",
                 "operationId": "chat-api-update-reasons-details",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the reason which needs to be updated.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "string": {
+                                "summary": "Reason ID",
+                                "value": ""
+                            }
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -14663,6 +14666,52 @@
                                         "updatedAt": 1760443648,
                                         "default": true
                                     }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Moderation"
+                ],
+                "summary": "Delete Reasons",
+                "description": "Deletes moderation reasons from the app configuration.",
+                "operationId": "chat-api-delete-reason",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the reason which needs to be deleted.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "string": {
+                                "summary": "Reason ID",
+                                "value": ""
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete Reasons",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "success": true,
+                                    "message": "The reason with id spam has been deleted successfully."
                                 }
                             }
                         }
@@ -15078,7 +15127,7 @@
                 ]
             }
         },
-        "/moderation/flagged-messages/2": {
+        "/moderation/flagged-messages/{id}": {
             "patch": {
                 "tags": [
                     "Moderation"
@@ -15086,6 +15135,23 @@
                 "summary": "Block/Review Flagged Message",
                 "description": "Enables moderators to review flagged messages and take action by either approving acceptable content or blocking policy violations, automatically transferring flagged messages to the reviewed list for tracking purposes.",
                 "operationId": "chat-api-review-block-flagged-message",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of the message which needs to be reviewed.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "string": {
+                                "summary": "Message ID",
+                                "value": ""
+                            }
+                        }
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
