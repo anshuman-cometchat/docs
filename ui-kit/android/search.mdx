@@ -400,17 +400,65 @@ With message item view functions, you can assign custom views to different types
 Here's how you can override the default message item view with a custom one for text messages:
 
 <Tabs>
+<Tab title="XML">
+```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="#E8E4F3">
+
+        <TextView
+            android:id="@+id/tv_sender_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="George Alan:"
+            android:textColor="#6B4FBB"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="4dp" />
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="That works for me. Yes, let's go a..."
+            android:textColor="#4A4A4A"
+            android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="1" />
+    </LinearLayout>
+```
+
+</Tab>
+
+</Tabs>
+
+<Tabs>
 <Tab title="Java">
 ```java
-        binding.cometchatSearch.setImageMessageItemView(new MessagesSearchViewHolderListener<MediaMessage>() {
+        binding.cometchatSearch.setTextMessageItemView(new MessagesSearchViewHolderListener<TextMessage>() {
             @Override
             public View createView(Context context, View listItem) {
-                // Inflate your custom view here
+                // Inflate the custom message item view
+                LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                return layoutInflater.inflate(R.layout.custom_message_item_view, null);
             }
 
             @Override
-            public void bindView(Context context, View createdView, MediaMessage message, RecyclerView.ViewHolder holder, List<BaseMessage> messagesList, int position) {
-                // Bind your data to the custom view here
+            public void bindView(Context context, View createdView, TextMessage message, RecyclerView.ViewHolder holder, List<BaseMessage> messagesList, int position) {
+                // Find the TextView elements
+                android.widget.TextView titleTv = createdView.findViewById(R.id.tv_sender_name);
+                android.widget.TextView messageTv = createdView.findViewById(R.id.tv_message);
+
+                // Bind the message data to the views
+                if (message != null) {
+                    titleTv.setText(message.getSender().getName());
+                    messageTv.setText(message.getText());
+                }
             }
         });
 ```
@@ -419,29 +467,38 @@ Here's how you can override the default message item view with a custom one for 
 
 <Tab title="Kotlin">
 ```kotlin
-        binding.cometchatSearch.setImageMessageItemView(object : MessagesSearchViewHolderListener<MediaMessage>() {
+        binding.cometchatSearch.setTextMessageItemView(object : MessagesSearchViewHolderListener<TextMessage>() {
             override fun createView(
                 context: Context?,
                 listItem: View?
             ): View? {
-                return LayoutInflater.from(context).inflate(R.layout.custom_image_message_item_view, null)
+                return layoutInflater.inflate(R.layout.custom_message_item_view, null)
             }
 
             override fun bindView(
                 context: Context?,
                 createdView: View?,
-                message: MediaMessage?,
+                message: TextMessage?,
                 holder: RecyclerView.ViewHolder?,
                 messagesList: List<BaseMessage?>?,
                 position: Int
             ) {
-                // Bind your data to the custom view here
+                val titleTv = createdView?.findViewById<android.widget.TextView>(R.id.tv_sender_name)
+                val messageTv = createdView?.findViewById<android.widget.TextView>(R.id.tv_message)
+
+                titleTv?.text = message?.sender?.name
+                messageTv?.text = message?.text
             }
         })
-
 ```
 </Tab>
 </Tabs>
+
+It should look like this in the app:
+
+<Frame>
+  <img src="/images/android-custom-text-message-item.png" />
+</Frame>
 
 Bellow is the list of message item view functions available for customization:
 
