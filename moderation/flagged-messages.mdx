@@ -1,0 +1,71 @@
+---
+title: "Flagged Messages"
+---
+
+## Overview
+
+The Flagged Messages endpoint in the Moderation Service API enables app owners and collaborators to review messages that have been flagged for potentially violating moderation rules. Messages can be flagged automatically by the rule engine based on predefined rules, or manually by end users who find certain content inappropriate or concerning.
+
+When a message is flagged, it becomes visible in the CometChat Dashboard under the flagged messages section. Moderators can then review these flagged messages and take one of two actions:
+
+1. **Approve** - The message is deemed acceptable and the moderation status remains approved
+2. **Block** - The message violates platform policies and the moderation status is changed to disapproved
+
+Once either action is taken, the message is automatically moved to the Reviewed list, which contains all messages that have been reviewed by moderators.
+
+#### Manual Flagging by End Users
+
+End users can manually flag messages they find inappropriate or concerning by selecting from a predefined list of reasons. These flag reasons are configurable through the CometChat Dashboard, where you can either use the default options or create custom flagging reasons tailored to your platform's needs. Once configured, these reasons will appear in the user interface, allowing users to select the most appropriate reason when reporting a message.
+<Frame>
+  <img src="/images/report_message.png" />
+</Frame>
+Messages can also be flagged via [Flag Message API](/rest-api/moderation/flag-a-message)
+
+#### Automatic Flagging by Rule Engine
+
+Messages can be automatically flagged when they violate predefined moderation rules. When setting up moderation rules in the Dashboard, you can configure the action to "flag" messages that match specific criteria. This ensures that potentially problematic content is automatically identified and queued for review without requiring manual intervention from users.
+For e.g. if the message contains any profane words, then it would be automatically flagged.
+<Frame>
+  <img src="/images/rule_engine_flag.png" />
+</Frame>
+
+#### Configuring Flag Reasons
+
+You can customize the flagging reasons available to end users through the CometChat Dashboard. The platform provides a set of default flagging reasons that cover common moderation scenarios, or you can create custom reasons that align with your platform's specific community guidelines and policies. These configuration options are accessible through the Advanced Settings within the Moderation section of your dashboard.
+<Frame>
+  <img src="/images/flag_reasons_default.png" />
+</Frame>
+Flag reasons can be also be configured via REST APIs [Reason APIs](/rest-api/moderation/create-reasons).
+
+### List Flagged Messages
+
+Retrieves the list of messages that have been flagged by the moderation system or manually by moderators.
+<Frame>
+  <img src="/images/1600d6b8-moderation_list_flagged_messages-1a2b3c4d5e6f7g8h9i0j.png" />
+</Frame>
+
+You can also set this up from your end using the [List Flagged Messages REST API](/rest-api/moderation/list-flagged-messages).
+
+---
+
+### Approve Flagged Message
+
+Allows the approval of messages that were previously flagged. Approving a flagged message indicates that it has been reviewed and is considered acceptable according to platform guidelines.
+
+<Frame>
+  <img src="/images/1600d6b8-moderation_approve_flagged_message-2b3c4d5e6f7g8h9i0j1a.png" />
+</Frame>
+
+You can also set this up from your end using the [Approve Flagged Message REST API](/rest-api/moderation/blockreview-flagged-message).
+
+---
+
+### Block Flagged Message
+
+Allows the blocking of messages that were flagged. Blocking a flagged message will automatically mark it as reviewed.
+
+<Frame>
+  <img src="/images/1600d6b8-moderation_block_flagged_message-3c4d5e6f7g8h9i0j1a2b.png" />
+</Frame>
+
+You can also set this up from your end using the [Block Flagged Message REST API](/rest-api/moderation/blockreview-flagged-message).

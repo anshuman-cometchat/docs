@@ -159,6 +159,33 @@ cometchatConversations.onBackPressListener = OnBackPress {
 
 ***
 
+##### setOnSearchClickListener
+
+`setOnSearchClickListener` is triggered when you click the search bar. It has a predefined behavior; when clicked, it opens the search screen. However, you can override this action using the following code snippet.
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java
+        binding.cometchatConversations.setOnSearchClickListener(() -> {
+            Log.i(TAG, "onViewCreated: Search Bar Clicked");
+        });
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt
+        binding.cometchatConversations.setOnSearchClickListener {
+            Log.i(TAG, "onViewCreated: Search Bar Clicked")
+        }
+```
+
+</Tab>
+
+</Tabs>
+
+***
+
 ##### setOnSelect
 
 Called when a item from the fetched list is selected, useful for multi-selection features.
@@ -427,9 +454,13 @@ Below is a list of customizations along with corresponding code snippets
 | setUsersStatusVisibility              | Used to control visibility of status indicator shown if user is online                                                                                | `.setUsersStatusVisibility(View.GONE);`                                      |
 | setGroupTypeVisibility                | Used to control visibility of status indicator shown for the group type                                                                               | `.setGroupTypeVisibility(View.GONE);`                                        |
 | setReceiptsVisibility                 | Used to hide receipts shown in the subtitle of the conversation item without disabling the functionality of marking messages as read and delivered.   | `.setReceiptsVisibility(View.GONE);`                                         |
+| setSearchInputEndIconVisibility       | Used to control the visibility for the end icon icon in the search bar of 'CometChatConversation'                                                     | `.setSearchInputEndIconVisibility(View.GONE);`                               |
+| setSearchInputEndIconVisibility       | Used to control the visibility for the end icon icon in the search bar of 'CometChatConversation'                                                     | `.setSearchInputEndIconVisibility(View.GONE);`                               |
 | disableSoundForMessages               | This method disables sound notifications for incoming messages                                                                                        | `.disableSoundForMessages(true);`                                            |
 | setCustomSoundForMessages             | This method enables users to personalize their chat experience by setting a custom sound file for incoming message notifications.                     | `.setCustomSoundForMessages(com.cometchat.chatuikit.R.raw.cometchat_beep2);` |
 | setSelectionMode                      | This method determines the selection mode for conversations, enabling users to select either a single conversation or multiple conversations at once. | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);`                  |
+| setSearchInputText                    | This method sets the text in the search input field.                                                                                                  | .setSearchInputText("Sample Text");                                          |
+| setSearchPlaceholderText              | This method sets the placeholder text for the search input field.                                                                                     | .setSearchPlaceholderText("Enter search term");                              |
 
 ### Advanced
 
