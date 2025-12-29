@@ -69,6 +69,13 @@ Copy the same structure into your app and only change identifiers (applicationId
 - [`AppConstants.FCMConstants.PROVIDER_ID`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/utils/AppConstants.kt#L20) must be replaced with the provider ID you created for this app.
 - Replace launcher icons and app name in `AndroidManifest.xml` / `res` if you fork the sample.
 
+### 2.4 Push Notification extension settings (dashboard)
+
+- Set **Extension version** to `V2` (or `V1 & V2` while migrating legacy topic-based clients).
+- Select **Platforms** you want to support (Android, iOS, Web, etc.).
+- Configure **Payload trimming** options if your pushes risk exceeding the ~4 KB limit (remove sender/receiver metadata, message metadata, or trim text).
+- Toggle **Notification triggers** (messages, calls, groups) to match your app’s requirements.
+
 ## 3. Project setup (Gradle + manifest)
 
 ### 3.1 Gradle configuration
@@ -174,6 +181,36 @@ Call this after `CometChatUIKit.login()` succeeds (the sample triggers it during
 - `FCMMessageNotificationUtils` groups notifications per sender, shows avatars (downloaded on a worker thread), and uses distinct channel IDs for message notifications.
 - Reply actions use `RemoteInput` so users can respond from the shade; messages are re-rendered in the notification after sending.
 - `AppConstants.FCMConstants` centralizes channel IDs, group keys, and summary IDs—update these if you already use conflicting channels in your app.
+
+### 4.6 Convert payloads to CometChat message objects
+
+If you need a `BaseMessage` from a push payload (for deep links or custom UI), parse the `message` JSON and pass it to `CometChatHelper.processMessage` inside `onMessageReceived`:
+
+```kotlin
+override fun onMessageReceived(remoteMessage: RemoteMessage) {
+    val messageJson = remoteMessage.data["message"] ?: return
+    val baseMessage = CometChatHelper.processMessage(JSONObject(messageJson))
+    // Use baseMessage to open the right chat/thread
+}
+```
+
+### 4.7 Customizing the notification body via metadata
+
+To override the push body, include `pushNotification` inside the message `metadata` before sending:
+
+```kotlin
+val receiverId = "TARGET_UID"
+val customData = JSONObject().put("yourKey", "yourValue")
+val meta = JSONObject().put("pushNotification", "Custom notification body")
+
+val customMessage = CustomMessage(
+    receiverId,
+    CometChatConstants.RECEIVER_TYPE_USER,
+    customData
+).apply { metadata = meta }
+
+CometChat.sendCustomMessage(customMessage, object : CallbackListener<CustomMessage>() {})
+```
 
 ## 5. Testing checklist
 
