@@ -1,0 +1,179 @@
+---
+title: "React Native Push Notifications (UI Kit)"
+description: "Bring the SampleAppWithPushNotifications experience—FCM/APNs, inline replies, and call-style VoIP alerts—into any React Native project using CometChat UI Kit."
+---
+
+The React Native push-notification sample already wires FCM (Android), APNs (iOS), VoIP push + CallKeep, Notifee-powered message banners, and deep links into conversations. Follow this guide to mirror that setup in your own app.
+
+<Card
+  title="Reference implementation"
+  icon="github"
+  href="https://github.com/cometchat/cometchat-uikit-react-native/tree/v5/examples/SampleAppWithPushNotifications"
+>
+  Browse the full React Native push sample (UI Kit + Calls + VoIP).
+</Card>
+
+<Note>
+Paths below refer to the sample repo (for example
+<a href="https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/App.tsx" target="_blank" rel="noopener noreferrer">App.tsx</a>,
+<a href="https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/index.js" target="_blank" rel="noopener noreferrer">index.js</a>, or
+<a href="https://github.com/cometchat/cometchat-uikit-react-native/tree/v5/examples/SampleAppWithPushNotifications/src/utils" target="_blank" rel="noopener noreferrer">src/utils</a>).
+Copy the same structure into your project and only change identifiers (bundle ID, package name, provider IDs, app credentials).
+</Note>
+
+## Architecture map
+
+| Sample path | Role | What to copy/replicate |
+| --- | --- | --- |
+| [`App.tsx`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/App.tsx) | Initializes CometChat UI Kit, requests permissions, registers tokens, handles foreground FCM, and navigates on notification taps | Mirror the effects for FCM/APNs/VoIP token handling and Notifee foreground events. |
+| [`index.js`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/index.js) | Background handlers: FCM `setBackgroundMessageHandler`, Notifee `onBackgroundEvent`, and VoIP call actions | Keep the same handlers so taps from killed/background states navigate correctly and call pushes render native UI. |
+| [`src/utils/PushNotification.tsx`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/src/utils/PushNotification.tsx) | Thin wrapper around `CometChatNotifications.registerPushToken` / `unregisterPushToken` for FCM + APNs/VoIP | Reuse for token registration; update provider IDs. |
+| [`src/utils/helper.ts`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/src/utils/helper.ts) | FCM token retrieval, local notifications via Notifee, iOS initial/tap handling, deep links into chats | Copy the helper and keep the navigation logic for conversation routing. |
+| [`src/utils/VoipNotificationHandler.ts`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/src/utils/VoipNotificationHandler.ts) | RNCallKeep + Notifee bridge for incoming call UI (Android/iOS) and call actions | Use as-is; ensure Android phone account permissions/capabilities and iOS CallKit permissions are configured. |
+| [`src/utils/AppConstants.tsx`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/src/utils/AppConstants.tsx) | Stores App ID/Region/Auth Key and `fcmProviderId` / `apnProviderId` | Fill with your credentials and provider IDs from the dashboard. |
+
+## 1. Prerequisites
+
+- CometChat app credentials (App ID, Region, Auth Key) and Push Notifications extension enabled with **FCM provider (React Native)** and **APNs provider** created; copy both provider IDs.
+- Firebase project with Android app configured (`google-services.json` in `android/app`) and FCM enabled.
+- Apple push setup: APNs certificate/keys configured in CometChat, iOS project with Push Notifications + Background Modes (Remote notifications, VoIP) + CallKit permissions.
+- React Native 0.81+, Node 18+, physical devices for reliable push/call testing.
+- Native deps from the sample: `@react-native-firebase/messaging`, `@react-native-firebase/app`, `@notifee/react-native`, `@react-native-community/push-notification-ios`, `react-native-voip-push-notification`, `react-native-callkeep`, and CometChat UI Kit + Calls SDK.
+
+### Push Notification extension settings (dashboard)
+
+- Set **Extension version** to `V2` (or `V1 & V2` while migrating).
+- Select **Platforms**: enable React Native Android + iOS (and others you use).
+- Use **Payload trimming** if you risk exceeding ~4 KB (strip metadata or trim text).
+- Toggle **Notification triggers** (messages, calls, groups) to match your app.
+
+## 2. Project setup (sample parity)
+
+### 2.1 Credentials
+
+- Update `src/utils/AppConstants.tsx` with `appId`, `authKey`, `region`, `fcmProviderId`, and `apnProviderId`.
+- Keep `app.json` name consistent with your bundle ID / applicationId.
+
+### 2.2 Gradle + Firebase (Android)
+
+1. Place `google-services.json` in `android/app`.
+2. Apply `com.google.gms.google-services` in `android/app/build.gradle` (the sample already does).
+3. Ensure `minSdk`/`targetSdk` match your project (sample uses RN 0.81 defaults).
+4. Grant notification + call permissions in the manifest (POST_NOTIFICATIONS, RECORD_AUDIO, CAMERA, READ_PHONE_STATE, FOREGROUND_SERVICE, ANSWER_PHONE_CALLS, USE_FULL_SCREEN_INTENT, WAKE_LOCK, VIBRATE).
+
+### 2.3 iOS capabilities
+
+1. Enable Push Notifications + Background Modes (Remote notifications, VoIP).
+2. Add CallKit usage descriptions to `Info.plist` (microphone/camera) and configure `react-native-callkeep` per sample `ios/` folder.
+3. Add your APNs auth key/cert in the CometChat dashboard provider.
+
+### 2.4 Dependencies snapshot (from sample)
+
+```json
+{
+  "@cometchat/chat-uikit-react-native": "5.2.6",
+  "@cometchat/chat-sdk-react-native": "4.0.18",
+  "@cometchat/calls-sdk-react-native": "4.4.0",
+  "@react-native-firebase/app": "23.4.0",
+  "@react-native-firebase/messaging": "23.4.0",
+  "@notifee/react-native": "9.1.8",
+  "@react-native-community/push-notification-ios": "1.11.0",
+  "react-native-voip-push-notification": "3.3.3",
+  "react-native-callkeep": "github:cometchat/react-native-callkeep"
+}
+```
+
+Match these or newer compatible versions in your app.
+
+## 3. Wire up push tokens
+
+### 3.1 Register tokens with CometChat
+
+[`registerPushToken`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/src/utils/PushNotification.tsx) maps platform + provider ID to `CometChatNotifications.registerPushToken`:
+
+```ts
+// FCM: isFcm=true, isVoip=false
+await registerPushToken(token, true, false);
+// APNs device: isFcm=false, isVoip=false
+await registerPushToken(deviceToken, false, false);
+// APNs VoIP: isFcm=false, isVoip=true
+await registerPushToken(voipToken, false, true);
+```
+
+### 3.2 Android (FCM)
+
+- `getAndRegisterFCMToken` (helper.ts) runs after login and registers the token; `messaging().onTokenRefresh` re-registers on rotation.
+- Foreground messages: `messaging().onMessage` in `App.tsx` shows a Notifee notification via `displayLocalNotification` unless that chat is open.
+- Background/terminated: `messaging().setBackgroundMessageHandler` in `index.js` shows Notifee notifications for chats or triggers VoIP call UI when `data.type === 'call'`.
+
+### 3.3 iOS (APNs + VoIP)
+
+- `PushNotificationIOS.requestPermissions` requests alert/badge/sound.
+- APNs device token: `PushNotificationIOS` `'register'` event calls `handleIosApnsToken` to register with CometChat.
+- VoIP token: `react-native-voip-push-notification` `'register'` event calls `handleIosVoipToken`; `VoipPushNotification.registerVoipToken()` is triggered after APNs registration.
+- Taps + initial opens: `checkInitialNotificationIOS` and `onRemoteNotificationIOS` fetch the user/group and navigate to `Messages` with parent threads when present.
+
+### 3.4 Logout / cleanup
+
+Call `CometChat.logout()` and `unregisterPushToken()` when signing out; delete FCM token if you want to force a fresh registration on next login.
+
+## 4. Message notifications
+
+- Notifee foreground notifications (`displayLocalNotification`) skip the current open chat and include avatars, BigText, and conversation metadata for navigation.
+- Notifee background presses are handled in `index.js` and `App.tsx` (foreground) to navigate via `navigateToConversation`.
+- iOS notifications deliver `data.message` and `data.parentId`; helpers fetch the user/group before navigation.
+- To turn a push payload back into a CometChat object for custom UI, use:
+
+```ts
+const baseMessage = CometChat.CometChatHelper.processMessage(
+  JSON.parse(remoteMessage.data.message),
+);
+```
+
+## 5. Call notifications (VoIP-like)
+
+- FCM `data.type === "call"` is handled in `index.js` background handler: call actions (`initiated`, `cancelled`, `rejected`, `busy`, `ended`, `unanswered`, `ongoing`) drive `VoipNotificationHandler`.
+- `VoipNotificationHandler` uses CallKeep to show native incoming call UI and manage telecom permissions; `PendingCallManager` resumes accepted calls if the app was cold-started.
+- Android foreground calls still arrive via FCM; ensure phone account permissions are granted or CallKeep cannot render the incoming screen.
+
+## 6. Customizing the push body
+
+Set `metadata.pushNotification` before sending to override the body:
+
+```ts
+const metadata = { pushNotification: 'Custom notification body' };
+const message = new CometChat.CustomMessage(
+  receiverId,
+  CometChat.RECEIVER_TYPE.USER,
+  'your_type',
+  { yourKey: 'value' },
+);
+message.setMetadata(metadata);
+CometChat.sendCustomMessage(message);
+```
+
+## 7. Testing checklist
+
+1. Android: install on device, grant POST_NOTIFICATIONS; log in and verify FCM token registration success.
+2. Send a chat push from CometChat Dashboard:
+   - Foreground: Notifee banner shows unless that chat is open.
+   - Background/terminated: tap opens the correct conversation; Notifee background handler runs.
+3. iOS: verify APNs device token + VoIP token register; tap push from killed app opens the right chat; remote notifications finish handler is called.
+4. Trigger incoming call push: native CallKeep UI should show caller info; Accept/Decline routes to the app and clears CallKeep state on cancel/end.
+5. Rotate tokens (reinstall or revoke) and confirm `onTokenRefresh` re-registers.
+
+## 8. Troubleshooting
+
+| Symptom | Quick checks |
+| --- | --- |
+| No pushes | Confirm `google-services.json` location, package/bundle IDs match Firebase/Apple, Push extension enabled with correct provider IDs, permissions granted. |
+| Token registration fails | Ensure registration runs **after login**, provider IDs are set, and `registerDeviceForRemoteMessages()` is called (Android). |
+| Notification taps do nothing | Keep Notifee foreground/background handlers and `checkInitialNotificationIOS`; ensure navigation ref is ready before routing. |
+| Call UI not showing | Verify CallKeep setup, telecom permissions (Android) or CallKit entitlement (iOS), and that `VoipNotificationHandler.initialize()` runs post-login. |
+| Inline reply needed | Extend Notifee action buttons; CometChat expects you to send the message manually after reading `remoteMessage.data`. |
+
+## Additional resources
+
+- [React Native push-notification sample (GitHub)](https://github.com/cometchat/cometchat-uikit-react-native/tree/v5/examples/SampleAppWithPushNotifications)
+- [CometChat Push Notification extension docs](/notifications/push-integration.mdx)
+- [Flutter push-notification guides](/notifications/flutter-push-notifications-android.mdx), [iOS](/notifications/flutter-push-notifications-ios.mdx)
