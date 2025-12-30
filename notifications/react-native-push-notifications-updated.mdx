@@ -31,6 +31,7 @@ Copy the same structure into your project and only change identifiers (bundle ID
 | [`src/utils/helper.ts`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/src/utils/helper.ts) | FCM token retrieval, local notifications via Notifee, iOS initial/tap handling, deep links into chats | Copy the helper and keep the navigation logic for conversation routing. |
 | [`src/utils/VoipNotificationHandler.ts`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/src/utils/VoipNotificationHandler.ts) | RNCallKeep + Notifee bridge for incoming call UI (Android/iOS) and call actions | Use as-is; ensure Android phone account permissions/capabilities and iOS CallKit permissions are configured. |
 | [`src/utils/AppConstants.tsx`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/src/utils/AppConstants.tsx) | Stores App ID/Region/Auth Key and `fcmProviderId` / `apnProviderId` | Fill with your credentials and provider IDs from the dashboard. |
+| [`ios/SampleAppWithPushNotifications/AppDelegate.swift`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/ios/SampleAppWithPushNotifications/AppDelegate.swift) | Native glue for iOS: Firebase/UNUserNotificationCenter delegates, PushKit VoIP token, CallKeep incoming calls | Copy the delegates and PushKit setup so FCM/APNs/VoIP events reach JS and CallKeep renders incoming calls. |
 
 ## 1. Prerequisites
 
@@ -112,6 +113,11 @@ await registerPushToken(voipToken, false, true);
 - APNs device token: `PushNotificationIOS` `'register'` event calls `handleIosApnsToken` to register with CometChat.
 - VoIP token: `react-native-voip-push-notification` `'register'` event calls `handleIosVoipToken`; `VoipPushNotification.registerVoipToken()` is triggered after APNs registration.
 - Taps + initial opens: `checkInitialNotificationIOS` and `onRemoteNotificationIOS` fetch the user/group and navigate to `Messages` with parent threads when present.
+- **AppDelegate.swift changes** (native iOS):
+  - Add `UNUserNotificationCenterDelegate` to forward APNs callbacks to `RNCPushNotificationIOS`.
+  - Register PushKit (`PKPushRegistry` with `.voIP`) and forward VoIP tokens to `RNVoipPushNotificationManager.didUpdate`.
+  - In `pushRegistry(_:didReceiveIncomingPushWith:)`, map `callAction` values to `RNCallKeep.reportNewIncomingCall` / `endCall` so VoIP pushes show native CallKit UI when the app is backgrounded/killed.
+  - Keep `RNVoipPushNotificationManager.voipRegistration()` in `didFinishLaunching` and set `UNUserNotificationCenter.current().delegate = self`.
 
 ### 3.4 Logout / cleanup
 
