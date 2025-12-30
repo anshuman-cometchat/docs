@@ -8,7 +8,7 @@ The UIKit iOS push sample handles APNs device pushes, PushKit VoIP pushes, CallK
 <Card
   title="Reference implementation"
   icon="github"
-  href="https://github.com/cometchat-team/uikit-ios/tree/master-v5/examples/push-notification-app"
+  href="https://github.com/cometchat/cometchat-uikit-ios/tree/v5/SampleAppPushNotificationAPNs/Push%20Notification%20%2B%20VoIP"
 >
   Browse the iOS push sample (UIKit + Calls + APNs/PushKit/CallKit glue).
 </Card>
@@ -21,7 +21,7 @@ Paths below refer to the sample repo (for example `examples/push-notification-ap
 
 | Sample path | Role | What to copy/replicate |
 | --- | --- | --- |
-| `AppDelegate.swift` | Initializes CometChat, registers for APNs, sets `UNUserNotificationCenterDelegate`, hands off PushKit events to CallKit | Keep the init + delegate wiring; update bundle identifiers and capability flags. |
+| `AppDelegate.swift` (in `SampleAppPushNotificationAPNs/Push Notification + VoIP`) | Initializes CometChat, registers for APNs, sets `UNUserNotificationCenterDelegate`, hands off PushKit events to CallKit | Keep the init + delegate wiring; update bundle identifiers and capability flags. |
 | `PushNotificationManager.swift` (or equivalent) | Requests notification permission, stores device/voip tokens, registers them with CometChat Push Notifications | Reuse token handling and registration calls; swap in your provider IDs. |
 | CallKit helpers (`CallKitManager.swift`, `VoipHandler.swift`) | Presents native incoming-call UI and routes Accept/Decline to CometChat | Copy configuration (ringtone, icon, video flag) and make sure capabilities are enabled. |
 | Optional Notification Service extension | Rich notification tweaks / logging | Include if you need mutable-content processing; otherwise skip. |
@@ -131,6 +131,6 @@ CometChat.sendCustomMessage(message: custom) { _ in } onError: { _ in }
 
 ## Additional resources
 
-- [iOS push sample (GitHub)](https://github.com/cometchat-team/uikit-ios/tree/master-v5/examples/push-notification-app)
+- [iOS push sample (GitHub)](https://github.com/cometchat/cometchat-uikit-ios/tree/v5/SampleAppPushNotificationAPNs/Push%20Notification%20%2B%20VoIP)
 - [CometChat Push Notification extension docs](/notifications/push-integration.mdx)
 - [Flutter iOS push guide](/notifications/flutter-push-notifications-ios.mdx)
