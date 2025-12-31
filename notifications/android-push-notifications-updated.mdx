@@ -124,6 +124,26 @@ dependencies {
 - Apply the `google-services` plugin and place `google-services.json` in the same module as the `build.gradle` above.
 - Keep `viewBinding` enabled if you copy the UI Kit screens directly from the sample.
 
+<Note>
+Need a minimal copy/paste? Keep the links above for context, but at minimum drop these into `app/build.gradle`:
+
+```gradle
+plugins {
+  id "com.google.gms.google-services"
+}
+
+dependencies {
+  implementation "com.cometchat:chat-uikit:5.2.6"
+  implementation "com.cometchat:chat-sdk-android:4.1.8"
+  implementation "com.cometchat:calls-sdk-android:4.3.2"
+
+  implementation platform("com.google.firebase:firebase-bom:33.7.0")
+  implementation "com.google.firebase:firebase-messaging"
+  implementation "com.google.firebase:firebase-auth"
+}
+```
+</Note>
+
 ### 3.2 Manifest permissions and components
 
 Start from the sample [`AndroidManifest.xml`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/AndroidManifest.xml):
@@ -131,10 +151,47 @@ Start from the sample [`AndroidManifest.xml`](https://github.com/cometchat/comet
 - Permissions for notifications and calls: `POST_NOTIFICATIONS`, `RECORD_AUDIO`, `CALL_PHONE`, `MANAGE_OWN_CALLS`, `ANSWER_PHONE_CALLS`, `WAKE_LOCK`, `READ_PHONE_STATE`, and media read permissions for attachments.
 - Set `android:name` on `<application>` to your `MyApplication` subclass.
 - Declare:
-  - `com.google.firebase.MESSAGING_EVENT` service: [`FCMService`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/fcm/FCMService.kt)
-  - Reply receiver: [`FCMMessageBroadcastReceiver`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/fcm/FCMMessageBroadcastReceiver.kt)
-  - VoIP connection service: [`CometChatVoIPConnectionService`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/voip/CometChatVoIPConnectionService.kt) with `android.permission.BIND_TELECOM_CONNECTION_SERVICE`.
+- `com.google.firebase.MESSAGING_EVENT` service: [`FCMService`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/fcm/FCMService.kt)
+- Reply receiver: [`FCMMessageBroadcastReceiver`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/fcm/FCMMessageBroadcastReceiver.kt)
+- VoIP connection service: [`CometChatVoIPConnectionService`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/voip/CometChatVoIPConnectionService.kt) with `android.permission.BIND_TELECOM_CONNECTION_SERVICE`.
 - Runtime permissions: follow [`AppUtils.kt`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/utils/AppUtils.kt) and [`HomeActivity.kt`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/ui/activity/HomeActivity.kt) for requesting notification/mic/camera/storage permissions early in the flow.
+
+<Note>
+Minimal manifest block to copy (keep the links above for full context):
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+<!-- VoIP -->
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.CALL_PHONE" />
+<uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
+<uses-permission android:name="android.permission.WAKE_LOCK" />
+<uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+<uses-feature android:name="android.hardware.sensor.proximity" android:required="false" />
+<uses-feature android:name="android.hardware.telephony" android:required="false" />
+
+<service
+    android:name=".fcm.FCMService"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+    </intent-filter>
+</service>
+<receiver android:name=".fcm.FCMMessageBroadcastReceiver" />
+
+<service
+    android:name=".voip.CometChatVoIPConnectionService"
+    android:exported="true"
+    android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE">
+    <intent-filter>
+        <action android:name="android.telecom.ConnectionService" />
+    </intent-filter>
+</service>
+```
+</Note>
 
 ## 4. Wire the Kotlin notification stack
 
