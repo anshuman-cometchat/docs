@@ -27,6 +27,15 @@ Give your chats Product Hunt superpowers: search launches, surface top posts, an
 
 ---
 
+## How it works
+
+- **Agent** — configure tools for top lists, timeframe queries, search, and confetti; clamp limits and validate inputs.
+- **Data** — Product Hunt GraphQL for live votes (needs `PRODUCTHUNT_API_TOKEN`) and Algolia search for discovery.
+- **API** — expose FastAPI (or similar) routes for top/search plus a `/kickoff` chat endpoint that streams NDJSON (`text_delta`, `tool_*`, `text_end`, `done`).
+- **Frontend** — when the confetti tool fires, your UI listens to `tool_result` and triggers the celebration handler.
+
+---
+
 ## Steps
 
 <Steps>
