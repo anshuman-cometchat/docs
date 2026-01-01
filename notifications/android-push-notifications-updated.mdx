@@ -78,6 +78,24 @@ Copy the same structure into your app and only change identifiers (applicationId
 - Configure **Payload trimming** options if your pushes risk exceeding the ~4 KB limit (remove sender/receiver metadata, message metadata, or trim text).
 - Toggle **Notification triggers** (messages, calls, groups) to match your app’s requirements.
 
+<Steps>
+  <Step title="Add credentials">
+    Fill `AppCredentials.kt` and set your `AppConstants.FCMConstants.PROVIDER_ID` from the dashboard provider you created.
+  </Step>
+  <Step title="Wire Gradle">
+    Paste the Gradle block below into `app/build.gradle` (keep the plugin + dependency links above for reference).
+  </Step>
+  <Step title="Update the manifest">
+    Add the permissions and services from the manifest snippet; keep the full manifest linked above for context.
+  </Step>
+  <Step title="Request permissions at runtime">
+    Reuse `AppUtils.kt` + `HomeActivity.kt` so notification/mic/camera/storage prompts run before token registration.
+  </Step>
+  <Step title="Register the FCM token after login">
+    Call `registerPushToken` (via `Repository.registerFCMToken`) once `CometChatUIKit.login()` succeeds.
+  </Step>
+</Steps>
+
 ## 3. Project setup (Gradle + manifest)
 
 ### 3.1 Gradle configuration

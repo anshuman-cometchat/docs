@@ -1,0 +1,232 @@
+---
+mode: "custom"
+title: "Notifications"
+description: "Engage users beyond chat with real-time and scheduled notifications across Push, Email, and SMS."
+canonical: "https://cometchat.com/docs"
+---
+
+import { CardGroup, Card, Columns } from 'mintlify';
+
+{/* Hero Section */}
+<div className="relative w-full flex items-center justify-center" style={{ height: '20rem', overflow: 'hidden' }}>
+<div className="absolute inset-0 bg-primary dark:bg-primary-light" style={{ opacity: 0.05 }}/>
+
+<div style={{maxWidth: '70rem', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}> 
+  <Columns cols={2} className="items-center gap-x-12">
+    <div className="flex flex-col justify-center h-full text-center md:text-left">
+      <h1 className="text-gray-700 dark:text-white" style={{ fontSize: '2.2rem', fontWeight: '600' }}>Notifications</h1>
+      <p className="text-lg text-gray-600">
+        Engage users beyond chat with real-time and scheduled notifications across Push, Email, and SMS.
+      </p> 
+      <p className="text-gray-600 dark:text-gray-300 mt-3">
+        Think of Notifications as a delivery platform, not three unrelated features.
+      </p>
+    </div>
+    <div className="flex flex-col items-center justify-center h-full">
+      <img 
+        src="/images/chat-messaging-banner.png" 
+        alt="Notifications UI preview" 
+        className="w-full max-w-[380px]"
+      />
+    </div>
+  </Columns>
+</div>
+
+</div>
+
+<div style={{marginTop: '2rem', marginBottom: '2rem', maxWidth: '70rem', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
+
+<div className="mb-12">
+    <h2 className="text-gray-700 dark:text-white text-2xl font-semibold">Push Notifications</h2>
+    <p className="text-gray-600 dark:text-gray-300">Real-time alerts for new messages, calls, and events routed through FCM or APNs.</p>
+
+    <Columns cols={3} className="gap-6 mt-6">
+      <div>
+        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">How it works</h4>
+        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
+          <li>Register devices and tokens through the SDK or REST.</li>
+          <li>Trigger notifications from chat, calling, or custom events.</li>
+          <li>Let CometChat handle routing, retries, and fallbacks.</li>
+        </ul>
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">Why it's great</h4>
+        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
+          <li>Unified delivery across mobile and web without platform drift.</li>
+          <li>Built-in preferences, templates, and quiet hours to avoid fatigue.</li>
+          <li>Extensible payloads for deep links, call invites, and custom data.</li>
+        </ul>
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">Configure push</h4>
+        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
+          <li><a href="/notifications/push-integration">Trigger programmatically</a> from your app.</li>
+          <li><a href="/notifications/push-customization">Attach metadata and custom payloads</a>.</li>
+          <li><a href="/notifications/token-management">Manage tokens and device lifecycle</a>.</li>
+          <li><a href="/notifications/preferences-templates-sounds">Templates, preferences, quiet hours</a> (<a href="/notifications/mute-functionality">mute</a>).</li>
+          <li><a href="/notifications/logs">Monitor delivery and errors</a>.</li>
+        </ul>
+      </div>
+    </Columns>
+
+    <h4 className="font-semibold text-gray-700 dark:text-white mb-3 mt-6">Supported platforms</h4>
+    <CardGroup cols={3}>
+      <Card title="iOS (APNs)" href="/notifications/ios-apns-push-notifications-updated" horizontal />
+      <Card title="iOS (FCM)" href="/notifications/ios-fcm-push-notifications-updated" horizontal />
+      <Card title="Android" href="/notifications/android-push-notifications-updated" horizontal />
+      <Card title="React Native" href="/notifications/react-native-push-notifications-updated" horizontal />
+      <Card title="Flutter" href="/notifications/flutter-push-notifications" horizontal />
+      <Card title="Web (FCM)" href="/notifications/web-push-notifications" horizontal />
+    </CardGroup>
+  </div>
+
+  <div className="mb-12">
+    <h2 className="text-gray-700 dark:text-white text-2xl font-semibold">Email Notifications</h2>
+    <p className="text-gray-600 dark:text-gray-300">Scheduled digests and transactional messages that pull users back after inactivity.</p>
+
+    <Columns cols={3} className="gap-6 mt-6">
+      <div>
+        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">How it works</h4>
+        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
+          <li>Define templates for missed messages, re-engagement, and system emails.</li>
+          <li>Let users control cadence and preferences directly.</li>
+          <li>Send programmatically for transactional use cases.</li>
+        </ul>
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">Why it's great</h4>
+        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
+          <li>Proven re-engagement channel when users are offline.</li>
+          <li>Template-driven so brand, language, and CTAs stay consistent.</li>
+          <li>Works alongside push/SMS without double-notifying.</li>
+        </ul>
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">Configure email</h4>
+        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
+          <li><a href="/notifications/email-integration">Set up transactional and digest emails</a>.</li>
+          <li><a href="/notifications/email-customization">Customize templates and branding</a>.</li>
+          <li><a href="/notifications/preferences-templates-sounds">User preferences and quiet hours</a>.</li>
+          <li><a href="/notifications/logs">Monitor sends and delivery</a>.</li>
+          <li><a href="/notifications/email-notification-extension">Legacy extension</a> (de-emphasized).</li>
+        </ul>
+      </div>
+    </Columns>
+
+    <h4 className="font-semibold text-gray-700 dark:text-white mb-3 mt-6">Supported workflows</h4>
+    <CardGroup cols={3}>
+      <Card title="Email Overview" href="/notifications/email-overview" horizontal />
+      <Card title="Transactional & Digest Setup" href="/notifications/email-integration" horizontal />
+      <Card title="Templates & Customization" href="/notifications/email-customization" horizontal />
+    </CardGroup>
+  </div>
+
+  <div className="mb-12">
+    <h2 className="text-gray-700 dark:text-white text-2xl font-semibold">SMS Notifications</h2>
+    <p className="text-gray-600 dark:text-gray-300">Critical alerts, OTPs, and short updates when immediacy or low-data delivery matters.</p>
+
+    <Columns cols={3} className="gap-6 mt-6">
+      <div>
+        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">How it works</h4>
+        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
+          <li>Trigger SMS from chat events or custom backend logic.</li>
+          <li>Route through CometChat's notification service with fallbacks.</li>
+          <li>Track delivery and opt-outs with preferences.</li>
+        </ul>
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">Why it's great</h4>
+        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
+          <li>Best for time-sensitive alerts and OTPs.</li>
+          <li>Lightweight payloads that reach low-connectivity regions.</li>
+          <li>Pairs with push/email for layered journeys.</li>
+        </ul>
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">Configure SMS</h4>
+        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
+          <li><a href="/notifications/sms-integration">Wire SMS triggers and providers</a>.</li>
+          <li><a href="/notifications/sms-customization">Set payloads and preferences</a>.</li>
+          <li><a href="/notifications/preferences-templates-sounds">Manage templates and quiet hours</a>.</li>
+          <li><a href="/notifications/logs">Monitor delivery and limits</a>.</li>
+          <li><a href="/notifications/sms-notification-extension">Legacy extension</a> (de-emphasized).</li>
+        </ul>
+      </div>
+    </Columns>
+
+    <h4 className="font-semibold text-gray-700 dark:text-white mb-3 mt-6">Supported workflows</h4>
+    <CardGroup cols={3}>
+      <Card title="SMS Overview" href="/notifications/sms-overview" horizontal />
+      <Card title="Integration & Triggers" href="/notifications/sms-integration" horizontal />
+      <Card title="Customization & Preferences" href="/notifications/sms-customization" horizontal />
+    </CardGroup>
+  </div>
+
+{/* Sample Apps Section */}
+<div className="mb-12">
+  <h2 className="text-gray-700 dark:text-white text-2xl font-semibold mb-4">
+    Notification Demos
+  </h2>
+  
+  <p className="text-gray-600 dark:text-gray-300 mb-6">
+    Show working experiences just like Chat & Calling: clones, payloads, and end-to-end journeys.
+  </p>
+
+  <CardGroup cols={4}>
+    <Card
+      title="Push notification demo app" 
+      href="https://github.com/cometchat/cometchat-push-notification-app-flutter/tree/v4-push-notifications-extension" 
+      cta="View on GitHub"
+      horizontal
+    />
+    <Card
+      title="Email template examples" 
+      href="/notifications/email-customization"
+      cta="View templates"
+      horizontal
+    />
+    <Card
+      title="SMS trigger examples" 
+      href="/notifications/sms-integration"
+      cta="See trigger setup"
+      horizontal
+    />
+    <Card
+      title="Missed message → email → push" 
+      href="/notifications/email-integration"
+      cta="Follow the flow"
+      horizontal
+    />
+  </CardGroup>
+</div>
+
+</div>
+
+{/* Footer */}
+<div className="flex flex-col w-full mt-8" style={{ background: 'black' }}>
+<div className="bg-black text-gray-400 py-6 px-8 flex flex-col md:flex-row justify-between items-center rounded-t-xl">
+  <div className="mb-4 md:mb-0">
+    2025 © CometChat
+  </div>
+  <div className="flex space-x-6 items-center">
+    <a href="https://www.linkedin.com/company/cometchat" target="_blank" className="flex items-center space-x-1 hover:text-white transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.762 2.239 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.026-3.059-1.865-3.059-1.865 0-2.15 1.455-2.15 2.96v5.703h-3v-10h2.881v1.367h.041c.402-.76 1.384-1.561 2.847-1.561 3.044 0 3.606 2.003 3.606 4.609v5.585z"/>
+      </svg>
+      <span>LinkedIn</span>
+    </a>
+    <a href="https://x.com/cometchat" target="_blank" className="flex items-center space-x-1 hover:text-white transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M22.162 5.656c-.793.352-1.645.589-2.54.696a4.468 4.468 0 0 0 1.958-2.46 9.043 9.043 0 0 1-2.845 1.088 4.496 4.496 0 0 0-7.664 4.1 12.758 12.758 0 0 1-9.272-4.7 4.493 4.493 0 0 0 1.393 6.002 4.46 4.46 0 0 1-2.035-.562v.057a4.497 4.497 0 0 0 3.606 4.41 4.503 4.503 0 0 1-2.029.077 4.502 4.502 0 0 0 4.198 3.12 9.01 9.01 0 0 1-5.575 1.922c-.362 0-.721-.021-1.077-.063a12.73 12.73 0 0 0 6.901 2.021c8.282 0 12.808-6.86 12.808-12.808 0-.195-.005-.388-.014-.58a9.152 9.152 0 0 0 2.25-2.336z"/>
+      </svg>
+      <span>Twitter</span>
+    </a>
+    <a href="https://github.com/cometchat" target="_blank" className="flex items-center space-x-1 hover:text-white transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577v-2.17c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.744.084-.729.084-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.807 1.305 3.495.997.108-.775.418-1.305.76-1.605-2.665-.3-5.467-1.332-5.467-5.932 0-1.31.467-2.382 1.235-3.222-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.404 11.5 11.5 0 0 1 3.003.404c2.292-1.552 3.298-1.23 3.298-1.23.653 1.653.241 2.873.118 3.176.77.84 1.233 1.912 1.233 3.222 0 4.61-2.807 5.628-5.48 5.922.429.369.813 1.096.813 2.211v3.281c0 .319.218.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+      </svg>
+      <span>GitHub</span>
+    </a>
+  </div>
+</div>
+</div>
