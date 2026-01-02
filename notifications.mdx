@@ -5,7 +5,7 @@ description: "Engage users beyond chat with real-time and scheduled notification
 canonical: "https://cometchat.com/docs"
 ---
 
-import { CardGroup, Card, Columns } from 'mintlify';
+import { CardGroup, Card, Columns, Steps, AccordionGroup, Accordion } from 'mintlify';
 
 {/* Hero Section */}
 <div className="relative w-full flex items-center justify-center" style={{ height: '20rem', overflow: 'hidden' }}>
@@ -40,34 +40,45 @@ import { CardGroup, Card, Columns } from 'mintlify';
     <h2 className="text-gray-700 dark:text-white text-2xl font-semibold">Push Notifications</h2>
     <p className="text-gray-600 dark:text-gray-300">Real-time alerts for new messages, calls, and events routed through FCM or APNs.</p>
 
-    <Columns cols={3} className="gap-6 mt-6">
-      <div>
-        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">How it works</h4>
-        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
-          <li>Register devices and tokens through the SDK or REST.</li>
-          <li>Trigger notifications from chat, calling, or custom events.</li>
-          <li>Let CometChat handle routing, retries, and fallbacks.</li>
-        </ul>
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">Why it's great</h4>
-        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
-          <li>Unified delivery across mobile and web without platform drift.</li>
-          <li>Built-in preferences, templates, and quiet hours to avoid fatigue.</li>
-          <li>Extensible payloads for deep links, call invites, and custom data.</li>
-        </ul>
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">Configure push</h4>
-        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
-          <li><a href="/notifications/push-integration">Trigger programmatically</a> from your app.</li>
-          <li><a href="/notifications/push-customization">Attach metadata and custom payloads</a>.</li>
-          <li><a href="/notifications/token-management">Manage tokens and device lifecycle</a>.</li>
-          <li><a href="/notifications/preferences-templates-sounds">Templates, preferences, quiet hours</a> (<a href="/notifications/mute-functionality">mute</a>).</li>
-          <li><a href="/notifications/logs">Monitor delivery and errors</a>.</li>
-        </ul>
-      </div>
-    </Columns>
+    <div className="mt-6">
+      <AccordionGroup>
+        <Accordion title="How it works">
+          <Steps>
+            <Step title="Set up providers">
+              Configure FCM/APNs keys and register device tokens via SDK or REST.
+            </Step>
+            <Step title="Listen and build payloads">
+              CometChat watches chat, calling, and custom events and assembles payloads from your templates.
+            </Step>
+            <Step title="Deliver with guardrails">
+              Delivery handles routing, retries, quiet hours, and logging across platforms.
+            </Step>
+          </Steps>
+        </Accordion>
+        <Accordion title="Why it's great">
+          <Steps>
+            <Step title="One setup, all platforms">
+              Cover iOS, Android, and web without per-platform wiring.
+            </Step>
+            <Step title="Fatigue-safe by default">
+              Templates, preferences, and quiet hours reduce over-notifying.
+            </Step>
+            <Step title="Deep links with visibility">
+              Custom payloads for call invites and actions, with delivery insight from logs and metrics.
+            </Step>
+          </Steps>
+        </Accordion>
+      </AccordionGroup>
+    </div>
+
+    {/* <h4 className="font-semibold text-gray-700 dark:text-white mb-2 mt-6">Configure push</h4>
+    <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300 mb-4">
+      <li><a href="/notifications/push-integration">Trigger programmatically</a> from your app.</li>
+      <li><a href="/notifications/push-customization">Attach metadata and custom payloads</a>.</li>
+      <li><a href="/notifications/token-management">Manage tokens and device lifecycle</a>.</li>
+      <li><a href="/notifications/preferences-templates-sounds">Templates, preferences, quiet hours</a> (<a href="/notifications/mute-functionality">mute</a>).</li>
+      <li><a href="/notifications/logs">Monitor delivery and errors</a>.</li>
+    </ul> */}
 
     <h4 className="font-semibold text-gray-700 dark:text-white mb-3 mt-6">Supported platforms</h4>
     <CardGroup cols={3}>
@@ -84,34 +95,45 @@ import { CardGroup, Card, Columns } from 'mintlify';
     <h2 className="text-gray-700 dark:text-white text-2xl font-semibold">Email Notifications</h2>
     <p className="text-gray-600 dark:text-gray-300">Scheduled digests and transactional messages that pull users back after inactivity.</p>
 
-    <Columns cols={3} className="gap-6 mt-6">
-      <div>
-        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">How it works</h4>
-        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
-          <li>Define templates for missed messages, re-engagement, and system emails.</li>
-          <li>Let users control cadence and preferences directly.</li>
-          <li>Send programmatically for transactional use cases.</li>
-        </ul>
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">Why it's great</h4>
-        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
-          <li>Proven re-engagement channel when users are offline.</li>
-          <li>Template-driven so brand, language, and CTAs stay consistent.</li>
-          <li>Works alongside push/SMS without double-notifying.</li>
-        </ul>
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">Configure email</h4>
-        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
-          <li><a href="/notifications/email-integration">Set up transactional and digest emails</a>.</li>
-          <li><a href="/notifications/email-customization">Customize templates and branding</a>.</li>
-          <li><a href="/notifications/preferences-templates-sounds">User preferences and quiet hours</a>.</li>
-          <li><a href="/notifications/logs">Monitor sends and delivery</a>.</li>
-          <li><a href="/notifications/email-notification-extension">Legacy extension</a> (de-emphasized).</li>
-        </ul>
-      </div>
-    </Columns>
+    <div className="mt-6">
+      <AccordionGroup>
+        <Accordion title="How it works">
+          <Steps>
+            <Step title="Choose templates">
+              Pick templates for missed messages, digests, and transactional emails.
+            </Step>
+            <Step title="Set cadence and preferences">
+              Users control frequency; CometChat schedules and sends automatically.
+            </Step>
+            <Step title="Trigger transactions">
+              Fire on-demand emails from SDK or API when events occur.
+            </Step>
+          </Steps>
+        </Accordion>
+        <Accordion title="Why it's great">
+          <Steps>
+            <Step title="Re-engage offline users">
+              Reach users who are away without spamming push.
+            </Step>
+            <Step title="On-brand and localized">
+              Brandable, multilingual templates keep CTAs consistent.
+            </Step>
+            <Step title="Plays well with other channels">
+              Preferences prevent double-notifying when push or SMS already fired.
+            </Step>
+          </Steps>
+        </Accordion>
+      </AccordionGroup>
+    </div>
+
+    {/* <h4 className="font-semibold text-gray-700 dark:text-white mb-2 mt-6">Configure email</h4>
+    <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300 mb-4">
+      <li><a href="/notifications/email-integration">Set up transactional and digest emails</a>.</li>
+      <li><a href="/notifications/email-customization">Customize templates and branding</a>.</li>
+      <li><a href="/notifications/preferences-templates-sounds">User preferences and quiet hours</a>.</li>
+      <li><a href="/notifications/logs">Monitor sends and delivery</a>.</li>
+      <li><a href="/notifications/email-notification-extension">Legacy extension</a> (de-emphasized).</li>
+    </ul> */}
 
     <h4 className="font-semibold text-gray-700 dark:text-white mb-3 mt-6">Supported workflows</h4>
     <CardGroup cols={3}>
@@ -125,34 +147,45 @@ import { CardGroup, Card, Columns } from 'mintlify';
     <h2 className="text-gray-700 dark:text-white text-2xl font-semibold">SMS Notifications</h2>
     <p className="text-gray-600 dark:text-gray-300">Critical alerts, OTPs, and short updates when immediacy or low-data delivery matters.</p>
 
-    <Columns cols={3} className="gap-6 mt-6">
-      <div>
-        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">How it works</h4>
-        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
-          <li>Trigger SMS from chat events or custom backend logic.</li>
-          <li>Route through CometChat's notification service with fallbacks.</li>
-          <li>Track delivery and opt-outs with preferences.</li>
-        </ul>
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">Why it's great</h4>
-        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
-          <li>Best for time-sensitive alerts and OTPs.</li>
-          <li>Lightweight payloads that reach low-connectivity regions.</li>
-          <li>Pairs with push/email for layered journeys.</li>
-        </ul>
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-700 dark:text-white mb-2">Configure SMS</h4>
-        <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300">
-          <li><a href="/notifications/sms-integration">Wire SMS triggers and providers</a>.</li>
-          <li><a href="/notifications/sms-customization">Set payloads and preferences</a>.</li>
-          <li><a href="/notifications/preferences-templates-sounds">Manage templates and quiet hours</a>.</li>
-          <li><a href="/notifications/logs">Monitor delivery and limits</a>.</li>
-          <li><a href="/notifications/sms-notification-extension">Legacy extension</a> (de-emphasized).</li>
-        </ul>
-      </div>
-    </Columns>
+    <div className="mt-6">
+      <AccordionGroup>
+        <Accordion title="How it works">
+          <Steps>
+            <Step title="Connect your SMS provider">
+              Map chat or custom events to triggers and wire the provider credentials.
+            </Step>
+            <Step title="Compose lightweight payloads">
+              Add optional deep links and metadata for actions without bloat.
+            </Step>
+            <Step title="Send with compliance">
+              Honor preferences, quiet hours, and regional rules while tracking delivery.
+            </Step>
+          </Steps>
+        </Accordion>
+        <Accordion title="Why it's great">
+          <Steps>
+            <Step title="Made for critical alerts">
+              Ideal for OTPs, safety pings, and low-connectivity regions.
+            </Step>
+            <Step title="Great fallback">
+              Layer with push/email; use SMS when immediacy matters most.
+            </Step>
+            <Step title="Opt-out and observability built-in">
+              Respect user choices and review delivery in logs.
+            </Step>
+          </Steps>
+        </Accordion>
+      </AccordionGroup>
+    </div>
+
+    {/* <h4 className="font-semibold text-gray-700 dark:text-white mb-2 mt-6">Configure SMS</h4>
+    <ul className="list-disc ml-4 text-gray-600 dark:text-gray-300 mb-4">
+      <li><a href="/notifications/sms-integration">Wire SMS triggers and providers</a>.</li>
+      <li><a href="/notifications/sms-customization">Set payloads and preferences</a>.</li>
+      <li><a href="/notifications/preferences-templates-sounds">Manage templates and quiet hours</a>.</li>
+      <li><a href="/notifications/logs">Monitor delivery and limits</a>.</li>
+      <li><a href="/notifications/sms-notification-extension">Legacy extension</a> (de-emphasized).</li>
+    </ul> */}
 
     <h4 className="font-semibold text-gray-700 dark:text-white mb-3 mt-6">Supported workflows</h4>
     <CardGroup cols={3}>
