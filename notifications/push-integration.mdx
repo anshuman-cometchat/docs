@@ -1,8 +1,8 @@
 ---
 title: "Integration"
 ---
-
-## Enable Push notifications
+ 
+ ## Step 1: Enable Push notifications
 
 <Frame>
   <img src="/images/80a520bb-pushnotification-enable-e64632d479a2ebba111453b95bd522c6.png" />
@@ -12,8 +12,8 @@ title: "Integration"
 2. Navigate to **Notifications** > **Notifications** in the left-hand menu.
 3. Enable the Push notifications feature.
 4. Continue to configure Push notifications by clicking on "Configure".
-
-## Add Providers
+ 
+## Step 2: Add Providers
 
 Firebase Cloud Messaging (FCM) and Apple Push Notification Service (APNS) are the two primary supported providers for sending push notifications.
 
@@ -72,7 +72,7 @@ Similarly, you can add multiple APNS Credentials in case you have multiple apps 
 
 For webhook-based providers and payload samples, see [/notifications/custom-providers](/notifications/custom-providers).
 
-## Tokens management
+## Step 3: Tokens management
 
 ### Register push token after login
 
@@ -337,7 +337,7 @@ CometChatNotifications.unregisterPushToken(onSuccess: (response) {
 
 </Tabs>
 
-## Handle incoming Push notifications
+## Step 4: Handle incoming Push notifications
 
 Push notifications should be managed primarily when the app is in the background or in a terminated state.
 
@@ -385,6 +385,7 @@ The push payload delivered to the user's device includes the following informati
 
 </Tabs>
 
+
 ## Continue to platform-specific implementation
 
 Choose your platform to continue with the Push notifications implementation.
@@ -428,51 +429,3 @@ React Native UI Kit Implementation
 </Card>
 
 </CardGroup>
-
-{/* ## Sample apps
-
-Check out our sample apps for understanding the implementation.
-
-<CardGroup>
-
-<Card title="React - Push notifications sample app" icon="github" href="https://github.com/cometchat/cometchat-push-notification-app-react">
-
-Push notifications sample app for the web
-
-View on Github
-
-</Card>
-
-<Card title="React Native - Push notifications sample app" icon="github" href="https://github.com/cometchat/cometchat-push-notification-app-react-native">
-
-Push notifications sample app for React Native
-
-View on Github
-
-</Card>
-
-<Card title="iOS - Push notifications sample app" icon="github" href="https://github.com/cometchat/cometchat-push-notification-app-ios">
-
-Push notifications sample app for iOS
-
-View on Github
-
-</Card>
-
-<Card title="Android - Push notifications sample app" icon="github" href="https://github.com/cometchat/cometchat-push-notification-app-android">
-
-Push notifications sample app for Android
-
-View on Github
-
-</Card>
-
-<Card title="Flutter - Push notifications sample app" icon="github" href="https://github.com/cometchat/cometchat-push-notification-app-flutter">
-
-Push notifications sample app for Flutter
-
-View on Github
-
-</Card>
-  
-</CardGroup> */}
