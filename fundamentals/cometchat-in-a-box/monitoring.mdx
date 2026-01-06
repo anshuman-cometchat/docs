@@ -1,0 +1,28 @@
+---
+title: "Monitoring"
+sidebarTitle: "Monitoring"
+---
+
+Operational visibility relies on metrics, logs, and alerts tuned to your workload.
+
+## Observability stack
+
+- Prometheus for metrics collection
+- Grafana for dashboards and visualizations
+- Loki (or ELK) for centralized log aggregation
+
+## Key service metrics
+
+- API latency (P95/P99)
+- Kafka consumer lag
+- WebSocket active connection count
+- Redis memory utilization and cache hit ratio
+- TiDB region health and TiKV store availability
+
+## Alerting recommendations
+
+- Sustained CPU utilization above 80%
+- Database query latency exceeding 100 ms
+- Kafka consumer lag breaching thresholds
+- WebSocket connection drops or failure rate spikes
+- Tune thresholds to traffic patterns and workload characteristics

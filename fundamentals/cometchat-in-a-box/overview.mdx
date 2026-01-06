@@ -1,0 +1,56 @@
+---
+title: "CometChat In a Box Overview"
+sidebarTitle: "Overview"
+---
+
+CometChat In a Box is a production-ready deployment of the CometChat platform that ships with a hardened microservices stack, observability, and scaling patterns. It is designed for teams that need predictable performance, low latency, and operational playbooks for MAU growth from 10k up to 250k+.
+
+## Who this guide is for
+
+- DevOps and SRE teams owning uptime and operations
+- Platform, cloud, and backend engineers deploying or tuning the stack
+- Architects evaluating multi-region or compliance-heavy environments
+
+## Core capabilities
+
+- Real-time messaging for 1:1 and group chat with durable history
+- WebSocket event streaming for presence, typing, and receipts
+- Kafka-backed event pipeline for decoupled microservices
+- Notifications subsystem for async push delivery and fan-out
+- Moderation services with rule-based filtering and optional AI adapters
+- Webhooks engine with retries and signature validation
+- Horizontally scalable REST APIs for chat, users, groups, and metadata
+
+## Data & storage summary
+
+- TiDB cluster (PD, TiKV, TiDB SQL) for primary relational storage
+- MongoDB for flexible metadata and moderation data
+- Redis clusters for caching, pub/sub, sessions, and ephemeral state
+- Kafka as the event backbone
+- Optional object storage integrations for artifacts and backups
+
+## Deployment models
+
+- Local development (Docker Compose): single-machine setup for development, QA, and CI validation. Not for production use.
+- Docker Swarm (recommended to ~200k MAU): current reference architecture with simple cluster management, secure overlay networking, and rolling updates.
+- Kubernetes (enterprise / >200k MAU): for advanced autoscaling, multi-region failover, service mesh, and regulated environments. Contact CometChat for enterprise architecture guidance.
+
+## High-level architecture
+
+- NGINX for TLS termination, routing, WebSocket upgrades, and load balancing
+- WebSocket gateway for presence, sessions, and low-latency delivery
+- Chat API for messaging logic, users, groups, and metadata
+- Moderation engine for rule-based filtering and compliance checks
+- Notifications service for async push workflows
+- Webhooks service for outbound callbacks with retries
+- Kafka for inter-service events and pipelines
+- TiDB, MongoDB, and Redis for stateful data stores
+- Observability stack (Prometheus, Grafana, Loki/ELK) for metrics, dashboards, and logs
+- Private overlay networks to isolate backend traffic
+
+## What to read next
+
+- [Prerequisites](/fundamentals/cometchat-in-a-box/prerequisites)
+- [Quick Start (Local Deployment)](/fundamentals/cometchat-in-a-box/quick-start)
+- [Production Deployment](/fundamentals/cometchat-in-a-box/production-deployment)
+- [Configuration Reference](/fundamentals/cometchat-in-a-box/configuration-reference)

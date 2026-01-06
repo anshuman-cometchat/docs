@@ -1,0 +1,44 @@
+---
+title: "Troubleshooting"
+sidebarTitle: "Troubleshooting"
+---
+
+Common operational issues, quick checks, and log locations.
+
+## Common problems
+
+| Symptom | Possible cause |
+| --- | --- |
+| 502 errors | Chat API unreachable or unhealthy behind NGINX |
+| Kafka lag | Consumer slowdown or insufficient partition count |
+| Redis eviction | Memory pressure or incorrect eviction policy |
+| TiKV region errors | Disk latency, resource contention, or store imbalance |
+
+## Debugging commands
+
+Container and Swarm diagnostics:
+
+```bash
+docker logs <container>
+docker service ps <service>
+docker inspect <container>
+```
+
+TiDB cluster status:
+
+```bash
+tiup cluster display
+```
+
+Kafka consumer diagnostics:
+
+```bash
+kafka-consumer-groups --describe
+```
+
+## Log locations
+
+- NGINX: `/var/log/nginx/`
+- Application logs: via `docker logs` per container
+- TiDB: `/logs/tidb/`
+- Kafka: `/logs/kafka/`

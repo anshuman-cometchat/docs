@@ -1,0 +1,88 @@
+---
+title: "Production Deployment"
+sidebarTitle: "Production Deployment"
+---
+
+Deploy the full stack on Docker Swarm with rolling updates, hardened networking, and TLS termination.
+
+## Initialize Docker Swarm (manager node)
+
+```bash
+docker swarm init
+docker node ls
+```
+
+## Deploy the complete infrastructure
+
+Run the deployment script from the repository root:
+
+```bash
+./deploy.sh
+```
+
+The script creates networks and volumes, then brings up all Swarm services defined in `docker-compose.yml` in the correct order.
+
+## Rolling updates
+
+```bash
+./update.sh
+```
+
+Performs zero-downtime rolling updates, refreshes configuration, and replaces containers at the Swarm layer.
+
+## Production NGINX reverse proxy
+
+NGINX handles TLS termination, routing, WebSocket upgrades, and proxy buffering. Update domain mappings in:
+
+- `chatapi.conf`
+- `extensions.conf`
+- `mgmtapi.conf`
+- `notifications.conf`
+- `dashboard.conf`
+- `globalwebhooks.conf`
+- `moderation.conf`
+- `websocket.conf`
+
+## Domain configuration
+
+When replacing `<your-domain>`, update environment values for:
+
+- Chat API, Management API, Extensions, Notifications, Moderation, Webhooks, and SQL Consumer
+- NGINX reverse proxy hostnames
+- WebSocket host configuration in Chat API
+
+## Useful Swarm operations
+
+General management:
+
+```bash
+docker node ls
+docker service ls
+docker service ps <service>
+docker service logs -f <service>
+docker exec -it <container> bash
+docker node update --availability drain <node>
+docker service scale <service>=3
+```
+
+Stack operations:
+
+```bash
+docker stack deploy -c docker-compose.yml cometchat
+docker stack rm cometchat
+docker stack services cometchat
+docker stack ps cometchat
+```
+
+## Health check endpoints
+
+| Component | URL |
+| --- | --- |
+| Dashboard | `https://app.<your-domain>` |
+| Chat API | `https://api-us.<your-domain>/health-check` |
+| Client API | `https://apiclient-us.<your-domain>/health-check` |
+| Management API | `https://apimgmt.<your-domain>/health-check` |
+| Notifications | `https://notifications-us.<your-domain>/health-check` |
+| Moderation | `https://rule-us.<your-domain>/health` |
+| WebSocket | `https://websocket-us.<your-domain>/v1/health` |
+| Webhooks | `https://webhooks-us.<your-domain>/v1/webhooks/health-check` |

@@ -1,0 +1,49 @@
+---
+title: "Prerequisites"
+sidebarTitle: "Prerequisites"
+---
+
+## Supported operating systems
+
+- Ubuntu 20.04 / 22.04 / 24.04 LTS
+- RedHat Enterprise Linux 8+
+
+## Required software
+
+- Docker Engine 24 or later
+- Docker Compose v2 or later
+- Git
+- OpenSSL 1.1 or later
+- CLI tooling: `jq`, `curl`, `net-tools`
+
+## Minimum hardware (testing / QA)
+
+| Environment | vCPUs | RAM  | Storage | Network |
+| --- | --- | --- | --- | --- |
+| Local / QA | 8 vCPUs | 16 GB | 100 GB SSD | 1 Gbps |
+
+## Production hardware sizing
+
+### Baseline profile
+
+| MAU | Peak concurrent connections | vCPUs | RAM |
+| --- | --- | --- | --- |
+| 10k | 500 | 32 | 64 GB |
+| 25k | 1,250 | 64 | 128 GB |
+| 50k | 2,500 | 96 | 192 GB |
+| 100k | 5,000 | 156 | 312 GB |
+| 200k | 10,000 | 272 | 544 GB |
+
+### High concurrency profile
+
+| MAU | Peak concurrent connections | vCPUs | RAM |
+| --- | --- | --- | --- |
+| 10k | 1,000 | 48 | 96 GB |
+| 25k | 2,500 | 96 | 192 GB |
+| 50k | 5,000 | 156 | 312 GB |
+| 100k | 10,000 | 240 | 480 GB |
+| 200k | 20,000 | 480 | 960 GB |
+
+## Required ports
+
+- `80` / `443` to the NGINX reverse proxy (HTTP / HTTPS entrypoints)

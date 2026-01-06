@@ -1,0 +1,29 @@
+---
+title: "Security"
+sidebarTitle: "Security"
+---
+
+Security controls focus on authentication, secrets management, network isolation, and TLS posture.
+
+## Authentication
+
+- JWT authentication with RSA key pairs
+- Optional SSO via OIDC or SAML 2.0
+- Rotate tokens and keys regularly for long-running environments
+
+## Secrets management
+
+- HashiCorp Vault for centralized secret storage with auditing and access control
+- Docker Swarm secrets for encrypted in-transit/at-rest injection into services
+
+## Network security
+
+- All backend services run on private overlay networks
+- Only the NGINX reverse proxy is exposed to the public internet
+- Keep all service-to-service traffic inside the private network
+
+## TLS configuration
+
+- Enforce TLS 1.2 or higher
+- Disable weak ciphers and deprecated protocols
+- Maintain at least two active certificates to enable seamless rotation

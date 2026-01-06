@@ -1,0 +1,24 @@
+---
+title: "Upgrades"
+sidebarTitle: "Upgrades"
+---
+
+Use rolling strategies to keep traffic online while upgrading services and databases.
+
+## Rolling updates
+
+- Deploy new replicas alongside existing ones
+- Gradually shift traffic to updated replicas
+- Retire older replicas only after health checks pass
+
+## Database migrations
+
+- Test migrations in staging before production
+- Prefer backward-compatible schema changes
+- Avoid dropping or renaming columns while serving live traffic
+
+## Rollbacks
+
+- Retain previous Docker images to enable quick rollback
+- Revert database changes using rollback or down migration scripts when required
+- Validate application behavior and data integrity before restoring full traffic
