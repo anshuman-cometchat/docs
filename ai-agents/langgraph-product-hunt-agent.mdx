@@ -1,0 +1,97 @@
+---
+title: "Launch a Product Hunt Agent with LangGraph"
+sidebarTitle: "Product Hunt Agent"
+description: "Build a LangGraph agent with Product Hunt-style tools, stream graph state, and prep it for CometChat."
+---
+
+A compact LangGraph example that binds a ChatOpenAI model to Product Hunt-inspired tools, loops until tool calls are complete, and streams every graph state.
+
+***
+
+## What You'll Build
+
+* A **LangGraph** with assistant + tool executor nodes.  
+* Two tools: `list_top_posts` (sorted by votes) and `search_launches` (keyword/topic search).  
+* Streaming runs keyed by `thread_id`, kept in sync via `MemorySaver`.  
+* A template you can expose over HTTP/SSE to connect with CometChat’s AI Agents.  
+
+***
+
+## Prerequisites
+
+* Node.js 18+ (Node 20 recommended).  
+* `OPENAI_API_KEY` in `.env`.  
+* Optional: `PRODUCT_OPENAI_MODEL` to override `gpt-4o-mini`.  
+
+***
+
+## Quick links
+
+- Repo root: [ai-agent-lang-graph-examples](https://github.com/cometchat/ai-agent-lang-graph-examples)
+- Project folder: [langgraph-product-hunt-agent](https://github.com/cometchat/ai-agent-lang-graph-examples/tree/main/langgraph-product-hunt-agent)
+- Graph logic: [src/graph.ts](https://github.com/cometchat/ai-agent-lang-graph-examples/blob/main/langgraph-product-hunt-agent/src/graph.ts)
+- Mock launches & search: [src/data/](https://github.com/cometchat/ai-agent-lang-graph-examples/tree/main/langgraph-product-hunt-agent/src/data)
+- Env sample: [.env.example](https://github.com/cometchat/ai-agent-lang-graph-examples/blob/main/.env.example)
+
+***
+
+## How it works
+
+- **Tools** — `list_top_posts` and `search_launches` live in `src/graph.ts`, backed by helpers in `src/data/search.ts`. Both return markdown bullets so the assistant can cite results directly.
+- **Graph** — `StateGraph(MessagesAnnotation)` alternates between the assistant node and the `tools` node based on `shouldCallTools`; tool outputs are fed back as `ToolMessage` objects.
+- **State** — `MemorySaver` checkpoints per `configurable.thread_id` let you run multi-turn conversations on the same graph instance.
+- **Streaming** — `app.stream` emits state snapshots (`streamMode: "values"`). The console demo prints each message as the model calls tools and drafts the response.
+
+***
+
+## Setup
+
+<Steps>
+  <Step title="Clone & install">
+    <code>git clone https://github.com/cometchat/ai-agent-lang-graph-examples.git</code> then <code>cd langgraph-product-hunt-agent</code> and run <code>npm install</code>.
+  </Step>
+  <Step title="Configure environment">
+    Copy <code>../.env.example</code> to <code>.env</code>, set <code>OPENAI_API_KEY</code>, and optionally override <code>PRODUCT_OPENAI_MODEL</code>.
+  </Step>
+  <Step title="Run the demo">
+    Execute <code>npm run demo</code>. The script runs two prompts on the same thread: listing top launches and finding analytics tools.
+  </Step>
+  <Step title="Optional: typecheck">
+    Run <code>npm run typecheck</code> to confirm the TypeScript setup.
+  </Step>
+</Steps>
+
+***
+
+## Project structure
+
+- Graph wiring: [src/graph.ts](https://github.com/cometchat/ai-agent-lang-graph-examples/blob/main/langgraph-product-hunt-agent/src/graph.ts)
+- Demo runner: [src/index.ts](https://github.com/cometchat/ai-agent-lang-graph-examples/blob/main/langgraph-product-hunt-agent/src/index.ts)
+- Launch data: [src/data/products.ts](https://github.com/cometchat/ai-agent-lang-graph-examples/blob/main/langgraph-product-hunt-agent/src/data/products.ts)
+- Search helper: [src/data/search.ts](https://github.com/cometchat/ai-agent-lang-graph-examples/blob/main/langgraph-product-hunt-agent/src/data/search.ts)
+- Config: [.env.example](https://github.com/cometchat/ai-agent-lang-graph-examples/blob/main/.env.example), [package.json](https://github.com/cometchat/ai-agent-lang-graph-examples/blob/main/langgraph-product-hunt-agent/package.json)
+
+***
+
+## Step 1 - Understand the agent tools
+
+`buildProductHuntGraph` binds both tools to `ChatOpenAI` (temperature 0 by default). The graph checks each assistant reply for `tool_calls`, routes to the `tools` node to execute them, then loops back until there are none left.
+
+***
+
+## Step 2 - Stream the demo
+
+`npm run demo` streams the graph state while asking:
+
+- “What are the top Product Hunt style launches right now?”  
+- “Find tools to help indie founders with analytics.”  
+
+Watch for tool call logs in between message deltas. The shared `thread_id` demonstrates how `MemorySaver` preserves context across turns.
+
+***
+
+## Step 3 - Extend & ship
+
+- Wrap the graph in a server (Express, Fastify, Next.js API route) that exposes `/agent` as SSE or newline-delimited JSON. Echo `thread_id` and `run_id` in each event so CometChat can correlate deltas.
+- Swap `products.ts` for your own data source (Product Hunt GraphQL, databases, analytics APIs) while keeping the same tool signatures.
+- Add more tools (e.g., “draft_launch_post”, “schedule_announcement”) and bind them to the model before compiling the graph.
