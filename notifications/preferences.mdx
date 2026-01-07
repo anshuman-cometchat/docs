@@ -12,7 +12,7 @@ Under Preferences tab, set the event preferences at the CometChat app-level and 
   <img src="/images/push-notification-preferences.png" />
 </Frame>
 
-### At-a-glance defaults
+{/* ### At-a-glance defaults
 
 These map to the options shown in the Notifications → Preferences screen (see dashboard screenshot):
 
@@ -23,7 +23,20 @@ These map to the options shown in the Notifications → Preferences screen (see 
 - **Call preferences**: Call events default to notify (cannot override).
 - **Mute preferences**: Allow users to mute all (DND), mute group, mute one-on-one; includes notification schedule.
 
-The rest of this page shows how to read/update these preferences with the SDK.
+The rest of this page shows how to read/update these preferences with the SDK. */}
+
+## Push payload message options
+
+These control what CometChat includes in push payloads. All are optional toggles:
+
+- Include entire message object in payload
+- Include message metadata in payload
+- Include sender's metadata in payload
+- Include receiver's metadata in payload
+- Trim CometChat message object (strip down to stay within provider limits)
+- Additional data in payload (JSON you add)
+
+Use a minimal combination to stay under ~4 KB for FCM/APNs.
 
 ### Group preferences
 
