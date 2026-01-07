@@ -2,7 +2,7 @@
 title: "SMS Templates"
 ---
 
-Use these payload fields when rendering SMS content with a custom provider. Sounds are not applicable for SMS.
+Use these payload fields when rendering SMS content. Sounds are not applicable for SMS.
 
 ## Payload shapes
 
@@ -30,3 +30,14 @@ Use these payload fields when rendering SMS content with a custom provider. Soun
   "groupDetails": { "guid": "cometchat-guid-1", "name": "Hiking Group" }
 }
 ```
+
+## Template examples
+
+<Frame>
+  <img src="/images/sms-notification-templates.png" />
+</Frame>
+
+| Use case | Default template | Privacy template | Example result (default) |
+| --- | --- | --- | --- |
+| One-on-one notification | You've received `{{messages.length}}` message(s) from `{{senderDetails.name}}`! Read them at https://your-website.com. | You've received `{{messages.length}}` message(s) from `{{senderDetails.name}}`! Read them at https://your-website.com. | You've received 2 message(s) from Susan Marie! Read them at https://your-website.com. |
+| Group notification | You've received `{{messages.length}}` message(s) in `{{groupDetails.name}}`! Read them at https://your-website.com. | You've received `{{messages.length}}` message(s) in `{{groupDetails.name}}`! Read them at https://your-website.com. | You've received 2 message(s) in Hiking Group! Read them at https://your-website.com. |

@@ -2,7 +2,7 @@
 title: "Email Templates"
 ---
 
-Use these payload fields when rendering your own email bodies with a custom provider. No sounds apply to email.
+Use these payload fields when rendering your own email bodies. No sounds apply to email.
 
 ## Payload shapes
 
@@ -40,7 +40,11 @@ Use these payload fields when rendering your own email bodies with a custom prov
 
 ## Subject examples
 
-| Use case | Template | Example result |
-| --- | --- | --- |
-| Group notification | Hello `{{to.name}}`! You have `{{messages.length}}` message(s) in `{{groupDetails.name}}`. | Hello Andrew Joseph! You have 2 message(s) in Hiking Group. |
-| One-on-one notification | Hello `{{to.name}}`! You have `{{messages.length}}` message(s) from `{{senderDetails.name}}`. | Hello Andrew Joseph! You have 2 message(s) from Susan Marie. |
+<Frame>
+  <img src="/images/email-notification-templates.png" />
+</Frame>
+
+| Use case | Default subject | Privacy subject | Example result (default) |
+| --- | --- | --- | --- |
+| One-on-one notification | New messages from `{{senderDetails.name}}` | New messages from `{{senderDetails.name}}` | New messages from Susan Marie |
+| Group notification | New messages in `{{groupDetails.name}}` | New messages in `{{groupDetails.name}}` | New messages in Hiking Group |
