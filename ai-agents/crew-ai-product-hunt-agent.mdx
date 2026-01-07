@@ -6,122 +6,93 @@ description: "Create a CrewAI agent that fetches Product Hunt posts, answers lau
 
 import { Steps, Step } from 'mintlify';
 
-Give your chats Product Hunt superpowers: search launches, surface top posts, and celebrate wins with a UI action.
+Refreshed for the latest [`ai-agent-crew-ai-examples`](https://github.com/) codebase: run the `product_hunt_agent` FastAPI service, wire it to CometChat, and stream SSE updates (with optional confetti actions).
 
 ---
 
 ## What you’ll build
 
-- A CrewAI agent with tools to **get top posts**, **search**, and **trigger a frontend action** (confetti).
-- A FastAPI `/kickoff` endpoint streaming NDJSON for CometChat.
-- Optional static page or widget that maps the confetti tool to a UI handler.
+- A CrewAI agent with tools to **get top posts**, **search**, **timeframes**, and **trigger confetti**.
+- A FastAPI `/stream` endpoint emitting newline-delimited JSON (`text_delta`, `text_done`, `done`).
+- CometChat AI Agent wiring that consumes those SSE chunks; your UI listens for the confetti payload.
 
 ---
 
 ## Prerequisites
 
-- Node or Python hosting for your CrewAI service
-- `OPENAI_API_KEY` for chat
-- `PRODUCTHUNT_API_TOKEN` (GraphQL) for live data
+- Python 3.10+ with `pip`
+- `OPENAI_API_KEY` (optionally `OPENAI_BASE_URL`, `PRODUCT_OPENAI_MODEL`)
+- Optional: `PRODUCTHUNT_API_TOKEN` for live GraphQL data (empty lists when missing)
 - CometChat app + AI Agent entry
 
 ---
 
-## How it works
-
-- **Agent** — configure tools for top lists, timeframe queries, search, and confetti; clamp limits and validate inputs.
-- **Data** — Product Hunt GraphQL for live votes (needs `PRODUCTHUNT_API_TOKEN`) and Algolia search for discovery.
-- **API** — expose FastAPI (or similar) routes for top/search plus a `/kickoff` chat endpoint that streams NDJSON (`text_delta`, `tool_*`, `text_end`, `done`).
-- **Frontend** — when the confetti tool fires, your UI listens to `tool_result` and triggers the celebration handler.
-
----
-
-## Steps
+## Run the updated sample
 
 <Steps>
-  <Step title="Add Product Hunt tools">
-    Create tools for <code>get_top_products</code>, <code>search_products</code>, and <code>get_top_by_timeframe</code>. Require <code>PRODUCTHUNT_API_TOKEN</code> and validate inputs.
+  <Step title="Install & start">
+    In <code>ai-agent-crew-ai-examples/</code>:
+    <pre><code className="language-bash">python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+uvicorn product_hunt_agent.main:app --host 0.0.0.0 --port 8001 --reload</code></pre>
   </Step>
-  <Step title="Add a confetti action">
-    Include a simple action tool (see <a href="/ai-agents/crew-ai-frontend-actions-agent">frontend actions guide</a>) to trigger celebration in the UI.
-  </Step>
-  <Step title="Instruct the agent">
-    Explain when to use each tool, how to summarize results in tables, and when to celebrate.
-  </Step>
-  <Step title="Expose /kickoff">
-    Reuse the NDJSON streaming pattern from <a href="/ai-agents/crew-ai">crew-ai.mdx</a>.
-  </Step>
-  <Step title="Connect to CometChat">
-    Provider = CrewAI, Agent ID = <code>product_hunt</code>, Deployment URL = your public endpoint.
+  <Step title="Set env">
+    Required: <code>OPENAI_API_KEY</code>. Optional: <code>PRODUCTHUNT_API_TOKEN</code> (GraphQL), <code>PRODUCTHUNT_DEFAULT_TIMEZONE</code> (default <code>America/New_York</code>).
   </Step>
 </Steps>
 
----
+***
 
-## Sample tool (top products)
+## API surface (FastAPI)
 
-`src/crew_demo/tools/product_hunt.py`
+- `GET /api/top` — top posts by votes (`limit` 1–10).
+- `GET /api/top-week` — rolling window (default 7 days) with `limit` and `days`.
+- `GET /api/top-range` — timeframe queries (`timeframe`, `tz`, `limit`); supports `"today"`, `"yesterday"`, `"last_week"`, `"last_month"`, or ISO dates.
+- `GET /api/search` — Algolia search (`q`, `limit`).
+- `POST /api/chat` — non-streaming CrewAI answer.
+- `POST /stream` — SSE stream (`text_delta`, `text_done`, `done`) ready for CometChat.
+
+### Streaming example
+
+```bash
+curl -N http://localhost:8001/stream \
+  -H "Content-Type: application/json" \
+  -d '{
+        "messages": [
+          { "role": "user", "content": "What were the top launches last week?" }
+        ]
+      }'
+```
+
+Streaming payload shape:
+
+```json
+{"type":"text_delta","content":"...","thread_id":"...","run_id":"..."}
+{"type":"text_done","thread_id":"...","run_id":"..."}
+{"type":"done","thread_id":"...","run_id":"..."}
+```
+
+***
+
+## Crew internals (for reference)
+
+Key tools in `product_hunt_agent/agent_builder.py`:
 
 ```python
-import os, json, httpx
-from crewai.tools import tool
-
-
-PRODUCT_HUNT_API = "https://api.producthunt.com/v2/api/graphql"
-HEADERS = lambda: {"Authorization": f"Bearer {os.getenv('PRODUCTHUNT_API_TOKEN')}"}
-
-
-@tool("get_top_products")
-def get_top_products(limit: int = 3) -> str:
-    """Fetch top Product Hunt posts by votes."""
-    if not os.getenv("PRODUCTHUNT_API_TOKEN"):
-        raise Exception("PRODUCTHUNT_API_TOKEN not set")
-
-    query = """
-    query TopProducts($limit: Int!) {
-      posts(order: VOTES, first: $limit) {
-        edges { node { name tagline votesCount url } }
-      }
-    }
-    """
-    resp = httpx.post(PRODUCT_HUNT_API, headers=HEADERS(), json={"query": query, "variables": {"limit": limit}}, timeout=10.0)
-    resp.raise_for_status()
-    data = resp.json()["data"]["posts"]["edges"]
-    posts = [{"name": edge["node"]["name"], "tagline": edge["node"]["tagline"], "votes": edge["node"]["votesCount"], "url": edge["node"]["url"]} for edge in data]
-    return json.dumps({"posts": posts})
+@tool("getTopProducts")          # votes-ranked, clamps limit 1-10
+@tool("getTopProductsThisWeek")  # rolling-week window, clamps days/limit
+@tool("getTopProductsByTimeframe")  # "today", "yesterday", "last_week", ISO, ranges
+@tool("searchProducts")          # Algolia search (no token needed)
+@tool("triggerConfetti")         # returns payload: colors, counts, spread, etc.
 ```
 
-Register the tool and combine it with a confetti action in `crew.py`.
+All tools run server-side; if `PRODUCTHUNT_API_TOKEN` is missing, top queries return empty arrays but still respond cleanly.
 
----
+***
 
-## Agent configuration
+## Wire it to CometChat
 
-`src/crew_demo/config/agents.yaml`
-
-```yaml
-product_hunt:
-  role: Product Hunt Launch Assistant
-  goal: Fetch Product Hunt data and celebrate launches
-  backstory: >
-    Use get_top_products for rankings and a search tool for queries.
-    Present answers as bullet points or compact tables. Fire confetti on wins when asked.
-```
-
----
-
-## Frontend handling
-
-- Map `tool_result` for the confetti action to your UI handler (Widget/React UI Kit).
-- Clamp limits (e.g., max 10 posts) in the tool to avoid huge responses.
-- Never expose API tokens to the client—keep calls server-side.
-
----
-
-## Troubleshooting
-
-- Empty posts: confirm `PRODUCTHUNT_API_TOKEN` and check rate limits.
-- Confetti not firing: ensure the tool name matches your client handler mapping.
-- Slow responses: cache popular queries or reduce `limit`.
-
----
+- Dashboard → AI Agents → **Provider: CrewAI** → **Agent ID** (e.g., `product_hunt`) → **Deployment URL** = your public `/stream`.
+- Listen for `text_delta`/`text_done` to render streaming text; stop on `done`.
+- When `triggerConfetti` returns, map the payload to your UI handler (Widget/React UI Kit). Keep API tokens server-side.

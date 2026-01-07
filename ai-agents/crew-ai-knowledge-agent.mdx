@@ -6,153 +6,133 @@ description: "Create a CrewAI knowledge agent that answers from your docs, strea
 
 import { Steps, Step } from 'mintlify';
 
-Imagine an agent that only answers when asked, pulls context from your docs, and responds with concise, cited answers right inside chat.
+Based on the refreshed [`ai-agent-crew-ai-examples`](https://github.com/) codebase, here’s how to run the `knowledge_agent` FastAPI service, ingest docs, and stream answers into CometChat.
 
 ***
 
 ## What you’ll build
 
-- A **CrewAI** agent scoped to documentation questions.
-- A lightweight **ingest + retrieve** flow that reads files from `knowledge/<namespace>`.
-- A **FastAPI `/kickoff`** endpoint that streams NDJSON events CometChat consumes.
-- A **CometChat AI Agent** entry pointing at your deployment.
+- A **CrewAI** agent that grounds replies in your ingested docs (per namespace).
+- A **FastAPI** service with ingest/search/generate endpoints plus a `/stream` SSE.
+- **CometChat AI Agent** wiring that consumes newline-delimited JSON chunks (`text_delta`, `text_done`, `done`).
 
 ***
 
 ## Prerequisites
 
-- CrewAI project (see [Create an AI Agent with CrewAI](/ai-agents/crew-ai))
-- Python 3.13.2+, `uv` or `pip`
-- `OPENAI_API_KEY` in `.env`
-- A CometChat app
+- Python 3.10+ with `pip` (or `uv`)
+- `OPENAI_API_KEY` (optionally `OPENAI_BASE_URL`, `KNOWLEDGE_OPENAI_MODEL`, `KNOWLEDGE_EMBEDDING_MODEL`)
+- A CometChat app + AI Agent entry
 
 ***
 
-## How it works
-
-- **Ingest**: drop markdown/text/PDF summaries into `knowledge/<namespace>/`.
-- **Retrieve**: a CrewAI tool scans that folder, scores snippets, and returns top matches with filenames for citations.
-- **Answer**: the agent replies only when explicitly mentioned (`@agent`) and always cites sources.
-- **Stream**: `/kickoff` emits NDJSON events (`text_*`, `tool_*`, `done`) that CometChat renders in real time.
-
-***
-
-## Steps
+## Run the updated sample
 
 <Steps>
-  <Step title="Prepare knowledge folders">
-    Create <code>knowledge/default</code> (or any namespace) and add markdown/text files. You can sync files from your CMS or build a simple CLI to keep this folder updated.
+  <Step title="Install & start">
+    In <code>ai-agent-crew-ai-examples/</code>:
+    <pre><code className="language-bash">python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+uvicorn knowledge_agent.main:app --host 0.0.0.0 --port 8000 --reload</code></pre>
+    Env supports <code>.env</code> at repo root or inside <code>knowledge_agent/.env</code>.
   </Step>
-  <Step title="Add a docs retriever tool">
-    Implement a CrewAI tool that loads files from the namespace, extracts top snippets, and returns JSON with <code>content</code>, <code>source</code>, and optional <code>score</code>.
+  <Step title="Set env">
+    <code>OPENAI_API_KEY</code> is required. Optional: <code>OPENAI_BASE_URL</code>, <code>KNOWLEDGE_OPENAI_MODEL</code> (default <code>gpt-4o-mini</code>), <code>KNOWLEDGE_EMBEDDING_MODEL</code> (default <code>text-embedding-3-small</code>).
   </Step>
-  <Step title="Define the agent">
-    Configure the agent to respond only when mentioned and to always cite sources. Keep the backstory strict about using the retriever tool first.
-  </Step>
-  <Step title="Expose /kickoff">
-    Reuse the FastAPI NDJSON stream from <a href="/ai-agents/crew-ai">crew-ai.mdx</a>. Pass <code>namespace</code> via tool params if you support multiple doc sets.
-  </Step>
-  <Step title="Connect in CometChat">
-    Dashboard → AI Agents → Provider = CrewAI, Agent ID = <code>knowledge</code>, Deployment URL = your public <code>/kickoff</code>.
+  <Step title="Storage">
+    Ingested files land in <code>knowledge_agent/data/knowledge/&lt;namespace&gt;/</code> and embeddings persist to <code>knowledge_agent/data/chroma/&lt;namespace&gt;/</code>. Duplicate hashes are skipped automatically.
   </Step>
 </Steps>
 
 ***
 
-## Sample retriever tool
+## API surface (FastAPI)
 
-`src/crew_demo/tools/docs_retriever.py`
+- `POST /api/tools/ingest` — accept JSON or `multipart/form-data` with `sources` (text/markdown/url) and optional file uploads; returns `saved`, `skipped`, `errors`.
+- `POST /api/tools/searchDocs` — semantic search via Chroma; accepts `namespace`, `query`, `max_results`.
+- `POST /api/agents/knowledge/generate` — single, non-streaming completion.
+- `POST /stream` — newline-delimited JSON over SSE (`text_delta`, `text_done`, `done`) ready for CometChat BYOA.
+
+### Ingest examples
+
+```bash
+curl -X POST http://localhost:8000/api/tools/ingest \
+  -H "Content-Type: application/json" \
+  -d '{
+        "namespace": "default",
+        "sources": [
+          { "type": "url", "value": "https://docs.crewai.com/" },
+          { "type": "markdown", "title": "Notes", "value": "# CrewAI Rocks" }
+        ]
+      }'
+```
+
+Multipart uploads are also supported:
+
+```bash
+curl -X POST http://localhost:8000/api/tools/ingest \
+  -H "Accept: application/json" \
+  -F "namespace=default" \
+  -F "sources=[{\"type\":\"text\",\"value\":\"Hello\"}]" \
+  -F "files=@/path/to/file.pdf"
+```
+
+### Search + answer
+
+```bash
+curl -X POST http://localhost:8000/api/tools/searchDocs \
+  -H "Content-Type: application/json" \
+  -d '{"namespace":"default","query":"CrewAI agent lifecycle","max_results":4}'
+```
+
+```bash
+curl -N http://localhost:8000/stream \
+  -H "Content-Type: application/json" \
+  -d '{
+        "thread_id": "thread_1",
+        "run_id": "run_001",
+        "messages": [
+          { "role": "user", "content": "Summarize the CrewAI agent lifecycle." }
+        ]
+      }'
+```
+
+Streaming payload shape:
+
+```json
+{"type":"text_delta","content":"...","thread_id":"...","run_id":"..."}
+{"type":"text_done","thread_id":"...","run_id":"..."}
+{"type":"done","thread_id":"...","run_id":"..."}
+```
+
+***
+
+## Crew internals (for reference)
+
+`knowledge_agent/knowledge_manager.py` builds a search tool per namespace, wired into a CrewAI agent:
 
 ```python
-import json
-from pathlib import Path
-from typing import List, Dict
-from crewai.tools import tool
-
-
-def _load_documents(namespace: str) -> List[Dict[str, str]]:
-    base = Path(__file__).parent.parent.parent / "knowledge" / namespace
-    docs = []
-    for path in base.rglob("*.md"):
-        try:
-            docs.append({"source": path.name, "content": path.read_text(encoding="utf-8")})
-        except Exception:
-            continue
-    return docs
-
-
-@tool("search_docs")
-def search_docs(query: str, namespace: str = "default", limit: int = 3) -> str:
-    """Return top matching snippets from knowledge/<namespace>."""
-    docs = _load_documents(namespace)
-    scored = []
-    for doc in docs:
-        if query.lower() in doc["content"].lower():
-            scored.append({"source": doc["source"], "excerpt": doc["content"][:800]})
-    top = scored[:limit] if scored else []
-    return json.dumps({"matches": top, "namespace": namespace})
+search_tool = self._create_search_tool(normalised)
+agent = Agent(
+    role="Knowledge Librarian",
+    goal="Answer user questions with relevant citations from the knowledge base.",
+    tools=[search_tool],
+    llm=model,
+)
+task = Task(
+    description="Use search_knowledge_base before answering.\nConversation: {conversation}\nLatest: {question}",
+    expected_output="A concise, cited answer grounded in ingested docs.",
+    agent=agent,
+)
+crew = Crew(agents=[agent], tasks=[task], process=Process.sequential)
 ```
 
 ***
 
-## Agent configuration
+## Wire it to CometChat
 
-`src/crew_demo/config/agents.yaml`
-
-```yaml
-knowledge:
-  role: Knowledge Retrieval Specialist
-  goal: Answer questions using retrieved docs only
-  backstory: >
-    Respond only when mentioned (e.g., @agent).
-    Always call the search_docs tool first, then compose a concise answer with a Sources list.
-    Never reveal internal reasoning or tool output verbatim.
-```
-
-`src/crew_demo/config/tasks.yaml`
-
-```yaml
-knowledge_task:
-  description: >
-    Use search_docs to find relevant context for: {user_message}
-    Namespace: {namespace}
-  expected_output: >
-    A short answer plus a "Sources:" list.
-  agent: knowledge
-```
-
-Register the tool in `crew.py`:
-
-```python
-from crew_demo.tools.docs_retriever import search_docs
-
-@agent
-def knowledge(self) -> Agent:
-    return Agent(
-        config=self.agents_config["knowledge"],  # type: ignore[index]
-        tools=[search_docs],
-        verbose=False,
-        memory=False,
-    )
-```
-
-***
-
-## CometChat setup
-
-<Steps>
-  <Step title="Dashboard">Open <a href="https://app.cometchat.com" target="_blank" rel="noreferrer">CometChat Dashboard</a> → AI Agents.</Step>
-  <Step title="Provider">Provider = <b>CrewAI</b>, Agent ID = <code>knowledge</code>, Deployment URL = your <code>/kickoff</code>.</Step>
-  <Step title="(Optional)">Add greeting/intro and suggested prompts like “@agent What’s our refund policy?”</Step>
-  <Step title="Enable">Save and toggle the agent ON.</Step>
-</Steps>
-
-***
-
-## Tips
-
-- Add basic file filters (size/type) before ingesting to keep retrieval fast.
-- If you need embeddings/vector search, swap the retriever implementation; CometChat only expects the NDJSON stream, not the retrieval method.
-- Use `output_json: true` on the task if you want fully structured answers.
-
----
+- Dashboard → AI Agents → **Provider: CrewAI** → **Agent ID** (e.g., `knowledge`) → **Deployment URL** = your public `/stream`.
+- The SSE stream is newline-delimited JSON; CometChat AG-UI adapters can parse `text_delta`/`text_done` to render partials and stop on `done`.
+- Use namespaces to keep customer/workspace data separate; pass `namespace` in the payload or inside `tool_params.namespace`.
+- Keep secrets server-side; add auth headers on the FastAPI route if needed.
