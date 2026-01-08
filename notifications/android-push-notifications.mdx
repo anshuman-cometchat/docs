@@ -31,29 +31,15 @@ Copy the same structure into your app and only change identifiers (applicationId
 
 ## Architecture map
 
-<CardGroup cols={1}>
-  <Card title="Push plumbing" href="https://github.com/cometchat/cometchat-uikit-android/tree/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm">
-    Copy the package, rename it, and set `AppConstants.FCMConstants.PROVIDER_ID` + `AppCredentials` to your provider ID/App ID/Auth Key/Region.
-  </Card>
-  <Card title="VoIP calls" href="https://github.com/cometchat/cometchat-uikit-android/tree/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/voip">
-    Keep class names; point the manifest service to `CometChatVoIPConnectionService` and include telecom permissions/metadata.
-  </Card>
-  <Card title="Application init" href="https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/utils/MyApplication.kt">
-    Use as your `application` class; set `<application android:name>` and adjust the package name.
-  </Card>
-  <Card title="Permissions helper" href="https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/utils/AppUtils.kt">
-    Reuse or mirror the permission helpers to fit your permission flow.
-  </Card>
-  <Card title="Entry activity" href="https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/ui/activity/HomeActivity.kt">
-    Copy the permission flow so notification/call prompts run before FCM token registration; update package/imports.
-  </Card>
-  <Card title="Manifest" href="https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/AndroidManifest.xml">
-    Start from the sample manifest; keep permissions, services, receivers, and set `<application android:name>` plus your package.
-  </Card>
-  <Card title="Gradle" href="https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/build.gradle">
-    Align plugin list (including `google-services`), Kotlin JVM target, and dependency versions/BOM before wiring code.
-  </Card>
-</CardGroup>
+| Sample path | Role | What to copy/replicate |
+| --- | --- | --- |
+| [`src/main/java/com/cometchat/sampleapp/kotlin/fcm`](https://github.com/cometchat/cometchat-uikit-android/tree/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm) | FCM service, DTOs, notification builder, inline reply broadcast receiver | Copy the package; update package name and constants (`AppConstants.FCMConstants.PROVIDER_ID`, `AppCredentials`). |
+| [`src/main/java/com/cometchat/sampleapp/kotlin/fcm/voip`](https://github.com/cometchat/cometchat-uikit-android/tree/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/voip) | ConnectionService wrapper for full-screen incoming-call UI and busy rejection | Keep class names; make sure manifest points to `CometChatVoIPConnectionService`. |
+| [`src/main/java/com/cometchat/sampleapp/kotlin/fcm/utils/MyApplication.kt`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/utils/MyApplication.kt) | Initializes UI Kit, tracks foreground activity, manages call overlays, connects/disconnects websockets | Use this as your Application class; set it in `AndroidManifest.xml`. |
+| [`src/main/java/com/cometchat/sampleapp/kotlin/fcm/utils/AppUtils.kt`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/utils/AppUtils.kt) | Runtime permission helpers for notifications, media, mic/camera | Reuse the permission flow or mirror it if you already centralize permissions elsewhere. |
+| [`src/main/java/com/cometchat/sampleapp/kotlin/fcm/ui/activity/HomeActivity.kt`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/ui/activity/HomeActivity.kt) | Requests runtime permissions on launch and wires navigation into UI Kit | Copy the permission prompts and keep notification/call permissions in your entry flow. |
+| [`src/main/AndroidManifest.xml`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/AndroidManifest.xml) | Permissions, FCM service, broadcast receiver, ConnectionService declaration | Start from the sample manifest; keep the same permissions and services. |
+| [`build.gradle`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/build.gradle) | Plugins, Firebase + CometChat dependencies, compile/target SDK levels | Align plugin list, Kotlin JVM target, and dependencies before wiring code. |
 
 ## 1. Prerequisites
 
