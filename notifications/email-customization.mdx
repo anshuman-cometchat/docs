@@ -11,7 +11,17 @@ Email notifications can be tailored in two places: the CometChat dashboard (no-c
 - **Templates**: configure default/privacy subjects; body rendering is handled in your provider using payload fields.
 - **Custom providers**: point to your own webhook instead of SendGrid.
 
-See: `/notifications/email-preferences`, `/notifications/email-templates`, `/notifications/email-custom-providers` for details and samples.
+<CardGroup cols={3}>
+  <Card title="Preferences" href="/notifications/email-preferences">
+    Delivery limits, overrides, and payload inclusion toggles.
+  </Card>
+  <Card title="Templates" href="/notifications/email-templates">
+    Subjects and payload shapes to render your email content.
+  </Card>
+  <Card title="Custom Providers" href="/notifications/email-custom-providers">
+    Configure SendGrid or webhooks for email delivery.
+  </Card>
+</CardGroup>
 
 ## What you can customize (via SendGrid or your provider)
 - **Subjects**: use the payload `subject` or build your own from `senderDetails` / `groupDetails` / `messages.length`.
