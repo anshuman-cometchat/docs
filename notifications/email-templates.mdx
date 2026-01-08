@@ -6,22 +6,29 @@ Use these payload fields when rendering your own email bodies. No sounds apply t
 
 ## Payload shapes
 
+Field meanings:
+- `to`: recipient identifiers and optional email.
+- `messages[]`: the unread messages that triggered the notification (use for counts and previews).
+- `senderDetails`: most recent sender; map to subjects or hero text.
+- `groupDetails`: only present for group conversations.
+- `subject`: ready-to-use subject if you do not build it in the provider.
+
 ### One-on-one
 ```json
 {
-  "to": { "uid": "cometchat-uid-1", "email": "andrew@example.com", "name": "Andrew Joseph" },
+  "to": { "uid": "customer-123", "email": "andrew@example.com", "name": "Andrew Joseph" },
   "messages": [
     {
-      "sender": { "uid": "cometchat-uid-4", "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-4.webp", "name": "Susan Marie" },
-      "message": "Are we meeting on this weekend?",
+      "sender": { "uid": "agent-42", "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-4.webp", "name": "Susan Marie" },
+      "message": "Are we meeting this weekend?",
       "messageObject": { "category": "message", "type": "text" }
     },
     {
-      "sender": { "uid": "cometchat-uid-4", "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-4.webp", "name": "Susan Marie" },
+      "sender": { "uid": "agent-42", "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-4.webp", "name": "Susan Marie" },
       "message": "📷 Has shared an image"
     }
   ],
-  "senderDetails": { "uid": "cometchat-uid-4", "name": "Susan Marie", "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-4.webp" },
+  "senderDetails": { "uid": "agent-42", "name": "Susan Marie", "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-4.webp" },
   "subject": "New messages from Susan Marie"
 }
 ```
@@ -29,12 +36,13 @@ Use these payload fields when rendering your own email bodies. No sounds apply t
 ### Group
 ```json
 {
-  "to": { "uid": "cometchat-uid-1", "name": "Andrew Joseph" },
+  "to": { "uid": "customer-123", "name": "Andrew Joseph" },
   "messages": [
-    { "sender": { "uid": "cometchat-uid-5", "name": "John Paul" }, "message": "Hello all! What's up?" },
-    { "sender": { "uid": "cometchat-uid-4", "name": "Susan Marie" }, "message": "This is the place I was thinking about" }
+    { "sender": { "uid": "mod-5", "name": "John Paul" }, "message": "Hello all! What's up?" },
+    { "sender": { "uid": "agent-42", "name": "Susan Marie" }, "message": "This is the place I was thinking about" }
   ],
-  "groupDetails": { "guid": "cometchat-guid-1", "name": "Hiking Group" }
+  "groupDetails": { "guid": "community-1", "name": "Hiking Group" },
+  "subject": "New messages in Hiking Group"
 }
 ```
 
