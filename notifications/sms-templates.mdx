@@ -6,6 +6,13 @@ Use these payload fields when rendering SMS content. Sounds are not applicable f
 
 ## Payload shapes
 
+Field meanings:
+- `to`: recipient identifier and phone number.
+- `messages[]`: unread messages that triggered the SMS; use for counts and previews.
+- `senderDetails`: most recent sender; helpful for subject-style copy.
+- `groupDetails`: present for group conversations.
+- `smsContent`: an optional, ready-to-send string if you want to use it directly.
+
 ### One-on-one
 ```json
 {
@@ -32,6 +39,8 @@ Use these payload fields when rendering SMS content. Sounds are not applicable f
 ```
 
 ## Template examples
+
+You can use the provided `smsContent` field or build your own using `senderDetails`, `groupDetails`, and `messages.length`. Here are default and privacy-focused templates:
 
 <Frame>
   <img src="/images/sms-notification-templates.png" />
