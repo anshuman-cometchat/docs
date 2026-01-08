@@ -1,9 +1,24 @@
 ---
-title: "Customizations"
+title: "SMS Customization"
 ---
 
-Customizations allow controlling notifications for message events, group events, and call events. Users can set preferences for incoming notifications based on notification schedules, Do Not Disturb (DND) mode, and the mute status of specific conversations.
+SMS notifications can be tailored in two places: the CometChat dashboard (no-code) and your delivery provider. Use the dashboard to manage eligibility, throttling, and payload inclusion; use your provider to shape the SMS copy and branding constraints for your SMS gateway.
 
-Additional customizations include modifications to notification templates and sounds. These options also ensure that user privacy is maintained while displaying notifications on the device.
+## What you can customize (via CometChat Dashboard)
+- **Eligibility & throttling** (Preferences): unread-only toggle, per-conversation delay, daily caps, per-conversation caps, override toggle for end users.
+- **Payload content** (Preferences → SMS Payload Message Options): include message object, message metadata, sender metadata, receiver metadata.
+- **Templates**: default and privacy SMS templates for 1:1 and group; adjust the copy users see.
+- **Custom providers**: point to your own webhook instead of a built-in SMS provider.
 
-For preference details, see your notification dashboard configuration.
+See: `/notifications/sms-preferences`, `/notifications/sms-templates`, `/notifications/sms-custom-providers` for details and samples.
+
+## What you can customize (via your SMS provider)
+- **Body content**: use the payload fields to compose concise SMS bodies; apply privacy variants if needed.
+- **Branding/links**: add URLs and opt-out text per carrier rules; keep content within length limits.
+- **Data mapping**: map payload fields to template variables (see [/notifications/sms-templates](/notifications/sms-templates) for payload shapes and examples).
+
+## Example flow
+1) In CometChat dashboard, enable SMS Notifications and set preferences/throttling.
+2) Configure the SMS provider or a custom provider webhook.
+3) In your provider template, map variables to the payload (recipient, messages.length, sender/group details, preview text).
+4) Adjust templates/privacy as needed in the dashboard.
