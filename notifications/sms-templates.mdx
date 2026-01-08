@@ -2,7 +2,7 @@
 title: "SMS Templates"
 ---
 
-Use these payload fields when rendering SMS content. Sounds are not applicable for SMS.
+Use these payload fields when rendering SMS content. Sounds are not applicable for SMS. Map the fields into your SMS provider template or build the body string in your service before sending.
 
 ## Payload shapes
 
@@ -41,3 +41,29 @@ Use these payload fields when rendering SMS content. Sounds are not applicable f
 | --- | --- | --- | --- |
 | One-on-one notification | You've received `{{messages.length}}` message(s) from `{{senderDetails.name}}`! Read them at https://your-website.com. | You've received `{{messages.length}}` message(s) from `{{senderDetails.name}}`! Read them at https://your-website.com. | You've received 2 message(s) from Susan Marie! Read them at https://your-website.com. |
 | Group notification | You've received `{{messages.length}}` message(s) in `{{groupDetails.name}}`! Read them at https://your-website.com. | You've received `{{messages.length}}` message(s) in `{{groupDetails.name}}`! Read them at https://your-website.com. | You've received 2 message(s) in Hiking Group! Read them at https://your-website.com. |
+
+## Example: using with your SMS gateway
+
+Pass payload fields into your SMS provider. Keep messages concise to respect SMS length limits and carrier rules.
+
+```js
+// payload from CometChat
+const payload = {
+  to: { phno: '+15551234567', name: 'Andrew Joseph' },
+  senderDetails: { name: 'Susan Marie' },
+  groupDetails: { name: 'Hiking Group' },
+  messages: [
+    { message: 'Are we meeting this weekend?' },
+    { message: '📷 Has shared an image' }
+  ]
+};
+
+// Build the SMS body using the default template
+const body = `You've received ${payload.messages.length} message(s) from ${payload.senderDetails.name}! Read them at https://your-website.com.`;
+
+// Example send with a generic gateway client
+await smsClient.send({
+  to: payload.to.phno,
+  body
+});
+```
