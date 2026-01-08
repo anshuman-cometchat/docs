@@ -5,14 +5,23 @@ sidebarTitle: "Troubleshooting"
 
 Common operational issues, quick checks, and log locations.
 
-## Common problems
+## Common problems and resolutions
 
-| Symptom | Possible cause |
-| --- | --- |
-| 502 errors | Chat API unreachable or unhealthy behind NGINX |
-| Kafka lag | Consumer slowdown or insufficient partition count |
-| Redis eviction | Memory pressure or incorrect eviction policy |
-| TiKV region errors | Disk latency, resource contention, or store imbalance |
+**502 errors** - Chat API unreachable or unhealthy behind NGINX  
+- Check service health: `docker service ps <chat-api-service>`  
+- Review NGINX upstreams and logs for routing errors.
+
+**Kafka lag** - Consumer slowdown or insufficient partitions  
+- Inspect lag: `kafka-consumer-groups --describe --group <group> --bootstrap-server <broker>`  
+- Increase partitions if needed: `kafka-topics --alter --partitions <count> --topic <topic> --bootstrap-server <broker>`.
+
+**Redis eviction** - Memory pressure or wrong eviction policy  
+- Inspect memory settings: `redis-cli config get maxmemory` and `redis-cli config get maxmemory-policy`  
+- Apply an eviction policy such as `redis-cli config set maxmemory-policy allkeys-lru`.
+
+**TiKV region errors** - Disk latency, contention, or store imbalance  
+- Check cluster status: `tiup cluster display`  
+- Rebalance if required: `tiup cluster restart <cluster-name> --force`.
 
 ## Debugging commands
 

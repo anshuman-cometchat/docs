@@ -17,10 +17,24 @@ Guidance for scaling platform components as traffic grows.
 - Raise file descriptor limits
 - Tune kernel network queues (`somaxconn`, `netdev_max_backlog`)
 - Increase application worker processes and thread pools where supported
+- Example file descriptor tuning:
+
+```bash
+sudo tee -a /etc/security/limits.conf <<'EOF'
+* soft nofile 500000
+* hard nofile 500000
+root soft nofile 500000
+root hard nofile 500000
+EOF
+echo "DefaultLimitNOFILE=500000" | sudo tee -a /etc/systemd/system.conf
+echo "DefaultLimitNOFILE=500000" | sudo tee -a /etc/systemd/user.conf
+sudo reboot
+ulimit -n
+```
 
 ## When to migrate to Kubernetes
 
-- MAU exceeds ~250k
+- MAU exceeds ~200k
 - Multi-region deployments or failover are required
 - Sub-50 ms latency targets are critical
 - Dynamic autoscaling and elasticity are operational priorities

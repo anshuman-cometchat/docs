@@ -10,20 +10,73 @@ Security controls focus on authentication, secrets management, network isolation
 - JWT authentication with RSA key pairs
 - Optional SSO via OIDC or SAML 2.0
 - Rotate tokens and keys regularly for long-running environments
+- Generate RSA key pair:
+
+```bash
+openssl genpkey -algorithm RSA -out private.key -pkeyopt rsa_keygen_bits:2048
+openssl rsa -pubout -in private.key -out public.key
+```
 
 ## Secrets management
 
 - HashiCorp Vault for centralized secret storage with auditing and access control
 - Docker Swarm secrets for encrypted in-transit/at-rest injection into services
+- Store secrets in Vault:
+
+```bash
+vault kv put secret/dbpassword value="your-secure-password"
+```
+
+- Store secrets in Swarm:
+
+```bash
+echo "your-secure-password" | docker secret create db_password -
+```
 
 ## Network security
 
 - All backend services run on private overlay networks
 - Only the NGINX reverse proxy is exposed to the public internet
 - Keep all service-to-service traffic inside the private network
+- Create a private overlay network:
+
+```bash
+docker network create --driver overlay private_network
+```
+
+- Example firewall hardening (Ubuntu ufw):
+
+```bash
+sudo ufw allow 80,443/tcp
+sudo ufw default deny incoming
+sudo ufw enable
+```
 
 ## TLS configuration
 
 - Enforce TLS 1.2 or higher
 - Disable weak ciphers and deprecated protocols
 - Maintain at least two active certificates to enable seamless rotation
+- Example NGINX TLS settings:
+
+```nginx
+ssl_protocols TLSv1.2 TLSv1.3;
+ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:...';
+```
+
+## Additional controls
+
+- Rate limiting: apply NGINX rate limits to absorb bursts or abuse.
+
+```nginx
+limit_req_zone $binary_remote_addr zone=mylimit:10m rate=10r/s;
+limit_req zone=mylimit burst=20;
+```
+
+- IP allowlists: restrict access to sensitive services by source IP.
+
+```bash
+sudo ufw allow from 192.168.1.0/24 to any port 3306
+```
+
+- Log monitoring: ship and watch logs for anomalous events (Grafana, Prometheus alerts, ELK/Loki).
