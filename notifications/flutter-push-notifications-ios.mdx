@@ -205,7 +205,7 @@ This registers the device token against the APNs provider selected in `CometChat
 ## 6. Testing checklist
 
 1. Run the app on a physical device in debug first. Grant notification, microphone, camera, and Bluetooth permissions when prompted.
-2. From the CometChat Dashboard, send a standard message notification. Verify:
+2. Send a message from another user:
    - Foreground: a local notification banner shows (unless you are in that chat).
    - Background: APNs notification appears, tapping opens the right conversation.
 3. Force-quit the app, send another message push, tap it, and confirm `NotificationLaunchHandler` launches `MessagesScreen`.

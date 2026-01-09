@@ -302,7 +302,7 @@ CometChat.sendCustomMessage(customMessage, object : CallbackListener<CustomMessa
 
 1. Install the app on a physical device, grant notification and microphone permissions (Android 13+ requires `POST_NOTIFICATIONS`).
 2. Log in and ensure `registerPushToken` succeeds (watch Logcat for the token and success callback).
-3. Send a message push from the CometChat dashboard:
+3. Send a message from another user:
    - Foreground: grouped local notification shows unless you are in that conversation.
    - Background/terminated: tapping the FCM notification opens the correct conversation.
 4. Use inline reply from the notification shade; verify the reply is delivered and the notification updates.

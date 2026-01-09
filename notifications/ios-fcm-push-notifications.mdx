@@ -116,7 +116,7 @@ CometChat.sendCustomMessage(message: custom) { _ in } onError: { _ in }
 ## 6. Testing checklist
 
 1. Verify `FirebaseApp.configure()` runs and FCM token logs after login; ensure registration succeeds with CometChat.
-2. Send a dashboard message push:
+2. Send a message from another user:
    - Foreground: confirm `willPresent` behavior.
    - Background/terminated: tap opens the correct chat.
 3. Rotate the FCM token (`didReceiveRegistrationToken`) and confirm re-registration works.

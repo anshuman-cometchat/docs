@@ -124,7 +124,7 @@ CometChat.sendCustomMessage(message: custom) { _ in } onError: { _ in }
 
 1. Install on a device; grant notification permission. Verify APNs device token logs.
 2. Log in, then confirm both device + VoIP tokens are registered with CometChat (success callbacks).
-3. Send a chat push from the CometChat Dashboard:
+3. Send a message from another user:
    - Foreground: ensure `willPresent` shows your chosen presentation.
    - Background/terminated: tapping opens the correct conversation.
 4. Trigger an incoming call; CallKit UI should show caller info. Accept should join the call; Decline should reject via CometChat and end CallKit.

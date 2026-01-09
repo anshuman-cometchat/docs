@@ -204,7 +204,7 @@ FirebaseMessaging.instance.onTokenRefresh.listen(
 ## 6. Testing checklist
 
 1. Run on a physical Android device. Grant notification, microphone, and camera permissions when prompted (Android 13+ requires `POST_NOTIFICATIONS`).
-2. From the CometChat Dashboard, send a standard message notification. Verify:
+2. Send a message from another user:
    - Foreground: a local notification banner shows (unless you are in that chat).
    - Background: FCM notification appears; tapping opens the right conversation.
 3. Force-quit the app, send another message push, tap it, and confirm `NotificationLaunchHandler` launches `MessagesScreen`.
