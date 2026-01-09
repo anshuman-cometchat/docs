@@ -173,8 +173,13 @@ For a comprehensive understanding and guide on implementing and using the Groups
 
 ## Mark As Unread
 
-CometChat's Mark As Unread feature allows users to mark specific messages or conversations as unread. This helps users keep track of important messages they want to revisit later, enhancing their chat management experience.
+Mark as Unread feature allows users to manually mark messages as unread, helping them keep track of important conversations they want to revisit later. When enabled, the message list can automatically start from the first unread message, making it easier to pick up where you left off.
 
 <Frame>
   <img src="/images/mark-as-unread.png" />
 </Frame>
+
+| Components                                        | Functionality                                                                                                                                                                                                 |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Message List](/ui-kit/android/message-list)      | [Message List](/ui-kit/android/message-list) provides the "Mark as unread" option in message actions and supports starting from the first unread message when enabled.                                        |
+| [Conversations](/ui-kit/android/conversations)    | [Conversations](/ui-kit/android/conversations) component listens to conversation updates and reflects the updated unread count in real-time.                                                                  |
