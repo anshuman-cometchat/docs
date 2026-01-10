@@ -407,6 +407,25 @@ FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
 
 Re-register on token refresh. Keep the provider ID aligned to the FCM provider you created for this app.
 
+Handle FCM refresh tokens too:
+
+```kotlin
+// In FCMService
+override fun onNewToken(token: String) {
+    super.onNewToken(token)
+    // Re-register with CometChat using your provider ID
+    CometChatNotifications.registerPushToken(
+        token,
+        PushPlatforms.FCM_ANDROID,
+        AppConstants.FCMConstants.PROVIDER_ID,
+        object : CometChat.CallbackListener<String?>() {
+            override fun onSuccess(s: String?) { /* token registered */ }
+            override fun onError(e: CometChatException) { /* handle failure */ }
+        }
+    )
+}
+```
+
 ## 7. Unregister the token on logout
 
 ```kotlin
@@ -451,12 +470,16 @@ Use `message` for deep links (`CometChatHelper.processMessage`) and `type/callAc
 - [`FCMService.onMessageReceived`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/fcm/FCMService.kt) checks `message.data["type"]`.
 - For `type == "chat"`: mark delivered (`CometChat.markAsDelivered`), skip notifying if the chat is already open (`MyApplication.currentOpenChatId`), and build grouped notifications (avatars + BigText) via [`FCMMessageNotificationUtils`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/fcm/FCMMessageNotificationUtils.kt) with inline reply actions.
 - [`FCMMessageBroadcastReceiver`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/fcm/FCMMessageBroadcastReceiver.kt) handles inline replies, initializes the SDK headlessly, sends the reply, and refreshes the notification.
+- In your messaging service (e.g., `FCMService`), set the notification tap intent to your splash/entry activity (e.g., `SplashActivity`), and keep the `currentOpenChatId` check to suppress notifications for the open chat.
 
 ## 10. Handle call pushes (ConnectionService)
 
 - For `type == "call"`, `FCMService.handleCallFlow` parses [`FCMCallDto`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/fcm/FCMCallDto.kt) and routes to the `voip` package.
 - [`CometChatVoIP`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/voip/CometChatVoIP.kt) registers a `PhoneAccount` and triggers `TelecomManager.addNewIncomingCall` for native full-screen UI with Accept/Decline.
 - Busy logic: if already on a call, reject with busy (`Repository.rejectCallWithBusyStatus`). Cancel/timeout pushes end the active telecom call when IDs match.
+- Runtime VoIP checks: before handling call pushes, request `READ_PHONE_STATE`, `MANAGE_OWN_CALLS`, and `ANSWER_PHONE_CALLS` at runtime and ensure the phone account is enabled (`CometChatVoIP.hasEnabledPhoneAccountForVoIP`).
+- Foreground suppression: the sample ignores VoIP banners if `MyApplication.isAppInForeground()` is true; keep or remove based on your UX.
+- Cancel/unanswered handling: on `callAction` of `cancelled`/`unanswered`, end the active telecom call if the session IDs match.
 
 ## 11. Customize notification text or parse payloads
 
