@@ -4,7 +4,7 @@ description: "Set up FCM, register push tokens with CometChat, and mirror the Ko
 ---
 
 <Info>
-Make sure you finish the shared [Push Notifications integration](/notifications/push-integration) first (create the FCM Android provider in the CometChat dashboard and keep the provider ID handy).
+The steps below include enabling push in the CometChat dashboard and creating the FCM Android provider—no separate integration page needed.
 </Info>
 
 <Card
@@ -33,31 +33,30 @@ Make sure you finish the shared [Push Notifications integration](/notifications/
 
 <Step title="Prepare Firebase and CometChat">
 
-1. **Firebase Console**
-   - Add your Android package name and place `google-services.json` in your app module.
-   - Enable Cloud Messaging.
+- **Firebase**: Add your Android package, download `google-services.json` into the app module, and enable Cloud Messaging.
 
-   <Frame>
-     <img src="/images/firebase-push-notifications.png" alt="Firebase - Push Notifications" />
-   </Frame>
+<Frame>
+  <img src="/images/firebase-push-notifications.png" alt="Firebase - Push Notifications" />
+</Frame>
 
-2. **CometChat dashboard**
-   - Turn on **Push Notifications** in the dashboard.
+- **Enable push + add FCM provider** (CometChat dashboard):
+  1. Go to **Notifications → Settings** and enable **Push Notifications**.
+  2. Click **Add Credentials**, choose FCM, and upload the Firebase service account JSON (Project settings → Service accounts → Generate new private key). Copy the Provider ID.
 
-   <Frame>
-     <img src="/images/push-notifications-guide-1.png" alt="CometChat Dashboard - Push Notifications" />
-   </Frame>
+<Frame>
+  <img src="/images/80a520bb-pushnotification-enable-e64632d479a2ebba111453b95bd522c6.png" alt="Enable Push Notifications" />
+</Frame>
+<Frame>
+  <img src="/images/push-notifications-guide-1.png" alt="CometChat Dashboard - Push Notifications" />
+</Frame>
+<Frame>
+  <img src="/images/c6447647-pushnotification-fcm-68092b02a5361d51ba14b09289da3a78.png" alt="Upload FCM service account JSON" />
+</Frame>
+<Frame>
+  <img src="/images/push-notifications-guide-2.png" alt="CometChat Dashboard - Push Notifications" />
+</Frame>
 
-   - Create an **FCM provider (Android)** and copy the Provider ID.
-
-   <Frame>
-     <img src="/images/push-notifications-guide-2.png" alt="CometChat Dashboard - Push Notifications" />
-   </Frame>
-
-3. **Local constants**
-   - In `AppCredentials.kt`, set your App ID, Auth Key, and Region.
-   - In `AppConstants.FCMConstants.PROVIDER_ID`, paste the Provider ID from the dashboard.
-   - Update `applicationId`, package names, icons, and app name to match your project.
+- **Local constants**: Set App ID, Auth Key, Region in `AppCredentials.kt`, and paste the Provider ID into `AppConstants.FCMConstants.PROVIDER_ID`. Adjust `applicationId`, package names, icons, and app name.
 
 </Step>
 
@@ -187,7 +186,19 @@ FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
 }
 ```
 
-Mirror `Repository.registerFCMToken` from the sample and call `unregisterPushToken` on logout.
+Re-register on token refresh. Keep the provider ID aligned to the FCM provider you created for this app.
+
+</Step>
+
+<Step title="Unregister the token on logout">
+
+```kotlin
+CometChatNotifications.unregisterPushToken(object : CometChat.CallbackListener<String?>() {
+    override fun onSuccess(s: String?) { /* success */ }
+    override fun onError(e: CometChatException) { /* handle error */ }
+})
+// Then call CometChatUIKit.logout()
+```
 
 </Step>
 
