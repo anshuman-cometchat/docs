@@ -2,18 +2,8 @@
 title: "Flutter Push Notifications (Android)"
 description: "End-to-end walkthrough for recreating the CometChat push from the Flutter UI Kit sample on Android."
 ---
-
-<Info>
-Make sure you complete [Push Notifications integration](/notifications/push-integration) steps before proceeding.
-</Info>
-
-{/* <Card title="Push Notifications Integration" href="/notifications/push-integration">
-
-View Guide
-
-</Card> */}
-
-The Flutter UI Kit push-notification demo already solves FCM permissions, background handlers, full-screen incoming-call UI, and navigation from terminated state. This guide distills that reference implementation so you can bring the exact experience into any Flutter app that uses CometChat UI Kit and Calls UI Kit.
+ 
+The Flutter UI Kit push sample already solves FCM permissions, background handlers, full-screen incoming-call UI, and navigation from terminated state. This guide distills that reference so you can mirror it in your app.
 
 <Card
   title="Reference implementation"
@@ -22,33 +12,39 @@ The Flutter UI Kit push-notification demo already solves FCM permissions, backgr
 >
   Browse the full push-notification sample (Flutter + native Android glue) to diff or copy files.
 </Card>
+ 
+## What this guide covers
 
-<Note>
-The steps below refer to the folder names inside the sample repo (for example
-<a href="https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app_push_notifications/lib/notifications" target="_blank" rel="noopener noreferrer">lib/notifications</a>,
-<a href="https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/android/app/src/main/kotlin/com/cometchat/sampleapp/flutter/android/MainActivity.kt" target="_blank" rel="noopener noreferrer">android/app/src/main/kotlin/com/cometchat/sampleapp/flutter/android/MainActivity.kt</a>, or
-<a href="https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/android/app/src/main/AndroidManifest.xml" target="_blank" rel="noopener noreferrer">android/app/src/main/AndroidManifest.xml</a>).
-Copy the same structure into your project and only change identifiers (applicationId/package name, provider IDs) to match your app.
-</Note>
+- CometChat dashboard setup (enable push, add FCM provider) with screenshots.
+- Firebase/FCM + Flutter wiring (credentials, pubspec, Firebase init).
+- Copying the sample notification stack and aligning package IDs/provider IDs.
+- Native Android glue (manifest, MethodChannel, lock-screen call activity/receiver).
+- Token registration, notification/call handling, navigation, testing, and troubleshooting.
 
-## Architecture map
-
-| Sample path | Role inside the app | What to copy/replicate |
-| --- | --- | --- |
-| [`lib/notifications`](https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app_push_notifications/lib/notifications) | Models, platform services, FCM helpers, CallKit-style handlers | Copy the directory as-is when starting a new app; keep folder names so imports resolve. |
-| [`lib/main.dart`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/lib/main.dart) | Initializes Firebase + local notifications, caches `NotificationLaunchHandler`, defines the `callMain` entrypoint for lock-screen calls | Reuse the launch sequence so notification taps from a terminated state reach Flutter before `runApp`. |
-| [`lib/dashboard.dart` / `lib/guard_screen.dart`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/lib/dashboard.dart) | Boots CometChat UI Kit, requests permissions, registers Call/Notification listeners | Mirror the lifecycle hooks to initialize `FirebaseService` only once and capture pending notification taps. |
-| [`lib/notifications/services/android_notification_service/firebase_services.dart`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/lib/notifications/services/android_notification_service/firebase_services.dart) | FCM init, background handler, token registration via `PNRegistry`, and CallKit event bridge | Keep the background handler at top level and ensure provider IDs are set before registering tokens. |
-| [`android/app/src/main`](https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app_push_notifications/android/app/src/main) | Manifest permissions, MethodChannel glue in `MainActivity.kt`, lock-screen `CallActivity`, and `CallActionReceiver` for accept/decline intents | Start from the sample files, then update `applicationId`, channel names, and icons to match your app. |
-
-## 1. Prerequisites
+## What you need first
 
 - Firebase project with an Android app configured (package name matches your `applicationId`) and Cloud Messaging enabled; `google-services.json` inside `android/app`.
-- CometChat app credentials (App ID, Region, Auth Key) plus Push Notification extension enabled with an **FCM provider** created for Flutter Android.
+- CometChat app credentials (App ID, Region, Auth Key) plus Push Notification extension enabled with an **FCM provider** for Flutter Android.
 - Flutter 3.24+ / Dart 3+, the latest CometChat UI Kit (`cometchat_chat_uikit`) and Calls UI Kit (`cometchat_calls_uikit`) packages.
 - Physical Android device for testing—full-screen call notifications and background delivery are unreliable on emulators.
 
-## 2. Prepare credentials before coding
+## 1. Enable push and add providers (CometChat Dashboard)
+
+1. Go to **Notifications → Settings** and enable **Push Notifications**.
+
+<Frame>
+  <img src="/images/80a520bb-pushnotification-enable-e64632d479a2ebba111453b95bd522c6.png" alt="Enable Push Notifications" />
+</Frame>
+
+2. Click **Add Credentials**, choose **FCM**, upload the Firebase service account JSON (Firebase → Project settings → Service accounts → Generate new private key), and copy the Provider ID.
+
+<Frame>
+  <img src="/images/c6447647-pushnotification-fcm-68092b02a5361d51ba14b09289da3a78.png" alt="Upload FCM service account JSON" />
+</Frame>
+
+Keep the provider ID—you’ll use it in `AppCredentials.fcmProviderId`.
+
+## 2. Prepare Firebase and credentials
 
 ### 2.1 Firebase Console
 
@@ -57,20 +53,6 @@ Copy the same structure into your project and only change identifiers (applicati
 
 <Frame>
   <img src="/images/firebase-push-notifications.png" alt="Firebase - Push Notifications" />
-</Frame>
-
-### 2.2 CometChat dashboard
-
-1. Turn on the **Push Notifications**.
-
-<Frame>
-  <img src="/images/push-notifications-guide-1.png" alt="CometChat Dashboard - Push Notifications" />
-</Frame>
-
-2. Create an FCM provider for Flutter Android and copy the generated provider ID.
-
-<Frame>
-  <img src="/images/push-notifications-guide-2.png" alt="CometChat Dashboard - Push Notifications" />
 </Frame>
 
 ### 2.3 Local configuration file
