@@ -1,84 +1,81 @@
 ---
 title: "iOS APNs Push Notifications"
-description: "Implement APNs + PushKit + CallKit exactly like the UIKit iOS push sample so messages and calls work from foreground to terminated states."
----
-
-<Info>
-Make sure you complete [Push Notifications integration](/notifications/push-integration) steps before proceeding.
-</Info>
-
-{/* Make sure you complete Push Notifications intergration steps before proceeding:
-
-<Card title="Push Notifications Integration" href="/notifications/push-integration">
-
-View Guide
-
-</Card> */}
-
-The UIKit iOS push sample handles APNs device pushes, PushKit VoIP pushes, CallKit UI, and message deep links. Follow these steps to mirror that setup in your own app.
+description: "Implement APNs + PushKit + CallKit like the UIKit iOS push sample so messages and calls work from foreground to terminated states—no separate integration page needed."
+--- 
 
 <Card
   title="Reference implementation"
   icon="github"
   href="https://github.com/cometchat/cometchat-uikit-ios/tree/v5/SampleAppPushNotificationAPNs/Push%20Notification%20%2B%20VoIP"
 >
-  Browse the iOS push sample (UIKit + Calls + APNs/PushKit/CallKit glue).
+  UIKit iOS push sample (APNs + PushKit/CallKit).
 </Card>
 
-<Note>
-Paths below refer to the sample repo (for example `examples/push-notification-app/AppDelegate.swift`, `PushNotificationManager.swift`, and any CallKit/PushKit helpers). Copy the same structure into your project and only change identifiers (bundle ID, Team ID, provider IDs).
-</Note>
+## What this guide covers
 
-## Architecture map
+- CometChat dashboard setup (enable push, add APNs Device + APNs VoIP providers) with screenshots.
+- APNs + PushKit/CallKit wiring (tokens, delegates, CallKit).
+- Incoming message/call handling and deep links.
+- Payload customization and testing.
 
-| Sample path | Role | What to copy/replicate |
-| --- | --- | --- |
-| `AppDelegate.swift` (in `SampleAppPushNotificationAPNs/Push Notification + VoIP`) | Initializes CometChat, registers for APNs, sets `UNUserNotificationCenterDelegate`, hands off PushKit events to CallKit | Keep the init + delegate wiring; update bundle identifiers and capability flags. |
-| `PushNotificationManager.swift` (or equivalent) | Requests notification permission, stores device/voip tokens, registers them with CometChat Push Notifications | Reuse token handling and registration calls; swap in your provider IDs. |
-| CallKit helpers (`CallKitManager.swift`, `VoipHandler.swift`) | Presents native incoming-call UI and routes Accept/Decline to CometChat | Copy configuration (ringtone, icon, video flag) and make sure capabilities are enabled. |
-| Optional Notification Service extension | Rich notification tweaks / logging | Include if you need mutable-content processing; otherwise skip. |
+## What you need first
 
-## 1. Prerequisites
+- CometChat App ID, Region, Auth Key; Push Notifications extension with **APNs Device provider ID** and **APNs VoIP provider ID**.
+- Apple capabilities: Push Notifications, Background Modes (Remote notifications, Voice over IP), CallKit usage descriptions. Physical device required.
+- `.p8` APNs key (Key ID, Team ID, Bundle ID) or certificates.
 
-- Apple Developer account with Push Notifications + Background Modes (Remote notifications, Voice over IP) and CallKit entitlements on your bundle ID.
-- CometChat app credentials (App ID, Region, Auth Key) and the **Push Notifications** extension enabled with APNs providers created:
-  - APNs Device provider ID for standard alerts.
-  - APNs VoIP provider ID for call-style pushes (recommended for CallKit).
-- Physical iPhone/iPad for testing (PushKit + CallKit do not work on simulators).
+## 1. Enable push and add providers (CometChat dashboard)
 
-### Dashboard settings (Push Notifications)
+1) Go to **Notifications → Settings** and enable **Push Notifications**.
 
-- Select **Platforms**: enable iOS.
-- Upload your APNs auth key/cert for the APNs provider(s) and toggle Production when shipping.
-- Use **Payload trimming** if you risk exceeding ~4 KB (strip metadata or trim text).
-- Toggle **Notification triggers** (messages, calls, groups) to match your app.
+<Frame>
+  <img src="/images/80a520bb-pushnotification-enable-e64632d479a2ebba111453b95bd522c6.png" alt="Enable Push Notifications" />
+</Frame>
+
+2) Click **Add Credentials**:
+   - Add an **APNs Device** provider (alerts) using your `.p8` key, Team ID, Key ID, and Bundle ID; copy the Provider ID.
+   - Add an **APNs VoIP** provider (calls) with the same `.p8` (recommended for CallKit reliability); copy the Provider ID.
+
+<Frame>
+  <img src="/images/1133421a-add-apns-credentials-f8c2fd747ab4cf3905c6d13cf215b4c1.png" alt="Add APNs credentials" />
+</Frame>
+
+Keep the provider IDs—you’ll paste them into your app constants.
 
 ## 2. Apple setup
 
-1. Generate an APNs Auth Key (`.p8`) and note **Key ID** and **Team ID** (or use a cert if required).
-2. Enable Push Notifications, Background Modes → *Remote notifications* + *Voice over IP* on the bundle ID.
-3. Add CallKit usage descriptions to `Info.plist` (microphone/camera).
+1) Capabilities: Push Notifications, Background Modes → Remote notifications & Voice over IP, CallKit usage descriptions in `Info.plist` (mic/camera).  
+2) APNs Auth Key: generate `.p8` (or use cert), note **Key ID**, **Team ID**, and **Bundle ID**; upload to CometChat providers.
 
-## 3. Wire APNs + PushKit tokens
+## 3. Copy helpers and align identifiers
 
-Use `CometChatNotifications.registerPushToken` to register both tokens after login:
+- From the sample repo, copy into your target:
+  - `CometChatAPNsHelper.swift`
+  - `AppDelegate + PN.swift`
+  - `AppDelegate + VoIP.swift`
+  - `NotificationExtension/` (optional, for delivery receipts)
+- Update bundle ID, team ID, and provider IDs (`AppConstants.PROVIDER_ID` etc.). Keep the `voip` push type.
+
+## 4. Register APNs device + VoIP tokens with CometChat
+
+Use `CometChatNotifications.registerPushToken` after login:
 
 ```swift
 // APNs device token (alerts)
 CometChatNotifications.registerPushToken(
     token: apnsDeviceToken,
-    platform: .apns,                 // use the APNs device platform enum
-    providerId: "<APNS_PROVIDER_ID>"
+    platform: .apns,
+    providerId: "<APNS_DEVICE_PROVIDER_ID>"
 ) { _ in
     print("APNs device token registered")
 } onError: { error in
-    print("APNs register error: \(error?.errorDescription ?? "")")
+    print("APNs device register error: \(error?.errorDescription ?? "")")
 }
 
-// PushKit VoIP token (CallKit)
+// PushKit VoIP token (calls)
 CometChatNotifications.registerPushToken(
     token: voipToken,
-    platform: .apnsVoip,             // use the APNs VoIP platform enum
+    platform: .apnsVoip,
     providerId: "<APNS_VOIP_PROVIDER_ID>"
 ) { _ in
     print("VoIP token registered")
@@ -87,28 +84,19 @@ CometChatNotifications.registerPushToken(
 }
 ```
 
-- Request alert/badge/sound permission via `UNUserNotificationCenter`.
-- Register for remote notifications (`UIApplication.shared.registerForRemoteNotifications()`).
-- Set `UNUserNotificationCenter.current().delegate = self` to receive foreground taps.
-- PushKit: create a `PKPushRegistry`, set `desiredPushTypes = [.voIP]`, and implement `pushRegistry(_:didUpdate:for:)` to grab the VoIP token.
+- Request alert/badge/sound permission (`UNUserNotificationCenter`), set its delegate, and call `UIApplication.shared.registerForRemoteNotifications()`.
+- PushKit: create `PKPushRegistry`, set `desiredPushTypes = [.voIP]`, implement `pushRegistry(_:didUpdate:for:)` to capture the VoIP token.
 
-## 4. Handling incoming pushes
+## 5. Handle incoming pushes
 
-### Message pushes
+- `UNUserNotificationCenterDelegate.willPresent`: decide alert/sound for foreground messages.
+- `UNUserNotificationCenterDelegate.didReceive`: route taps to chats using the sample helper (`CometChatPNHelper.handleTapActionOnNotification`).
+- PushKit `pushRegistry(_:didReceiveIncomingPushWith:)`: parse payload → `Call` → `CXProvider.reportNewIncomingCall`; Accept/Decline via `CometChat.acceptCall` / `CometChat.rejectCall`.
+- If you include the Notification Service Extension, keep delivery receipts via `CometChat.markAsDeliveredFromNotification`.
 
-- Implement `userNotificationCenter(_:willPresent:withCompletionHandler:)` to decide banner/alert options while foregrounded.
-- Use `CometChatHelper.processMessage` (or `CometChat.processMessage`) on the `message` payload to convert into `TextMessage`/`MediaMessage`/`CustomMessage`/`Call` objects for navigation or UI updates.
-- In `didReceive response`, route to the right chat (fetch user/group if needed) before pushing your message screen.
+## 6. Customize the notification body
 
-### Call pushes (VoIP)
-
-- In `pushRegistry(_:didReceiveIncomingPushWith:)`, parse the payload, convert to `Call`, and report to CallKit via `CXProvider.reportNewIncomingCall`.
-- Track the session ID and call type to end/dismiss on `cancelled/unanswered/rejected` call actions.
-- On Accept, call `CometChat.acceptCall(sessionID:)` then launch your call UI; on Decline/Busy, call `CometChat.rejectCall(sessionID:status:)` and end the CallKit call.
-
-## 5. Customizing the notification body
-
-To override the APNs body for a message, set `metadata["pushNotification"]` before sending:
+Set `metadata["pushNotification"]` before sending to override the body:
 
 ```swift
 var metadata = ["pushNotification": "Custom body"]
@@ -120,36 +108,22 @@ custom.metadata = metadata
 CometChat.sendCustomMessage(message: custom) { _ in } onError: { _ in }
 ```
 
-## 6. Testing checklist
+## 7. Testing checklist
 
 1. Install on a device; grant notification permission. Verify APNs device token logs.
-2. Log in, then confirm both device + VoIP tokens are registered with CometChat (success callbacks).
+2. Log in, then confirm both device + VoIP tokens register with CometChat (success callbacks).
 3. Send a message from another user:
    - Foreground: ensure `willPresent` shows your chosen presentation.
    - Background/terminated: tapping opens the correct conversation.
 4. Trigger an incoming call; CallKit UI should show caller info. Accept should join the call; Decline should reject via CometChat and end CallKit.
 5. Rotate tokens (reinstall or toggle VoIP) to ensure re-registration works.
 
-## 7. Troubleshooting
+## 8. Troubleshooting
 
 | Symptom | Quick checks |
 | --- | --- |
-| No pushes | Confirm entitlements, APNs provider creds, bundle ID matches dashboard, and permission is granted. |
-| Token registration fails | Make sure registration runs **after login** and provider IDs are correct for device vs VoIP. |
-| Taps do nothing | Verify notification center delegate, routing logic, and that the scene/navigation controller is ready before pushing. |
-| Call UI missing | Ensure PushKit delegate fires, CallKit capabilities enabled, and VoIP provider ID is set. |
+| No pushes | Entitlements set, APNs provider creds correct, bundle ID matches dashboard, permission granted. |
+| Token registration fails | Run after login; provider IDs correct for device vs VoIP. |
+| Taps do nothing | Verify notification center delegate and navigation readiness before routing. |
+| Call UI missing | Ensure PushKit delegate fires, CallKit capabilities enabled, VoIP provider ID set. |
 | Audio errors | Configure `AVAudioSession` for playAndRecord when reporting/accepting calls. |
-
-{/* ## Additional resources
-
-<CardGroup>
-
-<Card title="iOS - Push notifications sample app" icon="github" href="https://github.com/cometchat/cometchat-push-notification-app-ios">
-
-Push notifications sample app for iOS
-
-View on Github
-
-</Card>
-
-</CardGroup> */}
