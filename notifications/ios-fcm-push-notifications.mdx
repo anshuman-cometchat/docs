@@ -6,14 +6,7 @@ description: "Use Firebase Cloud Messaging with CometChat UI Kit on iOS, while k
 <Info>
 Make sure you complete [Push Notifications integration](/notifications/push-integration) steps before proceeding.
 </Info>
-
-{/* Make sure you complete Push Notifications intergration steps before proceeding:
-
-<Card title="Push Notifications Integration" href="/notifications/push-integration">
-
-View Guide
-
-</Card> */}
+ 
 
 The UIKit iOS push sample shows how to layer FCM on top of APNs so messages and calls arrive in foreground, background, and terminated states. Follow these steps to replicate it.
 
@@ -130,17 +123,3 @@ CometChat.sendCustomMessage(message: custom) { _ in } onError: { _ in }
 | Token registration fails | Ensure it runs after login, provider ID matches the FCM iOS provider, and `Messaging.messaging().delegate` is set. |
 | Taps ignored | Verify `UNUserNotificationCenterDelegate` methods run and navigation is ready before routing. |
 | Call UI missing | Add PushKit + CallKit setup and register a VoIP token with an APNs VoIP provider. |
-
-{/* ## Additional resources
-
-<CardGroup>
-
-<Card title="iOS - Push notifications sample app" icon="github" href="https://github.com/cometchat/cometchat-push-notification-app-ios">
-
-Push notifications sample app for iOS
-
-View on Github
-
-</Card>
-
-</CardGroup> */}
