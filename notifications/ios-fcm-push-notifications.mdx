@@ -1,8 +1,12 @@
 ---
 title: "iOS FCM Push Notifications"
-description: "Wire Firebase Cloud Messaging into the CometChat UIKit iOS push sample (APNs + PushKit/CallKit) so messages and calls arrive in all app states."
+description: "Add Firebase Cloud Messaging to the UIKit iOS push sample so messages and calls land across foreground, background, and terminated states."
 ---
-  
+
+<Info>
+Fully self-contained: enable push in the CometChat dashboard, add Firebase/FCM, and wire APNs + PushKit/CallKit here—no separate integration page needed.
+</Info>
+
 <Card
   title="Reference implementation"
   icon="github"
@@ -11,30 +15,49 @@ description: "Wire Firebase Cloud Messaging into the CometChat UIKit iOS push sa
   UIKit iOS push sample (APNs + PushKit/CallKit + optional FCM).
 </Card>
 
+## What this guide covers
+
+- CometChat dashboard setup (enable push, add FCM iOS + APNs providers) with screenshots.
+- Firebase/FCM + CometChat provider wiring (credentials, Podfile, capabilities).
+- Token registration/rotation with CometChat Push Notifications (FCM iOS provider).
+- APNs + PushKit/CallKit plumbing from the sample helpers.
+- Incoming message/call handling and deep links.
+- Payload customization and testing.
+
 ## What you need first
 
-- CometChat App ID, Region, Auth Key; Push Notifications extension with an **FCM iOS provider ID** (plus APNs device/VoIP provider IDs if you also deliver via APNs/PushKit).
-- Firebase project with an iOS app added; `GoogleService-Info.plist` downloaded.
-- Xcode capabilities: Push Notifications, Background Modes (Remote notifications, Voice over IP), CallKit usage descriptions. Physical device required (pushes don’t land reliably on simulators).
+- CometChat App ID, Region, Auth Key; Push Notifications extension with **FCM iOS provider ID** (and APNs device/VoIP provider IDs if you deliver via APNs/PushKit).
+- Firebase project with an iOS app; `GoogleService-Info.plist` downloaded; APNs key uploaded to Firebase Cloud Messaging.
+- Xcode capabilities: Push Notifications, Background Modes (Remote notifications, Voice over IP), CallKit usage descriptions. Physical device for push testing.
 
-## Copy-first (recommended)
+## 1. Enable push and add providers (CometChat dashboard)
 
-- Copy the folder `SampleAppPushNotificationAPNs/Push Notification + VoIP/` into your target. It already contains:
-  - `CometChatAPNsHelper.swift` (APNs + VoIP token handling, CallKit plumbing, payload routing).
-  - `AppDelegate + PN.swift` and `AppDelegate + VoIP.swift` (delegates for APNs + PushKit).
-- Copy `NotificationExtension/` if you want APNs delivery receipts.
-- Then add the FCM pieces below.
+1) Go to **Notifications → Settings** and enable **Push Notifications**.
 
-Files to copy (then swap bundle ID/team IDs/provider IDs):
+<Frame>
+  <img src="/images/80a520bb-pushnotification-enable-e64632d479a2ebba111453b95bd522c6.png" alt="Enable Push Notifications" />
+</Frame>
 
-- `CometChatAPNsHelper.swift`
-- `AppDelegate + PN.swift`
-- `AppDelegate + VoIP.swift`
-- `NotificationExtension/` (optional but recommended)
+2) Click **Add Credentials**:
+   - Add an **FCM iOS provider** and upload your Firebase service account JSON; copy the Provider ID.
+   - Add **APNs Device** and **APNs VoIP** providers (recommended for calls) using your .p8 key, Team ID, Key ID, and Bundle ID.
 
-## 1) Add dependencies
+<Frame>
+  <img src="/images/c6447647-pushnotification-fcm-68092b02a5361d51ba14b09289da3a78.png" alt="Add FCM credentials" />
+</Frame>
+<Frame>
+  <img src="/images/1133421a-add-apns-credentials-f8c2fd747ab4cf3905c6d13cf215b4c1.png" alt="Add APNs credentials" />
+</Frame>
 
-`Podfile` (per target receiving pushes):
+3) Keep the provider IDs handy; you’ll paste them into your app constants.
+
+## 2. Prepare Firebase and CometChat
+
+1) Dashboard: enable **Push Notifications**, add providers for **FCM iOS**, and (recommended for calls) APNs Device + APNs VoIP. Copy the provider IDs.  
+2) Firebase Console: upload APNs auth key/cert under Cloud Messaging; add `GoogleService-Info.plist` to your target.  
+3) Xcode capabilities: Push Notifications, Background Modes → Remote notifications & Voice over IP; keep `voip` push type in `Info.plist`.
+
+## 3. Add dependencies (Podfile)
 
 ```ruby
 target 'YourApp' do
@@ -42,22 +65,13 @@ target 'YourApp' do
 
   pod 'CometChatCallsSDK'
   pod 'CometChatUIKitSwift', '5.1.4'
-  pod 'Firebase/Messaging'   # add this for FCM
+  pod 'Firebase/Messaging'   # add for FCM
 end
 ```
 
 Run `pod install`.
 
-## 2) Firebase config + capabilities
-
-- Drop `GoogleService-Info.plist` into the app target.
-- In Firebase Console → Project Settings → Cloud Messaging: upload your APNs auth key/cert so FCM can deliver via APNs.
-- In Xcode Signing & Capabilities: enable Push Notifications and Background Modes → Remote notifications and Voice over IP.
-- Keep the `voip` push type in `Info.plist` (already present in the sample).
-
-## 3) AppDelegate wiring (Firebase + notification delegates)
-
-Merge into your `AppDelegate.swift` (the sample already has APNs/PushKit helpers):
+## 3. Wire AppDelegate (Firebase + delegates)
 
 ```swift
 import FirebaseCore
@@ -66,7 +80,7 @@ import PushKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    let apnsHelper = CometChatAPNsHelper()
+    let apnsHelper = CometChatAPNsHelper() // from sample folder
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -77,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         requestNotificationPermission()
         UIApplication.shared.registerForRemoteNotifications()
 
-        // PushKit/CallKit wiring from the helper
+        // PushKit/CallKit wiring
         apnsHelper.configurePushNotification(application: application, delegate: self)
         return true
     }
@@ -88,9 +102,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 ```
 
-## 4) Register the FCM token with CometChat
+## 4. Copy helpers and align identifiers
 
-Preferred: use `CometChatNotifications` after login. Handle token rotation too:
+- Copy from the sample repo into your target:
+  - `CometChatAPNsHelper.swift`
+  - `AppDelegate + PN.swift`
+  - `AppDelegate + VoIP.swift`
+  - `NotificationExtension/` (optional, for APNs delivery receipts)
+- Update bundle ID, team ID, and provider IDs (`AppConstants.PROVIDER_ID` etc.). Keep the `voip` push type.
+
+## 5. Register the FCM token with CometChat
+
+Use `CometChatNotifications` after login and re-register on rotation:
 
 ```swift
 extension AppDelegate: MessagingDelegate {
@@ -111,22 +134,22 @@ extension AppDelegate: MessagingDelegate {
 }
 ```
 
-Alternative: inject the FCM token into `UIKitSettings` before `CometChatUIKit.init` (e.g., `SceneDelegate`) via `.set(fcmKey:)`, along with APNs device/VoIP tokens.
+Alternative: pass the FCM token into `UIKitSettings` via `.set(fcmKey:)` before `CometChatUIKit.init` (e.g., `SceneDelegate`), alongside APNs device/VoIP tokens.
 
 Keep APNs + VoIP registration:
 
 - `didRegisterForRemoteNotificationsWithDeviceToken` → `CometChatNotifications.registerPushToken(...APNS_IOS_DEVICE...)`
 - PushKit `pushRegistry(_:didUpdate:for:)` → `CometChatNotifications.registerPushToken(...APNS_IOS_VOIP...)`
-- For navigation on tap, keep the helper flow from the sample (`CometChatPNHelper.handleTapActionOnNotification`) so pushes deep-link correctly.
+- For navigation on tap, keep the helper flow (`CometChatPNHelper.handleTapActionOnNotification`) from the sample.
 
-## 5) Handle incoming pushes
+## 6. Handle incoming pushes
 
 - `UNUserNotificationCenterDelegate.willPresent`: decide alert/sound for foreground messages.
-- `UNUserNotificationCenterDelegate.didReceive`: route taps to chats using the helper (`CometChatPNHelper.handleTapActionOnNotification` in the sample).
+- `UNUserNotificationCenterDelegate.didReceive`: route taps to chats using the helper; parse `userInfo` and open the right thread.
 - PushKit `pushRegistry(_:didReceiveIncomingPushWith:)`: convert payloads to `Call` and report to CallKit (`CXProvider.reportNewIncomingCall`); accept/decline via `CometChat.acceptCall` / `CometChat.rejectCall`.
-- If you include the Notification Service Extension, keep delivery receipts via `CometChat.markAsDeliveredFromNotification`.
+- If using the Notification Service Extension, keep delivery receipts via `CometChat.markAsDeliveredFromNotification`.
 
-## 6) Customize the notification body
+## 7. Customize the notification body
 
 Set `metadata["pushNotification"]` before sending to override the body:
 
@@ -140,16 +163,16 @@ custom.metadata = metadata
 CometChat.sendCustomMessage(message: custom) { _ in } onError: { _ in }
 ```
 
-## 7) Testing checklist
+## 8. Testing checklist
 
-1. Verify `FirebaseApp.configure()` runs and FCM token logs after login; registration with CometChat succeeds.
-2. Send a message from another user:
-   - Foreground: confirm `willPresent` behavior.
+1. `FirebaseApp.configure()` runs; FCM token logs after login; registration with CometChat succeeds.
+2. Message from another user:
+   - Foreground: `willPresent` behavior as expected.
    - Background/terminated: tap opens the correct chat.
-3. Rotate the FCM token (`didReceiveRegistrationToken`) and confirm re-registration works.
+3. Rotate the FCM token (`didReceiveRegistrationToken`) and confirm re-registration.
 4. VoIP: VoIP token registers; incoming call shows CallKit; Accept/Decline controls the CometChat call.
 
-## 8) Troubleshooting
+## 9. Troubleshooting
 
 | Symptom | Quick checks |
 | --- | --- |
