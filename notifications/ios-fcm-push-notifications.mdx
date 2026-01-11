@@ -2,7 +2,7 @@
 title: "iOS FCM Push Notifications"
 description: "Wire Firebase Cloud Messaging into the CometChat UIKit iOS push sample (APNs + PushKit/CallKit) so messages and calls arrive in all app states."
 ---
-
+  
 <Card
   title="Reference implementation"
   icon="github"
@@ -25,7 +25,7 @@ description: "Wire Firebase Cloud Messaging into the CometChat UIKit iOS push sa
 - Copy `NotificationExtension/` if you want APNs delivery receipts.
 - Then add the FCM pieces below.
 
-Files to copy verbatim (then swap bundle ID/team IDs/provider IDs):
+Files to copy (then swap bundle ID/team IDs/provider IDs):
 
 - `CometChatAPNsHelper.swift`
 - `AppDelegate + PN.swift`
@@ -117,6 +117,7 @@ Keep APNs + VoIP registration:
 
 - `didRegisterForRemoteNotificationsWithDeviceToken` → `CometChatNotifications.registerPushToken(...APNS_IOS_DEVICE...)`
 - PushKit `pushRegistry(_:didUpdate:for:)` → `CometChatNotifications.registerPushToken(...APNS_IOS_VOIP...)`
+- For navigation on tap, keep the helper flow from the sample (`CometChatPNHelper.handleTapActionOnNotification`) so pushes deep-link correctly.
 
 ## 5) Handle incoming pushes
 
