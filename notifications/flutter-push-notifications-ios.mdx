@@ -3,17 +3,7 @@ title: "Flutter Push Notifications (iOS)"
 description: "End-to-end walkthrough for recreating the CometChat push + CallKit experience from the Flutter UI Kit sample."
 ---
 
-<Info>
-Make sure you complete [Push Notifications integration](/notifications/push-integration) steps before proceeding.
-</Info>
-
-{/* <Card title="Push Notifications Integration" href="/notifications/push-integration">
-
-View Guide
-
-</Card> */}
-
-The Flutter UI Kit push-notification demo already solves permission prompts, Firebase/APNs registration, PushKit, and CallKit synchronization. This guide distills that reference implementation so you can bring the exact experience into any Flutter app that uses CometChat UI Kit and Calls UI Kit.
+The Flutter UI Kit push sample already solves permission prompts, APNs/VoIP registration, PushKit, CallKit, and Flutter navigation from terminated state. This guide distills that reference so you can mirror it in your app without relying on `push-integration.mdx`.
 
 <Card
   title="Reference implementation"
@@ -23,33 +13,45 @@ The Flutter UI Kit push-notification demo already solves permission prompts, Fir
   Browse the full push-notification sample (Flutter + native iOS glue) to diff or copy files.
 </Card>
 
-<Note>
-The steps below refer to the folder names inside the sample repo (for example
-<a href="https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app_push_notifications/lib/notifications" target="_blank" rel="noopener noreferrer">lib/notifications</a>
-or
-<a href="https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/ios/Runner/AppDelegate.swift" target="_blank" rel="noopener noreferrer">ios/Runner/AppDelegate.swift</a>).
-Copy the same structure into your project and only change identifiers (bundle ID, provider IDs, package name) to match your app.
-</Note>
+## What this guide covers
 
-## Architecture map
+- CometChat dashboard setup (enable push, create APNs + optional VoIP/FCM providers) with screenshots.
+- Apple + Firebase setup (entitlements, APNs key, `GoogleService-Info.plist`).
+- Copying the sample notification stack and aligning package IDs/provider IDs.
+- Native iOS glue (PushKit, CallKit, MethodChannel) plus Flutter wiring.
+- Token registration, navigation from pushes, testing, and troubleshooting.
 
-| Sample path | Role inside the app | What to copy/replicate |
-| --- | --- | --- |
-| [`lib/notifications`](https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app_push_notifications/lib/notifications) | Models, platform services, push registry helpers, MethodChannel bridge handlers | Copy the directory as-is when starting a new app; keep the folder boundaries so imports resolve. |
-| [`lib/main.dart`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/lib/main.dart) | Initializes Firebase, SharedPreferences, local notifications, and wires `APNSService.setupNativeCallListener` | Reuse the launch sequence so notification taps from a terminated state reach Flutter before `runApp`. |
-| [`lib/dashboard.dart`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/lib/dashboard.dart) / [`lib/guard_screen.dart`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/lib/guard_screen.dart) | Boots CometChat UI Kit, requests permissions, registers Call/Notification listeners | Mirror the lifecycle hooks to initialize `APNSService` only once and capture pending notification taps. |
-| [`ios/Runner/AppDelegate.swift`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/ios/Runner/AppDelegate.swift) | PushKit + CallKit bridge plus MethodChannel glue for VoIP token + call events | Start from the sample file and update the bundle identifiers or localized strings. |
-| [`lib/notifications/services/pn_registry.dart`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/lib/notifications/services/pn_registry.dart) | Wraps `CometChatNotifications.registerPushToken` for APNs, VoIP, and FCM | Supply your CometChat provider IDs so registration works in every environment. |
-
-## 1. Prerequisites
+## What you need first
 
 - Apple Developer account with Push Notifications, Background Modes, and VoIP entitlements for your bundle ID.
 - Firebase project with an iOS app configured (`GoogleService-Info.plist` inside the Runner target) and Cloud Messaging enabled.
-- CometChat app credentials (App ID, Region, Auth Key) plus Push Notification extension enabled with APNs + VoIP providers created.
+- CometChat app credentials (App ID, Region, Auth Key) plus Push Notification extension enabled with at least an **APNs provider** (add VoIP and FCM providers if you use them).
 - Flutter 3.24+ / Dart 3+, the latest CometChat UI Kit (`cometchat_chat_uikit`) and Calls UI Kit (`cometchat_calls_uikit`) packages.
 - Physical iPhone or iPad for testing—simulators cannot receive VoIP pushes or present CallKit UI.
 
-## 2. Prepare credentials before coding
+## 1. Enable push and add providers (CometChat Dashboard)
+
+1. Go to **Notifications → Settings** and enable **Push Notifications**.
+
+<Frame>
+  <img src="/images/80a520bb-pushnotification-enable-e64632d479a2ebba111453b95bd522c6.png" alt="Enable Push Notifications" />
+</Frame>
+
+2. Click **Add Credentials**, choose **APNs** (and **APNs VoIP** if you want in-call pushes), upload your `.p8` key or certificate, and copy each Provider ID.
+
+<Frame>
+  <img src="/images/1133421a-pushnotification-apple-3c67a90511358f639ba693a9a8b125fc.png" alt="Upload APNs credentials" />
+</Frame>
+
+3. (Optional) Add an **FCM** provider if you plan to register FCM tokens on iOS.
+
+<Frame>
+  <img src="/images/c6447647-pushnotification-fcm-68092b02a5361d51ba14b09289da3a78.png" alt="Upload FCM service account JSON" />
+</Frame>
+
+Keep the provider IDs—you’ll set them in `CometChatConfig`.
+
+## 2. Prepare Apple + Firebase credentials
 
 ### 2.1 Apple Developer portal
 
@@ -59,28 +61,14 @@ Copy the same structure into your project and only change identifiers (bundle ID
 
 ### 2.2 Firebase Console
 
-1. Register the same bundle ID and download `GoogleService-Info.plist`.
-2. Enable Cloud Messaging and, if needed, APNs authentication key under *Project Settings → Cloud Messaging*.
-
-### 2.3 CometChat dashboard
-
-1. Turn on the **Push Notifications**.
+1. Register the same bundle ID and download `GoogleService-Info.plist` into `ios/Runner`.
+2. Enable Cloud Messaging and upload the APNs key under *Project Settings → Cloud Messaging*.
 
 <Frame>
-  <img src="/images/push-notifications-guide-1.png" alt="CometChat Dashboard - Push Notifications" />
+  <img src="/images/firebase-push-notifications.png" alt="Firebase - Push Notifications" />
 </Frame>
 
-2. Create one provider for APNs device pushes and (optionally) another for VoIP pushes.
-
-<Frame>
-  <img src="/images/push-notifications-guide-3.png" alt="CometChat Dashboard - Push Notifications" />
-</Frame>
-
-3. Copy the generated provider IDs—they are required inside `CometChatConfig`.
-
-
-
-### 2.4 Local configuration files
+## 3. Local configuration file
 
 Update [`lib/cometchat_config.dart`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/lib/cometchat_config.dart) (or your own config file) so it exposes:
 
@@ -95,15 +83,15 @@ class CometChatConfig {
 }
 ```
 
-## 3. Bring the notification stack into Flutter
+## 4. Bring the notification stack into Flutter
 
-### 3.1 Copy [`lib/notifications`](https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app_push_notifications/lib/notifications)
+### 4.1 Copy [`lib/notifications`](https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app_push_notifications/lib/notifications)
 
 - Clone or download the sample once.
 - Copy the entire [`lib/notifications`](https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app_push_notifications/lib/notifications) directory (models, Android/iOS services, helpers) into your app.
 - Update the import prefixes (for example replace `package:flutter_application_demo/...` with your own package name). Keeping the same folder names avoids manual refactors later.
 
-### 3.2 Wire the entry points
+### 4.2 Wire the entry points
 
 **[`lib/main.dart`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/lib/main.dart)**
 
@@ -119,7 +107,7 @@ class CometChatConfig {
 - Replay `NotificationLaunchHandler.pendingNotificationResponse` after the widget tree builds so taps from a killed app still navigate to `MessagesScreen`.
 - Forward lifecycle changes to `IncomingCallOverlay` / `BoolSingleton` to hide stale overlays when the app resumes.
 
-### 3.3 Align dependencies and configuration
+### 4.3 Align dependencies and configuration
 
 Mirror the sample `pubspec.yaml` versions (update as needed when newer releases ship):
 
@@ -137,16 +125,16 @@ dependencies:
 
 Run `flutter pub get`, then `flutterfire configure` if you still need to generate `firebase_options.dart`.
 
-## 4. Configure the native iOS layer
+## 5. Configure the native iOS layer
 
-### 4.1 Capabilities and Info.plist
+### 5.1 Capabilities and Info.plist
 
 1. Open `ios/Runner.xcworkspace` in Xcode.
 2. Under *Signing & Capabilities*, enable **Push Notifications** and **Background Modes** (Remote notifications + Voice over IP).
 3. Add microphone, camera, Bluetooth, and notification permission strings to `Info.plist`.
 4. Set the development team that has access to the APNs/VoIP keys you generated earlier.
 
-### 4.2 `AppDelegate.swift` bridge
+### 5.2 `AppDelegate.swift` bridge
 
 Start from the sample [`ios/Runner/AppDelegate.swift`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/ios/Runner/AppDelegate.swift) and keep these pieces intact:
 
@@ -169,9 +157,9 @@ Handle at least `getAppInfo`, `endCall`, `onCallAcceptedFromNative`, and `onCall
 
 If you change the MethodChannel name in Swift, remember to update `APNSService.platform` in Dart to match.
 
-## 5. Token registration and runtime events
+## 6. Token registration and runtime events
 
-### 5.1 Standard APNs tokens
+### 6.1 Standard APNs tokens
 
 `APNSService` hooks into `FirebaseMessaging.instance.getAPNSToken()` (and `onTokenRefresh`) before calling:
 
@@ -185,24 +173,24 @@ await CometChatPushRegistry.register(
 
 This registers the device token against the APNs provider selected in `CometChatConfig.apnProviderId`.
 
-### 5.2 VoIP tokens
+### 6.2 VoIP tokens
 
 - Capture the PushKit token in `AppDelegate.pushRegistry(_:didUpdate:for:)`.
 - Forward it to Flutter via the MethodChannel or register it directly from Swift by invoking `CometChatPushRegistry` through `SwiftFlutterCallkitIncomingPlugin`.
 - If you keep the Dart implementation, emit a MethodChannel call named `onVoipToken` and handle it in `APNSService` by calling `CometChatPushRegistry.register(token: token, isFcm: false, isVoip: true);`.
 
-### 5.3 Local notifications and navigation
+### 6.3 Local notifications and navigation
 
 - `APNSService._showNotification` displays a local notification when the incoming CometChat message does not belong to the currently open conversation.
 - `LocalNotificationService.handleNotificationTap` parses the payload, fetches the relevant user/group, and pushes `MessagesScreen`.
 - `NotificationLaunchHandler.pendingNotificationResponse` caches taps triggered while the app is terminated; replay it on the dashboard once the UI is ready.
 
-### 5.4 Call events
+### 6.4 Call events
 
 - `FlutterCallkitIncoming.onEvent` is already wired inside `APNSService` to accept or end calls initiated by CallKit.
 - When native CallKit UI accepts/ends a call, Swift invokes `onCallAcceptedFromNative` / `onCallEndedFromNative` on the MethodChannel; `APNSService` then calls `FlutterCallkitIncoming.setCallConnected` or `CometChat.endCall()` to keep both stacks synchronized.
 
-## 6. Testing checklist
+## 7. Testing checklist
 
 1. Run the app on a physical device in debug first. Grant notification, microphone, camera, and Bluetooth permissions when prompted.
 2. Send a message from another user:
@@ -215,7 +203,7 @@ This registers the device token against the APNs provider selected in `CometChat
 5. Decline the call and confirm both CallKit and Flutter clean up (`BoolSingleton` resets, overlays dismissed).
 6. Rotate through Wi-Fi/cellular and reinstall the app to confirm token registration works after refresh events.
 
-## 7. Troubleshooting tips
+## 8. Troubleshooting tips
 
 | Symptom | Quick checks |
 | --- | --- |
