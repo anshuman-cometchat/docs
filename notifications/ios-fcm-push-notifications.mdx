@@ -47,13 +47,18 @@ description: "Add Firebase Cloud Messaging to the UIKit iOS push sample so messa
 
 3) Keep the provider IDs handy; you’ll paste them into your app constants.
 
-## 2. Prepare Firebase and CometChat
+ ## 2. Upload your APNs Certificates
+
+1) In the **Firebase Console**, go to **Project Settings → Cloud Messaging**.
+2) Under **iOS app configuration**, upload your APNs authentication key or certificates.
+
+## 3. Prepare Firebase and CometChat
 
 1) Dashboard: enable **Push Notifications**, add providers for **FCM iOS**, and (recommended for calls) APNs Device + APNs VoIP. Copy the provider IDs.  
 2) Firebase Console: upload APNs auth key/cert under Cloud Messaging; add `GoogleService-Info.plist` to your target.  
 3) Xcode capabilities: Push Notifications, Background Modes → Remote notifications & Voice over IP; keep `voip` push type in `Info.plist`.
 
-## 3. Add dependencies (Podfile)
+## 4. Add dependencies (Podfile)
 
 ```ruby
 target 'YourApp' do
@@ -67,7 +72,7 @@ end
 
 Run `pod install`.
 
-### 3. Configure Signing & Capabilities
+### 5. Configure Signing & Capabilities
 
 - Enable **Push Notifications**.
 - Enable **Background Modes** with **Remote notifications** and **Voice over IP**.
@@ -77,7 +82,7 @@ Run `pod install`.
   <img src="/images/background-modes-push.png" alt="Add FCM credentials" />
 </Frame>
 
-## 3. Wire AppDelegate (Firebase + delegates)
+## 6. Wire AppDelegate (Firebase + delegates)
 
 ```swift
 
@@ -115,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 }
 ```
 
-## 4. Create FCM helper
+## 7. Create FCM helper
 
 Create `CometChatFCMHelper.swift` and add:
 
@@ -244,7 +249,7 @@ extension CometChatFCMHelper: CometChatLoginDelegate {
 
 - Update bundle ID, team ID, and provider IDs (`AppConstants.PROVIDER_ID` etc.). Keep the `voip` push type.
 
-## 5. Update AppDelegate for FCM token registration
+## 8. Update AppDelegate for FCM token registration
 
 ```swift
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -286,7 +291,7 @@ extension CometChatFCMHelper: CometChatLoginDelegate {
 
 Alternative: pass the FCM token into `UIKitSettings` via `.set(fcmKey:)` before `CometChatUIKit.init` (e.g., `SceneDelegate`), alongside APNs device/VoIP tokens.
 
-## 8. Testing checklist
+## 9. Testing checklist
 
 1. `FirebaseApp.configure()` runs; FCM token logs after login; registration with CometChat succeeds.
 2. Message from another user:
@@ -295,7 +300,7 @@ Alternative: pass the FCM token into `UIKitSettings` via `.set(fcmKey:)` before 
 3. Rotate the FCM token (`didReceiveRegistrationToken`) and confirm re-registration.
 4. VoIP: VoIP token registers; incoming call shows CallKit; Accept/Decline controls the CometChat call.
 
-## 9. Troubleshooting
+## 10. Troubleshooting
 
 | Symptom | Quick checks |
 | --- | --- |
