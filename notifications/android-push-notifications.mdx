@@ -99,6 +99,8 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 ```
 
+This catalog pins SDK/Gradle/Google Services versions and exposes aliases so the app/build.gradle stays short and consistent with the sample.
+
 </Tab>
 <Tab title="Groovy (app/build.gradle)">
 
@@ -142,7 +144,7 @@ dependencies {
 </Tab>
 </Tabs>
 
-- Apply the `google-services` plugin and place `google-services.json` in the same module; keep `viewBinding` enabled if you copy UI Kit screens directly from the sample.
+- Apply the `google-services` plugin and place `google-services.json` in the same module; keep `viewBinding` enabled if you copy UI Kit screens directly from the sample. The Groovy snippet consumes the catalog aliases and pulls UI Kit, Calls, and FCM dependencies through the BOM.
 
 ## 3. Manifest permissions and services
 
@@ -187,6 +189,8 @@ Start from the sample [`AndroidManifest.xml`](https://github.com/cometchat/comet
 </application>
 ```
 
+- Permissions cover notifications + telecom; services/receiver wire Firebase delivery (`FCMService`), notification actions (`FCMMessageBroadcastReceiver`), and telecom UI (`CometChatVoIPConnectionService`). Point `android:name` to your `MyApplication`.
+
 - Set `android:name` on `<application>` to your `MyApplication` subclass.
 - Keep runtime permission prompts for notifications, mic, camera, and media access (see `AppUtils.kt` / `HomeActivity.kt` in the sample).
 
@@ -225,6 +229,8 @@ private fun handleDeepLinking() {
     finish()
 }
 ```
+
+This reads the push extras, clears the summary notification, and forwards the payload to `HomeActivity` so taps or deep links land in the right screen.
 
 **What the core pieces do**
 
@@ -282,6 +288,8 @@ class SplashViewModel : ViewModel() {
 }
 ```
 
+Loads credentials from shared prefs, builds `UIKitSettings`, initializes CometChat UIKit (without auto socket), sets sample metadata, and exposes `loginStatus` so the splash can route to login vs home.
+
 **Repository (push token + call helpers)**
 
 ```kotlin
@@ -305,6 +313,8 @@ object Repository {
     ) { /* rejectCall with CALL_STATUS_REJECTED and notify UIKit */ }
 }
 ```
+
+Thin wrappers that register/unregister FCM tokens with your Provider ID and perform server-side call actions (accept/reject/busy) so the caller sees the correct state even if your UI is backgrounded.
 
 **MyApplication (push/call lifecycle essentials)**
 
@@ -391,6 +401,8 @@ class MyApplication : Application() {
 }
 ```
 
+Initializes UIKit/Firebase, adds call listeners, manages websocket connect/disconnect tied to app foreground, tracks the current activity, and caches temp call state so banners can reappear after resume.
+
 State to set at runtime:
 
 - `isAppInForeground`/`currentActivity` inside lifecycle callbacks.
@@ -475,6 +487,8 @@ private fun handleDeepLinking() {
 }
 ```
 
+Requests notification + telecom permissions in sequence, initializes the VoIP phone account, and maps notification payload extras to set `currentOpenChatId` so you don’t alert for the chat currently open.
+
 ## 6. Register the FCM token after login
 
 Call registration right after `CometChatUIKit.login()` succeeds:
@@ -496,6 +510,8 @@ FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
 }
 ```
 
+Registers the current device token with CometChat under your Provider ID after login so the backend can target this user via FCM; retry on failure and rerun when the token rotates.
+
 Re-register on token refresh. Keep the provider ID aligned to the FCM provider you created for this app.
 
 Handle FCM refresh tokens too:
@@ -516,6 +532,8 @@ override fun onNewToken(token: String) {
     )
 }
 ```
+
+Ensures a rotated FCM token is re-bound to the logged-in user; without this, pushes will stop after Firebase refreshes the token.
 
 ## 7. Unregister the token on logout
 
@@ -584,6 +602,8 @@ override fun onMessageReceived(remoteMessage: RemoteMessage) {
 }
 ```
 
+Parses the CometChat message JSON shipped in the payload into a `BaseMessage` so you can navigate to the right conversation/thread without extra API calls.
+
 Override the push body before sending:
 
 ```kotlin
@@ -592,6 +612,7 @@ customMessage.metadata = meta
 CometChat.sendCustomMessage(customMessage, object : CallbackListener<CustomMessage>() {})
 ```
 
+Adds a `pushNotification` field in metadata so CometChat uses your custom text as the push body for that message.
 ## 12. Navigation from notifications
 Notification taps launch [`SplashActivity`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-kotlin%2Bpush-notification/src/main/java/com/cometchat/sampleapp/kotlin/fcm/ui/activity/SplashActivity.kt); it reads `NOTIFICATION_PAYLOAD` extras and opens the correct user or group in `MessagesActivity`. Keep `launchMode` settings that allow the intent extras to arrive.
 ## 13. Testing checklist
