@@ -136,7 +136,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Optional: Basic authentication middleware
 const basicAuth = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   if (!authHeader || !authHeader.startsWith('Basic ')) {
@@ -145,34 +144,30 @@ const basicAuth = (req, res, next) => {
   next();
 };
 
-const triggerSMSNotification = async (to, data) => {
+const triggerSMSNotification = async (to = {}, data = {}) => {
   let { name, uid, phno } = to;
   let { groupDetails, senderDetails, smsContent } = data;
 
-  if (groupDetails) {
-    console.log('Received webhook for group SMS notification');
-  }
+  if (!uid) throw new Error('Missing data.to.uid');
+  if (!smsContent) throw new Error('Missing data.smsContent');
 
-  if (senderDetails) {
-    console.log('Received webhook for one-on-one SMS notification');
-  }
+  if (groupDetails) console.log('Received webhook for group SMS notification');
+  if (senderDetails) console.log('Received webhook for one-on-one SMS notification');
 
   if (phno == null) {
-    // Your implementation to fetch Phone number
     phno = await fetchPhoneNumberFor(uid);
   }
 
-  // Your implementation for sending the SMS notification
-  await sendSMS(phno, smsContent);
+  if (!phno) throw new Error(`Phone number not available for uid=${uid}`);
+
+  return await sendSMS(phno, smsContent);
 };
 
 app.post('/webhook', basicAuth, (req, res) => {
-  const { trigger, data, appId, region, webhook } = req.body;
+  const { trigger, data, appId, region, webhook } = req.body || {};
+  const { to } = data || {};
 
-  if (
-    trigger !== 'sms-notification-payload-generated' ||
-    webhook !== 'custom'
-  ) {
+  if (trigger !== 'sms-notification-payload-generated' || webhook !== 'custom') {
     return res.status(400).json({ message: 'Invalid trigger or webhook type' });
   }
 
@@ -180,20 +175,10 @@ app.post('/webhook', basicAuth, (req, res) => {
 
   triggerSMSNotification(to, data)
     .then((result) => {
-      console.log(
-        'Successfully triggered SMS notification for',
-        appId,
-        to.uid,
-        result
-      );
+      console.log('Successfully triggered SMS notification for', appId, to?.uid, result);
     })
     .catch((error) => {
-      console.error(
-        'Something went wrong while triggering SMS notification for',
-        appId,
-        to.uid,
-        error.message
-      );
+      console.error('Something went wrong while triggering SMS notification for', appId, to?.uid, error.message);
     });
 
   res.status(200).json({ message: 'Webhook received successfully' });
