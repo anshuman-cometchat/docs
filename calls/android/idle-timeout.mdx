@@ -5,11 +5,6 @@ sidebarTitle: "Idle Timeout"
 
 Configure automatic session termination when a user is alone in a call. Idle timeout helps manage resources by ending sessions that have no active participants.
 
-## Prerequisites
-
-- CometChat Calls SDK [initialized](/calls/android/setup)
-- User [logged in](/calls/android/authentication)
-
 ## How Idle Timeout Works
 
 When a user is the only participant in a call session, the idle timeout countdown begins. If no other participant joins before the timeout expires, the session automatically ends and the `onSessionTimedOut` callback is triggered.
