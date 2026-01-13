@@ -83,7 +83,12 @@ github:cometchat/react-native-callkeep
 
 Match these or newer compatible versions in your app.
 
-## 4. Configure Firebase with Android credentials
+## 4. Android setup
+
+1. Create a Firebase project and add an Android app with your package name; download `google-services.json`.
+2. Place `google-services.json` in `android/app`; apply `com.google.gms.google-services` in `android/app/build.gradle`.
+
+### 4.1 Configure Firebase with Android credentials
 
 To allow Firebase on Android to use the credentials, the `google-services` plugin must be enabled on the project. This requires modification to two files in the Android directory.
 
@@ -105,7 +110,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services' 
 ```
 
-5. Configure required permissions in `AndroidManifest.xml` as shown in the sample.
+### 4.2 Configure required permissions in `AndroidManifest.xml` as shown.
 
 ```xml
     <uses-permission android:name="android.permission.INTERNET" />
@@ -125,30 +130,7 @@ apply plugin: 'com.google.gms.google-services'
 
 and ask for runtime permissions where needed (e.g. `POST_NOTIFICATIONS` on Android 13+).
 
-Inside your main app file where you initialize CometChat, add the below code snippet after the user has logged in successfully.
-Initilize and register the FCM token for Android as shown:
-
-```ts
-requestAndroidPermissions();
-
-const FCM_TOKEN = await messaging().getToken();
-console.log("FCM Token:", FCM_TOKEN);
-
-// For React Native Android
-CometChatNotifications.registerPushToken(
-        FCM_TOKEN,
-        CometChatNotifications.PushPlatforms.FCM_REACT_NATIVE_ANDROID,
-        "FCM-5"
-    )
-    .then(() => {
-        console.log("Token registration successful");
-    })
-    .catch((err) => {
-        console.log("Token registration failed:", err);
-    });
-```
-
-```
+```tsx
 import { PermissionsAndroid, Platform } from "react-native";
 
   const requestAndroidPermissions = async () => {
@@ -182,10 +164,41 @@ import { PermissionsAndroid, Platform } from "react-native";
 }
 ```
 
-[`index.js`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/index.js)
-Background handlers: FCM `setBackgroundMessageHandler`, Notifee `onBackgroundEvent`, and VoIP call actions.
-Keep the same handlers so taps from killed/background states navigate correctly and call pushes render native UI.
+### 4.3 Register FCM token with CometChat
 
+Inside your main app file where you initialize CometChat, add the below code snippet after the user has logged in successfully.
+Initilize and register the FCM token for Android as shown:
+
+```ts
+requestAndroidPermissions();
+
+const FCM_TOKEN = await messaging().getToken();
+console.log("FCM Token:", FCM_TOKEN);
+
+// For React Native Android
+CometChatNotifications.registerPushToken(
+        FCM_TOKEN,
+        CometChatNotifications.PushPlatforms.FCM_REACT_NATIVE_ANDROID,
+        "FCM-5"
+    )
+    .then(() => {
+        console.log("Token registration successful");
+    })
+    .catch((err) => {
+        console.log("Token registration failed:", err);
+    });
+```
+
+### 4.4 Unregister FCM token on logout
+
+Typically, push token unregistration should occur prior to user logout, using the `CometChat.logout()` method.
+
+For token unregistration, use the `CometChatNotifications.unregisterPushToken()` method provided by the SDKs.
+
+// This is applicable for web, React native, Ionic cordova
+`await CometChatNotifications.unregisterPushToken();`
+
+// Followed by CometChat.logout();
 
 {/* ## 4. Bring the notification stack into your app
 
@@ -200,14 +213,7 @@ Copy the same structure from the sample:
 | [`src/utils/VoipNotificationHandler.ts`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/src/utils/VoipNotificationHandler.ts) | CallKeep + Notifee bridge for incoming call UI (Android/iOS) and call actions | Use as-is; ensure Android phone account permissions/capabilities and iOS CallKit permissions are configured. |
 | [`ios/.../AppDelegate.swift`](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/examples/SampleAppWithPushNotifications/ios/SampleAppWithPushNotifications/AppDelegate.swift) | Native glue for iOS: Firebase/UNUserNotificationCenter delegates, PushKit VoIP token, CallKeep incoming calls | Copy the delegates and PushKit setup so FCM/APNs/VoIP events reach JS and CallKeep renders incoming calls. | */}
 
-## 5. Android setup
-
-1. Place `google-services.json` in `android/app`; apply `com.google.gms.google-services` in `android/app/build.gradle`.
-2. Set `minSdk`/`targetSdk` to your project values (sample follows RN 0.81 defaults).
-3. Manifest permissions for notifications and calls: `POST_NOTIFICATIONS`, `RECORD_AUDIO`, `CAMERA`, `READ_PHONE_STATE`, `FOREGROUND_SERVICE`, `ANSWER_PHONE_CALLS`, `USE_FULL_SCREEN_INTENT`, `WAKE_LOCK`, `VIBRATE`.
-4. Ensure CallKeep phone account is declared per sample and that `VoipNotificationHandler.initialize()` runs after login.
-
-## 6. iOS setup
+## 5. iOS setup
 
 1. Enable **Push Notifications** and **Background Modes** (Remote notifications, VoIP) in Xcode.
 2. Add CallKit usage strings to `Info.plist` (microphone/camera) and configure `react-native-callkeep`.
