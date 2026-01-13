@@ -98,6 +98,6 @@ All tools run server-side; if `PRODUCTHUNT_API_TOKEN` is missing, top/timeframe 
 
 ## Wire it to CometChat
 
-- Dashboard → AI Agents → **Provider: CrewAI** → **Agent ID** (e.g., `product_hunt`) → **Deployment URL** = your public `/stream`.
+- Dashboard → **AI Agent → BYO Agents** and then **Get Started / Integrate → Choose CrewAI**. → **Agent ID** (e.g., `product_hunt`) → **Deployment URL** = your public `/stream`.
 - Listen for `text_start`/`text_delta`/`text_end` to render streaming text; stop on `done`.
 - When `triggerConfetti` returns, map the payload to your UI handler (Widget/React UI Kit). Keep API tokens server-side.
