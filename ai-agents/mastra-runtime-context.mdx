@@ -110,27 +110,6 @@ export const productQueryTool = createTool({
 });
 ```
 
-### In Agent Instructions
-
-Reference context data in your agent instructions using template variables:
-
-```javascript
-const agent = new Agent({
-  name: 'Shopping Assistant',
-  instructions: `
-    You are a shopping assistant for user {{sender.uid}}.
-    {{#if sender.role}}
-    User role: {{sender.role}}
-    {{/if}}
-    
-    Always use the user's current page context to answer questions
-    about the specific product they're viewing.
-  `,
-  model: openai('gpt-4'),
-  tools: [productQueryTool]
-});
-```
-
 ## Common Use Cases
 
 ### User Authentication & Business Logic
