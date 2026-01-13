@@ -37,7 +37,6 @@ description: "Add Firebase Cloud Messaging to the UIKit iOS push sample so messa
 
 2) Click **Add Credentials**:
    - Add an **FCM iOS provider** and upload your Firebase service account JSON; copy the Provider ID.
-   - Add **APNs Device** and **APNs VoIP** providers (recommended for calls) using your .p8 key, Team ID, Key ID, and Bundle ID.
 
 <Frame>
   <img src="/images/c6447647-pushnotification-fcm-68092b02a5361d51ba14b09289da3a78.png" alt="Add FCM credentials" />
@@ -58,9 +57,13 @@ Continue adding FCM provider:
 
 ## 3. Prepare Firebase and CometChat
 
-1) Dashboard: enable **Push Notifications**, add providers for **FCM iOS**, and (recommended for calls) APNs Device + APNs VoIP. Copy the provider IDs.  
+1) Dashboard: enable **Push Notifications**, add providers for **FCM iOS**. Copy the provider IDs.  
 2) Firebase Console: upload APNs auth key/cert under Cloud Messaging; add `GoogleService-Info.plist` to your target.  
-3) Xcode capabilities: Push Notifications, Background Modes → Remote notifications & Voice over IP; keep `voip` push type in `Info.plist`.
+3) Xcode capabilities: Push Notifications, Background Modes → Remote notifications.
+
+<Frame>
+  <img src="/images/notification-capabilities-fcm.png" alt="Enable Push Notifications and Background Modes for FCM" />
+</Frame>
 
 ## 4. Add dependencies (Podfile)
 
@@ -75,18 +78,9 @@ end
 ```
 
 Run `pod install`.
+ 
 
-### 5. Configure Signing & Capabilities
-
-- Enable **Push Notifications**.
-- Enable **Background Modes** with **Remote notifications** and **Voice over IP**.
-- Add **CallKit** usage description to `Info.plist`:
-
-<Frame>
-  <img src="/images/background-modes-push.png" alt="Add FCM credentials" />
-</Frame>
-
-## 6. Wire AppDelegate (Firebase + delegates)
+## 5. Wire AppDelegate (Firebase + delegates)
 
 ```swift
 import UIKit
@@ -243,7 +237,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 }
 ```
 
-## 7. Create FCM helper
+## 6. Create FCM helper
 
 Create `CometChatFCMHelper.swift` and add:
 
@@ -280,51 +274,9 @@ final class CometChatFCMHelper {
 }
 ```
 
-- Update bundle ID, team ID, and provider IDs (`AppConstants.PROVIDER_ID` etc.). Keep the `voip` push type.
+{/* Alternative: pass the FCM token into `UIKitSettings` via `.set(fcmKey:)` before `CometChatUIKit.init` (e.g., `SceneDelegate`), alongside APNs device/VoIP tokens. */}
 
-## 8. Update AppDelegate for FCM token registration
-
-```swift
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        // Initialize Firebase FIRST
-        FirebaseApp.configure()
-        
-        // Set Firebase Messaging delegate
-        Messaging.messaging().delegate = self
-        
-        // Configure CometChat FCM
-        CometChatFCMHelper.shared.configurePushNotification(application: application, delegate: self)
-         
-        // Setup PushKit for VoIP
-        #if canImport(CometChatCallsSDK)
-        pushRegistry = PKPushRegistry(queue: DispatchQueue.main)
-        pushRegistry.delegate = self
-        pushRegistry.desiredPushTypes = [.voIP]
-        print(" PushKit registered for VoIP")
-        #endif
-        
-        return true
-    }
-    
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        print(" Firebase Messaging token refreshed")
-        
-        guard let token = fcmToken else {
-            print(" FCM token is nil")
-            return
-        }
-        
-        print(" New FCM Token: \(token)")
-        
-        // Handle token refresh in the helper
-        CometChatFCMHelper.shared.handleTokenRefresh(newToken: token)
-    }
-```
-
-Alternative: pass the FCM token into `UIKitSettings` via `.set(fcmKey:)` before `CometChatUIKit.init` (e.g., `SceneDelegate`), alongside APNs device/VoIP tokens.
-
-## 9. Testing checklist
+## 7. Testing checklist
 
 1. `FirebaseApp.configure()` runs; FCM token logs after login; registration with CometChat succeeds.
 2. Message from another user:
@@ -333,7 +285,7 @@ Alternative: pass the FCM token into `UIKitSettings` via `.set(fcmKey:)` before 
 3. Rotate the FCM token (`didReceiveRegistrationToken`) and confirm re-registration.
 4. VoIP: VoIP token registers; incoming call shows CallKit; Accept/Decline controls the CometChat call.
 
-## 10. Troubleshooting
+## 8. Troubleshooting
 
 | Symptom | Quick checks |
 | --- | --- |
