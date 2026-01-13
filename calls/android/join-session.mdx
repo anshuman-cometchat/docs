@@ -1,0 +1,219 @@
+---
+title: "Join Session"
+sidebarTitle: "Join Session"
+---
+
+Generate a token, configure settings, and join a call session.
+
+## Prerequisites
+
+- CometChat Calls SDK [initialized](/calls/android/setup)
+- User [logged in](/calls/android/authentication)
+- A container view (`RelativeLayout`) for the call UI
+
+## Generate Token
+
+A call token is required for secure access to a call session. Each token is unique to a specific session and user combination, ensuring that only authorized users can join the call.
+
+You can generate the token just before starting the call, or generate and store it ahead of time based on your use case.
+
+Use the `generateToken()` method to create a call token:
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin
+val sessionId = "SESSION_ID"
+
+CometChatCalls.generateToken(sessionId, object : CometChatCalls.CallbackListener<GenerateToken>() {
+    override fun onSuccess(token: GenerateToken) {
+        Log.d(TAG, "Token: ${token.token}")
+    }
+
+    override fun onError(e: CometChatException) {
+        Log.e(TAG, "Error: ${e.message}")
+    }
+})
+```
+</Tab>
+<Tab title="Java">
+```java
+String sessionId = "SESSION_ID";
+
+CometChatCalls.generateToken(sessionId, new CometChatCalls.CallbackListener<GenerateToken>() {
+    @Override
+    public void onSuccess(GenerateToken token) {
+        Log.d(TAG, "Token: " + token.getToken());
+    }
+
+    @Override
+    public void onError(CometChatException e) {
+        Log.e(TAG, "Error: " + e.getMessage());
+    }
+});
+```
+</Tab>
+</Tabs>
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `sessionId` | String | Unique identifier for the call session |
+
+<Note>
+All participants joining the same call must use the same session ID.
+</Note>
+
+## Session Settings
+
+Configure how a call session behaves and appears using `SessionSettingsBuilder`.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin
+val sessionSettings = CometChatCalls.SessionSettingsBuilder()
+    .setTitle("Team Meeting")
+    .setDisplayName("John Doe")
+    .setType(SessionType.VIDEO)
+    .setLayout(LayoutType.TILE)
+    .startAudioMuted(false)
+    .startVideoPaused(false)
+    .build()
+```
+</Tab>
+<Tab title="Java">
+```java
+SessionSettings sessionSettings = new CometChatCalls.SessionSettingsBuilder()
+    .setTitle("Team Meeting")
+    .setDisplayName("John Doe")
+    .setType(SessionType.VIDEO)
+    .setLayout(LayoutType.TILE)
+    .startAudioMuted(false)
+    .startVideoPaused(false)
+    .build();
+```
+</Tab>
+</Tabs>
+
+| Method | Type | Default | Description |
+|--------|------|---------|-------------|
+| `setTitle(String)` | String | null | Title displayed in the call header |
+| `setDisplayName(String)` | String | null | Display name shown to other participants |
+| `setType(SessionType)` | SessionType | VIDEO | Call type: `VIDEO` or `AUDIO` |
+| `setLayout(LayoutType)` | LayoutType | TILE | Layout: `TILE`, `SPOTLIGHT`, or `SIDEBAR` |
+| `setIdleTimeoutPeriod(int)` | int | 300 | Timeout in seconds when alone in the session |
+| `startAudioMuted(boolean)` | boolean | false | Start with microphone muted |
+| `startVideoPaused(boolean)` | boolean | false | Start with camera off |
+| `setAudioMode(AudioMode)` | AudioMode | SPEAKER | Initial audio output device |
+| `setInitialCameraFacing(CameraFacing)` | CameraFacing | FRONT | Initial camera: `FRONT` or `BACK` |
+| `enableLowBandwidthMode(boolean)` | boolean | false | Optimize for poor network conditions |
+| `enableAutoStartRecording(boolean)` | boolean | false | Auto-start recording when session begins |
+| `hideControlPanel(boolean)` | boolean | false | Hide bottom control bar |
+| `hideHeaderPanel(boolean)` | boolean | false | Hide top header bar |
+| `hideSessionTimer(boolean)` | boolean | false | Hide session duration timer |
+| `hideLeaveSessionButton(boolean)` | boolean | false | Hide leave/end call button |
+| `hideToggleAudioButton(boolean)` | boolean | false | Hide mute/unmute button |
+| `hideToggleVideoButton(boolean)` | boolean | false | Hide video on/off button |
+| `hideSwitchCameraButton(boolean)` | boolean | false | Hide camera flip button |
+| `hideRecordingButton(boolean)` | boolean | true | Hide recording button |
+| `hideScreenSharingButton(boolean)` | boolean | false | Hide screen share button |
+| `hideAudioModeButton(boolean)` | boolean | false | Hide speaker/earpiece toggle |
+| `hideRaiseHandButton(boolean)` | boolean | false | Hide raise hand button |
+| `hideShareInviteButton(boolean)` | boolean | true | Hide share invite button |
+| `hideParticipantListButton(boolean)` | boolean | false | Hide participant list button |
+| `hideChangeLayoutButton(boolean)` | boolean | false | Hide layout toggle button |
+| `hideChatButton(boolean)` | boolean | true | Hide in-call chat button |
+
+<Accordion title="Enum Values">
+| Enum | Value | Description |
+|------|-------|-------------|
+| `SessionType` | `VIDEO` | Video call with camera enabled |
+| | `AUDIO` | Audio-only call |
+| `LayoutType` | `TILE` | Grid layout showing all participants equally |
+| | `SPOTLIGHT` | Focus on active speaker with others in sidebar |
+| | `SIDEBAR` | Main speaker with participants in a sidebar |
+| `AudioMode` | `SPEAKER` | Device loudspeaker |
+| | `EARPIECE` | Phone earpiece |
+| | `BLUETOOTH` | Connected Bluetooth device |
+| | `HEADPHONES` | Wired headphones |
+| `CameraFacing` | `FRONT` | Front-facing camera |
+| | `BACK` | Rear camera |
+</Accordion>
+
+## Join Session
+
+Add a container view to your layout:
+
+```xml
+<RelativeLayout
+    android:id="@+id/call_view_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+```
+
+Use the `joinSession()` method to join a call session:
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin
+val sessionId = "SESSION_ID"
+val callViewContainer = findViewById<RelativeLayout>(R.id.call_view_container)
+
+val sessionSettings = CometChatCalls.SessionSettingsBuilder()
+    .setDisplayName("John Doe")
+    .setType(SessionType.VIDEO)
+    .build()
+
+CometChatCalls.joinSession(sessionId, sessionSettings, callViewContainer, 
+    object : CometChatCalls.CallbackListener<CallSession>() {
+        override fun onSuccess(callSession: CallSession) {
+            Log.d(TAG, "Joined session successfully")
+        }
+
+        override fun onError(e: CometChatException) {
+            Log.e(TAG, "Failed: ${e.message}")
+        }
+    }
+)
+```
+</Tab>
+<Tab title="Java">
+```java
+String sessionId = "SESSION_ID";
+RelativeLayout callViewContainer = findViewById(R.id.call_view_container);
+
+SessionSettings sessionSettings = new CometChatCalls.SessionSettingsBuilder()
+    .setDisplayName("John Doe")
+    .setType(SessionType.VIDEO)
+    .build();
+
+CometChatCalls.joinSession(sessionId, sessionSettings, callViewContainer, 
+    new CometChatCalls.CallbackListener<CallSession>() {
+        @Override
+        public void onSuccess(CallSession callSession) {
+            Log.d(TAG, "Joined session successfully");
+        }
+
+        @Override
+        public void onError(CometChatException e) {
+            Log.e(TAG, "Failed: " + e.getMessage());
+        }
+    }
+);
+```
+</Tab>
+</Tabs>
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `sessionId` | String | Unique session identifier (or use `GenerateToken`) |
+| `sessionSettings` | SessionSettings | Configuration for the session |
+| `callViewContainer` | RelativeLayout | Container view for the call UI |
+
+## Error Handling
+
+| Error Code | Description |
+|------------|-------------|
+| `ERROR_COMETCHAT_CALLS_SDK_INIT` | SDK not initialized |
+| `ERROR_AUTH_TOKEN` | User not logged in or auth token invalid |
+| `ERROR_CALL_SESSION_ID` | Session ID is null or empty |
+| `ERROR_CALL_TOKEN` | Invalid or missing call token |
+| `ERROR_CALLING_VIEW_REF_NULL` | Container view is null |
