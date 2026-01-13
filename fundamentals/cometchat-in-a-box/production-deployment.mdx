@@ -3,7 +3,7 @@ title: "Production Deployment"
 sidebarTitle: "Production Deployment"
 ---
 
-Deploy the full stack on Docker Swarm with rolling updates, hardened networking, and TLS termination.
+Deploy the full stack on Docker Swarm using the provided scripts.
 
 ## Initialize Docker Swarm (manager node)
 
@@ -14,13 +14,13 @@ docker node ls
 
 ## Deploy the complete infrastructure
 
-Run the deployment script from the repository root:
+From the repository root:
 
 ```bash
 ./deploy.sh
 ```
 
-The script creates networks and volumes, then brings up all Swarm services defined in `docker-compose.yml` in the correct order.
+The deployment script initializes required containers, creates Docker networks and volumes, deploys all Swarm services defined in `docker-compose.yml`, and starts components in the correct order.
 
 ## Rolling updates
 
@@ -32,27 +32,22 @@ Performs zero-downtime rolling updates, refreshes configuration, and replaces co
 
 ## Production NGINX reverse proxy
 
-NGINX handles TLS termination, routing, WebSocket upgrades, and proxy buffering. Update domain mappings in:
+NGINX handles TLS termination, API routing, WebSocket upgrades, and proxy buffering. Update domain mappings in:
 
-- `chatapi.conf`
-- `extensions.conf`
-- `mgmtapi.conf`
-- `notifications.conf`
-- `dashboard.conf`
-- `globalwebhooks.conf`
-- `moderation.conf`
-- `websocket.conf`
+- chatapi.conf
+- extensions.conf
+- mgmtapi.conf
+- notifications.conf
+- dashboard.conf
+- globalwebhooks.conf
+- moderation.conf
+- websocket.conf
 
-## Domain configuration
+## Domain configuration (production)
 
-When replacing `<your-domain>`, update environment values for:
+When replacing `<your-domain>`, update environment values for Chat API, Management API, Extensions, Notifications, Moderation, Webhooks, SQL Consumer, and NGINX reverse proxy hostnames. Ensure the WebSocket host in Chat API aligns with the chosen domain (for example, `chat.example.com`).
 
-- Chat API, Management API, Extensions, Notifications, Moderation, Webhooks, and SQL Consumer
-- NGINX reverse proxy hostnames
-- WebSocket host configuration in Chat API
-- Example: use `chat.example.com` or `api.example.com` in place of `<your-domain>` throughout.
-
-## Useful Swarm operations
+## Useful production commands (Swarm operations)
 
 General management:
 
@@ -79,13 +74,13 @@ docker stack ps cometchat
 
 | Component | URL |
 | --- | --- |
-| Dashboard | `https://app.<your-domain>` |
-| Chat API | `https://api-us.<your-domain>/health-check` |
-| Client API | `https://apiclient-us.<your-domain>/health-check` |
-| Management API | `https://apimgmt.<your-domain>/health-check` |
-| Notifications | `https://notifications-us.<your-domain>/health-check` |
-| Moderation | `https://rule-us.<your-domain>/health` |
-| WebSocket | `https://websocket-us.<your-domain>/v1/health` |
-| Webhooks | `https://webhooks-us.<your-domain>/v1/webhooks/health-check` |
+| Dashboard | `https://app.example.com` |
+| Chat API | `https://api-us.example.com/health-check` |
+| Client API | `https://apiclient-us.example.com/health-check` |
+| Management API | `https://apimgmt.example.com/health-check` |
+| Notifications | `https://notifications-us.example.com/health-check` |
+| Moderation | `https://rule-us.example.com/health` |
+| WebSocket | `https://websocket-us.example.com/v1/health` |
+| Webhooks | `https://webhooks-us.example.com/v1/webhooks/health-check` |
 
-Replace `<your-domain>` with your actual domain (for example, `example.com` or `chat.example.com`).
+Replace `example.com` with your actual domain, such as `chat.example.com`.

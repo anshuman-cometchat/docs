@@ -3,9 +3,9 @@ title: "Persistence & Backup"
 sidebarTitle: "Persistence & Backup"
 ---
 
-Guidelines for storing, backing up, and restoring persistent data in production.
+Defines how persistent data is stored, backed up, and restored in production environments.
 
-## Volume layout (defaults)
+## Volume layout
 
 | Service | Default path |
 | --- | --- |
@@ -15,17 +15,17 @@ Guidelines for storing, backing up, and restoring persistent data in production.
 | Redis | `/data` |
 | MongoDB | `/data/db` |
 
-Use SSD or NVMe-backed storage for all stateful volumes.
+All persistent volumes should be backed by SSD or NVMe storage for production deployments.
 
 ## Backup strategy
 
 - TiDB: daily backups to secure, off-cluster storage
 - Kafka: weekly segment-level backups
-- Redis: RDB snapshots every 6 hours (cache is non-authoritative)
+- Redis: RDB snapshots every 6 hours (cache data is non-authoritative)
 - Backup validation: monthly restore and integrity verification tests
 
 ## Disaster recovery
 
 - Validate full restore procedures at least once per quarter
 - Maintain a minimum of three geographically isolated backup copies
-- Run staged DR simulations such as warm-standby restoration and full cluster rehydration
+- Run staged disaster recovery simulations such as warm-standby restoration and full cluster rehydration from backups

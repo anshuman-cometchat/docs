@@ -3,38 +3,58 @@ title: "Scaling"
 sidebarTitle: "Scaling"
 ---
 
-Guidance for scaling platform components as traffic grows.
-
-## Horizontal scaling
-
-- WebSocket Gateway: ~1 replica per 1,000-1,500 peak concurrent connections (PCC)
-- Chat API: scale out when average CPU exceeds ~60%
-- Kafka: increase partition counts to raise throughput and parallelism
-- Redis: enable Redis Cluster mode when deployments exceed ~200k MAU
+Guidelines for scaling platform components based on load and resource requirements.
 
 ## Vertical scaling
 
+Increase system resource limits and tune configurations to handle more load on existing servers:
+
 - Raise file descriptor limits
 - Tune kernel network queues (`somaxconn`, `netdev_max_backlog`)
-- Increase application worker processes and thread pools where supported
-- Example file descriptor tuning:
+- Increase worker processes and thread pools where supported
 
-```bash
-sudo tee -a /etc/security/limits.conf <<'EOF'
+### Configure file descriptor limits
+
+1. Edit `/etc/security/limits.conf` and add:
+
+```
 * soft nofile 500000
 * hard nofile 500000
 root soft nofile 500000
 root hard nofile 500000
-EOF
+```
+
+2. Configure systemd defaults:
+
+```bash
 echo "DefaultLimitNOFILE=500000" | sudo tee -a /etc/systemd/system.conf
 echo "DefaultLimitNOFILE=500000" | sudo tee -a /etc/systemd/user.conf
+```
+
+3. Reboot to apply changes:
+
+```bash
 sudo reboot
+```
+
+4. Verify:
+
+```bash
 ulimit -n
 ```
 
 ## When to migrate to Kubernetes
 
+Consider Kubernetes when:
+
 - MAU exceeds ~200k
-- Multi-region deployments or failover are required
+- You need multi-region deployments or failover
 - Sub-50 ms latency targets are critical
-- Dynamic autoscaling and elasticity are operational priorities
+- Dynamic autoscaling and elasticity are operational priorities (HPA/VPA)
+
+### Horizontal scaling guidelines
+
+- WebSocket Gateway: add ~1 replica per 1,000-1,500 peak concurrent connections (PCC)
+- Chat API: scale out when average CPU utilization exceeds ~60%
+- Kafka: increase partition count to improve throughput and parallelism
+- Redis: enable Redis Cluster mode when deployments exceed ~200k MAU to distribute data and improve scalability

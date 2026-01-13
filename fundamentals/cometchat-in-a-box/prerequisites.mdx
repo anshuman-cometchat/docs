@@ -10,45 +10,44 @@ sidebarTitle: "Prerequisites"
 
 ## Required software
 
-- Docker Engine 24 or later
-- Docker Compose v2 or later
+- Docker Engine >= 24
+- Docker Compose >= v2
 - Git
-- OpenSSL 1.1 or later
-- CLI tooling: `jq`, `curl`, `net-tools`
+- OpenSSL >= 1.1
+- jq, curl, net-tools
 
 ## Minimum hardware (testing / QA)
 
-| Environment | vCPUs | RAM  | Storage | Network |
-| --- | --- | --- | --- | --- |
-| Local / QA | 8 vCPUs | 16 GB | 100 GB SSD (minimum) | 1 Gbps |
+- 8 vCPUs
+- 16 GB RAM
+- 100 GB SSD (minimum; scale up based on workload and storage needs)
 
-## Production hardware sizing
+## Production hardware
 
-### Baseline profile
+### Baseline sizing
 
-| MAU | Peak concurrent connections | vCPUs | RAM |
+| MAU | Peak concurrent connections (PCC) | vCPUs | RAM |
 | --- | --- | --- | --- |
-| 10k | 500 | 32 | 64 GB |
-| 25k | 1,250 | 64 | 128 GB |
-| 50k | 2,500 | 96 | 192 GB |
-| 100k | 5,000 | 156 | 312 GB |
-| 200k | 10,000 | 272 | 544 GB |
+| 10k | 500 | 32 | 64 GiB |
+| 25k | 1,250 | 64 | 128 GiB |
+| 50k | 2,500 | 96 | 192 GiB |
+| 100k | 5,000 | 156 | 312 GiB |
+| 200k | 10,000 | 272 | 544 GiB |
 
-### High concurrency profile
+Storage guidance: start at 100 GB SSD and scale to 500 GB to 2 TB SSD depending on workload and data retention.
 
-| MAU | Peak concurrent connections | vCPUs | RAM |
+### High-concurrency sizing
+
+| MAU | Peak concurrent connections (PCC) | vCPUs | RAM |
 | --- | --- | --- | --- |
-| 10k | 1,000 | 48 | 96 GB |
-| 25k | 2,500 | 96 | 192 GB |
-| 50k | 5,000 | 156 | 312 GB |
-| 100k | 10,000 | 240 | 480 GB |
-| 200k | 20,000 | 480 | 960 GB |
+| 10k | 1,000 | 48 | 96 GiB |
+| 25k | 2,500 | 96 | 192 GiB |
+| 50k | 5,000 | 156 | 312 GiB |
+| 100k | 10,000 | 240 | 480 GiB |
+| 200k | 20,000 | 480 | 960 GiB |
 
-**Storage guidance**
-
-- Start at 100 GB SSD for lower tiers; plan 500 GB to 2 TB SSD for higher concurrency or media-heavy workloads.
-- Size storage based on data volume, retention, and throughput requirements.
+Storage guidance: expect to exceed 100 GB SSD; plan 500 GB to 2 TB SSD as concurrency and data volume grow.
 
 ## Required ports
 
-- `80` / `443` to the NGINX reverse proxy (HTTP / HTTPS entrypoints)
+- 80 / 443 to NGINX (HTTP / HTTPS)

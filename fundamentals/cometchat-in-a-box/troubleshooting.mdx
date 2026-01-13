@@ -3,51 +3,48 @@ title: "Troubleshooting"
 sidebarTitle: "Troubleshooting"
 ---
 
-Common operational issues, quick checks, and log locations.
+Common operational issues and debugging guidance.
 
-## Common problems and resolutions
+## Common problems and likely causes
 
-**502 errors** - Chat API unreachable or unhealthy behind NGINX  
-- Check service health: `docker service ps <chat-api-service>`  
-- Review NGINX upstreams and logs for routing errors.
+### 502 errors
+- Possible cause: Chat API unreachable or unhealthy behind NGINX.
+- Resolution:
+  - Ensure the Chat API service is running: `docker service ps <chat-api-service>`
+  - Check NGINX logs and upstream configuration to verify routing and upstream health.
 
-**Kafka lag** - Consumer slowdown or insufficient partitions  
-- Inspect lag: `kafka-consumer-groups --describe --group <group> --bootstrap-server <broker>`  
-- Increase partitions if needed: `kafka-topics --alter --partitions <count> --topic <topic> --bootstrap-server <broker>`.
+### Kafka lag
+- Possible cause: Consumer slowdown or insufficient partition count.
+- Resolution:
+  - Check Kafka consumer lag: `kafka-consumer-groups --describe --group <your-consumer-group> --bootstrap-server <kafka-broker>`
+  - Increase partitions if needed: `kafka-topics --alter --partitions <new-partition-count> --topic <your-topic> --bootstrap-server <kafka-broker>`
 
-**Redis eviction** - Memory pressure or wrong eviction policy  
-- Inspect memory settings: `redis-cli config get maxmemory` and `redis-cli config get maxmemory-policy`  
-- Apply an eviction policy such as `redis-cli config set maxmemory-policy allkeys-lru`.
+### Redis eviction
+- Possible cause: Memory pressure or incorrect eviction policy.
+- Resolution:
+  - Inspect memory settings: `redis-cli config get maxmemory` and `redis-cli config get maxmemory-policy`
+  - Set an eviction policy such as `redis-cli config set maxmemory-policy allkeys-lru`
 
-**TiKV region errors** - Disk latency, contention, or store imbalance  
-- Check cluster status: `tiup cluster display`  
-- Rebalance if required: `tiup cluster restart <cluster-name> --force`.
+### TiKV region errors
+- Possible cause: Disk latency, resource contention, or store imbalance.
+- Resolution:
+  - Check TiKV store status: `tiup cluster display`
+  - Rebalance regions if needed: `tiup cluster restart <cluster-name> --force`
 
 ## Debugging commands
 
-Container and Swarm diagnostics:
+### Container and Swarm diagnostics
+- View container logs: `docker logs <container-name>`
+- Check service status: `docker service ps <service-name>`
+- Inspect container details: `docker inspect <container-name>`
 
-```bash
-docker logs <container>
-docker service ps <service>
-docker inspect <container>
-```
+### TiDB cluster status
+- Display cluster status with TiUP: `tiup cluster display <cluster-name>`
 
-TiDB cluster status:
+## Conclusion
 
-```bash
-tiup cluster display
-```
+This Platform Deployment & Operations Guide provides comprehensive guidance for deploying, operating, and scaling a high-performance real-time messaging platform, from local development environments to enterprise-scale production deployments. It addresses deployment strategies, configuration management, security controls, monitoring, scaling, upgrades, and troubleshooting.
 
-Kafka consumer diagnostics:
-
-```bash
-kafka-consumer-groups --describe
-```
-
-## Log locations
-
-- NGINX: `/var/log/nginx/`
-- Application logs: via `docker logs` per container
-- TiDB: `/logs/tidb/`
-- Kafka: `/logs/kafka/`
+Document Version: 1.0  
+Last Updated: January 2026  
+Prepared by: DevOps Team

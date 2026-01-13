@@ -3,16 +3,16 @@ title: "Quick Start (Local Deployment)"
 sidebarTitle: "Quick Start"
 ---
 
-Run the entire platform locally with Docker Compose for development, QA, and API exploration. This setup is not hardened for production workloads.
+Run the platform locally on a single machine with Docker Compose for development and QA. This setup is not hardened for production workloads.
 
-## 1) Install Git
+## Install Git
 
 ```bash
 sudo apt update -y
 sudo apt install git -y
 ```
 
-## 2) Clone the repository
+## Clone the repository
 
 ```bash
 git clone https://github.com/cometchat-team/cometchat-chat-api-infra-backend.git
@@ -20,7 +20,9 @@ cd cometchat-chat-api-infra-backend
 git switch docker-swarm-setup-x86
 ```
 
-## 3) Install Docker & Docker Compose (local only)
+## Install Docker & Docker Compose (local only)
+
+Use the included script, then verify the installation:
 
 ```bash
 ./install-docker-ubuntu.sh
@@ -28,24 +30,25 @@ docker --version
 docker-compose --version
 ```
 
-## 4) Start the local Docker environment
+## Start the local Docker environment
 
 ```bash
 docker compose pull
 docker compose up -d
 ```
 
-Result: all services required for local development start on the same host.
+Result: all services required for local development start on one host.
 
-## 5) Validate the deployment
+## Validate the local deployment
 
 - WebSocket Gateway: `http://localhost/v1/health`
-- Chat API: `http://localhost/health`
+- Chat API health check: `http://localhost/health`
 
-## What this setup includes
+## What this local setup includes
 
-- Kafka, Redis, MongoDB
+- Kafka
+- Redis
+- MongoDB
 - Local Docker volumes for persistence
-- Single-node deployment tuned for development and debugging
 
-> Use this environment only for development, debugging, and API testing. Do not run production traffic against it.
+> Intended for development, debugging, and API testing only. Do not use this environment for production traffic.

@@ -3,48 +3,51 @@ title: "Security"
 sidebarTitle: "Security"
 ---
 
-Security controls focus on authentication, secrets management, network isolation, and TLS posture.
+Security controls focus on authentication, secrets management, network isolation, TLS posture, and protective controls against abuse.
 
 ## Authentication
 
-- JWT authentication with RSA key pairs
-- Optional SSO via OIDC or SAML 2.0
-- Rotate tokens and keys regularly for long-running environments
-- Generate RSA key pair:
+Use JWT-based authentication with RSA key pairs so only authorized users interact with the platform. Single sign-on via OIDC or SAML 2.0 can be layered on when needed.
+
+Actionable steps:
+- Generate an RSA key pair (example):
 
 ```bash
 openssl genpkey -algorithm RSA -out private.key -pkeyopt rsa_keygen_bits:2048
 openssl rsa -pubout -in private.key -out public.key
 ```
 
+- Validate JWTs in your backend with the public key.
+- Rotate signing keys every 30-90 days for long-running deployments.
+
 ## Secrets management
 
-- HashiCorp Vault for centralized secret storage with auditing and access control
-- Docker Swarm secrets for encrypted in-transit/at-rest injection into services
-- Store secrets in Vault:
+Centralize and encrypt sensitive data such as passwords, API keys, and tokens.
 
-```bash
-vault kv put secret/dbpassword value="your-secure-password"
-```
-
-- Store secrets in Swarm:
+- HashiCorp Vault for RBAC, audit logs, and encrypted storage.
+  - Store a secret: `vault kv put secret/dbpassword value="your-secure-password"`
+  - Retrieve secrets via Vault APIs or client libraries.
+- Docker Swarm secrets for encrypted in-transit and at-rest injection.
+  - Create and use a secret:
 
 ```bash
 echo "your-secure-password" | docker secret create db_password -
 ```
 
+Include the secret in your compose or service definitions.
+
 ## Network security
 
-- All backend services run on private overlay networks
-- Only the NGINX reverse proxy is exposed to the public internet
-- Keep all service-to-service traffic inside the private network
+Run backend services on private overlay networks and expose only NGINX to the internet.
+
+Actionable steps:
 - Create a private overlay network:
 
 ```bash
 docker network create --driver overlay private_network
 ```
 
-- Example firewall hardening (Ubuntu ufw):
+- Harden firewall rules to allow only the necessary ports (80/443) and block the rest, for example:
 
 ```bash
 sudo ufw allow 80,443/tcp
@@ -54,29 +57,30 @@ sudo ufw enable
 
 ## TLS configuration
 
-- Enforce TLS 1.2 or higher
-- Disable weak ciphers and deprecated protocols
-- Maintain at least two active certificates to enable seamless rotation
-- Example NGINX TLS settings:
+Encrypt all traffic with TLS 1.2 or higher and plan for seamless certificate rotation.
+
+- Enforce strong TLS in NGINX:
 
 ```nginx
 ssl_protocols TLSv1.2 TLSv1.3;
 ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:...';
 ```
 
-## Additional controls
+- Maintain at least two certificates to rotate without downtime.
 
-- Rate limiting: apply NGINX rate limits to absorb bursts or abuse.
+## Additional security measures
+
+- Rate limiting: protect against abuse or DDoS using NGINX rate limits:
 
 ```nginx
 limit_req_zone $binary_remote_addr zone=mylimit:10m rate=10r/s;
 limit_req zone=mylimit burst=20;
 ```
 
-- IP allowlists: restrict access to sensitive services by source IP.
+- IP allowlisting: restrict access to sensitive services:
 
 ```bash
 sudo ufw allow from 192.168.1.0/24 to any port 3306
 ```
 
-- Log monitoring: ship and watch logs for anomalous events (Grafana, Prometheus alerts, ELK/Loki).
+- Log monitoring: collect and monitor logs (e.g., Prometheus alerts, Grafana dashboards, ELK/Loki) to detect suspicious activity.

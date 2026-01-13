@@ -3,20 +3,20 @@ title: "Air-Gapped Deployment"
 sidebarTitle: "Air-Gapped"
 ---
 
-Deploying offline or in isolated environments requires preloading container images and hosting a private registry.
+Guidelines for deploying the platform in offline or isolated (air-gapped) environments.
 
-## Offline installation
+## Offline installation steps
 
 - Export required Docker images with `docker save`
-- Transfer images via removable media, secure copy, or an isolated internal network
+- Transfer images via removable media, secure copy (SSH), or an isolated internal network
 - Import images on the target system with `docker load`
 
 ## Local registry
 
 - Host images in Harbor, Nexus, or a private Docker registry
-- Enforce RBAC and image retention policies
+- Enforce role-based access control (RBAC) and image retention policies
 
-## Limitations
+## Limitations in air-gapped mode
 
 - No access to external push notification services
 - No S3 or other cloud object storage unless internally emulated
