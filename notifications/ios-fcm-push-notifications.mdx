@@ -289,6 +289,12 @@ final class CometChatFCMHelper {
 
 {/* Alternative: pass the FCM token into `UIKitSettings` via `.set(fcmKey:)` before `CometChatUIKit.init` (e.g., `SceneDelegate`), alongside APNs device/VoIP tokens. */}
 
+**What this helper is doing**
+
+- Wraps permission prompts + delegate wiring so you can call one method from `AppDelegate`.  
+- Sets the notification delegate early and registers for APNs on the main queue (Apple requirement).  
+- Keeps all push setup in a reusable singleton to call from tests, scenes, or multi-target setups.
+
 ## 7. Testing checklist
 
 1. `FirebaseApp.configure()` runs; FCM token logs after login; registration with CometChat succeeds.
