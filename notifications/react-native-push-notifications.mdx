@@ -1,6 +1,6 @@
 ---
 title: "React Native Push Notifications"
-description: "Bring the SampleAppWithPushNotifications experience—FCM/APNs, inline replies, and call-style VoIP alerts—into any React Native project using CometChat UI Kit."
+description: "Bring the SampleAppWithPushNotifications experience—FCM/APNs into any React Native project using CometChat UI Kit."
 ---
 
 <Card
@@ -8,7 +8,7 @@ description: "Bring the SampleAppWithPushNotifications experience—FCM/APNs, in
   icon="github"
   href="https://github.com/cometchat/cometchat-uikit-react-native/tree/v5/examples/SampleAppWithPushNotifications"
 >
-  Browse the full React Native push sample (UI Kit + Calls + VoIP).
+  Browse the full React Native push sample (UI Kit).
 </Card>
 
 ## What this guide covers
@@ -269,7 +269,7 @@ func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive respo
 
 Add the following to `Podfile` to avoid framework linkage issues:
 ```ruby
-  use_frameworks! :linkage => :static
+use_frameworks! :linkage => :static
 ```
 
 You might have to remove below code if already present in your Podfile:
@@ -354,7 +354,7 @@ await CometChatNotifications.unregisterPushToken();
 2. Send a message from another user:
    - Foreground: Notifee banner shows unless that chat is open.
    - Background/terminated: tap opens the correct conversation; Notifee background handler runs.
-3. iOS: verify APNs device token + VoIP token register; tap push from killed app opens the right chat; remote notifications finish handler is called.
+3. iOS: verify APNs device token register; tap push from killed app opens the right chat; remote notifications finish handler is called.
 4. Trigger incoming call push: native CallKeep UI should show caller info; Accept/Decline routes to the app and clears CallKeep state on cancel/end.
 5. Rotate tokens (reinstall or revoke) and confirm `onTokenRefresh` re-registers.
 
