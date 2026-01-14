@@ -53,11 +53,12 @@ From the same screen, click **Add Provider** to upload the Firebase service acco
   <img src="/images/c6447647-pushnotification-fcm-68092b02a5361d51ba14b09289da3a78.png" alt="Upload FCM service account JSON" />
 </Frame>
 
-3. **Local constants**: Set App ID, Auth Key, Region in `AppCredentials.kt`, and paste the Provider ID into `AppConstants.FCMConstants.PROVIDER_ID`. Update `applicationId`, package names, icons, and app name.
+3. **App constants**: Note down your CometChat App ID, Auth Key, and Region from the CometChat dashboard and keep them available to be added to your project's AppCrendentials.kt. 
+Similarly, note the FCM Provider ID generated in the CometChat dashboard and add the same in your AppConstants.kt; this will be when registering the FCM token with CometChat.
 
 ## 2. Add dependencies (Gradle)
 
-Use a version catalog and aliases:
+Use a version catalog and aliases (Update `applicationId`, package names, icons, and app name.). Also, if you are new to CometChat, please review the Maven repositories and related setup requirements before proceeding.
 
 <Tabs>
 <Tab title="TOML (libs.versions.toml)">
