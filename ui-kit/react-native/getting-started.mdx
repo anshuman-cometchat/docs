@@ -309,10 +309,13 @@ import {
   CometChatUiKitConstants,
   UIKitSettings,
   CometChatThemeProvider,
+  CometChatI18nProvider,
 } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-import Messages from "./src/components/Messages";
+import Messages from "./Messages";
+
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 /* -------------------------------------------------------------------------- */
 /*  ⚙️  Replace the placeholders below with your own CometChat credentials.    */
@@ -372,6 +375,10 @@ const App = (): React.ReactElement => {
   /* Render                                                              */
   /* ------------------------------------------------------------------ */
   return (
+
+    <GestureHandlerRootView style={{ flex: 1 }}>
+    <CometChatI18nProvider>
+
     <SafeAreaView style={styles.fullScreen}>
       <CometChatThemeProvider>
         {/* Show conversations only after the user is logged in */}
@@ -415,6 +422,9 @@ const App = (): React.ReactElement => {
         )}
       </CometChatThemeProvider>
     </SafeAreaView>
+
+    </CometChatI18nProvider>
+    </GestureHandlerRootView>
   );
 };
 
