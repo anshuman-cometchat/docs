@@ -243,28 +243,28 @@ UNUserNotificationCenter.current().requestAuthorization(
 
 Add the following methods to handle push notification events:
 ```swift
-  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-      print("APNs device token received: \(deviceToken)")
-      RNCPushNotificationIOS.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)
-  }
+func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+  print("APNs device token received: \(deviceToken)")
+  RNCPushNotificationIOS.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)
+}
 
-  func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-      print("APNs registration failed: \(error)")
-      RNCPushNotificationIOS.didFailToRegisterForRemoteNotificationsWithError(error)
-  }
+func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+  print("APNs registration failed: \(error)")
+  RNCPushNotificationIOS.didFailToRegisterForRemoteNotificationsWithError(error)
+}
 
-  func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-      RNCPushNotificationIOS.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
-  }
+func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+  RNCPushNotificationIOS.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+}
 
-  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-      completionHandler([.banner, .sound, .badge])
-  }
-
-  func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-      RNCPushNotificationIOS.didReceive(response)
-      completionHandler()
-  }
+func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    completionHandler([.banner, .sound, .badge])
+}
+  
+func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+  RNCPushNotificationIOS.didReceive(response)
+  completionHandler()
+}
 ```
 
 Add the following to `Podfile` to avoid framework linkage issues:
