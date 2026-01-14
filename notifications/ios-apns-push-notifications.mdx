@@ -69,11 +69,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
     // MARK: - Foreground Notifications
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("📬 willPresent notification: \(notification.request.content.userInfo)")
+        print("willPresent notification: \(notification.request.content.userInfo)")
         let userInfo = notification.request.content.userInfo
         
         if CometChatPNHelper.shouldPresentNotification(userInfo: userInfo) == false {
-            print("🚫 Suppressing notification (user is in active chat)")
+            print("Suppressing notification (user is in active chat)")
             completionHandler([])
             return
         }
@@ -85,7 +85,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
         let userInfo = response.notification.request.content.userInfo
-        print("👆 User tapped notification: \(userInfo)")
+        print("User tapped notification: \(userInfo)")
 
         if response.actionIdentifier == "REPLY_ACTION" {
             if let textResponse = response as? UNTextInputNotificationResponse {
