@@ -90,7 +90,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         if response.actionIdentifier == "REPLY_ACTION" {
             if let textResponse = response as? UNTextInputNotificationResponse {
                 let userReply = textResponse.userText
-                print("💬 Quick reply: \(userReply)")
+                print("Quick reply: \(userReply)")
                 CometChatPNHelper.handleQuickReplyActionOnNotification(userInfo: userInfo, text: userReply, completionHandler: completionHandler)
             }
             completionHandler()
@@ -192,7 +192,7 @@ extension AppDelegate: PKPushRegistryDelegate, CXProviderDelegate {
     }
 
     func provider(_ provider: CXProvider, perform action: CXSetMutedCallAction) {
-        print("🔇 User toggled mute: \(action.isMuted)")
+        print("User toggled mute: \(action.isMuted)")
         CometChatCalls.audioMuted(action.isMuted)
         action.fulfill()
     }
@@ -1026,7 +1026,9 @@ class CometChatPNHelper {
 
 ## 4. Register APNs device + VoIP tokens with CometChat
 
-
+- In your `AppDelegate.swift`, implement the following methods to handle APNs registration success and failure, and to register the device token with CometChat.
+- Make sure to import the necessary modules at the top of the file.
+- Complete your `AppDelegate.swift` as shown below:
 
 ```Swift
 import UIKit
@@ -1075,9 +1077,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 ```
 
-
-
-## 7. Testing checklist
+## 5. Testing checklist
 
 1. Install on a device; grant notification permission. Verify APNs device token logs.
 2. Log in, then confirm both device + VoIP tokens register with CometChat (success callbacks).
@@ -1087,7 +1087,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 4. Trigger an incoming call; CallKit UI should show caller info. Accept should join the call; Decline should reject via CometChat and end CallKit.
 5. Rotate tokens (reinstall or toggle VoIP) to ensure re-registration works.
 
-## 8. Troubleshooting
+## 6. Troubleshooting
 
 | Symptom | Quick checks |
 | --- | --- |
