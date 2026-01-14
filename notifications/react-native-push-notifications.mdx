@@ -238,7 +238,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 Add the following inside the `didFinishLaunchingWithOptions` method:
 ```swift
-    //==================================================== 
     UNUserNotificationCenter.current().delegate = self
 
     UNUserNotificationCenter.current().requestAuthorization(
@@ -251,8 +250,7 @@ Add the following inside the `didFinishLaunchingWithOptions` method:
       } else {
         print("Push Notification permission not granted: \(String(describing: error))")
       }
-    }
-    //====================================================
+    } 
 ```
 
 Add the following methods to handle push notifications:
@@ -383,14 +381,7 @@ After user login, register the APNs token:
 
 Prior to logout, unregister the APNs token:
 ```tsx
-    // Unregister APNs token if we have it
-    if (apnsTokenRef.current) {
-      await CometChatNotifications.unregisterPushToken(
-        apnsTokenRef.current,
-        CometChatNotifications.PushPlatforms.APNS_REACT_NATIVE_DEVICE
-      );
-      console.log(' APNs token unregistered from CometChat');
-    }
+    await CometChatNotifications.unregisterPushToken();
 ```
 
 {/* ## 7. Token registration and runtime handling
