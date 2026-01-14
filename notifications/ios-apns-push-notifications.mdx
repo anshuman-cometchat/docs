@@ -109,6 +109,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 import Foundation
 import PushKit
 import CallKit
+import AVFoundation
 import CometChatSDK
 import CometChatCallsSDK
 
@@ -182,6 +183,10 @@ extension AppDelegate: PKPushRegistryDelegate, CXProviderDelegate {
 
     func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
         print("User answered call")
+        
+        // CRITICAL: Configure audio session BEFORE answering
+        configureAudioSession()
+        
         cometchatAPNsHelper.onAnswerCallAction(action: action)
     }
 
@@ -196,7 +201,51 @@ extension AppDelegate: PKPushRegistryDelegate, CXProviderDelegate {
         CometChatCalls.audioMuted(action.isMuted)
         action.fulfill()
     }
+    
+    // MARK: - CRITICAL: Audio Session Delegates (MISSING IN YOUR CODE)
+    
+    /// Called when CallKit activates the audio session
+    func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
+        print("Audio session activated")
+        
+        // Configure audio session for VoIP
+        configureAudioSession()
+        
+        // Removed CometChatCalls.startAudioSession() as per instructions
+    }
+    
+    /// Called when CallKit deactivates the audio session
+    func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
+        print("Audio session deactivated")
+        
+        // Removed CometChatCalls.stopAudioSession() as per instructions
+    }
+    
+    // MARK: - Audio Session Configuration
+    
+    /// Configure AVAudioSession for VoIP calls
+    private func configureAudioSession() {
+        let audioSession = AVAudioSession.sharedInstance()
+        
+        do {
+            // Set category for VoIP with speaker and bluetooth support
+            try audioSession.setCategory(
+                .playAndRecord,
+                mode: .voiceChat,
+                options: [.allowBluetooth, .allowBluetoothA2DP]
+            )
+            
+            // Activate the session
+            try audioSession.setActive(true)
+            
+            print("Audio session configured successfully")
+            
+        } catch {
+            print("Failed to configure audio session: \(error.localizedDescription)")
+        }
+    }
 }
+
 #endif
   ```
   </Tab>
