@@ -1,0 +1,152 @@
+---
+title: "Web Push Notifications"
+description: "Set up FCM web push for CometChat React UI Kit—service worker, VAPID keys, token registration, and foreground/background handlers."
+---
+
+<Card
+  title="Reference implementation"
+  icon="github"
+  href="https://github.com/cometchat/cometchat-uikit-react"
+>
+  React UI Kit sample app with web push enabled (service worker + token registration).
+</Card>
+
+## What this guide covers
+
+- CometChat dashboard setup (FCM provider + Provider ID) and Firebase web config + VAPID key.
+- Service worker + Firebase Messaging wiring for foreground/background pushes.
+- Token registration/unregistration with `CometChatNotifications` and navigation on notification click.
+- Testing and troubleshooting tips for web push.
+
+## What you need first
+
+- CometChat App ID, Region, Auth Key; Push Notifications enabled with an **FCM provider** (copy the Provider ID).
+- Firebase project with a **Web app** registered; Firebase config object; **VAPID key** from Cloud Messaging.
+- Node 18+ and a modern browser that supports service workers/notifications.
+
+## How CometChat + FCM work on web
+
+- **Provider ID**: Tells CometChat which Firebase credentials to use when sending to your web app.
+- **Tokens**: `getToken` returns a browser token (per origin/device). Register it after login:
+  `CometChatNotifications.registerPushToken(token, CometChatNotifications.PushPlatforms.FCM_WEB, providerId)`.
+- **Handlers**: Foreground messages come via `messaging.onMessage`; background uses `firebase-messaging-sw.js` with `onBackgroundMessage`.
+- **Navigation**: Service worker sends a postMessage or focuses the client; the app routes to the right view.
+
+## 1. Dashboard: enable push + add FCM provider
+
+1. Go to **Notifications → Settings** and enable **Push Notifications**.
+2. Add/configure an **FCM** provider and copy the **Provider ID** (used in code).
+
+## 2. Firebase setup (web app + VAPID)
+
+1. In Firebase Console, create/select a project.
+2. Add a **Web** app (`</>`), copy the **Firebase config** object.
+3. In **Project settings → Cloud Messaging**, generate/copy the **VAPID key** under Web Push certificates.
+
+## 3. Install dependencies
+
+```bash
+npm install firebase@^10.3.1
+```
+
+## 4. Configure Firebase (frontend)
+
+File: `src/firebase.js` (or equivalent)
+
+```js
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+
+const firebaseConfig = {
+  apiKey: "...",
+  authDomain: "...",
+  projectId: "...",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "...",
+  measurementId: "..."
+};
+
+const messaging = getMessaging(initializeApp(firebaseConfig));
+```
+
+Use your **VAPID key** in `getToken` calls.
+
+## 5. Service worker (background pushes)
+
+File: `public/firebase-messaging-sw.js`
+
+```js
+importScripts("https://www.gstatic.com/firebasejs/10.3.1/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/10.3.1/firebase-messaging-compat.js");
+
+firebase.initializeApp({ /* same firebaseConfig as above */ });
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage(payload => {
+  const { title, body } = payload.notification || {};
+  self.registration.showNotification(title || "New message", {
+    body: body || "",
+    data: payload.data,
+  });
+});
+
+self.addEventListener("notificationclick", event => {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: "window", includeUncontrolled: true }).then(clientsArr => {
+      const client = clientsArr.find(c => c.visibilityState === "visible") || clientsArr[0];
+      if (client) {
+        client.focus();
+        client.postMessage({ type: "NOTIFICATION_CLICK", data: event.notification.data });
+        return;
+      }
+      return clients.openWindow("/");
+    })
+  );
+});
+```
+
+Ensure your app registers the service worker (e.g., in `index.tsx`) and listens for `message` events to navigate.
+
+## 6. Request permission + register token after login
+
+In your app initialization (e.g., `App.tsx`):
+
+```ts
+const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+await CometChatNotifications.registerPushToken(
+  token,
+  CometChatNotifications.PushPlatforms.FCM_WEB,
+  COMETCHAT_CONSTANTS.FCM_PROVIDER_ID
+);
+```
+
+- Run after the user logs in; retry on failure.
+- On logout: `CometChatNotifications.unregisterPushToken()` before ending the session.
+- Handle token refresh by calling `getToken` again and re-registering if it changes.
+
+## 7. Foreground + background handling
+
+- **Foreground**: `messaging.onMessage` → show a `Notification` or in-app toast; deep link using payload data.
+- **Background/killed**: service worker `onBackgroundMessage` shows the notification; `notificationclick` focuses the tab and sends a message for navigation.
+- Suppress duplicates if the conversation is already active.
+
+## 8. Testing checklist
+
+1. Service worker registered (DevTools → Application → Service Workers shows “activated”).
+2. Permission prompt appears and is granted (`Notification.permission === "granted"`).
+3. Login → token fetched → `registerPushToken` succeeds (check console/logs).
+4. Foreground message shows a notification; click navigates to the right chat.
+5. Background/tab inactive message shows a notification; click focuses tab and routes correctly.
+6. Logout → `unregisterPushToken` runs without errors.
+
+## 9. Troubleshooting
+
+| Symptom | Quick checks |
+| --- | --- |
+| No notification | Service worker registered? Permission granted? VAPID key matches Firebase project? FCM Provider ID set in code? |
+| Token registration fails | Run after login; confirm Provider ID; ensure correct Firebase config domain/origin; check console errors. |
+| Click does nothing | Ensure `notificationclick` handler posts a message or opens the client; app listens for postMessage to navigate. |
+| Foreground only | Verify `onBackgroundMessage` in service worker; confirm service worker file is in `/public` and registered. |
+| Wrong project | Config/VAPID from a different Firebase project will invalidate tokens—recreate tokens after updating. |
