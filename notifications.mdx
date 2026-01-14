@@ -73,17 +73,17 @@ import { CardGroup, Card, Columns, Steps, AccordionGroup, Accordion } from 'mint
 
   <div className="mb-12">
     <h2 className="text-gray-700 dark:text-white text-2xl font-semibold">Email Notifications</h2>
-    <p className="text-gray-600 dark:text-gray-300">Fallback emails sent only when a chat message stays undelivered beyond your configurable wait window.</p>
+    <p className="text-gray-600 dark:text-gray-300">Fallback emails sent only when a chat message stays unread beyond your configurable wait window.</p>
 
     <div className="mt-6">
       <AccordionGroup>
         <Accordion title="How it works">
           <Steps>
             <Step title="Choose templates">
-              Set up HTML templates for undelivered-message alerts (e.g., subject/body with sender and message preview).
+              Set up HTML templates for unread-message alerts (e.g., subject/body with sender and message preview).
             </Step>
             <Step title="Set wait window and recipients">
-              Define how long to wait for delivery; if the message is still undelivered, CometChat triggers the email to the intended recipient.
+              Define how long to wait for the message to be read; if it is still unread, CometChat triggers the email to the intended recipient.
             </Step>
             <Step title="Set preferences">
               Honor user/channel preferences and regional rules before sending.
@@ -103,14 +103,14 @@ import { CardGroup, Card, Columns, Steps, AccordionGroup, Accordion } from 'mint
 
   <div className="mb-12">
     <h2 className="text-gray-700 dark:text-white text-2xl font-semibold">SMS Notifications</h2>
-    <p className="text-gray-600 dark:text-gray-300">SMS fallbacks fire only when a chat message remains undelivered after your configurable wait window.</p>
+    <p className="text-gray-600 dark:text-gray-300">SMS fallbacks fire only when a chat message remains unread after your configurable wait window.</p>
 
     <div className="mt-6">
       <AccordionGroup>
         <Accordion title="How it works">
           <Steps>
             <Step title="Connect your SMS provider">
-              Connect credentials and map the “message undelivered past wait window” trigger.
+              Connect credentials and map the “message unread past wait window” trigger.
             </Step>
             <Step title="Compose lightweight payloads">
               Keep payloads concise (sender + message snippet, optional deep link to the conversation).
