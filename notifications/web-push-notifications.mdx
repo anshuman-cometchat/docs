@@ -37,13 +37,23 @@ description: "Set up FCM web push for CometChat React UI Kit—service worker, V
 1. Go to **Notifications → Settings** and enable **Push Notifications**.
 2. Add/configure an **FCM** provider and copy the **Provider ID** (used in code).
 
+<Frame>
+  <img src="/images/80a520bb-pushnotification-enable-e64632d479a2ebba111453b95bd522c6.png" alt="Firebase - Push Notifications" />
+</Frame>
+
 ## 2. Firebase setup (web app + VAPID)
 
 1. In Firebase Console, create/select a project.
 2. Add a **Web** app (`</>`), copy the **Firebase config** object.
 3. In **Project settings → Cloud Messaging**, generate/copy the **VAPID key** under Web Push certificates.
 
+<Frame>
+  <img src="/images/push-notifications-fcm-web.png" alt="Firebase - Push Notifications" />
+</Frame>
+
 ## 3. Install dependencies
+
+Install firebase SDK:
 
 ```bash
 npm install firebase@^10.3.1
