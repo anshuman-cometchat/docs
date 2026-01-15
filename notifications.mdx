@@ -117,7 +117,7 @@ import { CardGroup, Card, Columns, Steps, AccordionGroup, Accordion } from 'mint
               Keep payloads concise (sender + message snippet, optional deep link to the conversation).
             </Step>
             <Step title="Send with compliance">
-              Delivery fires only after the wait window, honoring preferences, quiet hours, and regional rules.
+              CometChat handles routing, retries, user preferences, and regional compliance.
             </Step>
           </Steps>
         </Accordion>
@@ -127,8 +127,8 @@ import { CardGroup, Card, Columns, Steps, AccordionGroup, Accordion } from 'mint
     <h4 className="font-semibold text-gray-700 dark:text-white mb-3 mt-6">Supported workflows</h4>
     <CardGroup cols={3}>
       <Card title="SMS Overview" href="/notifications/sms-overview" horizontal />
-      <Card title="Integration & Triggers" href="/notifications/sms-integration" horizontal />
-      <Card title="Customization & Preferences" href="/notifications/sms-customization" horizontal />
+      <Card title="Integration" href="/notifications/sms-integration" horizontal />
+      <Card title="Templates" href="/notifications/sms-templates" horizontal />
     </CardGroup>
   </div>
 
@@ -182,6 +182,13 @@ import { CardGroup, Card, Columns, Steps, AccordionGroup, Accordion } from 'mint
       cta="View on GitHub"
       horizontal
     />
+
+    {/* <Card
+      title="Push Notification Sample App (Web)" 
+      href="https://github.com/cometchat/cometchat-uikit-react/tree/v6/push-notification-v6/push-notification-sample-app" 
+      cta="View on GitHub"
+      horizontal
+    /> */}
 
   </CardGroup>
 </div>
