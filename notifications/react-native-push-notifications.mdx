@@ -26,6 +26,12 @@ description: "Bring the SampleAppWithPushNotifications experience—FCM/APNs int
 - Apple push setup: APNs `.p8` key/cert in CometChat, iOS project with Push Notifications + Background Modes (Remote notifications) permissions.
 - React Native 0.81+, Node 18+, physical Android + iOS devices for reliable push/call testing.
 
+## How FCM/APNs + CometChat work together
+
+- **FCM (Android) and APNs (iOS) are the transports:** Firebase issues the Android FCM token; Apple issues the APNs token. They deliver the payloads to devices.  
+- **CometChat providers hold your credentials:** The FCM provider you add (for React Native Android) stores your Firebase service account; the APNs provider stores your `.p8` key/cert.  
+- **Registration flow:** Request permission → platform returns token → after `CometChat.login`, register with `CometChatNotifications.registerPushToken(token, platform, providerId)` using `FCM_REACT_NATIVE_ANDROID` on Android and `APNS_REACT_NATIVE_DEVICE` on iOS → CometChat sends pushes to FCM/APNs on your behalf → the app handles taps/foreground events via Notifee/PushNotificationIOS.
+
 ## 1. Enable push and add providers (CometChat Dashboard)
 
 1. Go to **Notifications → Settings** and enable **Push Notifications**.
