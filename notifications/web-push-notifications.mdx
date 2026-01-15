@@ -65,7 +65,7 @@ File: `src/AppConstants.js` (or equivalent)
 
 Set the CometChat Constants from your dashboard and Firebase config + VAPID key.
 
-```js
+```js lines highlight={2-5, 9-15, 18}
 export const COMETCHAT_CONSTANTS = {
   APP_ID: "",
   REGION: "",
@@ -95,7 +95,7 @@ This code:
 - Requests notification permission, fetches FCM token, and registers it with CometChat after login.
 - Sets up foreground message handler to show notifications.
 
-```js
+```js lines
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { CometChatNotifications } from "@cometchat/chat-sdk-javascript";
@@ -236,12 +236,12 @@ This code:
 - Manages notification clicks to focus the app and send data for navigation.
 - Ensure your app registers the service worker (e.g., in `index.tsx`) and listens for `message` events to navigate. 
 
-```js
-// /* eslint-disable no-restricted-globals */
-// /* eslint-disable no-undef */
-// // required to setup background notification handler when browser is not in focus or in background and
-// // In order to receive the onMessage event,  app must define the Firebase messaging service worker
-// // self.importScripts("localforage.js");
+```js lines
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-undef */
+// required to setup background notification handler when browser is not in focus or in background and
+// In order to receive the onMessage event,  app must define the Firebase messaging service worker
+// self.importScripts("localforage.js");
 
 importScripts(
   "https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"
@@ -356,7 +356,7 @@ This code:
 - Fetches FCM token and registers it with CometChat after user login.
 - Handles token refresh by re-registering if it changes.
 
-```ts
+```ts lines
 const token = await getToken(messaging, { vapidKey: VAPID_KEY });
 await CometChatNotifications.registerPushToken(
   token,
@@ -369,7 +369,7 @@ await CometChatNotifications.registerPushToken(
 - On logout: `CometChatNotifications.unregisterPushToken()` before ending the session.
 - Handle token refresh by calling `getToken` again and re-registering if it changes.
 
-Example Implementation: 
+**Example Implementation**: 
 
 This code:
 - Initializes CometChat UI Kit.
@@ -378,7 +378,7 @@ This code:
 - Mounts the React app.
 - Registers the push token after login. 
 
-```tsx
+```tsx lines highlight={11, 13, 41, 57}
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
