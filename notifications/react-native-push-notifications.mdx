@@ -60,7 +60,7 @@ description: "Bring the SampleAppWithPushNotifications experience—FCM/APNs int
 2. Enable Cloud Messaging.
 
 <Frame>
-  <img src="/images/firebase-push-notifications.png" alt="Firebase - Push Notifications" />
+  <img src="/images/push-notifications-fcm-rn.png" alt="Firebase - Push Notifications" />
 </Frame>
 
 ### 2.2 Apple Developer portal
@@ -68,14 +68,27 @@ description: "Bring the SampleAppWithPushNotifications experience—FCM/APNs int
 1. Generate an APNs Auth Key (`.p8`) and note the **Key ID** and **Team ID**.
 2. Enable Push Notifications plus Background Modes → *Remote notifications* on the bundle ID.
 
+<Frame>
+  <img src="/images/notification-capabilities-apns.png" alt="Enable Push Notifications and Background Modes for APNs" />
+</Frame>
+
 ## 3. Local configuration
 
 - Update `src/utils/AppConstants.tsx` with `appId`, `authKey`, `region`, `fcmProviderId`, and `apnProviderId`.
 - Keep `app.json` name consistent with your bundle ID / applicationId.
 
+```ts lines
+const APP_ID = "";  
+const AUTH_KEY = ""; 
+const REGION = ""; 
+const DEMO_UID = "cometchat-uid-1";
+```
+
 ### 3.1 Dependencies snapshot (from Sample App)
 
-```npm
+Install these dependencies in your React Native app:
+
+```npm lines
 npm install \
     @react-native-firebase/app@23.4.0 \
     @react-native-firebase/messaging@23.4.0 \
@@ -89,15 +102,13 @@ Match these or newer compatible versions in your app.
 
 ## 4. Android setup
 
-Place `google-services.json` in `android/app`; then follow the steps below.
-
 ### 4.1 Configure Firebase with Android credentials
 
 To allow Firebase on Android to use the credentials, the `google-services` plugin must be enabled on the project. This requires modification to two files in the Android directory.
 
 First, add the google-services plugin as a dependency inside of your `/android/build.gradle` file:
 
-```android
+```android lines
 buildscript {
   dependencies {
     // ... other dependencies
@@ -108,14 +119,14 @@ buildscript {
 
 Lastly, execute the plugin by adding the following to your `/android/app/build.gradle` file:
 
-```android
+```android lines
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services' 
+apply plugin: 'com.google.gms.google-services'
 ```
 
 ### 4.2 Configure required permissions in `AndroidManifest.xml` as shown.
 
-```xml
+```xml lines
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -133,7 +144,7 @@ apply plugin: 'com.google.gms.google-services'
 
 and ask for runtime permissions where needed (e.g. `POST_NOTIFICATIONS` on Android 13+).
 
-```tsx
+```tsx lines
 import { PermissionsAndroid, Platform } from "react-native";
 
   const requestAndroidPermissions = async () => {
@@ -172,7 +183,7 @@ import { PermissionsAndroid, Platform } from "react-native";
 Inside your main app file where you initialize CometChat, add the below code snippet after the user has logged in successfully.
 Initilize and register the FCM token for Android as shown:
 
-```ts
+```ts lines
 requestAndroidPermissions();
 
 const FCM_TOKEN = await messaging().getToken();
@@ -210,7 +221,7 @@ Enable **Push Notifications** and **Background Modes** (Remote notifications) in
 ### 5.2 Install dependencies:
 
 Install the required packages for iOS push notifications:
-```bash 
+```bash lines
 npm install react-native-push-notification@^8.1.1 
 npm install @react-native-community/push-notification-ios@^1.12.0
 ```
@@ -218,7 +229,7 @@ npm install @react-native-community/push-notification-ios@^1.12.0
 ### 5.3 AppDelegate.swift modifications:
 
 Add imports at the top:
-```swift
+```swift lines
 import UserNotifications
 import RNCPushNotificationIOS
 ```
@@ -229,7 +240,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 ```
 
 Add the following inside the `didFinishLaunchingWithOptions` method:
-```swift
+```swift lines
 UNUserNotificationCenter.current().delegate = self
 
 UNUserNotificationCenter.current().requestAuthorization(
@@ -248,7 +259,7 @@ UNUserNotificationCenter.current().requestAuthorization(
 ```
 
 Add the following methods to handle push notification events:
-```swift
+```swift lines
 func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
   print("APNs device token received: \(deviceToken)")
   RNCPushNotificationIOS.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)
@@ -279,7 +290,7 @@ use_frameworks! :linkage => :static
 ```
 
 You might have to remove below code if already present in your Podfile:
-```ruby
+```ruby lines
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
@@ -288,7 +299,7 @@ end
 ```
 
 Then lets install pods and open the workspace:
-```bash
+```bash lines
 cd ios
 pod install
 open YourProjectName.xcworkspace
@@ -306,7 +317,7 @@ Get device token and store it in a ref:
 Also, define your APNs provider ID from the CometChat Dashboard.
 And request permissions on mount:
 
-```tsx
+```tsx lines
 const APNS_PROVIDER_ID = 'YOUR_APNS_PROVIDER_ID'; // from CometChat Dashboard
 const apnsTokenRef = useRef < string | null > (null);
 
@@ -337,7 +348,7 @@ useEffect(() => {
 ```
 
 After user login, register the APNs token:
-```tsx
+```tsx lines
 //  Register token ONLY if we already have it
 if (apnsTokenRef.current) {
     await CometChatNotifications.registerPushToken(
@@ -358,7 +369,7 @@ await CometChatNotifications.unregisterPushToken();
 
 To handle notification taps and navigate to the appropriate chat screen, you need to set up handlers for both foreground and background notifications.
 
-:TODO: Add code snippets and explanation for setting up Notifee handlers and navigation logic.
+{/* :TODO: Add code snippets and explanation for setting up Notifee handlers and navigation logic. */}
 
 
 ## 7. Testing checklist
