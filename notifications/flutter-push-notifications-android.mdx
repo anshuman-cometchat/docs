@@ -57,7 +57,7 @@ Keep the provider ID—you’ll use it in `AppCredentials.fcmProviderId`.
 
 Update [`lib/app_credentials.dart`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/lib/app_credentials.dart) so it exposes your credentials and provider IDs:
 
-```dart
+```dart lines
 class AppCredentials {
   static String _appId = "YOUR_APP_ID";
   static String _authKey = "YOUR_AUTH_KEY";
@@ -96,7 +96,7 @@ The sample persists these values to `SharedPreferences`; `saveAppSettingsToNativ
 
 Mirror the sample `pubspec.yaml` versions (update as needed when newer releases ship):
 
-```yaml
+```yaml lines
 dependencies:
   firebase_core: ^3.9.0
   firebase_messaging: ^15.1.6
@@ -118,7 +118,7 @@ Run `flutter pub get`, then `flutterfire configure` if you still need to generat
 1. Add `google-services.json` to `android/app`.
 2. Ensure `android/app/build.gradle` applies the plugins used in the sample:
 
-```gradle
+```gradle lines
 plugins {
   id "com.android.application"
   id "com.google.gms.google-services"
@@ -156,7 +156,7 @@ If you change the MethodChannel name in Kotlin, update `voipPlatformChannel` ins
 
 `FirebaseService.init` requests notification permission, sets the background handler (`firebaseMessagingBackgroundHandler`), and registers tokens:
 
-```dart
+```dart lines
 final token = await FirebaseMessaging.instance.getToken();
 if (token != null) {
   PNRegistry.registerPNService(token, true, false); // platform: FCM_FLUTTER_ANDROID
@@ -203,17 +203,3 @@ FirebaseMessaging.instance.onTokenRefresh.listen(
 | Call actions never reach Flutter | Ensure `CallActionReceiver` is declared in the manifest, MethodChannel names match `voipPlatformChannel`, and `VoipNotificationHandler.handleNativeCallIntent` is called from `dashboard.dart`. |
 | Full-screen call UI not showing | Verify `USE_FULL_SCREEN_INTENT`, `WAKE_LOCK`, and `SHOW_WHEN_LOCKED` permissions plus `android:showWhenLocked="true"` / `android:turnScreenOn="true"` on `MainActivity` and `CallActivity`. |
 | Tapping notification from killed app does nothing | Keep the `NotificationLaunchHandler` logic in `main.dart` and replay it after the navigator key is ready (post-frame callback). |
-
-{/* ## Additional resources
-
-<CardGroup>
-
-<Card title="Flutter - Push notifications sample app" icon="github" href="https://github.com/cometchat/cometchat-push-notification-app-flutter">
-
-Push notifications sample app for Flutter
-
-View on Github
-
-</Card>
-
-</CardGroup> */}
