@@ -75,7 +75,7 @@ Keep the provider IDs—you’ll set them in `CometChatConfig`.
 
 Update [`lib/cometchat_config.dart`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/lib/cometchat_config.dart) (or your own config file) so it exposes:
 
-```dart
+```dart lines
 class CometChatConfig {
   static const appId = "YOUR_APP_ID";
   static const region = "YOUR_APP_REGION";
@@ -114,7 +114,7 @@ class CometChatConfig {
 
 Mirror the sample `pubspec.yaml` versions (update as needed when newer releases ship):
 
-```yaml
+```yaml lines
 dependencies:
   firebase_core: ^3.0.0
   firebase_messaging: ^15.0.0
@@ -137,13 +137,17 @@ Run `flutter pub get`, then `flutterfire configure` if you still need to generat
 3. Add microphone, camera, bluetooth, and notification permission strings to `Info.plist`.
 4. Set the development team that has access to the APNs/VoIP keys you generated earlier.
 
+<Frame>
+  <img src="/images/notification-capabilities-apns.png" alt="Enable Push Notifications and Background Modes for APNs" />
+</Frame>
+
 ### 5.2 `AppDelegate.swift` bridge
 
 Start from the sample [`ios/Runner/AppDelegate.swift`](https://github.com/cometchat/cometchat-uikit-flutter/blob/v5/sample_app_push_notifications/ios/Runner/AppDelegate.swift) and keep these pieces intact:
 
 - **MethodChannel handshake** – create a channel that both Flutter and Swift know:
 
-```swift
+```swift lines
 let appInfoChannel = FlutterMethodChannel(
   name: "com.flutter_application_demo/ios",
   binaryMessenger: controller.binaryMessenger
@@ -166,7 +170,7 @@ If you change the MethodChannel name in Swift, remember to update `APNSService.p
 
 `APNSService` hooks into `FirebaseMessaging.instance.getAPNSToken()` (and `onTokenRefresh`) before calling:
 
-```dart
+```dart lines
 await CometChatPushRegistry.register(
   token: token,
   isFcm: false,
