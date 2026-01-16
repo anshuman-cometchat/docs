@@ -2,13 +2,18 @@
 title: "Templates & Sounds"
 ---
 
-## Common templates and sounds
+Use this page to configure notification templates (default vs privacy), understand placeholders, and set custom sounds.
 
-Templates are designed to specify the content displayed in notifications on the user's device for different events.
+## How templates work
 
-Templates incorporate `placeholders`, which reference specific pieces of information determined by properties from the event.
+- Templates define the notification title/body per event type.
+- Placeholders map to properties from the event payload and get replaced before delivery.
+- Admin chooses whether users see rich previews (default templates) or generic content (privacy templates), with an optional user override.
+- Configure templates in **Dashboard -> Notifications -> Templates**; privacy behavior lives under **Preferences**.
 
-**For example**, New message event has the following structure:
+**Example payload (new message)**
+
+Key paths you can reference in placeholders are shown in this sample:
 
 ```json  theme={null}
 {
@@ -55,28 +60,25 @@ Templates incorporate `placeholders`, which reference specific pieces of informa
 }
 ```
 
-The sender's name is accessible via `data.entities.sender.name`, so the placeholder for the sender's name will be `{{message.data.entities.sender.name}}`. This `placeholder` is substituted within the template with the actual name of the sender aka the `substitution value`.
+The sender's name lives at `message.data.entities.sender.entity.name`, so use `{{message.data.entities.sender.entity.name}}` in templates.
 
-As an administrator, you can configure:
+## Default vs privacy templates
 
-1. **Default templates** - Use these templates to display previews by leveraging the information contained in the event.
-2. **Privacy templates** - Employ these templates to present generic content in the notification.
+Admin options in the dashboard:
 
-### Privacy setting
+1. **Default templates**: Rich previews using event data.
+2. **Privacy templates**: Generic content without message details.
+3. **Default templates with user privacy override (Default)**: Use defaults unless the user opts into privacy.
+
+### Configure privacy setting
 
 #### Dashboard configuration
 
-Configure which template will be used for displaying the content of the notifications displayed on user's devices. The available preferences are:
-
-1. Use default template - Enforces the use of default templates for all the users.
-2. Use privacy template - Enforces the use of privacy templates for all the users.
-3. **Use default templates with user privacy override (Default)** - Uses default templates by default, but allows the users to enable privacy to hide the previews.
+Choose the template mode that applies to users: default, privacy, or default with user override.
 
 #### Client-side implementation
 
-**1. Fetch privacy setting**
-
-The method `CometChatNotifications.fetchPreferences()` retrieves the notification preferences saved by the user as an instance of `NotificationPreferences` class. If the user has not configured any preferences, the default preferences defined by the CometChat administrator via the dashboard will be utilized.
+Fetch/update the privacy toggle so users can opt in when allowed.
 
 <Tabs>
   <Tab title="JavaScript">
@@ -84,7 +86,7 @@ The method `CometChatNotifications.fetchPreferences()` retrieves the notificatio
     // This is applicable for web, React native, Ionic cordova
     const preferences = await CometChatNotifications.fetchPreferences();
 
-    // Display a toggle for use privacy option TODO
+    // Display a toggle for use privacy option
     const usePrivacyTemplate = preferences.getUsePrivacyTemplate();
     ```
   </Tab>
@@ -138,9 +140,7 @@ The method `CometChatNotifications.fetchPreferences()` retrieves the notificatio
 
 `CometChatNotifications.updatePreferences()` method is used to update a user's notification preferences. The "**override**" toggle defined in the dashboard is crucial when updating preferences. If any preference is non-overridable, the method doesn't generate an error; it instead returns the `NotificationPreferences` object with the updated values where overrides are allowed.
 
-This functionality can be beneficial for temporarily superseding certain user preferences to ensure notifications for a specific event are delivered. Nonetheless, it is advisable to use this approach temporarily to avoid confusing users with unexpected changes to their notification settings.
-
-It is unnecessary to specify all values; only set and save the preferences that have been changed.
+Use this sparingly to avoid surprising users. Set only the preferences that changed.
 
 <Tabs>
   <Tab title="JavaScript">
@@ -154,7 +154,7 @@ It is unnecessary to specify all values; only set and save the preferences that 
     // To update the preference for privacy template
     updatedPreferences.setUsePrivacyTemplate(true);
 
-    // Update the preferences and receive the udpated copy.
+    // Update the preferences and receive the updated copy.
     const notificationPreferences = await CometChatNotifications.updatePreferences(
       updatedPreferences
     );
@@ -226,33 +226,39 @@ It is unnecessary to specify all values; only set and save the preferences that 
   </Tab>
 </Tabs>
 
+### Template tips
+
+- Use placeholders from the event payload; avoid placing them in fallback values.
+- Keep privacy templates generic to avoid leaking message content when users enable privacy.
+- For group titles, `sender@group` helps distinguish conversations.
+
 ### Text message templates
 
-| Template for       | Default template values                                                                           | Privacy template values                                                                           |
-| ------------------ | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                    | `{{message.data.entities.sender.entity.name}}`                                                    |
+| Template for       | Default template values                                                                         | Privacy template values                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                  | `{{message.data.entities.sender.entity.name}}`                                                  |
 | Title (Group)      | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` |
-| Body               | `{{message.data.text}}`                                                                           | New message                                                                                       |
+| Body               | `{{message.data.text}}`                                                                         | New message                                                                                     |
 
 ### Media message templates
 
-| Template for       | Default template values                                                                           | Privacy template values                                                                           |
-| ------------------ | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                    | `{{message.data.entities.sender.entity.name}}`                                                    |
+| Template for       | Default template values                                                                         | Privacy template values                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                  | `{{message.data.entities.sender.entity.name}}`                                                  |
 | Title (Group)      | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` |
-| Body for Image     | 📷 Has sent an image                                                                              | New image message                                                                                 |
-| Body for Audio     | 🔈 Has sent an audio                                                                              | New audio message                                                                                 |
-| Body for Video     | 🎥 Has sent a video                                                                               | New video message                                                                                 |
-| Body for File      | 📄 Has sent a file                                                                                | New file message                                                                                  |
+| Body for Image     | 📷 Has sent an image                                                                            | New image message                                                                               |
+| Body for Audio     | 🔈 Has sent an audio                                                                            | New audio message                                                                               |
+| Body for Video     | 🎥 Has sent a video                                                                             | New video message                                                                               |
+| Body for File      | 📄 Has sent a file                                                                              | New file message                                                                                |
 
 ### Custom message templates
 
-| Template for       | Default template values                                                                           | Privacy template values                                                                           |
-| ------------------ | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                    | `{{message.data.entities.sender.entity.name}}`                                                    |
+| Template for       | Default template values                                                                         | Privacy template values                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                  | `{{message.data.entities.sender.entity.name}}`                                                  |
 | Title (Group)      | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` |
-| Body               | `{{message.data.text}}`                                                                           | `{{message.data.text}}`                                                                           |
-| Body (Fallback)    | New message                                                                                       | New message                                                                                       |
+| Body               | `{{message.data.text}}`                                                                         | `{{message.data.text}}`                                                                         |
+| Body (Fallback)    | New message                                                                                     | New message                                                                                     |
 
 **Note:** The "Body (Fallback)" value is utilized when any placeholders within the "Body" fail to resolve to an appropriate substitution value.
 
@@ -262,35 +268,35 @@ Ideally, the "Body (Fallback)" value should not contain any placeholders to prev
 
 ### Interactive form templates
 
-| Template for       | Default template values                                                                           | Privacy template values                                                                           |
-| ------------------ | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                    | `{{message.data.entities.sender.entity.name}}`                                                    |
+| Template for       | Default template values                                                                         | Privacy template values                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                  | `{{message.data.entities.sender.entity.name}}`                                                  |
 | Title (Group)      | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` |
-| Body               | `{{data.interactiveData.title}}`                                                                  | New message                                                                                       |
+| Body               | `{{data.interactiveData.title}}`                                                                | New message                                                                                     |
 
 ### Interactive card templates
 
-| Template for       | Default template values                                                                           | Privacy template values                                                                           |
-| ------------------ | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                    | `{{message.data.entities.sender.entity.name}}`                                                    |
+| Template for       | Default template values                                                                         | Privacy template values                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                  | `{{message.data.entities.sender.entity.name}}`                                                  |
 | Title (Group)      | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` |
-| Body               | `{{data.interactiveData.title}}`                                                                  | New message                                                                                       |
+| Body               | `{{data.interactiveData.title}}`                                                                | New message                                                                                     |
 
 ### Interactive scheduler templates
 
-| Template for       | Default template values                                                                           | Privacy template values                                                                           |
-| ------------------ | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                    | `{{message.data.entities.sender.entity.name}}`                                                    |
+| Template for       | Default template values                                                                         | Privacy template values                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                  | `{{message.data.entities.sender.entity.name}}`                                                  |
 | Title (Group)      | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` |
-| Body               | New invite                                                                                        | New invite                                                                                        |
+| Body               | New invite                                                                                      | New invite                                                                                      |
 
 ### Custom Interactive message templates
 
-| Template for       | Default template values                                                                           | Privacy template values                                                                           |
-| ------------------ | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                    | `{{message.data.entities.sender.entity.name}}`                                                    |
+| Template for       | Default template values                                                                         | Privacy template values                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Title (One-on-one) | `{{message.data.entities.sender.entity.name}}`                                                  | `{{message.data.entities.sender.entity.name}}`                                                  |
 | Title (Group)      | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` | `{{message.data.entities.sender.entity.name}}`@`{{message.data.entities.receiver.entity.name}}` |
-| Body               | New message                                                                                       | New message                                                                                       |
+| Body               | New message                                                                                     | New message                                                                                     |
 
 {/* --- 
 
@@ -364,4 +370,4 @@ The sound files must be included within the app's bundle. These values are set w
 | Field | Default |
 | --- | --- |
 | Calls | default |
-| Sounds | default |
+| Chat  | default |
