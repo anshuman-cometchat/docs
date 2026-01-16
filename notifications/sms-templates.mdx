@@ -2,7 +2,13 @@
 title: "SMS Templates"
 ---
 
-Use these payload fields when rendering SMS content. Sounds are not applicable for SMS. Map the fields into your SMS provider template or build the body string in your service before sending.
+Design the SMS body users receive for unread-message alerts. Sounds do not apply to SMS. Map these payload fields into your provider template or assemble the text in your service before sending.
+
+## What to customize
+
+- **Body text** for 1:1 and group SMS (default vs privacy-friendly).
+- **Preview and counts** from `messages[]` plus `senderDetails`/`groupDetails`.
+- **Link back** to your app (add in your template).
 
 ## Payload shapes
 
@@ -50,6 +56,12 @@ You can use the provided `smsContent` field or build your own using `senderDetai
 | --- | --- | --- | --- |
 | One-on-one notification | You've received `{{messages.length}}` message(s) from `{{senderDetails.name}}`! Read them at https://your-website.com. | You've received `{{messages.length}}` message(s) from `{{senderDetails.name}}`! Read them at https://your-website.com. | You've received 2 message(s) from Susan Marie! Read them at https://your-website.com. |
 | Group notification | You've received `{{messages.length}}` message(s) in `{{groupDetails.name}}`! Read them at https://your-website.com. | You've received `{{messages.length}}` message(s) in `{{groupDetails.name}}`! Read them at https://your-website.com. | You've received 2 message(s) in Hiking Group! Read them at https://your-website.com. |
+
+## Tips
+
+- Keep bodies short to respect SMS length/carrier rules; consider removing URLs in privacy mode.
+- Use `messages.length` for counts and `senderDetails.name`/`groupDetails.name` for context.
+- Add your app link in the template; ensure it is trackable and domain-verified per provider.
 
 {/* ## Example: using with your SMS gateway
 
