@@ -2,39 +2,36 @@
 title: "Custom Providers"
 ---
 
-Custom provider lets you send email notifications through any provider via webhook. SendGrid is supported as a built-in provider separately; use a custom provider only when you need to route email through another service or your own SMTP bridge.
+Use a custom provider to send CometChat email notifications through any gateway via webhook. SendGrid is built-in; choose custom when you want another service or your own SMTP bridge.
 
-#### Pre-requisite
+## Prerequisites
 
-1. Your webhook endpoint must be accessible over `HTTPS`. This is essential to ensure the security and integrity of data transmission.
-2. This URL should be publicly accessible from the internet.
-3. Ensure that your endpoint supports the `HTTP POST` method. Event payloads will be delivered via `HTTP POST` requests in `JSON` format.
-4. Configure your endpoint to respond immediately to the CometChat server with a 200 OK response. The response should be sent within 2 seconds of receiving the request.
-5. For security, it is recommended to set up Basic Authentication that is usually used for server-to-server calls. This requires you to configure a username and password. Whenever your webhook URL is triggered, the HTTP Header will contain:
+1. Public `https://` webhook that accepts `POST` JSON.
+2. Return `200 OK` within ~2 seconds (do heavy work async).
+3. Secure the endpoint (recommended): Basic Auth or a verified signature. With Basic Auth, the request includes:
 
 ```html
 Authorization: Basic <Base64-encoded-credentials>
 ```
 
-#### Add credentials
+## Add credentials
 
 1. Click on the "+ Add Credentials" button.
 2. Enable the provider.
-3. Enter the publically accessible Webhook URL.
-4. It is recommended to enable Basic Authentication.
-5. Enter the username and password.
-6. Enabling the "Trigger only if email address is stored with CometChat" setting requires users' email addresses to be stored with CometChat using the [Update Contact details API](https://api-explorer.cometchat.com/reference/notifications-update-contact-details). When enabled, the webhook is triggered only for those users. If this setting is disabled, the webhook triggers regardless of whether users' email addresses are stored with CometChat.
-7. Save the credentials.
+3. Enter the publicly accessible webhook URL.
+4. (Recommended) Enable Basic Authentication and set username/password.
+5. Decide if you want to **Trigger only if email address is stored with CometChat** (via [Update Contact details API](https://api-explorer.cometchat.com/reference/notifications-update-contact-details)); when off, the webhook fires regardless.
+6. Save the credentials.
 
 <Frame>
   <img src="/images/0854ab1f-cometchat-email-notifications-custom-provider-e36031a54a4c5edbde279312baad957d.png" />
 </Frame>
 
-#### How does it work?
+## How delivery works
 
-The Custom provider is triggered once for an event in one-on-one conversation. In case of notifying the members of a group, the custom provider is triggered once for each user present in that group.
+For one-on-one events, CometChat calls your webhook once per recipient. For group events, it calls once per member—one HTTP request per user to notify.
 
-For example, if there are 100 members in the group, your webhook will receive 100 HTTP requests. Once for each member of the group.
+Example: if a group has 100 members, your webhook receives 100 POSTs.
 
 <Tabs>
 <Tab title="One-on-one conversation">
@@ -169,7 +166,7 @@ const triggerEmailNotification = async (to, data) => {
 };
 
 app.post('/webhook', basicAuth, (req, res) => {
-  const { trigger, data, appId, region, webhook } = req.body;
+  const { trigger, data, appId, region, webhook } = req.body || {};
   const { to } = data || {};
 
   if (
