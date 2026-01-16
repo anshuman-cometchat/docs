@@ -37,6 +37,10 @@ CometChat On-Prem is an enterprise deployment and operations blueprint for a hig
 
 ## High-level architecture
 
+<Frame>
+  <img src="/images/docker-on-prem-architecture.png" />
+</Frame>
+
 - NGINX for TLS termination, routing, WebSocket upgrades, and load balancing
 - WebSocket gateway for real-time connections, presence events, and device sessions
 - Chat API for messaging logic across users, groups, conversations, and metadata
@@ -47,3 +51,4 @@ CometChat On-Prem is an enterprise deployment and operations blueprint for a hig
 - TiDB, MongoDB, and Redis as the stateful data stores
 - Observability stack (Prometheus, Grafana, Loki/ELK) for metrics, dashboards, and logs
 - Host and network: private overlay networks isolating backend traffic and optimizing latency
+
