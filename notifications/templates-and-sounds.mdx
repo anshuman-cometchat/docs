@@ -66,7 +66,9 @@ Key paths you can reference in placeholders are shown in this sample:
 
 The sender's name lives at `message.data.entities.sender.entity.name`, so use `{{message.data.entities.sender.entity.name}}` in templates.
 
-### Text message templates
+### Templates
+
+#### Text message templates
 
 | Template for       | Default template values                                                                         | Privacy template values                                                                         |
 | ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -74,7 +76,7 @@ The sender's name lives at `message.data.entities.sender.entity.name`, so use `{
 | Title (Group)      | `{{message.data.entities.sender.entity.name}}` @ `{{message.data.entities.receiver.entity.name}}` | `{{message.data.entities.sender.entity.name}}` @ `{{message.data.entities.receiver.entity.name}}` |
 | Body               | `{{message.data.text}}`                                                                         | New message                                                                                     |
 
-### Media message templates
+#### Media message templates
 
 | Template for       | Default template values                                                                         | Privacy template values                                                                         |
 | ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -85,7 +87,7 @@ The sender's name lives at `message.data.entities.sender.entity.name`, so use `{
 | Body for Video     | 🎥 Has sent a video                                                                             | New video message                                                                               |
 | Body for File      | 📄 Has sent a file                                                                              | New file message                                                                                |
 
-### Custom message templates
+#### Custom message templates
 
 | Template for       | Default template values                                                                         | Privacy template values                                                                         |
 | ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -100,7 +102,7 @@ The sender's name lives at `message.data.entities.sender.entity.name`, so use `{
 
 Ideally, the "Body (Fallback)" value should not contain any placeholders to prevent additional resolution failures.
 
-### Interactive form templates
+#### Interactive form templates
 
 | Template for       | Default template values                                                                         | Privacy template values                                                                         |
 | ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -108,7 +110,7 @@ Ideally, the "Body (Fallback)" value should not contain any placeholders to prev
 | Title (Group)      | `{{message.data.entities.sender.entity.name}}` @ `{{message.data.entities.receiver.entity.name}}` | `{{message.data.entities.sender.entity.name}}` @ `{{message.data.entities.receiver.entity.name}}` |
 | Body               | `{{data.interactiveData.title}}`                                                                | New message                                                                                     |
 
-### Interactive card templates
+#### Interactive card templates
 
 | Template for       | Default template values                                                                         | Privacy template values                                                                         |
 | ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -116,7 +118,7 @@ Ideally, the "Body (Fallback)" value should not contain any placeholders to prev
 | Title (Group)      | `{{message.data.entities.sender.entity.name}}` @ `{{message.data.entities.receiver.entity.name}}` | `{{message.data.entities.sender.entity.name}}` @ `{{message.data.entities.receiver.entity.name}}` |
 | Body               | `{{message.data.interactiveData.text}}`                                                         | New message                                                                                     |
 
-### Interactive scheduler templates
+#### Interactive scheduler templates
 
 | Template for       | Default template values                                                                         | Privacy template values                                                                         |
 | ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -124,7 +126,7 @@ Ideally, the "Body (Fallback)" value should not contain any placeholders to prev
 | Title (Group)      | `{{message.data.entities.sender.entity.name}}` @ `{{message.data.entities.receiver.entity.name}}` | `{{message.data.entities.sender.entity.name}}` @ `{{message.data.entities.receiver.entity.name}}` |
 | Body               | New invite                                                                                      | New invite                                                                                      |
 
-### Custom Interactive message templates
+#### Custom Interactive message templates
 
 | Template for       | Default template values                                                                         | Privacy template values                                                                         |
 | ------------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -133,11 +135,13 @@ Ideally, the "Body (Fallback)" value should not contain any placeholders to prev
 | Body               | New message                                                                                     | New message                                                                                     |
 
 
-#### Dashboard configuration
+### Dashboard configuration
 
 Choose how templates apply to users: **default, privacy, or default with user override** (Privacy Setting dropdown in the dashboard).
 
 #### Client-side implementation
+
+**1. Fetch privacy setting**
 
 Fetch/update the privacy toggle so users can opt in when allowed.
 
