@@ -4,31 +4,34 @@ title: "Custom Providers"
 
 Custom providers let you route push payloads to your own webhook instead of FCM/APNs. Use this page to set up credentials, understand payload shapes, and wire a simple receiver.
 
-### Add Custom provider credentials
+**When to use a custom provider**
+- You already have a push gateway (or a third-party) and want CometChat to hand off payloads.
+- You want to enrich or filter notification payloads before delivery.
+- You need to fan out to multiple channels from one webhook.
 
-Custom providers allow you to make use of providers apart from FCM and APNs. This is implemented using webhook URL which gets all the required details that can be used to trigger Push notifications.
+**How delivery works**
+- CometChat POSTs one payload per recipient: once for one-on-one, once per member in a group.
+- Your webhook must return `200 OK` within ~2 seconds; you handle the actual push delivery.
+- Keep payloads small; respect any rate limits on your infrastructure.
 
-#### Pre-requisite
+### Add custom provider credentials
 
-1. Your webhook endpoint must be accessible over `HTTPS`. This is essential to ensure the security and integrity of data transmission.
-2. This URL should be publicly accessible from the internet.
-3. Ensure that your endpoint supports the `HTTP POST` method. Event payloads will be delivered via `HTTP POST` requests in `JSON` format.
-4. Configure your endpoint to respond immediately to the CometChat server with a 200 OK response. The response should be sent within 2 seconds of receiving the request.
-5. For security, it is recommended to set up Basic Authentication that is usually used for server-to-server calls. This requires you to configure a username and password. Whenever your webhook URL is triggered, the HTTP Header will contain:
+Custom providers use a webhook URL that receives everything needed to trigger push notifications through your own system.
 
-```html
-Authorization: Basic <Base64-encoded-credentials>
-```
+#### Prerequisites
 
-6. Your frontend application should implement the logic to get the push token and register it to your backend when the user logs in and unregister the push token when the user logs out.
-7. To enable multi-device logins, you can map the push tokens to the user's auth tokens. Where each new login makes use of a new auth token.
+1. An `https://` webhook that is publicly reachable and accepts `POST` JSON.
+2. Respond with `200 OK` within 2 seconds; do any heavy work asynchronously.
+3. Secure the endpoint (recommended): Basic Auth or a verified signature. With Basic Auth, send `Authorization: Basic <Base64-encoded-credentials>`.
+4. Your client should register push tokens with your backend on login and unregister on logout.
+5. For multi-device, map push tokens to the user's auth tokens so each session can be targeted.
 
 #### Add credentials
 
 1. Click on the "+ Add Credentials" button.
 2. Enable the provider.
-3. Enter the publically accessible Webhook URL.
-4. It is recommended to enable Basic Authentication.
+3. Enter the publicly accessible webhook URL.
+4. (Recommended) Enable Basic Authentication.
 5. Enter the username and password.
 6. Save the credentials.
 
@@ -38,11 +41,15 @@ Authorization: Basic <Base64-encoded-credentials>
 
 #### How does it work?
 
-The Custom provider is triggered once for an event in one-on-one conversation. In case of notifying the members of a group, the custom provider is triggered once for each user present in that group.
+For one-on-one events, the custom provider fires once per recipient. For group events, it fires once per member so you receive one HTTP request per user who should be notified.
 
-For example, if there are 100 members in the group, your webhook will receive 100 HTTP requests. Once for each member of the group.
+Example: if a group has 100 members, your webhook receives 100 POSTs—one for each member.
 
-Below are the sample payloads for different events:
+#### Payload reference
+
+Every request includes `trigger: "push-notification-payload-generated"` and `webhook: "custom"`. The notification content lives in `data.notificationDetails`; use that to decide how you deliver the push.
+
+Below are sample payloads for different events:
 
 <Tabs>
 <Tab title="Chat notification payload">
@@ -214,7 +221,9 @@ Below are the sample payloads for different events:
 
 #### Sample server-side code
 
-```typescript
+Example Express webhook that checks Basic Auth, validates the trigger, and forwards the payload to your push gateway.
+
+```js
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -223,63 +232,77 @@ app.use(express.json());
 
 // Optional: Basic authentication middleware
 const basicAuth = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  if (!authHeader || !authHeader.startsWith('Basic ')) {
+  const expected =
+    'Basic ' +
+    Buffer.from(
+      `${process.env.WEBHOOK_USER}:${process.env.WEBHOOK_PASS}`
+    ).toString('base64');
+
+  if (expected && req.headers.authorization !== expected) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
   next();
 };
 
-const triggerPushNotification = async (to, notificationDetails) => {
-  const { name, uid } = to;
-  const { type, notificationTitle, notificationBody } = notificationDetails;
+// Look up the push token for the recipient in your store.
+const fetchPushToken = async (uid) => {
+  // TODO: Implement fetch logic.
+  return 'device-push-token';
+};
 
-  if (type == 'call') {
-    console.log('Push notification for calling event');
-    // Use the following details to send a call notification.
-    const { callAction, sessionId, callType } = notificationDetails;
+// Send to APNs/FCM/other provider with the payload you received.
+const sendPushNotification = async (token, title, body, notificationDetails) => {
+  // TODO: Implement delivery.
+};
+
+const triggerPushNotification = async (to, notificationDetails) => {
+  const { uid } = to || {};
+  const { type, title, body, callAction, sessionId, callType } =
+    notificationDetails || {};
+
+  if (!uid) {
+    throw new Error('Missing recipient UID');
   }
 
-  if (type == 'chat') {
+  if (type === 'call') {
+    console.log('Push notification for calling event', {
+      callAction,
+      sessionId,
+      callType,
+    });
+  }
+
+  if (type === 'chat') {
     console.log('Push notification for messaging event');
   }
 
   const token = await fetchPushToken(uid);
-
-  // Your implementation for sending the Push notification
-  await sendPushNotification(token, notificationTitle, notificationBody);
+  await sendPushNotification(token, title, body, notificationDetails);
 };
 
 app.post('/webhook', basicAuth, (req, res) => {
-  const { trigger, data, appId, region, webhook } = req.body;
-  const { to } = data || {};
+  const { trigger, data, appId, webhook } = req.body || {};
+  const { to, notificationDetails } = data || {};
 
   if (
     trigger !== 'push-notification-payload-generated' ||
-    webhook !== 'custom'
+    webhook !== 'custom' ||
+    !to ||
+    !notificationDetails
   ) {
     return res.status(400).json({ message: 'Invalid trigger or webhook type' });
   }
 
-  console.log('Received Webhook:', JSON.stringify(req.body, null, 2));
+  console.log('Received webhook', { appId, trigger, webhook, to: to.uid });
 
-  triggerPushNotification(to, data)
-    .then((result) => {
-      console.log(
-        'Successfully triggered Push notification for',
-        appId,
-        to.uid,
-        result
-      );
-    })
-    .catch((error) => {
-      console.error(
-        'Something went wrong while triggering Push notification for',
-        appId,
-        to.uid,
-        error.message
-      );
-    });
+  triggerPushNotification(to, notificationDetails).catch((error) => {
+    console.error(
+      'Error while triggering push notification for',
+      appId,
+      to.uid,
+      error.message
+    );
+  });
 
   res.status(200).json({ message: 'Webhook received successfully' });
 });
