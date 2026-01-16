@@ -5,255 +5,169 @@ description: "Add real-time voice and video calling to your apps in minutes with
 canonical: "https://cometchat.com/docs"
 ---
 
-import { CardGroup, Card, Icon, Badge, Steps, Columns, AccordionGroup, Accordion, Callout } from 'mintlify';
+import { CardGroup, Card, Steps, Columns, AccordionGroup, Accordion, Callout } from 'mintlify';
 
 {/* Hero Section */}
-<div className="relative w-full flex items-center justify-center py-12" style={{ minHeight: '24rem' }}>
-  <div className="absolute inset-0 bg-primary dark:bg-primary-light" style={{ opacity: 0.05 }}/>
-  
-  <div className="w-full" style={{ maxWidth: '70rem', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}> 
-    <Columns cols={2} className="items-center gap-x-12">
-      <div className="flex flex-col justify-center h-full text-center md:text-left">
-        <h1 className="text-gray-700 dark:text-white mb-4" style={{ fontSize: '2.4rem', fontWeight: '600', lineHeight: '1.2' }}>Voice & Video Calling</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-0">
-          Add high-quality, real-time voice and video calls to any app. Built on WebRTC with drop-in UI components.
-        </p> 
-      </div>
-      <div className="flex items-center justify-center h-full">
-        <img 
-          src="/images/voice-video-banner.png" 
-          alt="Voice & Video Calling UI Preview" 
-          className="w-full max-w-md object-contain"
-          style={{ maxHeight: '320px' }}
-        />
-      </div>
-    </Columns>
-  </div>
+<div className="relative w-full flex items-center justify-center" style={{ height: '20rem', overflow: 'hidden' }}>
+<div className="absolute inset-0 bg-primary dark:bg-primary-light" style={{ opacity: 0.05 }}/>
+
+<div style={{maxWidth: '70rem', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}> 
+  <Columns cols={2} className="items-center gap-x-12">
+    <div className="flex flex-col justify-center h-full text-center md:text-left">
+      <h1 className="text-gray-700 dark:text-white" style={{ fontSize: '2.2rem', fontWeight: '600' }}>Voice & Video Calling</h1>
+      <p className="text-lg text-gray-600">
+        Add high-quality, real-time voice and video calls to any app. Built on WebRTC with drop-in UI components.
+      </p> 
+    </div>
+    <div className="flex flex-col items-center justify-center h-full">
+      <img 
+        src="/images/voice-video-banner.png" 
+        alt="Voice & Video Calling UI Preview" 
+        className="w-full max-w-[380px]"
+      />
+    </div>
+  </Columns>
 </div>
 
-<div style={{ maxWidth: '70rem', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1.25rem', paddingRight: '1.25rem', paddingBottom: '3rem' }}>
+</div>
 
-{/* What is CometChat Calls */}
+<div style={{marginTop: '2rem', marginBottom: '2rem', maxWidth: '70rem', marginLeft: 'auto', marginRight: 'auto', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
+
 <div className="mb-12">
-  <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">What is CometChat Calls?</h2>
-  
-  <p className="text-gray-600 dark:text-gray-300 mb-6">
-    The CometChat Calls SDK provides a complete voice and video calling solution built on WebRTC. It includes:
-  </p>
+  <h2 className="text-gray-700 dark:text-white text-2xl font-semibold mb-4">What is CometChat Calls?</h2>
+  <p className="text-gray-600 dark:text-gray-300 mb-4">The CometChat Calls SDK provides a complete voice and video calling solution built on WebRTC.</p>
 
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-    <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-      <span className="text-emerald-500 mt-1">✓</span>
-      <div>
-        <span className="font-medium text-gray-700 dark:text-white">Built-in UI</span>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 mb-0">Pre-built call screens, controls, and participant views</p>
-      </div>
-    </div>
-    <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-      <span className="text-emerald-500 mt-1">✓</span>
-      <div>
-        <span className="font-medium text-gray-700 dark:text-white">Rich Call Controls</span>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 mb-0">Mute, screen share, recording, layouts, and more</p>
-      </div>
-    </div>
-    <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-      <span className="text-emerald-500 mt-1">✓</span>
-      <div>
-        <span className="font-medium text-gray-700 dark:text-white">Cross-Platform</span>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 mb-0">Web, iOS, Android, React Native, and Flutter</p>
-      </div>
-    </div>
-    <div className="flex items-start gap-3 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-      <span className="text-emerald-500 mt-1">✓</span>
-      <div>
-        <span className="font-medium text-gray-700 dark:text-white">Scalable Infrastructure</span>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 mb-0">Enterprise-grade media servers handle all complexity</p>
-      </div>
-    </div>
+  <div className="flex gap-3 mb-6">
+    <a href="https://calls.cometchat.io/" target="_blank" className="inline-flex items-center px-4 py-2 rounded-lg bg-primary text-white font-medium hover:opacity-90 transition-opacity">
+      Try Live Demo →
+    </a>
+    <a href="/calls/platform/features" className="inline-flex items-center px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+      View Features →
+    </a>
   </div>
 
-  <Callout type="info">
-    **Already using CometChat UI Kits?** Voice and video calling is already integrated with ready-to-use components. Use the Calls SDK directly only if you need custom call UI or advanced control.
-  </Callout>
+<CardGroup cols={2}>
+  <Card title="Built-in UI" icon="window">
+    Pre-built call screens, controls, and participant views
+  </Card>
+  <Card title="Rich Call Controls" icon="sliders">
+    Mute, screen share, recording, layouts, and more
+  </Card>
+  <Card title="Cross-Platform" icon="layer-group">
+    Web, iOS, Android, React Native, and Flutter
+  </Card>
+  <Card title="Scalable Infrastructure" icon="server">
+    Enterprise-grade media servers handle all complexity
+  </Card>
+</CardGroup>
+
+<Callout type="info">
+**Already using CometChat UI Kits?** Voice and video calling is already integrated with ready-to-use components. Use the Calls SDK directly only if you need custom call UI or advanced control.
+</Callout>
 </div>
 
-{/* How It Works */}
 <div className="mb-12">
-  <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">How It Works</h2>
-  
-  ```mermaid
-  sequenceDiagram
-      participant App
-      participant CometChatCalls
-      participant MediaServer
-      
-      App->>CometChatCalls: 1. init(appId, region)
-      App->>CometChatCalls: 2. login(authToken)
-      App->>CometChatCalls: 3. generateToken(sessionId)
-      App->>CometChatCalls: 4. joinSession(token, settings)
-      CometChatCalls->>MediaServer: Connect to call
-      MediaServer-->>CometChatCalls: Media streams
-      CometChatCalls-->>App: Session joined + UI rendered
-      App->>CometChatCalls: 5. Actions (mute, layout, etc.)
-      CometChatCalls-->>App: Event callbacks
-      App->>CometChatCalls: 6. leaveSession()
-  ```
+  <h2 className="text-gray-700 dark:text-white text-2xl font-semibold mb-4">Choose Your Platform</h2>
+  <p className="text-gray-600 dark:text-gray-300 mb-4">Get started with the Calls SDK on your preferred platform. Each SDK provides the same core calling features with platform-specific optimizations.</p>
+
+<AccordionGroup>
+  <Accordion title="How It Works">
+    <Steps>
+      <Step title="Install the SDK">
+        Add the Calls SDK to your project via npm, CocoaPods, Gradle, or pub.
+      </Step>
+      <Step title="Initialize & Authenticate">
+        Configure with your App ID and Region, then log in users with their CometChat credentials.
+      </Step>
+      <Step title="Join a Call Session">
+        Generate a session token and join—the SDK renders a complete call UI automatically.
+      </Step>
+      <Step title="Customize as Needed">
+        Adjust layouts, controls, and styling to match your app's design.
+      </Step>
+    </Steps>
+  </Accordion>
+  <Accordion title="Why It's Great">
+    <Steps>
+      <Step title="Built-in UI">Pre-built call screens, controls, and participant views—no UI work required.</Step>
+      <Step title="WebRTC Powered">Enterprise-grade media infrastructure handles all the complexity.</Step>
+      <Step title="Cross-Platform Consistency">Same features and API patterns across all platforms.</Step>
+      <Step title="Easy Integration">Get up and running in minutes with simple setup and clear documentation.</Step>
+    </Steps>
+  </Accordion>
+</AccordionGroup>
+
+<CardGroup cols={3}>
+  <Card title="JavaScript" icon={<img src="/images/icons/js.svg" alt="JavaScript" />} href="/calls/javascript/overview">
+    Vanilla JS or any web framework
+  </Card>
+  <Card title="React" icon={<img src="/images/icons/react.svg" alt="React" />} href="/calls/javascript/react-integration">
+    React web applications
+  </Card>
+  <Card title="Angular" icon={<img src="/images/icons/angular.svg" alt="Angular" />} href="/calls/javascript/angular-integration">
+    Angular web applications
+  </Card>
+  <Card title="Vue" icon={<img src="/images/icons/vuejs.svg" alt="Vue" />} href="/calls/javascript/vue-integration">
+    Vue.js web applications
+  </Card>
+  <Card title="Next.js" icon={<img src="/images/icons/nextjs.svg" alt="Next.js" />} href="/calls/javascript/nextjs-integration">
+    Next.js with SSR support
+  </Card>
+  <Card title="Ionic" icon={<img src="/images/icons/ionic.svg" alt="Ionic" />} href="/calls/javascript/ionic-integration">
+    Ionic hybrid mobile apps
+  </Card>
+  <Card title="React Native" icon={<img src="/images/icons/react.svg" alt="React Native" />} href="/calls/react-native/overview">
+    Cross-platform mobile apps
+  </Card>
+  <Card title="iOS" icon={<img src="/images/icons/swift.svg" alt="iOS" />} href="/calls/ios/overview">
+    Native Swift/Objective-C apps
+  </Card>
+  <Card title="Android" icon={<img src="/images/icons/android.svg" alt="Android" />} href="/calls/android/overview">
+    Native Kotlin/Java apps
+  </Card>
+  <Card title="Flutter" icon={<img src="/images/icons/flutter.svg" alt="Flutter" />} href="/calls/flutter/overview">
+    Cross-platform with Dart
+  </Card>
+</CardGroup>
 </div>
 
-{/* Choose Your Platform */}
 <div className="mb-12">
-  <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">Choose Your Platform</h2>
-  
-  <CardGroup cols={3}>
-    <Card title="JavaScript" icon={<img src="/images/icons/js.svg" alt="JavaScript" />} href="/calls/javascript/overview">
-      Web apps with React, Vue, Angular, Next.js, or vanilla JS
-    </Card>
-    <Card title="React Native" icon={<img src="/images/icons/react.svg" alt="React Native" />} href="/calls/react-native/overview">
-      Cross-platform mobile apps
-    </Card>
-    <Card title="iOS" icon={<img src="/images/icons/swift.svg" alt="iOS" />} href="/calls/ios/overview">
-      Native Swift/Objective-C apps
-    </Card>
-    <Card title="Android" icon={<img src="/images/icons/android.svg" alt="Android" />} href="/calls/android/overview">
-      Native Kotlin/Java apps
-    </Card>
-    <Card title="Flutter" icon={<img src="/images/icons/flutter.svg" alt="Flutter" />} href="/calls/flutter/overview">
-      Cross-platform with Dart
-    </Card>
-    <Card title="REST API" icon="server" href="/calls/api/overview">
-      Server-side call management
-    </Card>
-  </CardGroup>
+  <h2 className="text-gray-700 dark:text-white text-2xl font-semibold mb-4">Sample Apps</h2>
+  <p className="text-gray-600 dark:text-gray-300 mb-4">Explore our open-source sample apps to see the Calls SDK in action. Clone, run, and customize for your needs.</p>
+
+<CardGroup cols={3}>
+  <Card title="JavaScript" icon="github" href="https://github.com/cometchat/calls-sdk-javascript">
+    Web calling with React, Vue, and vanilla JS
+  </Card>
+  <Card title="Android" icon="github" href="https://github.com/cometchat/calls-sdk-android">
+    Native Android with Kotlin/Java
+  </Card>
+  <Card title="iOS" icon="github" href="https://github.com/cometchat/calls-sdk-ios">
+    Native iOS with Swift
+  </Card>
+  <Card title="React Native" icon="github" href="https://github.com/cometchat/calls-sdk-react-native">
+    Cross-platform mobile app
+  </Card>
+  <Card title="Flutter" icon="github" href="https://github.com/cometchat/calls-sdk-flutter">
+    Cross-platform with Dart
+  </Card>
+</CardGroup>
 </div>
 
-{/* Key Features */}
 <div className="mb-12">
-  <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">Key Features</h2>
-  
-  <CardGroup cols={3}>
-    <Card title="Call Layouts" icon="grid-2" href="/calls/javascript/call-layouts">
-      Tile, Sidebar, and Spotlight views
-    </Card>
-    <Card title="Recording" icon="circle-dot" href="/calls/javascript/recording">
-      Record sessions with cloud storage
-    </Card>
-    <Card title="Screen Sharing" icon="display" href="/calls/javascript/screen-sharing">
-      Share screens with participants
-    </Card>
-    <Card title="Participant Management" icon="users" href="/calls/javascript/participant-management">
-      Mute, pin, kick participants
-    </Card>
-    <Card title="Ringing" icon="phone" href="/calls/javascript/ringing">
-      Incoming/outgoing notifications
-    </Card>
-    <Card title="Call Logs" icon="clock-rotate-left" href="/calls/javascript/call-logs">
-      Call history and analytics
-    </Card>
-    <Card title="Virtual Background" icon="image" href="/calls/javascript/virtual-background">
-      Blur or custom backgrounds (Web)
-    </Card>
-    <Card title="Picture-in-Picture" icon="window-restore" href="/calls/android/picture-in-picture">
-      Multitask during calls (JS, Android)
-    </Card>
-    <Card title="Raise Hand" icon="hand" href="/calls/javascript/raise-hand">
-      Signal to get attention during calls
-    </Card>
-    <Card title="Audio Modes" icon="volume-high" href="/calls/ios/audio-modes">
-      Speaker, earpiece, Bluetooth (Mobile)
-    </Card>
-    <Card title="Custom Control Panel" icon="sliders" href="/calls/javascript/custom-control-panel">
-      Customize call UI controls
-    </Card>
-    <Card title="Idle Timeout" icon="timer" href="/calls/javascript/idle-timeout">
-      Auto-end calls when alone
-    </Card>
-    <Card title="Device Management" icon="microphone" href="/calls/javascript/device-management">
-      Select camera/mic devices (Web)
-    </Card>
-  </CardGroup>
-</div>
+  <h2 className="text-gray-700 dark:text-white text-2xl font-semibold mb-4">Resources</h2>
 
-{/* Platform Comparison */}
-<div className="mb-12">
-  <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">Platform Feature Comparison</h2>
-  
-  <div className="overflow-x-auto">
-    | Feature | JavaScript | React Native | iOS | Android | Flutter |
-    |---------|:----------:|:------------:|:---:|:-------:|:-------:|
-    | Voice Calls | ✅ | ✅ | ✅ | ✅ | ✅ |
-    | Video Calls | ✅ | ✅ | ✅ | ✅ | ✅ |
-    | Screen Sharing | ✅ | ✅ | ✅ | ✅ | ✅ |
-    | Recording | ✅ | ✅ | ✅ | ✅ | ✅ |
-    | Virtual Background | ✅ | ❌ | ❌ | ❌ | ❌ |
-    | Picture-in-Picture | ✅ | ❌ | ❌ | ✅ | ❌ |
-    | Raise Hand | ✅ | ✅ | ✅ | ✅ | ✅ |
-    | Audio Modes | ❌ | ✅ | ✅ | ✅ | ✅ |
-    | Custom Control Panel | ✅ | ✅ | ✅ | ✅ | ✅ |
-    | Idle Timeout | ✅ | ✅ | ✅ | ✅ | ✅ |
-    | Device Management | ✅ | ❌ | ❌ | ❌ | ❌ |
-  </div>
-</div>
-
-{/* Browser & Platform Compatibility */}
-<div className="mb-12">
-  <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">Browser & Platform Compatibility</h2>
-  
-  <p className="text-gray-600 dark:text-gray-300 mb-6">
-    The Calls SDK requires WebRTC support. HTTPS is required for camera/microphone access in production (localhost is exempt during development).
-  </p>
-
-  <div className="overflow-x-auto">
-    | Platform | Browser / Framework | Minimum Version |
-    |----------|---------------------|-----------------|
-    | **Desktop** | Chrome | 72+ |
-    | | Firefox | 68+ |
-    | | Safari | 12.1+ |
-    | | Edge (Chromium) | 79+ |
-    | | Opera | 60+ |
-    | **Mobile Web** | Chrome for Android | Full support |
-    | | Safari for iOS | iOS 12.1+ |
-    | | Firefox for Android | Full support |
-    | | Samsung Internet | 12+ |
-    | **Native Mobile** | iOS | 16.0+ |
-    | | Android | API 24 (Android 7.0+) |
-    | **Cross-Platform** | React Native | 0.70+ |
-    | | Flutter | 3.0+ |
-  </div>
-</div>
-
-{/* Sync Your Users */}
-<div className="mb-12">
-  <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">Sync Your Users</h2>
-  
-  <p className="text-gray-600 dark:text-gray-300 mb-6">
-    Users must exist in CometChat before they can make or receive calls.
-  </p>
-
-  <CardGroup cols={3}>
-    <Card title="Dashboard" icon="browser" href="https://app.cometchat.com/">
-      Add users manually for quick testing
-    </Card>
-    <Card title="SDK" icon="code" href="/sdk/javascript/user-management">
-      Create users during sign-up/login flows
-    </Card>
-    <Card title="REST API" icon="server" href="/rest-api/users/create">
-      Batch imports or backend workflows
-    </Card>
-  </CardGroup>
-</div>
-
-{/* Resources */}
-<div>
-  <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">Resources</h2>
-  
-  <CardGroup cols={2}>
-    <Card title="REST API Reference" icon="book" href="/calls/api/overview">
-      Server-side APIs for call management, recordings, and analytics
-    </Card>
-    <Card title="Help Center" icon="circle-question" href="https://help.cometchat.com/">
-      Troubleshooting guides and FAQs
-    </Card>
-  </CardGroup>
+<CardGroup cols={3}>
+  <Card title="Platform Overview" icon="list-check" href="/calls/platform/overview">
+    Features, compatibility, and platform comparison
+  </Card>
+  <Card title="REST API Reference" icon="book" href="/calls/api/overview">
+    Server-side APIs for call management and recordings
+  </Card>
+  <Card title="Help Center" icon="circle-question" href="https://help.cometchat.com/">
+    Troubleshooting guides and FAQs
+  </Card>
+</CardGroup>
 </div>
 
 </div>
