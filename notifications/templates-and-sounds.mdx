@@ -4,7 +4,7 @@ title: "Templates & Sounds"
 
 Use this page to configure notification templates (default vs privacy), understand placeholders, and set custom sounds.
 
-## How templates work
+### How templates work
 
 - Templates define the notification title/body per event type.
 - Placeholders map to properties from the event payload and get replaced before delivery.
@@ -218,12 +218,6 @@ Use this sparingly to avoid surprising users. Set only the preferences that chan
   </Tab>
 </Tabs>
 
-### Template tips
-
-- Use placeholders from the event payload; avoid placing them in fallback values.
-- Keep privacy templates generic to avoid leaking message content when users enable privacy.
-- For group titles, `sender@group` helps distinguish conversations.
-
 ### Text message templates
 
 | Template for       | Default template values                                                                         | Privacy template values                                                                         |
@@ -297,6 +291,12 @@ Admin options in the dashboard:
 1. **Default templates**: Rich previews using event data.
 2. **Privacy templates**: Generic content without message details.
 3. **Default templates with user privacy override (Default)**: Use defaults unless the user opts into privacy.
+
+### Template tips
+
+- Use placeholders from the event payload; avoid placing them in fallback values.
+- Keep privacy templates generic to avoid leaking message content when users enable privacy.
+- For group titles, `sender@group` helps distinguish conversations.
 
 ### Sounds
 
