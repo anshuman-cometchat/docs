@@ -42,40 +42,44 @@ Add the CometChat Widget with a single snippet inside Wix’s **Embed HTML** ele
 
 **Use this when:** you want visitors to chat without signing in.
 
-### Paste this into the Wix HTML Embed
+### Paste this into the Wix Embed HTML element
 
-```html lines highlight={8-9, 11, 15-17, 22-24}
+```html
 <div id="cometChatMount"></div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
-<script type="module">
-
-  //  EDIT ONLY THE TEXT INSIDE QUOTES
+<script>
   const COMETCHAT_WIDGET_CONFIG = {
     appID: "YOUR_APP_ID",
-    region: "YOUR_APP_REGION",   // e.g. "us", "eu", "in"
-    mode: "guest",               // keep this as "guest"
+    region: "YOUR_APP_REGION",
+    mode: "guest",
     authKey: "YOUR_AUTH_KEY",
 
     // Optional: how the guest appears in chat
     user: {
       name: "Guest User",
-      avatar: "",                // e.g. "https://example.com/guest.png"
-      link: ""                   // e.g. "https://example.com/profile"
+      avatar: "",
+      link: ""
     },
 
     // Widget placement + size
     mount: "#cometChatMount",
     width: "450px",
     height: "80vh",
-    isDocked: true,               // true = docked widget (recommended)
+    isDocked: true,
     //variantID: "YOUR_VARIANT_ID",
     //chatType: "user" | "group",
     //defaultChatID: "uid_or_guid",
     //dockedAlignment: "left" | "right"
   };
 
-  CometChatApp.CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
+  const startWidget = () => CometChatApp.CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startWidget);
+  } else {
+    startWidget();
+  }
 </script>
 ```
 
@@ -97,15 +101,13 @@ Add the CometChat Widget with a single snippet inside Wix’s **Embed HTML** ele
 
 **Use this when:** you already have user IDs (email, username, member ID) and want to log people in with that ID automatically. CometChat creates the user the first time it sees the ID.
 
-### Paste this into the Wix HTML Embed
+### Paste this into the Wix Embed HTML element
 
-```html lines highlight={8-9, 11, 14, 18-20, 25-27}
+```html
 <div id="cometChatMount"></div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
-<script type="module">
-
-  //  EDIT ONLY THE TEXT INSIDE QUOTES
+<script>
   const COMETCHAT_WIDGET_CONFIG = {
     appID: "YOUR_APP_ID",
     region: "YOUR_APP_REGION",      // e.g. "us", "eu", "in"
@@ -133,7 +135,13 @@ Add the CometChat Widget with a single snippet inside Wix’s **Embed HTML** ele
     //dockedAlignment: "left" | "right"
   };
 
-  CometChatApp.CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
+  const startWidget = () => CometChatApp.CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startWidget);
+  } else {
+    startWidget();
+  }
 </script>
 ```
 
@@ -166,15 +174,13 @@ Add the CometChat Widget with a single snippet inside Wix’s **Embed HTML** ele
 
 Full walkthrough: [How to properly log in and create users in CometChat](https://community.cometchat.com/t/how-to-properly-log-in-and-create-users-in-cometchat/31).
 
-### Paste this into the Wix HTML Embed
+### Paste this into the Wix Embed HTML element
 
-```html lines highlight={8-9, 13, 17-18}
+```html
 <div id="cometChatMount"></div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
-<script type="module">
-
-  //  EDIT ONLY THE TEXT INSIDE QUOTES
+<script>
   const COMETCHAT_WIDGET_CONFIG = {
     appID: "YOUR_APP_ID",
     region: "YOUR_APP_REGION",       // e.g. "us", "eu", "in"
@@ -194,7 +200,13 @@ Full walkthrough: [How to properly log in and create users in CometChat](https:/
     //dockedAlignment: "left" | "right"
   };
 
-  CometChatApp.CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
+  const startWidget = () => CometChatApp.CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startWidget);
+  } else {
+    startWidget();
+  }
 </script>
 ```
 
