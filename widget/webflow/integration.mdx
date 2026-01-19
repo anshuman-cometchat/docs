@@ -44,13 +44,11 @@ Add the CometChat Widget with a single snippet in a Webflow **Embed** element. P
 
 ### Paste this into the Webflow Embed
 
-```html lines highlight={8-9, 11, 15-17, 22-24}
+```html
 <div id="cometChatMount"></div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
-<script type="module">
-
-  //  EDIT ONLY THE TEXT INSIDE QUOTES
+<script>
   const COMETCHAT_WIDGET_CONFIG = {
     appID: "YOUR_APP_ID",
     region: "YOUR_APP_REGION",   // e.g. "us", "eu", "in"
@@ -75,7 +73,13 @@ Add the CometChat Widget with a single snippet in a Webflow **Embed** element. P
     //dockedAlignment: "left" | "right"
   };
 
-  CometChatApp.CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
+  const startWidget = () => CometChatApp.CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startWidget);
+  } else {
+    startWidget();
+  }
 </script>
 ```
 
@@ -99,13 +103,11 @@ Add the CometChat Widget with a single snippet in a Webflow **Embed** element. P
 
 ### Paste this into the Webflow Embed
 
-```html lines highlight={8-9, 11, 14, 18-20, 25-27}
+```html
 <div id="cometChatMount"></div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
-<script type="module">
-
-  //  EDIT ONLY THE TEXT INSIDE QUOTES
+<script>
   const COMETCHAT_WIDGET_CONFIG = {
     appID: "YOUR_APP_ID",
     region: "YOUR_APP_REGION",      // e.g. "us", "eu", "in"
@@ -133,7 +135,13 @@ Add the CometChat Widget with a single snippet in a Webflow **Embed** element. P
     //dockedAlignment: "left" | "right"
   };
 
-  CometChatApp.CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
+  const startWidget = () => CometChatApp.CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startWidget);
+  } else {
+    startWidget();
+  }
 </script>
 ```
 
@@ -153,6 +161,193 @@ Add the CometChat Widget with a single snippet in a Webflow **Embed** element. P
 
 ---
 
+### Optional: auto-login with Memberstack (UID flow)
+
+Use this if your Webflow site uses Memberstack. It logs in members automatically and falls back to a persistent guest ID.
+
+**Head Code (Project Settings → Custom Code → Head):**
+
+```html
+<!-- Memberstack Installation -->
+<script
+  data-memberstack-id="YOUR_PUBLIC_KEY_HERE"
+  src="https://static.memberstack.com/scripts/v1/memberstack.js"
+  type="text/javascript">
+</script>
+```
+
+**Footer Code (Project Settings → Custom Code → Footer, or a page Embed):**
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
+<div id="cometChatMount"></div>
+
+<script>
+  const COMETCHAT_CONFIG = {
+    appID: "YOUR_APP_ID",
+    region: "YOUR_APP_REGION",
+    authKey: "YOUR_AUTH_KEY",
+    mount: "#cometChatMount",
+    mode: "uid",
+    width: "700px",
+    height: "500px",
+    isDocked: true,
+    // dockedAlignment: "right",
+    // variantID: "YOUR_VARIANT_ID",
+    // chatType: "user",
+    // defaultChatID: "uid_or_guid",
+  };
+
+  const startWidget = async () => {
+    try {
+      const member = await window.$memberstackDom.getCurrentMember();
+      let userConfig;
+
+      if (member?.data) {
+        const uid = member.data.id;
+        const first = member.data.customFields["first-name"] || "";
+        const last = member.data.customFields["last-name"] || "";
+        const name = (first + " " + last).trim() || "User";
+
+        userConfig = {
+          uid,
+          user: {
+            name,
+            avatar: member.data.profileImage || "",
+            link: window.location.origin + "/profile/" + uid
+          }
+        };
+      } else {
+        let guestId = localStorage.getItem("cometchat_guest_id");
+        if (!guestId) {
+          guestId = "guest_" + Math.random().toString(36).substr(2, 9);
+          localStorage.setItem("cometchat_guest_id", guestId);
+        }
+
+        userConfig = {
+          uid: guestId,
+          user: { name: "Guest User" }
+        };
+      }
+
+      CometChatApp.CometChatAuth.start({
+        ...COMETCHAT_CONFIG,
+        ...userConfig
+      });
+    } catch (error) {
+      console.error("CometChat init error:", error);
+
+      const guestId = "guest_" + Math.random().toString(36).substr(2, 9);
+      CometChatApp.CometChatAuth.start({
+        ...COMETCHAT_CONFIG,
+        uid: guestId,
+        user: { name: "Guest User" }
+      });
+    }
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startWidget);
+  } else {
+    startWidget();
+  }
+</script>
+```
+
+**Optional (without reload):** listen for Memberstack auth changes and swap users/guests.
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
+<div id="cometChatMount"></div>
+
+<script>
+  const COMETCHAT_CONFIG = {
+    appID: "YOUR_APP_ID",
+    region: "YOUR_APP_REGION",
+    authKey: "YOUR_AUTH_KEY",
+    mount: "#cometChatMount",
+    mode: "uid",
+    width: "700px",
+    height: "500px",
+    isDocked: true,
+  };
+
+  let currentUid = null;
+
+  const launchChat = (uid, name, avatar) => {
+    if (currentUid === uid) return;
+    currentUid = uid;
+
+    CometChatApp.CometChatAuth.start({
+      ...COMETCHAT_CONFIG,
+      uid,
+      user: { name: name || "User", avatar: avatar || "" }
+    });
+  };
+
+  const launchGuestChat = () => {
+    let guestId = localStorage.getItem("cometchat_guest_id");
+    if (!guestId) {
+      guestId = "guest_" + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem("cometchat_guest_id", guestId);
+    }
+    launchChat(guestId, "Guest User", "");
+  };
+
+  const initCometChat = async () => {
+    try {
+      const member = await window.$memberstackDom.getCurrentMember();
+
+      if (member?.data) {
+        const uid = member.data.id;
+        const first = member.data.customFields["first-name"] || "";
+        const last = member.data.customFields["last-name"] || "";
+        const name = (first + " " + last).trim() || "User";
+
+        launchChat(uid, name, member.data.profileImage || "");
+      } else {
+        launchGuestChat();
+      }
+    } catch (error) {
+      console.error("CometChat error:", error);
+      launchGuestChat();
+    }
+  };
+
+  window.$memberstackDom?.onAuthChange(async (member) => {
+    if (member?.data) {
+      const uid = member.data.id;
+      const first = member.data.customFields["first-name"] || "";
+      const last = member.data.customFields["last-name"] || "";
+      const name = (first + " " + last).trim() || "User";
+
+      if (currentUid && currentUid !== uid) {
+        await CometChatApp.logout();
+        document.getElementById("cometChatMount").innerHTML = "";
+        currentUid = null;
+      }
+
+      launchChat(uid, name, member.data.profileImage || "");
+    } else {
+      if (currentUid) {
+        await CometChatApp.logout();
+        document.getElementById("cometChatMount").innerHTML = "";
+        currentUid = null;
+      }
+      launchGuestChat();
+    }
+  });
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCometChat);
+  } else {
+    initCometChat();
+  }
+</script>
+```
+
+---
+
 ## 3. Backend-Created User (Auth Token Login)
 
 **Use this when:** people sign in through your backend and you generate their CometChat auth token server-side. This keeps your Auth Key off the page.
@@ -168,13 +363,11 @@ Full walkthrough: [How to properly log in and create users in CometChat](https:/
 
 ### Paste this into the Webflow Embed
 
-```html lines highlight={8-9, 13, 17-18}
+```html
 <div id="cometChatMount"></div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
-<script type="module">
-
-  //  EDIT ONLY THE TEXT INSIDE QUOTES
+<script>
   const COMETCHAT_WIDGET_CONFIG = {
     appID: "YOUR_APP_ID",
     region: "YOUR_APP_REGION",       // e.g. "us", "eu", "in"
@@ -194,7 +387,13 @@ Full walkthrough: [How to properly log in and create users in CometChat](https:/
     //dockedAlignment: "left" | "right"
   };
 
-  CometChatApp.CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
+  const startWidget = () => CometChatApp.CometChatAuth.start(COMETCHAT_WIDGET_CONFIG);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startWidget);
+  } else {
+    startWidget();
+  }
 </script>
 ```
 
