@@ -213,6 +213,7 @@ Following is a list of customizations along with their corresponding code snippe
 | **setVoiceCallButtonVisibility**   | Defines whether a user can initiate a voice call                                                                                                         | `.setVoiceCallButtonVisibility(View.VISIBLE)` |
 | **setNewChatButtonVisibility**     | Used to toggle the visibility of new chat button in case of chats with AI Assistants                                                                     | `.setNewChatButtonVisibility(View.GONE)`      |
 | **setChatHistoryButtonVisibility** | Used to toggle the visibility of chat history button in case of chats with AI Assistants                                                                 | `.setChatHistoryButtonVisibility(View.GONE)`  |
+| **setMenuIconVisibility**          | This method sets the visibility of the menu icon in the message header.                                                                                  | .setMenuIconVisibility(View.VISIBLE);         |
 
 ### Advanced
 
@@ -365,6 +366,65 @@ cometchatMessageHeader.setAuxiliaryButtonView(object : Function3<Context?, User?
              
             }
         })
+```
+
+</Tab>
+
+</Tabs>
+
+***
+
+#### setOptions
+
+Allows adding custom options menu which will show on header menu tap. The header menu will only be visible when options are set using this method.
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java
+        List<CometChatPopupMenu.MenuItem> options = new ArrayList<>();
+
+        options.add(new CometChatPopupMenu.MenuItem(
+                UIKitConstants.MessageHeaderMenuOptions.SEARCH,
+                getString(com.cometchat.chatuikit.R.string.cometchat_menu_search),
+                AppCompatResources.getDrawable(this, com.cometchat.chatuikit.R.drawable.cometchat_ic_search),
+                null,
+                this::navigateToSearchActivity
+        ));
+
+        options.add(new CometChatPopupMenu.MenuItem(
+                UIKitConstants.MessageHeaderMenuOptions.CONVERSATION_SUMMARY,
+                getString(com.cometchat.chatuikit.R.string.cometchat_menu_conversation_summary),
+                AppCompatResources.getDrawable(this, com.cometchat.chatuikit.R.drawable.cometchat_ic_menu_conversation_summary),
+                null,
+                this::generateConversationSummary
+        ));
+
+        binding.messageHeader.setOptions(options);
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt
+val options = mutableListOf<CometChatPopupMenu.MenuItem>()
+        options.add(
+            CometChatPopupMenu.MenuItem(
+                UIKitConstants.MessageHeaderMenuOptions.SEARCH,
+                getString(com.cometchat.chatuikit.R.string.cometchat_menu_search),
+                AppCompatResources.getDrawable(this@MessagesActivity, com.cometchat.chatuikit.R.drawable.cometchat_ic_search),
+                null,
+            ) { navigateToSearchActivity() }
+        )
+        options.add(
+            CometChatPopupMenu.MenuItem(
+                UIKitConstants.MessageHeaderMenuOptions.CONVERSATION_SUMMARY,
+                getString(com.cometchat.chatuikit.R.string.cometchat_menu_conversation_summary),
+                AppCompatResources.getDrawable(this@MessagesActivity, com.cometchat.chatuikit.R.drawable.cometchat_ic_menu_conversation_summary),
+                null
+            ) { generateConversationSummary() }
+        )
+
+binding.messageHeader.options = options
 ```
 
 </Tab>
