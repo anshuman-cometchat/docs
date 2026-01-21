@@ -18,33 +18,24 @@ The following open-source tools form the monitoring and observability stack for 
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                         Grafana                              │
-│              (Dashboards & Visualization)                    │
-└──────────────┬─────────────────────────┬────────────────────┘
-               │                         │
-               │ Queries                 │ Queries
-               ▼                         ▼
-    ┌──────────────────┐      ┌──────────────────┐
-    │   Prometheus     │      │      Loki        │
-    │ (Metrics Store)  │      │   (Log Store)    │
-    └────────┬─────────┘      └────────┬─────────┘
-             │                         │
-             │ Scrapes (/metrics)      │ Pushes
-             ▼                         ▼
-    ┌─────────────────────────────────────────┐
-    │  Node Exporter  │  cAdvisor  │ Promtail │
-    │  (Host Metrics) │ (Container)│  (Logs)  │
-    └─────────────────────────────────────────┘
-             │                │              │
-             └────────────────┴──────────────┘
-                            │
-                    ┌───────▼────────┐
-                    │  Docker Swarm  │
-                    │   CometChat    │
-                    │    Services    │
-                    └────────────────┘
+```mermaid
+graph TB
+    Grafana[Grafana<br/>Dashboards & Visualization]
+    Prometheus[Prometheus<br/>Metrics Store]
+    Loki[Loki<br/>Log Store]
+    NodeExporter[Node Exporter<br/>Host Metrics]
+    cAdvisor[cAdvisor<br/>Container Metrics]
+    Promtail[Promtail<br/>Log Collection]
+    Swarm[Docker Swarm<br/>CometChat Services]
+    
+    Grafana -->|Query Metrics| Prometheus
+    Grafana -->|Query Logs| Loki
+    Prometheus -->|Scrape /metrics| NodeExporter
+    Prometheus -->|Scrape /metrics| cAdvisor
+    Promtail -->|Push Logs| Loki
+    NodeExporter -->|Monitor| Swarm
+    cAdvisor -->|Monitor| Swarm
+    Promtail -->|Collect Logs| Swarm
 ```
 
 ## Key metrics to monitor
