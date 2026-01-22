@@ -30,11 +30,18 @@ Add the CometChat Widget with a single snippet in a Webflow **Embed** element. P
 
 ## Where to place the snippet in Webflow
 
-1) In the Webflow Designer, open the page where chat should appear.  
-2) Drag an **Embed** component to the page (bottom-right is common for a docked chat).  
-3) Click **Edit Custom Code** on the Embed, paste the snippet from your chosen option, and save.  
-4) Optionally add the `<script defer ...>` line once in **Project Settings → Custom Code → Head Code** to avoid repeating it in every Embed. Otherwise, keep it in the snippet.  
-5) Publish the site (not just preview) to confirm the widget loads.
+1) Log in to your Webflow dashboard.
+2) Select the website where you want to integrate CometChat.
+3) Go to **Setting icon (Site Settings)** and open the **Custom Code** section.
+4) (Optional) To avoid repeating the script in every Embed, add the CometChat script once in **Site Settings → Custom Code → Head Code**. 
+
+For example: 
+```<script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>```
+If you prefer, you can also keep this script directly in the Embed snippet.
+
+5) Click the **Save** button to apply the changes.
+6) Publish your site.
+7) Click Visit Website to view the integrated chat on your live site.
 
 ---
 
@@ -101,7 +108,7 @@ Add the CometChat Widget with a single snippet in a Webflow **Embed** element. P
 
 **Use this when:** you already have user IDs (email, username, member ID) and want to log people in with that ID automatically. CometChat creates the user the first time it sees the ID.
 
-### Add this to Project Settings → Custom Code → Head Code
+### Add this to Site Settings → Custom Code → Head Code
 
 ```html
 <script defer src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
@@ -169,7 +176,7 @@ Add the CometChat Widget with a single snippet in a Webflow **Embed** element. P
 
 Use this when your Webflow site uses Memberstack and you want the widget to log members in automatically (with a persistent guest fallback).
 
-**Step 1 — add Memberstack to Head (Project Settings → Custom Code → Head):**
+**Step 1 — add Memberstack to Head (Site Settings → Custom Code → Head):**
 
 ```html
 <!-- Memberstack Installation -->
@@ -180,7 +187,7 @@ Use this when your Webflow site uses Memberstack and you want the widget to log 
 </script>
 ```
 
-**Step 2 — add the chat widget (Project Settings → Custom Code → Footer, or a page Embed):**
+**Step 2 — add the chat widget (Site Settings → Custom Code → Footer, or a page Embed):**
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@cometchat/chat-embed@1.x.x/dist/main.js"></script>
