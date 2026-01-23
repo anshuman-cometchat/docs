@@ -55,6 +55,17 @@ docker swarm join --token <token> <manager-ip>:2377
 - Distribute manager nodes across availability zones when possible
 - Use worker nodes for application workloads, managers for orchestration only
 
+## Clone the repository
+
+Clone the CometChat On-Prem repository to access deployment scripts and configuration files:
+
+```bash
+git clone https://github.com/cometchat/cometchat-on-prem.git
+cd cometchat-on-prem
+```
+
+To access the repository, [contact us](https://www.cometchat.com/contact-sales).
+
 ## Deploy the complete infrastructure
 
 Run the following from the repository root on the Swarm manager node:
@@ -95,48 +106,6 @@ docker service ls
 # Check for any failed services
 docker service ls | grep "0/"
 ```
-
-## Rolling updates
-
-Perform zero-downtime updates to services using the update script:
-
-```bash
-./update.sh
-```
-
-**What the update script does:**
-- Pulls latest container images from the registry
-- Performs rolling updates service by service
-- Refreshes configuration and environment variables
-- Replaces containers gradually while maintaining availability
-- Automatically rolls back if health checks fail
-
-**Update behavior:**
-- Services are updated one replica at a time (configurable)
-- New replicas must pass health checks before old ones are removed
-- Traffic continues flowing to healthy replicas during updates
-- Failed updates trigger automatic rollback to previous version
-
-**Manual service updates:**
-For granular control, update individual services:
-
-```bash
-# Update specific service to new image version
-docker service update --image <registry>/<service>:<version> <service-name>
-
-# Update with custom rollback settings
-docker service update \
-  --update-parallelism 2 \
-  --update-delay 10s \
-  --update-failure-action rollback \
-  <service-name>
-```
-
-**Best practices:**
-- Test updates in staging environment first
-- Perform updates during low-traffic periods when possible
-- Monitor service logs and metrics during updates
-- Keep previous image versions available for quick rollback
 
 ## Production NGINX reverse proxy
 
