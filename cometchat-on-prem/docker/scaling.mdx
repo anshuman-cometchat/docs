@@ -86,6 +86,8 @@ docker service inspect chat-api --format='{{.Spec.TaskTemplate.Resources.Limits}
 
 Add more service replicas or nodes to distribute load across multiple servers. Horizontal scaling provides better fault tolerance and unlimited growth potential.
 
+**Note:** Docker Swarm supports horizontal scaling through manual commands. Unlike Kubernetes, which offers automatic scaling based on metrics (HPA/VPA), Docker Swarm requires you to manually scale services using the commands below. Monitor your metrics and scale proactively based on load patterns.
+
 ### Scaling application services
 
 **WebSocket Gateway:**
