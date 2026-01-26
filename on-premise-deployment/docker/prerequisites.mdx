@@ -3,7 +3,7 @@ title: "Prerequisites"
 sidebarTitle: "Prerequisites"
 ---
 
-This guide outlines the infrastructure, software, and network requirements for deploying CometChat on-premise. Proper capacity planning ensures optimal performance, cost efficiency, and scalability as your user base grows.
+This guide outlines the infrastructure, software, and network requirements for deploying CometChat On-Prem. Proper capacity planning ensures optimal performance, cost efficiency, and scalability as your user base grows.
 
 **Planning Considerations:**
 - **Hardware Sizing**: Select appropriate compute and storage resources based on expected monthly active users (MAU) and peak concurrent connections (PCC)
@@ -13,7 +13,7 @@ This guide outlines the infrastructure, software, and network requirements for d
 
 ## Supported operating systems
 
-CometChat on-premise is tested and supported on enterprise Linux distributions with long-term support (LTS) and security updates:
+CometChat On-Prem is tested and supported on enterprise Linux distributions with long-term support (LTS) and security updates:
 
 - **Ubuntu 20.04 / 22.04 / 24.04 LTS**: Recommended for most deployments with 5-year support lifecycle
 - **RedHat Enterprise Linux 8+**: Ideal for enterprises requiring commercial support and compliance certifications
@@ -44,8 +44,6 @@ For development, testing, and proof-of-concept environments:
 - **16 GB RAM**: Minimum memory for core services and data stores
 - **100 GB SSD**: Base storage for application data and logs (scale up based on workload and storage needs)
 
-**Use Cases**: Local development, CI/CD pipelines, QA testing, architecture evaluation
-
 **Important**: This configuration is not suitable for production workloads or performance testing at scale.
 
 ## Production hardware
@@ -68,8 +66,6 @@ Recommended for standard usage patterns where peak concurrent connections are ap
 
 **Storage guidance**: Start at 100 GB SSD and scale to 500 GB to 2 TB SSD depending on workload and data retention policies.
 
-**Typical use cases**: Consumer messaging apps, community platforms, standard business communication tools
-
 ### High-concurrency sizing
 
 Recommended for applications with sustained high concurrency where peak connections reach 10% or more of MAU:
@@ -83,8 +79,6 @@ Recommended for applications with sustained high concurrency where peak connecti
 | 200k | 20,000 | 480 | 960 GiB |
 
 **Storage guidance**: Expect to exceed 100 GB SSD; plan 500 GB to 2 TB SSD as concurrency and data volume grow.
-
-**Typical use cases**: Real-time collaboration tools, customer support platforms, live event applications, gaming communities
 
 ### Storage planning considerations
 

@@ -3,7 +3,7 @@ title: "Production Deployment"
 sidebarTitle: "Production Deployment"
 ---
 
-This guide walks through deploying CometChat on-premise to a production Docker Swarm cluster. The deployment process uses automated scripts to ensure consistent, repeatable deployments with proper service orchestration and zero-downtime updates.
+This guide walks through deploying CometChat On-Prem to a Docker Swarm cluster. The deployment process uses automated scripts to ensure consistent, repeatable deployments with proper service orchestration and zero-downtime updates.
 
 **Deployment Overview:**
 - Initialize Docker Swarm cluster for container orchestration
@@ -57,11 +57,11 @@ docker swarm join --token <token> <manager-ip>:2377
 
 ## Clone the repository
 
-Clone the CometChat on-premise repository to access deployment scripts and configuration files:
+Clone the CometChat On-Prem repository to access deployment scripts and configuration files:
 
 ```bash
-git clone https://github.com/cometchat/cometchat-on-premise.git
-cd cometchat-on-premise
+git clone https://github.com/cometchat/cometchat-on-prem.git
+cd cometchat-on-prem
 ```
 
 To access the repository, [contact us](https://www.cometchat.com/contact-sales).
@@ -107,7 +107,7 @@ docker service ls
 docker service ls | grep "0/"
 ```
 
-## Production NGINX reverse proxy
+## NGINX reverse proxy
 
 NGINX serves as the edge layer, handling TLS termination, API routing, WebSocket protocol upgrades, and proxy buffering for optimal performance.
 
@@ -151,9 +151,9 @@ docker service update --force nginx
 - Enable HSTS (HTTP Strict Transport Security)
 - Implement rate limiting for public endpoints
 
-## Domain configuration (production)
+## Domain configuration
 
-Production deployments require updating domain references across multiple services and configuration files. Replace all instances of `<your-domain>` with your actual production domain.
+Deployments require updating domain references across multiple services and configuration files. Replace all instances of `<your-domain>` with your actual domain.
 
 **Services requiring domain configuration:**
 - Chat API - Core messaging service endpoints
@@ -162,14 +162,14 @@ Production deployments require updating domain references across multiple servic
 - Notifications - Push notification service
 - Moderation - Content moderation service
 - Webhooks - Outbound webhook delivery
-- SQL Consumer - Database migration and provisioning service
+- Data Sync Service - Data synchronization
 - NGINX - Reverse proxy routing rules
 
 **Critical alignment:**
 Ensure the WebSocket host configured in Chat API matches your chosen domain exactly (e.g., `websocket.chat.example.com`). Mismatched domains will cause WebSocket connection failures.
 
 **Configuration checklist:**
-1. Update all service environment variables with production domains
+1. Update all service environment variables with your domains
 2. Update NGINX configuration files with matching domains
 3. Verify DNS records point to your cluster load balancer
 4. Configure TLS certificates for all public-facing domains
@@ -187,11 +187,11 @@ moderation.example.com   → Moderation Service
 app.example.com          → Dashboard
 ```
 
-**Note**: Your actual deployment may use region-specific naming (e.g., `api-us.example.com`) or other conventions. Ensure consistency across all configuration files and DNS records.
+**Note**: Ensure consistency across all configuration files and DNS records.
 
 For detailed environment variable mappings, see the [Configuration Reference](./configuration-reference).
 
-## Useful production commands (Swarm operations)
+## Useful commands (Swarm operations)
 
 ### General service management
 
@@ -273,23 +273,23 @@ After deployment, verify all services are healthy by checking their health endpo
 | Component | URL |
 | --- | --- |
 | Dashboard | `https://app.example.com` |
-| Chat API | `https://api-us.example.com/health-check` |
-| Client API | `https://apiclient-us.example.com/health-check` |
+| Chat API | `https://api.example.com/health-check` |
+| Client API | `https://apiclient.example.com/health-check` |
 | Management API | `https://apimgmt.example.com/health-check` |
-| Notifications | `https://notifications-us.example.com/health-check` |
-| Moderation | `https://rule-us.example.com/health` |
-| WebSocket | `https://websocket-us.example.com/v1/health` |
-| Webhooks | `https://webhooks-us.example.com/v1/webhooks/health-check` |
+| Notifications | `https://notifications.example.com/health-check` |
+| Moderation | `https://rule.example.com/health` |
+| WebSocket | `https://websocket.example.com/v1/health` |
+| Webhooks | `https://webhooks.example.com/v1/webhooks/health-check` |
 
-Replace `example.com` with your actual domain, such as `chat.example.com`.
+Replace `example.com` with your actual domain.
 
 **Health check validation:**
 
 ```bash
 # Check all health endpoints
-curl -f https://api-us.example.com/health-check || echo "Chat API unhealthy"
-curl -f https://websocket-us.example.com/v1/health || echo "WebSocket unhealthy"
-curl -f https://notifications-us.example.com/health-check || echo "Notifications unhealthy"
+curl -f https://api.example.com/health-check || echo "Chat API unhealthy"
+curl -f https://websocket.example.com/v1/health || echo "WebSocket unhealthy"
+curl -f https://notifications.example.com/health-check || echo "Notifications unhealthy"
 ```
 
 **Expected responses:**
