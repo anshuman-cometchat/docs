@@ -88,7 +88,7 @@ npm install \
 
 Match these or newer compatible versions in your app.
 
-## 4. Android App setup
+## 4. Android App Setup
 
 ### 4.1 Configure Firebase with Android credentials
 
@@ -527,6 +527,57 @@ Send a data-only FCM message like:
     "sessionId": "<COMETCHAT_SESSION_ID>",
     "senderName": "Alice",
     "receiverName": "Bob"
+  }
+}
+```
+
+### 5.7 Local notification helper (`LocalNotificationHandler.ts`)
+Add this helper next to your `index.js` to show local alerts for non-call pushes:
+
+```ts lines
+import { Platform } from "react-native";
+import notifee, { AndroidImportance } from "@notifee/react-native";
+
+const CHANNEL_ID = "default";
+
+async function ensureChannel(): Promise<string | undefined> {
+  if (Platform.OS !== "android") return undefined;
+  return notifee.createChannel({
+    id: CHANNEL_ID,
+    name: "Default",
+    lights: true,
+    vibration: true,
+    importance: AndroidImportance.HIGH,
+  });
+}
+
+export async function displayLocalNotification(remoteMessage: any) {
+  try {
+    const { notification = {}, data = {} } = remoteMessage || {};
+    const title = notification?.title || data?.title || "Notification";
+    const body = notification?.body || data?.body || "";
+
+    if (Platform.OS === "ios") {
+      await notifee.requestPermission();
+    }
+
+    const channelId = await ensureChannel();
+
+    await notifee.displayNotification({
+      title,
+      body,
+      data,
+      android: channelId
+        ? {
+            channelId,
+            pressAction: { id: "default" },
+            importance: AndroidImportance.HIGH,
+            smallIcon: "ic_launcher",
+          }
+        : undefined,
+    });
+  } catch (error) {
+    console.error("[LocalNotificationHandler] Failed to display notification", error);
   }
 }
 ```
