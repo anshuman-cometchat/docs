@@ -1,6 +1,6 @@
 ---
 title: "React Native Push Notification (Android)"
-description: "Bring the SampleAppWithPushNotifications experience—FCM/APNs into any React Native project using CometChat UI Kit."
+description: "Bring the SampleAppWithPushNotifications experience—FCM—into any React Native project using CometChat UI Kit."
 ---
 
 <Card
@@ -21,16 +21,15 @@ description: "Bring the SampleAppWithPushNotifications experience—FCM/APNs int
 
 ## What you need first
 
-- CometChat app credentials (App ID, Region, Auth Key) and Push Notifications enabled with an **FCM provider (React Native Android)** and **APNs provider** for iOS.
-- Firebase project with an Android app (`google-services.json` in `android/app`) and Cloud Messaging enabled; optional iOS app if you use FCM on iOS.
-- Apple push setup: APNs `.p8` key/cert in CometChat, iOS project with Push Notifications + Background Modes (Remote notifications) permissions.
-- React Native 0.81+, Node 18+, physical Android + iOS devices for reliable push/call testing.
+- CometChat app credentials (App ID, Region, Auth Key) and Push Notifications enabled with an **FCM provider (React Native Android)**.
+- Firebase project with an Android app (`google-services.json` in `android/app`) and Cloud Messaging enabled.
+- React Native 0.81+, Node 18+, physical Android devices for reliable push/call testing.
 
-## How FCM/APNs + CometChat work together
+## How FCM + CometChat work together
 
-- **FCM (Android) and APNs (iOS) are the transports:** Firebase issues the Android FCM token; Apple issues the APNs token. They deliver the payloads to devices.  
-- **CometChat providers hold your credentials:** The FCM provider you add (for React Native Android) stores your Firebase service account; the APNs provider stores your `.p8` key/cert.  
-- **Registration flow:** Request permission → platform returns token → after `CometChat.login`, register with `CometChatNotifications.registerPushToken(token, platform, providerId)` using `FCM_REACT_NATIVE_ANDROID` on Android and `APNS_REACT_NATIVE_DEVICE` on iOS → CometChat sends pushes to FCM/APNs on your behalf → the app handles taps/foreground events via Notifee/PushNotificationIOS.
+- **FCM (Android) is the transport:** Firebase issues the Android FCM token and delivers payloads to devices.  
+- **CometChat provider holds your credentials:** The FCM provider you add (for React Native Android) stores your Firebase service account JSON.  
+- **Registration flow:** Request permission → Android returns the FCM token → after `CometChat.login`, register with `CometChatNotifications.registerPushToken(token, platform, providerId)` using `FCM_REACT_NATIVE_ANDROID` → CometChat sends pushes to FCM on your behalf → the app handles taps/foreground events via Notifee.
 
 ## 1. Enable push and add providers (CometChat Dashboard)
 
@@ -46,12 +45,6 @@ description: "Bring the SampleAppWithPushNotifications experience—FCM/APNs int
   <img src="/images/c6447647-pushnotification-fcm-68092b02a5361d51ba14b09289da3a78.png" alt="Upload FCM service account JSON" />
 </Frame>
 
-3. Add an **APNs** provider for iOS and copy the Provider ID.
-
-<Frame>
-  <img src="/images/1133421a-add-apns-credentials-f8c2fd747ab4cf3905c6d13cf215b4c1.png" alt="Upload APNs credentials" />
-</Frame>
-
 ## 2. Prepare platform credentials
 
 ### 2.1 Firebase Console
@@ -63,18 +56,9 @@ description: "Bring the SampleAppWithPushNotifications experience—FCM/APNs int
   <img src="/images/push-notifications-fcm-rn.png" alt="Firebase - Push Notifications" />
 </Frame>
 
-### 2.2 Apple Developer portal
-
-1. Generate an APNs Auth Key (`.p8`) and note the **Key ID** and **Team ID**.
-2. Enable Push Notifications plus Background Modes → *Remote notifications* on the bundle ID.
-
-<Frame>
-  <img src="/images/notification-capabilities-apns.png" alt="Enable Push Notifications and Background Modes for APNs" />
-</Frame>
-
 ## 3. Local configuration
 
-- Update `src/utils/AppConstants.tsx` with `appId`, `authKey`, `region`, `fcmProviderId`, and `apnProviderId`.
+- Update `src/utils/AppConstants.tsx` with `appId`, `authKey`, `region`, and `fcmProviderId`.
 - Keep `app.json` name consistent with your bundle ID / applicationId.
 
 ```ts lines
@@ -92,10 +76,7 @@ Install these dependencies in your React Native app:
 npm install \
     @react-native-firebase/app@23.4.0 \
     @react-native-firebase/messaging@23.4.0 \
-    @notifee/react-native@9.1.8 \
-    @react-native-community/push-notification-ios@1.11.0 \
-    react-native-voip-push-notification@3.3.3 \
-    github:cometchat/react-native-callkeep
+    @notifee/react-native@9.1.8
 ```
 
 Match these or newer compatible versions in your app.
@@ -208,185 +189,27 @@ CometChatNotifications.registerPushToken(
 Typically, push token unregistration should occur prior to user logout, using the `CometChat.logout()` method.
 For token unregistration, use the `CometChatNotifications.unregisterPushToken()` method provided by the SDKs.
 
-## 5. iOS setup
-
-### 5.1 Project Setup
-
-Enable **Push Notifications** and **Background Modes** (Remote notifications) in Xcode.
-
-<Frame>
-  <img src="/images/signing-capabilities-rn-ios.png" alt="Enable Push Notifications" />
-</Frame>
-
-### 5.2 Install dependencies:
-
-Install the required packages for iOS push notifications:
-```bash lines
-npm install react-native-push-notification@^8.1.1 
-npm install @react-native-community/push-notification-ios@^1.12.0
-```
-
-### 5.3 AppDelegate.swift modifications:
-
-Add imports at the top:
-```swift lines
-import UserNotifications
-import RNCPushNotificationIOS
-```
-
-Add `UNUserNotificationCenterDelegate` to the `AppDelegate` class declaration:
-```swift
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate 
-```
-
-Add the following inside the `didFinishLaunchingWithOptions` method:
-```swift lines
-UNUserNotificationCenter.current().delegate = self
-
-UNUserNotificationCenter.current().requestAuthorization(
-    options: [.alert, .badge, .sound]
-) {
-    granted,
-    error in
-    if granted {
-        DispatchQueue.main.async {
-            application.registerForRemoteNotifications()
-        }
-    } else {
-        print("Push Notification permission not granted: \(String(describing: error))")
-    }
-}
-```
-
-Add the following methods to handle push notification events:
-```swift lines
-func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-  print("APNs device token received: \(deviceToken)")
-  RNCPushNotificationIOS.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)
-}
-
-func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-  print("APNs registration failed: \(error)")
-  RNCPushNotificationIOS.didFailToRegisterForRemoteNotificationsWithError(error)
-}
-
-func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-  RNCPushNotificationIOS.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
-}
-
-func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-  completionHandler([.banner, .sound, .badge])
-}
-  
-func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-  RNCPushNotificationIOS.didReceive(response)
-  completionHandler()
-}
-```
-
-Add the following to `Podfile` to avoid framework linkage issues:
-```ruby
-use_frameworks! :linkage => :static
-```
-
-You might have to remove below code if already present in your Podfile:
-```ruby lines
-linkage = ENV['USE_FRAMEWORKS']
-if linkage != nil
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
-end
-```
-
-Then lets install pods and open the workspace:
-```bash lines
-cd ios
-pod install
-open YourProjectName.xcworkspace
-```
-
-### 5.4 App.tsx modifications:
-
-Import CometChatNotifications:
-
-```tsx
-import { CometChat, CometChatNotifications } from "@cometchat/chat-sdk-react-native";
-```
-
-Get device token and store it in a ref:
-Also, define your APNs provider ID from the CometChat Dashboard.
-And request permissions on mount:
-
-```tsx lines
-const APNS_PROVIDER_ID = 'YOUR_APNS_PROVIDER_ID'; // from CometChat Dashboard
-const apnsTokenRef = useRef < string | null > (null);
-
-useEffect(() => {
-    if (Platform.OS !== 'ios') return;
-
-    const onRegister = (deviceToken: string) => {
-        console.log(' APNs device token captured:', deviceToken);
-        apnsTokenRef.current = deviceToken;
-    };
-
-    PushNotificationIOS.addEventListener('register', onRegister);
-
-    PushNotificationIOS.addEventListener('registrationError', error => {
-        console.error(' APNs registration error:', error);
-    });
-
-    // Trigger permission + native registration
-    PushNotificationIOS.requestPermissions().then(p =>
-        console.log('Push permissions:', p),
-    );
-
-    return () => {
-        PushNotificationIOS.removeEventListener('register');
-        PushNotificationIOS.removeEventListener('registrationError');
-    };
-}, []);
-```
-
-After user login, register the APNs token:
-```tsx lines
-//  Register token ONLY if we already have it
-if (apnsTokenRef.current) {
-    await CometChatNotifications.registerPushToken(
-        apnsTokenRef.current,
-        CometChatNotifications.PushPlatforms.APNS_REACT_NATIVE_DEVICE,
-        APNS_PROVIDER_ID
-    );
-    console.log(' APNs token registered with CometChat');
-}
-```
-
-Prior to logout, unregister the APNs token:
-```tsx
-await CometChatNotifications.unregisterPushToken();
-```
-
-## 6. Handling notification taps and navigation
+## 5. Handling notification taps and navigation
 
 To handle notification taps and navigate to the appropriate chat screen, you need to set up handlers for both foreground and background notifications.
 
 {/* :TODO: Add code snippets and explanation for setting up Notifee handlers and navigation logic. */}
 
 
-## 7. Testing checklist
+## 6. Testing checklist
 
 1. Android: install on device, grant POST_NOTIFICATIONS; log in and verify FCM token registration success.
 2. Send a message from another user:
    - Foreground: Notifee banner shows unless that chat is open.
    - Background/terminated: tap opens the correct conversation; Notifee background handler runs.
-3. iOS: verify APNs device token register; tap push from killed app opens the right chat; remote notifications finish handler is called.
-4. Rotate tokens (reinstall or revoke) and confirm `onTokenRefresh` re-registers.
+3. Rotate tokens (reinstall or revoke) and confirm `onTokenRefresh` re-registers.
 
-## 8. Troubleshooting
+## 7. Troubleshooting
 
 | Symptom | Quick checks |
 | --- | --- |
-| No pushes | Confirm `google-services.json` location, package/bundle IDs match Firebase/Apple, Push extension enabled with correct provider IDs, permissions granted. |
+| No pushes | Confirm `google-services.json` location, package IDs match Firebase, Push extension enabled with correct provider IDs, permissions granted. |
 | Token registration fails | Ensure registration runs **after login**, provider IDs are set, and `registerDeviceForRemoteMessages()` is called (Android). |
 {/* | Notification taps do nothing | Keep Notifee foreground/background handlers and `checkInitialNotificationIOS`; ensure navigation ref is ready before routing. | */}
-{/* | Call UI not showing | Verify CallKeep setup, telecom permissions (Android) or CallKit entitlement (iOS), and that `VoipNotificationHandler.initialize()` runs post-login. | */}
+{/* | Call UI not showing | Verify CallKeep setup, telecom permissions (Android), and that `VoipNotificationHandler.initialize()` runs post-login. | */}
 {/* | Inline reply needed | Extend Notifee action buttons; CometChat expects you to send the message manually after reading `remoteMessage.data`. | */}
