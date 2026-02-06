@@ -2,67 +2,115 @@
 title: "Custom API Moderation"
 ---
 
-CometChat allows you to integrate your own moderation logic using a **Custom API**. With this feature, you can define a webhook URL where CometChat will send messages for moderation along with relevant context from the conversation.
+CometChat allows you to integrate your own moderation logic using a **Custom API**. With this feature, you can define a webhook URL where CometChat will send messages for moderation along with relevant context from the conversation. This enables you to use your own moderation service, third-party AI moderation APIs, or custom business logic to moderate content.
 
-## Integration
+## Integration Steps
 
-### Step 1: Configure Custom API Settings
+### Step 1: Create a Custom API List
 
-1. **Login to the CometChat Dashboard**
-   - Navigate to [CometChat Dashboard](https://app.cometchat.com) and select your app.
+First, you need to create a list that defines your Custom API webhook configuration.
 
-2. **Navigate to Moderation Settings**
-   - Go to **Moderation → Settings** in the left-hand menu.
+1. Navigate to the [CometChat Dashboard](https://app.cometchat.com) and select your app.
 
-3. **Open Custom API Settings Tab**
-   - Click on the **Custom API** tab within the Moderation Settings.
+2. Go to **Moderation** → **Settings** from the left-hand menu.
 
-4. **Fill in the Custom API Configuration**
+3. Click on the **List** tab.
 
-   - **Webhook URL**
-     - Enter the endpoint URL where CometChat will send messages for moderation.
+4. Click **Add List** to create a new list.
 
-   - **Authentication (Optional)**
-     - Enable Basic Authentication to secure your webhook endpoint.
-     - Provide a username and password that CometChat will include in the `Authorization` header.
+5. Fill in the required fields:
+   - **Name**: Enter a descriptive name for your custom moderation list (e.g., `custom-moderation`)
+   - **ID**: Enter a unique identifier for the list (e.g., `custom-moderation-list`)
+   - **Category**: Select **Custom API** from the dropdown
+   - **URL**: Enter the webhook URL where CometChat will POST message data for moderation
 
-   - **Set Action on API Error**
-     - Define how the system should respond if the Custom API is unavailable:
-       - **Allow message** – Messages are delivered even if moderation fails.
-       - **Block message** – Messages are blocked when moderation is unavailable.
+6. **Enable Basic Auth** (Optional but Recommended):
+   - Toggle on **Enable Basic Auth** for added security
+   - Enter your **Basic Auth Username**
+   - Enter your **Basic Auth Password**
+   - CometChat will include these credentials in the `Authorization` header when calling your webhook
 
-   - **Set Context Window**
-     - Specify the number of previous messages in a conversation to include for context (0-10).
+7. Click **Save** to create the list.
 
-5. **Click Save Settings**
+### Step 2: Configure Advanced Settings
 
-### Step 2: Create a Moderation Rule
+Next, configure the context and error handling settings for your Custom API.
 
-1. Navigate to **Moderation → Rules**.
-2. Click **"Create New Rule"**.
-3. Select **Custom API** as the moderation type.
-4. Choose the rule type:
-   - **Text Contains** – For text message moderation
-   - **Image Contains** – For image message moderation
-5. Configure the action to take when content is flagged (block, flag for review, etc.).
-6. Save the rule.
+1. Navigate to **Moderation** → **Settings**.
+
+2. Click on the **Advanced Settings** tab.
+
+3. Scroll down to the **Custom API** section.
+
+4. Configure the following options:
+
+   - **The number of messages sent to Custom API for context**: 
+     - Set the number of previous messages to include as context (0-10)
+     - This enables context-aware moderation by providing conversation history
+     - Set to `0` if you don't need context and only want to moderate individual messages
+
+   - **On Custom API Error**:
+     - **Approve Message** (Default): Messages are automatically approved if your webhook is unavailable or returns an error
+     - **Block Message**: Messages are blocked when your webhook is inaccessible, ensuring no unmoderated content passes through
+
+5. Click **Save** to apply the settings.
+
+<Frame>
+  <img src="/images/moderation-custom-api-advanced-settings.png" alt="Custom API Advanced Settings" />
+</Frame>
+
+### Step 3: Create a Moderation Rule
+
+Now, map your Custom API list to a moderation rule to activate the moderation.
+
+1. Navigate to **Moderation** → **Rules**.
+
+2. Click **Create New Rule**.
+
+3. Fill in the mandatory fields:
+   - **Name**: Enter a name for the rule (e.g., `test-custom-api`)
+   - **ID**: Enter a unique identifier (e.g., `testcustomapi`)
+   - **Description**: Optionally describe what this rule does
+
+4. Configure the **Conditions**:
+   - Select the content type to moderate (e.g., **Text**)
+   - Select **Contains**
+   - Select **Custom API**
+   - Choose the Custom API list you created in Step 1 from the dropdown
+   - Set the **confidence** threshold (e.g., `greater than 80%`)
+     - Higher percentages result in stricter matching
+     - Lower percentages allow more content to be flagged
+
+5. Configure the **Actions** to perform when content is flagged (block, flag for review, etc.).
+
+6. Click **Save** to create the rule.
+
+7. **Enable the rule** by toggling it on.
+
+<Frame>
+  <img src="/images/moderation-custom-api-create-rule.png" alt="Create Custom API Rule"/>
+</Frame>
+
+Once enabled, all messages matching your filter criteria will be sent to your webhook URL for moderation.
+
+---
 
 ## Webhook Request
 
-### Headers
+When a message is sent, CometChat will POST the message data to your configured webhook URL.
 
-When CometChat calls your webhook, it includes the following headers:
+### Headers
 
 | Header | Description |
 |--------|-------------|
 | `Content-Type` | `application/json` |
 | `Authorization` | Basic auth credentials (if configured) |
 
-### Payload
+### Payload Structure
 
 The payload includes:
-- The latest message (the one just sent) — provided in full detail (entire message object)
-- The previous messages — provided as plain text only, for context (based on the context window setting)
+- **Context messages**: Previous messages in the conversation (as plain text) based on your context window setting
+- **Latest message**: The message being moderated (full message object with all details)
 
 ```json
 {
@@ -126,6 +174,8 @@ The payload includes:
 }
 ```
 
+---
+
 ## Webhook Response
 
 Your webhook must return a JSON response indicating the moderation decision.
@@ -136,7 +186,7 @@ Your webhook must return a JSON response indicating the moderation decision.
 {
   "isMatchingCondition": true,
   "confidence": 0.95,
-  "reason": "Contains hate speech"
+  "reason": "Contains prohibited content"
 }
 ```
 
@@ -152,50 +202,12 @@ Your webhook must return a JSON response indicating the moderation decision.
 
 ### Response Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `isMatchingCondition` | boolean | `true` if the message violates the rule, `false` if safe |
-| `confidence` | number | Confidence score of the decision (0.0 - 1.0) |
-| `reason` | string | Reason for flagging (can be empty for safe content) |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `isMatchingCondition` | boolean | Yes | `true` if the message violates the rule, `false` if safe |
+| `confidence` | number | Yes | Confidence score of the decision (0.0 - 1.0). This is compared against the threshold set in your rule conditions |
+| `reason` | string | No | Reason for flagging (can be empty for safe content) |
 
-## Example Webhook Implementation
-
-Here's a simple Node.js/Express example:
-
-```javascript
-const express = require('express');
-const app = express();
-
-app.use(express.json());
-
-app.post('/moderate', (req, res) => {
-  const { contextMessages } = req.body;
-  
-  // Get the latest message (last item in array)
-  const latestEntry = contextMessages[contextMessages.length - 1];
-  const senderId = Object.keys(latestEntry)[0];
-  const messageData = latestEntry[senderId];
-  
-  // Extract text content
-  const text = typeof messageData === 'string' 
-    ? messageData 
-    : messageData.data?.text || '';
-  
-  // Your moderation logic here
-  const isViolation = containsBadContent(text);
-  
-  res.json({
-    isMatchingCondition: isViolation,
-    confidence: 0.95,
-    reason: isViolation ? 'Content policy violation' : ''
-  });
-});
-
-function containsBadContent(text) {
-  // Implement your moderation logic
-  // Could call OpenAI Moderation API, Perspective API, etc.
-  return false;
-}
-
-app.listen(3000);
-```
+<Note>
+The `confidence` value returned by your webhook is compared against the confidence threshold configured in your moderation rule. For example, if your rule is set to trigger when confidence is "greater than 80%" and your webhook returns `0.95`, the rule action will be executed.
+</Note>
