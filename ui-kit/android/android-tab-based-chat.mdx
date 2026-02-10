@@ -1,9 +1,9 @@
 ---
-title: "Building A Messaging UI With Tabs, Sidebar, And Message View"
+title: "Building A Tab-Based Messaging UI"
 sidebarTitle: "Tab Based Chat Experience"
 ---
 
-This guide walks you through creating a **tab-based messaging UI** using **Android** and **CometChat UIKit**. The UI will include different sections for **Chats, Calls, Users, and Groups**, allowing seamless navigation.
+This guide walks you through creating a **tab-based messaging UI** using **Android** and **CometChat UIKit**. The UI uses **BottomNavigationView** with different sections for **Chats, Calls, Users, and Groups**, allowing seamless navigation.
 
 ***
 
@@ -15,29 +15,41 @@ This guide walks you through creating a **tab-based messaging UI** using **Andro
 
 This layout consists of:
 
-1. **Sidebar (Conversation List)** – Displays recent conversations with active users and groups.
-2. **Message View** – Shows the selected chat with real-time messages.
-3. **Message Input Box** – Allows users to send messages seamlessly.
+1. **Bottom Navigation Bar** – Provides quick access to main sections (Chats, Calls, Users, Groups).
+2. **Fragment Container** – Displays the selected section's content using Android Fragments.
+3. **Dynamic Content** – Each tab loads its respective Fragment with CometChat UI components.
 
 ***
 
 ## **Step-by-Step Guide**
 
-### **Step 1: Create a Tab Component**
+### **Navigation Pattern**
 
-To manage navigation, let's build a **`CometChatTabs`** component. This component will render different tabs and allow switching between sections dynamically.
+This implementation uses Android's **BottomNavigationView** pattern:
 
-#### **Folder Structure**
+1. **TabbedActivity** hosts the bottom navigation and fragment container
+2. User taps a tab in the bottom navigation
+3. The corresponding Fragment is loaded into the container
+4. Each Fragment displays its CometChat UI component (Conversations, CallLogs, Users, or Groups)
 
-Create a `TabbedActivity` inside your `src` directory and add the following files:
+This is the standard Android pattern for apps with multiple top-level destinations.
+
+***
+
+### **Step 1: Set Up Tabbed Activity**
+Create a new Activity called `TabbedActivity` with **BottomNavigationView** to manage tab navigation.
+
+#### **Project Structure**
+
+Create the following files in your Android project:
 
 ```txt
 src/main/java/your-package-name/
-├── TabbedActivity.kt
-├── ChatsFragment.kt
-├── CallLogsFragment.kt
-├── UsersFragment.kt
-├── GroupsFragment.kt
+├── TabbedActivity.kt (or .java)
+├── ChatsFragment.kt (or .java)
+├── CallLogsFragment.kt (or .java)
+├── UsersFragment.kt (or .java)
+└── GroupsFragment.kt (or .java)
 
 src/main/java/your-package-name/
 ├── res/
@@ -51,10 +63,13 @@ src/main/java/your-package-name/
 │       └── bottom_nav_menu.xml
 ```
 
-#### **Download the Icons**
+#### **Vector Drawable Icons**
 
-These icons are available in the **CometChat UI Kit res folder**. You can find them at:\
-🔗 [GitHub Assets Folder](https://github.com/cometchat/cometchat-uikit-android/tree/v5/sample-app-java/src/main/res/drawable)
+Download the navigation icons from the **CometChat UI Kit repository**:
+
+🔗 [GitHub Drawable Resources](https://github.com/cometchat/cometchat-uikit-android/tree/v5/sample-app-java/src/main/res/drawable)
+
+Place the icon files (`ic_chats.xml`, `ic_calls.xml`, `ic_user.xml`, `ic_group.xml`) in your `res/drawable/` directory.
 
 #### **Implementation**
 
@@ -352,9 +367,11 @@ This is necessary to properly manage the **UI Kit's lifecycle events**.
 
 ***
 
-### **Step 3: Create Fragments for Chat, Calls, Users and Groups**
+### **Step 2: Create Fragments for Each Tab**
 
-#### Chats Fragment
+Each tab displays a different CometChat UI component wrapped in a Fragment.
+
+#### **Chats Fragment**
 
 <Tabs>
 <Tab title="Kotlin">
@@ -429,7 +446,7 @@ public class ChatsFragment extends Fragment {
 
 </Tabs>
 
-#### Call Logs Fragment
+#### **Call Logs Fragment**
 
 <Info>
 
@@ -507,7 +524,7 @@ public class CallLogsFragment extends Fragment {
 
 </Tabs>
 
-#### Users Fragment
+#### **Users Fragment**
 
 <Tabs>
 <Tab title="Kotlin">
@@ -581,7 +598,7 @@ public class UsersFragment extends Fragment {
 
 </Tabs>
 
-#### Groups Fragment
+#### **Groups Fragment**
 
 <Tabs>
 <Tab title="Kotlin">
@@ -658,9 +675,9 @@ public class GroupsFragment extends Fragment {
 
 ***
 
-### **Step 3: Update MainActivity**
+### **Step 3: Launch TabbedActivity from Your App**
 
-Update the `MainActivity` to navigate to the `MessageActivity`:
+Update your `MainActivity` to launch `TabbedActivity` after successful login:
 
 <Tabs>
 <Tab title="Kotlin">
@@ -798,15 +815,32 @@ public class MainActivity extends ComponentActivity {
 
 ***
 
-## **Running the Project**
+## **Running the Application**
 
-Once the components are configured, build and run the app:
+Once you've completed the setup, build and run your Android application:
 
 ```sh
 gradle build
 ```
 
-Ensure you've added the necessary permissions and initialized CometChat in your `Application` class.
+<Note>
+**Required Permissions**
+
+Ensure you've added the necessary permissions in your `AndroidManifest.xml`and initialized CometChat in your `Application` class:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+```
+
+**For Call Features**, also add:
+
+```xml
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+```
+</Note>
 
 ***
 
