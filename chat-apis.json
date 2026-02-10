@@ -1741,7 +1741,7 @@
                     "Messages"
                 ],
                 "summary": "Send Message",
-                "description": "Sends a message on behalf of a user to another user or group. Supports text, media (image/audio/video/file), and custom message types. Requires 'onBehalfOf' header with sender UID. Use for server-side messaging, chatbots, system notifications, or data migration. Max message size: 100KB.",
+                "description": "Sends a message on behalf of a user to another user or group. Supports text, media (image/audio/video/file), and custom message types. Requires 'onBehalfOf' header with sender UID. Use for server-side messaging, chatbots, system notifications, or data migration. Max message size: 65KB.",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/onBehalfOf"
@@ -16019,7 +16019,7 @@
                         ]
                     },
                     "category": {
-                        "description": "Message category. Use 'custom' for application-defined message types",
+                        "description": "Message category. Use 'custom' for application-defined message types. Available options: custom",
                         "type": "string",
                         "default": "custom",
                         "enum": [
@@ -16031,7 +16031,7 @@
                         "type": "string"
                     },
                     "type": {
-                        "description": "Application-defined message type (e.g., 'location', 'poll', 'payment')",
+                        "description": "Application-defined message type (e.g., 'location', 'poll', 'payment'). You can use any custom string value based on your application needs",
                         "type": "string"
                     },
                     "data": {
@@ -16664,7 +16664,7 @@
                         ]
                     },
                     "category": {
-                        "description": "Message category. Use 'message' for standard message types (text, image, file, audio, video)",
+                        "description": "Message category. Use 'message' for standard message types (text, image, file, audio, video). Available options: message",
                         "type": "string",
                         "default": "message",
                         "enum": [
@@ -16676,7 +16676,7 @@
                         "type": "string"
                     },
                     "type": {
-                        "description": "The type of message content being sent",
+                        "description": "The type of message content being sent. Available options: text, image, file, audio, video",
                         "type": "string",
                         "default": "text",
                         "enum": [
