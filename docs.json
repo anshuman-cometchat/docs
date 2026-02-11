@@ -4422,63 +4422,176 @@
                 "pages": [
                   "rest-api/chat-apis",
                   {
-                    "group": "API Keys",
+                    "group": "Setup & Authentication",
+                    "expanded": false,
+                    "icon": "key",
                     "pages": [
-                      "rest-api/api-keys",
-                      "rest-api/api-keys/list",
-                      "rest-api/api-keys/create",
-                      "rest-api/api-keys/get",
-                      "rest-api/api-keys/update",
-                      "rest-api/api-keys/delete"
+                      {
+                        "group": "API Keys",
+                        "pages": [
+                          "rest-api/api-keys",
+                          "rest-api/api-keys/list",
+                          "rest-api/api-keys/create",
+                          "rest-api/api-keys/get",
+                          "rest-api/api-keys/update",
+                          "rest-api/api-keys/delete"
+                        ]
+                      },
+                      {
+                        "group": "Auth Tokens",
+                        "pages": [
+                          "rest-api/auth-tokens",
+                          "rest-api/auth-tokens/list",
+                          "rest-api/auth-tokens/create",
+                          "rest-api/auth-tokens/flush",
+                          "rest-api/auth-tokens/get",
+                          "rest-api/auth-tokens/update",
+                          "rest-api/auth-tokens/delete"
+                        ]
+                      }
                     ]
                   },
                   {
-                    "group": "Roles",
+                    "group": "Users & Groups",
+                    "expanded": false,
+                    "icon": "users",
                     "pages": [
-                      "rest-api/roles",
-                      "rest-api/roles/list",
-                      "rest-api/roles/create",
-                      "rest-api/roles/get",
-                      "rest-api/roles/update",
-                      "rest-api/roles/delete"
+                      {
+                        "group": "User Roles",
+                        "pages": [
+                          "rest-api/roles",
+                          "rest-api/roles/list",
+                          "rest-api/roles/create",
+                          "rest-api/roles/get",
+                          "rest-api/roles/update",
+                          "rest-api/roles/delete",
+                          {
+                            "group": "Restrict Features",
+                            "pages": [
+                              "rest-api/restrict-features",
+                              "rest-api/restrict-features/list-restricted-features",
+                              "rest-api/restrict-features/restrict-features",
+                              "rest-api/restrict-features/allow-features"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "group": "Users",
+                        "pages": [
+                          "rest-api/users",
+                          "rest-api/users/list",
+                          "rest-api/users/reactivate",
+                          "rest-api/users/create",
+                          "rest-api/users/deactivate",
+                          "rest-api/users/get",
+                          "rest-api/users/update",
+                          "rest-api/users/delete"
+                        ]
+                      },
+                      {
+                        "group": "Blocked Users",
+                        "pages": [
+                          "rest-api/blocked-users",
+                          "rest-api/blocked-users/list-blocked-users",
+                          "rest-api/blocked-users/block-user",
+                          "rest-api/blocked-users/unblock-user"
+                        ]
+                      },
+                      {
+                        "group": "Friends",
+                        "pages": [
+                          "rest-api/friends",
+                          "rest-api/friends/list-friends",
+                          "rest-api/friends/add-friends",
+                          "rest-api/friends/remove-friends"
+                        ]
+                      },
+                      {
+                        "group": "Groups",
+                        "pages": [
+                          "rest-api/groups",
+                          "rest-api/groups/list",
+                          "rest-api/groups/create",
+                          "rest-api/groups/get",
+                          "rest-api/groups/update",
+                          "rest-api/groups/delete"
+                        ]
+                      },
+                      {
+                        "group": "Group Members",
+                        "pages": [
+                          "rest-api/group-members",
+                          "rest-api/group-members/list",
+                          "rest-api/group-members/add-members",
+                          "rest-api/group-members/change-scope",
+                          "rest-api/group-members/kick"
+                        ]
+                      },
+                      {
+                        "group": "Banned Users",
+                        "pages": [
+                          "rest-api/banned-users",
+                          "rest-api/banned-users/ban",
+                          "rest-api/banned-users/unban",
+                          "rest-api/banned-users/list"
+                        ]
+                      }
                     ]
                   },
                   {
-                    "group": "Users",
+                    "group": "Chat & Messaging",
+                    "expanded": false,
+                    "icon": "comments",
                     "pages": [
-                      "rest-api/users",
-                      "rest-api/users/list",
-                      "rest-api/users/reactivate",
-                      "rest-api/users/create",
-                      "rest-api/users/deactivate",
-                      "rest-api/users/get",
-                      "rest-api/users/update",
-                      "rest-api/users/delete"
+                      {
+                        "group": "Messages",
+                        "pages": [
+                          "rest-api/messages",
+                          "rest-api/messages/list-messages",
+                          "rest-api/messages/send-message",
+                          "rest-api/messages/get-message",
+                          "rest-api/messages/update-message",
+                          "rest-api/messages/delete-message",
+                          "rest-api/messages/mark-message-as-interacted",
+                          "rest-api/messages/list-all-reactions",
+                          "rest-api/messages/list-reactions-with-a-specific-emojiunicodes",
+                          "rest-api/messages/add-reaction",
+                          "rest-api/messages/remove-reaction",
+                          "rest-api/messages/list-threaded-messages",
+                          "rest-api/messages/send-threaded-message",
+                          "rest-api/messages/list-user-messages",
+                          "rest-api/messages/list-group-messages",
+                          "rest-api/messages/send-bot-message"
+                        ]
+                      },
+                      {
+                        "group": "Conversations",
+                        "pages": [
+                          "rest-api/conversations",
+                          "rest-api/conversations/list-conversations",
+                          "rest-api/conversations/get-conversation",
+                          "rest-api/conversations/delete-conversation",
+                          "rest-api/conversations/get-user-conversation",
+                          "rest-api/conversations/update-user-conversation",
+                          "rest-api/conversations/reset-user-conversation",
+                          "rest-api/conversations/mark-user-conversation-as-delivered",
+                          "rest-api/conversations/mark-user-conversation-as-read",
+                          "rest-api/conversations/mark-conversation-messages-as-unread",
+                          "rest-api/conversations/get-group-conversation",
+                          "rest-api/conversations/update-group-conversation",
+                          "rest-api/conversations/reset-group-conversation",
+                          "rest-api/conversations/mark-group-conversation-as-delivered",
+                          "rest-api/conversations/mark-group-conversation-as-read",
+                          "rest-api/conversations/mark-group-conversation-as-unread"
+                        ]
+                      }
                     ]
                   },
                   {
-                    "group": "Auth Tokens",
-                    "pages": [
-                      "rest-api/auth-tokens",
-                      "rest-api/auth-tokens/list",
-                      "rest-api/auth-tokens/create",
-                      "rest-api/auth-tokens/flush",
-                      "rest-api/auth-tokens/get",
-                      "rest-api/auth-tokens/update",
-                      "rest-api/auth-tokens/delete"
-                    ]
-                  },
-                  {
-                    "group": "Blocked Users",
-                    "pages": [
-                      "rest-api/blocked-users",
-                      "rest-api/blocked-users/list-blocked-users",
-                      "rest-api/blocked-users/block-user",
-                      "rest-api/blocked-users/unblock-user"
-                    ]
-                  },
-                  {
-                    "group": "Calls",
+                    "group": "Voice & Video Calls",
+                    "expanded": false,
+                    "icon": "phone-volume",
                     "pages": [
                       "rest-api/calls",
                       "rest-api/list-calls",
@@ -4486,218 +4599,131 @@
                     ]
                   },
                   {
-                    "group": "Friends",
+                    "group": "Platform Features",
+                    "expanded": false,
+                    "icon": "sliders",
                     "pages": [
-                      "rest-api/friends",
-                      "rest-api/friends/list-friends",
-                      "rest-api/friends/add-friends",
-                      "rest-api/friends/remove-friends"
+                      {
+                        "group": "Metrics",
+                        "pages": [
+                          "rest-api/metrics/usage-metrics",
+                          "rest-api/metrics/message-metrics"
+                        ]
+                      },
+                      {
+                        "group": "Moderation",
+                        "pages": [
+                          "rest-api/moderation",
+                          "rest-api/moderation/list-rules",
+                          "rest-api/moderation/add-rule",
+                          "rest-api/moderation/get-rule",
+                          "rest-api/moderation/update-rule",
+                          "rest-api/moderation/remove-rule",
+                          "rest-api/moderation/list-keywords",
+                          "rest-api/moderation/add-keywords",
+                          "rest-api/moderation/get-keyword",
+                          "rest-api/moderation/update-keyword",
+                          "rest-api/moderation/remove-keyword",
+                          "rest-api/moderation/get-rule-revisions",
+                          "rest-api/moderation/list-blocked-messages",
+                          "rest-api/moderation/approve-blocked-messages",
+                          "rest-api/moderation/create-reasons",
+                          "rest-api/moderation/list-reasons",
+                          "rest-api/moderation/get-reason-details",
+                          "rest-api/moderation/update-reason-details",
+                          "rest-api/moderation/delete-reasons",
+                          "rest-api/moderation/flag-a-message",
+                          "rest-api/moderation/review-blocked-message",
+                          "rest-api/moderation/approve-blocked-messages",
+                          "rest-api/moderation/blockreview-flagged-message",
+                          "rest-api/moderation/list-flagged-messages",
+                          "rest-api/moderation/list-reviewed-messages"
+                        ]
+                      },
+                      {
+                        "group": "Notification Engine",
+                        "pages": [
+                          "rest-api/notifications/list-settings",
+                          "rest-api/notifications/reset-settings",
+                          "rest-api/notifications/update-settings",
+                          "rest-api/notifications/list-fcm-providers",
+                          "rest-api/notifications/update-fcm-provider",
+                          "rest-api/notifications/add-fcm-provider",
+                          "rest-api/notifications/delete-fcm-provider",
+                          "rest-api/notifications/change-default-fcm-provider",
+                          "rest-api/notifications/list-apns-providers",
+                          "rest-api/notifications/update-apns-providers",
+                          "rest-api/notifications/add-apns-provider",
+                          "rest-api/notifications/delete-apns-providers",
+                          "rest-api/notifications/change-default-apns-provider",
+                          "rest-api/notifications/list-preferences",
+                          "rest-api/notifications/reset-preferences",
+                          "rest-api/notifications/update-preferences",
+                          "rest-api/notifications/list-push-tokens",
+                          "rest-api/notifications/register-push-token",
+                          "rest-api/notifications/unregister-push-tokens-for-authtoken",
+                          "rest-api/notifications/delete-the-given-push-token",
+                          "rest-api/notifications/list-muted-conversations",
+                          "rest-api/notifications/mute-notifications-for-conversations",
+                          "rest-api/notifications/unmute-notifications-for-conversations",
+                          "rest-api/notifications/get-timezone",
+                          "rest-api/notifications/update-timezone",
+                          "rest-api/notifications/get-contact-details",
+                          "rest-api/notifications/delete-contact-details",
+                          "rest-api/notifications/update-contact-details",
+                          "rest-api/notifications/get-twilio-credentials",
+                          "rest-api/notifications/update-twilio-credentials",
+                          "rest-api/notifications/save-twilio-credentials",
+                          "rest-api/notifications/delete-twilio-credentials",
+                          "rest-api/notifications/get-sendgrid-credentials",
+                          "rest-api/notifications/update-sendgrid-credentials",
+                          "rest-api/notifications/save-sendgrid-credentials",
+                          "rest-api/notifications/delete-sendgrid-credentials",
+                          "rest-api/notifications/get-custom-provider-for-push-notifications",
+                          "rest-api/notifications/update-custom-provider-for-push-notifications",
+                          "rest-api/notifications/save-custom-provider-for-push-notifications",
+                          "rest-api/notifications/delete-the-custom-provider-for-push-notifications",
+                          "rest-api/notifications/get-custom-provider-for-sms-notifications",
+                          "rest-api/notifications/update-custom-provider-for-sms-notifications",
+                          "rest-api/notifications/save-custom-provider-for-sms-notifications",
+                          "rest-api/notifications/delete-the-custom-provider-for-sms-notifications",
+                          "rest-api/notifications/get-custom-provider-for-email-notifications",
+                          "rest-api/notifications/update-custom-provider-for-email-notifications",
+                          "rest-api/notifications/save-custom-provider-for-email-notifications",
+                          "rest-api/notifications/delete-the-custom-provider-for-email-notifications",
+                          "rest-api/notifications/notifications-logs"
+                        ]
+                      }
                     ]
                   },
                   {
-                    "group": "Groups",
+                    "group": "Data Import",
+                    "expanded": false,
+                    "icon": "file-import",
                     "pages": [
-                      "rest-api/groups",
-                      "rest-api/groups/list",
-                      "rest-api/groups/create",
-                      "rest-api/groups/get",
-                      "rest-api/groups/update",
-                      "rest-api/groups/delete"
-                    ]
-                  },
-                  {
-                    "group": "Banned Users",
-                    "pages": [
-                      "rest-api/banned-users",
-                      "rest-api/banned-users/ban",
-                      "rest-api/banned-users/unban",
-                      "rest-api/banned-users/list"
-                    ]
-                  },
-                  {
-                    "group": "Group Members",
-                    "pages": [
-                      "rest-api/group-members",
-                      "rest-api/group-members/list",
-                      "rest-api/group-members/add-members",
-                      "rest-api/group-members/change-scope",
-                      "rest-api/group-members/kick"
-                    ]
-                  },
-                  {
-                    "group": "Messages",
-                    "pages": [
-                      "rest-api/messages",
-                      "rest-api/messages/list-messages",
-                      "rest-api/messages/send-message",
-                      "rest-api/messages/get-message",
-                      "rest-api/messages/update-message",
-                      "rest-api/messages/delete-message",
-                      "rest-api/messages/mark-message-as-interacted",
-                      "rest-api/messages/list-all-reactions",
-                      "rest-api/messages/list-reactions-with-a-specific-emojiunicodes",
-                      "rest-api/messages/add-reaction",
-                      "rest-api/messages/remove-reaction",
-                      "rest-api/messages/list-threaded-messages",
-                      "rest-api/messages/send-threaded-message",
-                      "rest-api/messages/list-user-messages",
-                      "rest-api/messages/list-group-messages",
-                      "rest-api/messages/send-bot-message"
-                    ]
-                  },
-                  {
-                    "group": "Conversations",
-                    "pages": [
-                      "rest-api/conversations",
-                      "rest-api/conversations/list-conversations",
-                      "rest-api/conversations/get-conversation",
-                      "rest-api/conversations/delete-conversation",
-                      "rest-api/conversations/get-user-conversation",
-                      "rest-api/conversations/update-user-conversation",
-                      "rest-api/conversations/reset-user-conversation",
-                      "rest-api/conversations/mark-user-conversation-as-delivered",
-                      "rest-api/conversations/mark-user-conversation-as-read",
-                      "rest-api/conversations/mark-conversation-messages-as-unread",
-                      "rest-api/conversations/get-group-conversation",
-                      "rest-api/conversations/update-group-conversation",
-                      "rest-api/conversations/reset-group-conversation",
-                      "rest-api/conversations/mark-group-conversation-as-delivered",
-                      "rest-api/conversations/mark-group-conversation-as-read",
-                      "rest-api/conversations/mark-group-conversation-as-unread"
-                    ]
-                  },
-                  {
-                    "group": "Restrict Features",
-                    "pages": [
-                      "rest-api/restrict-features",
-                      "rest-api/restrict-features/list-restricted-features",
-                      "rest-api/restrict-features/restrict-features",
-                      "rest-api/restrict-features/allow-features"
-                    ]
-                  },
-                  {
-                    "group": "Metrics",
-                    "pages": [
-                      "rest-api/metrics/usage-metrics",
-                      "rest-api/metrics/message-metrics"
-                    ]
-                  },
-                  {
-                    "group": "AI Moderation",
-                    "pages": [
-                      "rest-api/moderation",
-                      "rest-api/moderation/list-rules",
-                      "rest-api/moderation/add-rule",
-                      "rest-api/moderation/get-rule",
-                      "rest-api/moderation/update-rule",
-                      "rest-api/moderation/remove-rule",
-                      "rest-api/moderation/list-keywords",
-                      "rest-api/moderation/add-keywords",
-                      "rest-api/moderation/get-keyword",
-                      "rest-api/moderation/update-keyword",
-                      "rest-api/moderation/remove-keyword",
-                      "rest-api/moderation/get-rule-revisions",
-                      "rest-api/moderation/list-blocked-messages",
-                      "rest-api/moderation/approve-blocked-messages",
-                      "rest-api/moderation/send-message",
-                      "rest-api/moderation/list-messages",
-                      "rest-api/moderation/get-message",
-                      "rest-api/moderation/update-message",
-                      "rest-api/moderation/delete-message",
-                      "rest-api/moderation/create-reasons",
-                      "rest-api/moderation/list-reasons",
-                      "rest-api/moderation/get-reason-details",
-                      "rest-api/moderation/update-reason-details",
-                      "rest-api/moderation/delete-reasons",
-                      "rest-api/moderation/flag-a-message",
-                      "rest-api/moderation/review-blocked-message",
-                      "rest-api/moderation/approve-blocked-messages",
-                      "rest-api/moderation/blockreview-flagged-message",
-                      "rest-api/moderation/list-flagged-messages",
-                      "rest-api/moderation/list-reviewed-messages"
-                    ]
-                  },
-                  {
-                    "group": "Notifications",
-                    "pages": [
-                      "rest-api/notifications/list-settings",
-                      "rest-api/notifications/reset-settings",
-                      "rest-api/notifications/update-settings",
-                      "rest-api/notifications/list-fcm-providers",
-                      "rest-api/notifications/update-fcm-provider",
-                      "rest-api/notifications/add-fcm-provider",
-                      "rest-api/notifications/delete-fcm-provider",
-                      "rest-api/notifications/change-default-fcm-provider",
-                      "rest-api/notifications/list-apns-providers",
-                      "rest-api/notifications/update-apns-providers",
-                      "rest-api/notifications/add-apns-provider",
-                      "rest-api/notifications/delete-apns-providers",
-                      "rest-api/notifications/change-default-apns-provider",
-                      "rest-api/notifications/list-preferences",
-                      "rest-api/notifications/reset-preferences",
-                      "rest-api/notifications/update-preferences",
-                      "rest-api/notifications/list-push-tokens",
-                      "rest-api/notifications/register-push-token",
-                      "rest-api/notifications/unregister-push-tokens-for-authtoken",
-                      "rest-api/notifications/delete-the-given-push-token",
-                      "rest-api/notifications/list-muted-conversations",
-                      "rest-api/notifications/mute-notifications-for-conversations",
-                      "rest-api/notifications/unmute-notifications-for-conversations",
-                      "rest-api/notifications/get-timezone",
-                      "rest-api/notifications/update-timezone",
-                      "rest-api/notifications/get-contact-details",
-                      "rest-api/notifications/delete-contact-details",
-                      "rest-api/notifications/update-contact-details",
-                      "rest-api/notifications/get-twilio-credentials",
-                      "rest-api/notifications/update-twilio-credentials",
-                      "rest-api/notifications/save-twilio-credentials",
-                      "rest-api/notifications/delete-twilio-credentials",
-                      "rest-api/notifications/get-sendgrid-credentials",
-                      "rest-api/notifications/update-sendgrid-credentials",
-                      "rest-api/notifications/save-sendgrid-credentials",
-                      "rest-api/notifications/delete-sendgrid-credentials",
-                      "rest-api/notifications/get-custom-provider-for-push-notifications",
-                      "rest-api/notifications/update-custom-provider-for-push-notifications",
-                      "rest-api/notifications/save-custom-provider-for-push-notifications",
-                      "rest-api/notifications/delete-the-custom-provider-for-push-notifications",
-                      "rest-api/notifications/get-custom-provider-for-sms-notifications",
-                      "rest-api/notifications/update-custom-provider-for-sms-notifications",
-                      "rest-api/notifications/save-custom-provider-for-sms-notifications",
-                      "rest-api/notifications/delete-the-custom-provider-for-sms-notifications",
-                      "rest-api/notifications/get-custom-provider-for-email-notifications",
-                      "rest-api/notifications/update-custom-provider-for-email-notifications",
-                      "rest-api/notifications/save-custom-provider-for-email-notifications",
-                      "rest-api/notifications/delete-the-custom-provider-for-email-notifications",
-                      "rest-api/notifications/notifications-logs"
+                      "rest-api/data-import",
+                      {
+                        "group": "Messages",
+                        "pages": [
+                          "rest-api/data-import-apis/messages/import-messages"
+                        ]
+                      },
+                      {
+                        "group": "Users",
+                        "pages": [
+                          "rest-api/data-import-apis/users/import-users"
+                        ]
+                      },
+                      {
+                        "group": "Groups",
+                        "pages": [
+                          "rest-api/data-import-apis/groups/import-groups",
+                          "rest-api/data-import-apis/groups/import-group-members"
+                        ]
+                      }
                     ]
                   },
                   "rest-api/constraints-rate-limits-and-errors"
-                ]
-              },
-              {
-                "group": "Data Import APIs",
-                "pages": [
-                  "rest-api/data-import",
-                  {
-                    "group": "Messages",
-                    "pages": [
-                      "rest-api/data-import-apis/messages/import-messages"
-                    ]
-                  },
-                  {
-                    "group": "Users",
-                    "pages": [
-                      "rest-api/data-import-apis/users/import-users"
-                    ]
-                  },
-                  {
-                    "group": "Groups",
-                    "pages": [
-                      "rest-api/data-import-apis/groups/import-groups",
-                      "rest-api/data-import-apis/groups/import-group-members"
-                    ]
-                  },
-                  "rest-api/data-migration-constraints-rate-limits-and-errors"
                 ]
               },
               {
@@ -4705,149 +4731,164 @@
                 "pages": [
                   "rest-api/management-apis",
                   {
-                    "group": "App",
+                    "group": "App Management",
+                    "expanded": false,
+                    "icon": "grid-2",
                     "pages": [
-                      "rest-api/management-apis/app/list",
-                      "rest-api/management-apis/app/create",
-                      "rest-api/management-apis/app/delete",
-                      "rest-api/management-apis/app/fetch-usage"
+                      {
+                        "group": "App",
+                        "pages": [
+                          "rest-api/management-apis/app/list",
+                          "rest-api/management-apis/app/create",
+                          "rest-api/management-apis/app/delete",
+                          "rest-api/management-apis/app/fetch-usage"
+                        ]
+                      },
+                      {
+                        "group": "Extensions",
+                        "pages": [
+                          "rest-api/extensions-overview",
+                          "rest-api/management-apis/extensions/list-extensions",
+                          "rest-api/management-apis/extensions/enabledisable",
+                          "rest-api/management-apis/extensions/chat-widgets-list",
+                          "rest-api/management-apis/extensions/chat-widgets-update",
+                          "rest-api/management-apis/extensions/chat-widgets-create",
+                          "rest-api/management-apis/extensions/giphy-get-settings",
+                          "rest-api/management-apis/extensions/giphy-update-settings",
+                          "rest-api/management-apis/extensions/giphy-store-settings",
+                          "rest-api/management-apis/extensions/giphy-delete-settings-for-giphy",
+                          "rest-api/management-apis/extensions/xss-filter-get-settings",
+                          "rest-api/management-apis/extensions/xss-filter-update-settings",
+                          "rest-api/management-apis/extensions/xss-filter-store-settings",
+                          "rest-api/management-apis/extensions/xss-filter-delete-settings",
+                          "rest-api/management-apis/extensions/image-moderation-get-settings",
+                          "rest-api/management-apis/extensions/image-moderation-update-settings",
+                          "rest-api/management-apis/extensions/image-moderation-store-settings",
+                          "rest-api/management-apis/extensions/image-moderation-delete-settings",
+                          "rest-api/management-apis/extensions/report-user-get-settings",
+                          "rest-api/management-apis/extensions/report-user-update-settings",
+                          "rest-api/management-apis/extensions/report-user-store-settings",
+                          "rest-api/management-apis/extensions/report-user-delete-settings",
+                          "rest-api/management-apis/extensions/report-message-get-settings",
+                          "rest-api/management-apis/extensions/report-message-update-settings",
+                          "rest-api/management-apis/extensions/report-message-store-settings",
+                          "rest-api/management-apis/extensions/report-message-delete-settings",
+                          "rest-api/management-apis/extensions/voice-transcription-get-settings",
+                          "rest-api/management-apis/extensions/voice-transcription-update-settings",
+                          "rest-api/management-apis/extensions/voice-transcription-store-settings",
+                          "rest-api/management-apis/extensions/voice-transcription-delete-settings",
+                          "rest-api/management-apis/extensions/stipop-get-settings",
+                          "rest-api/management-apis/extensions/stipop-update-settings",
+                          "rest-api/management-apis/extensions/stipop-store-settings",
+                          "rest-api/management-apis/extensions/stipop-delete-settings",
+                          "rest-api/management-apis/extensions/sentiment-analysis-get-settings",
+                          "rest-api/management-apis/extensions/sentiment-analysis-update-settings",
+                          "rest-api/management-apis/extensions/sentiment-analysis-store-settings",
+                          "rest-api/management-apis/extensions/sentiment-analysis-delete-settings",
+                          "rest-api/management-apis/extensions/tinyurl-get-settings",
+                          "rest-api/management-apis/extensions/tinyurl-update-settings",
+                          "rest-api/management-apis/extensions/tinyurl-store-settings",
+                          "rest-api/management-apis/extensions/tinyurl-delete-settings",
+                          "rest-api/management-apis/extensions/intercom-get-settings",
+                          "rest-api/management-apis/extensions/intercom-update-settings",
+                          "rest-api/management-apis/extensions/intercom-store-settings",
+                          "rest-api/management-apis/extensions/intercom-delete-settings",
+                          "rest-api/management-apis/extensions/bitly-get-settings",
+                          "rest-api/management-apis/extensions/bitly-update-settings",
+                          "rest-api/management-apis/extensions/bitly-store-settings",
+                          "rest-api/management-apis/extensions/bitly-delete-settings",
+                          "rest-api/management-apis/extensions/rich-media-preview-get-settings",
+                          "rest-api/management-apis/extensions/rich-media-preview-update-settings",
+                          "rest-api/management-apis/extensions/rich-media-preview-store-settings",
+                          "rest-api/management-apis/extensions/rich-media-preview-delete-settings",
+                          "rest-api/management-apis/extensions/virus-malware-scanner-get-settings",
+                          "rest-api/management-apis/extensions/virus-malware-scanner-update-settings",
+                          "rest-api/management-apis/extensions/virus-malware-scanner-store-settings",
+                          "rest-api/management-apis/extensions/virus-malware-scanner-delete-settings",
+                          "rest-api/management-apis/extensions/video-broadcasting-get-settings",
+                          "rest-api/management-apis/extensions/video-broadcasting-update-settings",
+                          "rest-api/management-apis/extensions/video-broadcasting-store-settings",
+                          "rest-api/management-apis/extensions/video-broadcasting-delete-settings",
+                          "rest-api/management-apis/extensions/tenor-gifs-get-settings",
+                          "rest-api/management-apis/extensions/tenor-gifs-update-settings",
+                          "rest-api/management-apis/extensions/tenor-gifs-store-settings",
+                          "rest-api/management-apis/extensions/tenor-gifs-delete-settings",
+                          "rest-api/management-apis/extensions/in-flight-message-moderation-get-settings",
+                          "rest-api/management-apis/extensions/in-flight-message-moderation-update-settings",
+                          "rest-api/management-apis/extensions/in-flight-message-moderation-store-settings",
+                          "rest-api/management-apis/extensions/in-flight-message-moderation-delete-settings",
+                          "rest-api/management-apis/extensions/end-to-end-encryption-get-settings",
+                          "rest-api/management-apis/extensions/end-to-end-encryption-update-settings",
+                          "rest-api/management-apis/extensions/end-to-end-encryption-store-settings",
+                          "rest-api/management-apis/extensions/end-to-end-encryption-delete-settings",
+                          "rest-api/management-apis/extensions/stickers-extension-get-settings",
+                          "rest-api/management-apis/extensions/stickers-extension-update-settings",
+                          "rest-api/management-apis/extensions/stickers-extension-delete-settings",
+                          "rest-api/management-apis/extensions/push-notification-upload-p12-certificate",
+                          "rest-api/management-apis/extensions/push-notification-upload-p8-certificate",
+                          "rest-api/management-apis/extensions/push-notification-get-certificate",
+                          "rest-api/management-apis/extensions/email-replies-get-settings",
+                          "rest-api/management-apis/extensions/email-replies-update-settings",
+                          "rest-api/management-apis/extensions/email-replies-store-settings",
+                          "rest-api/management-apis/extensions/email-replies-delete-settings",
+                          "rest-api/management-apis/extensions/sms-notification-get-settings",
+                          "rest-api/management-apis/extensions/sms-notification-update-settings",
+                          "rest-api/management-apis/extensions/sms-notification-store-settings",
+                          "rest-api/management-apis/extensions/sms-notification-delete-settings",
+                          "rest-api/management-apis/extensions/push-notification-get-settings",
+                          "rest-api/management-apis/extensions/push-notification-update-settings",
+                          "rest-api/management-apis/extensions/push-notification-store-settings",
+                          "rest-api/management-apis/extensions/push-notification-delete-settings",
+                          "rest-api/management-apis/extensions/chatwoot-get-settings",
+                          "rest-api/management-apis/extensions/chatwoot-update-settings",
+                          "rest-api/management-apis/extensions/chatwoot-store-settings",
+                          "rest-api/management-apis/extensions/chatwoot-delete-settings",
+                          "rest-api/management-apis/extensions/message-shortcuts-get-settings",
+                          "rest-api/management-apis/extensions/message-shortcuts-update-settings",
+                          "rest-api/management-apis/extensions/message-shortcuts-store-settings",
+                          "rest-api/management-apis/extensions/message-shortcuts-delete-settings",
+                          "rest-api/management-apis/extensions/email-notification-get-settings",
+                          "rest-api/management-apis/extensions/email-notification-update-settings",
+                          "rest-api/management-apis/extensions/email-notification-store-settings",
+                          "rest-api/management-apis/extensions/email-notification-delete-settings",
+                          "rest-api/management-apis/extensions/data-masking-get-settings",
+                          "rest-api/management-apis/extensions/data-masking-store-or-update-settings",
+                          "rest-api/management-apis/extensions/data-masking-delete-settings",
+                          "rest-api/management-apis/extensions/profanity-filter-get-settings",
+                          "rest-api/management-apis/extensions/profanity-filter-update-settings",
+                          "rest-api/management-apis/extensions/profanity-filter-adds-settings",
+                          "rest-api/management-apis/extensions/profanity-filter-delete-settings"
+                        ]
+                      },
+                      {
+                        "group": "Settings",
+                        "pages": [
+                          "rest-api/settings",
+                          "rest-api/management-apis/settings/list-settings",
+                          "rest-api/management-apis/settings/maps-settings",
+                          "rest-api/management-apis/settings/unmaps-settings"
+                        ]
+                      }
                     ]
                   },
                   {
-                    "group": "Extensions",
+                    "group": "Access Control",
+                    "expanded": false,
+                    "icon": "lock",
                     "pages": [
-                      "rest-api/extensions-overview",
-                      "rest-api/management-apis/extensions/list-extensions",
-                      "rest-api/management-apis/extensions/enabledisable",
-                      "rest-api/management-apis/extensions/chat-widgets-list",
-                      "rest-api/management-apis/extensions/chat-widgets-update",
-                      "rest-api/management-apis/extensions/chat-widgets-create",
-                      "rest-api/management-apis/extensions/giphy-get-settings",
-                      "rest-api/management-apis/extensions/giphy-update-settings",
-                      "rest-api/management-apis/extensions/giphy-store-settings",
-                      "rest-api/management-apis/extensions/giphy-delete-settings-for-giphy",
-                      "rest-api/management-apis/extensions/xss-filter-get-settings",
-                      "rest-api/management-apis/extensions/xss-filter-update-settings",
-                      "rest-api/management-apis/extensions/xss-filter-store-settings",
-                      "rest-api/management-apis/extensions/xss-filter-delete-settings",
-                      "rest-api/management-apis/extensions/image-moderation-get-settings",
-                      "rest-api/management-apis/extensions/image-moderation-update-settings",
-                      "rest-api/management-apis/extensions/image-moderation-store-settings",
-                      "rest-api/management-apis/extensions/image-moderation-delete-settings",
-                      "rest-api/management-apis/extensions/report-user-get-settings",
-                      "rest-api/management-apis/extensions/report-user-update-settings",
-                      "rest-api/management-apis/extensions/report-user-store-settings",
-                      "rest-api/management-apis/extensions/report-user-delete-settings",
-                      "rest-api/management-apis/extensions/report-message-get-settings",
-                      "rest-api/management-apis/extensions/report-message-update-settings",
-                      "rest-api/management-apis/extensions/report-message-store-settings",
-                      "rest-api/management-apis/extensions/report-message-delete-settings",
-                      "rest-api/management-apis/extensions/voice-transcription-get-settings",
-                      "rest-api/management-apis/extensions/voice-transcription-update-settings",
-                      "rest-api/management-apis/extensions/voice-transcription-store-settings",
-                      "rest-api/management-apis/extensions/voice-transcription-delete-settings",
-                      "rest-api/management-apis/extensions/stipop-get-settings",
-                      "rest-api/management-apis/extensions/stipop-update-settings",
-                      "rest-api/management-apis/extensions/stipop-store-settings",
-                      "rest-api/management-apis/extensions/stipop-delete-settings",
-                      "rest-api/management-apis/extensions/sentiment-analysis-get-settings",
-                      "rest-api/management-apis/extensions/sentiment-analysis-update-settings",
-                      "rest-api/management-apis/extensions/sentiment-analysis-store-settings",
-                      "rest-api/management-apis/extensions/sentiment-analysis-delete-settings",
-                      "rest-api/management-apis/extensions/tinyurl-get-settings",
-                      "rest-api/management-apis/extensions/tinyurl-update-settings",
-                      "rest-api/management-apis/extensions/tinyurl-store-settings",
-                      "rest-api/management-apis/extensions/tinyurl-delete-settings",
-                      "rest-api/management-apis/extensions/intercom-get-settings",
-                      "rest-api/management-apis/extensions/intercom-update-settings",
-                      "rest-api/management-apis/extensions/intercom-store-settings",
-                      "rest-api/management-apis/extensions/intercom-delete-settings",
-                      "rest-api/management-apis/extensions/bitly-get-settings",
-                      "rest-api/management-apis/extensions/bitly-update-settings",
-                      "rest-api/management-apis/extensions/bitly-store-settings",
-                      "rest-api/management-apis/extensions/bitly-delete-settings",
-                      "rest-api/management-apis/extensions/rich-media-preview-get-settings",
-                      "rest-api/management-apis/extensions/rich-media-preview-update-settings",
-                      "rest-api/management-apis/extensions/rich-media-preview-store-settings",
-                      "rest-api/management-apis/extensions/rich-media-preview-delete-settings",
-                      "rest-api/management-apis/extensions/virus-malware-scanner-get-settings",
-                      "rest-api/management-apis/extensions/virus-malware-scanner-update-settings",
-                      "rest-api/management-apis/extensions/virus-malware-scanner-store-settings",
-                      "rest-api/management-apis/extensions/virus-malware-scanner-delete-settings",
-                      "rest-api/management-apis/extensions/video-broadcasting-get-settings",
-                      "rest-api/management-apis/extensions/video-broadcasting-update-settings",
-                      "rest-api/management-apis/extensions/video-broadcasting-store-settings",
-                      "rest-api/management-apis/extensions/video-broadcasting-delete-settings",
-                      "rest-api/management-apis/extensions/tenor-gifs-get-settings",
-                      "rest-api/management-apis/extensions/tenor-gifs-update-settings",
-                      "rest-api/management-apis/extensions/tenor-gifs-store-settings",
-                      "rest-api/management-apis/extensions/tenor-gifs-delete-settings",
-                      "rest-api/management-apis/extensions/in-flight-message-moderation-get-settings",
-                      "rest-api/management-apis/extensions/in-flight-message-moderation-update-settings",
-                      "rest-api/management-apis/extensions/in-flight-message-moderation-store-settings",
-                      "rest-api/management-apis/extensions/in-flight-message-moderation-delete-settings",
-                      "rest-api/management-apis/extensions/end-to-end-encryption-get-settings",
-                      "rest-api/management-apis/extensions/end-to-end-encryption-update-settings",
-                      "rest-api/management-apis/extensions/end-to-end-encryption-store-settings",
-                      "rest-api/management-apis/extensions/end-to-end-encryption-delete-settings",
-                      "rest-api/management-apis/extensions/stickers-extension-get-settings",
-                      "rest-api/management-apis/extensions/stickers-extension-update-settings",
-                      "rest-api/management-apis/extensions/stickers-extension-delete-settings",
-                      "rest-api/management-apis/extensions/push-notification-upload-p12-certificate",
-                      "rest-api/management-apis/extensions/push-notification-upload-p8-certificate",
-                      "rest-api/management-apis/extensions/push-notification-get-certificate",
-                      "rest-api/management-apis/extensions/email-replies-get-settings",
-                      "rest-api/management-apis/extensions/email-replies-update-settings",
-                      "rest-api/management-apis/extensions/email-replies-store-settings",
-                      "rest-api/management-apis/extensions/email-replies-delete-settings",
-                      "rest-api/management-apis/extensions/sms-notification-get-settings",
-                      "rest-api/management-apis/extensions/sms-notification-update-settings",
-                      "rest-api/management-apis/extensions/sms-notification-store-settings",
-                      "rest-api/management-apis/extensions/sms-notification-delete-settings",
-                      "rest-api/management-apis/extensions/push-notification-get-settings",
-                      "rest-api/management-apis/extensions/push-notification-update-settings",
-                      "rest-api/management-apis/extensions/push-notification-store-settings",
-                      "rest-api/management-apis/extensions/push-notification-delete-settings",
-                      "rest-api/management-apis/extensions/chatwoot-get-settings",
-                      "rest-api/management-apis/extensions/chatwoot-update-settings",
-                      "rest-api/management-apis/extensions/chatwoot-store-settings",
-                      "rest-api/management-apis/extensions/chatwoot-delete-settings",
-                      "rest-api/management-apis/extensions/message-shortcuts-get-settings",
-                      "rest-api/management-apis/extensions/message-shortcuts-update-settings",
-                      "rest-api/management-apis/extensions/message-shortcuts-store-settings",
-                      "rest-api/management-apis/extensions/message-shortcuts-delete-settings",
-                      "rest-api/management-apis/extensions/email-notification-get-settings",
-                      "rest-api/management-apis/extensions/email-notification-update-settings",
-                      "rest-api/management-apis/extensions/email-notification-store-settings",
-                      "rest-api/management-apis/extensions/email-notification-delete-settings",
-                      "rest-api/management-apis/extensions/data-masking-get-settings",
-                      "rest-api/management-apis/extensions/data-masking-store-or-update-settings",
-                      "rest-api/management-apis/extensions/data-masking-delete-settings",
-                      "rest-api/management-apis/extensions/profanity-filter-get-settings",
-                      "rest-api/management-apis/extensions/profanity-filter-update-settings",
-                      "rest-api/management-apis/extensions/profanity-filter-adds-settings",
-                      "rest-api/management-apis/extensions/profanity-filter-delete-settings"
-                    ]
-                  },
-                  {
-                    "group": "Team Management",
-                    "pages": [
-                      "rest-api/management-apis/team-management/list-collaborators",
-                      "rest-api/management-apis/team-management/addsremove-collaborators"
-                    ]
-                  },
-                  {
-                    "group": "Settings",
-                    "pages": [
-                      "rest-api/settings",
-                      "rest-api/management-apis/settings/list-settings",
-                      "rest-api/management-apis/settings/maps-settings",
-                      "rest-api/management-apis/settings/unmaps-settings"
+                      {
+                        "group": "Team Management",
+                        "pages": [
+                          "rest-api/management-apis/team-management/list-collaborators",
+                          "rest-api/management-apis/team-management/addsremove-collaborators"
+                        ]
+                      }
                     ]
                   },
                   {
                     "group": "Webhooks",
                     "pages": [
+                      "rest-api/management-apis/webhooks/overview",
                       "rest-api/management-apis/webhooks/list-webhooks",
                       "rest-api/management-apis/webhooks/create-webhook",
                       "rest-api/management-apis/webhooks/get-webhook",
@@ -4856,25 +4897,6 @@
                       "rest-api/management-apis/webhooks/list-triggers",
                       "rest-api/management-apis/webhooks/add-triggers",
                       "rest-api/management-apis/webhooks/remove-triggers"
-                    ]
-                  },
-                  {
-                    "group": "AI Moderation",
-                    "pages": [
-                      "rest-api/moderation",
-                      "rest-api/management-apis/moderation/list-rules",
-                      "rest-api/management-apis/moderation/add-rule",
-                      "rest-api/management-apis/moderation/get-rule",
-                      "rest-api/management-apis/moderation/update-rule",
-                      "rest-api/management-apis/moderation/remove-rule",
-                      "rest-api/management-apis/moderation/list-keywords",
-                      "rest-api/management-apis/moderation/add-keywords",
-                      "rest-api/management-apis/moderation/get-keyword",
-                      "rest-api/management-apis/moderation/update-keyword",
-                      "rest-api/management-apis/moderation/remove-keyword",
-                      "rest-api/management-apis/moderation/get-rule-revisions",
-                      "rest-api/management-apis/moderation/list-blocked-messages",
-                      "rest-api/management-apis/moderation/approve-blocked-messages"
                     ]
                   },
                   "rest-api/multi-tenancy-constraints-rate-limits-and-errors"
@@ -5128,7 +5150,35 @@
               {
                 "group": "Resources",
                 "pages": [
-                  "moderation/api-explorer",
+                  {
+                    "group": "Moderation APIs",
+                    "pages": [
+                      "moderation/api-explorer",
+                      "moderation/apis/list-rules",
+                      "moderation/apis/add-rule",
+                      "moderation/apis/get-rule",
+                      "moderation/apis/update-rule",
+                      "moderation/apis/remove-rule",
+                      "moderation/apis/list-keywords",
+                      "moderation/apis/add-keywords",
+                      "moderation/apis/get-keyword",
+                      "moderation/apis/update-keyword",
+                      "moderation/apis/remove-keyword",
+                      "moderation/apis/get-rule-revisions",
+                      "moderation/apis/list-blocked-messages",
+                      "moderation/apis/approve-blocked-messages",
+                      "moderation/apis/review-blocked-message",
+                      "moderation/apis/list-flagged-messages",
+                      "moderation/apis/blockreview-flagged-message",
+                      "moderation/apis/list-reviewed-messages",
+                      "moderation/apis/flag-a-message",
+                      "moderation/apis/create-reasons",
+                      "moderation/apis/list-reasons",
+                      "moderation/apis/get-reason-details",
+                      "moderation/apis/update-reason-details",
+                      "moderation/apis/delete-reasons"
+                    ]
+                  },
                   "moderation/legacy-extensions"
                 ]
               }
@@ -5173,8 +5223,46 @@
                 ]
               },
               {
-                "group": " ",
+                "group": "Resources",
                 "pages": [
+                  {
+                    "group": "Push APIs",
+                    "pages": [
+                      "notifications/apis/push/list-fcm-providers",
+                      "notifications/apis/push/add-fcm-provider",
+                      "notifications/apis/push/update-fcm-provider",
+                      "notifications/apis/push/delete-fcm-provider",
+                      "notifications/apis/push/change-default-fcm-provider",
+                      "notifications/apis/push/list-apns-providers",
+                      "notifications/apis/push/add-apns-provider",
+                      "notifications/apis/push/update-apns-providers",
+                      "notifications/apis/push/delete-apns-providers",
+                      "notifications/apis/push/change-default-apns-provider",
+                      "notifications/apis/push/register-push-token",
+                      "notifications/apis/push/list-push-tokens",
+                      "notifications/apis/push/delete-push-token",
+                      "notifications/apis/push/unregister-push-tokens",
+                      "notifications/apis/push/get-custom-provider",
+                      "notifications/apis/push/save-custom-provider",
+                      "notifications/apis/push/update-custom-provider",
+                      "notifications/apis/push/delete-custom-provider",
+                      "notifications/apis/push/list-settings",
+                      "notifications/apis/push/update-settings",
+                      "notifications/apis/push/reset-settings",
+                      "notifications/apis/push/list-preferences",
+                      "notifications/apis/push/update-preferences",
+                      "notifications/apis/push/reset-preferences",
+                      "notifications/apis/push/get-timezone",
+                      "notifications/apis/push/update-timezone",
+                      "notifications/apis/push/get-contact-details",
+                      "notifications/apis/push/update-contact-details",
+                      "notifications/apis/push/delete-contact-details",
+                      "notifications/apis/push/mute-conversations",
+                      "notifications/apis/push/unmute-conversations",
+                      "notifications/apis/push/list-muted-conversations",
+                      "notifications/apis/push/notifications-logs"
+                    ]
+                  },
                   "notifications/push-notifications-extension-legacy"
                 ]
               }
@@ -5189,8 +5277,21 @@
               "notifications/email-templates",
               "notifications/email-custom-providers",
               {
-                "group": " ",
+                "group": "Resources",
                 "pages": [
+                  {
+                    "group": "Email APIs",
+                    "pages": [
+                      "notifications/apis/email/get-sendgrid-credentials",
+                      "notifications/apis/email/save-sendgrid-credentials",
+                      "notifications/apis/email/update-sendgrid-credentials",
+                      "notifications/apis/email/delete-sendgrid-credentials",
+                      "notifications/apis/email/get-custom-provider",
+                      "notifications/apis/email/save-custom-provider",
+                      "notifications/apis/email/update-custom-provider",
+                      "notifications/apis/email/delete-custom-provider"
+                    ]
+                  },
                   "notifications/email-notifications-extension-legacy"
                 ]
               }
@@ -5205,8 +5306,21 @@
               "notifications/sms-templates",
               "notifications/sms-custom-providers",
               {
-                "group": " ",
+                "group": "Resources",
                 "pages": [
+                  {
+                    "group": "SMS APIs",
+                    "pages": [
+                      "notifications/apis/sms/get-twilio-credentials",
+                      "notifications/apis/sms/save-twilio-credentials",
+                      "notifications/apis/sms/update-twilio-credentials",
+                      "notifications/apis/sms/delete-twilio-credentials",
+                      "notifications/apis/sms/get-custom-provider",
+                      "notifications/apis/sms/save-custom-provider",
+                      "notifications/apis/sms/update-custom-provider",
+                      "notifications/apis/sms/delete-custom-provider"
+                    ]
+                  },
                   "notifications/sms-notifications-extension-legacy"
                 ]
               }

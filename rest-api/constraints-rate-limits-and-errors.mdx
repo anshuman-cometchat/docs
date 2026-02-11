@@ -207,6 +207,13 @@ title: "Constraints, Rate Limits And Errors"
 | `ERR_WEBHOOK_NOT_FOUND` | Indicates that the webhook does not exist. |
 | `ERR_BLOCKED_BY_WEBHOOK` | Indicates that the message is blocked by the extension. |
 | `ERR_TRIGGER_NOT_FOUND` | Indicates trigger does not exist. |
+| **Data Import Errors** |  |
+| `ERR_IMPORT_MUID_ALREADY_EXISTS` | The message `muid` is expected to be unique. The muid will be a unique Identifier of the message. |
+| `ERR_IMPORT_INVALID_MESSAGE_FORMAT` | The value for messages property should be an array of message objects. |
+| `ERR_IMPORT_INVALID_USER_FORMAT` | The value for users property should be an array of user objects. |
+| `ERR_IMPORT_INVALID_MEMBER_FORMAT` | The value for members property should be an array of member objects. |
+| `ERR_IMPORT_INVALID_JOINEDAT` | The value for `joinedAt` should be greater than `createdAt` and less than the current timestamp. |
+| `ERR_IMPORT_INVALID_GROUP_FORMAT` | The value for groups property should be an array of group objects. |
 | **General Errors** |  |
 | `ERR_INVALID_API_VERSION` | Indicates invalid API version. |
 | `ERR_API_NOT_FOUND` | Indicates one from the list below:<br />1. API endpoint does not exist.<br />2. The endpoint does not use HTTP request method using which API is called. |
