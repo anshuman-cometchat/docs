@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Data Import APIs",
-        "description": "Manage messages, users, groups for a particular app using our Chat API. These APIs enable you to build real-time chat functionality including user management, group conversations, direct messaging, push notifications, and content moderation.",
+        "description": "Manage messages, users, groups for a particular app using our Chat API. These APIs enable you to build chat functionality including user management, group conversations, direct messaging, push notifications, and content moderation.",
         "version": "3.0"
     },
     "servers": [
@@ -5409,12 +5409,12 @@
             "description": "Configure role-based access control (RBAC) for your users. Roles define what API endpoints and features users can access. Use these endpoints to create custom roles, assign permissions, and manage access rights across your application. Default roles include 'default' for regular users and 'admin' for administrative access."
         },
         {
-            "name": "Users",
-            "description": "Create and manage user accounts in your CometChat app. Users are the core entities that send and receive messages. Use these endpoints to create users during onboarding, update user profiles (name, avatar, metadata), list users with filtering and pagination, deactivate/reactivate accounts, and permanently delete users when needed."
-        },
-        {
             "name": "Auth Tokens",
             "description": "Generate and manage authentication tokens for user login. Auth tokens are required by CometChat client SDKs (Web, iOS, Android) to establish real-time connections. Use these endpoints to create tokens when users log in to your app, list active tokens, and revoke tokens for security purposes such as logout or session management."
+        },
+        {
+            "name": "Users",
+            "description": "Create and manage user accounts in your CometChat app. Users are the core entities that send and receive messages. Use these endpoints to create users during onboarding, update user profiles (name, avatar, metadata), list users with filtering and pagination, deactivate/reactivate accounts, and permanently delete users when needed. Start here to populate your app with users."
         },
         {
             "name": "Blocked Users",
@@ -5429,12 +5429,12 @@
             "description": "Create and manage group conversations. Groups enable multi-user chat rooms with configurable privacy settings (public, password-protected, or private). Use these endpoints to create groups, update group settings (name, icon, metadata), manage group ownership, and delete groups. Groups support features like member limits, join modes, and custom metadata."
         },
         {
-            "name": "Banned Users",
-            "description": "Manage banned users within groups. Banning removes a user from a group and prevents them from rejoining. Use these endpoints to ban disruptive users, unban users to restore access, and list all banned users in a group. Only group admins and moderators can perform ban operations."
-        },
-        {
             "name": "Group Members",
             "description": "Manage group membership and member roles. Members can have different scopes: 'participant' (regular member), 'moderator' (can kick/mute users), or 'admin' (full group management). Use these endpoints to add members, remove members, update member scope, and list group members with filtering options."
+        },
+        {
+            "name": "Banned Users",
+            "description": "Manage banned users within groups. Banning removes a user from a group and prevents them from rejoining. Use these endpoints to ban disruptive users, unban users to restore access, and list all banned users in a group. Only group admins and moderators can perform ban operations."
         },
         {
             "name": "Messages",
@@ -5445,20 +5445,8 @@
             "description": "Access and manage conversation threads. A conversation represents the message history between two users (1-on-1) or within a group. Use these endpoints to list conversations with unread counts, retrieve specific conversations, mark conversations as read/delivered, reset conversation history, and delete conversations."
         },
         {
-            "name": "Restrict Features",
-            "description": "Control feature availability for users based on roles. Feature restrictions allow you to enable or disable specific CometChat features (messaging, calling, groups) for different user segments. Use these endpoints to configure feature access rules and manage feature availability across your app."
-        },
-        {
-            "name": "Metrics",
-            "description": "Access usage analytics and metrics for your CometChat app. Metrics provide insights into message volume, active users, API usage, and other key performance indicators. Use these endpoints to retrieve daily/monthly statistics, monitor app health, and track usage against your subscription limits."
-        },
-        {
-            "name": "Triggers",
-            "description": "Configure event triggers for webhooks. Triggers define which CometChat events (message sent, user created, group joined, etc.) should fire webhook notifications. Use these endpoints to add triggers to webhooks, remove triggers, and list available trigger types for real-time event integration."
-        },
-        {
-            "name": "Webhooks",
-            "description": "Set up webhook endpoints to receive real-time event notifications. Webhooks enable server-to-server communication when events occur in your CometChat app (new messages, user actions, group changes). Use these endpoints to create webhooks, configure target URLs, manage authentication, and control which events trigger notifications."
+            "name": "Calls",
+            "description": "Manage voice and video calling functionality. Access call history, retrieve call details, and monitor call quality metrics. Calls integrate with CometChat's real-time communication infrastructure for audio and video conversations."
         },
         {
             "name": "Notifications",
@@ -5467,6 +5455,22 @@
         {
             "name": "Moderation",
             "description": "The REST collections for Moderations."
+        },
+        {
+            "name": "Restrict Features",
+            "description": "Control feature availability for users based on roles. Feature restrictions allow you to enable or disable specific CometChat features (messaging, calling, groups) for different user segments. Use these endpoints to configure feature access rules and manage feature availability across your app."
+        },
+        {
+            "name": "Webhooks",
+            "description": "Set up webhook endpoints to receive real-time event notifications. Webhooks enable server-to-server communication when events occur in your CometChat app (new messages, user actions, group changes). Use these endpoints to create webhooks, configure target URLs, manage authentication, and control which events trigger notifications."
+        },
+        {
+            "name": "Triggers",
+            "description": "Configure event triggers for webhooks. Triggers define which CometChat events (message sent, user created, group joined, etc.) should fire webhook notifications. Use these endpoints to add triggers to webhooks, remove triggers, and list available trigger types for real-time event integration."
+        },
+        {
+            "name": "Metrics",
+            "description": "Access usage analytics and metrics for your CometChat app. Metrics provide insights into message volume, active users, API usage, and other key performance indicators. Use these endpoints to retrieve daily/monthly statistics, monitor app health, and track usage against your subscription limits."
         }
     ]
 }
