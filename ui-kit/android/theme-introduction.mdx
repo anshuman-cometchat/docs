@@ -1,47 +1,57 @@
 ---
-title: "Introduction"
+title: "Theme Introduction"
 ---
 
 ## Overview
 
-Theming in CometChat allows you to create visually consistent and customizable user interfaces that align with your application's branding. With the `CometChatTheme.DayNight` style which is built on `Theme.MaterialComponents.DayNight.NoActionBar` and acts as a global theme applied across all components, you can seamlessly integrate light and dark modes, define custom colors, typography, and component-specific styles, and enhance user experience across all CometChat components.
+Theming in CometChat allows you to create visually consistent and customizable user interfaces that align with your application's branding. The `CometChatTheme.DayNight` style is built on `Theme.MaterialComponents.DayNight.NoActionBar` and serves as the global theme applied across all CometChat components.
 
-## Using Theming in Your Project
+With theming, you can:
+- Seamlessly integrate light and dark modes
+- Define custom colors and typography
+- Apply component-specific styles
+- Maintain consistent branding across your app
 
-Set the `CometChatTheme.DayNight` as the parent theme for your application in the `themes.xml` file. You can extend it with your custom theme as needed:
+## Quick Start
 
-```html
-<!-- themes.xml -->
-<style name="AppTheme" parent="CometChatTheme.DayNight">
-   
-</style>
+### Step 1: Set Up Your Theme
+
+Create or update your `themes.xml` file and extend `CometChatTheme.DayNight`:
+
+```xml themes.xml
+<resources>
+    <style name="AppTheme" parent="CometChatTheme.DayNight">
+        <!-- Your customizations go here -->
+    </style>
+</resources>
 ```
 
-In your AndroidManifest.xml file, set the theme for your application or activity:
+### Step 2: Apply Theme to Your Application
 
-```html
-<!-- AndroidManifest.xml -->
+In your `AndroidManifest.xml`, set the theme for your application:
+
+```xml AndroidManifest.xml
 <application
-    ...
-    android:theme="@style/AppTheme">
-    <!-- Other configurations -->
+    android:name=".YourApplication"
+    android:theme="@style/AppTheme"
+    ...>
+    <!-- Your activities -->
 </application>
 ```
 
-If you need to apply specific styles to a particular activity, override the theme as follows:
+### Step 3: (Optional) Apply Theme to Specific Activities
 
-```html
-<!-- AndroidManifest.xml -->
+If you need different theming for specific activities:
+
+```xml AndroidManifest.xml
 <application
-    ...
-    >
-    <!-- Other configurations -->
-
-<activity
-    android:name=".YourChatActivity"
-    android:theme="@style/AppTheme">
-</activity>
-
+    android:theme="@style/AppTheme"
+    ...>
+    
+    <activity
+        android:name=".ChatActivity"
+        android:theme="@style/ChatTheme" />
+        
 </application>
 ```
 
@@ -49,21 +59,73 @@ If you need to apply specific styles to a particular activity, override the them
   <img src="/images/42da9194-introduction_theming_default-b29d82f803cd9092f10d0a72a35f4f62.png" />
 </Frame>
 
-## Customization
+## Basic Customization
 
-To customize the primary color in your app, you can override the cometchatPrimaryColor attribute in your theme. Here's how:
+### Changing Primary Color
 
-```html
-<!-- themes.xml -->
+The primary color is used throughout the UI for buttons, highlights, and interactive elements:
+
+```xml themes.xml
 <style name="AppTheme" parent="CometChatTheme.DayNight">
-
     <item name="cometchatPrimaryColor">#F76808</item>
-
 </style>
 ```
-
-To know more such attributes, visit the [theme attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_theme.xml).
 
 <Frame>
   <img src="/images/e6e0caaf-introduction_theming_primary_change-b6047b7a97046c3abf385ff1fec54e5a.png" />
 </Frame>
+
+### Common Theme Attributes
+
+Here are some commonly customized theme attributes:
+
+```xml themes.xml
+<style name="AppTheme" parent="CometChatTheme.DayNight">
+    <!-- Primary brand color -->
+    <item name="cometchatPrimaryColor">#6851D6</item>
+    
+    <!-- Background colors -->
+    <item name="cometchatBackgroundColor">#FFFFFF</item>
+    <item name="cometchatBackgroundColorSecondary">#F5F5F5</item>
+    
+    <!-- Text colors -->
+    <item name="cometchatTextColorPrimary">#000000</item>
+    <item name="cometchatTextColorSecondary">#666666</item>
+    
+    <!-- Border and divider colors -->
+    <item name="cometchatStrokeColor">#E0E0E0</item>
+</style>
+```
+
+## Light and Dark Mode
+
+`CometChatTheme.DayNight` automatically supports both light and dark modes based on the system setting. To customize colors for each mode:
+
+### Create themes-night.xml
+
+Create a `values-night` folder and add `themes.xml`:
+
+```xml values-night/themes.xml
+<resources>
+    <style name="AppTheme" parent="CometChatTheme.DayNight">
+        <!-- Dark mode colors -->
+        <item name="cometchatPrimaryColor">#8B7FFF</item>
+        <item name="cometchatBackgroundColor">#1A1A1A</item>
+        <item name="cometchatTextColorPrimary">#FFFFFF</item>
+    </style>
+</resources>
+```
+
+The system will automatically use the appropriate theme based on the device's dark mode setting.
+
+## Next Steps
+
+Now that you've set up basic theming, explore more customization options:
+
+- **[Color Resources](/ui-kit/android/color-resources)** - Complete list of color attributes
+- **[Component Styling](/ui-kit/android/component-styling)** - Style individual components
+- **[Message Bubble Styling](/ui-kit/android/message-bubble-styling)** - Customize message appearance
+
+<Note>
+For a complete list of theme attributes, visit the [theme attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_theme.xml) on GitHub.
+</Note>
