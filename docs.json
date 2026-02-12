@@ -5096,60 +5096,105 @@
             "tab": "AI Moderation",
             "pages": [
               "moderation/overview",
-              "moderation/getting-started",
-              "moderation/rules-management",
-              "moderation/lists-management",
-              "moderation/flagged-messages",
-              "moderation/blocked-messages",
-              "moderation/reviewed-messages",
-              "moderation/constraints-and-limits",
               {
-                "group": "OpenAI",
+                "group": "Setup",
                 "pages": [
-                  "moderation/open-ai/openai-overview",
-                  "moderation/open-ai/openai-custom"
+                  "moderation/getting-started",
+                  "moderation/rules-management",
+                  "moderation/lists-management"
                 ]
               },
               {
-                "group": "Custom API",
+                "group": "Message Management",
                 "pages": [
-                  "moderation/custom/custom-api-overview",
-                  "moderation/custom/custom-api"
+                  "moderation/flagged-messages",
+                  "moderation/blocked-messages",
+                  "moderation/reviewed-messages"
                 ]
               },
               {
-                "group": "Resources",
+                "group": "Providers",
                 "pages": [
                   {
-                    "group": "Moderation APIs",
+                    "group": "OpenAI",
                     "pages": [
-                      "moderation/api-explorer",
-                      "moderation/apis/list-rules",
-                      "moderation/apis/add-rule",
-                      "moderation/apis/get-rule",
-                      "moderation/apis/update-rule",
-                      "moderation/apis/remove-rule",
-                      "moderation/apis/list-keywords",
-                      "moderation/apis/add-keywords",
-                      "moderation/apis/get-keyword",
-                      "moderation/apis/update-keyword",
-                      "moderation/apis/remove-keyword",
-                      "moderation/apis/get-rule-revisions",
-                      "moderation/apis/list-blocked-messages",
-                      "moderation/apis/approve-blocked-messages",
-                      "moderation/apis/review-blocked-message",
-                      "moderation/apis/list-flagged-messages",
-                      "moderation/apis/blockreview-flagged-message",
-                      "moderation/apis/list-reviewed-messages",
-                      "moderation/apis/flag-a-message",
-                      "moderation/apis/create-reasons",
-                      "moderation/apis/list-reasons",
-                      "moderation/apis/get-reason-details",
-                      "moderation/apis/update-reason-details",
-                      "moderation/apis/delete-reasons"
+                      "moderation/open-ai/openai-overview",
+                      "moderation/open-ai/openai-custom"
                     ]
                   },
+                  {
+                    "group": "Custom API",
+                    "pages": [
+                      "moderation/custom/custom-api-overview",
+                      "moderation/custom/custom-api"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Reference",
+                "pages": [
+                  "moderation/constraints-and-limits",
                   "moderation/legacy-extensions"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "APIs",
+            "pages": [
+              "moderation/api-explorer",
+              {
+                "group": "Rules",
+                "pages": [
+                  "moderation/apis/list-rules",
+                  "moderation/apis/add-rule",
+                  "moderation/apis/get-rule",
+                  "moderation/apis/update-rule",
+                  "moderation/apis/remove-rule",
+                  "moderation/apis/get-rule-revisions"
+                ]
+              },
+              {
+                "group": "Keywords",
+                "pages": [
+                  "moderation/apis/list-keywords",
+                  "moderation/apis/add-keywords",
+                  "moderation/apis/get-keyword",
+                  "moderation/apis/update-keyword",
+                  "moderation/apis/remove-keyword"
+                ]
+              },
+              {
+                "group": "Blocked Messages",
+                "pages": [
+                  "moderation/apis/list-blocked-messages",
+                  "moderation/apis/approve-blocked-messages",
+                  "moderation/apis/review-blocked-message"
+                ]
+              },
+              {
+                "group": "Flagged Messages",
+                "pages": [
+                  "moderation/apis/list-flagged-messages",
+                  "moderation/apis/blockreview-flagged-message",
+                  "moderation/apis/flag-a-message"
+                ]
+              },
+              {
+                "group": "Reviewed Messages",
+                "pages": [
+                  "moderation/apis/list-reviewed-messages"
+                ]
+              },
+              {
+                "group": "Reasons",
+                "pages": [
+                  "moderation/apis/create-reasons",
+                  "moderation/apis/list-reasons",
+                  "moderation/apis/get-reason-details",
+                  "moderation/apis/update-reason-details",
+                  "moderation/apis/delete-reasons"
                 ]
               }
             ]
@@ -5192,50 +5237,7 @@
                   "notifications/constraints-and-limits"
                 ]
               },
-              {
-                "group": "Resources",
-                "pages": [
-                  {
-                    "group": "Push APIs",
-                    "pages": [
-                      "notifications/apis/push/list-fcm-providers",
-                      "notifications/apis/push/add-fcm-provider",
-                      "notifications/apis/push/update-fcm-provider",
-                      "notifications/apis/push/delete-fcm-provider",
-                      "notifications/apis/push/change-default-fcm-provider",
-                      "notifications/apis/push/list-apns-providers",
-                      "notifications/apis/push/add-apns-provider",
-                      "notifications/apis/push/update-apns-providers",
-                      "notifications/apis/push/delete-apns-providers",
-                      "notifications/apis/push/change-default-apns-provider",
-                      "notifications/apis/push/register-push-token",
-                      "notifications/apis/push/list-push-tokens",
-                      "notifications/apis/push/delete-push-token",
-                      "notifications/apis/push/unregister-push-tokens",
-                      "notifications/apis/push/get-custom-provider",
-                      "notifications/apis/push/save-custom-provider",
-                      "notifications/apis/push/update-custom-provider",
-                      "notifications/apis/push/delete-custom-provider",
-                      "notifications/apis/push/list-settings",
-                      "notifications/apis/push/update-settings",
-                      "notifications/apis/push/reset-settings",
-                      "notifications/apis/push/list-preferences",
-                      "notifications/apis/push/update-preferences",
-                      "notifications/apis/push/reset-preferences",
-                      "notifications/apis/push/get-timezone",
-                      "notifications/apis/push/update-timezone",
-                      "notifications/apis/push/get-contact-details",
-                      "notifications/apis/push/update-contact-details",
-                      "notifications/apis/push/delete-contact-details",
-                      "notifications/apis/push/mute-conversations",
-                      "notifications/apis/push/unmute-conversations",
-                      "notifications/apis/push/list-muted-conversations",
-                      "notifications/apis/push/notifications-logs"
-                    ]
-                  },
-                  "notifications/push-notifications-extension-legacy"
-                ]
-              }
+              "notifications/push-notifications-extension-legacy"
             ]
           },
           {
@@ -5246,25 +5248,7 @@
               "notifications/email-preferences",
               "notifications/email-templates",
               "notifications/email-custom-providers",
-              {
-                "group": "Resources",
-                "pages": [
-                  {
-                    "group": "Email APIs",
-                    "pages": [
-                      "notifications/apis/email/get-sendgrid-credentials",
-                      "notifications/apis/email/save-sendgrid-credentials",
-                      "notifications/apis/email/update-sendgrid-credentials",
-                      "notifications/apis/email/delete-sendgrid-credentials",
-                      "notifications/apis/email/get-custom-provider",
-                      "notifications/apis/email/save-custom-provider",
-                      "notifications/apis/email/update-custom-provider",
-                      "notifications/apis/email/delete-custom-provider"
-                    ]
-                  },
-                  "notifications/email-notifications-extension-legacy"
-                ]
-              }
+              "notifications/email-notifications-extension-legacy"
             ]
           },
           {
@@ -5275,23 +5259,74 @@
               "notifications/sms-preferences",
               "notifications/sms-templates",
               "notifications/sms-custom-providers",
+              "notifications/sms-notifications-extension-legacy"
+            ]
+          },
+          {
+            "tab": "APIs",
+            "pages": [
               {
-                "group": "Resources",
+                "group": "Push APIs",
                 "pages": [
-                  {
-                    "group": "SMS APIs",
-                    "pages": [
-                      "notifications/apis/sms/get-twilio-credentials",
-                      "notifications/apis/sms/save-twilio-credentials",
-                      "notifications/apis/sms/update-twilio-credentials",
-                      "notifications/apis/sms/delete-twilio-credentials",
-                      "notifications/apis/sms/get-custom-provider",
-                      "notifications/apis/sms/save-custom-provider",
-                      "notifications/apis/sms/update-custom-provider",
-                      "notifications/apis/sms/delete-custom-provider"
-                    ]
-                  },
-                  "notifications/sms-notifications-extension-legacy"
+                  "notifications/apis/push/list-fcm-providers",
+                  "notifications/apis/push/add-fcm-provider",
+                  "notifications/apis/push/update-fcm-provider",
+                  "notifications/apis/push/delete-fcm-provider",
+                  "notifications/apis/push/change-default-fcm-provider",
+                  "notifications/apis/push/list-apns-providers",
+                  "notifications/apis/push/add-apns-provider",
+                  "notifications/apis/push/update-apns-providers",
+                  "notifications/apis/push/delete-apns-providers",
+                  "notifications/apis/push/change-default-apns-provider",
+                  "notifications/apis/push/register-push-token",
+                  "notifications/apis/push/list-push-tokens",
+                  "notifications/apis/push/delete-push-token",
+                  "notifications/apis/push/unregister-push-tokens",
+                  "notifications/apis/push/get-custom-provider",
+                  "notifications/apis/push/save-custom-provider",
+                  "notifications/apis/push/update-custom-provider",
+                  "notifications/apis/push/delete-custom-provider",
+                  "notifications/apis/push/list-settings",
+                  "notifications/apis/push/update-settings",
+                  "notifications/apis/push/reset-settings",
+                  "notifications/apis/push/list-preferences",
+                  "notifications/apis/push/update-preferences",
+                  "notifications/apis/push/reset-preferences",
+                  "notifications/apis/push/get-timezone",
+                  "notifications/apis/push/update-timezone",
+                  "notifications/apis/push/get-contact-details",
+                  "notifications/apis/push/update-contact-details",
+                  "notifications/apis/push/delete-contact-details",
+                  "notifications/apis/push/mute-conversations",
+                  "notifications/apis/push/unmute-conversations",
+                  "notifications/apis/push/list-muted-conversations",
+                  "notifications/apis/push/notifications-logs"
+                ]
+              },
+              {
+                "group": "Email APIs",
+                "pages": [
+                  "notifications/apis/email/get-sendgrid-credentials",
+                  "notifications/apis/email/save-sendgrid-credentials",
+                  "notifications/apis/email/update-sendgrid-credentials",
+                  "notifications/apis/email/delete-sendgrid-credentials",
+                  "notifications/apis/email/get-custom-provider",
+                  "notifications/apis/email/save-custom-provider",
+                  "notifications/apis/email/update-custom-provider",
+                  "notifications/apis/email/delete-custom-provider"
+                ]
+              },
+              {
+                "group": "SMS APIs",
+                "pages": [
+                  "notifications/apis/sms/get-twilio-credentials",
+                  "notifications/apis/sms/save-twilio-credentials",
+                  "notifications/apis/sms/update-twilio-credentials",
+                  "notifications/apis/sms/delete-twilio-credentials",
+                  "notifications/apis/sms/get-custom-provider",
+                  "notifications/apis/sms/save-custom-provider",
+                  "notifications/apis/sms/update-custom-provider",
+                  "notifications/apis/sms/delete-custom-provider"
                 ]
               }
             ]

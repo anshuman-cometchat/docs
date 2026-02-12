@@ -23,6 +23,15 @@ A CometChat app represents a self-contained chat environment with its own users,
 - Aggregator applications
 - Vertical-specific software (education, healthcare, etc.)
 
+## Authentication
+
+All Management API requests must be authenticated using the key and secret provided when multi-tenancy is enabled for your account. Include these credentials in the request headers:
+
+```
+key: YOUR_KEY
+secret: YOUR_SECRET
+```
+
 ## Common Use Cases
 
 Multi-tenancy works well for scenarios like:
@@ -54,6 +63,6 @@ This enables automation and "configuration as code" patterns for managing large 
 
 ## Getting Started
 
-To enable multi-tenancy for your account, [contact our support team](https://www.cometchat.com/contact-sales). Once approved, you'll receive your App Management credentials and can begin creating tenant apps.
+To enable multi-tenancy for your account, [contact our support team](https://www.cometchat.com/contact-sales). Once approved, you'll receive your App Management key and secret, and can begin creating tenant apps.
 
 For detailed API documentation on managing apps programmatically, refer to the [Management REST APIs](/rest-api/management-apis).
