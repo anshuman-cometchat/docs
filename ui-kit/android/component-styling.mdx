@@ -2,9 +2,26 @@
 title: "Component Styling"
 ---
 
-## Overview
+CometChat UIKit components are fully customizable through XML styling. Each component supports theme attributes for colors, fonts, sizes, icons, and more, allowing you to match your app's design system.
 
-CometChat UIKit enables developers to seamlessly integrate customizable components into their applications. Each component is designed to ensure a consistent user experience while offering flexibility to adapt to your app’s design system. You can modify attributes such as colors, fonts, sizes, icons, and more using XML or programmatically. Below is a detailed guide for styling individual components within the UIKit.
+## How to Style Components
+
+All component styles follow the same pattern:
+
+1. Create a custom style extending the component's parent style
+2. Override specific attributes
+3. Apply the style to your app theme
+
+```xml
+<!-- themes.xml -->
+<style name="CustomComponentStyle" parent="CometChatComponentStyle">
+    <item name="attributeName">value</item>
+</style>
+
+<style name="AppTheme" parent="CometChatTheme.DayNight">
+    <item name="cometchatComponentStyle">@style/CustomComponentStyle</item>
+</style>
+```
 
 ## Components
 
@@ -16,7 +33,7 @@ The `CometChatConversations` Component provides a list of recent chats, showing 
   <img src="/images/433c987e-Conversation_Styling-1e5686a26eb349d5cbc40262b9b6df0e.png" />
 </Frame>
 
-```html
+```xml
 <!-- themes.xml -->
     <style name="CustomAvatarStyle" parent="CometChatAvatarStyle">
         <item name="cometchatAvatarStrokeRadius">8dp</item>
@@ -34,7 +51,7 @@ The `CometChatConversations` Component provides a list of recent chats, showing 
     </style>
 ```
 
-```html
+```xml
 <!-- themes.xml -->
     <style name="AppTheme" parent="CometChatTheme.DayNight">
         <item name="cometchatConversationsStyle">@style/CustomConversationsStyle</item>
@@ -45,7 +62,10 @@ The `CometChatConversations` Component provides a list of recent chats, showing 
     </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_conversations.xml).
+**Attribute References:**
+- [Conversations attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_conversations.xml)
+- [Avatar attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_avatar.xml)
+- [Badge attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_badge.xml)
 
 ### Users
 
@@ -55,7 +75,7 @@ The `CometChatUsers` Component displays a scrollable list of users. It is ideal 
   <img src="/images/c8909b74-users_styling-3acb1ffef7870b6903a070fd83b5103f.png" />
 </Frame>
 
-```html
+```xml
     <style name="CustomAvatarStyle" parent="CometChatAvatarStyle">
         <item name="cometchatAvatarStrokeRadius">8dp</item>
         <item name="cometchatAvatarBackgroundColor">#FBAA75</item>
@@ -68,7 +88,7 @@ The `CometChatUsers` Component displays a scrollable list of users. It is ideal 
     </style>
 ```
 
-```html
+```xml
 <!-- themes.xml -->
     <style name="AppTheme" parent="CometChatTheme.DayNight">
         <item name="cometchatUsersStyle">@style/CustomUsersStyle</item>
@@ -79,7 +99,9 @@ The `CometChatUsers` Component displays a scrollable list of users. It is ideal 
     </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_users.xml).
+**Attribute References:**
+- [Users attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_users.xml)
+- [Avatar attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_avatar.xml)
 
 ### Groups
 
@@ -89,7 +111,7 @@ The `CometChatGroups` Component allows you to display and interact with chat gro
   <img src="/images/5b3c1825-groups_styling-f8164f3a9b1247ad1db859328c199051.png" />
 </Frame>
 
-```html
+```xml
     <style name="CustomAvatarStyle" parent="CometChatAvatarStyle">
         <item name="cometchatAvatarStrokeRadius">8dp</item>
         <item name="cometchatAvatarBackgroundColor">#FBAA75</item>
@@ -102,7 +124,7 @@ The `CometChatGroups` Component allows you to display and interact with chat gro
     </style>
 ```
 
-```html
+```xml
 <!-- themes.xml -->
     <style name="AppTheme" parent="CometChatTheme.DayNight">
         <item name="cometchatGroupsStyle">@style/CustomGroupsStyle</item>
@@ -113,7 +135,9 @@ The `CometChatGroups` Component allows you to display and interact with chat gro
     </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_groups.xml).
+**Attribute References:**
+- [Groups attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_groups.xml)
+- [Avatar attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_avatar.xml)
 
 ### Message Header
 
@@ -123,7 +147,7 @@ The `CometChatMessageHeader` Component provides essential information about the 
   <img src="/images/c761803d-message_header_styling-ae4670a5a130374818f37e2144246748.png" />
 </Frame>
 
-```html
+```xml
     <style name="CustomCallButtonStyle" parent="CometChatCallButtonsStyle">
         <item name="cometchatCallButtonsVideoCallIconTint">#F76808</item>
         <item name="cometchatCallButtonsVoiceCallIconTint">#F76808</item>
@@ -136,7 +160,7 @@ The `CometChatMessageHeader` Component provides essential information about the 
     </style>
 ```
 
-```html
+```xml
 <!-- themes.xml -->
     <style name="AppTheme" parent="CometChatTheme.DayNight">
          <item name="cometchatMessageHeaderStyle">@style/CustomMessageHeaderStyle</item>
@@ -147,7 +171,9 @@ The `CometChatMessageHeader` Component provides essential information about the 
     </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_header.xml).
+**Attribute References:**
+- [Message Header attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_header.xml)
+- [Call Buttons attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_call_buttons.xml)
 
 ### Message List
 
@@ -168,7 +194,7 @@ The `CometChatMessageList` Component displays the sequence of messages in a conv
     </style>
 ```
 
-```html
+```xml
     <style name="AppTheme" parent="CometChatTheme.DayNight">
         <item name="cometchatMessageListStyle">@style/CustomCometChatMessageListStyle</item>
         <item name="cometchatFontBold">@font/times_new_roman_bold</item>
@@ -177,7 +203,9 @@ The `CometChatMessageList` Component displays the sequence of messages in a conv
     </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_list.xml).
+**Attribute References:**
+- [Message List attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_list.xml)
+- [Outgoing Message Bubble attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_outgoing_message_bubble.xml)
 
 ### Message Composer
 
@@ -228,7 +256,8 @@ The `CometChatMessageComposer` Component enables users to compose and send messa
     </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_composer.xml).
+**Attribute References:**
+- [Message Composer attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_composer.xml)
 
 ### Group Members
 
@@ -238,7 +267,7 @@ The `CometChatGroupMembers` Component lists participants in a chat group with de
   <img src="/images/1bd5a982-group_members_styling-ee7427e23be4ccf40776d8b1df1342f4.png" />
 </Frame>
 
-```html
+```xml
     <!-- themes.xml -->
      <style name="CustomAvatarStyle" parent="CometChatAvatarStyle">
         <item name="cometchatAvatarStrokeRadius">8dp</item>
@@ -264,7 +293,9 @@ The `CometChatGroupMembers` Component lists participants in a chat group with de
     </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_group_members.xml).
+**Attribute References:**
+- [Group Members attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_group_members.xml)
+- [Avatar attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_avatar.xml)
 
 ### Thread Header
 
@@ -300,7 +331,10 @@ The `CometChatThreadHeader` is used in threaded message views, displaying inform
     </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_thread_header.xml).
+**Attribute References:**
+- [Thread Header attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_thread_header.xml)
+- [Outgoing Message Bubble attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_outgoing_message_bubble.xml)
+- [Incoming Message Bubble attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_incoming_message_bubble.xml)
 
 ### Call Logs
 
@@ -328,7 +362,8 @@ The `CometChatCallLogs` Component provides a list of recent calls (voice or vide
     </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_call_logs.xml).
+**Attribute References:**
+- [Call Logs attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_call_logs.xml)
 
 ### Incoming Call
 
@@ -367,7 +402,9 @@ The `CometChatIncomingCall` component displays a notification for an incoming ca
     </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_incoming_call.xml).
+**Attribute References:**
+- [Incoming Call attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_incoming_call.xml)
+- [Avatar attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_avatar.xml)
 
 ### Outgoing Call
 
@@ -399,7 +436,9 @@ The `CometChatOutgoingCall` component displays a status view for calls initiated
     </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_outgoing_call.xml).
+**Attribute References:**
+- [Outgoing Call attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_outgoing_call.xml)
+- [Avatar attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_avatar.xml)
 
 ### Call Button
 
@@ -433,7 +472,8 @@ The `CometChatCallButton` Component initiates voice or video calls with a single
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_call_buttons.xml).
+**Attribute References:**
+- [Call Buttons attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_call_buttons.xml)
 
 ### AI Assistant Chat History
 
@@ -471,7 +511,8 @@ The `CometChatAIAssistantChatHistory` component displays the history of interact
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_ai_assistant_chat_history.xml).
+**Attribute References:**
+- [AI Assistant Chat History attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_ai_assistant_chat_history.xml)
 
 ### Search
 
@@ -518,7 +559,8 @@ The `CometChatSearch` component allows users to search through conversations and
 
 ***
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_search.xml).
+**Attribute References:**
+- [Search attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_search.xml)
 
 ## Base Component
 
@@ -543,7 +585,8 @@ The `CometChatAvatar` Component is used across the UIKit to represent users, gro
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_avatar.xml).
+**Attribute References:**
+- [Avatar attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_avatar.xml)
 
 ### Status indicator
 
@@ -580,7 +623,8 @@ The `CometChatStatusIndicator` visually represents user presence (online, offlin
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_status_indicator.xml).
+**Attribute References:**
+- [Status Indicator attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_status_indicator.xml)
 
 ### Badge
 
@@ -604,7 +648,8 @@ The `CometChatBadge` Component displays notifications or counts, such as unread 
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_badge.xml).
+**Attribute References:**
+- [Badge attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_badge.xml)
 
 ### Date
 
@@ -626,7 +671,8 @@ The `CometChatDate` Component formats and displays timestamps in conversation li
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_date.xml).
+**Attribute References:**
+- [Date attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_date.xml)
 
 ### Receipts
 
@@ -664,7 +710,8 @@ The `CometChatReceipts` Component indicates message delivery and read statuses u
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_receipt.xml).
+**Attribute References:**
+- [Message Receipt attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_receipt.xml)
 
 ### Media Recorder
 
@@ -689,7 +736,8 @@ The `CometChatMediaRecorder` Component facilitates the recording of audio and vi
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_media_recorder.xml).
+**Attribute References:**
+- [Media Recorder attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_media_recorder.xml)
 
 ### Sticker Keyboard
 
@@ -711,7 +759,8 @@ The `CometChatStickerKeyboard` simplifies the integration of sticker-based messa
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_sticker_keyboard.xml).
+**Attribute References:**
+- [Sticker Keyboard attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_sticker_keyboard.xml)
 
 ### Reaction list
 
@@ -733,7 +782,8 @@ The `CometChatReactionList` Component provides a visual representation of emoji 
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_reaction_list.xml).
+**Attribute References:**
+- [Reaction List attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_reaction_list.xml)
 
 ### Conversation Starter
 
@@ -755,7 +805,8 @@ The `CometChatConversationStarter` Component offers AI-based suggestions or repl
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_ai_conversation_starter.xml).
+**Attribute References:**
+- [AI Conversation Starter attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_ai_conversation_starter.xml)
 
 ### Conversation Summary
 
@@ -777,7 +828,8 @@ The `CometChatConversationSummary` Component highlights the essence of a convers
  </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_ai_conversation_summary.xml).
+**Attribute References:**
+- [AI Conversation Summary attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_ai_conversation_summary.xml)
 
 ### Smart Replies
 
@@ -803,7 +855,8 @@ The `CometChatSmartReplies` Component provides AI-driven suggestions for quick m
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_ai_smart_replies.xml).
+**Attribute References:**
+- [AI Smart Replies attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_ai_smart_replies.xml)
 
 ### Message Information
 
@@ -813,7 +866,8 @@ The `CometChatMessageInformation` Component displays metadata for messages, such
   <img src="/images/237b6e0a-base_component_message_information_styling-d51400af46b6aebae636302be9ec863a.png" />
 </Frame>
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_information.xml).
+**Attribute References:**
+- [Message Information attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_information.xml)
 
 ### Message option sheet
 
@@ -836,7 +890,8 @@ The `CometChatMessageOptionSheet` Component is a context menu for performing act
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_option_sheet.xml).
+**Attribute References:**
+- [Message Option Sheet attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_option_sheet.xml)
 
 ### Attachment option sheet
 
@@ -859,7 +914,8 @@ The `CometChatAttachmentOptionSheet` Component provides a sleek interface for us
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_attachment_option_sheet.xml).
+**Attribute References:**
+- [Attachment Option Sheet attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_attachment_option_sheet.xml)
 
 ### AIOption Sheet
 
@@ -882,7 +938,8 @@ The `CometChatAIOptionSheet` Component offers AI-powered action options, like ge
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_ai_option_sheet.xml).
+**Attribute References:**
+- [AI Option Sheet attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_ai_option_sheet.xml)
 
 ### Mentions
 
@@ -920,11 +977,14 @@ The `CometChatMentions` Component highlights referenced users or groups within m
 </style>
 ```
 
-```html
+```xml
 <style name="AppTheme" parent="CometChatTheme.DayNight">
     <item name="cometchatIncomingMessageBubbleStyle">@style/CustomIncomingMessageBubbleStyle</item>
     <item name="cometchatOutgoingMessageBubbleStyle">@style/CustomOutgoingMessageBubbleStyle</item>
 </style>
 ```
 
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_mentions.xml).
+**Attribute References:**
+- [Mentions attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_mentions.xml)
+- [Incoming Message Bubble attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_incoming_message_bubble.xml)
+- [Outgoing Message Bubble attributes](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_outgoing_message_bubble.xml)
