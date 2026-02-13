@@ -30,42 +30,54 @@ export interface CometChatSettings {
 
 Essential messaging features: typing indicators, media sharing, message actions, and presence.
 
-| Property                       | Type               | Description                                |
-| ------------------------------ | ------------------ | ------------------------------------------ |
-| typingIndicator                | boolean            | Show “user is typing” state.               |
-| threadConversationAndReplies   | boolean            | Enable threaded conversations and replies. |
-| photosSharing                  | boolean            | Allow sharing images.                      |
-| videoSharing                   | boolean            | Allow sharing videos.                      |
-| audioSharing                   | boolean            | Allow sharing audio clips.                 |
-| fileSharing                    | boolean            | Allow generic file uploads.                |
-| editMessage                    | boolean            | Let users edit their sent messages.        |
-| deleteMessage                  | boolean            | Let users delete their sent messages.      |
-| messageDeliveryAndReadReceipts | boolean            | Show delivery/read receipts.               |
-| userAndFriendsPresence         | boolean            | Display online/offline presence.           |
-| conversationAndAdvancedSearch  | boolean (optional) | Enable conversation + advanced search.     |
-| moderation                     | boolean (optional) | Turn on content moderation tools.          |
-| quotedReplies                  | boolean (optional) | Allow quoting messages.                    |
-| markAsUnread                   | boolean (optional) | Let users mark messages as unread.         |
+| Property                       | Type    | Description                                |
+| ------------------------------ | ------- | ------------------------------------------ |
+| typingIndicator                | boolean | Show “user is typing” state.               |
+| threadConversationAndReplies   | boolean | Enable threaded conversations and replies. |
+| photosSharing                  | boolean | Allow sharing images.                      |
+| videoSharing                   | boolean | Allow sharing videos.                      |
+| audioSharing                   | boolean | Allow sharing audio clips.                 |
+| fileSharing                    | boolean | Allow generic file uploads.                |
+| editMessage                    | boolean | Let users edit their sent messages.        |
+| deleteMessage                  | boolean | Let users delete their sent messages.      |
+| messageDeliveryAndReadReceipts | boolean | Show delivery/read receipts.               |
+| userAndFriendsPresence         | boolean | Display online/offline presence.           |
+| conversationAndAdvancedSearch  | boolean | Enable conversation + advanced search.     |
+| moderation                     | boolean | Turn on content moderation tools.          |
+| quotedReplies                  | boolean | Allow quoting messages.                    |
+| markAsUnread                   | boolean | Let users mark messages as unread.         |
+
+<Tip>
+  Empower users with a seamless chat experience—reply to specific messages with
+  quoted replies, mark conversations as unread for later, and search across all
+  chats instantly. Learn more about [Core
+  Features](/ui-kit/react/core-features).
+</Tip>
 
 ### 1.2 Deeper User Engagement (`deeperUserEngagement`)
 
 Interactive features: mentions, reactions, polls, voice notes, and collaborative tools.
 
-| Property                | Type               | Description                                 |
-| ----------------------- | ------------------ | ------------------------------------------- |
-| mentions                | boolean            | Enable @mentions.                           |
-| mentionAll              | boolean (optional) | Allow @all to notify everyone in the group. |
-| reactions               | boolean            | Emoji/label reactions on messages.          |
-| messageTranslation      | boolean            | Inline message translation.                 |
-| polls                   | boolean            | Create and vote on polls.                   |
-| collaborativeWhiteboard | boolean            | Real-time whiteboard.                       |
-| collaborativeDocument   | boolean            | Collaborative docs.                         |
-| voiceNotes              | boolean            | Voice-note capture and send.                |
-| emojis                  | boolean            | Emoji keyboard support.                     |
-| stickers                | boolean            | Sticker sending.                            |
-| userInfo                | boolean            | View user profile info.                     |
-| groupInfo               | boolean            | View group details.                         |
-| reportMessage           | boolean (optional) | Allow reporting a message.                  |
+| Property                | Type    | Description                                 |
+| ----------------------- | ------- | ------------------------------------------- |
+| mentions                | boolean | Enable @mentions.                           |
+| mentionAll              | boolean | Allow @all to notify everyone in the group. |
+| reactions               | boolean | Emoji/label reactions on messages.          |
+| messageTranslation      | boolean | Inline message translation.                 |
+| polls                   | boolean | Create and vote on polls.                   |
+| collaborativeWhiteboard | boolean | Real-time whiteboard.                       |
+| collaborativeDocument   | boolean | Collaborative docs.                         |
+| voiceNotes              | boolean | Voice-note capture and send.                |
+| emojis                  | boolean | Emoji keyboard support.                     |
+| stickers                | boolean | Sticker sending.                            |
+| userInfo                | boolean | View user profile info.                     |
+| groupInfo               | boolean | View group details.                         |
+| reportMessage           | boolean | Allow reporting a message.                  |
+
+<Tip>
+  Configure these features based on your app's requirements. Learn more about
+  [Extensions](/ui-kit/react/extensions).
+</Tip>
 
 ### 1.3 AI User Copilot (`aiUserCopilot`)
 
@@ -77,11 +89,15 @@ AI-powered features to help users start and navigate conversations.
 | conversationSummary | boolean | Summaries of chat threads.                 |
 | smartReply          | boolean | Quick replies suggested by AI.             |
 
+<Tip>
+AI User Copilot features require an OpenAI API key. Configure it in the [CometChat Dashboard](https://app.cometchat.com) under **Chat & Messaging > Settings**. Learn more about [AI Features](/ui-kit/react/ai-features).
+</Tip>
+
 ### 1.4 User Management (`userManagement`)
 
-| Property    | Type               | Description                         |
-| ----------- | ------------------ | ----------------------------------- |
-| friendsOnly | boolean (optional) | Restrict chat to friends-only mode. |
+| Property    | Type    | Description                         |
+| ----------- | ------- | ----------------------------------- |
+| friendsOnly | boolean | Restrict chat to friends-only mode. |
 
 ### 1.5 Group Management (`groupManagement`)
 
@@ -99,12 +115,20 @@ Control what users can do with groups.
 
 Admin tools for managing group members and content.
 
-| Property             | Type               | Description               |
-| -------------------- | ------------------ | ------------------------- |
-| kickUsers            | boolean            | Kick users from groups.   |
-| banUsers             | boolean            | Ban users from groups.    |
-| promoteDemoteMembers | boolean            | Change a member’s scope.  |
-| reportMessage        | boolean (optional) | Enable message reporting. |
+| Property             | Type    | Description               |
+| -------------------- | ------- | ------------------------- |
+| kickUsers            | boolean | Kick users from groups.   |
+| banUsers             | boolean | Ban users from groups.    |
+| promoteDemoteMembers | boolean | Change a member’s scope.  |
+| reportMessage        | boolean | Enable message reporting. |
+
+<Tip>
+  To enable content moderation, set `moderation` and `reportMessage` to `true`,
+  then configure your moderation rules in the [CometChat
+  Dashboard](https://app.cometchat.com). See [Rules
+  Management](/moderation/getting-started#setting-up-moderation-rules) for setup
+  details.
+</Tip>
 
 ### 1.7 Private Messaging Within Groups (`privateMessagingWithinGroups`)
 
@@ -129,6 +153,10 @@ Enable voice and video calling capabilities.
 | groupVideoConference | boolean | Group video calls.      |
 | groupVoiceConference | boolean | Group voice-only calls. |
 
+<Tip>
+  Learn more about [Call Features](/ui-kit/react/call-features#features).
+</Tip>
+
 ---
 
 ## 3. Layout (`layout`)
@@ -141,6 +169,11 @@ Control the overall UI structure and navigation.
 | tabs        | string[] | Tabs to expose, e.g. `['chats','calls','users','groups']`. |
 | chatType    | string   | Default chat type: `'user'` or `'group'`.                  |
 
+<Tip>
+  Set `withSideBar: false` for embedded chat widgets or single-conversation
+  views where navigation isn't needed.
+</Tip>
+
 ---
 
 ## 4. Style (`style`)
@@ -151,7 +184,12 @@ Customize colors, fonts, and theme appearance.
 
 | Property | Type   | Description                         |
 | -------- | ------ | ----------------------------------- |
-| theme    | string | `'light'`, `'dark'`, or `'system'`. |
+| theme    | string | `'system'`, `'light'`, or `'dark'`. |
+
+<Tip>
+  Use `theme: "system"` to automatically match the user's device preference.
+  Test your `brandColor` in both light and dark modes for contrast.
+</Tip>
 
 ### 4.2 Color
 
@@ -163,12 +201,18 @@ Customize colors, fonts, and theme appearance.
 | secondaryTextLight | string | Secondary text color in light mode. |
 | secondaryTextDark  | string | Secondary text color in dark mode.  |
 
+<Tip>
+  Match `brandColor` to your website's primary accent color. Use your site's
+  existing text colors for `primaryTextLight` and `primaryTextDark` to maintain
+  brand consistency.
+</Tip>
+
 ### 4.3 Typography
 
-| Property | Type   | Description                           |
-| -------- | ------ | ------------------------------------- |
-| font     | string | Font family (e.g., `'roboto'`).       |
-| size     | string | Font size preset (e.g., `'default'`). |
+| Property | Type   | Description                                                            |
+| -------- | ------ | ---------------------------------------------------------------------- |
+| font     | string | Font family: `'roboto'`, `'arial'`, `'inter'`, or `'times new roman'`. |
+| size     | string | Font size preset: `'default'`, `'compact'`, or `'comfortable'`.        |
 
 ---
 
@@ -184,7 +228,9 @@ Agent-facing options for support scenarios.
 
 --- \*/}
 
-## Example configuration
+## Settings Overview
+
+Here's the complete settings structure. Modify these values in `CometChatSettings.ts` to customize your chat experience.
 
 ```json
 {
@@ -286,14 +332,6 @@ Agent-facing options for support scenarios.
   }
 }
 ```
-
----
-
-## Tips
-
-- Enable `conversationAndAdvancedSearch` when you need global search across conversations; keep it off for lighter builds.
-- For enterprise moderation, pair `moderation` + `reportMessage` with your backend review queues.
-- Keep `noCode.styles.customJs` minimal and sanitized; avoid long-running scripts to maintain widget performance.
 
 ---
 

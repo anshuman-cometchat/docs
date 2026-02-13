@@ -1,20 +1,20 @@
 ---
 title: "Directory Structure"
 sidebarTitle: "Directory Structure"
-description: "Overview of the CometChat UI Kit Builder directory layout for React Router."
+description: "Overview of the CometChat UI Kit Builder directory layout for React Router — understand where to find and customize components, settings, and styles."
 ---
 
-All UI Kit Builder files are contained within the `src/CometChat/` directory.
+The exported UI Kit Builder code lives in `src/CometChat/`. This guide helps you navigate the structure so you know exactly where to make changes.
 
 ```
 src/
 ├── CometChat/
 │   ├── assets/          # Icons, images, audio files
-│   ├── components/      # React components
-│   ├── context/         # React Context providers
+│   ├── components/      # React components (UI elements)
+│   ├── context/         # React Context providers (state management)
 │   ├── locales/         # Translation files (en, fr, de, etc.)
 │   ├── styles/          # CSS files (mirrors components structure)
-│   ├── utils/           # Utility functions
+│   ├── utils/           # Utility functions and helpers
 │   ├── CometChatApp.tsx
 │   ├── CometChatSettings.ts
 │   ├── customHooks.ts
@@ -28,55 +28,66 @@ src/
 
 ## Root Files
 
-| File                   | Description                                                  |
+| File                   | Purpose                                                      |
 | ---------------------- | ------------------------------------------------------------ |
 | `CometChatApp.tsx`     | Main entry point — import this to render the chat experience |
-| `CometChatSettings.ts` | Configuration for UI elements, features, and theming         |
+| `CometChatSettings.ts` | Toggle features on/off (messaging, calls, AI copilot, etc.)  |
 | `customHooks.ts`       | Custom React hooks used throughout the application           |
-| `styleConfig.ts`       | Global styling configuration                                 |
+| `styleConfig.ts`       | Global styling configuration (colors, fonts, spacing)        |
 
 ---
 
-## Components
+## Key Folders
 
-Each component folder contains the main `.tsx` file and associated hooks (`use*.ts`).
+### `components/`
+
+Each component folder contains the main `.tsx` file and associated hooks (`use*.ts`). These are the building blocks of your chat UI.
 
 ```
 components/
-├── CometChatAddMembers/
-├── CometChatBannedMembers/
-├── CometChatCallLog/
-├── CometChatCreateGroup/
-├── CometChatDetails/
-├── CometChatHome/
-├── CometChatJoinGroup/
-├── CometChatLogin/
-├── CometChatMessages/
-├── CometChatSelector/
-└── CometChatTransferOwnership/
+├── CometChatAddMembers/       # Add members to groups
+├── CometChatBannedMembers/    # Manage banned users
+├── CometChatCallLog/          # Call history display
+├── CometChatCreateGroup/      # Group creation flow
+├── CometChatDetails/          # User/group details panel
+├── CometChatHome/             # Main chat home screen
+├── CometChatJoinGroup/        # Join group flow
+├── CometChatLogin/            # Login screen
+├── CometChatMessages/         # Message list and composer
+├── CometChatSelector/         # Conversation/user selector
+└── CometChatTransferOwnership/ # Transfer group ownership
 ```
 
----
+### `context/`
 
-## Context
+State management for the chat application.
 
 ```
 context/
-├── AppContext.tsx        # Main application context
-├── CometChatContext.tsx  # Builder settings context
-└── appReducer.ts         # Reducer functions
+├── AppContext.tsx        # Main application state
+├── CometChatContext.tsx  # Builder settings and configuration
+└── appReducer.ts         # State reducer functions
 ```
+
+### `styles/`
+
+CSS files organized to mirror the components structure. Each component has a corresponding style folder.
+
+### `locales/`
+
+Translation files for multi-language support. Add or modify JSON files here to customize text.
 
 ---
 
-## Customization Tips
+## Quick Reference: Where to Customize
 
-| What to customize     | Where to look                |
-| --------------------- | ---------------------------- |
-| Feature toggles       | `CometChatSettings.ts`       |
-| Theme colors & fonts  | `styleConfig.ts`             |
-| Component-specific UI | `styles/<ComponentName>/`    |
-| Text & translations   | `locales/<lang>/<lang>.json` |
+| What you want to change | Where to look                 |
+| ----------------------- | ----------------------------- |
+| Enable/disable features | `CometChatSettings.ts`        |
+| Theme colors & fonts    | `styleConfig.ts`              |
+| Component-specific CSS  | `styles/<ComponentName>/`     |
+| Text & translations     | `locales/<lang>/<lang>.json`  |
+| Component behavior      | `components/<ComponentName>/` |
 
 <Note>
   Prefer using settings and CSS overrides. For extensive changes, create wrapper
