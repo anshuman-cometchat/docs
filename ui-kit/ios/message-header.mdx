@@ -1,10 +1,12 @@
 ---
 title: "Message Header"
+sidebarTitle: "Message Header"
+description: "Display user or group details with typing indicators and navigation controls in CometChat UI Kit for iOS"
 ---
 
 ## Overview
 
-`MessageHeader` is a [Component](/ui-kit/ios/components-overview#components) that showcases the [User](/sdk/ios/users-overview) or [Group](/sdk/ios/groups-overview) details in the toolbar. Furthermore, it also presents a typing indicator and a back navigation button for ease of use.
+`MessageHeader` is a [Component](/ui-kit/ios/components-overview#components) that showcases the [User](/sdk/ios/users-overview) or [Group](/sdk/ios/groups-overview) details in the toolbar. It also presents a typing indicator and a back navigation button for ease of use.
 
 <Frame>
   <img src="/images/cdbdc9b3-message-header-cd5bd3b233f9e340571a62cc0e32f3f5.png" />
@@ -12,21 +14,25 @@ title: "Message Header"
 
 The `MessageHeader` is comprised of the following components:
 
-| Components                                       | Description                                                                                                                                    |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| [ListItem Component](/ui-kit/ios/list-item) | This component’s view consists of avatar, status indicator , title, and subtitle. The fields are then mapped with the SDK’s user, group class. |
-| Back Button                                      | BackButton that allows users to navigate back from the current activity or screen to the previous one                                          |
+| Components | Description |
+|------------|-------------|
+| ListItem | This component's view consists of avatar, status indicator, title, and subtitle. The fields are mapped with the SDK's [User](/sdk/ios/users-overview) and [Group](/sdk/ios/groups-overview) class. |
+| Back Button | Allows users to navigate back from the current activity or screen to the previous one |
+
+---
 
 ## Usage
 
 ### Integration
 
-You can add `MessageHeader` component directly by setting the user.
+You can add the `MessageHeader` component directly by setting the user:
 
-```ruby Swift
-// syntax for set(user: User)
-messageHeader.set(user: user)	 // The object which is going to be rendered in the data item
+```swift
+// Set the user for the message header
+messageHeader.set(user: user)
 ```
+
+---
 
 ### Actions
 
@@ -34,53 +40,53 @@ messageHeader.set(user: user)	 // The object which is going to be rendered in th
 
 The `MessageHeader` component does not have any exposed actions.
 
-##### 1. set(onBack:)
+#### 1. set(onBack:)
 
-This `set(onBack:)` method becomes valuable when a user needs to override the action triggered upon pressing the back button in CometChatMessageHeader.
+The `set(onBack:)` method becomes valuable when you need to override the action triggered upon pressing the back button in CometChatMessageHeader.
 
 <Tabs>
 <Tab title="Swift">
 ```swift
 cometChatMessageHeader.set(onBack: {
-    // Override on back
+    // Handle back button action
 })
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
-##### 2. set(onError:)
+#### 2. set(onError:)
 
-This method proves helpful when a user needs to customize the action taken upon encountering an error in CometChatMessageHeader.
+This method proves helpful when you need to customize the action taken upon encountering an error in CometChatMessageHeader.
 
 <Tabs>
 <Tab title="Swift">
 ```swift
 cometChatMessageHeader.set(onError: { error in
-    // Override on error
+    // Handle error
 })
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 ### Filters
 
-**Filters** allow you to customize the data displayed in a list within a `Component`. You can filter the list based on your specific criteria, allowing for a more customized. Filters can be applied using `RequestBuilders` of Chat SDK.
+Filters allow you to customize the data displayed in a list within a Component. You can filter the list based on your specific criteria, allowing for more customization. Filters can be applied using `RequestBuilders` of the Chat SDK.
 
 The `MessageHeader` component does not have any exposed filters.
 
+---
+
 ### Events
 
-[Events](/ui-kit/ios/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+[Events](/ui-kit/ios/components-overview#events) are emitted by a Component. By using events you can extend existing functionality. Being global events, they can be applied in multiple locations and are capable of being added or removed.
 
 The `MessageHeader` component does not produce any events.
+
+---
 
 ## Customization
 
@@ -88,9 +94,9 @@ To fit your app's design requirements, you can customize the appearance of the c
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+Using Style you can customize the look and feel of the component in your app. These parameters typically control elements such as the color, size, shape, and fonts used within the component.
 
-##### 1. MessageHeader Style
+#### 1. MessageHeader Style
 
 To customize the appearance, you can assign a `MessageHeaderStyle` object to the `MessageHeader` component.
 
@@ -99,18 +105,18 @@ To customize the appearance, you can assign a `MessageHeaderStyle` object to the
 <Tabs>
 <Tab title="Swift">
 ```swift
+// Create custom avatar style
 let customAvatarStyle = AvatarStyle()
 customAvatarStyle.backgroundColor = UIColor(hex: "#FBAA75")
 customAvatarStyle.textFont = UIFont(name: "Times-New-Roman", size: 18)
-        
+
+// Apply global message header styling
 CometChatMessageHeader.style.titleTextColor = UIColor(hex: "#F76808")
 CometChatMessageHeader.style.titleTextFont = UIFont(name: "Times-New-Roman", size: 16)
 CometChatMessageHeader.style.subtitleTextFont = UIFont(name: "Times-New-Roman", size: 12)
 CometChatMessageHeader.style.avatarStyle = customAvatarStyle
 ```
-
 </Tab>
-
 </Tabs>
 
 **Instance level styling**
@@ -118,71 +124,73 @@ CometChatMessageHeader.style.avatarStyle = customAvatarStyle
 <Tabs>
 <Tab title="Swift">
 ```swift
+// Create custom avatar style
 let customAvatarStyle = AvatarStyle()
 customAvatarStyle.backgroundColor = UIColor(hex: "#FBAA75")
 customAvatarStyle.textFont = UIFont(name: "Times-New-Roman", size: 18)
-        
+
+// Create custom message header style
 let messageHeaderStyle = MessageHeaderStyle()
 messageHeaderStyle.titleTextColor = UIColor(hex: "#F76808")
 messageHeaderStyle.titleTextFont = UIFont(name: "Times-New-Roman", size: 16)
 messageHeaderStyle.subtitleTextFont = UIFont(name: "Times-New-Roman", size: 12)
-        
+
+// Apply styles to instance
 let messageHeader = CometChatMessageHeader()
 messageHeader.style = messageHeaderStyle
 messageHeader.avatarStyle = customAvatarStyle
 ```
-
 </Tab>
-
 </Tabs>
 
 <Frame>
   <img src="/images/54a6e640-message-header-style-d4203b4eece8507a4e5750d88e7fa913.png" />
 </Frame>
 
+
 The properties exposed by `MessageHeaderStyle` are as follows:
 
-| **Property**                            | **Description**                                                                 | **Code**                                                                                  |
-| --------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| **Title Text Color**                    | Used to set the text color of the header title.                                 | `CometChatMessageHeader.style.titleTextColor = UIColor.black`                             |
-| **Title Text Font**                     | Used to set the font style of the header title.                                 | `CometChatMessageHeader.style.titleTextFont = UIFont.boldSystemFont(ofSize: 18)`          |
-| **Subtitle Text Color**                 | Used to set the text color of the subtitle in the header.                       | `CometChatMessageHeader.style.subtitleTextColor = UIColor.gray`                           |
-| **Subtitle Text Font**                  | Used to set the font style of the subtitle in the header.                       | `CometChatMessageHeader.style.subtitleTextFont = UIFont.systemFont(ofSize: 14)`           |
-| **Back Button Image Tint Color**        | Used to set the tint color of the back button image in the header.              | `CometChatMessageHeader.style.backButtonImageTintColor = UIColor.blue`                    |
-| **Private Group Badge Tint Color**      | Used to set the tint color of the private group badge in the header.            | `CometChatMessageHeader.style.privateGroupBadgeImageTintColor = UIColor.green`            |
-| **Password-Protected Badge Tint Color** | Used to set the tint color of the password-protected group badge in the header. | `CometChatMessageHeader.style.passwordProtectedGroupBadgeImageTintColor = UIColor.orange` |
-| **Private Group Background Color**      | Used to set the background color of the private group badge.                    | `CometChatMessageHeader.style.privateGroupImageBackgroundColor = UIColor.lightGray`       |
-| **Password-Protected Background Color** | Used to set the background color of the password-protected group badge.         | `CometChatMessageHeader.style.passwordGroupImageBackgroundColor = UIColor.red`            |
-| **Group Image Background Color**        | Used to set the background color for group icons in the header.                 | `CometChatMessageHeader.style.groupImageBackgroundColor = UIColor.clear`                  |
-| **Avatar Style**                        | Used to customize the appearance of the avatar in the header.                   | `CometChatMessageHeader.style.avatarStyle = customAvatarStyle`                            |
-| **Background Color**                    | Used to set the background color of the header.                                 | `CometChatMessageHeader.style.backgroundColor = UIColor.white`                            |
-| **Corner Radius**                       | Used to set the corner radius of the header.                                    | `CometChatMessageHeader.style.cornerRadius = CometChatCornerStyle(cornerRadius: 8)`       |
-| **Border Width**                        | Used to set the border width of the header.                                     | `CometChatMessageHeader.style.borderWidth = 2`                                            |
-| **Border Color**                        | Used to set the border color of the header.                                     | `CometChatMessageHeader.style.borderColor = UIColor.gray`                                 |
-| **Back Button Icon**                    | Used to set a custom icon for the back button.                                  | `CometChatMessageHeader.style.backButtonIcon = UIImage(named: "customBackIcon")`          |
-| **Private Group Icon**                  | Used to set a custom icon for private groups.                                   | `CometChatMessageHeader.style.privateGroupIcon = UIImage(named: "privateIcon")`           |
-| **Protected Group Icon**                | Used to set a custom icon for password-protected groups.                        | `CometChatMessageHeader.style.protectedGroupIcon = UIImage(named: "protectedIcon")`       |
-| **Background Image**                    | Used to set a background image for the header.                                  | `CometChatMessageHeader.style.backgroundImage = UIImage(named: "headerBackground")`       |
-| **New Chat Icon**                       | Sets a custom icon for the new chat button for AI agent.                                     | `CometChatAIAssistantChatHistory.newChatIcon = UIImage(named: "iconName")` |
-| **Chat History Icon**                   | Sets a custom icon for the chat history button for AI agent.                                 | `CometChatAIAssistantChatHistory.chatHistoryIcon = UIImage(named: "iconName")` |
+| Property | Description | Code |
+|----------|-------------|------|
+| **Title Text Color** | Sets the text color of the header title | `CometChatMessageHeader.style.titleTextColor = UIColor.black` |
+| **Title Text Font** | Sets the font style of the header title | `CometChatMessageHeader.style.titleTextFont = UIFont.boldSystemFont(ofSize: 18)` |
+| **Subtitle Text Color** | Sets the text color of the subtitle in the header | `CometChatMessageHeader.style.subtitleTextColor = UIColor.gray` |
+| **Subtitle Text Font** | Sets the font style of the subtitle in the header | `CometChatMessageHeader.style.subtitleTextFont = UIFont.systemFont(ofSize: 14)` |
+| **Back Button Image Tint Color** | Sets the tint color of the back button image | `CometChatMessageHeader.style.backButtonImageTintColor = UIColor.blue` |
+| **Private Group Badge Tint Color** | Sets the tint color of the private group badge | `CometChatMessageHeader.style.privateGroupBadgeImageTintColor = UIColor.green` |
+| **Password-Protected Badge Tint Color** | Sets the tint color of the password-protected group badge | `CometChatMessageHeader.style.passwordProtectedGroupBadgeImageTintColor = UIColor.orange` |
+| **Private Group Background Color** | Sets the background color of the private group badge | `CometChatMessageHeader.style.privateGroupImageBackgroundColor = UIColor.lightGray` |
+| **Password-Protected Background Color** | Sets the background color of the password-protected group badge | `CometChatMessageHeader.style.passwordGroupImageBackgroundColor = UIColor.red` |
+| **Group Image Background Color** | Sets the background color for group icons in the header | `CometChatMessageHeader.style.groupImageBackgroundColor = UIColor.clear` |
+| **Avatar Style** | Customizes the appearance of the avatar in the header | `CometChatMessageHeader.style.avatarStyle = customAvatarStyle` |
+| **Background Color** | Sets the background color of the header | `CometChatMessageHeader.style.backgroundColor = UIColor.white` |
+| **Corner Radius** | Sets the corner radius of the header | `CometChatMessageHeader.style.cornerRadius = CometChatCornerStyle(cornerRadius: 8)` |
+| **Border Width** | Sets the border width of the header | `CometChatMessageHeader.style.borderWidth = 2` |
+| **Border Color** | Sets the border color of the header | `CometChatMessageHeader.style.borderColor = UIColor.gray` |
+| **Back Button Icon** | Sets a custom icon for the back button | `CometChatMessageHeader.style.backButtonIcon = UIImage(named: "customBackIcon")` |
+| **Private Group Icon** | Sets a custom icon for private groups | `CometChatMessageHeader.style.privateGroupIcon = UIImage(named: "privateIcon")` |
+| **Protected Group Icon** | Sets a custom icon for password-protected groups | `CometChatMessageHeader.style.protectedGroupIcon = UIImage(named: "protectedIcon")` |
+| **Background Image** | Sets a background image for the header | `CometChatMessageHeader.style.backgroundImage = UIImage(named: "headerBackground")` |
+| **New Chat Icon** | Sets a custom icon for the new chat button (AI agent) | `CometChatAIAssistantChatHistory.newChatIcon = UIImage(named: "iconName")` |
+| **Chat History Icon** | Sets a custom icon for the chat history button (AI agent) | `CometChatAIAssistantChatHistory.chatHistoryIcon = UIImage(named: "iconName")` |
 
-##### 2. Avatar Style
+#### 2. Avatar Style
 
-If you want to apply customized styles to the `Avatar` component within the `MessageHeader` Component, you can use the following code snippet. For more information you can refer [Avatar Styles](/ui-kit/ios/component-styling#avatar#methods).
+If you want to apply customized styles to the `Avatar` component within the `MessageHeader` Component, you can use the following code snippet. For more information, refer to [Avatar Styles](/ui-kit/ios/component-styling#avatar#methods).
 
 **Global level styling**
 
 <Tabs>
 <Tab title="Swift">
 ```swift
+// Create custom avatar style with rounded corners
 let customAvatarStyle = AvatarStyle()
 customAvatarStyle.cornerRadius = CometChatCornerStyle(cornerRadius: 8)
-        
+
+// Apply globally
 CometChatMessageHeader.style.avatarStyle = customAvatarStyle
 ```
-
 </Tab>
-
 </Tabs>
 
 **Instance level styling**
@@ -190,79 +198,80 @@ CometChatMessageHeader.style.avatarStyle = customAvatarStyle
 <Tabs>
 <Tab title="Swift">
 ```swift
+// Create custom avatar style
 let customAvatarStyle = AvatarStyle()
 customAvatarStyle.cornerRadius = CometChatCornerStyle(cornerRadius: 8)
-                
+
+// Apply to instance
 let messageHeader = CometChatMessageHeader()
 messageHeader.avatarStyle = customAvatarStyle
 ```
-
 </Tab>
-
 </Tabs>
 
 <Frame>
   <img src="/images/a2f4d179-header-avatar-style-b31d058753670e28959f222088f64109.png" />
 </Frame>
 
-***
+---
 
 ### Functionality
 
 These are a set of small functional customizations that allow you to fine-tune the overall experience of the component. With these, you can change text, set custom icons, and toggle the visibility of UI elements.
 
-Below is a list of customizations along with corresponding code snippets
+Below is a list of customizations along with corresponding code snippets:
 
-| Method              | Description                                                            | Code                         |
-| ------------------- | ---------------------------------------------------------------------- | ---------------------------- |
-| set(user:User)      | Sets message header for CometChat user.                                | `.set(user:User)`            |
-| set(group:Group)    | Sets message header for CometChat group.                               | `.set(group:Group)`          |
-| hideBackButton      | Hides the back button of message header.                               | `hideBackButton = true`      |
-| hideUserStatus      | Hides or shows the user status of user(online/offline/last active at). | `hideUserStatus = true`      |
-| hideVideoCallButton | Hides the video call button.                                           | `hideVideoCallButton = true` |
-| hideVoiceCallButton | Hides the voice call button.                                           | `hideVoiceCallButton = true` |
-| hideChatHistoryButton            | Hides the chat history button in the component.                                 | `CometChatAIAssistantChatHistory.hideChatHistoryButton = true`           |
-| hideNewChatButton                | Hides the new chat button in the component for AI agent.                                     | `CometChatAIAssistantChatHistory.hideNewChatButton = true`               |
-| onNewChatButtonClicked  | Used to handle actions when the “New Chat” button is clicked.                | `CometChatAIAssistantChatHistory.set(onNewChatButtonClicked: { user in })`                    |
-| onMessageClicked          | Used to handle actions when a message is clicked.                            | `CometChatAIAssistantChatHistory.set(onMessageClicked: { message in })`                       |
+| Method | Description | Code |
+|--------|-------------|------|
+| set(user:User) | Sets message header for CometChat user | `.set(user:User)` |
+| set(group:Group) | Sets message header for CometChat group | `.set(group:Group)` |
+| hideBackButton | Hides the back button of message header | `hideBackButton = true` |
+| hideUserStatus | Hides or shows the user status (online/offline/last active at) | `hideUserStatus = true` |
+| hideVideoCallButton | Hides the video call button | `hideVideoCallButton = true` |
+| hideVoiceCallButton | Hides the voice call button | `hideVoiceCallButton = true` |
+| hideChatHistoryButton | Hides the chat history button in the component | `CometChatAIAssistantChatHistory.hideChatHistoryButton = true` |
+| hideNewChatButton | Hides the new chat button in the component (AI agent) | `CometChatAIAssistantChatHistory.hideNewChatButton = true` |
+| onNewChatButtonClicked | Handles actions when the "New Chat" button is clicked | `CometChatAIAssistantChatHistory.set(onNewChatButtonClicked: { user in })` |
+| onMessageClicked | Handles actions when a message is clicked | `CometChatAIAssistantChatHistory.set(onMessageClicked: { message in })` |
 
-***
+---
 
 ### Advanced
 
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
+For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your own views, layouts, and UI elements and then incorporate those into the component.
 
 #### Date Time Formatter
 
-The **CometChatMessageHeader** component supports full customization of how date and time are displayed using the [CometChatDateTimeFormatter](/ui-kit/ios/localize#datetimeformatter).
+The `CometChatMessageHeader` component supports full customization of how date and time are displayed using the [CometChatDateTimeFormatter](/ui-kit/ios/localize#datetimeformatter).
 
-This enables developers to localize, format, or personalize the date and time strings shown next to the message header such as “Today”, “Yesterday”, “12:45 PM”, etc.
+This enables developers to localize, format, or personalize the date and time strings shown next to the message header such as "Today", "Yesterday", "12:45 PM", etc.
 
-1. Component-Level (Global)
+**1. Component-Level (Global)**
 
 <Tabs>
 <Tab title="Swift">
 ```swift
+// Customize time format
 CometChatMessageHeader.dateTimeFormatter.time = { timestamp in
     return "Last seen at " + DateFormatter.localizedString(from: Date(timeIntervalSince1970: TimeInterval(timestamp)), dateStyle: .none, timeStyle: .short)
 }
 
+// Customize today format
 CometChatMessageHeader.dateTimeFormatter.today = { timestamp in
     return "Last seen: Today • \(formattedTime(from: timestamp))"
 }
 
-CometChatMessageHeader.dateTimeFormatter.otherDay = { timestamp in // This will display older dates as "24 Apr 2025" instead of the default relative format.
+// Customize older dates format
+CometChatMessageHeader.dateTimeFormatter.otherDay = { timestamp in
     let formatter = DateFormatter()
     formatter.dateFormat = "dd MMM yyyy"
     return formatter.string(from: Date(timeIntervalSince1970: TimeInterval(timestamp)))
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-2. Instance-Level (Local)
+**2. Instance-Level (Local)**
 
 <Tabs>
 <Tab title="Swift">
@@ -272,28 +281,26 @@ messageHeader.dateTimeFormatter.yesterday = { timestamp in
     return "Yesterday at " + formattedTime(from: timestamp)
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-##### Available closures
+##### Available Closures
 
-| Property  | Description                                                         | Code                                                           |
-| --------- | ------------------------------------------------------------------- | -------------------------------------------------------------- |
-| time      | Called to format a timestamp as a standard time (e.g., "12:30 PM"). | `CometChatMessageHeader.dateTimeFormatter.time = { ... }`      |
-| today     | Called when rendering messages sent today.                          | `CometChatMessageHeader.dateTimeFormatter.today = { ... }`     |
-| yesterday | Called for yesterday's messages.                                    | `CometChatMessageHeader.dateTimeFormatter.yesterday = { ... }` |
-| lastweek  | Called for messages within the last week.                           | `CometChatMessageHeader.dateTimeFormatter.lastweek = { ... }`  |
-| otherDay  | Called for dates older than last week.                              | `CometChatMessageHeader.dateTimeFormatter.otherDay = { ... }`  |
-| minute    | Called when referring to "a minute ago".                            | `CometChatMessageHeader.dateTimeFormatter.minute = { ... }`    |
-| minutes   | Called for "x minutes ago".                                         | `CometChatMessageHeader.dateTimeFormatter.minutes = { ... }`   |
-| hour      | Called for "an hour ago".                                           | `CometChatMessageHeader.dateTimeFormatter.hour = { ... }`      |
-| hours     | Called for "x hours ago".                                           | `CometChatMessageHeader.dateTimeFormatter.hours = { ... }`     |
+| Property | Description | Code |
+|----------|-------------|------|
+| time | Called to format a timestamp as a standard time (e.g., "12:30 PM") | `CometChatMessageHeader.dateTimeFormatter.time = { ... }` |
+| today | Called when rendering messages sent today | `CometChatMessageHeader.dateTimeFormatter.today = { ... }` |
+| yesterday | Called for yesterday's messages | `CometChatMessageHeader.dateTimeFormatter.yesterday = { ... }` |
+| lastweek | Called for messages within the last week | `CometChatMessageHeader.dateTimeFormatter.lastweek = { ... }` |
+| otherDay | Called for dates older than last week | `CometChatMessageHeader.dateTimeFormatter.otherDay = { ... }` |
+| minute | Called when referring to "a minute ago" | `CometChatMessageHeader.dateTimeFormatter.minute = { ... }` |
+| minutes | Called for "x minutes ago" | `CometChatMessageHeader.dateTimeFormatter.minutes = { ... }` |
+| hour | Called for "an hour ago" | `CometChatMessageHeader.dateTimeFormatter.hour = { ... }` |
+| hours | Called for "x hours ago" | `CometChatMessageHeader.dateTimeFormatter.hours = { ... }` |
 
 Each closure receives a timestamp (Int, representing UNIX time) and must return a String representing the formatted time.
 
-***
+---
 
 #### SetListItemView
 
@@ -308,20 +315,20 @@ cometChatMessageHeader.set(listItemView: { user, group in
     return view
 })
 ```
-
 </Tab>
-
 </Tabs>
 
-Demonstration
+**Demonstration**
 
 <Frame>
   <img src="/images/0a9c996b-headerLisItem-84b7b1afda8328d5386b24f865247023.png" />
 </Frame>
 
-You can create a `CustomListItemView` as a custom `UIView`. Which we will inflate in `setListItemView()`
+You can create a `CustomListItemView` as a custom `UIView` which will be inflated in `setListItemView()`:
 
-```swift swift
+<Tabs>
+<Tab title="Swift">
+```swift
 import UIKit
 
 class CustomListItemView: UIView {
@@ -440,12 +447,15 @@ class CustomListItemView: UIView {
     }
 }
 ```
+</Tab>
+</Tabs>
 
-***
+
+---
 
 #### SetLeadingView
 
-You can modify the leading view of a group cell using .set(leadingView:).
+You can modify the leading view of a group cell using `.set(leadingView:)`.
 
 <Tabs>
 <Tab title="Swift">
@@ -453,20 +463,18 @@ You can modify the leading view of a group cell using .set(leadingView:).
 cometChatMessageHeader.set(leadingView: { user, group in  
     let view = CustomLeadingView()
     return view  
-})  
+})
 ```
-
 </Tab>
-
 </Tabs>
 
-Demonstration
+**Demonstration**
 
 <Frame>
   <img src="/images/e6fad16f-headerLeadng-6f55e63eb8a291dfe2a06771801f2337.png" />
 </Frame>
 
-You can create a `CustomLeadingView` as a custom `UIView`. Which we will inflate in `setLeadingView()`
+You can create a `CustomLeadingView` as a custom `UIView` which will be inflated in `setLeadingView()`:
 
 <Tabs>
 <Tab title="Swift">
@@ -480,7 +488,7 @@ class CustomLeadingView: UIView {
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .lightGray // Placeholder color
+        imageView.backgroundColor = .lightGray
         imageView.image = UIImage(systemName: "person.fill")
         return imageView
     }()
@@ -530,16 +538,14 @@ class CustomLeadingView: UIView {
     }
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 #### SetTitleView
 
-You can customize the title view of a group cell using .set(titleView:).
+You can customize the title view of a group cell using `.set(titleView:)`.
 
 <Tabs>
 <Tab title="Swift">
@@ -547,25 +553,23 @@ You can customize the title view of a group cell using .set(titleView:).
 cometChatMessageHeader.set(titleView: { user, group in  
     let view = CustomTitleView()
     return view
-})  
+})
 ```
-
 </Tab>
-
 </Tabs>
 
-Demonstration
+**Demonstration**
 
 <Frame>
   <img src="/images/77d20b8c-headerTitle-20200a0eddfa0c9f2337abb9511a9671.png" />
 </Frame>
 
-You can create a `CustomTitleView` as a custom `UIView`. Which we will inflate in `setTitleView()`
+You can create a `CustomTitleView` as a custom `UIView` which will be inflated in `setTitleView()`:
 
 <Tabs>
 <Tab title="Swift">
 ```swift
- class CustomTitleView: UIView {
+class CustomTitleView: UIView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -632,16 +636,14 @@ You can create a `CustomTitleView` as a custom `UIView`. Which we will inflate i
     }
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 #### SetTrailView
 
-You can modify the trailing view of a message header using .set(trailView:).
+You can modify the trailing view of a message header using `.set(trailView:)`.
 
 <Tabs>
 <Tab title="Swift">
@@ -649,20 +651,18 @@ You can modify the trailing view of a message header using .set(trailView:).
 cometChatMessageHeader.set(trailView: { user, group in  
     let view = CustomTrailView() 
     return view  
-})  
+})
 ```
-
 </Tab>
-
 </Tabs>
 
-Demonstration
+**Demonstration**
 
 <Frame>
   <img src="/images/7ae625d7-headerTrail-b0c07329c262e97434036abff2c0132d.png" />
 </Frame>
 
-You can create a `CustomTrailView` as a custom `UIView`. Which we will inflate in `setTrailView()`
+You can create a `CustomTrailView` as a custom `UIView` which will be inflated in `setTrailView()`:
 
 <Tabs>
 <Tab title="Swift">
@@ -705,7 +705,6 @@ class CustomTrailView: UIView {
     }
 
     private func setupView() {
-
         let buttonsStack = UIStackView(arrangedSubviews: [videoCallButton, callButton])
         buttonsStack.axis = .horizontal
         buttonsStack.spacing = 16
@@ -725,18 +724,15 @@ class CustomTrailView: UIView {
         ])
     }
 }
- 
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 #### SetSubTitleView
 
-You can customize the subtitle view for each group item to meet your requirements
+You can customize the subtitle view for each group item to meet your requirements.
 
 <Tabs>
 <Tab title="Swift">
@@ -746,20 +742,16 @@ cometChatMessageHeader.set(subtitleView: { user, group in
    return view
 })
 ```
-
 </Tab>
-
 </Tabs>
 
-**Example**
-
-Demonstration
+**Demonstration**
 
 <Frame>
   <img src="/images/da6d6843-groups_subtitle_view-6e73eb325145dd0670dc66bbf32e41d0.png" />
 </Frame>
 
-You can seamlessly integrate this `CustomSubtitleView` UIView file into the `.set(subtitleView:)` method within CometChatMessageHeader.
+You can seamlessly integrate this `CustomSubtitleView` UIView file into the `.set(subtitleView:)` method within CometChatMessageHeader:
 
 <Tabs>
 <Tab title="Swift">
@@ -781,22 +773,26 @@ class CustomSubtitleView: UILabel {
     }
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 <Note>
-
 To ensure that the `MessageHeader` is properly configured, passing the controller is mandatory.
-
-* Swift
 
 ```swift
 let headerView = CometChatMessageHeader()
 headerView.set(controller: UIViewController) // Passing the controller is required
 ```
-
 </Note>
+
+---
+
+## Next Steps
+
+- [Message List](/ui-kit/ios/message-list) — Display and customize the message list
+- [Message Composer](/ui-kit/ios/message-composer) — Customize the message input component
+- [Conversations](/ui-kit/ios/conversations) — Manage conversation lists
+
+---

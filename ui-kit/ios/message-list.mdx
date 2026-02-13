@@ -1,5 +1,7 @@
 ---
 title: "Message List"
+sidebarTitle: "Message List"
+description: "Display and manage real-time chat messages with various message types using CometChat UI Kit for iOS"
 ---
 
 ## Overview
@@ -12,118 +14,106 @@ title: "Message List"
   <img src="/images/942fc513-message_list-90e4da42a9cbee8143f9caeb4ca12282.png" />
 </Frame>
 
-***
+---
 
 ## Usage
 
 ### Integration
 
-The following code snippet illustrates how you can directly incorporate the MessageList component.
+The following code snippet illustrates how you can directly incorporate the MessageList component:
 
 <Tabs>
 <Tab title="Swift">
 ```swift
-// syntax for set(user: User)
+// Set user for the message list
 messageList.set(user: user)
 
-// syntax for set(user: User, parentMessage: BaseMessage? = nil)
+// Set user with parent message for threaded conversations
 messageList.set(user: user, parentMessage: textMessage)
 ```
-
 </Tab>
-
 </Tabs>
 
 <Warning>
-
 To retrieve messages for a specific entity, you must associate it with either a `User` or `Group` object.
-
 </Warning>
 
-***
+---
 
 ### Actions
 
 [Actions](/ui-kit/ios/components-overview#actions) dictate how a component functions. They are divided into two types: Predefined and User-defined. You can override either type, allowing you to tailor the behavior of the component to fit your specific needs.
 
-##### 1. onThreadRepliesClick
+#### 1. onThreadRepliesClick
 
-`onThreadRepliesClick` is triggered when you click on the thread indicator of message bubble. The `onThreadRepliesClick` action doesn't have a predefined behavior. You can override this action using the following code snippet.
+`onThreadRepliesClick` is triggered when you click on the thread indicator of a message bubble. The `onThreadRepliesClick` action doesn't have a predefined behavior. You can override this action using the following code snippet:
 
 <Tabs>
 <Tab title="Swift">
 ```swift
- let messageListView = CometChatMessageList()
- messageListView.set(onThreadRepliesClick: { message, template in
-    // Your action onclick       
+let messageListView = CometChatMessageList()
+messageListView.set(onThreadRepliesClick: { message, template in
+    // Handle thread replies click
 })
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
-##### 2. onReactionClick
+#### 2. onReactionClick
 
 `onReactionClick` is triggered when you click on a reaction on a message bubble.
 
 <Tabs>
 <Tab title="Swift">
 ```swift
- let messageListView = CometChatMessageList()
- messageListView.set(onReactionClick: { reactionCount, baseMessage in
-    // Your action onclick       
+let messageListView = CometChatMessageList()
+messageListView.set(onReactionClick: { reactionCount, baseMessage in
+    // Handle reaction click
 })
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
-##### 3. onReactionListItemClick
+#### 3. onReactionListItemClick
 
 `onReactionListItemClick` is triggered when you click on the list item of CometChatReactionList on a message bubble.
 
 <Tabs>
 <Tab title="Swift">
 ```swift
- let messageListView = CometChatMessageList()
- messageListView.set(onReactionListItemClick: { messageReaction, baseMessage in
-    // Your action onclick       
+let messageListView = CometChatMessageList()
+messageListView.set(onReactionListItemClick: { messageReaction, baseMessage in
+    // Handle reaction list item click
 })
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
-##### 4. set(onError:)
+#### 4. set(onError:)
 
-This method proves helpful when a user needs to customize the action taken upon encountering an error in CometChatMessageList.
+This method proves helpful when you need to customize the action taken upon encountering an error in CometChatMessageList.
 
 <Tabs>
 <Tab title="Swift">
 ```swift
 cometChatGroupMembers.set(onError: { error in
-    // Override on error
+    // Handle error
 })
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
-##### 5. set(onEmpty:)
+#### 5. set(onEmpty:)
 
-This `set(onEmpty:)` method is triggered when the message list is empty in CometChatMessageList.
+The `set(onEmpty:)` method is triggered when the message list is empty in CometChatMessageList.
 
 <Tabs>
 <Tab title="Swift">
@@ -132,16 +122,14 @@ cometChatMessageList.set(onEmpty: {
     // Handle empty state
 })
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
-##### 6. setOnLoad
+#### 6. setOnLoad
 
-This set(onLoad:) method is triggered when messages are successfully loaded in CometChatMessageList.
+The `set(onLoad:)` method is triggered when messages are successfully loaded in CometChatMessageList.
 
 <Tabs>
 <Tab title="Swift">
@@ -150,62 +138,55 @@ cometChatMessageList.set(onLoad: { messages in
     // Handle loaded messages
 })
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 ### Filters
 
 You can adjust the `MessagesRequestBuilder` in the MessageList Component to customize your message list. Numerous options are available to alter the builder to meet your specific needs. For additional details on `MessagesRequestBuilder`, please visit [MessagesRequestBuilder](/sdk/ios/additional-message-filtering).
 
-In the example below, we are applying a filter to the messages based on a search substring and for a specific user. This means that only messages that contain the search term and are associated with the specified user will be displayed
+In the example below, we are applying a filter to the messages based on a search substring and for a specific user. This means that only messages that contain the search term and are associated with the specified user will be displayed:
 
 <Tabs>
 <Tab title="Swift">
 ```swift
-let messageRequestBuilder =  MessagesRequest.MessageRequestBuilder()
+// Create message request builder with filters
+let messageRequestBuilder = MessagesRequest.MessageRequestBuilder()
     .set(uid: "YOUR_UID")
     .set(types: ["Text"])
     .set(searchKeyword: "sure")
 
+// Apply to CometChatMessages
 let cometChatMessages = CometChatMessages()
 cometChatMessages.set(user: user)
-cometChatMessages.set(messagesRequestBuilder:messageRequestBuilder)
+cometChatMessages.set(messagesRequestBuilder: messageRequestBuilder)
 ```
-
 </Tab>
-
 </Tabs>
 
 <Note>
-
-The following parameters in messageRequestBuilder will always be altered inside the message list
-
+The following parameters in messageRequestBuilder will always be altered inside the message list:
 1. UID
 2. GUID
 3. types
 4. categories
-
 </Note>
 
 <Tip>
-
 Ensure to include the `uid` and `name` of the User in the implementation.
-
 </Tip>
 
-***
+---
 
 ### Events
 
-[Events](/ui-kit/ios/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+[Events](/ui-kit/ios/components-overview#events) are emitted by a Component. By using events you can extend existing functionality. Being global events, they can be applied in multiple locations and are capable of being added or removed.
 
 The MessageList Component does not emit any events of its own.
 
-***
+---
 
 ## Customization
 
@@ -213,11 +194,11 @@ To fit your app's design requirements, you can customize the appearance of the c
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+Using Style you can customize the look and feel of the component in your app. These parameters typically control elements such as the color, size, shape, and fonts used within the component.
 
-##### 1. MessageList Style
+#### 1. MessageList Style
 
-To customize the appearance, you can assign a `MessageListStyle` object to the `MessageList` component
+To customize the appearance, you can assign a `MessageListStyle` object to the `MessageList` component.
 
 **Global level styling**
 
@@ -227,9 +208,7 @@ To customize the appearance, you can assign a `MessageListStyle` object to the `
 CometChatMessageList.style.backgroundColor = UIColor(hex: "#FBAA75")
 CometChatMessageList.messageBubbleStyle.outgoing.backgroundColor = UIColor(hex: "#F76808")
 ```
-
 </Tab>
-
 </Tabs>
 
 **Instance level styling**
@@ -237,137 +216,136 @@ CometChatMessageList.messageBubbleStyle.outgoing.backgroundColor = UIColor(hex: 
 <Tabs>
 <Tab title="Swift">
 ```swift
+// Create custom message list style
 let messageListStyle = MessageListStyle()
 messageListStyle.backgroundColor = UIColor(hex: "#FBAA75")
-        
+
+// Apply to instance
 let messageList = CometChatMessageList()
 messageList.messageBubbleStyle.outgoing.backgroundColor = UIColor(hex: "#F76808")
 messageList.style = messageListStyle
 ```
-
 </Tab>
-
 </Tabs>
 
 <Frame>
   <img src="/images/82d08739-message-list-style-25635b75554376a8c9ed3664cf61e44c.png" />
 </Frame>
 
-List of properties exposed by MessageListStyle
 
-| **Property**                    | **Description**                                                | **Code**                                                                                                     |
-| ------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| **Background Color**            | Background color with dynamic support for light and dark mode. | `CometChatMessageList.style.backgroundColor = UIColor.dynamicColor(lightModeColor: ..., darkModeColor: ...)` |
-| **Border Width**                | Border width for the component.                                | `CometChatMessageList.style.borderWidth = 0`                                                                 |
-| **Border Color**                | Border color for the component.                                | `CometChatMessageList.style.borderColor = .clear`                                                            |
-| **Corner Radius**               | Corner radius for the component.                               | `CometChatMessageList.style.cornerRadius = CometChatCornerStyle?`                                            |
-| **Shimmer Gradient Color 1**    | First color of the shimmer gradient.                           | `CometChatMessageList.style.shimmerGradientColor1 = CometChatTheme.backgroundColor04`                        |
-| **Shimmer Gradient Color 2**    | Second color of the shimmer gradient.                          | `CometChatMessageList.style.shimmerGradientColor2 = CometChatTheme.backgroundColor03`                        |
-| **Empty State Title Color**     | Text color for the title in the empty state.                   | `CometChatMessageList.style.emptyStateTitleColor = CometChatTheme.textColorPrimary`                          |
-| **Empty State Title Font**      | Font for the title in the empty state.                         | `CometChatMessageList.style.emptyStateTitleFont = CometChatTypography.Heading3.bold`                         |
-| **Empty State Subtitle Color**  | Text color for the subtitle in the empty state.                | `CometChatMessageList.style.emptyStateSubtitleColor = CometChatTheme.textColorSecondary`                     |
-| **Empty State Subtitle Font**   | Font for the subtitle in the empty state.                      | `CometChatMessageList.style.emptyStateSubtitleFont = CometChatTypography.Body.regular`                       |
-| **Error State Title Color**     | Text color for the title in the error state.                   | `CometChatMessageList.style.errorStateTitleColor = CometChatTheme.textColorPrimary`                          |
-| **Error State Title Font**      | Font for the title in the error state.                         | `CometChatMessageList.style.errorStateTitleFont = CometChatTypography.Heading3.bold`                         |
-| **Error State Subtitle Color**  | Text color for the subtitle in the error state.                | `CometChatMessageList.style.errorStateSubtitleColor = CometChatTheme.textColorSecondary`                     |
-| **Error State Subtitle Font**   | Font for the subtitle in the error state.                      | `CometChatMessageList.style.errorStateSubtitleFont = CometChatTypography.Body.regular`                       |
-| **Threaded Message Image**      | Icon image for threaded messages.                              | `CometChatMessageList.style.threadedMessageImage = UIImage(systemName: "arrow.turn.down.right")`             |
-| **Error Image**                 | Icon image for error state.                                    | `CometChatMessageList.style.errorImage = UIImage(named: "error-icon")`                                       |
-| **Empty Image**                 | Icon image for empty state.                                    | `CometChatMessageList.style.emptyImage = UIImage(named: "empty-icon")`                                       |
-| **New Message Indicator Image** | Icon image for new message indicator.                          | `CometChatMessageList.style.newMessageIndicatorImage = UIImage?`                                             |
-| **New Message Indicator Text Color**            | Text color for unread messages indicator.                            | `CometChatMessageList.style.newMessageIndicatorTextColor = UIColor?`                                                      |
-| **New Message Indicator Text Font**            | Text font for unread messages indicator.                            | `CometChatMessageList.style.newMessageIndicatorTextFont = UIFont?`                                                      |
-| **New Message Indicator Background Color**            | Background color for unread messages indicator.                            | `CometChatMessageList.style.newMessageIndicatorBackgroundColor = UIColor?`                                                      |
+List of properties exposed by MessageListStyle:
 
+| Property | Description | Code |
+|----------|-------------|------|
+| **Background Color** | Background color with dynamic support for light and dark mode | `CometChatMessageList.style.backgroundColor = UIColor.dynamicColor(lightModeColor: ..., darkModeColor: ...)` |
+| **Border Width** | Border width for the component | `CometChatMessageList.style.borderWidth = 0` |
+| **Border Color** | Border color for the component | `CometChatMessageList.style.borderColor = .clear` |
+| **Corner Radius** | Corner radius for the component | `CometChatMessageList.style.cornerRadius = CometChatCornerStyle?` |
+| **Shimmer Gradient Color 1** | First color of the shimmer gradient | `CometChatMessageList.style.shimmerGradientColor1 = CometChatTheme.backgroundColor04` |
+| **Shimmer Gradient Color 2** | Second color of the shimmer gradient | `CometChatMessageList.style.shimmerGradientColor2 = CometChatTheme.backgroundColor03` |
+| **Empty State Title Color** | Text color for the title in the empty state | `CometChatMessageList.style.emptyStateTitleColor = CometChatTheme.textColorPrimary` |
+| **Empty State Title Font** | Font for the title in the empty state | `CometChatMessageList.style.emptyStateTitleFont = CometChatTypography.Heading3.bold` |
+| **Empty State Subtitle Color** | Text color for the subtitle in the empty state | `CometChatMessageList.style.emptyStateSubtitleColor = CometChatTheme.textColorSecondary` |
+| **Empty State Subtitle Font** | Font for the subtitle in the empty state | `CometChatMessageList.style.emptyStateSubtitleFont = CometChatTypography.Body.regular` |
+| **Error State Title Color** | Text color for the title in the error state | `CometChatMessageList.style.errorStateTitleColor = CometChatTheme.textColorPrimary` |
+| **Error State Title Font** | Font for the title in the error state | `CometChatMessageList.style.errorStateTitleFont = CometChatTypography.Heading3.bold` |
+| **Error State Subtitle Color** | Text color for the subtitle in the error state | `CometChatMessageList.style.errorStateSubtitleColor = CometChatTheme.textColorSecondary` |
+| **Error State Subtitle Font** | Font for the subtitle in the error state | `CometChatMessageList.style.errorStateSubtitleFont = CometChatTypography.Body.regular` |
+| **Threaded Message Image** | Icon image for threaded messages | `CometChatMessageList.style.threadedMessageImage = UIImage(systemName: "arrow.turn.down.right")` |
+| **Error Image** | Icon image for error state | `CometChatMessageList.style.errorImage = UIImage(named: "error-icon")` |
+| **Empty Image** | Icon image for empty state | `CometChatMessageList.style.emptyImage = UIImage(named: "empty-icon")` |
+| **New Message Indicator Image** | Icon image for new message indicator | `CometChatMessageList.style.newMessageIndicatorImage = UIImage?` |
+| **New Message Indicator Text Color** | Text color for unread messages indicator | `CometChatMessageList.style.newMessageIndicatorTextColor = UIColor?` |
+| **New Message Indicator Text Font** | Text font for unread messages indicator | `CometChatMessageList.style.newMessageIndicatorTextFont = UIFont?` |
+| **New Message Indicator Background Color** | Background color for unread messages indicator | `CometChatMessageList.style.newMessageIndicatorBackgroundColor = UIColor?` |
 
-
-***
+---
 
 ### Functionality
 
 These are a set of small functional customizations that allow you to fine-tune the overall experience of the component. With these, you can change text, set custom icons, and toggle the visibility of UI elements.
 
-Below is a list of customizations along with corresponding code snippets
+Below is a list of customizations along with corresponding code snippets:
 
-| Property                        | Description                                                  | Code                                        |
-| ------------------------------- | ------------------------------------------------------------ | ------------------------------------------- |
-| hideAvatar                      | Hides the avatar of the sender.                              | `hideAvatar = true`                         |
-| hideGroupActionMessages         | Hides group action messages (like join/leave notifications). | `hideGroupActionMessages = true`            |
-| hideReplyInThreadOption         | Hides the reply in thread option.                            | `hideReplyInThreadOption = true`            |
-| hideTranslateMessageOption      | Hides the message translation option.                        | `hideTranslateMessageOption = true`         |
-| hideEditMessageOption           | Hides the edit message option.                               | `hideEditMessageOption = true`              |
-| hideDeleteMessageOption         | Hides the delete message option.                             | `hideDeleteMessageOption = true`            |
-| hideReactionOption              | Hides the reaction option on messages.                       | `hideReactionOption = true`                 |
-| hideMessagePrivatelyOption      | Hides the option to message privately.                       | `hideMessagePrivatelyOption = true`         |
-| hideCopyMessageOption           | Hides the option to copy a message.                          | `hideCopyMessageOption = true`              |
-| hideMessageInfoOption           | Hides the message info option.                               | `hideMessageInfoOption = true`              |
-| hideHeaderView                  | Hides the header view of the message list.                   | `hideHeaderView = true`                     |
-| hideFooterView                  | Hides the footer view of the message list.                   | `hideFooterView = true`                     |
-| hideDateSeparator               | Hides the date separator between messages.                   | `hideDateSeparator = true`                  |
-| scrollToBottomOnNewMessages     | Scrolls to the bottom when new messages arrive.              | `scrollToBottomOnNewMessages = true`        |
-| hideReceipts                    | Hides the message read receipts (ticks).                     | `hideReceipts = true`                       |
-| disableSoundForMessages         | Disables the sound when a new message arrives.               | `disableSoundForMessages = true`            |
-| hideEmptyView                   | Hides the empty state view when no messages are available.   | `hideEmptyView = true`                      |
-| hideErrorView                   | Hides the error view when an error occurs.                   | `hideErrorView = true`                      |
-| hideLoadingView                 | Hides the loading view when fetching messages.               | `hideLoadingView = true`                    |
-| hideNewMessageIndicator         | Hides the "new message" indicator.                           | `hideNewMessageIndicator = true`            |
-| scrollToBottom(isAnimated:)     | Scrolls to the bottom of the message list.                   | `scrollToBottom(isAnimated: true)`          |
-| set(messageAlignment:)          | Sets the alignment of messages in the list.                  | `set(messageAlignment: .left)`              |
-| set(smartRepliesKeywords:)      | Sets keywords for smart replies.                             | `set(smartRepliesKeywords: ["Hi", "Bye"])`  |
-| set(smartRepliesDelayDuration:) | Sets the delay duration for smart replies.                   | `set(smartRepliesDelayDuration: 2)`         |
-| set(user:parentMessage:)        | Sets the user and an optional parent message.                | `set(user: user, parentMessage: message)`   |
-| set(group:parentMessage:)       | Sets the group and an optional parent message.               | `set(group: group, parentMessage: message)` |
-| set(messagesRequestBuilder:)    | Sets the message request builder.                            | `set(messagesRequestBuilder: builder)`      |
-| set(reactionsRequestBuilder:)   | Sets the reactions request builder.                          | `set(reactionsRequestBuilder: builder)`     |
-| set(parentMessageId:)           | Sets the parent message ID.                                  | `set(parentMessageId: 12345)`               |
-| hideModerationView        | Hides the moderation view in the AI assistant chat.                  | `hideModerationView = true`              |
-|hideThreadView            | Hides the thread view in the AI assistant chat.                      | `hideThreadView = true`                  |
-| set(suggestedMessages:)          | List of predefined replies shown in the AI assistant.                | `suggestedMessages = ["Hello", "Hi"]`    |
-| hideSuggestedMessages     | Hides the suggested message replies.                                  | `hideSuggestedMessages = true`           |
-| set(emptyChatGreetingView:)    | Custom view displayed when the AI assistant chat is empty.            | `emptyChatGreetingView = { /* custom view */ }` |
-| set(streamingSpeed:)             | Sets the speed of streaming for AI assistant messages.               | `streamingSpeed = 50`                    |
-| goToMessage(withId:)  | Scrolls the message list to a specific message, making it visible to the user based on the provided message ID | `goToMessage(messageId: Int)` |
-| startFromUnreadMessages     | Starts the message list from the first unread message..                                  | `startFromUnreadMessages = true`           |
-| showMarkAsUnreadOption     | Sets the visibility of the “Mark as unread” option in the message actions menu.                                  | `showMarkAsUnreadOption = true`           |
+| Property | Description | Code |
+|----------|-------------|------|
+| hideAvatar | Hides the avatar of the sender | `hideAvatar = true` |
+| hideGroupActionMessages | Hides group action messages (like join/leave notifications) | `hideGroupActionMessages = true` |
+| hideReplyInThreadOption | Hides the reply in thread option | `hideReplyInThreadOption = true` |
+| hideTranslateMessageOption | Hides the message translation option | `hideTranslateMessageOption = true` |
+| hideEditMessageOption | Hides the edit message option | `hideEditMessageOption = true` |
+| hideDeleteMessageOption | Hides the delete message option | `hideDeleteMessageOption = true` |
+| hideReactionOption | Hides the reaction option on messages | `hideReactionOption = true` |
+| hideMessagePrivatelyOption | Hides the option to message privately | `hideMessagePrivatelyOption = true` |
+| hideCopyMessageOption | Hides the option to copy a message | `hideCopyMessageOption = true` |
+| hideMessageInfoOption | Hides the message info option | `hideMessageInfoOption = true` |
+| hideHeaderView | Hides the header view of the message list | `hideHeaderView = true` |
+| hideFooterView | Hides the footer view of the message list | `hideFooterView = true` |
+| hideDateSeparator | Hides the date separator between messages | `hideDateSeparator = true` |
+| scrollToBottomOnNewMessages | Scrolls to the bottom when new messages arrive | `scrollToBottomOnNewMessages = true` |
+| hideReceipts | Hides the message read receipts (ticks) | `hideReceipts = true` |
+| disableSoundForMessages | Disables the sound when a new message arrives | `disableSoundForMessages = true` |
+| hideEmptyView | Hides the empty state view when no messages are available | `hideEmptyView = true` |
+| hideErrorView | Hides the error view when an error occurs | `hideErrorView = true` |
+| hideLoadingView | Hides the loading view when fetching messages | `hideLoadingView = true` |
+| hideNewMessageIndicator | Hides the "new message" indicator | `hideNewMessageIndicator = true` |
+| scrollToBottom(isAnimated:) | Scrolls to the bottom of the message list | `scrollToBottom(isAnimated: true)` |
+| set(messageAlignment:) | Sets the alignment of messages in the list | `set(messageAlignment: .left)` |
+| set(smartRepliesKeywords:) | Sets keywords for smart replies | `set(smartRepliesKeywords: ["Hi", "Bye"])` |
+| set(smartRepliesDelayDuration:) | Sets the delay duration for smart replies | `set(smartRepliesDelayDuration: 2)` |
+| set(user:parentMessage:) | Sets the user and an optional parent message | `set(user: user, parentMessage: message)` |
+| set(group:parentMessage:) | Sets the group and an optional parent message | `set(group: group, parentMessage: message)` |
+| set(messagesRequestBuilder:) | Sets the message request builder | `set(messagesRequestBuilder: builder)` |
+| set(reactionsRequestBuilder:) | Sets the reactions request builder | `set(reactionsRequestBuilder: builder)` |
+| set(parentMessageId:) | Sets the parent message ID | `set(parentMessageId: 12345)` |
+| hideModerationView | Hides the moderation view in the AI assistant chat | `hideModerationView = true` |
+| hideThreadView | Hides the thread view in the AI assistant chat | `hideThreadView = true` |
+| set(suggestedMessages:) | List of predefined replies shown in the AI assistant | `suggestedMessages = ["Hello", "Hi"]` |
+| hideSuggestedMessages | Hides the suggested message replies | `hideSuggestedMessages = true` |
+| set(emptyChatGreetingView:) | Custom view displayed when the AI assistant chat is empty | `emptyChatGreetingView = { /* custom view */ }` |
+| set(streamingSpeed:) | Sets the speed of streaming for AI assistant messages | `streamingSpeed = 50` |
+| goToMessage(withId:) | Scrolls the message list to a specific message based on the provided message ID | `goToMessage(messageId: Int)` |
+| startFromUnreadMessages | Starts the message list from the first unread message | `startFromUnreadMessages = true` |
+| showMarkAsUnreadOption | Sets the visibility of the "Mark as unread" option in the message actions menu | `showMarkAsUnreadOption = true` |
 
+---
 
-***
+### Advanced
 
-### Advance
-
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
+For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your own views, layouts, and UI elements and then incorporate those into the component.
 
 #### Date Time Formatter
 
-The **CometChatMessageList** component supports full customization of how date and time are displayed using the [CometChatDateTimeFormatter](/ui-kit/ios/localize#datetimeformatter).
+The `CometChatMessageList` component supports full customization of how date and time are displayed using the [CometChatDateTimeFormatter](/ui-kit/ios/localize#datetimeformatter).
 
-This enables developers to localize, format, or personalize the date and time strings shown next to each message such as “Today”, “Yesterday”, “12:45 PM”, etc.
+This enables developers to localize, format, or personalize the date and time strings shown next to each message such as "Today", "Yesterday", "12:45 PM", etc.
 
-1. Component-Level (Global)
+**1. Component-Level (Global)**
 
 <Tabs>
 <Tab title="Swift">
 ```swift
+// Customize time format
 CometChatMessageList.dateTimeFormatter.time = { timestamp in
     return "at " + DateFormatter.localizedString(from: Date(timeIntervalSince1970: TimeInterval(timestamp)), dateStyle: .none, timeStyle: .short)
 }
 
+// Customize today format
 CometChatMessageList.dateTimeFormatter.today = { timestamp in
     return "Today • \(formattedTime(from: timestamp))"
 }
 
-CometChatMessageList.dateTimeFormatter.otherDay = { timestamp in // This will display older dates as "24 Apr 2025" instead of the default relative format.
+// Customize older dates format
+CometChatMessageList.dateTimeFormatter.otherDay = { timestamp in
     let formatter = DateFormatter()
     formatter.dateFormat = "dd MMM yyyy"
     return formatter.string(from: Date(timeIntervalSince1970: TimeInterval(timestamp)))
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-2. Instance-Level (Local)
+**2. Instance-Level (Local)**
 
 <Tabs>
 <Tab title="Swift">
@@ -377,32 +355,30 @@ messageList.dateTimeFormatter.yesterday = { timestamp in
     return "Yesterday at " + formattedTime(from: timestamp)
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-##### Available closures
+##### Available Closures
 
-| Property  | Description                                                         | Code                                                         |
-| --------- | ------------------------------------------------------------------- | ------------------------------------------------------------ |
-| time      | Called to format a timestamp as a standard time (e.g., "12:30 PM"). | `CometChatMessageList.dateTimeFormatter.time = { ... }`      |
-| today     | Called when rendering messages sent today.                          | `CometChatMessageList.dateTimeFormatter.today = { ... }`     |
-| yesterday | Called for yesterday's messages.                                    | `CometChatMessageList.dateTimeFormatter.yesterday = { ... }` |
-| lastweek  | Called for messages within the last week.                           | `CometChatMessageList.dateTimeFormatter.lastweek = { ... }`  |
-| otherDay  | Called for dates older than last week.                              | `CometChatMessageList.dateTimeFormatter.otherDay = { ... }`  |
-| minute    | Called when referring to "a minute ago".                            | `CometChatMessageList.dateTimeFormatter.minute = { ... }`    |
-| minutes   | Called for "x minutes ago".                                         | `CometChatMessageList.dateTimeFormatter.minutes = { ... }`   |
-| hour      | Called for "an hour ago".                                           | `CometChatMessageList.dateTimeFormatter.hour = { ... }`      |
-| hours     | Called for "x hours ago".                                           | `CometChatMessageList.dateTimeFormatter.hours = { ... }`     |
+| Property | Description | Code |
+|----------|-------------|------|
+| time | Called to format a timestamp as a standard time (e.g., "12:30 PM") | `CometChatMessageList.dateTimeFormatter.time = { ... }` |
+| today | Called when rendering messages sent today | `CometChatMessageList.dateTimeFormatter.today = { ... }` |
+| yesterday | Called for yesterday's messages | `CometChatMessageList.dateTimeFormatter.yesterday = { ... }` |
+| lastweek | Called for messages within the last week | `CometChatMessageList.dateTimeFormatter.lastweek = { ... }` |
+| otherDay | Called for dates older than last week | `CometChatMessageList.dateTimeFormatter.otherDay = { ... }` |
+| minute | Called when referring to "a minute ago" | `CometChatMessageList.dateTimeFormatter.minute = { ... }` |
+| minutes | Called for "x minutes ago" | `CometChatMessageList.dateTimeFormatter.minutes = { ... }` |
+| hour | Called for "an hour ago" | `CometChatMessageList.dateTimeFormatter.hour = { ... }` |
+| hours | Called for "x hours ago" | `CometChatMessageList.dateTimeFormatter.hours = { ... }` |
 
 Each closure receives a timestamp (Int, representing UNIX time) and must return a String representing the formatted time.
 
-***
+---
 
 #### SetHeaderView
 
-You can set custom headerView to the Message List component using the following method.
+You can set a custom headerView to the Message List component using the following method:
 
 <Tabs>
 <Tab title="Swift">
@@ -410,17 +386,17 @@ You can set custom headerView to the Message List component using the following 
 let messageListView = CometChatMessageList()
 messageListView.set(headerView: CustomHeaderView)
 ```
-
 </Tab>
-
 </Tabs>
 
 <Frame>
   <img src="/images/61aaea76-message-list-header-view-1b13be0814741c6b101398f3776f75e3.png" />
 </Frame>
 
-Following is the code of CustomHeaderView - UIView Class
+Following is the code of CustomHeaderView - UIView Class:
 
+<Tabs>
+<Tab title="Swift">
 ```swift
 import UIKit
 
@@ -447,7 +423,6 @@ class CustomHeaderView: UIViewController, UICollectionViewDelegate, UICollection
         collectionView.tag = 1
         return collectionView
     }()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -522,7 +497,7 @@ class CustomHeaderViewCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        backgroundColor = UIColor(white: 0.95, alpha: 1) // Light purple background
+        backgroundColor = UIColor(white: 0.95, alpha: 1)
         layer.cornerRadius = 18
         clipsToBounds = true
         
@@ -547,14 +522,15 @@ class CustomHeaderViewCell: UICollectionViewCell {
     }
 }
 ```
+</Tab>
+</Tabs>
 
-***
+
+---
 
 #### SetFooterView
 
-You can set custom footerView to the Message List component using the following method.
-
-Example
+You can set a custom footerView to the Message List component using the following method:
 
 <Tabs>
 <Tab title="Swift">
@@ -562,17 +538,17 @@ Example
 let messageListView = CometChatMessageList(frame: .null)
 messageListView.set(footerView: CustomFooterView)
 ```
-
 </Tab>
-
 </Tabs>
 
 <Frame>
   <img src="/images/c14d50be-message-list-footer-view-b406b74bcbfb1320d52ce1abe65cadba.png" />
 </Frame>
 
-Following is the code of CustomFooterView UIView Class
+Following is the code of CustomFooterView UIView Class:
 
+<Tabs>
+<Tab title="Swift">
 ```swift
 import UIKit
 
@@ -599,7 +575,6 @@ class CustomFooterView: UIViewController, UICollectionViewDelegate, UICollection
         collectionView.tag = 1
         return collectionView
     }()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -674,7 +649,7 @@ class CustomFooterViewCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        backgroundColor = UIColor(white: 0.95, alpha: 1) // Light purple background
+        backgroundColor = UIColor(white: 0.95, alpha: 1)
         layer.cornerRadius = 18
         clipsToBounds = true
         
@@ -699,20 +674,21 @@ class CustomFooterViewCell: UICollectionViewCell {
     }
 }
 ```
+</Tab>
+</Tabs>
 
-***
+---
 
 #### SetDateSeparatorPattern
 
 You can modify the date pattern of the message list date separator to your requirement using `setDateSeparatorPattern()`. This method accepts a function with a return type String. Inside the function, you can create your own pattern and return it as a String.
 
-**Example**
-
 <Tabs>
 <Tab title="Swift">
 ```swift
 let messageListView = CometChatMessageList()
-.set(user: user)
+    .set(user: user)
+
 messageListView.set(dateSeparatorPattern: { timestamp in
     guard let timestamp = timestamp else {
         return ""
@@ -723,24 +699,18 @@ messageListView.set(dateSeparatorPattern: { timestamp in
     return formatter.string(from: date)
 })
 ```
-
 </Tab>
-
 </Tabs>
 
 <Note>
-
 Ensure to pass and present `cometChatMessages`. If a navigation controller is already in use, utilize the pushViewController function instead of directly presenting the view controller.
-
 </Note>
 
-***
+---
 
 #### SetDatePattern
 
-You can modify the date pattern to your requirement using .set(datePattern:). This method accepts a function with a return type String. Inside the function, you can create your own pattern and return it as a String.
-
-**Example**
+You can modify the date pattern to your requirement using `.set(datePattern:)`. This method accepts a function with a return type String. Inside the function, you can create your own pattern and return it as a String.
 
 <Tabs>
 <Tab title="Swift">
@@ -748,7 +718,7 @@ You can modify the date pattern to your requirement using .set(datePattern:). Th
 let messageListView = CometChatMessageList()
 messageListView.set(datePattern: { timestamp in
     guard let timestamp = timestamp else {
-             return ""
+        return ""
     }
     let date = Date(timeIntervalSince1970: TimeInterval(timestamp/1000))
     let formatter = DateFormatter()
@@ -756,18 +726,14 @@ messageListView.set(datePattern: { timestamp in
     return formatter.string(from: date)
 })
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 #### SetTimePattern
 
 You can modify the date pattern to your requirement using `.set(timePattern:)`. This method accepts a function with a return type String. Inside the function, you can create your own pattern and return it as a String.
-
-**Example**
 
 <Tabs>
 <Tab title="Swift">
@@ -780,43 +746,42 @@ messageListView.set(timePattern: { timestamp in
     return formatter.string(from: time)
 })
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 #### SetTextFormatters
 
 This functionality dynamically assigns a list of text formatters. If a custom list is provided, it uses that list. Otherwise, it gracefully falls back to the default text formatters retrieved from the data source for seamless integration.
 
-**Example**
+This code customizes a CometChat text formatter to identify and style the word "sure", with handling options for interactions like string search, scrolling, and item clicks. The custom formatter is then applied to CometChat messages:
 
-This code customizes a CometChat text formatter to identify and style the word "sure", with handling options for interactions like string search, scrolling, and item clicks. The custom formatter is then applied to CometChat messages.
-
-```ruby Swift
+<Tabs>
+<Tab title="Swift">
+```swift
 let myCustomTextFormatter = MyCustomTextFormatter(trackingCharacter: "#")
 
-let cometChatMessages  = CometChatMessages()
+let cometChatMessages = CometChatMessages()
     .set(user: user)
     .set(textFormatter: [myCustomTextFormatter])
 ```
+</Tab>
+</Tabs>
 
-Demonstration:
+**Demonstration:**
 
 <Tabs>
 <Tab title="MyCustomTextFormatter">
 ```swift
-
 import Foundation
 import CometChatSDK
 import CometChatUIKitSwift
 
 class MyCustomTextFormatter: CometChatTextFormatter {
-override func getRegex() -> String {
-return "(\\bsure\\b)"
-
+    
+    override func getRegex() -> String {
+        return "(\\bsure\\b)"
     }
 
     override func getTrackingCharacter() -> Character {
@@ -825,33 +790,32 @@ return "(\\bsure\\b)"
 
     override func search(string: String, suggestedItems: ((_: [SuggestionItem]) -> ())? = nil) {
         // This function would call an API or perform a local search
-        // For now, it does nothing
     }
 
     override func onScrollToBottom(suggestionItemList: [SuggestionItem], listItem: ((_: [SuggestionItem]) -> ())?) {
         // This function would call the next page of an API
-        // For now, it does nothing
     }
 
     override func onItemClick(suggestedItem: SuggestionItem, user: User?, group: Group?) {
-        // Do something with the clicked item
+        // Handle clicked item
     }
 
     override func handlePreMessageSend(baseMessage: BaseMessage, suggestionItemList: [SuggestionItem]) {
-        // This function would modify the message before it's sent
-        // For now, it does nothing
+        // Modify the message before it's sent
     }
 
     override func prepareMessageString(
-      baseMessage: BaseMessage,
-      regexString: String,
-      alignment: MessageBubbleAlignment = .left,
-      formattingType: FormattingType
+        baseMessage: BaseMessage,
+        regexString: String,
+        alignment: MessageBubbleAlignment = .left,
+        formattingType: FormattingType
     ) -> NSAttributedString {
         let attrString = NSMutableAttributedString(string: "SURE")
-        if alignment == .left { // Received message
+        if alignment == .left {
+            // Received message styling
             attrString.addAttribute(.foregroundColor, value: UIColor.blue, range: NSRange(location: 0, length: attrString.length))
-        } else { // Sent message
+        } else {
+            // Sent message styling
             attrString.addAttribute(.foregroundColor, value: UIColor.green, range: NSRange(location: 0, length: attrString.length))
         }
         attrString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 18), range: NSRange(location: 0, length: attrString.length))
@@ -859,80 +823,71 @@ return "(\\bsure\\b)"
     }
 
     override func onTextTapped(baseMessage: BaseMessage, tappedText: String, controller: UIViewController?) {
-        // Your Action
+        // Handle text tap action
     }
-
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 #### SetTemplate and AddTemplate
 
 [CometChatMessageTemplate](/ui-kit/ios/message-template) is a pre-defined structure for creating message views that can be used as a starting point or blueprint for creating message views often known as message bubbles. For more information, you can refer to [CometChatMessageTemplate](/ui-kit/ios/message-template).
 
-***
+---
 
 #### SetLoadingView
 
-You can set a custom loading view using .set(loadingView:). This method accepts a UIView to display while data is being fetched.
+You can set a custom loading view using `.set(loadingView:)`. This method accepts a UIView to display while data is being fetched.
 
 <Tabs>
 <Tab title="Swift">
 ```swift
-let loadingIndicator = UIActivityIndicatorView(style: .medium)  
-loadingIndicator.startAnimating()  
-cometChatMessageList.set(loadingView: loadingIndicator)  
+let loadingIndicator = UIActivityIndicatorView(style: .medium)
+loadingIndicator.startAnimating()
+cometChatMessageList.set(loadingView: loadingIndicator)
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 #### SetErrorView
 
-You can customize the error view using .set(errorView:). This method accepts a UIView that appears when an error occurs.
+You can customize the error view using `.set(errorView:)`. This method accepts a UIView that appears when an error occurs.
 
 <Tabs>
 <Tab title="Swift">
 ```swift
-let errorLabel = UILabel()  
-errorLabel.text = "Something went wrong!"  
-errorLabel.textColor = .red  
-cometChatMessageList.set(errorView: errorLabel)  
+let errorLabel = UILabel()
+errorLabel.text = "Something went wrong!"
+errorLabel.textColor = .red
+cometChatMessageList.set(errorView: errorLabel)
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 #### SetEmptyView
 
-You can customize the empty state view using .set(emptyView:). This method accepts a UIView that appears when no conversations are available.
+You can customize the empty state view using `.set(emptyView:)`. This method accepts a UIView that appears when no conversations are available.
 
 <Tabs>
 <Tab title="Swift">
 ```swift
-let emptyLabel = UILabel()  
-emptyLabel.text = "No conversations found"  
-emptyLabel.textColor = .gray  
-emptyLabel.textAlignment = .center  
-cometChatMessageList.set(emptyView: emptyLabel)  
+let emptyLabel = UILabel()
+emptyLabel.text = "No conversations found"
+emptyLabel.textColor = .gray
+emptyLabel.textAlignment = .center
+cometChatMessageList.set(emptyView: emptyLabel)
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 #### SetNewMessageIndicatorView
 
@@ -941,37 +896,39 @@ Set a custom view for the unread message indicator.
 <Tabs>
 <Tab title="Swift">
 ```swift
-let newMessageIndicatorView = NewUnreadMessageIndicator()  
-cometChatMessageList.set(newMessageIndicatorView:: newMessageIndicatorView) 
+let newMessageIndicatorView = NewUnreadMessageIndicator()
+cometChatMessageList.set(newMessageIndicatorView: newMessageIndicatorView)
 
 class NewUnreadMessageIndicator: UIView {
-    // Your custom view
+    // Your custom view implementation
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+---
 
 <Note>
-
 To ensure that the `MessageList` is properly configured, passing the controller is mandatory.
-
-* Swift
 
 ```swift
 let messageListView = CometChatMessageList()
 messageListView.set(controller: UIViewController) // Passing the controller is required
 ```
-
 </Note>
 
-***
+---
 
 <Note>
-
 Ensure to pass and present `cometChatMessages`. If a navigation controller is already in use, utilize the pushViewController function instead of directly presenting the view controller.
-
 </Note>
+
+---
+
+## Next Steps
+
+- [Message Composer](/ui-kit/ios/message-composer) — Customize the message input component
+- [Message Header](/ui-kit/ios/message-header) — Display user/group details in the header
+- [Message Template](/ui-kit/ios/message-template) — Create custom message bubble templates
+
+---
