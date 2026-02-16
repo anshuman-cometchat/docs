@@ -1,26 +1,49 @@
 ---
 title: "Color Resources"
+description: "Complete reference of CSS color variables available in CometChat UI Kit for light and dark mode theming."
 ---
+
+{/* TL;DR for Agents and Quick Reference */}
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```css
+/* Primary brand color */
+--cometchat-primary-color: #6852d6;
+
+/* Extended primary palette (light mode) */
+--cometchat-extended-primary-color-50: #f9f8fd;   /* Lightest */
+--cometchat-extended-primary-color-500: #aa9ee8;   /* Mid */
+--cometchat-extended-primary-color-900: #5d49be;   /* Darkest */
+```
+
+- Override these in `.cometchat {}` or `:root {}` to rebrand the entire UI
+- **Theming Overview** → [Theming](/ui-kit/react/theme)
+- **Message Bubble Styling** → [Bubble Customization](/ui-kit/react/theme/message-bubble-styling)
+- **Source on GitHub** → [css-variables.css](https://github.com/cometchat/cometchat-uikit-react/blob/v6/src/styles/css-variables.css#L198-L419)
+</Info>
 
 ## Introduction
 
-The **Chat UI Kit** features a carefully crafted **color palette** designed for a **consistent and visually appealing** user experience. It follows the **Block, Element, Modifier (BEM)** methodology, ensuring **scalable styling** and easy **customization** by overriding the Kit’s CSS variables.
+The Chat UI Kit features a carefully crafted color palette designed for a consistent and visually appealing user experience. It follows the Block, Element, Modifier (BEM) methodology, ensuring scalable styling and easy customization by overriding the Kit's CSS variables.
 
 ***
 
 ## Color Palette
 
-The **primary color** defines key actions, branding, and UI elements, while the **extended primary palette** provides variations for supporting components.
+The primary color defines key actions, branding, and UI elements, while the extended primary palette provides variations for supporting components.
 
-### **Primary Color**
+### Primary Color
 
-#### **Light Mode**
+#### Light Mode
 
 <Frame>
   <img src="/images/329064e0-color_resources_primary_color_light_mode-a4c89cc5a4355cb52f5ce09be70ceea4.png" />
 </Frame>
 
-```python
+<Tabs>
+<Tab title="CSS Variables">
+```css
 --cometchat-primary-color: #6852d6;
 --cometchat-extended-primary-color-50: #f9f8fd;
 --cometchat-extended-primary-color-100: #edeafa;
@@ -33,16 +56,20 @@ The **primary color** defines key actions, branding, and UI elements, while the 
 --cometchat-extended-primary-color-800: #7965db;
 --cometchat-extended-primary-color-900: #5d49be;
 ```
+</Tab>
+</Tabs>
 
 ***
 
-#### **Dark Mode**
+#### Dark Mode
 
 <Frame>
   <img src="/images/1a351be5-color_resources_primary_color_dark_mode-ad041848a2ccb280a23b81196bd70241.png" />
 </Frame>
 
-```python
+<Tabs>
+<Tab title="CSS Variables">
+```css
 --cometchat-primary-color: #6852d6;
 --cometchat-extended-primary-color-50: #15102b;
 --cometchat-extended-primary-color-100: #1d173c;
@@ -55,17 +82,54 @@ The **primary color** defines key actions, branding, and UI elements, while the 
 --cometchat-extended-primary-color-800: #5745b4;
 --cometchat-extended-primary-color-900: #7460d9;
 ```
+</Tab>
+</Tabs>
 
-### **Extended Primary Colors**
+### Extended Primary Colors
 
-#### **Light Mode**
+#### Light Mode
 
 <Frame>
   <img src="/images/e0e0442e-color_resources_extended_primary_color_light_mode-da639cfd64903321d4b586eeae6a7959.png" />
 </Frame>
 
-#### **Dark Mode**
+#### Dark Mode
 
 <Frame>
   <img src="/images/b8b4d7ab-color_resources_extended_primary_color_dark_mode-8a814c0ae318b8784f3f5cdfa681237c.png" />
 </Frame>
+
+***
+
+<AccordionGroup>
+<Accordion title="Best Practices">
+- Always override CSS variables within the `.cometchat` scope to avoid leaking styles to other parts of your app.
+- When customizing for dark mode, use `@media (prefers-color-scheme: dark)` or the `[data-theme="dark"]` attribute to scope your overrides.
+- Use the extended primary palette shades for hover states, backgrounds, and subtle accents rather than creating new colors.
+- Test color contrast ratios to ensure text remains readable against custom background colors.
+</Accordion>
+<Accordion title="Troubleshooting">
+- **Colors not changing?** Make sure you've imported the base stylesheet first: `@import url("@cometchat/chat-uikit-react/css-variables.css");`
+- **Dark mode colors showing in light mode?** Check that your dark mode overrides are properly scoped inside a media query or data-theme selector.
+- **Inconsistent colors across components?** Use the extended primary palette variables instead of hardcoded hex values to maintain consistency.
+</Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Theming Overview" icon="paintbrush" href="/ui-kit/react/theme">
+    Global theming with CSS variables
+  </Card>
+  <Card title="Message Bubble Styling" icon="message" href="/ui-kit/react/theme/message-bubble-styling">
+    Customize message bubble appearance
+  </Card>
+  <Card title="Localize" icon="globe" href="/ui-kit/react/localize">
+    Customize text and date formats
+  </Card>
+  <Card title="Sound Manager" icon="volume-high" href="/ui-kit/react/sound-manager">
+    Customize notification sounds
+  </Card>
+</CardGroup>

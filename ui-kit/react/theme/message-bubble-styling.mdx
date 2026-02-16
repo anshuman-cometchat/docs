@@ -1,14 +1,34 @@
 ---
 title: "Message Bubble Styling"
+description: "Customize the appearance of incoming and outgoing message bubbles in CometChat UI Kit using CSS variables and class overrides."
 ---
 
-## Introduction
+{/* TL;DR for Agents and Quick Reference */}
+<Info>
+**Quick Reference for AI Agents & Developers**
 
-We offer customizable message bubble styling to enhance user experience and match your app’s design. With distinct classes for incoming and outgoing messages, you can easily define colors, borders, and other styles. Each message type, from text to multimedia, has predefined classes for default styling, and developers can further customize using CSS.
+```css
+/* Outgoing bubble color */
+.cometchat .cometchat-message-bubble-outgoing .cometchat-message-bubble__body {
+  --cometchat-primary-color: #f76808;
+}
+
+/* Incoming bubble color */
+.cometchat .cometchat-message-bubble-incoming .cometchat-message-bubble__body {
+  --cometchat-neutral-color-300: #f76808;
+}
+```
+
+- **CSS Variable Classes**: Target `.cometchat-message-bubble-outgoing` or `.cometchat-message-bubble-incoming` with `.cometchat-message-bubble__body`
+- **Message type modifiers**: `.cometchat-message-bubble__text-message`, `.cometchat-message-bubble__image-message`, `.cometchat-message-bubble__video-message`, etc.
+- **Parent theme page** → [Theming Overview](/ui-kit/react/theme)
+</Info>
+
+We offer customizable message bubble styling to enhance user experience and match your app's design. With distinct classes for incoming and outgoing messages, you can easily define colors, borders, and other styles. Each message type, from text to multimedia, has predefined classes for default styling, and developers can further customize using CSS.
 
 ## Incoming & Outgoing Messages
 
-Incoming and outgoing messages have different styling by default, allowing users to visually separate their own messages from others’. Here, we show both the default view and examples of customizations for these message bubbles.
+Incoming and outgoing messages have different styling by default, allowing users to visually separate their own messages from others'. Here, we show both the default view and examples of customizations for these message bubbles.
 
 Shown below is the default chat interface.
 
@@ -30,12 +50,16 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css app.css
+<Tabs>
+<Tab title="App.css">
+```css
 .cometchat .cometchat-message-bubble-outgoing .cometchat-message-bubble__body {
   --cometchat-primary-color: #f76808;
   --cometchat-extended-primary-color-900: #fbaa75;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -49,11 +73,15 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css app.css
+<Tabs>
+<Tab title="App.css">
+```css
 .cometchat .cometchat-message-bubble-incoming .cometchat-message-bubble__body {
   --cometchat-neutral-color-300: #f76808;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -67,19 +95,23 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css app.css
+<Tabs>
+<Tab title="App.css">
+```css
 .cometchat .cometchat-message-bubble .cometchat-message-bubble__body {
   --cometchat-neutral-color-300: #f76808;
   --cometchat-primary-color: #f76808;
   --cometchat-extended-primary-color-900: #fbaa75;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
 ## Message Types
 
-CometChat UI Kit includes classes for various message types. Below are examples of default & customised views for each message type, along with the relevant CSS code snippets so that you can quickly up to the mark with CSS customization.
+CometChat UI Kit includes classes for various message types. Below are examples of default & customised views for each message type, along with the relevant CSS code snippets so that you can quickly get up to speed with CSS customization.
 
 ***
 
@@ -99,8 +131,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 /* Outgoing Text Message Bubble */
 .cometchat
   .cometchat-message-bubble-outgoing
@@ -115,6 +148,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-neutral-color-300: #feede1;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -134,8 +169,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 /* Outgoing Image Message Bubble */
 .cometchat
   .cometchat-message-bubble-outgoing
@@ -150,6 +186,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-neutral-color-300: #feede1;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -169,8 +207,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 /* Outgoing Video Message Bubble */
 .cometchat
   .cometchat-message-bubble-outgoing
@@ -185,6 +224,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-neutral-color-300: #feede1;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -204,8 +245,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 /* Outgoing Audio Message Bubble */
 .cometchat
   .cometchat-message-bubble-outgoing
@@ -221,6 +263,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-neutral-color-300: #feede1;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -240,8 +284,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 /* Outgoing File Message Bubble */
 .cometchat
   .cometchat-message-bubble-outgoing
@@ -257,6 +302,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-neutral-color-300: #feede1;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -276,8 +323,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 /* Outgoing Delete Bubble */
 .cometchat
   .cometchat-message-bubble-outgoing
@@ -292,6 +340,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-neutral-color-300: #feede1;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -311,8 +361,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 .cometchat .cometchat-message-bubble__body .cometchat-action-bubble {
   --cometchat-primary-color: #f76808;
   background-color: #feede1;
@@ -321,6 +372,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-border-color-default: #f76808;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -340,8 +393,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 /* Outgoing Direct Call Message Bubble */
 .cometchat
   .cometchat-message-bubble-outgoing
@@ -358,6 +412,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-neutral-color-300: #feede1;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -377,8 +433,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 .cometchat .cometchat-message-bubble__body .cometchat-action-bubble {
   --cometchat-primary-color: #f76808;
   background-color: #feede1;
@@ -387,6 +444,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-border-color-default: #f76808;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -408,8 +467,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 /* Outgoing Collaborative Whiteboard Bubble */
 .cometchat
   .cometchat-message-bubble-outgoing
@@ -426,6 +486,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-neutral-color-300: #feede1;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -445,8 +507,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 /* Outgoing Collaborative Document Bubble */
 .cometchat
   .cometchat-message-bubble-outgoing
@@ -463,6 +526,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-neutral-color-300: #feede1;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -482,8 +547,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 /* Outgoing Poll Message Bubble */
 .cometchat
   .cometchat-message-bubble-outgoing
@@ -500,6 +566,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-neutral-color-300: #feede1;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -519,8 +587,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 /* Outgoing Sticker Bubble */
 .cometchat
   .cometchat-message-bubble-outgoing
@@ -535,6 +604,8 @@ Use the following code to achieve the customization shown above.
   --cometchat-neutral-color-300: #feede1;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
 
@@ -554,8 +625,9 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-```css App.css
-
+<Tabs>
+<Tab title="App.css">
+```css
 /* Outgoing Link Preview Bubble */
 .cometchat
   .cometchat-message-bubble-outgoing
@@ -572,5 +644,42 @@ Use the following code to achieve the customization shown above.
   --cometchat-neutral-color-300: #feede1;
 }
 ```
+</Tab>
+</Tabs>
 
 ***
+
+<AccordionGroup>
+<Accordion title="Best Practices">
+- Use CSS variables instead of direct property overrides for consistent theming across light and dark modes.
+- Target specific message types using their BEM modifier classes (e.g., `.cometchat-message-bubble__text-message`) rather than broad selectors.
+- Keep outgoing and incoming bubble styles visually distinct so users can easily differentiate their own messages.
+- Test customizations in both light and dark themes to ensure readability and contrast.
+- Use the `.cometchat` parent selector to scope your overrides and avoid conflicts with other styles.
+</Accordion>
+<Accordion title="Troubleshooting">
+- **Styles not applying?** Ensure your CSS is loaded after the CometChat stylesheet. Check selector specificity — your overrides must match or exceed the specificity of the default styles.
+- **Only one direction styled?** Make sure you're targeting both `.cometchat-message-bubble-outgoing` and `.cometchat-message-bubble-incoming` if you want to style both.
+- **Dark mode looks wrong?** Wrap dark mode overrides in `@media (prefers-color-scheme: dark)` or use the `[data-theme="dark"]` attribute selector.
+- **Extension bubbles not styled?** Extension message types (polls, whiteboard, etc.) use their own modifier classes — check you're using the correct class name.
+</Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Theming Overview" icon="paintbrush" href="/ui-kit/react/theme">
+    Global theming with CSS variables
+  </Card>
+  <Card title="Color Resources" icon="palette" href="/ui-kit/react/theme/color-resources">
+    Complete list of CSS color variables
+  </Card>
+  <Card title="Localize" icon="globe" href="/ui-kit/react/localize">
+    Customize text and date formats
+  </Card>
+  <Card title="Message Template" icon="code" href="/ui-kit/react/message-template">
+    Customize message rendering logic
+  </Card>
+</CardGroup>
