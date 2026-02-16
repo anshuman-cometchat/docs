@@ -113,7 +113,7 @@ Initialize CometChat in your app's entry file. Select your setup:
 <Tabs>
 <Tab title="Vite">
 
-```tsx src/main.tsx
+```tsx {12-14} src/main.tsx
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
@@ -151,7 +151,7 @@ CometChatUIKit.init(uiKitSettings)?.then(() => {
 
 <Tab title="CRA">
 
-```tsx src/index.tsx
+```tsx {12-14} src/index.tsx
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
@@ -265,7 +265,7 @@ Alternatively, log in the user immediately inside `CometChatUIKit.init()` — id
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts {12-14}
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
@@ -324,7 +324,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js {12-14}
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
