@@ -1,31 +1,29 @@
 ---
 title: "Extensions"
-description: "Overview of CometChat built-in extensions including stickers, polls, collaborative whiteboard, and more."
+description: "Overview of CometChat's built-in extensions including Stickers, Polls, Collaborative Whiteboard, Collaborative Document, Message Translation, Link Preview, and Thumbnail Generation — activated via the Dashboard and auto-integrated into UI Kit components."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
 <Info>
 **Quick Reference for AI Agents & Developers**
 
-Built-in extensions (enable via Dashboard):
-- **Bitly** → Shorten URLs in messages
-- **Link Preview** → URL summaries in Message List
-- **Message Shortcuts** → Predefined quick messages
-- **Pin Message** → Pin important messages
-- **Rich Media Preview** → Rich URL previews
-- **Save Message** → Bookmark messages
-- **Thumbnail Generation** → Image previews
-- **TinyURL** → URL shortening
-- **Voice Transcription** → Audio to text
-- **Giphy** → GIF sharing
-- **Message Translation** → Auto-translate messages
-- **Polls** → Group voting in Message Composer
-- **Stickers** → Fun expression in Message Composer
-- **Collaborative Whiteboard** → Real-time drawing
-- **Collaborative Document** → Shared document editing
-- **Disappearing Messages** → Auto-delete messages
+Key components that support extensions:
+- **Message Composer** → [CometChatMessageComposer](/ui-kit/react/message-composer) (Stickers, Polls, Whiteboard, Document)
+- **Message List** → [CometChatMessageList](/ui-kit/react/message-list) (Translation, Link Preview, Thumbnails)
 
-Extensions auto-integrate with UI Kit components after Dashboard activation.
+Extensions are enabled via the [CometChat Dashboard](/fundamentals/extensions-overview) — no additional code required once activated.
+
+Supported extensions: Stickers, Polls, Collaborative Whiteboard, Collaborative Document, Message Translation, Link Preview, Thumbnail Generation
+</Info>
+
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()` + Extensions enabled in Dashboard
+**Extensions covered:** Stickers, Polls, Collaborative Whiteboard, Collaborative Document, Message Translation, Link Preview, Thumbnail Generation
+**Primary components:** `CometChatMessageComposer`, `CometChatMessageList`
+**Activation:** Enable each extension from the CometChat Dashboard — UI Kit auto-integrates them
 </Info>
 
 ## Overview
@@ -33,7 +31,11 @@ Extensions auto-integrate with UI Kit components after Dashboard activation.
 CometChat's UI Kit offers built-in support for various extensions, enriching the chatting experience with enhanced functionality. These extensions augment your chat application, making it more interactive, secure, and efficient.
 
 <Note>
-**Available via:** [UI Kits](/ui-kit/react/overview) | [SDK](/sdk/javascript/overview) | [Dashboard](/fundamentals/extensions-overview)
+**Available via:** [UI Kits](/ui-kit/react/overview) | [SDK](/sdk/javascript/overview) | [Dashboard](https://app.cometchat.com)
+</Note>
+
+<Note>
+**Before using extensions:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. Extensions must also be activated from the [CometChat Dashboard](/fundamentals/extensions-overview).
 </Note>
 
 Activating extensions within CometChat is a straightforward process through your application's dashboard. For detailed instructions, refer to our guide on [Extensions](/fundamentals/extensions-overview).
@@ -186,17 +188,43 @@ The Intercom extension integrates Intercom's customer support platform with Come
 
 ## Next Steps
 
+Once you have successfully activated the [Thumbnail Generation Extension](/fundamentals/thumbnail-generation) from your CometChat Dashboard, the feature will automatically be incorporated into the Message Bubble of [MessageList Component](/ui-kit/react/message-list) component of UI Kits.
+
+<Frame>
+  <img src="/images/382b5743-extension_thumbnail_generation_web_screens-b660bc307ecd540c0a7301e65ca0af5b.png" />
+</Frame>
+
+<AccordionGroup>
+<Accordion title="Common Failure Modes">
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Extension feature not appearing | Extension not activated in CometChat Dashboard | Enable the specific extension from your [Dashboard](/fundamentals/extensions-overview) |
+| Component doesn't render | `CometChatUIKit.init()` not called or not awaited | Ensure init completes before rendering. See [Methods](/ui-kit/react/methods) |
+| Component renders but no extension UI | User not logged in | Call `CometChatUIKit.login("UID")` after init |
+| Stickers not showing in composer | Sticker extension not enabled | Activate [Sticker Extension](/fundamentals/stickers) in Dashboard |
+| Polls option missing from action sheet | Polls extension not enabled | Activate [Polls Extension](/fundamentals/polls) in Dashboard |
+| Link preview not rendering in messages | Link Preview extension not enabled | Activate [Link Preview Extension](/fundamentals/link-preview) in Dashboard |
+| SSR hydration error | Component uses browser APIs on server | Wrap in `useEffect` or dynamic import with `ssr: false`. See [Next.js Integration](/ui-kit/react/next-js-integration) |
+
+</Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
 <CardGroup cols={2}>
-  <Card title="Core Features" icon="star" href="/ui-kit/react/core-features">
-    Explore core messaging capabilities
-  </Card>
-  <Card title="AI Features" icon="robot" href="/ui-kit/react/ai-features">
-    Integrate AI-powered chat features
-  </Card>
-  <Card title="Message Composer" icon="pen" href="/ui-kit/react/message-composer">
-    Customize the message input component
+  <Card title="Message Composer" icon="pen-to-square" href="/ui-kit/react/message-composer">
+    Customize the composer where most extensions appear
   </Card>
   <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
-    Display and customize message bubbles
+    Customize the message list for extension-rendered content
+  </Card>
+  <Card title="Core Features" icon="comments" href="/ui-kit/react/core-features">
+    Explore core chat features like messaging and reactions
+  </Card>
+  <Card title="AI Features" icon="robot" href="/ui-kit/react/ai-features">
+    Explore AI-powered chat capabilities
   </Card>
 </CardGroup>

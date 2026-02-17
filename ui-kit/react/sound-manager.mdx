@@ -1,24 +1,27 @@
 ---
 title: "Sound Manager"
-description: "A helper class for managing and playing audio sounds for incoming and outgoing calls in CometChat UI Kit."
+description: "Manage and customize audio cues for incoming/outgoing calls and messages in CometChat React UI Kit."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
 <Info>
 **Quick Reference for AI Agents & Developers**
 
-```tsx
+```javascript
 import { CometChatSoundManager, Sound } from "@cometchat/chat-uikit-react";
 
-// Play default sound for incoming call
+// Play default incoming call sound
 CometChatSoundManager.play(Sound.incomingCall);
 
 // Play custom sound
-CometChatSoundManager.play(Sound.incomingCall, "path/to/custom-sound.mp3");
+CometChatSoundManager.play(Sound.incomingCall, "path/to/custom.mp3");
 
-// Pause currently playing sound
+// Pause current sound
 CometChatSoundManager.pause();
 ```
+
+- **Sound events:** `Sound.incomingCall`, `Sound.outgoingCall`, `Sound.incomingMessage`, `Sound.outgoingMessage`
+- Supports custom MP3 file paths
 </Info>
 
 ## Overview
@@ -80,21 +83,39 @@ CometChatSoundManager.pause();
 
 By using the CometChatSoundManager, you can enhance the user experience in your chat application by integrating audible cues for chat interactions.
 
----
+***
+
+## Common Failure Modes
+
+<AccordionGroup>
+<Accordion title="Common Failure Modes">
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| No sound plays | Browser autoplay policy blocks audio | User must interact with the page first before audio can play |
+| Custom sound not playing | Invalid file path or unsupported format | Ensure the path is correct and the file is a valid MP3 |
+| Sound keeps playing | `pause()` not called | Call `CometChatSoundManager.pause()` to stop playback |
+
+</Accordion>
+</AccordionGroup>
+
+***
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Theme Customization" icon="palette" href="/ui-kit/react/theme">
-    Customize colors, fonts, and styling.
+  <Card title="Localize" href="/ui-kit/react/localize">
+    Configure multi-language localization and date formatting.
   </Card>
-  <Card title="Localization" icon="globe" href="/ui-kit/react/localize">
-    Configure language settings and translations.
+  <Card title="Theme" href="/ui-kit/react/theme">
+    Customize colors, fonts, and styles.
   </Card>
-  <Card title="Incoming Call" icon="phone-arrow-down-left" href="/ui-kit/react/incoming-call">
-    Handle incoming voice and video calls.
+  <Card title="Components Overview" href="/ui-kit/react/components-overview">
+    Explore all available prebuilt UI components.
   </Card>
-  <Card title="Outgoing Call" icon="phone-arrow-up-right" href="/ui-kit/react/outgoing-call">
-    Manage outgoing call UI and sounds.
+  <Card title="Methods" href="/ui-kit/react/methods">
+    Init, login, logout, and other UI Kit methods.
   </Card>
 </CardGroup>
+
+***

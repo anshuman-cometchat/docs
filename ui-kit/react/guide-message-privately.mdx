@@ -1,34 +1,19 @@
 ---
 title: "Message Privately"
 sidebarTitle: "Message Privately"
-description: "Learn how to enable users to initiate private conversations with group members directly from group chat interfaces."
+description: "Launch a direct 1:1 chat from a group member profile in CometChat React UI Kit."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
 <Info>
 **Quick Reference for AI Agents & Developers**
 
-```tsx
-import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
-
-// Group members with private messaging option
-<CometChatGroupMembers
-  group={group}
-  onItemClick={(member) => startPrivateChatFromGroup(member, group)}
-  options={[{
-    id: "message_privately",
-    title: "Message Privately",
-    onClick: (member) => startPrivateChatFromGroup(member, group)
-  }]}
-/>
-
-// Start private chat from group context
-const startPrivateChatFromGroup = (user, group) => {
-  CometChat.getConversation(user.getUid(), "user")
-    .then((conversation) => setSelectedItem(conversation));
-};
-```
+- **Key component:** `CometChatMessages + CometChatGroupMembers`
+- **Prerequisites:** `CometChatUIKit.init()` + `CometChatUIKit.login()` must complete first
+- **Sample app:** [GitHub](https://github.com/cometchat/cometchat-uikit-react/tree/v6/sample-app)
+- **All guides:** [Guide Overview](/ui-kit/react/guide-overview)
 </Info>
+
 
 Enable users to initiate private conversations with group members directly from group chat interfaces.
 
@@ -346,16 +331,18 @@ const startPrivateChatFromGroup = async (user: CometChat.User, group: CometChat.
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Group Members" icon="users" href="/ui-kit/react/group-members">
-    Display group member lists
+  <Card title="Group Members" href="/ui-kit/react/group-members">
+    Display and manage group member lists.
   </Card>
-  <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
-    Display messages in conversations
+  <Card title="Message List" href="/ui-kit/react/message-list">
+    Render real-time message threads.
   </Card>
-  <Card title="Users" icon="user" href="/ui-kit/react/users">
-    Display and manage user lists
+  <Card title="All Guides" href="/ui-kit/react/guide-overview">
+    Browse all feature and formatter guides.
   </Card>
-  <Card title="Conversations" icon="comments" href="/ui-kit/react/conversations">
-    Display conversation lists
+  <Card title="Sample App" href="https://github.com/cometchat/cometchat-uikit-react/tree/v6/sample-app">
+    Full working sample application on GitHub.
   </Card>
-</CardGroup>  
+</CardGroup>
+
+***

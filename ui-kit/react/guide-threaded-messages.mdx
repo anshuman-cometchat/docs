@@ -1,33 +1,19 @@
 ---
 title: "Threaded Messages"
 sidebarTitle: "Threaded Messages"
-description: "Learn how to enable organized threaded conversations within group chats using CometChat's React UI Kit."
+description: "Implement threaded message replies with parent context, reply list, and focused thread composer in CometChat React UI Kit."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
 <Info>
 **Quick Reference for AI Agents & Developers**
 
-```tsx
-import { 
-  CometChatMessages, 
-  CometChatThreadedMessages 
-} from "@cometchat/chat-uikit-react";
-
-// Enable thread replies in messages
-<CometChatMessages
-  group={group}
-  onThreadRepliesClick={(message) => setThreadedMessage(message)}
-/>
-
-// Display threaded messages
-<CometChatThreadedMessages
-  message={threadedMessage}
-  selectedItem={selectedItem}
-  onClose={() => setThreadedMessage(undefined)}
-/>
-```
+- **Key component:** `CometChatThreadHeader`
+- **Prerequisites:** `CometChatUIKit.init()` + `CometChatUIKit.login()` must complete first
+- **Sample app:** [GitHub](https://github.com/cometchat/cometchat-uikit-react/tree/v6/sample-app)
+- **All guides:** [Guide Overview](/ui-kit/react/guide-overview)
 </Info>
+
 
 Enable organized threaded conversations within group chats using CometChat's React UI Kit.
 
@@ -238,16 +224,18 @@ useEffect(() => {
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
-    Display messages in conversations
+  <Card title="Message List" href="/ui-kit/react/message-list">
+    Render real-time message threads.
   </Card>
-  <Card title="Groups" icon="users-rectangle" href="/ui-kit/react/groups">
-    Display and manage group lists
+  <Card title="Thread Header" href="/ui-kit/react/thread-header">
+    Customize the thread header component.
   </Card>
-  <Card title="Search Messages" icon="magnifying-glass" href="/ui-kit/react/guide-search-messages">
-    Search messages in conversations
+  <Card title="All Guides" href="/ui-kit/react/guide-overview">
+    Browse all feature and formatter guides.
   </Card>
-  <Card title="Message Composer" icon="pen-to-square" href="/ui-kit/react/message-composer">
-    Compose and send messages
+  <Card title="Sample App" href="https://github.com/cometchat/cometchat-uikit-react/tree/v6/sample-app">
+    Full working sample application on GitHub.
   </Card>
-</CardGroup>  
+</CardGroup>
+
+***

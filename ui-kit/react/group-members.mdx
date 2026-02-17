@@ -1,6 +1,6 @@
 ---
 title: "Group Members"
-description: "A component that displays all users added or invited to a group, with member management capabilities including scope changes, kick, and ban options."
+description: "CometChatGroupMembers component displays all users in a group with their roles, scopes, and online status. Supports member management actions, custom views, filtering via GroupMembersRequestBuilder, and CSS styling."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
@@ -8,19 +8,31 @@ description: "A component that displays all users added or invited to a group, w
 **Quick Reference for AI Agents & Developers**
 
 ```tsx
+import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
 
-// Minimal usage
+// Requires a CometChat.Group object
 <CometChatGroupMembers group={chatGroup} />
 
 // With common props
 <CometChatGroupMembers
   group={chatGroup}
-  onItemClick={(member) => console.log(member)}
+  onItemClick={(groupMember) => console.log("Selected:", groupMember)}
   selectionMode={SelectionMode.none}
-  hideUserStatus={false}
 />
 ```
+</Info>
+
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Import:** `import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";`
+**Minimal JSX:** `<CometChatGroupMembers group={chatGroup} />`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+**Key props:** `group: CometChat.Group` (required), `onItemClick: (member: CometChat.GroupMember) => void`, `selectionMode: SelectionMode`, `groupMemberRequestBuilder: CometChat.GroupMembersRequestBuilder`
+**CSS class:** `.cometchat-group-members`
+**Events:** `CometChatGroupEvents`
 </Info>
 
 ## Overview
@@ -33,6 +45,10 @@ import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
 
 <Note>
 **Available via:** [UI Kits](/ui-kit/react/overview) | [SDK](/sdk/javascript/overview) | [REST API](https://api-explorer.cometchat.com)
+</Note>
+
+<Note>
+**Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
 </Note>
 
 ***
@@ -86,6 +102,16 @@ const GroupMembersDemo = () => {
 };
 
 export default GroupMembersDemo;
+```
+
+</Tab>
+
+</Tabs>
+    <div className="App">
+      <GroupMembersDemo />
+    </div>
+  );
+}
 ```
 
 </Tab>
@@ -1495,19 +1521,46 @@ export default GroupMembersDemo;
 
 ***
 
+## Component API Pattern
+
+| Customization Type | Prop Pattern | Example |
+| --- | --- | --- |
+| Callback actions | `on<Event>={(param) => {}}` | `onItemClick={(member) => {}}` |
+| Data filtering | `groupMemberRequestBuilder={new CometChat.GroupMembersRequestBuilder("GUID")}` | `groupMemberRequestBuilder={builder}` |
+| Toggle features | `hide<Feature>={true\|false}` | `hideSearch={true}` |
+| Custom rendering | `<slot>View={(<params>) => JSX}` | `itemView={(member) => <div>...</div>}` |
+| CSS overrides | Target `.cometchat-group-members` class in global CSS | `.cometchat-group-members { ... }` |
+
+<AccordionGroup>
+<Accordion title="Common Failure Modes">
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Component doesn't render | `CometChatUIKit.init()` not called or not awaited | Ensure init completes before rendering. See [Methods](/ui-kit/react/methods) |
+| Component renders but shows no data | User not logged in | Call `CometChatUIKit.login("UID")` after init |
+| No members displayed | `group` prop not passed or invalid | Ensure a valid `CometChat.Group` object is passed to the `group` prop |
+| Callback not firing | Wrong prop name or signature | Check the Actions section for exact prop name and parameter types |
+| Custom view not appearing | Returning `null` or `undefined` from view prop | Ensure view function returns valid JSX |
+| SSR hydration error | Component uses browser APIs on server | Wrap in `useEffect` or dynamic import with `ssr: false`. See [Next.js Integration](/ui-kit/react/next-js-integration) |
+
+</Accordion>
+</AccordionGroup>
+
+---
+
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Groups" icon="users-rectangle" href="/ui-kit/react/groups">
+  <Card title="Groups" icon="users" href="/ui-kit/react/groups">
     Display and manage group lists
   </Card>
-  <Card title="Add Members" icon="user-plus" href="/ui-kit/react/guide-group-chat">
-    Add new members to groups
-  </Card>
-  <Card title="Banned Members" icon="user-slash" href="/ui-kit/react/guide-group-chat">
-    Manage banned group members
+  <Card title="Users" icon="user" href="/ui-kit/react/users">
+    Display and manage user lists
   </Card>
   <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
-    Display messages in a group
+    Render messages in a chat view
+  </Card>
+  <Card title="Conversations" icon="comments" href="/ui-kit/react/conversations">
+    Display recent conversations
   </Card>
 </CardGroup>

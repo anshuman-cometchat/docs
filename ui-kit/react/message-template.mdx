@@ -1,6 +1,6 @@
 ---
 title: "Message Template"
-description: "A blueprint for defining and customizing message bubble structure, appearance, and behavior in the chat interface."
+description: "CometChatMessageTemplate provides a structure for defining custom message types and their rendering in the message list. Use templates to customize how different message categories and types are displayed."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
@@ -8,33 +8,33 @@ description: "A blueprint for defining and customizing message bubble structure,
 **Quick Reference for AI Agents & Developers**
 
 ```tsx
-import { CometChatUIKit, CometChatMessageTemplate, CometChatUIKitConstants } from "@cometchat/chat-uikit-react";
+import { CometChatMessageTemplate } from "@cometchat/chat-uikit-react";
+import { ChatConfigurator } from "@cometchat/chat-uikit-react";
 
-// Get all existing templates
-const templates = CometChatUIKit.getDataSource().getAllMessageTemplates();
+// Get default templates
+const templates = ChatConfigurator.getDataSource().getAllMessageTemplates();
 
-// Customize a specific template (e.g., text messages)
-templates.forEach((template) => {
-  if (template.type === CometChatUIKitConstants.MessageTypes.text) {
-    template.headerView = (message) => <CustomHeader message={message} />;
-    template.contentView = (message) => <CustomContent message={message} />;
-    template.footerView = (message) => <CustomFooter message={message} />;
-  }
-});
-
-// Create a custom message template
-const customTemplate = new CometChatMessageTemplate({
-  type: "customType",
-  category: CometChatUIKitConstants.MessageCategory.custom,
-  contentView: (message) => <CustomView message={message} />,
-});
-
-// Apply templates to MessageList
-<CometChatMessageList user={chatUser} templates={templates} />
+// Pass custom templates to MessageList
+<CometChatMessageList templates={templates} />
 ```
 </Info>
 
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Import:** `import { CometChatMessageTemplate } from "@cometchat/chat-uikit-react";`
+**Usage:** Pass `templates` prop to `CometChatMessageList`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+**Key properties:** `category: string`, `type: string`, `contentView`, `bubbleView`, `headerView`, `footerView`
+**Related:** Used with `CometChatMessageList` via the `templates` prop
+</Info>
+
 ## Overview
+
+<Note>
+**Before using message templates:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
+</Note>
 
 MessageTemplate provides you with the capability to define and customize both the structure and the behavior of the Message Bubble. It acts as a schema or design blueprint for the creation of a variety of Message Bubble components, allowing you to manage the appearance and interactions of Message Bubble within your application effectively and consistently.
 
@@ -1966,21 +1966,36 @@ export { CustomMessageTemplate };
 
 </Tabs>
 
+
+<AccordionGroup>
+<Accordion title="Common Failure Modes">
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Custom template not rendering | Template `type` or `category` doesn't match message | Verify template matches the message's `type` and `category` fields |
+| Component doesn't render | `CometChatUIKit.init()` not called or not awaited | Ensure init completes before rendering. See [Methods](/ui-kit/react/methods) |
+| Default templates missing | Not using `ChatConfigurator.getDataSource().getAllMessageTemplates()` | Start with default templates and modify from there |
+| Custom view returning blank | View function returns `null` or `undefined` | Ensure view function returns valid JSX |
+| SSR hydration error | Component uses browser APIs on server | Wrap in `useEffect` or dynamic import with `ssr: false`. See [Next.js Integration](/ui-kit/react/next-js-integration) |
+
+</Accordion>
+</AccordionGroup>
+
 ---
 
 ## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
-    Display messages using custom templates
+    Use templates with the message list component
   </Card>
   <Card title="Message Composer" icon="pen-to-square" href="/ui-kit/react/message-composer">
-    Add message input and sending capabilities
+    Compose and send messages
   </Card>
-  <Card title="Custom Text Formatter" icon="code" href="/ui-kit/react/custom-text-formatter-guide">
-    Create custom text formatting rules
+  <Card title="Theme" icon="palette" href="/ui-kit/react/theme">
+    Customize the look and feel of your chat UI
   </Card>
-  <Card title="Theme Customization" icon="palette" href="/ui-kit/react/theme">
-    Customize colors, fonts, and styling
+  <Card title="Message Bubble Styling" icon="paintbrush" href="/ui-kit/react/theme/message-bubble-styling">
+    Style individual message bubbles with CSS
   </Card>
 </CardGroup>

@@ -1,6 +1,6 @@
 ---
 title: "Call Buttons"
-description: "CometChatCallButtons component provides voice and video call buttons for initiating calls to users or groups."
+description: "Add voice and video call buttons to initiate calls using the CometChatCallButtons component."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
@@ -8,21 +8,34 @@ description: "CometChatCallButtons component provides voice and video call butto
 **Quick Reference for AI Agents & Developers**
 
 ```tsx
+import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
 
-// Basic usage with user
+// For a user
 <CometChatCallButtons user={chatUser} />
 
-// With group
+// For a group
 <CometChatCallButtons group={chatGroup} />
 
-// Hide specific buttons
-<CometChatCallButtons 
-  user={chatUser} 
-  hideVideoCallButton={true}
+// With options
+<CometChatCallButtons
+  user={chatUser}
+  hideVideoCallButton={false}
   hideVoiceCallButton={false}
 />
 ```
+</Info>
+
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Import:** `import { CometChatCallButtons } from "@cometchat/chat-uikit-react";`
+**Minimal JSX:** `<CometChatCallButtons user={chatUser} />`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+**Key props:** `user` (CometChat.User), `group` (CometChat.Group), `hideVideoCallButton` (boolean), `hideVoiceCallButton` (boolean), `onError` (callback)
+**CSS class:** `.cometchat-call-button`
+**Events:** `ccCallRejected`, `ccCallEnded`, `ccOutgoingCall`, `ccMessageSent`
 </Info>
 
 ## Overview
@@ -35,6 +48,10 @@ The `Call Button` is a Component provides users with the ability to make calls, 
 
 <Note>
 **Available via:** [UI Kits](/ui-kit/react/overview) | [SDK](/sdk/javascript/overview)
+</Note>
+
+<Note>
+**Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
 </Note>
 
 ## Usage
@@ -435,19 +452,36 @@ You can customize the properties of the `CometChatOutgoingCall` component by mak
 
 You can refer to [CometChatOutgoingCall](/ui-kit/react/outgoing-call) component to know more about each of the above properties.
 
+***
+
+<AccordionGroup>
+<Accordion title="Common Failure Modes">
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Component doesn't render | `CometChatUIKit.init()` not called or not awaited | Ensure init completes before rendering. See [Methods](/ui-kit/react/methods) |
+| Component renders but shows no buttons | Neither `user` nor `group` prop provided | Pass a valid `CometChat.User` or `CometChat.Group` object |
+| Callback not firing | Wrong prop name or signature | Check the Actions section for exact prop name and parameter types |
+| Only voice or video button visible | `hideVideoCallButton` or `hideVoiceCallButton` set to `true` | Set the corresponding hide prop to `false` |
+| Call fails to initiate | Calls SDK not installed | Install `@cometchat/calls-sdk-javascript`. See [Call Features](/ui-kit/react/call-features) |
+| SSR hydration error | Component uses browser APIs on server | Wrap in `useEffect` or dynamic import with `ssr: false`. See [Next.js Integration](/ui-kit/react/next-js-integration) |
+
+</Accordion>
+</AccordionGroup>
+
 ---
 
 ## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Outgoing Call" icon="phone-arrow-up-right" href="/ui-kit/react/outgoing-call">
-    Customize the outgoing call screen
+    Manage outgoing voice and video call UI
   </Card>
   <Card title="Incoming Call" icon="phone-arrow-down-left" href="/ui-kit/react/incoming-call">
-    Handle incoming call notifications
+    Handle incoming voice and video calls
   </Card>
   <Card title="Call Logs" icon="clock-rotate-left" href="/ui-kit/react/call-logs">
-    Display call history
+    Display call history and call log details
   </Card>
   <Card title="Call Features" icon="video" href="/ui-kit/react/call-features">
     Overview of all calling capabilities
