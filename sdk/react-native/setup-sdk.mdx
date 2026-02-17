@@ -172,7 +172,7 @@ The `AppSettings` class allows you to configure the following settings:
 | **overrideAdminHost(adminHost: string)** | Uses a custom admin URL instead of the default. Used for dedicated CometChat deployments |
 | **overrideClientHost(clientHost: string)** | Uses a custom client URL instead of the default. Used for dedicated CometChat deployments |
 
-You need to call `init()` before calling any other method from CometChat. We suggest you call the `init()` method on app startup, preferably in the `index.js` file.
+You need to call `init()` before calling any other method from CometChat. We suggest you call the `init()` method on app startup, preferably in the `App.tsx` file.
 
 <Tabs>
   <Tab title="JavaScript">
@@ -226,6 +226,23 @@ You need to call `init()` before calling any other method from CometChat. We sug
 <Warning>
 Make sure you replace the `APP_ID` with your CometChat **App ID** and `REGION` with your **App Region** in the above code.
 </Warning>
+
+<Accordion title="Sample Console Output">
+**On Success** — `console.log("Initialization completed successfully")` returns:
+```
+Initialization completed successfully
+```
+
+**On Failure** — `console.log("Initialization failed with error:", error)` returns:
+```json
+{
+  "code": "ERR_INVALID_APP_ID",
+  "name": "Invalid App ID",
+  "message": "The App ID provided is incorrect. Please verify your App ID from the CometChat Dashboard.",
+  "details": {}
+}
+```
+</Accordion>
 
 <AccordionGroup>
   <Accordion title="Best Practices">

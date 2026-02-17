@@ -183,6 +183,112 @@ The `TextMessage` class constructor takes the following parameters:
 
 When a text message is sent successfully, the response will include a `TextMessage` object which includes all information related to the sent message.
 
+<Accordion title="Sample Console Output">
+**On Success** — `console.log("Message sent successfully:", message)` returns:
+```json
+{
+  "reactions": [],
+  "mentionedUsers": [],
+  "mentionedMe": false,
+  "receiverId": "cometchat-uid-3",
+  "type": "text",
+  "receiverType": "user",
+  "category": "message",
+  "data": {
+    "text": "Hello world!",
+    "resource": "REACT_NATIVE-4_0_13-398e7dd2-3481-44ed-8837-eadf1c9c6f5d-1771320626645",
+    "entities": {
+      "sender": {
+        "entity": {
+          "uid": "cometchat-uid-2",
+          "name": "George Alan",
+          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
+          "status": "online",
+          "role": "default",
+          "lastActiveAt": 1771320632,
+          "tags": []
+        },
+        "entityType": "user"
+      },
+      "receiver": {
+        "entity": {
+          "uid": "cometchat-uid-3",
+          "name": "Nancy Grace",
+          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
+          "status": "online",
+          "role": "default",
+          "lastActiveAt": 1771320647,
+          "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
+          "tags": []
+        },
+        "entityType": "user"
+      }
+    },
+    "metadata": {
+      "@injected": {
+        "extensions": {
+          "link-preview": {
+            "links": []
+          }
+        }
+      }
+    },
+    "moderation": {
+      "status": "pending"
+    }
+  },
+  "text": "Hello world!",
+  "id": "25182",
+  "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
+  "sender": {
+    "hasBlockedMe": false,
+    "blockedByMe": false,
+    "deactivatedAt": 0,
+    "uid": "cometchat-uid-2",
+    "name": "George Alan",
+    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
+    "lastActiveAt": 1771320632,
+    "role": "default",
+    "status": "online",
+    "tags": []
+  },
+  "receiver": {
+    "hasBlockedMe": false,
+    "blockedByMe": false,
+    "deactivatedAt": 0,
+    "uid": "cometchat-uid-3",
+    "name": "Nancy Grace",
+    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
+    "lastActiveAt": 1771320647,
+    "role": "default",
+    "status": "online",
+    "tags": []
+  },
+  "sentAt": 1771320772,
+  "updatedAt": 1771320772,
+  "metadata": {
+    "@injected": {
+      "extensions": {
+        "link-preview": {
+          "links": []
+        }
+      }
+    }
+  }
+}
+```
+
+**On Failure** — `console.log("Message sending failed with error:", error)` returns:
+```json
+{
+  "code": "ERR_NOT_LOGGED_IN",
+  "name": "Not logged in",
+  "message": "No user is currently logged in. Please log in before sending a message.",
+  "details": {}
+}
+```
+</Accordion>
+
 ### Set Quoted Message Id
 
 To set a quoted message ID for a message, use the `setQuotedMessageId()` method of the TextMessage class. This method accepts the ID of the message to be quoted.
@@ -512,6 +618,104 @@ The `MediaMessage` class constructor takes the following parameters:
 | **messageType**  | The type of the message that needs to be sent which in this case can be: <br />1.`CometChat.MESSAGE_TYPE.IMAGE` <br />2.`CometChat.MESSAGE_TYPE.VIDEO` <br />3.`CometChat.MESSAGE_TYPE.AUDIO` <br />4.`CometChat.MESSAGE_TYPE.FILE` | YES      |
 | **receiverType** | The type of the receiver to whom the message is to be sent. <br />`1. CometChat.RECEIVER_TYPE.USER` <br />`2. CometChat.RECEIVER_TYPE.GROUP`                                                                              | YES      |
 
+<Accordion title="Sample Console Output">
+**On Success** — `console.log("Media message sent successfully", message)` returns:
+```json
+{
+  "reactions": [],
+  "mentionedUsers": [],
+  "mentionedMe": false,
+  "receiverId": "cometchat-uid-3",
+  "type": "image",
+  "receiverType": "user",
+  "category": "message",
+  "data": {
+    "category": "message",
+    "type": "image",
+    "resource": "REACT_NATIVE-4_0_14-542c56fc-a1a6-4df4-a5e4-549f3cf17550-1771321970718",
+    "url": "https://data-in.cometchat.io/2748663902141719/media/1771323061_1750099251_c35f9734fc20947b7456bbea68126f99.png",
+    "attachments": [
+      {
+        "name": "1770616246_260562078_3832605b5c8a337ac672b0c60933d208.png",
+        "extension": "png",
+        "size": 2295572,
+        "mimeType": "image/png",
+        "url": "https://data-in.cometchat.io/2748663902141719/media/1771323061_1750099251_c35f9734fc20947b7456bbea68126f99.png"
+      }
+    ],
+    "entities": {
+      "sender": {
+        "entity": {
+          "uid": "cometchat-uid-2",
+          "name": "George Alan",
+          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
+          "status": "online",
+          "role": "default",
+          "lastActiveAt": 1771323060,
+          "tags": []
+        },
+        "entityType": "user"
+      },
+      "receiver": {
+        "entity": {
+          "uid": "cometchat-uid-3",
+          "name": "Nancy Grace",
+          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
+          "status": "offline",
+          "role": "default",
+          "lastActiveAt": 1771322968,
+          "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
+          "tags": []
+        },
+        "entityType": "user"
+      }
+    },
+    "moderation": {
+      "status": "pending"
+    }
+  },
+  "id": "25189",
+  "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
+  "sender": {
+    "hasBlockedMe": false,
+    "blockedByMe": false,
+    "deactivatedAt": 0,
+    "uid": "cometchat-uid-2",
+    "name": "George Alan",
+    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
+    "lastActiveAt": 1771323060,
+    "role": "default",
+    "status": "online",
+    "tags": []
+  },
+  "receiver": {
+    "hasBlockedMe": false,
+    "blockedByMe": false,
+    "deactivatedAt": 0,
+    "uid": "cometchat-uid-3",
+    "name": "Nancy Grace",
+    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
+    "lastActiveAt": 1771322968,
+    "role": "default",
+    "status": "offline",
+    "tags": []
+  },
+  "sentAt": 1771323061,
+  "updatedAt": 1771323061
+}
+```
+
+**On Failure** — `console.log("Media message sending failed with error", error)` returns:
+```json
+{
+  "code": "ERR_NOT_LOGGED_IN",
+  "name": "Not logged in",
+  "message": "No user is currently logged in. Please log in before sending a message.",
+  "details": {}
+}
+```
+</Accordion>
+
 ### 2. By Providing the URL of the File
 
 The second way to send media messages using the CometChat SDK is to provide the SDK with the URL of any file that is hosted on your servers or any cloud storage. To achieve this you will have to make use of the Attachment class. For more information, you can refer to the below code snippet:
@@ -648,6 +852,103 @@ The second way to send media messages using the CometChat SDK is to provide the 
 </Tabs>
 
 When a media message is sent successfully, the response will include a `MediaMessage` object which includes all information related to the sent message.
+
+<Accordion title="Sample Console Output">
+**On Success** — `console.log("message", mediaMessage)` returns:
+```json
+{
+  "reactions": [],
+  "mentionedUsers": [],
+  "mentionedMe": false,
+  "receiverId": "cometchat-uid-3",
+  "type": "image",
+  "receiverType": "user",
+  "category": "message",
+  "data": {
+    "category": "message",
+    "type": "image",
+    "resource": "REACT_NATIVE-4_0_14-542c56fc-a1a6-4df4-a5e4-549f3cf17550-1771321970718",
+    "url": "https://data-in.cometchat.io/2748663902141719/media/1771323061_1750099251_c35f9734fc20947b7456bbea68126f99.png",
+    "attachments": [
+      {
+        "name": "mario",
+        "extension": "png",
+        "mimeType": "image/png",
+        "url": "https://pngimg.com/uploads/mario/mario_PNG125.png"
+      }
+    ],
+    "entities": {
+      "sender": {
+        "entity": {
+          "uid": "cometchat-uid-2",
+          "name": "George Alan",
+          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
+          "status": "online",
+          "role": "default",
+          "lastActiveAt": 1771323060,
+          "tags": []
+        },
+        "entityType": "user"
+      },
+      "receiver": {
+        "entity": {
+          "uid": "cometchat-uid-3",
+          "name": "Nancy Grace",
+          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
+          "status": "offline",
+          "role": "default",
+          "lastActiveAt": 1771322968,
+          "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
+          "tags": []
+        },
+        "entityType": "user"
+      }
+    },
+    "moderation": {
+      "status": "pending"
+    }
+  },
+  "id": "25189",
+  "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
+  "sender": {
+    "hasBlockedMe": false,
+    "blockedByMe": false,
+    "deactivatedAt": 0,
+    "uid": "cometchat-uid-2",
+    "name": "George Alan",
+    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
+    "lastActiveAt": 1771323060,
+    "role": "default",
+    "status": "online",
+    "tags": []
+  },
+  "receiver": {
+    "hasBlockedMe": false,
+    "blockedByMe": false,
+    "deactivatedAt": 0,
+    "uid": "cometchat-uid-3",
+    "name": "Nancy Grace",
+    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
+    "lastActiveAt": 1771322968,
+    "role": "default",
+    "status": "offline",
+    "tags": []
+  },
+  "sentAt": 1771323061,
+  "updatedAt": 1771323061
+}
+```
+
+**On Failure** — `console.log("error in sending message", error)` returns:
+```json
+{
+  "code": "ERR_NOT_LOGGED_IN",
+  "name": "Not logged in",
+  "message": "No user is currently logged in. Please log in before sending a message.",
+  "details": {}
+}
+```
+</Accordion>
 
 ## Multiple Attachments in a Media Message
 
@@ -993,6 +1294,109 @@ When a media message is sent successfully, the response will include a `MediaMes
 
 You can use the `setMetadata()`, `setCaption()` & `setTags()` methods to add metadata, caption and tags respectively in exactly the same way as it is done while sending a single file or attachment in a Media Message.
 
+<Accordion title="Sample Console Output">
+**On Success** — `console.log("message", mediaMessage)` returns:
+```json
+{
+  "reactions": [],
+  "mentionedUsers": [],
+  "mentionedMe": false,
+  "receiverId": "cometchat-uid-3",
+  "type": "image",
+  "receiverType": "user",
+  "category": "message",
+  "data": {
+    "category": "message",
+    "type": "image",
+    "resource": "REACT_NATIVE-4_0_14-542c56fc-a1a6-4df4-a5e4-549f3cf17550-1771321970718",
+    "url": "https://data-in.cometchat.io/2748663902141719/media/1771323061_1750099251_c35f9734fc20947b7456bbea68126f99.png",
+    "attachments": [
+      {
+        "name": "mario",
+        "extension": "png",
+        "mimeType": "image/png",
+        "url": "https://pngimg.com/uploads/mario/mario_PNG125.png"
+      },
+      {
+        "name": "jaguar",
+        "extension": "png",
+        "mimeType": "image/png",
+        "url": "https://pngimg.com/uploads/jaguar/jaguar_PNG20759.png"
+      }
+    ],
+    "entities": {
+      "sender": {
+        "entity": {
+          "uid": "cometchat-uid-2",
+          "name": "George Alan",
+          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
+          "status": "online",
+          "role": "default",
+          "lastActiveAt": 1771323060,
+          "tags": []
+        },
+        "entityType": "user"
+      },
+      "receiver": {
+        "entity": {
+          "uid": "cometchat-uid-3",
+          "name": "Nancy Grace",
+          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
+          "status": "offline",
+          "role": "default",
+          "lastActiveAt": 1771322968,
+          "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
+          "tags": []
+        },
+        "entityType": "user"
+      }
+    },
+    "moderation": {
+      "status": "pending"
+    }
+  },
+  "id": "25189",
+  "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
+  "sender": {
+    "hasBlockedMe": false,
+    "blockedByMe": false,
+    "deactivatedAt": 0,
+    "uid": "cometchat-uid-2",
+    "name": "George Alan",
+    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
+    "lastActiveAt": 1771323060,
+    "role": "default",
+    "status": "online",
+    "tags": []
+  },
+  "receiver": {
+    "hasBlockedMe": false,
+    "blockedByMe": false,
+    "deactivatedAt": 0,
+    "uid": "cometchat-uid-3",
+    "name": "Nancy Grace",
+    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
+    "lastActiveAt": 1771322968,
+    "role": "default",
+    "status": "offline",
+    "tags": []
+  },
+  "sentAt": 1771323061,
+  "updatedAt": 1771323061
+}
+```
+
+**On Failure** — `console.log("error in sending message", error)` returns:
+```json
+{
+  "code": "ERR_NOT_LOGGED_IN",
+  "name": "Not logged in",
+  "message": "No user is currently logged in. Please log in before sending a message.",
+  "details": {}
+}
+```
+</Accordion>
+
 ## Custom Message
 
 *In other words, as a sender, how do I send a custom message like location coordinates?*
@@ -1170,6 +1574,119 @@ Once the object of `CustomMessage` class is ready you can send the custom messag
 The above sample explains how custom messages can be used to share the location with a user. The same can be achieved for groups.
 
 On success, you will receive an object of the `CustomMessage` class.
+
+<Accordion title="Sample Console Output">
+**On Success** — `console.log("custom message sent successfully", message)` returns:
+```json
+{
+  "reactions": [],
+  "mentionedUsers": [],
+  "mentionedMe": false,
+  "receiverId": "cometchat-uid-3",
+  "type": "location",
+  "receiverType": "user",
+  "category": "custom",
+  "customData": {
+    "latitude": "50.6192171633316",
+    "longitude": "-72.68182268750002"
+  },
+  "data": {
+    "customData": {
+      "latitude": "50.6192171633316",
+      "longitude": "-72.68182268750002"
+    },
+    "text": "Sent a custom message",
+    "resource": "REACT_NATIVE-4_0_14-542c56fc-a1a6-4df4-a5e4-549f3cf17550-1771321970718",
+    "entities": {
+      "sender": {
+        "entity": {
+          "uid": "cometchat-uid-2",
+          "name": "George Alan",
+          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
+          "status": "online",
+          "role": "default",
+          "lastActiveAt": 1771323089,
+          "tags": []
+        },
+        "entityType": "user"
+      },
+      "receiver": {
+        "entity": {
+          "uid": "cometchat-uid-3",
+          "name": "Nancy Grace",
+          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
+          "status": "offline",
+          "role": "default",
+          "lastActiveAt": 1771322968,
+          "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
+          "tags": []
+        },
+        "entityType": "user"
+      }
+    },
+    "metadata": {
+      "@injected": {
+        "extensions": {
+          "link-preview": {
+            "links": []
+          }
+        }
+      }
+    },
+    "moderation": {
+      "status": "pending"
+    }
+  },
+  "id": "25190",
+  "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
+  "sender": {
+    "hasBlockedMe": false,
+    "blockedByMe": false,
+    "deactivatedAt": 0,
+    "uid": "cometchat-uid-2",
+    "name": "George Alan",
+    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
+    "lastActiveAt": 1771323089,
+    "role": "default",
+    "status": "online",
+    "tags": []
+  },
+  "receiver": {
+    "hasBlockedMe": false,
+    "blockedByMe": false,
+    "deactivatedAt": 0,
+    "uid": "cometchat-uid-3",
+    "name": "Nancy Grace",
+    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
+    "lastActiveAt": 1771322968,
+    "role": "default",
+    "status": "offline",
+    "tags": []
+  },
+  "sentAt": 1771323234,
+  "updatedAt": 1771323234,
+  "metadata": {
+    "@injected": {
+      "extensions": {
+        "link-preview": {
+          "links": []
+        }
+      }
+    }
+  }
+}
+```
+
+**On Failure** — `console.log("custom message sending failed with error", error)` returns:
+```json
+{
+  "code": "ERR_NOT_LOGGED_IN",
+  "name": "Not logged in",
+  "message": "No user is currently logged in. Please log in before sending a message.",
+  "details": {}
+}
+```
+</Accordion>
 
 ### Update Conversation
 
