@@ -32,7 +32,7 @@
                     "API Keys"
                 ],
                 "summary": "Create",
-                "description": "Creates a new API key for authenticating requests to the CometChat API. API keys are essential for server-side integrations and client SDK initialization.<br/><br/>**Scope types:** authOnly is limited scope for user authentication only (use for client-side SDKs, cannot access admin endpoints). fullAccess provides full administrative access to all API endpoints (use for server-side integrations, keep secure and never expose in client-side code).<br/><br/>**Limitations:** API key name max length is 100 characters. Maximum API keys per app is 10. Requires an existing API key with fullAccess scope to create new keys.",
+                "description": "Creates a new API key for authenticating requests to the CometChat API. API keys are essential for server-side integrations and client SDK initialization.<br/><br/>**Scope types:** authOnly is limited scope for user authentication only (use for client-side SDKs, cannot access admin endpoints). fullAccess provides full administrative access to all API endpoints (use for server-side integrations, keep secure and never expose in client-side code).",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -358,7 +358,7 @@
                     "Users"
                 ],
                 "summary": "Create",
-                "description": "Creates a new user in your CometChat app. Use this endpoint when onboarding new users to your application. The user will be created with the specified UID and can immediately participate in messaging and calling features.<br/><br/>**When to use:** During user registration in your application, when migrating users from another chat platform, or when creating bot or system users.<br/><br/>**Limitations:** UID must be unique across your app (case-insensitive). UID max length is 100 characters (alphanumeric, underscore, hyphen allowed). Name max length is 100 characters. Metadata max size is 100KB. Avatar URL max length is 2048 characters. Link URL max length is 2048 characters. Maximum 25 tags per user, each tag max length is 100 characters. Requires API key with fullAccess or authOnly scope.",
+                "description": "Creates a new user in your CometChat app. Use this endpoint when onboarding new users to your application. The user will be created with the specified UID and can immediately participate in messaging and calling features.<br/><br/>**When to use:** During user registration in your application, when migrating users from another chat platform, or when creating bot or system users.",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1109,7 +1109,7 @@
                     "Groups"
                 ],
                 "summary": "Create",
-                "description": "Creates a new group in your CometChat app. Use this endpoint to set up chat rooms, channels, or any multi-user conversation space. The group is immediately available for messaging once created.<br/><br/>**Use cases:** Creating team channels for project collaboration, setting up public chat rooms for community discussions, creating private groups for confidential conversations, or building password-protected groups for controlled access.<br/><br/>**Limitations:** GUID must be unique across your app (case-sensitive). GUID max length is 100 characters (alphanumeric, underscore, hyphen allowed). Name max length is 100 characters. Description max length is 500 characters. Metadata max size is 100KB (JSON object). Maximum 10 tags per group, each tag max 50 characters. Maximum 100 members can be added during creation. Requires API key with fullAccess or groups scope.",
+                "description": "Creates a new group in your CometChat app. Use this endpoint to set up chat rooms, channels, or any multi-user conversation space. The group is immediately available for messaging once created.<br/><br/>**Use cases:** Creating team channels for project collaboration, setting up public chat rooms for community discussions, creating private groups for confidential conversations, or building password-protected groups for controlled access.",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/onBehalfOf"
@@ -1741,7 +1741,7 @@
                     "Messages"
                 ],
                 "summary": "Send Message",
-                "description": "Sends a message on behalf of a user to another user or group. Supports text, media (image/audio/video/file), and custom message types. Requires 'onBehalfOf' header with sender UID. Use for server-side messaging, chatbots, system notifications, or data migration. Max message size: 65KB.",
+                "description": "Sends a message on behalf of a user to another user or group. Supports text, media (image/audio/video/file), and custom message types. Requires 'onBehalfOf' header with sender UID. Use for server-side messaging, chatbots, system notifications, or data migration.",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/onBehalfOf"
@@ -6450,7 +6450,7 @@
                     "Roles"
                 ],
                 "summary": "Create",
-                "description": "Creates a new role for role-based access control (RBAC) in your CometChat app. Roles define what users can do and see within the chat system.<br/><br/>**Use cases:** Create different permission levels (admin, moderator, member, guest), restrict messaging to friends only for certain user types, control which users can see other users in the user list, and implement tiered access for freemium apps.<br/><br/>**Role settings:** listUsers controls who appears in user lists (all shows everyone, friendsOnly shows only friends), and sendMessagesTo controls who can receive messages (all allows messaging anyone, friendsOnly restricts to friends).<br/><br/>**Limitations:** Role identifier max length is 100 characters. Role name max length is 100 characters. Role identifier must be unique within your app. Role identifier cannot be changed after creation. Requires API key with fullAccess scope.",
+                "description": "Creates a new role for role-based access control (RBAC) in your CometChat app. Roles define what users can do and see within the chat system.<br/><br/>**Use cases:** Create different permission levels (admin, moderator, member, guest), restrict messaging to friends only for certain user types, control which users can see other users in the user list, and implement tiered access for freemium apps.<br/><br/>**Role settings:** listUsers controls who appears in user lists (all shows everyone, friendsOnly shows only friends), and sendMessagesTo controls who can receive messages (all allows messaging anyone, friendsOnly restricts to friends).",
                 "requestBody": {
                     "content": {
                         "application/json": {
