@@ -1,8 +1,27 @@
 ---
 title: "User Management"
+description: "Create, update, and delete users in CometChat using the React Native SDK — including logged-in user updates and the User class reference."
 ---
 
+<Info>
+**Quick Reference** - Create and update users:
 
+```javascript
+// Create a user
+const user = new CometChat.User("user1");
+user.setName("Kevin");
+await CometChat.createUser(user, "AUTH_KEY");
+
+// Update logged-in user
+const me = new CometChat.User("user1");
+me.setName("Kevin Fernandez");
+await CometChat.updateCurrentUserDetails(me);
+```
+</Info>
+
+<Note>
+**Available via:** [SDK](/sdk/react-native/user-management) | [REST API](/rest-api/users/create)
+</Note>
 
 When a user logs into your app, you need to programmatically login the user into CometChat. But before you log in the user to CometChat, you need to create the user.
 
@@ -20,9 +39,13 @@ Summing up-
 
 ## Creating a user
 
-Ideally, user creation should take place at your backend. You can refer to our Rest API to learn more about [creating a user](https://api-explorer.cometchat.com/reference/creates-user) and use the appropriate code sample based on your backend language.
+Ideally, user creation should take place at your backend. You can refer to our Rest API to learn more about [creating a user](https://www.cometchat.com/docs/rest-api/users/create) and use the appropriate code sample based on your backend language.
 
 However, if you wish to create users on the fly, you can use the `createUser()` method. This method takes a `User` object and the `Auth Key` as input parameters and returns the created `User` object if the request is successful.
+
+<Warning>
+The `Auth Key` is intended for development and testing only. In production, create users from your backend using the [REST API](/rest-api/create-user) with your API Key instead.
+</Warning>
 
 <Tabs>
 <Tab title="JavaScript">
@@ -71,13 +94,13 @@ CometChat.createUser(user, authKey).then(
 
 <Warning>
 
-UID can be alphanumeric with underscore and hyphen. Spaces, punctuation and other special characters are not allowed.
+UID can be alphanumeric with underscore and hyphen. Spaces, punctuation and other special characters are not allowed. CometChat automatically converts any uppercase characters in the UID to lowercase.
 
 </Warning>
 
 ## Updating a user
 
-Updating a user similar to creating a user should ideally be achieved at your backend using the Restful APIs. For more information, you can check the [update a user](https://api-explorer.cometchat.com/reference/update-user) section. However, this can be achieved on the fly as well as using the `updateUser()` method. This method takes a `User` object and the `Auth Key` as inputs and returns the updated `User` object on the successful execution of the request.
+Updating a user similar to creating a user should ideally be achieved at your backend using the Restful APIs. For more information, you can check the [update a user](https://www.cometchat.com/docs/rest-api/users/update) section. However, this can be achieved on the fly as well as using the `updateUser()` method. This method takes a `User` object and the `Auth Key` as inputs and returns the updated `User` object on the successful execution of the request.
 
 <Tabs>
 <Tab title="JavaScript">
@@ -177,7 +200,7 @@ By using the `updateCurrentUserDetails()` method one can only update the logged-
 
 ## Deleting a user
 
-Deleting a user can only be achieved via the Restful APIs. For more information please check the [delete a user](https://api-explorer.cometchat.com/reference/delete-user) section.
+Deleting a user can only be achieved via the Restful APIs. For more information please check the [delete a user](https://www.cometchat.com/docs/rest-api/users/delete) section.
 
 ## User Class
 
@@ -195,3 +218,50 @@ Deleting a user can only be achieved via the Restful APIs. For more information 
 | hasBlockedMe  | No                                                  | A boolean that determines if the user has blocked the logged in user |
 | blockedByMe   | No                                                  | A boolean that determines if the logged in user has blocked the user |
 | tags          | Yes                                                 | A list of tags to identify specific users                            |
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Create users from your backend">
+    Use the REST API with your API Key to create users server-side. The `createUser()` SDK method requires the Auth Key, which should not be exposed in production client apps.
+  </Accordion>
+  <Accordion title="Keep UIDs consistent with your system">
+    Use the same user identifier from your backend as the CometChat UID. This simplifies mapping between your user system and CometChat.
+  </Accordion>
+  <Accordion title="Use updateCurrentUserDetails for self-updates">
+    When the logged-in user updates their own profile, use `updateCurrentUserDetails()` which doesn't require an Auth Key. Reserve `updateUser()` for admin-level operations from your backend.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="createUser fails with 'UID already exists'">
+    Each UID must be unique across your CometChat app. If the user already exists, use `updateUser()` instead, or skip creation and proceed to login.
+  </Accordion>
+  <Accordion title="updateCurrentUserDetails doesn't update role">
+    Role updates are not allowed via `updateCurrentUserDetails()`. Use the REST API or `updateUser()` with Auth Key to change a user's role.
+  </Accordion>
+  <Accordion title="UID validation error">
+    UIDs can only contain alphanumeric characters, underscores, and hyphens. Spaces, punctuation, and other special characters are not allowed.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Retrieve Users" icon="users" href="/sdk/react-native/retrieve-users">
+    Fetch user lists, search users, and get user details
+  </Card>
+  <Card title="Block Users" icon="ban" href="/sdk/react-native/block-users">
+    Block and unblock users, retrieve blocked user lists
+  </Card>
+  <Card title="Authentication" icon="key" href="/sdk/react-native/authentication-overview">
+    Log users into CometChat after creation
+  </Card>
+  <Card title="User Presence" icon="circle-dot" href="/sdk/react-native/user-presence">
+    Track online/offline status of users in real time
+  </Card>
+</CardGroup>

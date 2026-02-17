@@ -1,8 +1,29 @@
 ---
 title: "Kick Member From A Group"
+description: "Learn how to kick, ban, and unban group members using the CometChat React Native SDK, including fetching banned member lists and handling real-time events."
 ---
 
+<Info>
+**Quick Reference**
+```javascript
+// Kick a member
+CometChat.kickGroupMember("GUID", "UID");
 
+// Ban a member
+CometChat.banGroupMember("GUID", "UID");
+
+// Unban a member
+CometChat.unbanGroupMember("GUID", "UID");
+
+// Fetch banned members
+let request = new CometChat.BannedMembersRequestBuilder("GUID").setLimit(30).build();
+request.fetchNext();
+```
+</Info>
+
+<Note>
+Available via: [SDK](/sdk/react-native/group-kick-ban-members) | REST API: [Kick](/rest-api/group-members/kick), [Ban](/rest-api/banned-users/ban)
+</Note>
 
 There are certain actions that can be performed on the group members:
 
@@ -18,7 +39,7 @@ All the above actions can only be performed by the **Admin** or the **Moderator*
 The Admin or Moderator of a group can kick a member out of the group using the `kickGroupMember()` method.
 
 <Tabs>
-<Tab title="Kick Group Member">
+<Tab title="JavaScript">
 ```javascript
 var GUID = "GUID";
 var UID = "UID";
@@ -68,7 +89,7 @@ The kicked user will be no longer part of the group and can not perform any acti
 The Admin or Moderator of the group can ban a member from the group using the `banGroupMember()` method.
 
 <Tabs>
-<Tab title="Ban Group Member">
+<Tab title="JavaScript">
 ```javascript
 var GUID = "GUID";
 var UID = "UID";
@@ -118,7 +139,7 @@ The banned user will be no longer part of the group and can not perform any acti
 Only Admin or Moderators of the group can unban a previously banned member from the group using the `unbanGroupMember()` method.
 
 <Tabs>
-<Tab title="Unban Group Member">
+<Tab title="JavaScript">
 ```javascript
 var GUID = "GUID";
 var UID = "UID";
@@ -176,7 +197,7 @@ The `GUID` of the group for which the banned members are to be fetched must be s
 This method sets the limit i.e. the number of banned members that should be fetched in a single iteration.
 
 <Tabs>
-<Tab title="Set Limit">
+<Tab title="JavaScript">
 ```javascript
 let GUID = "GUID";
 let limit = 30;
@@ -204,7 +225,7 @@ let bannedGroupMembersRequest: CometChat.BannedMembersRequest =
 This method allows you to set the search string based on which the banned group members are to be fetched.
 
 <Tabs>
-<Tab title="Set Search Keyword">
+<Tab title="JavaScript">
 ```javascript
 let GUID = "GUID";
 let limit = 30;
@@ -238,7 +259,7 @@ Finally, once all the parameters are set to the builder class, you need to call 
 Once you have the object of the `BannedGroupMembersRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of `GroupMember` objects containing n number of banned members where n is the limit set in the builder class.
 
 <Tabs>
-<Tab title="Banned Group Members Request">
+<Tab title="JavaScript">
 ```javascript
 let GUID = "GUID";
 let limit = 30;
@@ -302,7 +323,7 @@ In order to get real-time events for the kick/ban/unban group members you need t
 3. `onGroupMemberUnbanned()` - triggered when any group member has been unbanned.
 
 <Tabs>
-<Tab title="Group Listener">
+<Tab title="JavaScript">
 ```javascript
 let listenerID = "UNIQUE_LISTENER_ID";
 
@@ -378,6 +399,13 @@ CometChat.addGroupListener(
 
 </Tabs>
 
+<Warning>
+Always remove group listeners when the component unmounts to prevent memory leaks.
+```javascript
+CometChat.removeGroupListener("UNIQUE_LISTENER_ID");
+```
+</Warning>
+
 ## Missed Group Member Kicked/Banned Events
 
 *In other words, as a member of a group, how do I know when someone is banned/kicked when my app is not running?*
@@ -404,3 +432,39 @@ For group member unbanned event, the details can be obtained using the below fie
 2. `actionBy` - User object containing the details of the user who has unbanned the member
 3. `actionOn` - User object containing the details of the member that has been unbanned
 4. `actionFor` - Group object containing the details of the Group from which the member was unbanned
+
+
+<AccordionGroup>
+<Accordion title="Best Practices">
+- Always confirm with the user before kicking or banning — these are disruptive actions
+- Use ban for persistent rule violations and kick for temporary removals (kicked users can rejoin)
+- Keep your local member list in sync by handling `onGroupMemberKicked`, `onGroupMemberBanned`, and `onGroupMemberUnbanned` listeners
+- When fetching banned members, use pagination (`fetchNext()`) to handle large lists efficiently
+- Only admins and moderators can perform these actions — check the logged-in user's scope before showing kick/ban UI controls
+</Accordion>
+
+<Accordion title="Troubleshooting">
+- **ERR_NOT_A_MEMBER**: The logged-in user is not a member of the group. Ensure the user has joined the group first.
+- **ERR_INSUFFICIENT_PERMISSIONS**: Only admins or moderators can kick/ban members. Verify the logged-in user's role.
+- **Banned user can still rejoin**: Make sure you used `banGroupMember()` and not `kickGroupMember()` — kicked users can rejoin, banned users cannot.
+- **Unban not working**: Only admins or moderators can unban. Also ensure the user was actually banned (not just kicked).
+- **Listener events not firing**: Confirm you registered a `GroupListener` with the correct listener ID and are handling the right callback methods.
+</Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+<Card title="Change Member Scope" icon="user-gear" href="/sdk/react-native/group-change-member-scope">
+Promote or demote group members
+</Card>
+<Card title="Transfer Ownership" icon="arrow-right-arrow-left" href="/sdk/react-native/transfer-group-ownership">
+Transfer group ownership to another member
+</Card>
+<Card title="Retrieve Group Members" icon="users" href="/sdk/react-native/retrieve-group-members">
+Fetch the list of members in a group
+</Card>
+<Card title="Add Members" icon="user-plus" href="/sdk/react-native/group-add-members">
+Add new members to a group
+</Card>
+</CardGroup>

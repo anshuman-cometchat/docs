@@ -1,8 +1,27 @@
 ---
 title: "Block Users"
+description: "Block and unblock users, and retrieve blocked user lists using the CometChat React Native SDK."
 ---
 
+<Info>
+**Quick Reference** - Block and unblock users:
 
+```javascript
+// Block users
+await CometChat.blockUsers(["UID1", "UID2"]);
+
+// Unblock users
+await CometChat.unblockUsers(["UID1", "UID2"]);
+
+// Fetch blocked users
+const request = new CometChat.BlockedUsersRequestBuilder().setLimit(30).build();
+const blockedUsers = await request.fetchNext();
+```
+</Info>
+
+<Note>
+**Available via:** [SDK](/sdk/react-native/block-users) | [REST API](/rest-api/blocked-users/block-user)
+</Note>
 
 ## Block Users
 
@@ -11,7 +30,7 @@ title: "Block Users"
 You can block users using the `blockUsers()` method. Once any user is blocked, all the communication to and from the respective user will be completely blocked. You can block multiple users in a single operation. The `blockUsers()` method takes a `Array` as a parameter which holds the list of `UID's` to be blocked.
 
 <Tabs>
-<Tab title="Block Users">
+<Tab title="JavaScript">
 ```javascript
 var usersList = ["UID1", "UID2", "UID3"];
 CometChat.blockUsers(usersList).then(
@@ -51,7 +70,7 @@ It returns a Array which contains `UID's` as the keys and "success" or "fail" as
 You can unblock the already blocked users using the `unblockUsers()` method. You can unblock multiple users in a single operation. The `unblockUsers()` method takes a `Array` as a parameter which holds the list of `UID's` to be unblocked.
 
 <Tabs>
-<Tab title="Unblock Users">
+<Tab title="JavaScript">
 ```javascript
 var usersList = ["UID1", "UID2", "UID3"];
 
@@ -98,7 +117,7 @@ The `BlockedUsersRequestBuilder` class allows you to set the below parameters:
 This method sets the limit i.e. the number of blocked users that should be fetched in a single iteration.
 
 <Tabs>
-<Tab title="Set Limit">
+<Tab title="JavaScript">
 ```javascript
 let limit = 30;
 let blockedUsersRequest = new BlockedUsersRequest.BlockedUsersRequestBuilder()
@@ -125,7 +144,7 @@ let blockedUsersRequest: CometChat.BlockedUsersRequest = new CometChat.BlockedUs
 This method allows you to set the search string based on which the blocked users are to be fetched.
 
 <Tabs>
-<Tab title="Set Search Keyword">
+<Tab title="JavaScript">
 ```javascript
 let limit = 30;
 let searchKeyword = "super";
@@ -158,7 +177,7 @@ let blockedUsersRequest: CometChat.BlockedUsersRequest = new CometChat.BlockedUs
 * CometChat.BlockedUsersRequest.directions.BOTH - This will make sure the list of users includes both the above cases. This is the default value for the direction variable if it is not set.
 
 <Tabs>
-<Tab title="Set Direction">
+<Tab title="JavaScript">
 ```javascript
 let limit = 30;
 let blockedUsersRequest = new BlockedUsersRequest.BlockedUsersRequestBuilder()
@@ -187,7 +206,7 @@ Finally, once all the parameters are set to the builder class, you need to call 
 Once you have the object of the `BlockedUsersRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of `User` objects containing n number of blocked users where N is the limit set in the builder class.
 
 <Tabs>
-<Tab title="Blocked Users Request">
+<Tab title="JavaScript">
 ```javascript
 var limit = 30;
 var blockedUsersRequest = new CometChat.BlockedUsersRequestBuilder()
@@ -223,3 +242,44 @@ blockedUsersRequest.fetchNext().then(
 </Tab>
 
 </Tabs>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use hideBlockedUsers when fetching user lists">
+    When displaying user lists in your app, use `hideBlockedUsers(true)` in the `UsersRequestBuilder` to automatically exclude blocked users from the results.
+  </Accordion>
+  <Accordion title="Handle block/unblock results per UID">
+    The `blockUsers()` and `unblockUsers()` methods return a map with each UID's result ("success" or "fail"). Check individual results rather than assuming all operations succeeded.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Blocked user can still send messages">
+    Blocking is enforced server-side. If a blocked user's messages still appear, verify the block operation returned "success" for that UID. Also ensure you're not using a cached conversation list — refresh after blocking.
+  </Accordion>
+  <Accordion title="fetchNext returns empty for blocked users list">
+    Check the `setDirection` filter. If set to `BLOCKED_BY_ME`, only users you blocked are returned. If set to `HAS_BLOCKED_ME`, only users who blocked you are returned. Use `BOTH` to see all.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Retrieve Users" icon="users" href="/sdk/react-native/retrieve-users">
+    Fetch user lists with filtering and pagination
+  </Card>
+  <Card title="User Management" icon="user-plus" href="/sdk/react-native/user-management">
+    Create, update, and delete users in CometChat
+  </Card>
+  <Card title="User Presence" icon="circle-dot" href="/sdk/react-native/user-presence">
+    Track online/offline status of users in real time
+  </Card>
+  <Card title="Send Messages" icon="paper-plane" href="/sdk/react-native/send-message">
+    Send text, media, and custom messages to users and groups
+  </Card>
+</CardGroup>

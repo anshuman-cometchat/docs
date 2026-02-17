@@ -1,15 +1,34 @@
 ---
 title: "Retrieve Users"
+description: "Fetch user lists, search users, get logged-in user details, and retrieve online user counts using the CometChat React Native SDK."
 ---
 
+<Info>
+**Quick Reference** - Fetch users:
 
+```javascript
+// Get logged-in user
+const me = await CometChat.getLoggedinUser();
+
+// Fetch user list
+const usersRequest = new CometChat.UsersRequestBuilder().setLimit(30).build();
+const users = await usersRequest.fetchNext();
+
+// Get specific user
+const user = await CometChat.getUser("UID");
+```
+</Info>
+
+<Note>
+**Available via:** [SDK](/sdk/react-native/retrieve-users) | [REST API](/rest-api/users/list) | [UI Kits](/ui-kit/react-native/users)
+</Note>
 
 ## Retrieve Logged In User Details
 
 You can get the details of the logged-in user using the `getLoggedInUser()` method. This method can also be used to check if the user is logged in or not. If the method returns `Promise` with reject callback, it indicates that the user is not logged in and you need to log the user into CometChat SDK.
 
 <Tabs>
-<Tab title="Get Logged In User Details">
+<Tab title="JavaScript">
 ```javascript
 var user = CometChat.getLoggedinUser().then(
 user => {
@@ -50,7 +69,7 @@ The `UsersRequestBuilder` class allows you to set the below parameters:
 This method sets the limit i.e. the number of users that should be fetched in a single iteration.
 
 <Tabs>
-<Tab title="Set Limit">
+<Tab title="JavaScript">
 ```javascript
 let limit = 30;
 let usersRequest = new CometChat.UsersRequestBuilder()
@@ -77,7 +96,7 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 This method allows you to set the search string based on which the users are to be fetched.
 
 <Tabs>
-<Tab title="Set Search Keyword">
+<Tab title="JavaScript">
 ```javascript
 let limit = 30;
 let searchKeyword = "super";
@@ -148,7 +167,7 @@ The status based on which the users are to be fetched. The status parameter can 
 If this parameter is not set, will return all the available users.
 
 <Tabs>
-<Tab title="Set Status">
+<Tab title="JavaScript">
 ```javascript
 let limit = 30;
 let usersRequest = new CometChat.UsersRequestBuilder()
@@ -177,7 +196,7 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 This method is used to determine if the blocked users should be returned as a part of the user list. If set to true, the user list will not contain the users blocked by the logged in user.
 
 <Tabs>
-<Tab title="Hide Blocked Users">
+<Tab title="JavaScript">
 ```javascript
 let limit = 30;
 let usersRequest = new CometChat.UsersRequestBuilder()
@@ -206,7 +225,7 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 This method allows you to fetch the users based on multiple roles.
 
 <Tabs>
-<Tab title="Set Roles">
+<Tab title="JavaScript">
 ```javascript
 let limit = 30;
 let roles = ["default", "dev"];
@@ -237,7 +256,7 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 This property when set to true will return only the friends of the logged-in user.
 
 <Tabs>
-<Tab title="Friends Only">
+<Tab title="JavaScript">
 ```javascript
 let limit = 30;
 let usersRequest = new CometChat.UsersRequestBuilder()
@@ -266,7 +285,7 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 This method accepts a list of tags based on which the list of users is to be fetched. The list fetched will only contain the users that have been tagged with the specified tags.
 
 <Tabs>
-<Tab title="Set Tags">
+<Tab title="JavaScript">
 ```javascript
 let limit = 30;
 let tags = ["tag1", "tag2"];
@@ -297,7 +316,7 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 This property when set to true will fetch tags data along with the list of users.
 
 <Tabs>
-<Tab title="With Tags">
+<Tab title="JavaScript">
 ```javascript
 let limit = 30;
 let usersRequest = new CometChat.UsersRequestBuilder()
@@ -326,7 +345,7 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 This method accepts a list of UIDs based on which the list of users is fetched. A maximum of `25` users can be fetched.
 
 <Tabs>
-<Tab title="Set UIDs">
+<Tab title="JavaScript">
 ```javascript
 let limit = 30;
 let UIDs = ["cometchat-uid-1", "cometchat-uid-2"];
@@ -420,7 +439,7 @@ Finally, once all the parameters are set to the builder class, you need to call 
 Once you have the object of the UsersRequest class, you need to call the fetchNext() method. Calling this method will return a list of User objects containing n number of users where n is the limit set in the builder class.
 
 <Tabs>
-<Tab title="Users Request">
+<Tab title="JavaScript">
 ```javascript
 var limit = 30;
 var usersRequest = new CometChat.UsersRequestBuilder()
@@ -463,7 +482,7 @@ usersRequest.fetchNext().then(
 To get the information of a user, you can use the `getUser()` method.
 
 <Tabs>
-<Tab title="Retrieve Particular User's Details">
+<Tab title="JavaScript">
 ```javascript
 let UID = "UID";
 CometChat.getUser(UID).then(
@@ -506,7 +525,7 @@ It returns the `User` object containing the details of the user.
 To get the total count of online users for your app, you can use the `getOnlineUserCount()` method.
 
 <Tabs>
-<Tab title="Get Online User Count">
+<Tab title="JavaScript">
 ```javascript
 CometChat.getOnlineUserCount().then(
 userCount => {
@@ -535,3 +554,50 @@ CometChat.getOnlineUserCount().then(
 </Tabs>
 
 This method returns the total online user count for your app.
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use pagination for large user lists">
+    Always use `fetchNext()` with a reasonable `setLimit()` value (e.g., 20-30) rather than fetching all users at once. This improves performance and reduces memory usage.
+  </Accordion>
+  <Accordion title="Reuse the same UsersRequest instance for pagination">
+    The `UsersRequest` object maintains an internal cursor. Creating a new instance resets the cursor, causing the same page to be fetched repeatedly. Reuse the same instance across `fetchNext()` calls.
+  </Accordion>
+  <Accordion title="Filter server-side, not client-side">
+    Use the builder's filter methods (`setSearchKeyword`, `setStatus`, `setRoles`, `setTags`) to narrow results at the API level rather than fetching all users and filtering in your app.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="fetchNext returns empty list">
+    Verify the logged-in user session is active. Also check if filters like `setRoles`, `setTags`, or `setStatus` are too restrictive. Try removing filters to confirm users exist.
+  </Accordion>
+  <Accordion title="getUser returns error">
+    Ensure the UID exists in your CometChat app. UIDs are case-sensitive — double-check the exact UID string.
+  </Accordion>
+  <Accordion title="Blocked users still appearing in list">
+    By default, blocked users are included in the user list. Use `hideBlockedUsers(true)` in the `UsersRequestBuilder` to exclude them.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="User Management" icon="user-plus" href="/sdk/react-native/user-management">
+    Create, update, and delete users in CometChat
+  </Card>
+  <Card title="Block Users" icon="ban" href="/sdk/react-native/block-users">
+    Block and unblock users, retrieve blocked user lists
+  </Card>
+  <Card title="User Presence" icon="circle-dot" href="/sdk/react-native/user-presence">
+    Track online/offline status of users in real time
+  </Card>
+  <Card title="Retrieve Conversations" icon="comments" href="/sdk/react-native/retrieve-conversations">
+    Fetch conversation lists with last message and unread counts
+  </Card>
+</CardGroup>
