@@ -151,7 +151,7 @@ let UID = "UID";
 let limit = 30;
 let latestId = await CometChat.getLastDeliveredMessageId();
 
-var messagesRequest = new CometChat.MessagesRequestBuilder()
+let messagesRequest = new CometChat.MessagesRequestBuilder()
   .setUID(UID)
   .setMessageId(latestId)
   .setLimit(limit)
@@ -204,7 +204,7 @@ let GUID = "GUID";
 let limit = 30;
 let latestId = await CometChat.getLastDeliveredMessageId();
 
-var messagesRequest = new CometChat.MessagesRequestBuilder()
+let messagesRequest = new CometChat.MessagesRequestBuilder()
   .setGUID(GUID)
   .setMessageId(latestId)
   .setLimit(limit)
@@ -991,6 +991,25 @@ CometChat.getUnreadMessageCountForAllGroups().then(
 </Tabs>
 
 It returns an object which will contain the GUID as the key and the unread message count as the value.
+
+<Accordion title="Best Practices">
+- **Remove listeners on cleanup**: Always call `removeMessageListener()` when components unmount to prevent memory leaks
+- **Use unique listener IDs**: Generate unique IDs per component/screen to avoid conflicts
+- **Handle all message types**: Implement handlers for text, media, and custom messages
+- **Fetch missed messages on app resume**: Call `getLastDeliveredMessageId()` and fetch messages since that ID
+- **Paginate message history**: Use `setLimit()` with reasonable values (30-50) and call `fetchPrevious()` for more
+- **Filter by category/type**: Use `setCategories()` and `setTypes()` to fetch only relevant messages
+</Accordion>
+
+<Accordion title="Troubleshooting">
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Not receiving messages | Listener not added | Verify `addMessageListener()` was called with correct ID |
+| Duplicate messages | Multiple listeners | Ensure only one listener per ID; remove on unmount |
+| Missing messages | App was offline | Use `getLastDeliveredMessageId()` + `fetchNext()` for missed messages |
+| Wrong message count | Blocked users included | Use `hideMessagesFromBlockedUsers` parameter |
+| History not loading | Wrong method | Use `fetchPrevious()` for history, `fetchNext()` for missed messages |
+</Accordion>
 
 ---
 

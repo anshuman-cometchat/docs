@@ -196,6 +196,27 @@ CometChat.sendMessage(textMessage).then(
 
 </Tab>
 
+<Tab title="Async/Await">
+```javascript
+try {
+  const receiverID = "UID";
+  const messageText = "Hello world!";
+  const receiverType = CometChat.RECEIVER_TYPE.USER;
+  const textMessage = new CometChat.TextMessage(
+    receiverID,
+    messageText,
+    receiverType
+  );
+
+  const message = await CometChat.sendMessage(textMessage);
+  console.log("Message sent successfully:", message);
+} catch (error) {
+  console.log("Message sending failed with error:", error);
+}
+```
+
+</Tab>
+
 </Tabs>
 
 ### Set Quoted Message Id
@@ -426,11 +447,11 @@ Getting file Object:
   <body>
     <input type="file" name="img_file" id="img_file" />
     <script>
-      var UID = "UID";
-      var file = document.getElementById("img_file").files[0];
-      var fileType = MESSAGE_TYPE.IMAGE;
-      var userType = CometChat.RECEIVER_TYPE.USER;
-      var mediaMessage = new MediaMessage(UID, file, fileType, userType);
+      const UID = "UID";
+      const file = document.getElementById("img_file").files[0];
+      const fileType = MESSAGE_TYPE.IMAGE;
+      const userType = CometChat.RECEIVER_TYPE.USER;
+      const mediaMessage = new MediaMessage(UID, file, fileType, userType);
     </script>
   </body>
 </html>
@@ -573,11 +594,11 @@ Getting file Object:
   <body>
     <input type="file" name="img_file" id="img_file" />
     <script>
-      var UID = "UID";
-      var file = document.getElementById("img_file").files[0];
-      var fileType = MESSAGE_TYPE.IMAGE;
-      var userType = CometChat.RECEIVER_TYPE.USER;
-      var mediaMessage = new MediaMessage(UID, file, fileType, userType);
+      const UID = "UID";
+      const file = document.getElementById("img_file").files[0];
+      const fileType = MESSAGE_TYPE.IMAGE;
+      const userType = CometChat.RECEIVER_TYPE.USER;
+      const mediaMessage = new MediaMessage(UID, file, fileType, userType);
     </script>
   </body>
 </html>
@@ -857,11 +878,11 @@ Getting files:
   <body>
     <input type="file" name="img_file" id="img_file" />
     <script>
-      var UID = "UID";
-      var files = document.getElementById("img_file").files;
-      var fileType = MESSAGE_TYPE.IMAGE;
-      var userType = CometChat.RECEIVER_TYPE.USER;
-      var mediaMessage = new MediaMessage(UID, files, fileType, userType);
+      const UID = "UID";
+      const files = document.getElementById("img_file").files;
+      const fileType = MESSAGE_TYPE.IMAGE;
+      const userType = CometChat.RECEIVER_TYPE.USER;
+      const mediaMessage = new MediaMessage(UID, files, fileType, userType);
     </script>
   </body>
 </html>
@@ -1751,6 +1772,25 @@ CometChat.sendCustomMessage(customMessage).then(
 It is also possible to send interactive messages from CometChat, to know more [click here](/sdk/javascript/interactive-messages)
 
 </Note>
+
+<Accordion title="Best Practices">
+- **Use appropriate message types**: Choose text, media, or custom messages based on your content
+- **Add metadata for context**: Use `setMetadata()` to attach location, device info, or other contextual data
+- **Tag important messages**: Use `setTags()` to mark messages for easy filtering (e.g., "starred", "important")
+- **Handle errors gracefully**: Always implement error callbacks to handle network issues or invalid parameters
+- **Use async/await for cleaner code**: Modern JavaScript syntax makes message sending code more readable
+- **Validate file types**: Before sending media messages, verify the file type matches the message type (IMAGE, VIDEO, AUDIO, FILE)
+</Accordion>
+
+<Accordion title="Troubleshooting">
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Message not sent | User not logged in | Ensure `CometChat.login()` succeeded before sending |
+| Media upload fails | File too large | Check file size limits in your CometChat plan |
+| Custom message not received | Missing listener | Ensure receiver has `onCustomMessageReceived` handler |
+| Metadata not appearing | Wrong method | Use `setMetadata()` before calling send method |
+| Quoted message fails | Invalid message ID | Verify the quoted message ID exists |
+</Accordion>
 
 ---
 

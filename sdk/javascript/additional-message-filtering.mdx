@@ -1509,6 +1509,24 @@ let GUID: string = "GUID",
 
 </Tabs>
 
+<Accordion title="Best Practices">
+- **Combine filters strategically**: Use `setCategories()` with `setTypes()` for precise filtering
+- **Set reasonable limits**: Use 30-50 messages per fetch for optimal performance
+- **Use timestamps for sync**: `setUpdatedAfter()` helps sync local cache with server
+- **Hide deleted messages in UI**: Use `hideDeletedMessages(true)` for cleaner message lists
+- **Filter blocked users**: Use `hideMessagesFromBlockedUsers(true)` to respect user preferences
+- **Reuse MessagesRequest**: Call `fetchPrevious()`/`fetchNext()` on the same object for pagination
+</Accordion>
+
+<Accordion title="Troubleshooting">
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| No messages returned | Conflicting filters | Simplify filters and add them one at a time |
+| Missing message types | Category not included | Ensure category matches type (e.g., "message" for "text") |
+| Pagination not working | New request object | Reuse the same MessagesRequest object for pagination |
+| Thread replies included | `hideReplies` not set | Add `.hideReplies(true)` to exclude thread messages |
+| Deleted messages showing | Default behavior | Add `.hideDeletedMessages(true)` to filter them out |
+</Accordion>
 
 ---
 

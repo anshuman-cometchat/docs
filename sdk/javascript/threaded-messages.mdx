@@ -100,8 +100,8 @@ To add a MessageListener, you can use the `addMessageListener()` method of the S
 <Tabs>
 <Tab title="Message Listener">
 ```javascript
-var listenerID = "UNIQUE_LISTENER_ID";
-var activeThreadId = 100;
+const listenerID = "UNIQUE_LISTENER_ID";
+const activeThreadId = 100;
 
 CometChat.addMessageListener(
 listenerID,
@@ -129,8 +129,8 @@ new CometChat.MessageListener({
 
 <Tab title="TypeScript">
 ```typescript
-var listenerID: string = "UNIQUE_LISTENER_ID",
-  activeThreadId: number = 100;
+const listenerID: string = "UNIQUE_LISTENER_ID";
+const activeThreadId: number = 100;
 
 CometChat.addMessageListener(
   listenerID,
@@ -299,6 +299,23 @@ messagesRequest.fetchPrevious().then(
 </Tabs>
 
 The above snippet will return messages between the logged in user and `cometchat-uid-1` excluding all the threaded messages belonging to the same conversation.
+
+<Accordion title="Best Practices">
+- **Track active thread ID**: Store the current thread's `parentMessageId` to filter incoming messages
+- **Use `hideReplies(true)`**: Exclude thread replies from main conversation to avoid clutter
+- **Paginate thread messages**: Use `setLimit()` and `fetchPrevious()` for large threads
+- **Remove listeners on thread close**: Clean up message listeners when user exits a thread view
+- **Show reply count**: Display the number of replies on parent messages to indicate thread activity
+</Accordion>
+
+<Accordion title="Troubleshooting">
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Thread replies in main chat | `hideReplies` not set | Add `.hideReplies(true)` to MessagesRequestBuilder |
+| Missing thread messages | Wrong parent ID | Verify `setParentMessageId()` uses correct message ID |
+| Real-time messages not filtered | Not checking parent ID | Compare `getParentMessageId()` with active thread ID |
+| Empty thread | Parent message deleted | Handle case where parent message no longer exists |
+</Accordion>
 
 ---
 
