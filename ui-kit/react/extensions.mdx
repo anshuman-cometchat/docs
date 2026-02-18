@@ -1,6 +1,6 @@
 ---
 title: "Extensions"
-description: "Overview of CometChat's built-in extensions including Stickers, Polls, Collaborative Whiteboard, Collaborative Document, Message Translation, Link Preview, and Thumbnail Generation — activated via the Dashboard and auto-integrated into UI Kit components."
+description: "Overview of CometChat's extensions grouped by Dashboard categories (User Experience, User Engagement, Collaboration, Security, Customer Support, Smart Chat Features) and how they auto-integrate into React UI Kit components."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
@@ -13,7 +13,7 @@ Key components that support extensions:
 
 Extensions are enabled via the [CometChat Dashboard](/fundamentals/extensions-overview) — no additional code required once activated.
 
-Supported extensions: Stickers, Polls, Collaborative Whiteboard, Collaborative Document, Message Translation, Link Preview, Thumbnail Generation
+Supported extensions: User Experience, User Engagement, Collaboration, Security, Customer Support, Smart Chat Features
 </Info>
 
 <Info>
@@ -21,7 +21,7 @@ Supported extensions: Stickers, Polls, Collaborative Whiteboard, Collaborative D
 
 **Package:** `@cometchat/chat-uikit-react`
 **Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()` + Extensions enabled in Dashboard
-**Extensions covered:** Stickers, Polls, Collaborative Whiteboard, Collaborative Document, Message Translation, Link Preview, Thumbnail Generation
+**Extensions covered:** User Experience, User Engagement, Collaboration, Security, Customer Support, Smart Chat Features
 **Primary components:** `CometChatMessageComposer`, `CometChatMessageList`
 **Activation:** Enable each extension from the CometChat Dashboard — UI Kit auto-integrates them
 </Info>
@@ -43,13 +43,15 @@ CometChat's UI Kit provides native support for a wide range of powerful extensio
 
 ## Built-in Extensions
 
-Here's a guide on how you can enable and integrate these extensions:
+Here's a guide on how you can enable and integrate these extensions. The grouping below mirrors the CometChat Dashboard.
 
-### Bitly
+### User Experience
+
+#### Bitly
 
 The Bitly extension allows you to shorten long URLs in your text messages using Bitly's URL shortening service. For a comprehensive understanding and guide on implementing and using the Bitly Extension, refer to our specific guide on the [Bitly Extension](/fundamentals/bitly).
 
-### Link Preview
+#### Link Preview
 
 The Link Preview extension provides a summary of the URL shared in the chat. It includes the title, a description, and a thumbnail image from the web page. For a comprehensive understanding and guide on implementing and using the Link Preview Extension, refer to our specific guide on the [Link Preview Extension](/fundamentals/link-preview).
 
@@ -59,23 +61,23 @@ Once you have successfully activated the [Link Preview Extension](/fundamentals/
   <img src="/images/0219d225-extension_link_preview_web_screens-3c9e0774d6a45316df0ee48ee2338c2d.png" />
 </Frame>
 
-### Message Shortcuts
+#### Message Shortcuts
 
 The Message Shortcuts extension enables users to send predefined messages using short codes. For example, typing `!hb` can automatically expand to `Happy birthday!`. For a comprehensive understanding and guide on implementing and using the Message Shortcuts Extension, refer to our specific guide on the [Message Shortcuts Extension](/fundamentals/message-shortcuts).
 
-### Pin Message
+#### Pin Message
 
 The Pin Message extension allows users to pin important messages in a conversation, making them easily accessible for all participants. For a comprehensive understanding and guide on implementing and using the Pin Message Extension, refer to our specific guide on the [Pin Message Extension](/fundamentals/pin-message).
 
-### Rich Media Preview
+#### Rich Media Preview
 
 The Rich Media Preview extension generates rich preview panels for URLs shared in messages, fetching detailed information from popular sites using iFramely. For a comprehensive understanding and guide on implementing and using the Rich Media Preview Extension, refer to our specific guide on the [Rich Media Preview Extension](/fundamentals/rich-media-preview).
 
-### Save Message
+#### Save Message
 
 The Save Message extension allows users to bookmark messages for later reference. Saved messages are private and visible only to the user who saved them. For a comprehensive understanding and guide on implementing and using the Save Message Extension, refer to our specific guide on the [Save Message Extension](/fundamentals/save-message).
 
-### Thumbnail Generation
+#### Thumbnail Generation
 
 The Thumbnail Generation extension automatically creates a smaller preview image whenever a larger image is shared, helping to reduce the upload/download time and bandwidth usage. For a comprehensive understanding and guide on implementing and using the Thumbnail Generation Extension, refer to our specific guide on the [Thumbnail Generation Extension](/fundamentals/thumbnail-generation).
 
@@ -85,23 +87,21 @@ Once you have successfully activated the [Thumbnail Generation Extension](/funda
   <img src="/images/382b5743-extension_thumbnail_generation_web_screens-b660bc307ecd540c0a7301e65ca0af5b.png" />
 </Frame>
 
-### TinyURL
+#### TinyURL
 
 The TinyURL extension provides URL shortening capabilities for messages, similar to Bitly but using the TinyURL service. For a comprehensive understanding and guide on implementing and using the TinyURL Extension, refer to our specific guide on the [TinyURL Extension](/fundamentals/tinyurl).
 
-### Voice Transcription
+#### Voice Transcription
 
 The Voice Transcription extension converts audio messages into text, making it easier to read voice messages without playing them. For a comprehensive understanding and guide on implementing and using the Voice Transcription Extension, refer to our specific guide on the [Voice Transcription Extension](/fundamentals/voice-transcription).
 
-### User Management
+### User Engagement
 
-The Avatars extension allows end-users to upload avatar images for their profiles directly within CometChat. For a comprehensive understanding and guide on implementing and using the Avatars Extension, refer to our specific guide on the [Avatars Extension](/fundamentals/avatars).
-
-### Giphy
+#### Giphy
 
 The Giphy extension allows users to search for and share GIFs in their conversations, adding a fun and expressive element to chats. For a comprehensive understanding and guide on implementing and using the Giphy Extension, refer to our specific guide on the [Giphy Extension](/fundamentals/giphy).
 
-### Message Translation
+#### Message Translation
 
 The Message Translation extension in CometChat is designed to translate any message into your local locale. It eliminates language barriers, making the chat more inclusive. For a comprehensive understanding and guide on implementing and using the Message Translation Extension, refer to our specific guide on the [Message Translation Extension](/fundamentals/message-translation).
 
@@ -111,7 +111,7 @@ Once you have successfully activated the [Message Translation Extension](/fundam
   <img src="/images/0baa8eed-extension_message_translation_web_screens-4e96a6b7bc989197532d49ca83f77977.png" />
 </Frame>
 
-### Polls
+#### Polls
 
 The Polls extension enhances group discussions by allowing users to create polls. Users can ask questions with a predefined list of answers, enabling a quick, organized way to gather group opinions. For a comprehensive understanding and guide on implementing and using the Polls Extension, refer to our specific guide on the [Polls Extension](/fundamentals/polls).
 
@@ -121,11 +121,11 @@ Once you have successfully activated the [Polls Extension](/fundamentals/polls) 
   <img src="/images/cc12b78b-extension_poll_web_screens-d48dc40c1a77ad81b6382607d7721b19.png" />
 </Frame>
 
-### Reminders
+#### Reminders
 
 The Reminders extension allows users to set reminders for messages or create personal reminders. When a reminder is due, a bot sends a notification message to the user. For a comprehensive understanding and guide on implementing and using the Reminders Extension, refer to our specific guide on the [Reminders Extension](/fundamentals/reminders).
 
-### Stickers
+#### Stickers
 
 The Stickers extension allows users to express their emotions more creatively. It adds a much-needed fun element to the chat by allowing users to send various pre-designed stickers. For a comprehensive understanding and guide on implementing and using the Sticker Extension, refer to our specific guide on the [Sticker Extension](/fundamentals/stickers).
 
@@ -135,27 +135,17 @@ Once you have successfully activated the [Sticker Extension](/fundamentals/stick
   <img src="/images/f3262629-extension_sticker_web_screens-6e10335c8a82dea2b11cc875c44b606e.png" />
 </Frame>
 
-### Stipop
+#### Stipop
 
 The Stipop extension integrates the world's trendiest sticker platform into your chat, allowing users to search for and send stickers from Stipop's extensive library. For a comprehensive understanding and guide on implementing and using the Stipop Extension, refer to our specific guide on the [Stipop Extension](/fundamentals/stickers-stipop).
 
-### Tenor
+#### Tenor
 
 The Tenor extension allows users to search for and share GIFs from Tenor's library in their conversations. For a comprehensive understanding and guide on implementing and using the Tenor Extension, refer to our specific guide on the [Tenor Extension](/fundamentals/tenor).
 
-## Collaboration
+### Collaboration
 
-### Collaborative Whiteboard
-
-The Collaborative Whiteboard extension facilitates real-time collaboration. Users can draw, brainstorm, and share ideas on a shared digital whiteboard. For a comprehensive understanding and guide on implementing and using the Collaborative Whiteboard Extension, refer to our specific guide on the [Collaborative Whiteboard Extension](/fundamentals/collaborative-whiteboard).
-
-Once you have successfully activated the [Collaborative Whiteboard Extension](/fundamentals/collaborative-whiteboard) from your CometChat Dashboard, the feature will automatically be incorporated into the Action Sheet of the [Message Composer](/ui-kit/react/message-composer) component of UI Kits.
-
-<Frame>
-  <img src="/images/6baee6d6-extension_whiteboard_web_screens-5ab03b904a0a2f6550d86c701c5fcda2.png" />
-</Frame>
-
-### Collaborative Document
+#### Collaborative Document
 
 With the Collaborative Document extension, users can work together on a shared document. This feature is essential for remote teams where document collaboration is a recurring requirement. For a comprehensive understanding and guide on implementing and using the Collaborative Document Extension, refer to our specific guide on the [Collaborative Document Extension](/fundamentals/collaborative-document).
 
@@ -165,31 +155,47 @@ Once you have successfully activated the [Collaborative Document Extension](/fun
   <img src="/images/ed4f9ead-extension_collaborative_document_web_screens-b636764a036d286a66cf81bf43cadf19.png" />
 </Frame>
 
-## Security
+#### Collaborative Whiteboard
 
-### Disappearing Messages
+The Collaborative Whiteboard extension facilitates real-time collaboration. Users can draw, brainstorm, and share ideas on a shared digital whiteboard. For a comprehensive understanding and guide on implementing and using the Collaborative Whiteboard Extension, refer to our specific guide on the [Collaborative Whiteboard Extension](/fundamentals/collaborative-whiteboard).
+
+Once you have successfully activated the [Collaborative Whiteboard Extension](/fundamentals/collaborative-whiteboard) from your CometChat Dashboard, the feature will automatically be incorporated into the Action Sheet of the [Message Composer](/ui-kit/react/message-composer) component of UI Kits.
+
+<Frame>
+  <img src="/images/6baee6d6-extension_whiteboard_web_screens-5ab03b904a0a2f6550d86c701c5fcda2.png" />
+</Frame>
+
+### Security
+
+#### Disappearing Messages
 
 The Disappearing Messages extension allows users to send messages that automatically disappear after a specified time interval. This works for both one-on-one and group messages. For a comprehensive understanding and guide on implementing and using the Disappearing Messages Extension, refer to our specific guide on the [Disappearing Messages Extension](/fundamentals/disappearing-messages).
 
-## Customer Support
+### Customer Support
 
-### Chatwoot
+#### Chatwoot
 
 The Chatwoot extension makes customer support seamless by allowing your users to communicate with your support team directly through CometChat, eliminating the need for a separate support interface. For a comprehensive understanding and guide on implementing and using the Chatwoot Extension, refer to our specific guide on the [Chatwoot Extension](/fundamentals/chatwoot).
 
-### Intercom
+#### Intercom
 
 The Intercom extension integrates Intercom's customer support platform with CometChat, enabling users to chat with your support team using the same chat interface they use for regular conversations. For a comprehensive understanding and guide on implementing and using the Intercom Extension, refer to our specific guide on the [Intercom Extension](/fundamentals/intercom).
 
+### Smart Chat Features
+
+#### Conversation Starter
+
+Conversation Starter suggests AI-generated opening messages to help users begin a new chat. For a comprehensive understanding and guide on implementing and using Conversation Starter, refer to our specific guide on the [Conversation Starter](/fundamentals/ai-user-copilot/conversation-starter) and the [AI Features](/ui-kit/react/ai-features) overview.
+
+#### Smart Replies
+
+Smart Replies provide AI-generated response suggestions to keep conversations flowing. For a comprehensive understanding and guide on implementing and using Smart Replies, refer to our specific guide on the [Smart Replies](/fundamentals/ai-user-copilot/smart-replies) and the [AI Features](/ui-kit/react/ai-features) overview.
+
+#### Conversation Summary
+
+Conversation Summary generates an AI-written recap of a conversation when needed. For a comprehensive understanding and guide on implementing and using Conversation Summary, refer to our specific guide on the [Conversation Summary](/fundamentals/ai-user-copilot/conversation-summary) and the [AI Features](/ui-kit/react/ai-features) overview.
+
 ---
-
-## Next Steps
-
-Once you have successfully activated the [Thumbnail Generation Extension](/fundamentals/thumbnail-generation) from your CometChat Dashboard, the feature will automatically be incorporated into the Message Bubble of [MessageList Component](/ui-kit/react/message-list) component of UI Kits.
-
-<Frame>
-  <img src="/images/382b5743-extension_thumbnail_generation_web_screens-b660bc307ecd540c0a7301e65ca0af5b.png" />
-</Frame>
 
 <AccordionGroup>
 <Accordion title="Common Failure Modes">
