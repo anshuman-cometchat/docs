@@ -82,7 +82,7 @@ src/
 <Tabs>
 <Tab title="TypeScript">
 
-```tsx CometChatNoSSR.tsx
+```tsx CometChatNoSSR.tsx lines highlight={7-9, 31, 51, 61}
 import React, { useEffect, useState } from "react";
 import { CometChatMessageComposer, CometChatMessageHeader, CometChatMessageList, CometChatUIKit, UIKitSettingsBuilder } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -113,7 +113,7 @@ const CometChatNoSSR: React.FC = () => {
         console.log("Initialization completed successfully");
         CometChatUIKit.getLoggedinUser().then((loggedInUser) => {
           if (!loggedInUser) {
-            CometChatUIKit.login("superhero1")
+            CometChatUIKit.login("cometchat-uid-2") //TODO: Replace with your actual UID
               .then((user) => {
                 console.log("Login Successful", { user });
                 setUser(user);
@@ -176,7 +176,7 @@ export default CometChatNoSSR;
 
 <Tab title="CSS">
 
-```css CometChatNoSSR.css
+```css CometChatNoSSR.css lines
 .messages-wrapper {
     width: 100%;
     height: 100%;
@@ -208,8 +208,9 @@ In the code snippet above, ensure you select either a user or a group based on y
 
 #### **Fetching a User (One-on-One Chat)**
 
-```javascript
+```javascript lines highlight={1}
 const UID = "cometchat-uid-1";
+
 CometChat.getUser(UID).then(
     user => {
         setSelectedUser(user);
@@ -221,8 +222,9 @@ CometChat.getUser(UID).then(
 
 #### **Fetching a Group (Group Chat)**
 
-```javascript
+```javascript lines highlight={1}
 const GUID = "GUID"
+
 CometChat.getGroup(GUID).then(
     group => {
         setSelectedGroup(group);
@@ -240,7 +242,7 @@ In this update, we will **disable Server-Side Rendering (SSR) for `CometChatNoSS
 
 Modify your `index.tsx` file to dynamically import the `CometChatNoSSR.tsx` component with `{ ssr: false }`.
 
-```tsx index.tsx
+```tsx index.tsx lines
 import { Inter } from "next/font/google";
 import dynamic from "next/dynamic";
 
@@ -270,7 +272,7 @@ export default function Home() {
 
 Next, add the following styles to global.css to ensure CometChat UI Kit is properly styled.
 
-```css global.css
+```css global.css lines
 :root {
   --background: #ffffff;
   --foreground: #171717;
