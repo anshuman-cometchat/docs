@@ -78,7 +78,7 @@ src/
 <Tabs>
 <Tab title="TypeScript">
 
-```tsx CometChatNoSSR.tsx
+```tsx CometChatNoSSR.tsx lines highlight={7-9, 31, 51, 61}
 import React, { useEffect, useState } from "react";
 import { CometChatMessageComposer, CometChatMessageHeader, CometChatMessageList, CometChatUIKit, UIKitSettingsBuilder } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -109,7 +109,7 @@ const CometChatNoSSR: React.FC = () => {
         console.log("Initialization completed successfully");
         CometChatUIKit.getLoggedinUser().then((loggedInUser) => {
           if (!loggedInUser) {
-            CometChatUIKit.login("superhero1")
+            CometChatUIKit.login("cometchat-uid-2") //TODO: Replace with dynamic UID
               .then((user) => {
                 console.log("Login Successful", { user });
                 setUser(user);
@@ -172,7 +172,7 @@ export default CometChatNoSSR;
 
 <Tab title="CSS">
 
-```css CometChatNoSSR.css
+```css CometChatNoSSR.css lines
 .messages-wrapper {
     width: 100%;
     height: 100%;
@@ -204,8 +204,9 @@ In the code snippet above, ensure you select either a user or a group based on y
 
 #### **Fetching a User (One-on-One Chat)**
 
-```javascript
+```javascript lines highlight={1}
 const UID = "cometchat-uid-1";
+
 CometChat.getUser(UID).then(
     user => {
         setSelectedUser(user);
@@ -217,8 +218,9 @@ CometChat.getUser(UID).then(
 
 #### **Fetching a Group (Group Chat)**
 
-```javascript
+```javascript lines highlight={1}
 const GUID = "GUID"
+
 CometChat.getGroup(GUID).then(
     group => {
         setSelectedGroup(group);
@@ -232,7 +234,7 @@ CometChat.getGroup(GUID).then(
 
 Create a file CometChat.tsx inside the routes folder:
 
-```javascript
+```javascript lines
 import React, { lazy, Suspense, useEffect, useState } from "react";
 import "@cometchat/chat-uikit-react/css-variables.css";
 
@@ -258,7 +260,7 @@ export default function CometChatRoute() {
 
 Now, create a route for CometChat in your routes file:
 
-```typescript
+```typescript lines
 import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 export default [
@@ -277,7 +279,7 @@ Why disable SSR? CometChat UI Kit Builder relies on browser APIs such as window,
 
 Next, add the following styles to app.css to ensure CometChat UI Kit is properly styled.
 
-```css app.css
+```css app.css lines
 :root {
   --background: #ffffff;
   --foreground: #171717;
