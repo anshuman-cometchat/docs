@@ -100,7 +100,7 @@ To integrate CometChat into your Android project, you need to add the CometChat 
 <Tabs>
 <Tab title="Kotlin">
 
-```gradle settings.gradle.kts
+```gradle settings.gradle.kts lines
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -115,7 +115,7 @@ dependencyResolutionManagement {
 
 <Tab title="Groovy">
 
-```gradle settings.gradle
+```gradle settings.gradle lines
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -168,7 +168,7 @@ dependencies {
 <Tab title="Gradle (build.gradle)">
 Open the **app level** `build.gradle` file and add the following dependency to fetch the chat UI kit into your project.
 
-```gradle build.gradle
+```gradle build.gradle lines
 dependencies {
     // CometChat UIKit
     implementation 'com.cometchat:chat-uikit-android:5.2.7'
@@ -234,7 +234,7 @@ For secure authentication, use the [`Auth Token`](/ui-kit/android/methods#login-
 
 <Tabs>
 <Tab title="Kotlin">
-```kotlin MainActivity.kt
+```kotlin MainActivity.kt lines highlight={15-17, 46-55}
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -304,7 +304,7 @@ class MainActivity : ComponentActivity() {
 </Tab>
 
 <Tab title="Java">
-```java MainActivity.java
+```java MainActivity.java lines highlight={15-17, 51-60}
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
