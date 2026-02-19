@@ -50,7 +50,7 @@ The `CometChatSearch` component is a powerful and customizable search interface 
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 function SearchDemo() {
@@ -67,7 +67,7 @@ export default SearchDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```jsx
+```jsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 function SearchDemo() {
@@ -97,7 +97,7 @@ export default SearchDemo;
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 const openConversation = (conversation: CometChat.Conversation) => {
@@ -110,7 +110,7 @@ const openConversation = (conversation: CometChat.Conversation) => {
 </Tab>
 
 <Tab title="JavaScript">
-```jsx
+```jsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 const openConversation = (conversation) => {
@@ -132,7 +132,7 @@ const openConversation = (conversation) => {
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 const goToMessage = (message: CometChat.BaseMessage) => {
@@ -145,7 +145,7 @@ const goToMessage = (message: CometChat.BaseMessage) => {
 </Tab>
 
 <Tab title="JavaScript">
-```jsx
+```jsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 const goToMessage = (message) => {
@@ -167,7 +167,7 @@ const goToMessage = (message) => {
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 const onBack = () => {
@@ -180,7 +180,7 @@ const onBack = () => {
 </Tab>
 
 <Tab title="JavaScript">
-```jsx
+```jsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 const onBack = () => {
@@ -202,7 +202,7 @@ This action doesn't change the behavior of the component but rather listens for 
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 const handleOnError = (error: CometChat.CometChatException) => {
@@ -215,7 +215,7 @@ const handleOnError = (error: CometChat.CometChatException) => {
 </Tab>
 
 <Tab title="JavaScript">
-```jsx
+```jsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 const handleOnError = (error) => {
@@ -239,7 +239,7 @@ You can set the `ConversationsRequestBuilder` in the Search Component to filter 
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -253,7 +253,7 @@ import { CometChat } from "@cometchat/chat-sdk-javascript";
 </Tab>
 
 <Tab title="JavaScript">
-```jsx
+```jsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -276,7 +276,7 @@ You can set the `MessagesRequestBuilder` in the Search Component to filter the s
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -288,7 +288,7 @@ import { CometChat } from "@cometchat/chat-sdk-javascript";
 </Tab>
 
 <Tab title="JavaScript">
-```jsx
+```jsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -327,7 +327,7 @@ To customize the appearance, you can customise css of `CometChatSearch`
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -337,7 +337,7 @@ import { CometChatSearch } from "@cometchat/chat-uikit-react";
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat-search * {
   font-family: 'Times New Roman', Times !important;
 }
@@ -418,7 +418,7 @@ Here is a code snippet demonstrating how you can customize the functionality of 
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 <CometChatSearch hideBackButton={true} />;
@@ -427,7 +427,7 @@ import { CometChatSearch } from "@cometchat/chat-uikit-react";
 </Tab>
 
 <Tab title="JavaScript">
-```jsx
+```jsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 <CometChatSearch hideBackButton={true} />;
@@ -505,7 +505,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -530,7 +530,7 @@ const getMessageItemView = (message: CometChat.BaseMessage) => {
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat-search__message-list-item {
   background: var(--cometchat-extended-primary-color-100);
   border-bottom: 1px solid var(--cometchat-border-color-highlight);
@@ -577,7 +577,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -597,7 +597,7 @@ const getMessageLeadingView = (message: CometChat.BaseMessage) => {
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat-search__message-list-item-leading-view {
   height: 48px;
   width: 48px;
@@ -640,7 +640,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -666,7 +666,7 @@ const getMessageTitleView = (message: CometChat.BaseMessage) => {
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat-search__message-list-item-title {
   display: flex;
   align-items: center;
@@ -712,7 +712,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -737,7 +737,7 @@ const getMessageSubtitleView = (message: CometChat.BaseMessage) => {
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat-search__message-list-item-subtitle {
   background: var(--cometchat-extended-primary-color-100);
   padding: var(--cometchat-padding-1);
@@ -784,7 +784,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -834,7 +834,7 @@ const getMessageTrailingView = (message: CometChat.BaseMessage) => {
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat-search__message-trailing-view {
   display: flex;
   flex-direction: column;
@@ -897,7 +897,7 @@ The following example demonstrates how to modify the **Sent At** timestamp forma
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import {
   CometChatSearch,
   CalendarObject

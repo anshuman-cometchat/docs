@@ -54,7 +54,7 @@ The following code snippet illustrates how you can directly incorporate the Mess
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
@@ -78,7 +78,7 @@ export function MessageComposerDemo() {
 </Tab>
 
 <Tab title="JavaScript">
-```jsx
+```jsx lines
 import React, { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
@@ -113,7 +113,7 @@ The `OnSendButtonClick` event gets activated when the send message button is cli
 
 <Tabs>
 <Tab title="MessageComposerDemo (TypeScript)">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
@@ -142,7 +142,7 @@ export function MessageComposerDemo() {
 </Tab>
 
 <Tab title="MessageComposerDemo (JavaScript)">
-```jsx
+```jsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
@@ -178,7 +178,7 @@ This action doesn't change the behavior of the component but rather listens for 
 
 <Tabs>
 <Tab title="MessageComposerDemo.tsx">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
@@ -214,7 +214,7 @@ This event is triggered as the user starts typing in the Message Composer.
 
 <Tabs>
 <Tab title="MessageComposerDemo.tsx">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
@@ -253,7 +253,7 @@ You can customize how mentioned users and group members are fetched by providing
 
 <Tabs>
 <Tab title="MessageComposerDemo.tsx">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
@@ -331,7 +331,7 @@ Adding `CometChatMessageEvents` Listener's
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChatMessageEvents } from "@cometchat/chat-uikit-react";
 
 const ccMessageEdited = CometChatMessageEvents.ccMessageEdited.subscribe(() => {
@@ -357,7 +357,7 @@ Removing `CometChatMessageEvents` Listener's
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```js lines
 ccMessageEdited?.unsubscribe();
 ccReplyToMessage?.unsubscribe();
 ccMessageSent?.unsubscribe();
@@ -385,7 +385,7 @@ To modify the styling, you can customise the css of MessageComposer Component.
 
 <Tabs>
 <Tab title="MessageComposerDemo.tsx">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
@@ -396,7 +396,7 @@ import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
 </Tab>
 
 <Tab title="MessageComposerDemo.css">
-```css
+```css lines
 .cometchat-message-composer .cometchat-message-composer__input {
   font-family: "SF Pro";
 }
@@ -422,7 +422,7 @@ These are a set of small functional customizations that allow you to fine-tune t
 
 <Tabs>
 <Tab title="MessageComposerDemo.tsx">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
@@ -493,7 +493,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="MessageComposerDemo.tsx">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -535,7 +535,7 @@ function getAttachments() {
 </Tab>
 
 <Tab title="MessageComposerDemo.css">
-```css
+```css lines
 .cometchat-message-composer__secondary-button-view-attachment-button
   .cometchat-action-sheet {
   border: none;
@@ -590,7 +590,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="MessageComposerDemo.tsx">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -640,7 +640,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="MessageComposerDemo.tsx">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -663,7 +663,7 @@ const sendButtonView = (
 </Tab>
 
 <Tab title="MessageComposerDemo.css">
-```css
+```css lines
 .cometchat-message-composer
   div:not([class])
   .message-composer__send-button
@@ -705,7 +705,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="MessageComposerDemo.tsx">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
@@ -727,7 +727,7 @@ const getHeaderView = () => {
 </Tab>
 
 <Tab title="MessageComposerDemo.css">
-```css
+```css lines
 .cometchat-message-composer .message-composer__header-view {
   display: flex;
   align-items: center;
@@ -781,7 +781,7 @@ Assigns the list of text formatters. If the provided list is not null, it sets t
 
 <Tabs>
 <Tab title="ShortCutFormatter.ts">
-```ts
+```ts lines
 import { CometChatTextFormatter } from "@cometchat/chat-uikit-react";
 import DialogHelper from "./Dialog";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -895,7 +895,7 @@ export default ShortcutFormatter;
 </Tab>
 
 <Tab title="Dialog.tsx">
-```tsx
+```tsx lines
 import React from "react";
 import ReactDOM from "react-dom";
 
@@ -960,7 +960,7 @@ export default class DialogHelper {
 </Tab>
 
 <Tab title="MessageComposerDemo.tsx">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";

@@ -57,7 +57,7 @@ The `Call Button` is a Component provides users with the ability to make calls, 
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -78,7 +78,7 @@ export default CallButtonDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```jsx
+```jsx lines
 import React, { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
@@ -108,7 +108,7 @@ This action doesn't change the behavior of the component but rather listens for 
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -134,7 +134,7 @@ export default CallButtonDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React, { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
@@ -170,7 +170,7 @@ You can set `CallSettingsBuilder` in the Call Buttons Component to customise the
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -208,7 +208,7 @@ export default CallButtonDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React, { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
@@ -266,7 +266,7 @@ The list of events emitted by the `Call Buttons` component is as follows.
 
 <Tabs>
 <Tab title="Add Listener">
-```tsx
+```tsx lines
 const ccCallRejected = CometChatCallEvents.ccCallRejected.subscribe(
   (call: CometChat.Call) => {
     //Your Code
@@ -298,7 +298,7 @@ const ccMessageSent = CometChatMessageEvents.ccMessageSent.subscribe(() => {
 
 <Tabs>
 <Tab title="Remove Listener">
-```tsx
+```tsx lines
 ccCallRejected?.unsubscribe();
 
 ccCallEnded?.unsubscribe();
@@ -330,7 +330,7 @@ Using CSS you can customize the look and feel of the component in your app like 
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -352,7 +352,7 @@ export default CallButtonDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React, { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
@@ -375,7 +375,7 @@ export default CallButtonDemo;
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat-call-button {
   display: flex;
   width: 183px;

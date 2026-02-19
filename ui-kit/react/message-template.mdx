@@ -128,7 +128,7 @@ You will need to first get the MessageTemplate object for the type of message yo
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import {
   CometChatUIKit,
   CometChatUIKitConstants,
@@ -146,7 +146,7 @@ for (let i = 0; i < allTemplates.length; i++) {
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import {
   CometChatUIKit,
   CometChatUIKitConstants,
@@ -168,7 +168,7 @@ You will be using [Message List](/ui-kit/react/message-list) component using the
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChatMessageList } from "@cometchat/uikit-react";
 
 <CometChatMessageList user={chatUser} templates={templates} />;
@@ -177,7 +177,7 @@ import { CometChatMessageList } from "@cometchat/uikit-react";
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChatMessageList } from "@cometchat/uikit-react";
 
 <CometChatMessageList user={chatUser} templates={templates} />;
@@ -197,7 +197,7 @@ The `headerView` method of MessageTemplate allows you to add custom views to the
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React, { useEffect, useState } from "react";
 import {
   CometChatMessageList,
@@ -252,7 +252,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React, { useEffect, useState } from "react";
 import {
   CometChatMessageList,
@@ -316,7 +316,7 @@ The `contentview` method of MessageTemplate allows you to add a custom view to t
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React from "react";
 import {
   CometChatMessageList,
@@ -414,7 +414,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React from "react";
 import {
   CometChatMessageList,
@@ -510,7 +510,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .content-view__header-banner {
   border-radius: 12px;
 }
@@ -579,7 +579,7 @@ The `bottomView` method of MessageTemplate allows you to add a custom button vie
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React, { useEffect, useState } from "react";
 import {
   CometChatMessageList,
@@ -639,7 +639,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React, { useEffect, useState } from "react";
 import { CometChatMessageList, CometChatUIKit, CometChatUIKitConstants } from '@cometchat/chat-uikit-react';
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -688,7 +688,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat .cometchat-message-bubble__body {
   border-radius: 12px 12px 0px 0px;
 }
@@ -739,7 +739,7 @@ The `footerView` method of MessageTemplate allows you to add a footer view to yo
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React, { useEffect, useState } from "react";
 import {
   CometChatMessageList,
@@ -802,7 +802,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React, { useEffect, useState } from "react";
 import {
   CometChatMessageList,
@@ -863,7 +863,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat .cometchat-message-bubble__body-footer-view {
   display: flex;
   align-items: center;
@@ -895,7 +895,7 @@ The `bubbleView` method of MessageTemplate allows you to add a bubble view to yo
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React, { useEffect, useState } from "react";
 import {
   CometChatMessageList,
@@ -1010,7 +1010,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React, { useEffect, useState } from "react";
 import { CometChatMessageList, CometChatUIKit, CometChatUIKitConstants,CometChatMessageTemplate,Receipts,MessageBubbleAlignment,CometChatUIKitLoginListener,MessageReceiptUtils, isMessageSentByMe } from '@cometchat/chat-uikit-react';
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -1112,7 +1112,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .bubble-view {
   display: flex;
   flex-direction: column;
@@ -1200,7 +1200,7 @@ The `statusInfoView` method of MessageTemplate allows you to add a status info v
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React, { useEffect, useState } from "react";
 import {
   CometChatMessageList,
@@ -1271,7 +1271,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React, { useEffect, useState } from "react";
 import { CometChatMessageList, CometChatUIKit, CometChatUIKitConstants } from '@cometchat/chat-uikit-react';
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -1337,7 +1337,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .status-info {
   display: flex;
   width: 57px;
@@ -1381,7 +1381,7 @@ The `replyView` method of MessageTemplate allows you to add a reply view to your
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React, { useEffect, useState } from "react";
 import {
   CometChatMessageList
@@ -1412,7 +1412,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React, { useEffect, useState } from "react";
 import { CometChatMessageList } from '@cometchat/chat-uikit-react';
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -1439,7 +1439,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat
   .cometchat-message-bubble-outgoing
   .cometchat-message-bubble__body {
@@ -1472,7 +1472,7 @@ However, if you wish to override or modify these options, you can use the `optio
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React, { useEffect, useState } from "react";
 import {
   CometChatMessageList,
@@ -1551,7 +1551,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React, { useEffect, useState } from "react";
 import {
   CometChatMessageList,
@@ -1619,7 +1619,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 #refresh.cometchat-menu-list__menu .cometchat-menu-list__sub-menu-item-title {
   overflow: hidden;
   color: #6852d6;
@@ -1647,7 +1647,7 @@ You can create an entirely new template for custom messages is one of the powerf
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React, { useEffect, useState } from "react";
 import {
   CometChatMessageList,
@@ -1774,7 +1774,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React, { useEffect, useState } from "react";
 import { CometChatMessageList, CometChatUIKit, CometChatUIKitConstants,
 CometChatMessageTemplate,MessageReceiptUtils,isMessageSentByMe,Receipts,CometChatUIKitLoginListener } from '@cometchat/chat-uikit-react';
@@ -1885,7 +1885,7 @@ export { CustomMessageTemplate };
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .content-view {
   display: flex;
   flex-direction: column;

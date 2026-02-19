@@ -85,7 +85,7 @@ Below is an example demonstrating how to use a custom formatter class in compone
 
 <Tabs>
 <Tab title="HashTagTextFormatter.ts">
-```ts
+```ts lines
 import { CometChatTextFormatter } from "@cometchat/chat-uikit-react";
 
 class HashTagTextFormatter extends CometChatTextFormatter {
@@ -239,7 +239,7 @@ export default HashTagTextFormatter;
 </Tab>
 
 <Tab title="MessageListDemo.tsx">
-```tsx
+```tsx lines
 import { HashTagTextFormatter } from "./HashTagTextFormatter";
 
 export default function MessageListDemo() {
@@ -300,7 +300,7 @@ Upon calling `reRender`, the composer will invoke the `getFormattedText` functio
 
 <Tabs>
 <Tab title="getFormattedText">
-```js
+```js lines
   /**
    * If the input text is provided, it returns the formatted text. Otherwise, it edits the text using the current cursor position.
    * @param {string|null} inputText - The text to format.
@@ -318,7 +318,7 @@ Upon calling `reRender`, the composer will invoke the `getFormattedText` functio
 </Tab>
 
 <Tab title="onKeyUp">
-```js
+```js lines
 /**
  * Handles 'keydown' events.
  * @param {KeyboardEvent} event - The keyboard event.
@@ -337,7 +337,7 @@ onKeyUp(event: KeyboardEvent) {
 </Tab>
 
 <Tab title="onKeyDown">
-```js
+```js lines
 /**
  * Handles 'keydown' events.
  * @param {KeyboardEvent} event - The keyboard event.
@@ -348,7 +348,7 @@ onKeyDown(event: KeyboardEvent) {}
 </Tab>
 
 <Tab title="registerEventListeners">
-```js
+```js lines
 /**
  * Composer and Text Bubbles will call this function when rendering the HTML content.
  * This will be called for each HTML Element present in the formatted string.
@@ -419,7 +419,7 @@ registerEventListeners(element: HTMLElement, domTokenList: DOMTokenList) {
 </Tab>
 
 <Tab title="getOriginalText">
-```js
+```js lines
   /**
    * Returns the original unformatted text from the input text.
    * @param {string|null|undefined} inputText - The input text to get original text from.

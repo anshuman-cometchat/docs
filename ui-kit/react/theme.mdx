@@ -103,7 +103,7 @@ To enable theming, first, **import the base stylesheet** containing default styl
 
 <Tabs>
 <Tab title="App.css">
-```css
+```css lines
 @import url("@cometchat/chat-uikit-react/css-variables.css");
 ```
 
@@ -131,7 +131,7 @@ Recommended: Use **App.css** for global overrides and keep them scoped under `.c
 
 <Tabs>
 <Tab title="App.css (Recommended)">
-```css
+```css lines
 .cometchat {
   --cometchat-primary-color: #f76808;
   --cometchat-neutral-color-300: #fff;
@@ -145,7 +145,7 @@ Recommended: Use **App.css** for global overrides and keep them scoped under `.c
 </Tab>
 
 <Tab title="App.tsx (Runtime Only)">
-```tsx
+```tsx lines
 import { useEffect } from "react";
 
 const App = () => {
@@ -199,7 +199,7 @@ Want to apply **different styles to specific components**? Override **CSS variab
 
 <Tabs>
 <Tab title="App.css">
-```css
+```css lines
 .cometchat .cometchat-conversations {
   --cometchat-primary-color: #f76808;
   --cometchat-extended-primary-color-500: #fbaa75;
@@ -223,7 +223,7 @@ For full control over component styling, use **CSS overrides** to target specifi
 
 <Tabs>
 <Tab title="App.css">
-```css
+```css lines
 .cometchat-conversations .cometchat-avatar,
 .cometchat-conversations .cometchat-avatar__image {
   border-radius: 12px;
@@ -257,7 +257,7 @@ Avoid mixing both unless you intentionally want OS preference plus manual overri
 
 <Tabs>
 <Tab title="App.tsx">
-```tsx
+```tsx lines
 import { useEffect, useState } from "react";
 
 const App = () => {
@@ -299,7 +299,7 @@ Define different **color schemes** for **light and dark modes**.
 
 <Tabs>
 <Tab title="App.css">
-```css
+```css lines
 /* Default (Light) Theme */
 .cometchat {
   --cometchat-primary-color: #f76808;
