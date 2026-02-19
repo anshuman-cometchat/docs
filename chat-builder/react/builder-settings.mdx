@@ -30,22 +30,22 @@ export interface CometChatSettings {
 
 Essential messaging features: typing indicators, media sharing, message actions, and presence.
 
-| Property                       | Type    | Description                                |
-| ------------------------------ | ------- | ------------------------------------------ |
-| typingIndicator                | boolean | Show “user is typing” state.               |
-| threadConversationAndReplies   | boolean | Enable threaded conversations and replies. |
-| photosSharing                  | boolean | Allow sharing images.                      |
-| videoSharing                   | boolean | Allow sharing videos.                      |
-| audioSharing                   | boolean | Allow sharing audio clips.                 |
-| fileSharing                    | boolean | Allow generic file uploads.                |
-| editMessage                    | boolean | Let users edit their sent messages.        |
-| deleteMessage                  | boolean | Let users delete their sent messages.      |
-| messageDeliveryAndReadReceipts | boolean | Show delivery/read receipts.               |
-| userAndFriendsPresence         | boolean | Display online/offline presence.           |
-| conversationAndAdvancedSearch  | boolean | Enable conversation + advanced search.     |
-| moderation                     | boolean | Turn on content moderation tools.          |
-| quotedReplies                  | boolean | Allow quoting messages.                    |
-| markAsUnread                   | boolean | Let users mark messages as unread.         |
+| Property                       | Type    | What It Does                                                                                                                                                                     |
+| ------------------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| typingIndicator                | boolean | **ON**: Shows animated "typing..." indicator below the message input when another user is composing a message. **OFF**: No typing feedback shown to users.                       |
+| threadConversationAndReplies   | boolean | **ON**: Enables threaded replies — users can reply to specific messages creating a nested conversation thread. **OFF**: All messages appear in a flat list without threading.    |
+| photosSharing                  | boolean | **ON**: Shows image attachment button in message composer; users can share photos from device or camera. **OFF**: Image sharing option hidden from composer.                     |
+| videoSharing                   | boolean | **ON**: Shows video attachment button in message composer; users can share video files. **OFF**: Video sharing option hidden from composer.                                      |
+| audioSharing                   | boolean | **ON**: Shows audio file attachment button in message composer; users can share audio files (mp3, wav, etc.). **OFF**: Audio file sharing option hidden.                         |
+| fileSharing                    | boolean | **ON**: Shows generic file attachment button; users can share documents (PDF, DOC, etc.). **OFF**: File sharing option hidden from composer.                                     |
+| editMessage                    | boolean | **ON**: Shows "Edit" option in message action menu; users can modify their sent messages. Edited messages show "(edited)" label. **OFF**: Edit option not available.             |
+| deleteMessage                  | boolean | **ON**: Shows "Delete" option in message action menu; users can remove their sent messages. **OFF**: Delete option not available.                                                |
+| messageDeliveryAndReadReceipts | boolean | **ON**: Shows delivery ticks (✓) when message is delivered and read ticks (✓✓) when recipient has seen the message. **OFF**: No delivery/read status indicators shown.          |
+| userAndFriendsPresence         | boolean | **ON**: Shows green dot for online users and gray dot for offline users next to their avatar. **OFF**: No online/offline status indicators shown.                                |
+| conversationAndAdvancedSearch  | boolean | **ON**: Enables search bar to find messages, users, and conversations across all chats. **OFF**: Search functionality disabled.                                                  |
+| moderation                     | boolean | **ON**: Enables content moderation — flagged messages can be reviewed and actioned. Requires Dashboard setup. **OFF**: No moderation tools available.                            |
+| quotedReplies                  | boolean | **ON**: Shows "Reply" option in message action menu; users can quote a message when replying, showing the original message above their response. **OFF**: Quote reply disabled.  |
+| markAsUnread                   | boolean | **ON**: Shows "Mark as Unread" option in conversation menu; users can mark a chat as unread to revisit later. **OFF**: Mark as unread option not available.                      |
 
 <Tip>
   Empower users with a seamless chat experience—reply to specific messages with
@@ -58,21 +58,21 @@ Essential messaging features: typing indicators, media sharing, message actions,
 
 Interactive features: mentions, reactions, polls, voice notes, and collaborative tools.
 
-| Property                | Type    | Description                                 |
-| ----------------------- | ------- | ------------------------------------------- |
-| mentions                | boolean | Enable @mentions.                           |
-| mentionAll              | boolean | Allow @all to notify everyone in the group. |
-| reactions               | boolean | Emoji/label reactions on messages.          |
-| messageTranslation      | boolean | Inline message translation.                 |
-| polls                   | boolean | Create and vote on polls.                   |
-| collaborativeWhiteboard | boolean | Real-time whiteboard.                       |
-| collaborativeDocument   | boolean | Collaborative docs.                         |
-| voiceNotes              | boolean | Voice-note capture and send.                |
-| emojis                  | boolean | Emoji keyboard support.                     |
-| stickers                | boolean | Sticker sending.                            |
-| userInfo                | boolean | View user profile info.                     |
-| groupInfo               | boolean | View group details.                         |
-| reportMessage           | boolean | Allow reporting a message.                  |
+| Property                | Type    | What It Does                                                                                                                                                                                  |
+| ----------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| mentions                | boolean | **ON**: Users can type @ to mention specific users in a message; mentioned users receive a notification. **OFF**: @mention functionality disabled.                                            |
+| mentionAll              | boolean | **ON**: Users can type @all to notify every member in a group chat. **OFF**: @all mention disabled (individual @mentions still work if `mentions` is ON).                                     |
+| reactions               | boolean | **ON**: Shows reaction button on messages; users can add emoji reactions (👍 ❤️ 😂 etc.) to any message. **OFF**: Reaction button hidden.                                                     |
+| messageTranslation      | boolean | **ON**: Shows "Translate" option in message action menu; messages can be translated to user's preferred language. Requires Dashboard setup. **OFF**: Translation option not available.       |
+| polls                   | boolean | **ON**: Shows poll creation button in composer; users can create polls with multiple options for group voting. Requires Dashboard setup. **OFF**: Poll creation disabled.                     |
+| collaborativeWhiteboard | boolean | **ON**: Shows whiteboard button; users can open a shared whiteboard for real-time drawing and collaboration. Requires Dashboard setup. **OFF**: Whiteboard feature hidden.                   |
+| collaborativeDocument   | boolean | **ON**: Shows document button; users can create and edit shared documents together in real-time. Requires Dashboard setup. **OFF**: Collaborative document feature hidden.                    |
+| voiceNotes              | boolean | **ON**: Shows microphone button in composer; users can record and send voice messages. **OFF**: Voice recording button hidden.                                                                |
+| emojis                  | boolean | **ON**: Shows emoji picker button in composer; users can browse and insert emojis into messages. **OFF**: Emoji picker hidden (users can still type emoji manually).                          |
+| stickers                | boolean | **ON**: Shows sticker button in composer; users can send sticker images from available sticker packs. Requires Dashboard setup. **OFF**: Sticker button hidden.                               |
+| userInfo                | boolean | **ON**: Users can tap on another user's avatar/name to view their profile (name, avatar, status, etc.). **OFF**: User profile view disabled.                                                  |
+| groupInfo               | boolean | **ON**: Users can tap on group header to view group details (name, description, member count, member list). **OFF**: Group info view disabled.                                                |
+| reportMessage           | boolean | **ON**: Shows "Report" option in message action menu; users can flag inappropriate messages for review. Requires moderation setup in Dashboard. **OFF**: Report option not available.         |
 
 <Tip>
   Configure these features based on your app's requirements. Learn more about
@@ -83,11 +83,11 @@ Interactive features: mentions, reactions, polls, voice notes, and collaborative
 
 AI-powered features to help users start and navigate conversations.
 
-| Property            | Type    | Description                                |
-| ------------------- | ------- | ------------------------------------------ |
-| conversationStarter | boolean | Suggest AI-generated conversation openers. |
-| conversationSummary | boolean | Summaries of chat threads.                 |
-| smartReply          | boolean | Quick replies suggested by AI.             |
+| Property            | Type    | What It Does                                                                                                                                                                                                |
+| ------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| conversationStarter | boolean | **ON**: Shows AI-suggested conversation starters when opening a new chat — helps users break the ice with relevant opening messages. Requires OpenAI API key in Dashboard. **OFF**: No suggestions shown.  |
+| conversationSummary | boolean | **ON**: Shows "Summarize" button that generates an AI-powered summary of the conversation — useful for catching up on long threads. Requires OpenAI API key in Dashboard. **OFF**: Summary feature hidden. |
+| smartReply          | boolean | **ON**: Shows AI-suggested quick reply options above the composer based on conversation context — users can tap to send instantly. Requires OpenAI API key in Dashboard. **OFF**: No smart replies shown.  |
 
 <Tip>
 AI User Copilot features require an OpenAI API key. Configure it in the [CometChat Dashboard](https://app.cometchat.com) under **Chat & Messaging > Settings**. Learn more about [AI Features](/ui-kit/react/ai-features).
@@ -95,32 +95,32 @@ AI User Copilot features require an OpenAI API key. Configure it in the [CometCh
 
 ### 1.4 User Management (`userManagement`)
 
-| Property    | Type    | Description                         |
-| ----------- | ------- | ----------------------------------- |
-| friendsOnly | boolean | Restrict chat to friends-only mode. |
+| Property    | Type    | What It Does                                                                                                                                                                  |
+| ----------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| friendsOnly | boolean | **ON**: Users can only chat with users in their friends list — the Users tab shows only friends. **OFF**: Users can chat with any user in the app; Users tab shows everyone. |
 
 ### 1.5 Group Management (`groupManagement`)
 
 Control what users can do with groups.
 
-| Property           | Type    | Description                    |
-| ------------------ | ------- | ------------------------------ |
-| createGroup        | boolean | Allow users to create groups.  |
-| addMembersToGroups | boolean | Add members to groups.         |
-| joinLeaveGroup     | boolean | Join or leave groups.          |
-| deleteGroup        | boolean | Allow admins to delete groups. |
-| viewGroupMembers   | boolean | Show group member list.        |
+| Property           | Type    | What It Does                                                                                                                                                                |
+| ------------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| createGroup        | boolean | **ON**: Shows "Create Group" button in Groups tab; users can create new public or private groups. **OFF**: Create group button hidden; only admins can create groups.       |
+| addMembersToGroups | boolean | **ON**: Group admins/owners see "Add Members" option; they can invite users to join the group. **OFF**: Add members option hidden.                                          |
+| joinLeaveGroup     | boolean | **ON**: Users see "Join" button on public groups and "Leave" option in group menu. **OFF**: Join/leave functionality disabled; membership managed by admins only.           |
+| deleteGroup        | boolean | **ON**: Group owners see "Delete Group" option in group settings; permanently removes the group and all messages. **OFF**: Delete option hidden; groups cannot be deleted.  |
+| viewGroupMembers   | boolean | **ON**: Shows member list in group info; users can see who's in the group. **OFF**: Member list hidden from group info.                                                     |
 
 ### 1.6 Moderator Controls (`moderatorControls`)
 
 Admin tools for managing group members and content.
 
-| Property             | Type    | Description               |
-| -------------------- | ------- | ------------------------- |
-| kickUsers            | boolean | Kick users from groups.   |
-| banUsers             | boolean | Ban users from groups.    |
-| promoteDemoteMembers | boolean | Change a member’s scope.  |
-| reportMessage        | boolean | Enable message reporting. |
+| Property             | Type    | What It Does                                                                                                                                                                                  |
+| -------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| kickUsers            | boolean | **ON**: Admins/moderators see "Kick" option on group members; removes user from group (they can rejoin). **OFF**: Kick option not available.                                                  |
+| banUsers             | boolean | **ON**: Admins/moderators see "Ban" option on group members; permanently removes user and prevents rejoining. **OFF**: Ban option not available.                                              |
+| promoteDemoteMembers | boolean | **ON**: Group owners see "Change Scope" option; can promote members to moderator/admin or demote them back to member. **OFF**: Role changes not available.                                    |
+| reportMessage        | boolean | **ON**: Shows "Report" option in message action menu for all users; reported messages are flagged for moderator review in Dashboard. **OFF**: Report option hidden.                           |
 
 <Tip>
   To enable content moderation, set `moderation` and `reportMessage` to `true`,
@@ -134,9 +134,9 @@ Admin tools for managing group members and content.
 
 Allow direct messages between group members.
 
-| Property                         | Type    | Description                              |
-| -------------------------------- | ------- | ---------------------------------------- |
-| sendPrivateMessageToGroupMembers | boolean | DM group members from the group context. |
+| Property                         | Type    | What It Does                                                                                                                                                                                |
+| -------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| sendPrivateMessageToGroupMembers | boolean | **ON**: Shows "Message Privately" option when viewing a group member's profile; starts a 1:1 chat with that user. **OFF**: Private message option hidden; users must find them in Users tab. |
 
 ---
 
@@ -146,12 +146,12 @@ Allow direct messages between group members.
 
 Enable voice and video calling capabilities.
 
-| Property             | Type    | Description             |
-| -------------------- | ------- | ----------------------- |
-| oneOnOneVoiceCalling | boolean | One-to-one voice calls. |
-| oneOnOneVideoCalling | boolean | One-to-one video calls. |
-| groupVideoConference | boolean | Group video calls.      |
-| groupVoiceConference | boolean | Group voice-only calls. |
+| Property             | Type    | What It Does                                                                                                                                                                    |
+| -------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| oneOnOneVoiceCalling | boolean | **ON**: Shows phone icon in 1:1 chat header; users can start voice calls with each other. **OFF**: Voice call button hidden in 1:1 chats.                                       |
+| oneOnOneVideoCalling | boolean | **ON**: Shows video camera icon in 1:1 chat header; users can start video calls with each other. **OFF**: Video call button hidden in 1:1 chats.                                |
+| groupVideoConference | boolean | **ON**: Shows video camera icon in group chat header; any member can start a group video call that others can join. **OFF**: Group video call button hidden.                    |
+| groupVoiceConference | boolean | **ON**: Shows phone icon in group chat header; any member can start a group voice call (audio only) that others can join. **OFF**: Group voice call button hidden.              |
 
 <Tip>
   Learn more about [Call Features](/ui-kit/react/call-features#features).
@@ -163,11 +163,11 @@ Enable voice and video calling capabilities.
 
 Control the overall UI structure and navigation.
 
-| Property    | Type     | Description                                                |
-| ----------- | -------- | ---------------------------------------------------------- |
-| withSideBar | boolean  | Show/hide the sidebar.                                     |
-| tabs        | string[] | Tabs to expose, e.g. `['chats','calls','users','groups']`. |
-| chatType    | string   | Default chat type: `'user'` or `'group'`.                  |
+| Property    | Type     | What It Does                                                                                                                                                                                                                                  |
+| ----------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| withSideBar | boolean  | **ON**: Shows navigation sidebar with tabs (Chats, Calls, Users, Groups) on the left side. **OFF**: Hides sidebar; useful for embedded chat widgets or single-conversation views.                                                             |
+| tabs        | string[] | Array of tabs to show in sidebar. Options: `'chats'` (conversations list), `'calls'` (call history), `'users'` (user directory), `'groups'` (group directory). Example: `['chats', 'users']` shows only Chats and Users tabs.                 |
+| chatType    | string   | Default conversation type when app loads. `'user'`: Opens to 1:1 chats view. `'group'`: Opens to group chats view.                                                                                                                            |
 
 <Tip>
   Set `withSideBar: false` for embedded chat widgets or single-conversation
@@ -182,9 +182,9 @@ Customize colors, fonts, and theme appearance.
 
 ### 4.1 Theme
 
-| Property | Type   | Description                         |
-| -------- | ------ | ----------------------------------- |
-| theme    | string | `'system'`, `'light'`, or `'dark'`. |
+| Property | Type   | What It Does                                                                                                                                                                                                    |
+| -------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| theme    | string | Controls light/dark mode. `'light'`: Always uses light theme. `'dark'`: Always uses dark theme. `'system'`: Automatically matches user's device preference (recommended for best UX).                           |
 
 <Tip>
   Use `theme: "system"` to automatically match the user's device preference.
@@ -196,13 +196,13 @@ Customize colors, fonts, and theme appearance.
 
 ### 4.2 Color
 
-| Property           | Type   | Description                         |
-| ------------------ | ------ | ----------------------------------- |
-| brandColor         | string | Primary UI color (hex).             |
-| primaryTextLight   | string | Text color in light mode.           |
-| primaryTextDark    | string | Text color in dark mode.            |
-| secondaryTextLight | string | Secondary text color in light mode. |
-| secondaryTextDark  | string | Secondary text color in dark mode.  |
+| Property           | Type   | What It Does                                                                                                                                                                                    |
+| ------------------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| brandColor         | string | Primary accent color (hex code) used for buttons, links, active states, and highlights throughout the UI. Example: `"#6852D6"` for purple.                                                      |
+| primaryTextLight   | string | Main text color in light mode (hex code). Used for headings, message text, and primary content. Example: `"#2B2B2B"` for near-black.                                                            |
+| primaryTextDark    | string | Main text color in dark mode (hex code). Used for headings, message text, and primary content. Example: `"#FFFFFF"` for white.                                                                  |
+| secondaryTextLight | string | Secondary text color in light mode (hex code). Used for timestamps, subtitles, and less prominent text. Example: `"#727272"` for gray.                                                          |
+| secondaryTextDark  | string | Secondary text color in dark mode (hex code). Used for timestamps, subtitles, and less prominent text. Example: `"#989898"` for light gray.                                                     |
 
 <Tip>
   Match `brandColor` to your website's primary accent color. Use your site's
@@ -212,10 +212,10 @@ Customize colors, fonts, and theme appearance.
 
 ### 4.3 Typography
 
-| Property | Type   | Description                                                            |
-| -------- | ------ | ---------------------------------------------------------------------- |
-| font     | string | Font family: `'roboto'`, `'arial'`, `'inter'`, or `'times new roman'`. |
-| size     | string | Font size preset: `'default'`, `'compact'`, or `'comfortable'`.        |
+| Property | Type   | What It Does                                                                                                                                                                                                                                                |
+| -------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| font     | string | Font family used throughout the chat UI. Options: `'roboto'` (clean, modern), `'arial'` (web-safe classic), `'inter'` (optimized for screens), `'times new roman'` (serif, formal).                                                                         |
+| size     | string | Controls overall text size and spacing. `'default'`: Standard sizing. `'compact'`: Smaller text and tighter spacing (fits more content). `'comfortable'`: Larger text and more spacing (easier to read).                                                    |
 
 ---
 
