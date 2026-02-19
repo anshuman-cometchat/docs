@@ -42,7 +42,7 @@ Create an Activity - `MessageActivity` to display the full-screen chat interface
 
 Define the layout with `CometChatMessageHeader`, `CometChatMessageList`, and `CometChatMessageComposer` in `activity_message.xml`:
 
-```xml activity_message.xml
+```xml activity_message.xml lines
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -89,7 +89,7 @@ Retrieve the user or group ID from the Intent extras and configure the message c
 
 <Tabs>
 <Tab title="Kotlin">
-```kotlin MessageActivity.kt
+```kotlin MessageActivity.kt lines
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -193,7 +193,7 @@ class MessageActivity : AppCompatActivity() {
 </Tab>
 
 <Tab title="Java">
-```java MessageActivity.java
+```java MessageActivity.java lines
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -333,7 +333,7 @@ The `MessageActivity` will automatically detect which type of chat to display ba
 
 <Tabs> 
 <Tab title="Kotlin">
-```kotlin MainActivity.kt
+```kotlin MainActivity.kt lines highlight={15-17, 19-20, 49-52}
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -351,6 +351,9 @@ class MainActivity : ComponentActivity() {
     private val appID = "APP_ID" // Replace with your App ID
     private val region = "REGION" // Replace with your App Region
     private val authKey = "AUTH_KEY" // Replace with your Auth Key or leave blank if you are authenticating using Auth Token
+
+    private val uid = "cometchat-uid-1" // Replace with the UID of the user you want to chat with
+    private val target_uid = "cometchat-uid-2" // Replace with the UID of the user you want to chat with
 
     private val uiKitSettings = UIKitSettings.UIKitSettingsBuilder()
         .setRegion(region)
@@ -376,12 +379,12 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun loginUser() {
-        CometChatUIKit.login("cometchat-uid-1", object : CometChat.CallbackListener<User>() {
+        CometChatUIKit.login(uid, object : CometChat.CallbackListener<User>() {
             override fun onSuccess(user: User) {
 
                 // Launch One-to-One or Group Chat Screen
                  val intent = Intent(this@MainActivity, MessageActivity::class.java)
-                 intent.putExtra("uid", "cometchat-uid-1")
+                 intent.putExtra("uid", target_uid) // Pass the UID of the user you want to chat with
                  startActivity(intent)
             }
 
@@ -397,7 +400,7 @@ class MainActivity : ComponentActivity() {
 </Tab>
 
 <Tab title="Java">
-```java MainActivity.java
+```java MainActivity.java lines highlight={15-17, 19-20, 54-57}
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -415,6 +418,9 @@ public class MainActivity extends ComponentActivity {
     private final String appID = "APP_ID"; // Replace with your App ID
     private final String region = "REGION"; // Replace with your App Region
     private final String authKey = "AUTH_KEY"; // Replace with your Auth Key
+
+    private final String uid = "cometchat-uid-1"; // Replace with the UID of the user you want to chat with
+    private final String target_uid = "cometchat-uid-2"; // Replace with the UID of the user you want to chat with
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -443,14 +449,14 @@ public class MainActivity extends ComponentActivity {
     }
 
     private void loginUser() {
-        CometChatUIKit.login("cometchat-uid-1", new CometChat.CallbackListener<User>() {
+        CometChatUIKit.login(uid, new CometChat.CallbackListener<User>() {
             @Override
             public void onSuccess(User user) {
                 Log.d(TAG, "Login successful for user: " + user.getUid());
 
                 // Launch One-to-One or Group Chat Screen
                  Intent intent = new Intent(MainActivity.this, MessageActivity.class);
-                 intent.putExtra("uid", "cometchat-uid-1");
+                 intent.putExtra("uid", target_uid);
                  startActivity(intent);
             }
 
