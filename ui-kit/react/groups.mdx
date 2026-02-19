@@ -64,7 +64,7 @@ The following code snippet illustrates how you can directly incorporate the Grou
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -78,7 +78,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```jsx
+```jsx lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -107,7 +107,7 @@ This action does not come with any predefined behavior. However, you have the fl
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups, SelectionMode } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -131,7 +131,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChatGroups, SelectionMode } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -161,7 +161,7 @@ The `onItemClick` event is activated when you click on the Group List item. This
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -179,7 +179,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -203,7 +203,7 @@ This action doesn't change the behavior of the component but rather listens for 
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -221,7 +221,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -261,7 +261,7 @@ In the example below, we are applying a filter to the Group List based on only j
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -282,7 +282,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -312,7 +312,7 @@ The SearchRequestBuilder uses [GroupsRequestBuilder](/sdk/javascript/retrieve-gr
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -333,7 +333,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -383,7 +383,7 @@ Using CSS you can customize the look and feel of the component in your app like 
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -397,7 +397,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -411,7 +411,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat .cometchat-groups .cometchat-list__header-title {
   background-color: #edeafa;
   color: #6852d6;
@@ -481,7 +481,7 @@ These are a set of small functional customizations that allow you to fine-tune t
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChatGroups, TitleAlignment } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -501,7 +501,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChatGroups, TitleAlignment } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -564,7 +564,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -593,7 +593,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -621,7 +621,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .group-list-item {
   display: flex;
   flex-direction: column;
@@ -706,7 +706,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
@@ -725,39 +725,43 @@ const customTitleView = (group: CometChat.Group) => {
 </Tab>
 
 <Tab title="css">
-```css
-.groups__title-view{
-display: flex;
-align-items: center;
-gap: 4px;
-align-self: stretch;
+```css lines
+.groups__title-view {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	align-self: stretch;
 }
-.groups__title-view-name{
-overflow: hidden;
-color: #141414;
-text-overflow: ellipsis;
-font:500 16px Roboto
+
+.groups__title-view-name {
+	overflow: hidden;
+	color: #141414;
+	text-overflow: ellipsis;
+	font: 500 16px Roboto
 }
-.groups__title-view-type{
-color: #FFF;
-font: 600 8px Roboto;
-display: flex;
-height: 15px;
-padding: 1px 3px;
-justify-content: center;
-align-items: center;
-gap: 4px;
-border-radius: 7px;
-background: #09C26F;
+
+.groups__title-view-type {
+	color: #FFF;
+	font: 600 8px Roboto;
+	display: flex;
+	height: 15px;
+	padding: 1px 3px;
+	justify-content: center;
+	align-items: center;
+	gap: 4px;
+	border-radius: 7px;
+	background: #09C26F;
 }
-.groups__title-view-public .groups__title-view-type{
-background: #0B7BEA;
+
+.groups__title-view-public .groups__title-view-type {
+	background: #0B7BEA;
 }
-.groups__title-view-type img{
-background: #fff;
-border-radius: 4px;
-height: 12px;
-width: 12px;
+
+.groups__title-view-type img {
+	background: #fff;
+	border-radius: 4px;
+	height: 12px;
+	width: 12px;
 }
 ```
 
@@ -787,7 +791,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -814,7 +818,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -841,7 +845,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat .cometchat-groups .group-subtitle {
   overflow: hidden;
   color: #727272;
@@ -872,7 +876,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups,CometChatAvatar } from "@cometchat/chat-uikit-react";
@@ -907,32 +911,34 @@ import { CometChatGroups,CometChatAvatar } from "@cometchat/chat-uikit-react";
 </Tab>
 
 <Tab title="css">
-```css
-
-.cometchat-groups .cometchat-list-item .groups__leading-view .cometchat-avatar__image, .cometchat-groups .cometchat-list-item .groups__leading-view .cometchat-avatar{
-  border-radius: 8px;
-  height: 48px ;
-  width: 48px ;
+```css lines
+.cometchat-groups .cometchat-list-item .groups__leading-view .cometchat-avatar__image,
+.cometchat-groups .cometchat-list-item .groups__leading-view .cometchat-avatar {
+	border-radius: 8px;
+	height: 48px;
+	width: 48px;
 }
 
-.groups__leading-view-info{
-  display: flex;
-  width: 48px;
-  height: 15px;
-  padding: 1px 3px;
-  justify-content: center;
-  align-items: center;
-  color:#FFF;
-  font:600 8px/9.6px Roboto;
-  background:#FFAB00;
-  position:absolute;
-  bottom:-2px;
+.groups__leading-view-info {
+	display: flex;
+	width: 48px;
+	height: 15px;
+	padding: 1px 3px;
+	justify-content: center;
+	align-items: center;
+	color: #FFF;
+	font: 600 8px/9.6px Roboto;
+	background: #FFAB00;
+	position: absolute;
+	bottom: -2px;
 }
-.groups__leading-view-joined .groups__leading-view-info{
-   background:#09C26F;
+
+.groups__leading-view-joined .groups__leading-view-info {
+	background: #09C26F;
 }
-.groups__leading-view{
-  position: relative;
+
+.groups__leading-view {
+	position: relative;
 }
 ```
 
@@ -954,7 +960,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -974,22 +980,23 @@ return <div className="groups__trailing-view">
 </Tab>
 
 <Tab title="css">
-```css
-.groups__trailing-view{
-display: flex;
-padding: 4px 12px;
-justify-content: center;
-align-items: center;
-border-radius: 1000px;
-background: #EDEAFA;
-overflow: hidden;
-color: #6852D6;
-text-overflow: ellipsis;
-font:700 12px Roboto;
+```css lines
+.groups__trailing-view {
+	display: flex;
+	padding: 4px 12px;
+	justify-content: center;
+	align-items: center;
+	border-radius: 1000px;
+	background: #EDEAFA;
+	overflow: hidden;
+	color: #6852D6;
+	text-overflow: ellipsis;
+	font: 700 12px Roboto;
 }
-.cometchat-groups .cometchat-list-item__trailing-view{
-width: fit-content;
-height: fit-content;
+
+.cometchat-groups .cometchat-list-item__trailing-view {
+	width: fit-content;
+	height: fit-content;
 }
 ```
 
@@ -1013,7 +1020,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -1031,7 +1038,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -1049,7 +1056,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .group-header-view {
   height: 24px;
   width: 24px;
@@ -1087,7 +1094,7 @@ Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import { CometChatGroups, CometChatOption } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -1113,7 +1120,7 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import { CometChatGroups, CometChatOption } from "@cometchat/chat-uikit-react";
 import React from "react";
 
@@ -1139,24 +1146,25 @@ export default GroupsDemo;
 </Tab>
 
 <Tab title="css">
-```css
+```css lines
 .cometchat .cometchat-groups .cometchat-menu-list__menu {
-  background: none;
+	background: none;
 }
+
 .cometchat .cometchat-groups .cometchat-menu-list__main-menu-item-icon {
-  height: 24px;
-  width: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  align-self: center;
-  background: #f44649;
-  flex-shrink: 0;
-  -webkit-mask: url("../assets/delete.svg") center center no-repeat;
-  mask: url("../assets/delete.svg") center center no-repeat;
-  -webkit-mask-size: contain;
-  mask-size: contain;
+	height: 24px;
+	width: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	align-self: center;
+	background: #f44649;
+	flex-shrink: 0;
+	-webkit-mask: url("../assets/delete.svg") center center no-repeat;
+	mask: url("../assets/delete.svg") center center no-repeat;
+	-webkit-mask-size: contain;
+	mask-size: contain;
 }
 ```
 
