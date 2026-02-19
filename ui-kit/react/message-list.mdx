@@ -54,7 +54,7 @@ The following code snippet illustrates how you can directly incorporate the Mess
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
@@ -78,7 +78,7 @@ export function MessageListDemo() {
 </Tab>
 
 <Tab title="JavaScript">
-```jsx
+```jsx lines
 import React, { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
@@ -115,13 +115,13 @@ To fetch messages for a specific entity, you need to supplement it with `User` o
 
 [Actions](/ui-kit/react/components-overview#actions) dictate how a component functions. They are divided into two types: Predefined and User-defined. You can override either type, allowing you to tailor the behavior of the component to fit your specific needs.
 
-##### 1. onThreadRepliesClick
+#### 1. onThreadRepliesClick
 
 `onThreadRepliesClick` is triggered when you click on the threaded message bubble. The `onThreadRepliesClick` action doesn't have a predefined behavior. You can override this action using the following code snippet.
 
 <Tabs>
 <Tab title="TypeScript">
-```ts
+```ts lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
@@ -152,7 +152,7 @@ export function MessageListDemo() {
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```js lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
@@ -185,7 +185,7 @@ export function MessageListDemo() {
 
 </Tabs>
 
-##### 2. onError
+#### 2. onError
 
 This action doesn't change the behavior of the component but rather listens for any errors that occur in the MessageList component.
 
@@ -249,7 +249,7 @@ export function MessageListDemo() {
 
 </Tabs>
 
-##### 3. onReactionClick
+#### 3. onReactionClick
 
 `onReactionClick` is triggered when you click on the reaction item of the message bubble. The `onReactionClick` action doesn't have a predefined behavior. You can override this action using the following code snippet.
 
@@ -316,7 +316,7 @@ export function MessageListDemo() {
 
 </Tabs>
 
-##### 4. onReactionListItemClick
+#### 4. onReactionListItemClick
 
 `onReactionListItemClick` is triggered when you click on the reaction list item of the reaction list. The `onReactionListItemClick` action doesn't have a predefined behavior. You can override this action using the following code snippet.
 
@@ -391,7 +391,7 @@ export function MessageListDemo() {
 
 ### Filters
 
-##### 1. Messages Request Builder
+#### 1. Messages Request Builder
 
 You can adjust the `MessagesRequestBuilder` in the MessageList Component to customize your message list. Numerous options are available to alter the builder to meet your specific needs. For additional details on `MessagesRequestBuilder`, please visit [MessagesRequestBuilder](/sdk/javascript/additional-message-filtering).
 
@@ -468,7 +468,7 @@ The following parameters in messageRequestBuilder will always be altered inside 
 
 </Note>
 
-##### 2. Reactions Request Builder
+#### 2. Reactions Request Builder
 
 You can adjust the `ReactionsRequestBuilder` in the MessageList Component to customize and fetch the reactions for the messages. Numerous options are available to alter the builder to meet your specific needs.
 
@@ -669,8 +669,8 @@ import { CometChatMessageList } from "@cometchat/chat-uikit-react";
 
 </Tab>
 
-<Tab title="css">
-```css
+<Tab title="CSS">
+```css lines
 .cometchat-message-bubble__body
   .cometchat-text-bubble.cometchat-text-bubble-incoming
   .cometchat-text-bubble__body-text {
@@ -1229,8 +1229,8 @@ export function MessageListDemo() {
 
 </Tab>
 
-<Tab title="css">
-```css
+<Tab title="CSS">
+```css lines
 .header-view {
   display: flex;
   width: 100%;
@@ -1364,8 +1364,8 @@ export function MessageListDemo() {
 
 </Tab>
 
-<Tab title="css">
-```css
+<Tab title="CSS">
+```css lines
 .footer-view {
   display: flex;
   width: 100%;
