@@ -309,12 +309,10 @@ The above snippet will return messages between the logged in user and `cometchat
 </Accordion>
 
 <Accordion title="Troubleshooting">
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| Thread replies in main chat | `hideReplies` not set | Add `.hideReplies(true)` to MessagesRequestBuilder |
-| Missing thread messages | Wrong parent ID | Verify `setParentMessageId()` uses correct message ID |
-| Real-time messages not filtered | Not checking parent ID | Compare `getParentMessageId()` with active thread ID |
-| Empty thread | Parent message deleted | Handle case where parent message no longer exists |
+- **Thread replies appearing in main chat** — Add `.hideReplies(true)` to your `MessagesRequestBuilder` to exclude thread replies from the main conversation.
+- **Missing thread messages** — Verify `setParentMessageId()` uses the correct parent message ID.
+- **Real-time messages not filtered** — Compare `getParentMessageId()` with the active thread ID to filter incoming messages.
+- **Empty thread** — The parent message may have been deleted. Handle this case gracefully in your UI.
 </Accordion>
 
 ---

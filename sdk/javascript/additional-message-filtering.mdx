@@ -1519,13 +1519,11 @@ let GUID: string = "GUID",
 </Accordion>
 
 <Accordion title="Troubleshooting">
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| No messages returned | Conflicting filters | Simplify filters and add them one at a time |
-| Missing message types | Category not included | Ensure category matches type (e.g., "message" for "text") |
-| Pagination not working | New request object | Reuse the same MessagesRequest object for pagination |
-| Thread replies included | `hideReplies` not set | Add `.hideReplies(true)` to exclude thread messages |
-| Deleted messages showing | Default behavior | Add `.hideDeletedMessages(true)` to filter them out |
+- **No messages returned** — Conflicting filters may cancel each other out. Simplify filters and add them one at a time to isolate the issue.
+- **Missing message types** — Ensure the category matches the type (e.g., category `"message"` for type `"text"`).
+- **Pagination not working** — Reuse the same `MessagesRequest` object for `fetchPrevious()` / `fetchNext()` calls. Creating a new object resets pagination.
+- **Thread replies included** — Add `.hideReplies(true)` to exclude thread messages from the main conversation.
+- **Deleted messages showing** — Add `.hideDeletedMessages(true)` to filter them out. This is not enabled by default.
 </Accordion>
 
 ---

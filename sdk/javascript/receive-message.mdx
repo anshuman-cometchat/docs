@@ -1002,13 +1002,11 @@ It returns an object which will contain the GUID as the key and the unread messa
 </Accordion>
 
 <Accordion title="Troubleshooting">
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| Not receiving messages | Listener not added | Verify `addMessageListener()` was called with correct ID |
-| Duplicate messages | Multiple listeners | Ensure only one listener per ID; remove on unmount |
-| Missing messages | App was offline | Use `getLastDeliveredMessageId()` + `fetchNext()` for missed messages |
-| Wrong message count | Blocked users included | Use `hideMessagesFromBlockedUsers` parameter |
-| History not loading | Wrong method | Use `fetchPrevious()` for history, `fetchNext()` for missed messages |
+- **Not receiving messages** — Verify `addMessageListener()` was called with the correct listener ID before messages are sent.
+- **Duplicate messages** — Ensure only one listener per ID is registered. Remove listeners on component unmount.
+- **Missing messages after reconnect** — Use `getLastDeliveredMessageId()` + `fetchNext()` to fetch messages missed while offline.
+- **Wrong message count** — Blocked users may be included. Use `hideMessagesFromBlockedUsers` parameter to exclude them.
+- **History not loading** — Use `fetchPrevious()` for message history and `fetchNext()` for missed messages. Don't mix them up.
 </Accordion>
 
 ---

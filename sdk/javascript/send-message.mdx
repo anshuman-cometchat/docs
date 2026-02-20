@@ -1783,13 +1783,11 @@ It is also possible to send interactive messages from CometChat, to know more [c
 </Accordion>
 
 <Accordion title="Troubleshooting">
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| Message not sent | User not logged in | Ensure `CometChat.login()` succeeded before sending |
-| Media upload fails | File too large | Check file size limits in your CometChat plan |
-| Custom message not received | Missing listener | Ensure receiver has `onCustomMessageReceived` handler |
-| Metadata not appearing | Wrong method | Use `setMetadata()` before calling send method |
-| Quoted message fails | Invalid message ID | Verify the quoted message ID exists |
+- **Message not sent** — Ensure `CometChat.login()` succeeded before sending. The user must be logged in.
+- **Media upload fails** — Check file size limits in your CometChat plan. Verify the file type matches the message type.
+- **Custom message not received** — Ensure the receiver has an `onCustomMessageReceived` handler registered.
+- **Metadata not appearing** — Use `setMetadata()` before calling the send method, not after.
+- **Quoted message fails** — Verify the quoted message ID exists and belongs to the same conversation.
 </Accordion>
 
 ---

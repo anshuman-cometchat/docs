@@ -138,24 +138,16 @@ When you fetch the list of users, in the [User](/sdk/javascript/user-management#
 
 <AccordionGroup>
 <Accordion title="Best Practices">
-
-| Practice | Details |
-| --- | --- |
-| Choose the right subscription | Use `subscribePresenceForFriends()` or `subscribePresenceForRoles()` instead of `subscribePresenceForAllUsers()` in apps with many users to reduce unnecessary events |
-| Unique listener IDs | Use unique, descriptive listener IDs (e.g., `"chat-screen-presence"`) to avoid accidentally overwriting other listeners |
-| Cleanup on unmount | Always call `removeUserListener()` when the component/view is destroyed |
-| Combine with user list | Use the `status` field from `UsersRequest` results for initial state, then update via `UserListener` for real-time changes |
-
+- **Choose the right subscription** — Use `subscribePresenceForFriends()` or `subscribePresenceForRoles()` instead of `subscribePresenceForAllUsers()` in apps with many users to reduce unnecessary events.
+- **Use unique listener IDs** — Use unique, descriptive listener IDs (e.g., `"chat-screen-presence"`) to avoid accidentally overwriting other listeners.
+- **Cleanup on unmount** — Always call `removeUserListener()` when the component/view is destroyed.
+- **Combine with user list** — Use the `status` field from `UsersRequest` results for initial state, then update via `UserListener` for real-time changes.
 </Accordion>
 <Accordion title="Troubleshooting">
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| No presence events received | Presence subscription not configured in `AppSettings` | Add `subscribePresenceForAllUsers()`, `subscribePresenceForRoles()`, or `subscribePresenceForFriends()` to your `AppSettingsBuilder` |
-| Presence events stop after navigation | Listener was removed or component unmounted | Re-register the listener when the component mounts again |
-| Duplicate presence events | Multiple listeners registered with the same or different IDs | Ensure you remove old listeners before adding new ones |
-| `lastActiveAt` is `0` or `null` | User has never been online or data not yet available | Handle this case in your UI with a fallback like "Never active" |
-
+- **No presence events received** — Presence subscription not configured in `AppSettings`. Add `subscribePresenceForAllUsers()`, `subscribePresenceForRoles()`, or `subscribePresenceForFriends()` to your `AppSettingsBuilder`.
+- **Presence events stop after navigation** — The listener was removed or the component unmounted. Re-register the listener when the component mounts again.
+- **Duplicate presence events** — Multiple listeners registered with the same or different IDs. Ensure you remove old listeners before adding new ones.
+- **`lastActiveAt` is `0` or `null`** — The user has never been online or data is not yet available. Handle this in your UI with a fallback like "Never active".
 </Accordion>
 </AccordionGroup>
 

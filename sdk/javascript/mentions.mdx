@@ -152,7 +152,7 @@ To get a list of messages in a conversation where users are mentioned along with
 let UID = "UID";
 let limit = 30;
 
-var messagesRequest = new CometChat.MessagesRequestBuilder()
+let messagesRequest = new CometChat.MessagesRequestBuilder()
   .setUID(UID)
   .setLimit(limit)
   .mentionsWithTagInfo(true)
@@ -179,7 +179,7 @@ messagesRequest.fetchPrevious().then(
 let GUID = "GUID";
 let limit = 30;
 
-var messagesRequest = new CometChat.MessagesRequestBuilder()
+let messagesRequest = new CometChat.MessagesRequestBuilder()
   .setGUID(GUID)
   .setLimit(limit)
   .mentionsWithTagInfo(true)
@@ -271,7 +271,7 @@ To get a list of messages in a conversation where users are mentioned along with
 let UID = "UID";
 let limit = 30;
 
-var messagesRequest = new CometChat.MessagesRequestBuilder()
+let messagesRequest = new CometChat.MessagesRequestBuilder()
   .setUID(UID)
   .setLimit(limit)
   .mentionsWithBlockedInfo(true)
@@ -299,7 +299,7 @@ messagesRequest.fetchPrevious().then(
 let GUID = "GUID";
 let limit = 30;
 
-var messagesRequest = new CometChat.MessagesRequestBuilder()
+let messagesRequest = new CometChat.MessagesRequestBuilder()
   .setGUID(GUID)
   .setLimit(limit)
   .mentionsWithBlockedInfo(true)
@@ -391,6 +391,21 @@ To retrieve the list of users mentioned in the particular message, you can use t
 ```javascript
 message.getMentionedUsers()
 ```
+
+<Accordion title="Best Practices">
+- **Use correct format**: Always use `<@uid:UID>` format for mentions in message text
+- **Validate UIDs**: Ensure mentioned UIDs exist before sending
+- **Highlight mentions in UI**: Parse message text and style mentions differently
+- **Fetch tag info when needed**: Use `mentionsWithTagInfo(true)` to get user tags for mentioned users
+- **Handle blocked users**: Use `mentionsWithBlockedInfo(true)` to check blocked relationships
+</Accordion>
+
+<Accordion title="Troubleshooting">
+- **Mention not parsed** — Use the `<@uid:UID>` format exactly. Any deviation will prevent parsing.
+- **`getMentionedUsers()` returns empty** — This only works on messages received from the server, not locally constructed messages.
+- **Missing user tags** — Add `mentionsWithTagInfo(true)` to your request builder to include tag information.
+- **Blocked info missing** — Add `mentionsWithBlockedInfo(true)` to your request builder to include blocked relationship data.
+</Accordion>
 
 ---
 

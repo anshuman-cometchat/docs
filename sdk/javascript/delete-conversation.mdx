@@ -102,6 +102,19 @@ The `deleteConversation()` method takes the following parameters:
 | conversationWith | `UID` of the user or `GUID` of the group whose conversation you want to delete.   | YES      |
 | conversationType | The type of conversation you want to delete . It can be either `user` or `group`. | YES      |
 
+<Accordion title="Best Practices">
+- **Confirm before deleting**: Always show a confirmation dialog before deleting conversations
+- **Update UI immediately**: Remove the conversation from the list optimistically, then handle errors
+- **Handle errors gracefully**: If deletion fails, restore the conversation in the UI
+- **Clear local cache**: If you cache conversations locally, remove them after successful deletion
+</Accordion>
+
+<Accordion title="Troubleshooting">
+- **Conversation still visible after deletion** — Refresh the conversation list after deletion. Update your UI immediately on success.
+- **Delete fails** — Verify the UID or GUID exists and is correct.
+- **Other user still sees messages** — The SDK deletes for the logged-in user only. Use the REST API to delete for all participants.
+- **"Conversation not found" error** — The conversation may already be deleted, or the `conversationType` doesn't match. Ensure it's `user` or `group` as appropriate.
+</Accordion>
 
 ---
 
