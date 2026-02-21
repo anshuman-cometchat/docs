@@ -2,36 +2,38 @@
 title: "Call Buttons"
 ---
 
-## Overview
+`CometChatCallButtons` provides users with the ability to make voice and video calls. It renders call buttons that, when clicked, initiate a call to the specified user or group.
 
-The `CometChatCallButtons` is a [Component](/ui-kit/android/components-overview#components) provides users with the ability to make calls, access call-related functionalities, and control call settings. Clicking this button typically triggers the call to be placed to the desired recipient.
+## When to use this
 
-<Frame>
-  <img src="/images/2338801e-call_button-90161ce159058183ff0d16adbf8f4734.png" />
-</Frame>
+- You need to add voice and video call buttons to a chat screen or user profile.
+- You want to trigger outgoing calls to a specific `User` or `Group` object.
+- You need to customize which call buttons are visible (voice only, video only, or both).
+- You want to override the default call-initiation behavior with custom logic.
+- You need to configure call settings such as audio/video preferences using `CometChatCalls.CallSettingsBuilder`.
 
-***
+## Prerequisites
 
-## Usage
+- CometChat SDK initialized with `CometChatUIKit.init()` and a user logged in.
+- The `cometchat-chat-uikit-android` dependency added to your project.
+- A valid `User` or `Group` object to pass to the component.
+- A layout XML file or Activity/Fragment where you will place the component.
 
-### Integration
+## Quick start
 
-`CometChatCallButtons` can be used inside another widget or can be launched to a new screen by adding the following code snippet into the XML layout file.
+1. Open your layout XML file (e.g., `activity_main.xml`).
+2. Add the `CometChatCallButtons` XML element:
 
-<Tabs>
-<Tab title="XML">
-```xml lines
+```xml activity_main.xml lines
 <com.cometchat.chatuikit.calls.callbutton.CometChatCallButtons
     android:id="@+id/call_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 ```
 
-</Tab>
+> **What this does:** Adds the `CometChatCallButtons` component to your layout with wrap-content sizing. It renders voice and video call buttons.
 
-</Tabs>
-
-If you're defining the `CometChatCallButtons` within the XML code or in your activity or fragment then you'll need to extract them and set them on the User object using the appropriate method.
+3. In your Activity or Fragment, get a reference to the component and set a `User` or `Group` object:
 
 <Tabs>
 <Tab title="Java">
@@ -62,15 +64,38 @@ if (userObject != null) {
 
 </Tabs>
 
-***
+> **What this does:** Retrieves the `CometChatCallButtons` instance from the layout using view binding, then sets either a `User` or `Group` object. The component requires one of these to know who to call.
+
+4. Build and run your app.
+5. Verify that the voice and video call buttons appear in your layout.
+
+<Frame>
+  <img src="/images/2338801e-call_button-90161ce159058183ff0d16adbf8f4734.png" />
+</Frame>
+
+## Core concepts
+
+- **`CometChatCallButtons`**: The main component class that renders voice and video call buttons. It must be bound to a `User` or `Group` object using `setUser()` or `setGroup()`.
+- **Actions**: Callbacks such as `setOnVoiceCallClick`, `setOnVideoCallClick`, and `setOnError` that let you override default call-initiation behavior.
+- **Filters**: The `CometChatCallButtons` component does not have any exposed filters.
+- **Events**: Global events emitted by the component (`ccCallAccepted`, `ccCallRejected`) that you can listen to using `CometChatCallEvents`.
+- **Style**: XML theme styles (parent `CometChatCallButtonsStyle`) applied via `setStyle()` to customize icon tints, backgrounds, padding, stroke, and corner radius.
+- **Configurations**: Use `OutgoingCallConfiguration` to customize the outgoing call screen that appears after a call is initiated.
+
+## Implementation
 
 ### Actions
 
-[Actions](/ui-kit/android/components-overview#actions) dictate how a component functions. They are divided into two types: Predefined and User-defined. You can override either type, allowing you to tailor the behavior of the component to fit your specific needs.
+What you're changing: How the component responds when the user taps a call button or when an error occurs.
 
-##### setOnVoiceCallClick
+- **Where**: Activity or Fragment where you hold a reference to `CometChatCallButtons` (e.g., `cometchatCallButtons`).
+- **Applies to**: `CometChatCallButtons`.
+- **Default behavior**: Tapping the voice call button initiates a voice call; tapping the video call button initiates a video call. Errors are handled internally.
+- **Override**: Call the corresponding setter method to replace the default behavior with your own logic.
 
-The `setOnVoiceCallClick` action is usually invoked when a voice call is initiated, executing predefined actions. However, by utilizing the provided code snippet, you can effortlessly tailor or override this default behavior to suit your unique requirements.
+#### `setOnVoiceCallClick`
+
+Overrides the default voice call initiation behavior. If you set this, tapping the voice call button executes your custom logic instead of placing a call.
 
 <Tabs>
 <Tab title="Java">
@@ -96,9 +121,11 @@ cometchatCallButtons.setOnVoiceCallClick(CometChatCallButtons.OnClick { user, gr
 
 </Tabs>
 
-##### setOnVideoCallClick
+> **What this does:** Replaces the default voice call behavior. When the user taps the voice call button, your custom `OnClick` lambda executes with the `User` and `Group` objects instead of the built-in call initiation.
 
-The `setOnVideoCallClick` action is typically triggered when a video call is initiated, executing default actions. However, with the provided code snippet, you have the flexibility to easily customize or override this default behavior according to your specific preferences or requirements.
+#### `setOnVideoCallClick`
+
+Overrides the default video call initiation behavior. If you set this, tapping the video call button executes your custom logic instead of placing a call.
 
 <Tabs>
 <Tab title="Java">
@@ -124,9 +151,11 @@ cometchatCallButtons.setOnVideoCallClick(CometChatCallButtons.OnClick { user, gr
 
 </Tabs>
 
-##### setOnError
+> **What this does:** Replaces the default video call behavior. When the user taps the video call button, your custom `OnClick` lambda executes with the `User` and `Group` objects instead of the built-in call initiation.
 
-You can customize this behavior by using the provided code snippet to override the `setOnError` and improve error handling.
+#### `setOnError`
+
+Overrides the default error handling. If you set this, errors encountered by the component are passed to your custom handler.
 
 <Tabs>
 <Tab title="Java">
@@ -152,28 +181,25 @@ cometchatCallButtons.setOnError(OnError {  e ->
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default error handling. When the component encounters an error (e.g., a failed call initiation), your custom `OnError` callback receives the `CometChatException`.
 
-### Filters
-
-**Filters** allow you to customize the data displayed in a list within a Component. You can filter the list based on your specific criteria, allowing for a more customized. Filters can be applied using RequestBuilders of Chat SDK.
-
-The CallButton component does not have any exposed filters.
-
-***
+- **Verify**: After setting any action override, tap the corresponding button and confirm your custom logic executes instead of the default behavior.
 
 ### Events
 
-[Events](/ui-kit/android/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+What you're changing: How you listen for call-related events emitted by the component.
 
-Events emitted by the Call buttons component are as follows.
+- **Where**: Activity or Fragment where you want to respond to call events.
+- **Applies to**: `CometChatCallButtons` (events are global via `CometChatCallEvents`).
+- **Default behavior**: The component emits `ccCallAccepted` and `ccCallRejected` events when the outgoing call is accepted or rejected.
+- **Override**: Add a `CometChatCallEvents` listener with a unique ID to receive these events.
 
-| Event              | Description                                  |
-| ------------------ | -------------------------------------------- |
-| **ccCallAccepted** | Triggers when the outgoing call is accepted. |
-| **ccCallRejected** | Triggers when the outgoing call is rejected. |
+| Event | Description |
+| --- | --- |
+| `ccCallAccepted` | Triggers when the outgoing call is accepted. |
+| `ccCallRejected` | Triggers when the outgoing call is rejected. |
 
-Add `CometChatCallEvents`
+#### Add `CometChatCallEvents`
 
 <Tabs>
 <Tab title="Java">
@@ -202,7 +228,9 @@ CometChatCallEvents.addListener("UNIQUE_ID", new CometChatCallEvents() {
 
 </Tabs>
 
-Remove `CometChatCallEvents`
+> **What this does:** Registers a `CometChatCallEvents` listener with the tag `"UNIQUE_ID"`. When an outgoing call is accepted, `ccCallAccepted` fires with the `Call` object. When an outgoing call is rejected, `ccCallRejected` fires with the `Call` object.
+
+#### Remove `CometChatCallEvents`
 
 <Tabs>
 <Tab title="Java">
@@ -221,15 +249,19 @@ CometChatCallEvents.removeListener("LISTENER_ID_USED_FOR_ADDING_THIS_LISTENER")
 
 </Tabs>
 
-***
+> **What this does:** Removes the `CometChatCallEvents` listener identified by the tag string. Use the same tag you passed to `addListener` to unsubscribe.
 
-## Customization
-
-To fit your app's design requirements, you can customize the appearance of the conversation component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+- **Verify**: After adding the listener, initiate a call and confirm that `ccCallAccepted` or `ccCallRejected` fires when the recipient responds.
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+What you're changing: The visual appearance of the call buttons (icon tints, backgrounds, padding, stroke, corner radius).
+
+- **Where**: `themes.xml` for the style definition, Activity or Fragment for applying the style.
+- **Applies to**: `CometChatCallButtons`.
+- **Default behavior**: The component uses the default `CometChatCallButtonsStyle` theme.
+- **Override**: Define a custom style with parent `CometChatCallButtonsStyle` in `themes.xml`, then apply it with `setStyle()`.
+- **Code**:
 
 <Frame>
   <img src="/images/9864ab5c-DqXqOIPBfs6BAAAAAElFTkSuQmCC.png" />
@@ -253,6 +285,8 @@ Using Style you can customize the look and feel of the component in your app, Th
     </style>
 ```
 
+> **What this does:** Defines a custom style named `CustomCallButtonStyle` that sets purple icon tints, light purple backgrounds, 8dp padding, 1dp gray strokes, and 8dp corner radius for both voice and video call buttons.
+
 <Tabs>
 <Tab title="Java">
 ```java lines
@@ -270,44 +304,43 @@ cometChatCallButtons.setStyle(R.style.CustomCallButtonStyle)
 
 </Tabs>
 
-***
+> **What this does:** Applies the `CustomCallButtonStyle` theme to the `CometChatCallButtons` instance, overriding the default visual appearance.
 
 To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_call_buttons.xml).
 
+- **Verify**: After applying the style, confirm that the call buttons display with the custom icon tints, backgrounds, padding, strokes, and corner radius defined in your style.
+
 ### Functionality
 
-These are a set of small functional customizations that allow you to fine-tune the overall experience of the component. With these, you can change text, set custom icons, and toggle the visibility of UI elements.
+What you're changing: Functional properties such as which user or group receives the call, button visibility, call settings, and outgoing call configuration.
 
-Below is a list of customizations along with corresponding code snippets
+- **Where**: Activity or Fragment where you hold a reference to `CometChatCallButtons`.
+- **Applies to**: `CometChatCallButtons`.
+- **Default behavior**: Both voice and video call buttons are visible. No call settings builder or outgoing call configuration is set.
+- **Override**: Call the corresponding setter method on the `CometChatCallButtons` instance.
 
-| Property                         | Description                                                                                                                                                             | Code                                                                                                               |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| **setUser**                      | Used to set User object to the call button                                                                                                                              | `.setUser(User user)`                                                                                              |
-| **setGroup**                     | Used to set Group object to the call button                                                                                                                             | `.setGroup(group)`                                                                                                 |
-| **setVideoCallButtonVisibility** | Used to hide video call button                                                                                                                                          | `.setVideoCallButtonVisibility(View.GONE)`                                                                         |
-| **setVoiceCallButtonVisibility** | Used to hide voice call button                                                                                                                                          | `.setVoiceCallButtonVisibility(View.GONE)`                                                                         |
-| **setCallSettingsBuilder**       | Sets the call settings builder callback function. This callback is responsible for configuring the call settings based on the user, group, and call type (audio/video). | `.setCallSettingsBuilder(Function3<User, Group, Boolean, CometChatCalls.CallSettingsBuilder> callSettingsBuilder)` |
-| **setOutgoingCallConfiguration** | Sets the configurations for outgoing call component.                                                                                                                    | `.setOutgoingCallConfiguration(new OutgoingCallConfiguration)`                                                     |
+| Property | Description | Code |
+| --- | --- | --- |
+| `setUser` | Sets the `User` object to the call button. | `.setUser(User user)` |
+| `setGroup` | Sets the `Group` object to the call button. | `.setGroup(group)` |
+| `setVideoCallButtonVisibility` | Hides or shows the video call button. | `.setVideoCallButtonVisibility(View.GONE)` |
+| `setVoiceCallButtonVisibility` | Hides or shows the voice call button. | `.setVoiceCallButtonVisibility(View.GONE)` |
+| `setCallSettingsBuilder` | Sets the call settings builder callback function. This callback configures the call settings based on the user, group, and call type (audio/video). | `.setCallSettingsBuilder(Function3<User, Group, Boolean, CometChatCalls.CallSettingsBuilder> callSettingsBuilder)` |
+| `setOutgoingCallConfiguration` | Sets the configurations for the outgoing call component. | `.setOutgoingCallConfiguration(new OutgoingCallConfiguration)` |
 
-### Advanced
+> **What this does:** These functional properties control which entity receives the call, which buttons are visible, how call settings are configured, and how the outgoing call screen behaves.
 
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
+- **Verify**: After setting a property, confirm the expected behavior. If you hide the video call button with `setVideoCallButtonVisibility(View.GONE)`, only the voice call button is visible. If you set a `User` object, tapping a call button initiates a call to that user.
 
-The `CometChatCallButtons` component does not provide additional functionalities beyond this level of customization.
+### Configurations
 
-***
+What you're changing: Properties of the outgoing call screen that appears after a call is initiated from `CometChatCallButtons`.
 
-## Configurations
-
-[Configurations](/ui-kit/android/components-overview#configurations) offer the ability to customize the properties of each individual component within a Composite Component.
-
-* `Configurations` expose properties that are available in its individual components.
-
-***
-
-#### Outgoing Call
-
-You can customize the properties of the Outgoing Call component by making use of the `OutgoingCallConfiguration`. You can accomplish this by employing the `OutgoingCallConfiguration` as demonstrated below:
+- **Where**: Activity or Fragment where you hold a reference to `CometChatCallButtons`.
+- **Applies to**: `CometChatCallButtons` (configures the child `OutgoingCall` component).
+- **Default behavior**: The outgoing call screen uses default settings.
+- **Override**: Create an `OutgoingCallConfiguration` instance, configure it, and pass it to `setOutgoingCallConfiguration()`.
+- **Code**:
 
 <Tabs>
 <Tab title="Java">
@@ -330,4 +363,71 @@ cometchatCallButtons.setOutgoingCallConfiguration(outgoingCallConfiguration)
 
 </Tabs>
 
+> **What this does:** Creates an `OutgoingCallConfiguration` instance and applies it to the `CometChatCallButtons` component. This lets you customize the outgoing call screen properties.
+
 All exposed properties of `OutgoingCallConfiguration` can be found under [Outgoing Call](/ui-kit/android/outgoing-call). Properties marked with the 🛑 symbol are not accessible within the Configuration Object.
+
+- **Verify**: After setting the outgoing call configuration, initiate a call and confirm the outgoing call screen reflects your configuration changes.
+
+## Customization matrix
+
+| What you want to change | Where | Property/API | Example |
+| --- | --- | --- | --- |
+| Video call icon tint | `themes.xml` | `cometchatCallButtonsVideoCallIconTint` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsVideoCallIconTint">#6852D6</item>` |
+| Voice call icon tint | `themes.xml` | `cometchatCallButtonsVoiceCallIconTint` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsVoiceCallIconTint">#6852D6</item>` |
+| Margin between buttons | `themes.xml` | `cometchatCallButtonsMarginBetween` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsMarginBetween">16dp</item>` |
+| Video call button padding | `themes.xml` | `cometchatCallButtonsVideoCallButtonPadding` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsVideoCallButtonPadding">8dp</item>` |
+| Voice call button padding | `themes.xml` | `cometchatCallButtonsVoiceCallButtonPadding` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsVoiceCallButtonPadding">8dp</item>` |
+| Video call background color | `themes.xml` | `cometchatCallButtonsVideoCallBackgroundColor` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsVideoCallBackgroundColor">#EDEAFA</item>` |
+| Voice call background color | `themes.xml` | `cometchatCallButtonsVoiceCallBackgroundColor` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsVoiceCallBackgroundColor">#EDEAFA</item>` |
+| Video call stroke width | `themes.xml` | `cometchatCallButtonsVideoCallStrokeWidth` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsVideoCallStrokeWidth">1dp</item>` |
+| Voice call stroke width | `themes.xml` | `cometchatCallButtonsVoiceCallStrokeWidth` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsVoiceCallStrokeWidth">1dp</item>` |
+| Video call stroke color | `themes.xml` | `cometchatCallButtonsVideoCallStrokeColor` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsVideoCallStrokeColor">#E8E8E8</item>` |
+| Voice call stroke color | `themes.xml` | `cometchatCallButtonsVoiceCallStrokeColor` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsVoiceCallStrokeColor">#E8E8E8</item>` |
+| Video call corner radius | `themes.xml` | `cometchatCallButtonsVideoCallCornerRadius` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsVideoCallCornerRadius">8dp</item>` |
+| Voice call corner radius | `themes.xml` | `cometchatCallButtonsVoiceCallCornerRadius` in `CometChatCallButtonsStyle` | `<item name="cometchatCallButtonsVoiceCallCornerRadius">8dp</item>` |
+| Apply a custom style | Activity/Fragment | `setStyle(int styleRes)` | `cometChatCallButtons.setStyle(R.style.CustomCallButtonStyle);` |
+| Set user for call | Activity/Fragment | `setUser(User user)` | `.setUser(userObject)` |
+| Set group for call | Activity/Fragment | `setGroup(Group group)` | `.setGroup(groupObject)` |
+| Hide video call button | Activity/Fragment | `setVideoCallButtonVisibility(int)` | `.setVideoCallButtonVisibility(View.GONE)` |
+| Hide voice call button | Activity/Fragment | `setVoiceCallButtonVisibility(int)` | `.setVoiceCallButtonVisibility(View.GONE)` |
+| Configure call settings | Activity/Fragment | `setCallSettingsBuilder(Function3<User, Group, Boolean, CometChatCalls.CallSettingsBuilder>)` | `.setCallSettingsBuilder(callSettingsBuilder)` |
+| Configure outgoing call screen | Activity/Fragment | `setOutgoingCallConfiguration(OutgoingCallConfiguration)` | `.setOutgoingCallConfiguration(new OutgoingCallConfiguration())` |
+| Override voice call tap | Activity/Fragment | `setOnVoiceCallClick(CometChatCallButtons.OnClick)` | See `setOnVoiceCallClick` code above |
+| Override video call tap | Activity/Fragment | `setOnVideoCallClick(CometChatCallButtons.OnClick)` | See `setOnVideoCallClick` code above |
+| Override error handling | Activity/Fragment | `setOnError(OnError)` | See `setOnError` code above |
+
+## Common pitfalls & fixes
+
+| Pitfall | Fix |
+| --- | --- |
+| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load. |
+| Call buttons appear but nothing happens on tap | Verify that you have set a `User` or `Group` object using `setUser()` or `setGroup()`. The component requires one of these to know who to call. |
+| Both call buttons visible when only one is needed | Use `setVideoCallButtonVisibility(View.GONE)` to hide the video call button, or `setVoiceCallButtonVisibility(View.GONE)` to hide the voice call button. |
+| Custom style not applied | Verify the style parent is `CometChatCallButtonsStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
+| `setOnVoiceCallClick` or `setOnVideoCallClick` not firing | Ensure you set the action override on the correct `CometChatCallButtons` instance. If you have multiple instances, each must be configured separately. |
+| Event listener not receiving `ccCallAccepted` or `ccCallRejected` | Ensure you call `CometChatCallEvents.addListener` with a unique ID string. If you use the same ID as another listener, the previous one is replaced. |
+| Outgoing call configuration not taking effect | Ensure you call `setOutgoingCallConfiguration()` before the call is initiated. If called after the call starts, the configuration may not apply. |
+
+## FAQ
+
+**Q: Do I need to set both a `User` and a `Group` on `CometChatCallButtons`?**
+**A:** No. Set either a `User` object with `setUser()` or a `Group` object with `setGroup()`. The component uses whichever is set to determine the call recipient.
+
+**Q: How do I show only the voice call button?**
+**A:** Call `setVideoCallButtonVisibility(View.GONE)` on the `CometChatCallButtons` instance. This hides the video call button and leaves only the voice call button visible.
+
+**Q: Can I customize the outgoing call screen that appears after tapping a call button?**
+**A:** Yes. Create an `OutgoingCallConfiguration` instance, configure its properties, and pass it to `setOutgoingCallConfiguration()`. See the [Outgoing Call](/ui-kit/android/outgoing-call) page for all available properties.
+
+**Q: Does `CometChatCallButtons` support filters?**
+**A:** No. The `CometChatCallButtons` component does not have any exposed filters.
+
+**Q: How do I configure call settings like enabling/disabling audio or video?**
+**A:** Use `setCallSettingsBuilder()` to provide a `Function3<User, Group, Boolean, CometChatCalls.CallSettingsBuilder>` callback that returns a configured `CometChatCalls.CallSettingsBuilder` based on the user, group, and call type.
+
+## Next steps
+
+- [Outgoing Call component](/ui-kit/android/outgoing-call)
+- [Incoming Call component](/ui-kit/android/incoming-call)
+- [Call Logs component](/ui-kit/android/call-logs)

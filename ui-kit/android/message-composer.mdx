@@ -2,42 +2,93 @@
 title: "Message Composer"
 ---
 
-## Overview
+`CometChatMessageComposer` enables users to write and send a variety of messages, including text, image, video, and custom messages. It supports features such as live reactions, attachments, and message editing.
 
-MessageComposer is a [Component](/ui-kit/android/components-overview#components) that enables users to write and send a variety of messages, including text, image, video, and custom messages.
+## When to use this
 
-Features such as **Live Reaction**, **Attachments**, and **Message Editing** are also supported by it.
+- You need a message input area where users can type and send text messages.
+- You want to support sending image, video, audio, and file attachments.
+- You need live reaction and sticker functionality in the composer.
+- You want to customize attachment options, send button, or auxiliary buttons.
+- You need text formatting support such as mentions in the composer.
+- You want to listen for text changes or override the send button behavior.
 
-<Frame>
-  <img src="/images/8becc772-message_composer-0cc03defaf535f332f7f8bb1ebd65392.png" />
-</Frame>
+## Prerequisites
 
-## Usage
+- CometChat SDK initialized with `CometChatUIKit.init()` and a user logged in.
+- The `cometchat-chat-uikit-android` dependency added to your project.
+- A valid layout XML file or Activity/Fragment where you will place the component.
 
-### Integration
+## Quick start
 
-The following code snippet illustrates how you can directly incorporate the MessageComposer component into your `layout.xml` file.
+1. Open your layout XML file (e.g., `layout_activity.xml`).
+2. Add the `CometChatMessageComposer` XML element:
 
-```python lines
+```xml layout_activity.xml lines
 <com.cometchat.chatuikit.messagecomposer.CometChatMessageComposer
                 android:id="@+id/composer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 ```
 
+> **What this does:** Adds the `CometChatMessageComposer` component to your layout. It fills the available width and wraps its height to fit the composer UI.
+
+3. Build and run your app.
+4. Verify that the message composer appears with a text input field, attachment button, and send button.
+
+<Frame>
+  <img src="/images/8becc772-message_composer-0cc03defaf535f332f7f8bb1ebd65392.png" />
+</Frame>
+
 <Warning>
-
-The MessageComposer is responsible for managing runtime permissions. To ensure the **ActivityResultLauncher** is properly initialized, its object should be created in the the **onCreate** state of an activity. To ensure that the composer is loaded within the fragment, it is important to make sure that the fragment is loaded in the `onCreate` state of the activity.
-
+The MessageComposer is responsible for managing runtime permissions. To ensure the **ActivityResultLauncher** is properly initialized, its object should be created in the **onCreate** state of an activity. To ensure that the composer is loaded within the fragment, it is important to make sure that the fragment is loaded in the `onCreate` state of the activity.
 </Warning>
+
+5. Set the `User` or `Group` object on the composer so it knows which conversation to send messages to:
+
+<Tabs>
+<Tab title="Java">
+```java
+messageComposer.setUser(user);
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin
+messageComposer.setUser(user)
+```
+
+</Tab>
+
+</Tabs>
+
+> **What this does:** Associates the composer with a specific `User` object so that messages are sent to that user's conversation. If you are in a group conversation, use `.setGroup(group)` instead.
+
+## Core concepts
+
+- **`CometChatMessageComposer`**: The main component class that renders the message input area with send, attachment, and auxiliary buttons. Add it via XML layout.
+- **Actions**: Callbacks such as `setOnSendButtonClick`, `setOnError`, and `setOnTextChangedListener` that let you respond to user interactions in the composer.
+- **Filters**: The MessageComposer component does not have any available filters.
+- **Events**: The MessageComposer component does not emit any events of its own.
+- **Style**: XML theme styles (parent `CometChatMessageComposerStyle`) applied via `setStyle()` to customize colors, icons, and tints.
+- **Functionality**: Methods like `setUser`, `setGroup`, `disableTypingEvents`, `setAttachmentButtonVisibility`, and others that control composer behavior.
+- **Advanced views**: Methods like `setTextFormatters`, `setAttachmentOptions`, `setAuxiliaryButtonView`, `setSendButtonView`, and `setHeaderView` that let you replace default UI elements with custom layouts.
+
+## Implementation
 
 ### Actions
 
-[Actions](/ui-kit/android/components-overview#actions) dictate how a component functions. They are divided into two types: Predefined and User-defined. You can override either type, allowing you to tailor the behavior of the component to fit your specific needs.
+What you're changing: How the component responds to user interactions such as tapping the send button, encountering errors, and text input changes.
 
-##### setOnSendButtonClick
+- **Where**: Activity or Fragment where you hold a reference to `CometChatMessageComposer` (e.g., `messageComposer`).
+- **Applies to**: `CometChatMessageComposer`.
+- **Default behavior**: The send button sends the composed message. Errors are handled internally. Text changes are not externally observed.
+- **Override**: Call the corresponding setter method to replace the default behavior with your own logic.
 
-The `OnSendButtonClick` event gets activated when the send message button is clicked. It has a predefined function of sending messages entered in the composer `EditText`. However, you can overide this action with the following code snippet.
+#### `setOnSendButtonClick`
+
+The `OnSendButtonClick` event gets activated when the send message button is clicked. It has a predefined function of sending messages entered in the composer `EditText`. You can override this action with the following code snippet.
 
 <Tabs>
 <Tab title="Java">
@@ -65,9 +116,11 @@ The `OnSendButtonClick` event gets activated when the send message button is cli
 
 </Tabs>
 
-##### setOnError
+> **What this does:** Replaces the default send-button behavior. When a user taps the send button, your custom lambda executes instead of the built-in message sending logic.
 
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the MessageList component.
+#### `setOnError`
+
+This action does not change the behavior of the component but listens for any errors that occur in the MessageComposer component.
 
 <Tabs>
 <Tab title="Java">
@@ -95,7 +148,9 @@ messageComposer.setOnError(object : OnError {
 
 </Tabs>
 
-##### setOnTextChangedListener
+> **What this does:** Registers an error listener. If the component encounters an error, your callback receives the `CometChatException`.
+
+#### `setOnTextChangedListener`
 
 Function triggered whenever the message input's text value changes, enabling dynamic text handling.
 
@@ -140,33 +195,34 @@ messageComposer.setOnTextChangedListener(object : CometChatTextWatcher() {
 
 </Tabs>
 
-***
+> **What this does:** Registers a `CometChatTextWatcher` that fires callbacks when the text in the composer input field changes. Use `onTextChanged` for real-time character tracking, `beforeTextChanged` for pre-change state, and `afterTextChanged` for post-change processing.
+
+- **Verify**: After setting an action callback, trigger the corresponding user interaction (tap send, type text) and confirm your custom logic executes instead of the default behavior.
 
 ### Filters
 
-MessageComposer component does not have any available filters.
-
-***
+The MessageComposer component does not have any available filters.
 
 ### Events
 
-[Events](/ui-kit/android/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
-
-The MessageComposer Component does not emit any events of its own.
-
-***
-
-## Customization
-
-To fit your app's design requirements, you can customize the appearance of the MessageComposer component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+The MessageComposer component does not emit any events of its own.
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+What you're changing: The visual appearance of the MessageComposer component using XML theme styles.
+
+- **Where**: `themes.xml` for style definitions, and your Activity/Fragment for applying the style.
+- **Applies to**: `CometChatMessageComposer`.
+- **Default behavior**: The component uses the default `CometChatMessageComposerStyle`.
+- **Override**: Define a custom style with parent `CometChatMessageComposerStyle` in `themes.xml`, then call `setStyle()` on the component.
 
 <Frame>
   <img src="/images/482915e0-message_composer_styling-db627f8855f376a0287e9d2d7f0be603.png" />
 </Frame>
+
+- **Code**:
+
+First, create a custom send button drawable:
 
 ```html lines
 <!-- active send button drawable -->
@@ -187,6 +243,10 @@ Using Style you can customize the look and feel of the component in your app, Th
 </vector>
 ```
 
+> **What this does:** Defines a custom vector drawable for the active send button with an orange circular background and a white send arrow icon.
+
+Then define the custom style in `themes.xml`:
+
 ```html lines
     <!-- themes.xml -->
     <style name="CustomMessageComposerStyle" parent="CometChatMessageComposerStyle">
@@ -200,6 +260,10 @@ Using Style you can customize the look and feel of the component in your app, Th
         </item>
     </style>
 ```
+
+> **What this does:** Defines a custom style that tints the attachment icon, voice recording icon, sticker icons, and AI icon to orange (`#F76808`), and replaces the active send button drawable with the custom vector defined above.
+
+Apply the style to the component:
 
 <Tabs>
 <Tab title="Java">
@@ -218,52 +282,58 @@ cometChatMessageComposer.setStyle(R.style.CustomMessageComposerStyle)
 
 </Tabs>
 
+> **What this does:** Applies the `CustomMessageComposerStyle` theme to the `CometChatMessageComposer` component, changing the icon tints and send button appearance.
+
 To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_composer.xml).
 
-***
+- **Verify**: The composer attachment icon, voice recording icon, sticker icons, and AI icon display in orange (`#F76808`), and the active send button shows the custom orange circular drawable.
 
 ### Functionality
 
-These are a set of small functional customizations that allow you to fine-tune the overall experience of the component. With these, you can change text, set custom icons, and toggle the visibility of UI elements.
+What you're changing: Small functional customizations such as toggling visibility of UI elements, setting custom sounds, configuring typing events, and setting predefined text.
 
-Below is a list of customizations along with corresponding code snippets
+- **Where**: Activity or Fragment where you hold a reference to `CometChatMessageComposer`.
+- **Applies to**: `CometChatMessageComposer`.
+- **Default behavior**: All UI elements are visible with default settings. Typing events are enabled. No predefined text is set.
+- **Override**: Call the corresponding method on the component instance.
 
-| Property                                       | Description                                                                                                                                                                                                                                     | Code                                                        |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| **User**                                       | Used to pass user object of which header specific details will be shown                                                                                                                                                                         | `.setUser(user)`                                            |
-| **Group**                                      | Used to pass group object of which header specific details will be shown                                                                                                                                                                        | `.setGroup(Group)`                                          |
-| **disableTypingEvents**                        | Used to disable/enable typing events , default false                                                                                                                                                                                            | `.disableTypingEvents(boolean)`                             |
-| **disableSoundForMessages**                    | Used to toggle sound for outgoing messages                                                                                                                                                                                                      | `.disableSoundForMessages(boolean)`                         |
-| **setInitialComposerText**                     | Used to set predefined text                                                                                                                                                                                                                     | `.setInitialComposerText("Your_Text")`                      |
-| **setMaxLine**                                 | Maximum lines allowed to increase in the input field                                                                                                                                                                                            | `.setMaxLine(int)`                                          |
-| **setAuxiliaryButtonAlignment**                | controls position auxiliary button view , can be **left** or **right** . default **right**                                                                                                                                                      | `.setAuxiliaryButtonAlignment(AuxiliaryButtonsAlignment)`   |
-| **setDisableMentions**                         | Sets whether mentions in text should be disabled. Processes the text formatters If there are text formatters available and the disableMentions flag is set to true, it removes any formatters that are instances of CometChatMentionsFormatter. | `.setDisableMentions(true);`                                |
-| **setCustomSoundForMessages**                  | Used to give custom sounds to outgoing messages                                                                                                                                                                                                 | `.setCustomSoundForMessages(String)`                        |
-| **setAttachmentButtonVisibility**              | Hides the attachment button in the composer                                                                                                                                                                                                     | `.setAttachmentButtonVisibility(View.VISIBLE)`              |
-| **setStickersButtonVisibility**                | Hides the stickers button in the composer                                                                                                                                                                                                       | `.setStickersButtonVisibility(View.GONE)`                   |
-| **setSendButtonVisibility**                    | Hides the send button in the composer                                                                                                                                                                                                           | `.setSendButtonVisibility(View.VISIBLE)`                    |
-| **setCameraAttachmentOptionVisibility**        | Controls whether camera attachments are allowed                                                                                                                                                                                                 | `.setCameraAttachmentOptionVisibility(View.VISIBLE)`        |
-| **setImageAttachmentOptionVisibility**         | Controls whether image attachments are allowed                                                                                                                                                                                                  | `.setImageAttachmentOptionVisibility(View.VISIBLE)`         |
-| **setVideoAttachmentOptionVisibility**         | Controls whether video attachments are allowed                                                                                                                                                                                                  | `.setVideoAttachmentOptionVisibility(View.VISIBLE)`         |
-| **setAudioAttachmentOptionVisibility**         | Controls whether audio attachments are allowed                                                                                                                                                                                                  | `.setAudioAttachmentOptionVisibility(View.VISIBLE)`         |
-| **setFileAttachmentOptionVisibility**          | Controls whether file attachments are allowed                                                                                                                                                                                                   | `.setFileAttachmentOptionVisibility(View.VISIBLE)`          |
-| **setPollAttachmentOptionVisibility**          | Controls whether polls can be shared                                                                                                                                                                                                            | `.setPollAttachmentOptionVisibility(View.VISIBLE)`          |
-| **setCollaborativeDocumentOptionVisibility**   | Controls whether collaborative documents can be shared                                                                                                                                                                                          | `.setCollaborativeDocumentOptionVisibility(View.VISIBLE)`   |
-| **setCollaborativeWhiteboardOptionVisibility** | Controls whether collaborative whiteboards can be shared                                                                                                                                                                                        | `.setCollaborativeWhiteboardOptionVisibility(View.VISIBLE)` |
+| Methods | Description | Code |
+| --- | --- | --- |
+| `setUser` | Used to pass user object of which header specific details will be shown | `.setUser(user)` |
+| `setGroup` | Used to pass group object of which header specific details will be shown | `.setGroup(Group)` |
+| `disableTypingEvents` | Used to disable/enable typing events, default false | `.disableTypingEvents(boolean)` |
+| `disableSoundForMessages` | Used to toggle sound for outgoing messages | `.disableSoundForMessages(boolean)` |
+| `setInitialComposerText` | Used to set predefined text | `.setInitialComposerText("Your_Text")` |
+| `setMaxLine` | Maximum lines allowed to increase in the input field | `.setMaxLine(int)` |
+| `setAuxiliaryButtonAlignment` | Controls position of auxiliary button view, can be left or right. Default right | `.setAuxiliaryButtonAlignment(AuxiliaryButtonsAlignment)` |
+| `setDisableMentions` | Sets whether mentions in text should be disabled. If set to true, it removes any formatters that are instances of `CometChatMentionsFormatter` | `.setDisableMentions(true);` |
+| `setCustomSoundForMessages` | Used to give custom sounds to outgoing messages | `.setCustomSoundForMessages(String)` |
+| `setAttachmentButtonVisibility` | Hides the attachment button in the composer | `.setAttachmentButtonVisibility(View.VISIBLE)` |
+| `setStickersButtonVisibility` | Hides the stickers button in the composer | `.setStickersButtonVisibility(View.GONE)` |
+| `setSendButtonVisibility` | Hides the send button in the composer | `.setSendButtonVisibility(View.VISIBLE)` |
+| `setCameraAttachmentOptionVisibility` | Controls whether camera attachments are allowed | `.setCameraAttachmentOptionVisibility(View.VISIBLE)` |
+| `setImageAttachmentOptionVisibility` | Controls whether image attachments are allowed | `.setImageAttachmentOptionVisibility(View.VISIBLE)` |
+| `setVideoAttachmentOptionVisibility` | Controls whether video attachments are allowed | `.setVideoAttachmentOptionVisibility(View.VISIBLE)` |
+| `setAudioAttachmentOptionVisibility` | Controls whether audio attachments are allowed | `.setAudioAttachmentOptionVisibility(View.VISIBLE)` |
+| `setFileAttachmentOptionVisibility` | Controls whether file attachments are allowed | `.setFileAttachmentOptionVisibility(View.VISIBLE)` |
+| `setPollAttachmentOptionVisibility` | Controls whether polls can be shared | `.setPollAttachmentOptionVisibility(View.VISIBLE)` |
+| `setCollaborativeDocumentOptionVisibility` | Controls whether collaborative documents can be shared | `.setCollaborativeDocumentOptionVisibility(View.VISIBLE)` |
+| `setCollaborativeWhiteboardOptionVisibility` | Controls whether collaborative whiteboards can be shared | `.setCollaborativeWhiteboardOptionVisibility(View.VISIBLE)` |
 
-***
+- **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `disableTypingEvents(true)`, confirm no typing indicators are sent. After calling `setInitialComposerText("Your_Text")`, confirm the text input field shows the predefined text.
 
-### Advanced
+### Advanced views
 
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
+What you're changing: The default UI elements of the composer including text formatters, attachment options, auxiliary buttons, send button, and header view.
 
-***
+- **Where**: Activity or Fragment where you hold a reference to `CometChatMessageComposer`.
+- **Applies to**: `CometChatMessageComposer`.
+- **Default behavior**: The component renders its built-in views for each part of the composer.
+- **Override**: Call the corresponding setter method and provide a custom view or callback.
 
-#### setTextFormatters
+#### `setTextFormatters`
 
-Assigns the list of text formatters. If the provided list is not null, it sets the list. Otherwise, it assigns the default text formatters retrieved from the data source. To configure the existing Mentions look and feel check out [CometChatMentionsFormatter](/ui-kit/android/mentions-formatter-guide)
-
-**Example**
+Assigns the list of text formatters. If the provided list is not null, it sets the list. Otherwise, it assigns the default text formatters retrieved from the data source. To configure the existing Mentions look and feel check out [CometChatMentionsFormatter](/ui-kit/android/mentions-formatter-guide).
 
 <Frame>
   <img src="/images/b2f00911-mentions_message_composer-b1d1dd7961bc3c2953e7439bb516200b.png" />
@@ -280,6 +350,8 @@ Assigns the list of text formatters. If the provided list is not null, it sets t
     <item name="cometchatSelfMentionBackgroundColor">#30A46C</item>
 </style>
 ```
+
+> **What this does:** Defines a custom mentions style with black text and background for regular mentions, and green (`#30A46C`) text and background for self-mentions, both using the body regular text appearance.
 
 <Tabs>
 <Tab title="Java">
@@ -315,9 +387,11 @@ messageComposer.setTextFormatters(textFormatters)
 
 </Tabs>
 
-#### setAttachmentOptions
+> **What this does:** Creates a `CometChatMentionsFormatter`, applies the custom mentions style to it, adds it to a list of text formatters, and sets that list on the `CometChatMessageComposer`. Mentions in the composer input will render with the custom colors and text appearance.
 
-By using `setAttachmentOptions()`, you can set a list of custom `MessageComposerActions` for the MessageComposer Component. This will override the existing list of `MessageComposerActions`.
+#### `setAttachmentOptions`
+
+By using `setAttachmentOptions()`, you can set a list of custom `CometChatMessageComposerAction` for the MessageComposer component. This replaces the existing list of attachment options.
 
 <Tabs>
 <Tab title="Java">
@@ -336,13 +410,13 @@ cometChatMessageComposer.setAttachmentOptions()
 
 </Tabs>
 
-**Example**
+> **What this does:** Calls `setAttachmentOptions()` to replace the default attachment options. Pass a list of `CometChatMessageComposerAction` objects to define custom attachment actions.
 
 <Frame>
   <img src="/images/927b388b-message_composer_attachment_options-7fab1d4e46f7ec14b998d555d3d26968.png" />
 </Frame>
 
-In this example, we are overriding the existing MessageComposerActions List with Capture Photo, Go Live & Payments actions.
+In this example, the existing attachment options are overridden with four custom actions:
 
 <Tabs>
 <Tab title="Java">
@@ -442,11 +516,13 @@ In this example, we are overriding the existing MessageComposerActions List with
 
 </Tabs>
 
-***
+> **What this does:** Creates four custom `CometChatMessageComposerAction` objects, each with a title, icon, and click handler that shows a toast. The list is passed to `setAttachmentOptions()`, replacing the default attachment options (camera, image, video, audio, file, poll, etc.) with these four custom actions.
 
-#### setAuxiliaryButtonView
+#### `setAuxiliaryButtonView`
 
-You can insert a custom view into the MessageComposer component to add additional functionality using the following method.
+You can insert a custom view into the MessageComposer component to add additional functionality using this method.
+
+Note: The MessageComposer component uses the AuxiliaryButton to provide sticker functionality. If you override the AuxiliaryButton, it replaces the sticker functionality.
 
 <Tabs>
 <Tab title="Java">
@@ -465,15 +541,13 @@ You can insert a custom view into the MessageComposer component to add additiona
 
 </Tabs>
 
-Please note that the MessageComposer Component utilizes the AuxiliaryButton to provide sticker functionality. Overriding the AuxiliaryButton will subsequently replace the sticker functionality.
-
-**Example**
+> **What this does:** Calls `setAuxiliaryButtonView()` to replace the default auxiliary button area. Pass a custom `View` to define your own auxiliary button content.
 
 <Frame>
   <img src="/images/673c7c47-message_composer_auxiliary_button_view-d7be5a9bcabce2d9260e8338658c8fc7.png" />
 </Frame>
 
-In this example, we'll be adding a custom SOS button with click functionality. You'll first need to create a layout file and then inflate it inside the `.setAuxiliaryButtonView()` function.
+In this example, a custom SOS button with click functionality is added. A layout is created and inflated inside `.setAuxiliaryButtonView()`:
 
 <Tabs>
 <Tab title="Java">
@@ -525,11 +599,11 @@ cometChatMessageComposer.setAuxiliaryButtonView(linearLayout)
 
 </Tabs>
 
-***
+> **What this does:** Creates a horizontal `LinearLayout` containing the default auxiliary buttons (retrieved via `CometChatUIKit.getDataSource().getAuxiliaryOption()`) and a custom `ImageView` with a save icon. The combined layout replaces the default auxiliary button area, preserving the existing sticker/AI buttons while adding a custom button.
 
-#### setSendButtonView
+#### `setSendButtonView`
 
-You can set a custom view in place of the already existing send button view. Using the following method.
+You can set a custom view in place of the already existing send button view using this method.
 
 <Tabs>
 <Tab title="Java">
@@ -548,11 +622,13 @@ You can set a custom view in place of the already existing send button view. Usi
 
 </Tabs>
 
-**Example**
+> **What this does:** Replaces the default send button with your custom `View`. The custom view takes over the send button position in the composer.
 
 <Frame>
   <img src="/images/3a7932a2-message_composer_send_button_view-f2e27a65301a5ced00e5854fa3b4ee6f.png" />
 </Frame>
+
+First, create a custom send button drawable:
 
 ```xml drawable/custom_send_button.xml lines
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
@@ -568,6 +644,10 @@ You can set a custom view in place of the already existing send button view. Usi
       android:fillColor="#6852D6"/>
 </vector>
 ```
+
+> **What this does:** Defines a custom vector drawable for the send button with a light purple rounded-rectangle background and a purple send arrow icon.
+
+Then create an `ImageView` with the custom drawable and set it as the send button:
 
 <Tabs>
 <Tab title="Java">
@@ -601,11 +681,11 @@ You can set a custom view in place of the already existing send button view. Usi
 
 </Tabs>
 
-***
+> **What this does:** Creates an `ImageView` with the custom send button drawable, attaches a click listener that shows a toast, and sets it as the send button view on the composer. The custom button replaces the default send button.
 
-#### HeaderView
+#### `setHeaderView`
 
-You can set custom headerView to the MessageComposer component using the following method
+You can set a custom header view to the MessageComposer component using this method. The header view appears above the text input area.
 
 <Tabs>
 <Tab title="Java">
@@ -624,13 +704,13 @@ cometChatMessageComposer.setHeaderView(view);
 
 </Tabs>
 
-**Example**
+> **What this does:** Sets a custom `View` as the header of the composer. The header view renders above the text input area.
 
 <Frame>
   <img src="/images/dbb04a8b-message_composer_header_view-11ddf1d50aa74a8868351007037451f9.png" />
 </Frame>
 
-In the following example, we're going to apply a mock smart reply view to the MessageComposer Component using the `.setHeaderView()` method.
+In the following example, a mock smart reply view is applied to the MessageComposer component using `.setHeaderView()`:
 
 ```xml custom_header_layout lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -681,6 +761,8 @@ In the following example, we're going to apply a mock smart reply view to the Me
 </LinearLayout>
 ```
 
+> **What this does:** Defines a custom header layout with a `MaterialCardView` containing an icon and "Notes" text label. The card has a light purple background (`#EDEAFA`) with rounded corners.
+
 <Tabs>
 <Tab title="Java">
 ```java lines
@@ -699,3 +781,83 @@ cometChatMessageComposer.setHeaderView(view)
 </Tab>
 
 </Tabs>
+
+> **What this does:** Inflates the custom header layout XML and sets it as the header view on the composer. The "Notes" card appears above the text input area.
+
+- **Verify**: After setting any advanced view, confirm the custom view renders in the correct position within the composer, and the data binding populates correctly.
+
+## Customization matrix
+
+| What you want to change | Where | Property/API | Example |
+| --- | --- | --- | --- |
+| Attachment icon tint | `themes.xml` | `CometChatMessageComposerStyle` with `cometchatMessageComposerAttachmentIconTint` | `<item name="cometchatMessageComposerAttachmentIconTint">#F76808</item>` |
+| Voice recording icon tint | `themes.xml` | `CometChatMessageComposerStyle` with `cometchatMessageComposerVoiceRecordingIconTint` | `<item name="cometchatMessageComposerVoiceRecordingIconTint">#F76808</item>` |
+| Active sticker icon tint | `themes.xml` | `CometChatMessageComposerStyle` with `cometchatMessageComposerActiveStickerIconTint` | `<item name="cometchatMessageComposerActiveStickerIconTint">#F76808</item>` |
+| Inactive sticker icon tint | `themes.xml` | `CometChatMessageComposerStyle` with `cometchatMessageComposerInactiveStickerIconTint` | `<item name="cometchatMessageComposerInactiveStickerIconTint">#F76808</item>` |
+| AI icon tint | `themes.xml` | `CometChatMessageComposerStyle` with `cometchatMessageComposerAIIconTint` | `<item name="cometchatMessageComposerAIIconTint">#F76808</item>` |
+| Active send button drawable | `themes.xml` | `CometChatMessageComposerStyle` with `cometchatMessageComposerActiveSendButtonDrawable` | `<item name="cometchatMessageComposerActiveSendButtonDrawable">@drawable/active_send_button</item>` |
+| Apply a custom style | Activity/Fragment | `setStyle(int styleRes)` | `cometChatMessageComposer.setStyle(R.style.CustomMessageComposerStyle);` |
+| Target user | Activity/Fragment | `setUser(User)` | `.setUser(user)` |
+| Target group | Activity/Fragment | `setGroup(Group)` | `.setGroup(Group)` |
+| Typing events | Activity/Fragment | `disableTypingEvents(boolean)` | `.disableTypingEvents(true)` |
+| Outgoing message sound | Activity/Fragment | `disableSoundForMessages(boolean)` | `.disableSoundForMessages(true)` |
+| Predefined text | Activity/Fragment | `setInitialComposerText(String)` | `.setInitialComposerText("Your_Text")` |
+| Max input lines | Activity/Fragment | `setMaxLine(int)` | `.setMaxLine(5)` |
+| Auxiliary button alignment | Activity/Fragment | `setAuxiliaryButtonAlignment(AuxiliaryButtonsAlignment)` | `.setAuxiliaryButtonAlignment(AuxiliaryButtonsAlignment)` |
+| Disable mentions | Activity/Fragment | `setDisableMentions(boolean)` | `.setDisableMentions(true);` |
+| Custom outgoing message sound | Activity/Fragment | `setCustomSoundForMessages(String)` | `.setCustomSoundForMessages(String)` |
+| Attachment button visibility | Activity/Fragment | `setAttachmentButtonVisibility(int)` | `.setAttachmentButtonVisibility(View.VISIBLE)` |
+| Stickers button visibility | Activity/Fragment | `setStickersButtonVisibility(int)` | `.setStickersButtonVisibility(View.GONE)` |
+| Send button visibility | Activity/Fragment | `setSendButtonVisibility(int)` | `.setSendButtonVisibility(View.VISIBLE)` |
+| Camera attachment option | Activity/Fragment | `setCameraAttachmentOptionVisibility(int)` | `.setCameraAttachmentOptionVisibility(View.VISIBLE)` |
+| Image attachment option | Activity/Fragment | `setImageAttachmentOptionVisibility(int)` | `.setImageAttachmentOptionVisibility(View.VISIBLE)` |
+| Video attachment option | Activity/Fragment | `setVideoAttachmentOptionVisibility(int)` | `.setVideoAttachmentOptionVisibility(View.VISIBLE)` |
+| Audio attachment option | Activity/Fragment | `setAudioAttachmentOptionVisibility(int)` | `.setAudioAttachmentOptionVisibility(View.VISIBLE)` |
+| File attachment option | Activity/Fragment | `setFileAttachmentOptionVisibility(int)` | `.setFileAttachmentOptionVisibility(View.VISIBLE)` |
+| Poll attachment option | Activity/Fragment | `setPollAttachmentOptionVisibility(int)` | `.setPollAttachmentOptionVisibility(View.VISIBLE)` |
+| Collaborative document option | Activity/Fragment | `setCollaborativeDocumentOptionVisibility(int)` | `.setCollaborativeDocumentOptionVisibility(View.VISIBLE)` |
+| Collaborative whiteboard option | Activity/Fragment | `setCollaborativeWhiteboardOptionVisibility(int)` | `.setCollaborativeWhiteboardOptionVisibility(View.VISIBLE)` |
+| Mentions text style | `themes.xml` | `CometChatMessageComposerMentionsStyle` | `<item name="cometchatMentionTextColor">#000000</item>` |
+| Text formatters | Activity/Fragment | `setTextFormatters(List<CometChatTextFormatter>)` | See `setTextFormatters` code above |
+| Attachment options (replace) | Activity/Fragment | `setAttachmentOptions(List<CometChatMessageComposerAction>)` | See `setAttachmentOptions` code above |
+| Auxiliary button view | Activity/Fragment | `setAuxiliaryButtonView(View)` | See `setAuxiliaryButtonView` code above |
+| Send button view | Activity/Fragment | `setSendButtonView(View)` | See `setSendButtonView` code above |
+| Header view | Activity/Fragment | `setHeaderView(View)` | See `setHeaderView` code above |
+
+## Common pitfalls & fixes
+
+| Pitfall | Fix |
+| --- | --- |
+| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load. |
+| Messages not sending to the correct conversation | Ensure you call `.setUser(user)` or `.setGroup(group)` on the `CometChatMessageComposer` instance to associate it with the correct conversation. |
+| `ActivityResultLauncher` not initialized | The `CometChatMessageComposer` manages runtime permissions. Ensure its object is created in the `onCreate` state of an Activity. If using a Fragment, ensure the Fragment is loaded in the `onCreate` state of the Activity. |
+| Custom style not visible | Verify the style parent is `CometChatMessageComposerStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
+| Sticker button disappears after setting auxiliary view | The MessageComposer uses the AuxiliaryButton for sticker functionality. If you override it with `setAuxiliaryButtonView()`, retrieve the default auxiliary buttons via `CometChatUIKit.getDataSource().getAuxiliaryOption()` and include them in your custom layout. |
+| Attachment options not showing custom actions | Ensure you pass the list of `CometChatMessageComposerAction` objects to `setAttachmentOptions(actionList)`. Calling `setAttachmentOptions()` without a list does not add custom actions. |
+| Typing indicators still sent after disabling | Ensure you call `disableTypingEvents(true)` before the component starts loading. If called after the component is already active, it may not take effect immediately. |
+| `setOnSendButtonClick` not firing | If you set a custom send button view with `setSendButtonView()`, the `setOnSendButtonClick` callback may not fire because the custom view replaces the default send button entirely. Attach your click listener directly to the custom view instead. |
+| Mentions not rendering with custom style | Ensure you create a `CometChatMentionsFormatter`, call `setMessageComposerMentionTextStyle()` with your custom style resource, and pass the formatter in a list to `setTextFormatters()`. |
+| Predefined text not appearing | Ensure you call `setInitialComposerText("Your_Text")` after the component is initialized and attached to the view hierarchy. |
+
+## FAQ
+
+**Q: Does the MessageComposer support filters or events?**
+**A:** No. The MessageComposer component does not have any available filters and does not emit any events of its own.
+
+**Q: How do I set the target user or group for the composer?**
+**A:** Call `.setUser(user)` for a one-on-one conversation or `.setGroup(group)` for a group conversation on the `CometChatMessageComposer` instance.
+
+**Q: How do I keep the default sticker button when adding a custom auxiliary view?**
+**A:** Retrieve the default auxiliary buttons using `CometChatUIKit.getDataSource().getAuxiliaryOption()`, add them to a `LinearLayout` along with your custom view, and pass the combined layout to `setAuxiliaryButtonView()`.
+
+**Q: How do I customize the attachment options?**
+**A:** Create a list of `CometChatMessageComposerAction` objects, each with a title, icon, and click handler, and pass the list to `setAttachmentOptions(actionList)`. This replaces the default attachment options entirely.
+
+**Q: How do I customize the mentions appearance in the composer?**
+**A:** Define a custom style with parent `CometChatMessageComposerMentionsStyle` in `themes.xml`, create a `CometChatMentionsFormatter`, call `setMessageComposerMentionTextStyle()` with your style, and pass the formatter to `setTextFormatters()`.
+
+## Next steps
+
+- [Message list component](/ui-kit/android/message-list)
+- [Message header component](/ui-kit/android/message-header)
+- [Threaded messages header component](/ui-kit/android/threaded-messages-header)

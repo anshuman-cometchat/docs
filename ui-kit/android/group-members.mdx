@@ -2,38 +2,39 @@
 title: "Group Members"
 ---
 
-## Overview
+`CometChatGroupMembers` displays all users who are either added to or invited to a group, enabling them to participate in group discussions, access shared content, and engage in collaborative activities.
 
-`CometChatGroupMembers` is a versatile [Component](/ui-kit/android/components-overview#components) designed to showcase all users who are either added to or invited to a group, thereby enabling them to participate in group discussions, access shared content, and engage in collaborative activities. Group members have the capability to communicate in real-time through messaging, voice and video calls, and various other interactions. Additionally, they can interact with each other, share files, and join calls based on the permissions established by the group administrator or owner.
+## When to use this
 
-<Frame>
-  <img src="/images/c316bb0a-group_members-9849dc973b6addaffc0990af38520294.png" />
-</Frame>
+- You need a screen that lists all members of a specific group.
+- You want to show member avatars, names, and scope (admin, moderator, participant).
+- You need tap and long-press actions on group member items (view profile, kick, ban, change scope).
+- You want to filter group members by scope, search keyword, or custom request builders.
+- You need real-time updates when members are banned, kicked, or have their scope changed.
+- You want to customize the member list appearance with styles, custom views, or advanced layouts.
 
-***
+## Prerequisites
 
-## Usage
+- CometChat SDK initialized with `CometChatUIKit.init()` and a user logged in.
+- The `cometchat-chat-uikit-android` dependency added to your project.
+- A valid `Group` object with a group ID (`GUID`) to pass to the component.
+- A valid `layout_activity.xml` or Activity/Fragment where you will place the component.
 
-### Integration
+## Quick start
 
-`CometChatGroupMembers`, as a Composite Component, offers flexible integration options, allowing it to be launched directly via button clicks or any user-triggered action. Additionally, it seamlessly integrates into tab view controllers. With group members, users gain access to a wide range of parameters and methods for effortless customization of its user interface.
+1. Open your `layout_activity.xml` file.
+2. Add the `CometChatGroupMembers` XML element:
 
-The following code snippet exemplifies how you can seamlessly integrate the GroupMembers component into your application.
-
-<Tabs>
-<Tab title="XML">
-```xml lines
+```xml layout_activity.xml lines
 <com.cometchat.chatuikit.groupmembers.CometChatGroupMembers
     android:id="@+id/group_member"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
 ```
 
-</Tab>
+> **What this does:** Adds the `CometChatGroupMembers` component to your layout. It fills the available width and height and renders the group member list once a `Group` object is set.
 
-</Tabs>
-
-If you're defining the Group members within the XML code, you'll need to extract them and set them on the Group object using the appropriate method.
+3. In your Activity or Fragment, get a reference to the component and set the `Group` object:
 
 <Tabs>
 <Tab title="Java">
@@ -64,15 +65,38 @@ cometchatGroupMembers.setGroup(group)
 
 </Tabs>
 
-***
+> **What this does:** Creates a `Group` object with a group ID and name, then passes it to the `CometChatGroupMembers` component. The component fetches and displays all members of that group.
+
+4. Build and run your app.
+5. Verify that the group member list appears with avatars, names, and member scopes.
+
+<Frame>
+  <img src="/images/c316bb0a-group_members-9849dc973b6addaffc0990af38520294.png" />
+</Frame>
+
+## Core concepts
+
+- **`CometChatGroupMembers`**: The main component class that renders the group member list. It requires a `Group` object set via `setGroup()`.
+- **Actions**: Callbacks such as `setOnItemClick`, `setOnItemLongClick`, `setOnBackPressListener`, `setOnSelect`, `setOnError`, `setOnLoad`, and `setOnEmpty` that let you respond to user interactions.
+- **Filters**: Use `GroupMembersRequest.GroupMembersRequestBuilder` to filter members by limit, search keyword, or scopes.
+- **Events**: Global events emitted by the component (e.g., `ccGroupMemberBanned`, `ccGroupMemberKicked`, `ccGroupMemberScopeChanged`) that you can listen to from anywhere in your app using `CometChatGroupEvents`.
+- **Style**: XML theme styles (parent `CometChatGroupMembersStyle`) applied via `setStyle()` to customize colors, fonts, and sub-component styles.
+- **Advanced views**: Methods like `setLeadingView`, `setTitleView`, `setSubtitleView`, `setTrailingView`, `setItemView`, and `setOverflowMenu` that let you replace default UI elements with custom layouts.
+
+## Implementation
 
 ### Actions
 
-[Actions](/ui-kit/android/components-overview#actions) dictate how a component functions. They are divided into two types: Predefined and User-defined. You can override either type, allowing you to tailor the behavior of the component to fit your specific needs.
+What you're changing: How the component responds to user interactions such as taps, long-presses, back button, selection, errors, load completion, and empty states.
 
-##### setOnItemClick
+- **Where**: Activity or Fragment where you hold a reference to `CometChatGroupMembers`.
+- **Applies to**: `CometChatGroupMembers`.
+- **Default behavior**: Predefined actions execute automatically (e.g., tapping a member opens the member profile, pressing back navigates to the previous screen).
+- **Override**: Call the corresponding setter method to replace the default behavior with your own logic.
 
-Function invoked when a user item is clicked, typically used to open a user profile or chat screen.
+#### `setOnItemClick`
+
+Function invoked when a user item is clicked, used to open a user profile or chat screen.
 
 <Tabs>
 <Tab title="Java">
@@ -95,9 +119,9 @@ cometchatUsers.onItemClick = OnItemClick { view, position, user ->
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default item-click behavior. When a user taps a group member, your custom lambda executes instead of the built-in navigation.
 
-##### setOnItemLongClick
+#### `setOnItemLongClick`
 
 Function executed when a user item is long-pressed, allowing additional actions like delete or block.
 
@@ -122,11 +146,11 @@ cometchatUsers.onItemLongClick = OnItemLongClick({ view, position, user ->
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default long-press behavior. When a user long-presses a group member, your custom lambda executes.
 
-##### setOnBackPressListener
+#### `setOnBackPressListener`
 
-`OnBackPressListener` is triggered when you press the back button in the app bar. It has a predefined behavior; when clicked, it navigates to the previous activity. However, you can override this action using the following code snippet.
+Triggered when the user presses the back button in the app bar. By default, it navigates to the previous activity.
 
 <Tabs>
 <Tab title="Java">
@@ -149,11 +173,11 @@ cometchatUsers.onBackPressListener = OnBackPress {
 
 </Tabs>
 
-***
+> **What this does:** Overrides the default back-press navigation. When the user taps the back button, your custom logic runs instead.
 
-##### setOnSelect
+#### `setOnSelect`
 
-Called when a item from the fetched list is selected, useful for multi-selection features.
+Called when an item from the fetched list is selected, useful for multi-selection features.
 
 <Tabs>
 <Tab title="Java">
@@ -178,11 +202,11 @@ cometchatUsers.setOnSelect(object : OnSelection<User?> {
 
 </Tabs>
 
-***
+> **What this does:** Registers a callback that fires when the user selects one or more group members. The callback receives the list of selected `User` objects.
 
-##### setOnError
+#### `setOnError`
 
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the Users component.
+Listens for any errors that occur in the component. This does not change the component's behavior.
 
 <Tabs>
 <Tab title="Java">
@@ -205,9 +229,9 @@ cometchatUsers.setOnError {
 
 </Tabs>
 
-***
+> **What this does:** Registers an error listener. If the component encounters an error (e.g., network failure), your callback receives the `CometChatException`.
 
-##### setOnLoad
+#### `setOnLoad`
 
 Invoked when the list is successfully fetched and loaded, helping track component readiness.
 
@@ -234,9 +258,9 @@ cometchatUsers.setOnLoad(object : OnLoad<User?> {
 
 </Tabs>
 
-***
+> **What this does:** Registers a callback that fires after the group member list is fetched and rendered. The callback receives the list of loaded `User` objects.
 
-##### setOnEmpty
+#### `setOnEmpty`
 
 Called when the list is empty, enabling custom handling such as showing a placeholder message.
 
@@ -261,25 +285,28 @@ cometchatUsers.setOnEmpty{
 
 </Tabs>
 
-***
+> **What this does:** Registers a callback that fires when the group member list has no items. Use this to show a custom empty-state message or trigger other logic.
+
+- **Verify**: After setting an action callback, trigger the corresponding user interaction (tap, long-press, back, select) and confirm your custom logic executes instead of the default behavior.
 
 ### Filters
 
-**Filters** allow you to customize the data displayed in a list within a `Component`. You can filter the list based on your specific criteria, allowing for a more customized. Filters can be applied using `RequestBuilders` of Chat SDK.
+What you're changing: Which group members appear in the list.
 
-##### 1. GroupsRequestBuilder
+- **Where**: Activity or Fragment where you hold a reference to `CometChatGroupMembers`.
+- **Applies to**: `CometChatGroupMembers`.
+- **Default behavior**: All members of the specified group are fetched and displayed.
+- **Override**: Create a `GroupMembersRequest.GroupMembersRequestBuilder`, configure it, and pass it to `setGroupMembersRequestBuilder`.
 
-The [GroupsRequestBuilder](/sdk/android/retrieve-groups) enables you to filter and customize the group list based on available parameters in GroupsRequestBuilder. This feature allows you to create more specific and targeted queries when fetching groups. The following are the parameters available in [GroupsRequestBuilder](/sdk/android/retrieve-groups)
+You can filter using the following parameters:
 
-| Property           | Description                                                                                                      | Code                        |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| **Limit**          | Sets the number of group members that can be fetched in a single request, suitable for pagination.               | `.setLimit(int)`            |
-| **Search Keyword** | Used for fetching group members matching the passed string.                                                      | `.setSearchKeyword(String)` |
-| **Scopes**         | Used for fetching group members having matching scopes which may be of participant, moderator, admin, and owner. | `.setScopes(List<String>)`  |
+| Property | Description | Code |
+| --- | --- | --- |
+| **Limit** | Sets the number of group members that can be fetched in a single request, suitable for pagination. | `.setLimit(int)` |
+| **Search Keyword** | Used for fetching group members matching the passed string. | `.setSearchKeyword(String)` |
+| **Scopes** | Used for fetching group members having matching scopes which may be of participant, moderator, admin, and owner. | `.setScopes(List<String>)` |
 
-**Example**
-
-In the example below, we are applying a filter to the Group List based on limit and scope.
+- **Code**:
 
 <Tabs>
 <Tab title="Java">
@@ -302,15 +329,13 @@ cometchatGroupMembers.setGroupMembersRequestBuilder(groupMembersRequestBuilder)
 
 </Tabs>
 
-***
+> **What this does:** Creates a `GroupMembersRequestBuilder` with a group ID and a limit on the number of members fetched per request. The builder is then applied to the `CometChatGroupMembers` component.
 
-##### 2. SearchRequestBuilder
+- **Verify**: The group member list shows only the specified number of members per fetch request.
 
-The SearchRequestBuilder uses [GroupsRequestBuilder](/sdk/android/retrieve-groups) enables you to filter and customize the search list based on available parameters in GroupsRequestBuilder.
+#### SearchRequestBuilder
 
-This feature allows you to keep uniformity between the displayed Groups List and searched Group List.
-
-**Example**
+The `SearchRequestBuilder` uses `GroupMembersRequest.GroupMembersRequestBuilder` to filter and customize the search list based on available parameters. This keeps uniformity between the displayed group members list and the searched group members list.
 
 <Tabs>
 <Tab title="Java">
@@ -333,19 +358,28 @@ cometchatGroupMembers.setSearchRequestBuilder(groupMembersRequestBuilder)
 
 </Tabs>
 
-***
+> **What this does:** Creates a `GroupMembersRequestBuilder` with a group ID, limit, and search keyword, then applies it as the search request builder. When the user searches, the component uses this builder to filter results.
+
+- **Verify**: Searching in the group members list returns only members matching the specified keyword and limit.
 
 ### Events
 
-[Events](/ui-kit/android/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+What you're changing: How your app reacts to global events emitted by the Group Members component.
 
-Events emitted by the Join Group component is as follows.
+- **Where**: Any Activity, Fragment, or class where you want to listen for group member events.
+- **Applies to**: `CometChatGroupEvents`.
+- **Default behavior**: No external listeners are registered. Events are emitted but not handled outside the component.
+- **Override**: Add a listener using `CometChatGroupEvents.addGroupListener` and remove it when no longer needed using `CometChatGroupEvents.removeListener`.
 
-| Event                         | Description                                                       |
-| ----------------------------- | ----------------------------------------------------------------- |
-| **ccGroupMemberBanned**       | Triggers when the group member banned from the group successfully |
-| **ccGroupMemberKicked**       | Triggers when the group member kicked from the group successfully |
-| **ccGroupMemberScopeChanged** | Triggers when the group member scope is changed in the group      |
+The following events are emitted:
+
+| Event | Description |
+| --- | --- |
+| `ccGroupMemberBanned` | Triggers when the group member is banned from the group successfully |
+| `ccGroupMemberKicked` | Triggers when the group member is kicked from the group successfully |
+| `ccGroupMemberScopeChanged` | Triggers when the group member scope is changed in the group |
+
+- **Code**:
 
 <Tabs>
 <Tab title="Java">
@@ -414,9 +448,9 @@ CometChatGroupEvents.addGroupListener("LISTENER_ID", object : CometChatGroupEven
 
 </Tabs>
 
-***
+> **What this does:** Registers a global event listener tagged with `"LISTENER_ID"`. When a group member is kicked, banned, or has their scope changed, the corresponding callback fires with the action details, affected user, and group information.
 
-Remove the added listener
+To remove the listener:
 
 <Tabs>
 <Tab title="Java">
@@ -435,19 +469,24 @@ CometChatGroupEvents.removeListener("LISTENER_ID")
 
 </Tabs>
 
-***
+> **What this does:** Removes the previously registered group event listener identified by `"LISTENER_ID"`. Call this when you no longer need to listen for group member events.
 
-## Customization
-
-To fit your app's design requirements, you can customize the appearance of the Groups component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+- **Verify**: Kick or ban a group member in the UI and confirm your `ccGroupMemberKicked` or `ccGroupMemberBanned` callback fires with the correct user and group objects.
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+What you're changing: The visual appearance of the Group Members component using XML theme styles.
+
+- **Where**: `themes.xml` for style definitions, and your Activity/Fragment for applying the style.
+- **Applies to**: `CometChatGroupMembers`.
+- **Default behavior**: The component uses the default `CometChatGroupMembersStyle`.
+- **Override**: Define a custom style with parent `CometChatGroupMembersStyle` in `themes.xml`, then call `setStyle()` on the component.
 
 <Frame>
   <img src="/images/1bd5a982-group_members_styling-ee7427e23be4ccf40776d8b1df1342f4.png" />
 </Frame>
+
+- **Code**:
 
 ```xml themes.xml lines
      <style name="CustomAvatarStyle" parent="CometChatAvatarStyle">
@@ -462,6 +501,8 @@ Using Style you can customize the look and feel of the component in your app, Th
         <item name="cometchatGroupMembersBackIconTint">#F76808</item>
     </style>
 ```
+
+> **What this does:** Defines two custom styles: `CustomAvatarStyle` sets the avatar corner radius to 8dp and background color to `#FBAA75`; `CustomGroupMembersStyle` applies the custom avatar style and sets the separator color, title text color, and back icon tint to `#F76808`.
 
 <Tabs>
 <Tab title="Java">
@@ -480,48 +521,49 @@ cometchatGroupMembers.setStyle(R.style.CustomGroupMembersStyle)
 
 </Tabs>
 
-***
+> **What this does:** Applies the `CustomGroupMembersStyle` theme to the `CometChatGroupMembers` component, changing the avatar, separator, title text, and back icon appearance.
 
 To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_group_members.xml).
 
+- **Verify**: The group member list avatars display with rounded corners (8dp radius) and an orange background (`#FBAA75`), and the separator, title text, and back icon appear in orange (`#F76808`).
+
 ### Functionality
 
-These are a set of small functional customizations that allow you to fine-tune the overall experience of the component. With these, you can toggle the visibility of UI elements.
+What you're changing: Small functional customizations such as toggling visibility of UI elements and configuring selection modes.
 
-Below is a list of customizations along with corresponding code snippets
+- **Where**: Activity or Fragment where you hold a reference to `CometChatGroupMembers`.
+- **Applies to**: `CometChatGroupMembers`.
+- **Default behavior**: All UI elements are visible with default settings.
+- **Override**: Call the corresponding method on the component instance.
 
-| Methods                   | Description                                                                                                                  | Code                                                        |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| setGroup                  | Sets the group whose members need to be fetched. This is a required property for the component to function properly.         | `.setGroup(group);`                                         |
-| setBackIconVisibility     | Used to toggle visibility for back button in the app bar                                                                     | `.setBackIconVisibility(View.VISIBLE);`                     |
-| setToolbarVisibility      | Used to toggle visibility for back button in the app bar                                                                     | `.setToolbarVisibility(View.GONE);`                         |
-| setErrorStateVisibility   | Used to hide error state on fetching Users                                                                                   | `.setErrorStateVisibility(View.GONE);`                      |
-| setEmptyStateVisibility   | Used to hide empty state on fetching Users                                                                                   | `.setEmptyStateVisibility(View.GONE);`                      |
-| setLoadingStateVisibility | Used to hide loading state while fetching Users                                                                              | `.setLoadingStateVisibility(View.GONE);`                    |
-| setSeparatorVisibility    | Used to control visibility of Separators in the list view                                                                    | `.setSeparatorVisibility(View.GONE);`                       |
-| setUsersStatusVisibility  | Used to control visibility of status indicator shown if user is online                                                       | `.setUsersStatusVisibility(View.GONE);`                     |
-| setSelectionMode          | This method determines the selection mode for members, enabling users to select either a single or multiple members at once. | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
-| setSearchkeyword          | Used for fetching members matching the passed keywords                                                                       | `.setSearchkeyword("anything");`                            |
-| setSearchBoxVisibility    | Used to hide search box shown in the tool bar                                                                                | `.setSearchBoxVisibility(View.GONE);`                       |
+| Methods | Description | Code |
+| --- | --- | --- |
+| `setGroup` | Sets the group whose members need to be fetched. This is a required property for the component to function properly. | `.setGroup(group);` |
+| `setBackIconVisibility` | Toggles visibility for the back button in the app bar | `.setBackIconVisibility(View.VISIBLE);` |
+| `setToolbarVisibility` | Toggles visibility for the toolbar in the app bar | `.setToolbarVisibility(View.GONE);` |
+| `setErrorStateVisibility` | Hides the error state on fetching members | `.setErrorStateVisibility(View.GONE);` |
+| `setEmptyStateVisibility` | Hides the empty state on fetching members | `.setEmptyStateVisibility(View.GONE);` |
+| `setLoadingStateVisibility` | Hides the loading state while fetching members | `.setLoadingStateVisibility(View.GONE);` |
+| `setSeparatorVisibility` | Controls visibility of separators in the list view | `.setSeparatorVisibility(View.GONE);` |
+| `setUsersStatusVisibility` | Controls visibility of the status indicator shown if a user is online | `.setUsersStatusVisibility(View.GONE);` |
+| `setSelectionMode` | Determines the selection mode for members, enabling users to select either a single or multiple members at once. | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
+| `setSearchkeyword` | Used for fetching members matching the passed keywords | `.setSearchkeyword("anything");` |
+| `setSearchBoxVisibility` | Hides the search box shown in the toolbar | `.setSearchBoxVisibility(View.GONE);` |
 
-***
+- **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE)`, confirm that multiple members can be selected.
 
-### Advanced
+### Advanced views
 
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your own views, layouts, and UI elements and then incorporate those into the component.
+What you're changing: The default UI elements of group member list items and the component's chrome (loading, empty, error states, options, overflow menu).
 
-The `Group Memebers` component does not provide additional functionalities beyond this level of customization.
+- **Where**: Activity or Fragment where you hold a reference to `CometChatGroupMembers`.
+- **Applies to**: `CometChatGroupMembers`.
+- **Default behavior**: The component renders its built-in views for each part of the group member item and component chrome.
+- **Override**: Call the corresponding setter method and provide a custom view or callback.
 
-***
+#### `setOptions`
 
-#### setOptions
-
-Defines a set of available actions that users can perform when they interact with a group member item.
-
-Use Cases:
-
-* Provide actions like "View Profile", "Send Message", "Remove from Group".
-* Restrict certain actions to admins (e.g., "Promote to Admin", "Ban User").
+Sets a predefined list of actions that users can perform when they interact with a group member item. This replaces the default options entirely.
 
 <Tabs>
 <Tab title="Java">
@@ -540,16 +582,11 @@ cometchatUsers.options = Function2<Context?, User?, List<CometChatPopupMenu.Menu
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default interaction options with an empty list, effectively removing all menu items when interacting with a group member.
 
-#### addOptions
+#### `addOptions`
 
-Adds custom actions to the existing options available when interacting with a group member.
-
-Use Cases:
-
-* Extend functionality by adding "Block User", "Report User", or "View Activity".
-* Customize actions based on member roles.
+Extends the existing set of actions without removing the default ones.
 
 <Tabs>
 <Tab title="Java">
@@ -568,16 +605,11 @@ cometchatUsers.addOptions { context, user -> emptyList<CometChatPopupMenu.MenuIt
 
 </Tabs>
 
-***
+> **What this does:** Appends an empty list to the existing interaction options, leaving the defaults unchanged. Replace the empty list with your custom `MenuItem` objects to add new actions.
 
-#### setLoadingView
+#### `setLoadingView`
 
-Displays a custom loading view while group members are being fetched.
-
-Use Cases:
-
-* Show a loading spinner with "Fetching group members...".
-* Implement a skeleton loader for a smoother UI experience.
+Sets a custom loading view displayed while group members are being fetched.
 
 <Tabs>
 <Tab title="Java">
@@ -596,16 +628,11 @@ cometchatUsers.loadingView = R.layout.your_loading_view
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default loading spinner with your custom layout resource. The custom view displays while group members are being fetched.
 
-#### setEmptyView
+#### `setEmptyView`
 
-Configures a view to be displayed when no group members are found.
-
-Use Cases:
-
-* Display a message like "No members in this group yet.".
-* Show a button to Invite Members.
+Configures a custom view displayed when no group members are found.
 
 <Tabs>
 <Tab title="Java">
@@ -624,16 +651,11 @@ cometchatUsers.emptyView = R.layout.your_empty_view
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default empty state with your custom layout resource. The custom view displays when the group member list has no items.
 
-#### setErrorView
+#### `setErrorView`
 
 Defines a custom error state view when there is an issue loading group members.
-
-Use Cases:
-
-* Display a retry button with "Failed to load members. Tap to retry.".
-* Show an illustration for a better user experience.
 
 <Tabs>
 <Tab title="Java">
@@ -652,16 +674,11 @@ cometchatUsers.errorView = R.layout.your_error_view
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default error state with your custom layout resource. The custom view displays when the component encounters an error during data fetching.
 
-#### setLeadingView
+#### `setLeadingView`
 
-Sets a custom leading view for each group member item, usually used for profile images or avatars.
-
-Use Cases:
-
-* Show a circular avatar with an online/offline indicator.
-* Add a role-based badge (Admin, Moderator, Member).
+Sets a custom leading view for each group member item, used for profile images or avatars.
 
 <Tabs>
 <Tab title="Java">
@@ -697,15 +714,13 @@ cometchatUsers.setLeadingView(object: UsersViewHolderListener {
 
 </Tabs>
 
+> **What this does:** Registers a `UsersViewHolderListener` that provides a custom view for the leading (left) area of each group member item. `createView` inflates your layout, and `bindView` populates it with user data.
+
 <Frame>
   <img src="/images/b013490a-group_members_leading_view-87dce6741e65f09e848ea6698c75e978.png" />
 </Frame>
 
-You can indeed create a custom layout file named `custom_title_view.xml` for more complex or unique list items.
-
-Once this layout file is made, you would inflate it inside the `createView()` method of the `GroupsViewHolderListener`. The inflation process prepares the layout for use in your application:
-
-Following this, you would use the `bindView()` method to initialize and assign values to your individual views. This could include setting text on TextViews, images on ImageViews, and so on based on the properties of the Group object:
+Create a custom layout file named `custom_title_view.xml`:
 
 ```xml custom_title_view.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -729,6 +744,10 @@ Following this, you would use the `bindView()` method to initialize and assign v
 
 </RelativeLayout>
 ```
+
+> **What this does:** Defines a custom leading view layout with a `CometChatAvatar` and a role badge view that can display different backgrounds based on the member's scope (admin, moderator, participant).
+
+Inflate the layout inside `createView()` of `GroupMembersViewHolderListeners` and use `bindView()` to set the avatar and role badge based on the member's scope:
 
 <Tabs>
 <Tab title="Java">
@@ -811,16 +830,11 @@ cometchatGroupMembers.setLeadingView(object : GroupMembersViewHolderListeners() 
 
 </Tabs>
 
-***
+> **What this does:** Inflates a custom leading view layout and populates it with the group member's avatar and a role-based badge. If the member is an admin, the badge shows the `marketing_head` drawable; if a moderator, `sr_manager`; if a participant, `content_manager`; otherwise, `team_member`. The view is sized to 40dp × 40dp.
 
-#### setTitleView
+#### `setTitleView`
 
-Customizes the title view, typically displaying the member's name.
-
-Use Cases:
-
-* Customize fonts, colors, or styles for usernames.
-* Add role-specific indicators like "(Group Admin)".
+Customizes the title view, displaying the member's name.
 
 <Tabs>
 <Tab title="Java">
@@ -856,15 +870,13 @@ cometchatUsers.setTitleView(object: UsersViewHolderListener {
 
 </Tabs>
 
+> **What this does:** Registers a `UsersViewHolderListener` that provides a custom view for the title area of each group member item. `createView` inflates your layout, and `bindView` populates it with user data.
+
 <Frame>
   <img src="/images/8cc2ed79-group_members_title_view-a20a9c5f8ef829a4a5d35794d94ec352.png" />
 </Frame>
 
-You can indeed create a custom layout file named `custom_title_view.xml` for more complex or unique list items.
-
-Once this layout file is made, you would inflate it inside the `createView()` method of the `GroupsViewHolderListener`. The inflation process prepares the layout for use in your application:
-
-Following this, you would use the `bindView()` method to initialize and assign values to your individual views. This could include setting text on TextViews, images on ImageViews, and so on based on the properties of the Group object:
+Create a custom layout file named `custom_title_view.xml`:
 
 ```xml custom_title_view.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -892,6 +904,10 @@ Following this, you would use the `bindView()` method to initialize and assign v
         android:background="@drawable/team_member" />
 </LinearLayout>
 ```
+
+> **What this does:** Defines a custom title view layout with a `TextView` for the member name and a `View` for the role badge, arranged horizontally.
+
+Inflate the layout inside `createView()` of `GroupMembersViewHolderListeners` and use `bindView()` to set the name and role badge:
 
 <Tabs>
 <Tab title="Java">
@@ -976,16 +992,11 @@ cometchatGroupMembers.setTitleView(object : GroupMembersViewHolderListeners() {
 
 </Tabs>
 
-***
+> **What this does:** Inflates a custom title view layout and populates it with the group member's name and a role-based badge. The badge background changes based on the member's scope: `marketing_head` for admin, `sr_manager` for moderator, `content_manager` for participant, and `team_member` for others.
 
-#### setItemView
+#### `setItemView`
 
-Assigns a fully custom ListItem layout to the Group Members Component, replacing the default structure.
-
-Use Cases:
-
-* Include additional member details like joined date, bio, or status.
-* Modify layout based on user roles.
+Assigns a fully custom list item layout to the Group Members component, replacing the default structure entirely.
 
 <Tabs>
 <Tab title="Java">
@@ -1029,17 +1040,13 @@ cometchatGroupMembers.setItemView(object : GroupMembersViewHolderListeners() {
 
 </Tabs>
 
-**Example**
+> **What this does:** Registers a `GroupMembersViewHolderListeners` that replaces the entire default group member list item layout. `createView` inflates your custom layout, and `bindView` populates it with group member data.
 
 <Frame>
   <img src="/images/506c713b-group_members_list_item_view-7db7e3429ec8898cb29e584a459ec43f.png" />
 </Frame>
 
-You can indeed create a custom layout file named `item_list.xml` for more complex or unique list items.
-
-Once this layout file is made, you would inflate it inside the `createView()` method of the `GroupsViewHolderListener`. The inflation process prepares the layout for use in your application:
-
-Following this, you would use the `bindView()` method to initialize and assign values to your individual views. This could include setting text on TextViews, images on ImageViews, and so on based on the properties of the Group object:
+Create a custom layout file named `item_list.xml`:
 
 ```xml item_list.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -1067,6 +1074,10 @@ Following this, you would use the `bindView()` method to initialize and assign v
         android:textColor="?attr/cometchatTextColorSecondary" />
 </LinearLayout>
 ```
+
+> **What this does:** Defines a custom list item layout with two `TextView` elements: one for the member name and one for the subtitle (scope), arranged vertically.
+
+Inflate the layout inside `createView()` and use `bindView()` to set the name and scope:
 
 <Tabs>
 <Tab title="Java">
@@ -1121,16 +1132,11 @@ cometchatGroupMembers.setItemView(object :
 
 </Tabs>
 
-***
+> **What this does:** Inflates a custom list item layout and populates it with the group member's name and scope. Each list item shows the member name in the primary text style and their scope (admin, moderator, participant) in the secondary text style.
 
-#### setSubTitleView
+#### `setSubTitleView`
 
-Customizes the subtitle view for each group member, typically used for extra details.
-
-Use Cases:
-
-* Show "Last Active" time.
-* Display a custom status message.
+Customizes the subtitle view for each group member, used for extra details such as join date.
 
 <Tabs>
 <Tab title="Java">
@@ -1174,17 +1180,13 @@ cometchatGroupMembers.setSubtitleView(object : GroupMembersViewHolderListeners()
 
 </Tabs>
 
-**Example**
+> **What this does:** Registers a `GroupMembersViewHolderListeners` that provides a custom view for the subtitle area of each group member item. `createView` inflates your layout, and `bindView` populates it with group member data.
 
 <Frame>
   <img src="/images/2b73a513-group_members_subtitle_view-b0b1463389d35067432eaf60d8418ffe.png" />
 </Frame>
 
-You can indeed create a custom layout file named `subtitle_layout.xml` for more complex or unique list items.
-
-Once this layout file is made, you would inflate it inside the `createView()` method of the `GroupsViewHolderListener`. The inflation process prepares the layout for use in your application:
-
-Following this, you would use the `bindView()` method to initialize and assign values to your individual views. This could include setting text on TextViews, images on ImageViews, and so on based on the properties of the Group object:
+Inflate a `TextView` in `createView()` and use `bindView()` to display the member's join date:
 
 <Tabs>
 <Tab title="Java">
@@ -1234,16 +1236,11 @@ cometchatGroupMembers.setSubtitleView(object :
 
 </Tabs>
 
-***
+> **What this does:** Creates a `TextView` as the subtitle view and populates it with the group member's join date formatted as "dd/mm/yyyy". The `joinedAt` timestamp is multiplied by 1000 to convert from seconds to milliseconds.
 
-#### setTrailingView
+#### `setTrailingView`
 
-Customizes the trailing (right-end) section of each member item, typically used for action buttons.
-
-Use Cases:
-
-* Show quick actions like Mute, Remove, or Promote.
-* Display a "Last Active" timestamp.
+Customizes the trailing (right-end) section of each member item, used for action buttons or scope badges.
 
 <Tabs>
 <Tab title="Java">
@@ -1288,17 +1285,13 @@ cometchatGroupMembers.setTrailingView(object : GroupMembersViewHolderListeners()
 
 </Tabs>
 
-**Example**
+> **What this does:** Registers a `GroupMembersViewHolderListeners` that provides a custom view for the trailing (right) area of each group member item. `createView` inflates your layout, and `bindView` populates it with group member data.
 
 <Frame>
   <img src="/images/fb7e32ac-group_members_tail_view-19ea33e3931012467d4df750210007fe.png" />
 </Frame>
 
-You can indeed create a custom layout file named `tail_view_layout.xml` for more complex or unique list items.
-
-Once this layout file is made, you would inflate it inside the `createView()` method of the `GroupsViewHolderListener`. The inflation process prepares the layout for use in your application:
-
-Following this, you would use the `bindView()` method to initialize and assign values to your individual views. This could include setting text on TextViews, images on ImageViews, and so on based on the properties of the Group object:
+Create a custom layout file named `custom_tail_view.xml`:
 
 ```xml custom_tail_view.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -1334,6 +1327,10 @@ Following this, you would use the `bindView()` method to initialize and assign v
 
 </LinearLayout>
 ```
+
+> **What this does:** Defines a custom trailing view layout with a `MaterialCardView` containing a `TextView` that displays the member's scope as a colored badge.
+
+Inflate the layout and use `bindView()` to set the scope text and visibility:
 
 <Tabs>
 <Tab title="Java">
@@ -1391,14 +1388,11 @@ cometchatGroupMembers.setTrailingView(object :
 
 </Tabs>
 
-#### setOverflowMenu
+> **What this does:** Inflates a custom trailing view that displays a scope badge for each group member. The badge background uses the extended primary color, the text shows the member's scope, and the badge is only visible for participants (hidden for admins, moderators, and owners).
 
-Allows customization of the overflow menu (three-dot ⋮ icon) with additional options.
+#### `setOverflowMenu`
 
-Use Cases:
-
-* Add extra actions like "Report Member", "Restrict from Posting".
-* Provide group admins with moderation options.
+Customizes the overflow menu (three-dot ⋮ icon) with additional options in the toolbar.
 
 <Tabs>
 <Tab title="Java">
@@ -1417,7 +1411,7 @@ cometchatGroupMembers.setOverflowMenu(v)
 
 </Tabs>
 
-Example:
+> **What this does:** Sets a custom `View` as the overflow menu in the group members toolbar. Pass any view (e.g., an icon button) to replace the default overflow menu.
 
 <Frame>
   <img src="/images/fb7e32ac-group_members_tail_view-19ea33e3931012467d4df750210007fe.png" />
@@ -1443,3 +1437,78 @@ cometchatGroupMembers.setOverflowMenu(addMemberIv)
 </Tab>
 
 </Tabs>
+
+> **What this does:** Creates an `ImageView` with an add icon and sets it as the overflow menu in the group members toolbar. This provides a quick action button for adding new members.
+
+- **Verify**: After setting any advanced view, confirm the custom view renders in the correct position within the group member list item, and the data binding populates correctly for each member.
+
+## Customization matrix
+
+| What you want to change | Where | Property/API | Example |
+| --- | --- | --- | --- |
+| Avatar style (corner radius, background) | `themes.xml` | `CometChatGroupMembersStyle` with `cometchatGroupMembersAvatarStyle` | `<item name="cometchatAvatarStrokeRadius">8dp</item>` |
+| Separator color | `themes.xml` | `CometChatGroupMembersStyle` with `cometchatGroupMembersSeparatorColor` | `<item name="cometchatGroupMembersSeparatorColor">#F76808</item>` |
+| Title text color | `themes.xml` | `CometChatGroupMembersStyle` with `cometchatGroupMembersTitleTextColor` | `<item name="cometchatGroupMembersTitleTextColor">#F76808</item>` |
+| Back icon tint | `themes.xml` | `CometChatGroupMembersStyle` with `cometchatGroupMembersBackIconTint` | `<item name="cometchatGroupMembersBackIconTint">#F76808</item>` |
+| Apply a custom style | Activity/Fragment | `setStyle(int styleRes)` | `cometchatGroupMembers.setStyle(R.style.CustomGroupMembersStyle);` |
+| Set the group | Activity/Fragment | `setGroup(Group)` | `.setGroup(group);` |
+| Back button visibility | Activity/Fragment | `setBackIconVisibility(int)` | `.setBackIconVisibility(View.VISIBLE);` |
+| Toolbar visibility | Activity/Fragment | `setToolbarVisibility(int)` | `.setToolbarVisibility(View.GONE);` |
+| Error state visibility | Activity/Fragment | `setErrorStateVisibility(int)` | `.setErrorStateVisibility(View.GONE);` |
+| Empty state visibility | Activity/Fragment | `setEmptyStateVisibility(int)` | `.setEmptyStateVisibility(View.GONE);` |
+| Loading state visibility | Activity/Fragment | `setLoadingStateVisibility(int)` | `.setLoadingStateVisibility(View.GONE);` |
+| Separator visibility | Activity/Fragment | `setSeparatorVisibility(int)` | `.setSeparatorVisibility(View.GONE);` |
+| User online status visibility | Activity/Fragment | `setUsersStatusVisibility(int)` | `.setUsersStatusVisibility(View.GONE);` |
+| Selection mode (single/multiple) | Activity/Fragment | `setSelectionMode(SelectionMode)` | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
+| Search keyword | Activity/Fragment | `setSearchkeyword(String)` | `.setSearchkeyword("anything");` |
+| Search box visibility | Activity/Fragment | `setSearchBoxVisibility(int)` | `.setSearchBoxVisibility(View.GONE);` |
+| Filter group members | Activity/Fragment | `setGroupMembersRequestBuilder(GroupMembersRequestBuilder)` | See Filters code above |
+| Search request builder | Activity/Fragment | `setSearchRequestBuilder(GroupMembersRequestBuilder)` | See SearchRequestBuilder code above |
+| Interaction options (replace) | Activity/Fragment | `setOptions(Function2)` | See `setOptions` code above |
+| Interaction options (append) | Activity/Fragment | `addOptions(Function2)` | See `addOptions` code above |
+| Loading view | Activity/Fragment | `setLoadingView(int)` | `cometchatUsers.setLoadingView(R.layout.your_loading_view);` |
+| Empty view | Activity/Fragment | `setEmptyView(int)` | `cometchatUsers.setEmptyView(R.layout.your_empty_view);` |
+| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatUsers.setErrorView(R.layout.your_empty_view);` |
+| Leading view (avatar area) | Activity/Fragment | `setLeadingView(GroupMembersViewHolderListeners)` | See `setLeadingView` code above |
+| Title view | Activity/Fragment | `setTitleView(GroupMembersViewHolderListeners)` | See `setTitleView` code above |
+| Subtitle view | Activity/Fragment | `setSubtitleView(GroupMembersViewHolderListeners)` | See `setSubTitleView` code above |
+| Trailing view | Activity/Fragment | `setTrailingView(GroupMembersViewHolderListeners)` | See `setTrailingView` code above |
+| Entire list item | Activity/Fragment | `setItemView(GroupMembersViewHolderListeners)` | See `setItemView` code above |
+| Overflow menu | Activity/Fragment | `setOverflowMenu(View)` | `cometchatGroupMembers.setOverflowMenu(v);` |
+
+## Common pitfalls & fixes
+
+| Pitfall | Fix |
+| --- | --- |
+| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
+| Group member list is empty despite having members | Verify that `setGroup(group)` is called with a valid `Group` object that has a correct `GUID`. The component requires a group to fetch members. |
+| `setGroup` not called | `setGroup` is a required property. If you define `CometChatGroupMembers` in XML, you must still call `setGroup()` programmatically in your Activity or Fragment. |
+| Filters not applied | Ensure you call `setGroupMembersRequestBuilder(builder)` on the `CometChatGroupMembers` instance after creating and configuring the builder. |
+| Custom style not visible | Verify the style parent is `CometChatGroupMembersStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
+| Event listener not receiving events | Ensure you call `CometChatGroupEvents.addGroupListener` with a unique `LISTENER_ID`. If you use the same ID as another listener, the previous one is replaced. |
+| Custom view returns null in `createView` | If `createView` returns `null`, the default view is used. Return a valid inflated `View` to replace the default. |
+| Scope badge not showing for participants | In the trailing view example, the badge is only visible when `groupMember.getScope()` equals `UIKitConstants.GroupMemberScope.PARTICIPANTS`. If you want it visible for all scopes, remove the visibility condition. |
+| Search not working | Ensure you call `setSearchRequestBuilder` with a properly configured `GroupMembersRequestBuilder` that includes `setSearchKeyword`. |
+
+## FAQ
+
+**Q: How do I filter group members by scope (admin, moderator, participant)?**
+**A:** Create a `GroupMembersRequest.GroupMembersRequestBuilder`, call `setScopes(List<String>)` with the desired scopes, and pass it to `setGroupMembersRequestBuilder`.
+
+**Q: How do I listen for member kick, ban, or scope change events outside the component?**
+**A:** Use `CometChatGroupEvents.addGroupListener("YOUR_TAG", ...)` and override `ccGroupMemberKicked`, `ccGroupMemberBanned`, or `ccGroupMemberScopeChanged`. Call `CometChatGroupEvents.removeListener("YOUR_TAG")` to unsubscribe.
+
+**Q: Can I show a custom badge for each member's role?**
+**A:** Yes. Use `setLeadingView` or `setTitleView` with a `GroupMembersViewHolderListeners` implementation. In `bindView`, check `groupMember.getScope()` against `UIKitConstants.GroupMemberScope.ADMIN`, `UIKitConstants.GroupMemberScope.MODERATOR`, and `UIKitConstants.GroupMemberScope.PARTICIPANTS` to set different badge backgrounds.
+
+**Q: How do I customize the avatar and separator styles?**
+**A:** Define custom styles with parent `CometChatAvatarStyle` in `themes.xml`, reference them in a `CometChatGroupMembersStyle` using `cometchatGroupMembersAvatarStyle`, and apply with `setStyle()`.
+
+**Q: How do I add custom options without removing the defaults?**
+**A:** Use `addOptions` instead of `setOptions`. `addOptions` appends your custom `MenuItem` objects to the existing default options.
+
+## Next steps
+
+- [Groups component](/ui-kit/android/groups)
+- [Message list component](/ui-kit/android/message-list)
+- [Users component](/ui-kit/android/users)

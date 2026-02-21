@@ -55,7 +55,7 @@ What you're changing: How UI Kit components communicate with the rest of your ap
 - **Where to change it**: Event handling in your implementation (not specified on this page).
 - **Applies to**: Components and composite components that emit events.
 - **Default behavior**: Events are emitted when user interaction or state changes occur.
-- **Override**: Subscribe or react to events as needed for your flow.
+- **Override**: If your app needs to respond to a component event, subscribe to that event and handle it in your listener.
 - **Code**: Not applicable for this overview.
 - **Verify**: You can map an event to the UI change it should trigger.
 
@@ -77,7 +77,7 @@ What you're changing: Per-component configuration inside composite screens.
 | Event handling strategy | Event listeners in your implementation | Not specified on this page | Not applicable for this overview |
 | Per-component configuration in composites | Composite screen setup | Not specified on this page | Not applicable for this overview |
 
-## Common pitfalls and fixes
+## Common pitfalls & fixes
 - Confusing Base Components with Components: Base Components render UI only; Components include business logic.
 - Expecting Base Components to emit actions: Only Components and composite components expose actions.
 - Ignoring events: Events are how components notify the rest of your app about state changes.

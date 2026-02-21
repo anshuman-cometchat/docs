@@ -2,21 +2,27 @@
 title: "Message Header"
 ---
 
-## Overview
+`CometChatMessageHeader` displays [User](/sdk/android/users-overview) or [Group](/sdk/android/groups-overview) details in the toolbar, including a typing indicator and a back navigation button.
 
-`MessageHeader` is a [Component](/ui-kit/android/components-overview#components) that showcases the [User](/sdk/android/users-overview) or [Group](/sdk/android/groups-overview) details in the toolbar. Furthermore, it also presents a typing indicator and a back navigation button for ease of use.
+## When to use this
 
-<Frame>
-  <img src="/images/6fc1ac0d-message_header-3ef4b07948db07a2ec0b2aca8bcdc221.png" />
-</Frame>
+- You need a header bar that shows the name, avatar, and status of the user or group in a chat screen.
+- You want to display a typing indicator when the other party is typing.
+- You need back navigation from the message screen to the previous screen.
+- You want to show voice and video call buttons in the header.
+- You want to replace default header elements (subtitle, leading view, trailing view) with custom layouts.
 
-***
+## Prerequisites
 
-## Usage
+- CometChat SDK initialized with `CometChatUIKit.init()` and a user logged in.
+- The `cometchat-chat-uikit-android` dependency added to your project.
+- A valid `User` or `Group` object to pass to the component.
+- A layout XML file or Activity/Fragment where you will place the component.
 
-### Integration
+## Quick start
 
-You can add `MessageHeader` component directly into the \`layout.xml\`\` file.
+1. Open your layout XML file (e.g., `your_layout.xml`).
+2. Add the `CometChatMessageHeader` XML element:
 
 ```xml your_layout.xml lines
 <com.cometchat.chatuikit.messageheader.CometChatMessageHeader
@@ -25,15 +31,46 @@ You can add `MessageHeader` component directly into the \`layout.xml\`\` file.
                 android:layout_height="56dp" />
 ```
 
+> **What this does:** Adds the `CometChatMessageHeader` component to your layout with a fixed height of 56dp. It fills the available width and renders the header bar.
+
+3. In your Activity or Fragment, get a reference to the component and set a `User` or `Group` object:
+
+```java YourActivity.java lines
+cometchatMessageHeader.setUser(user);
+```
+
+> **What this does:** Passes a `User` object to the header so it displays that user's name, avatar, and status.
+
+4. Build and run your app.
+5. Verify that the header displays the user or group name, avatar, and status information.
+
+<Frame>
+  <img src="/images/6fc1ac0d-message_header-3ef4b07948db07a2ec0b2aca8bcdc221.png" />
+</Frame>
+
+## Core concepts
+
+- **`CometChatMessageHeader`**: The main component class that renders user or group details in a toolbar. It is added via XML layout.
+- **Actions**: Callbacks such as `setOnBackPressListener` and `setOnError` that let you respond to user interactions.
+- **Filters**: The `MessageHeader` component does not expose any filters.
+- **Events**: The `MessageHeader` component does not produce any events.
+- **Style**: XML theme styles (parent `CometChatMessageHeaderStyle`) applied via `setStyle()` to customize colors, fonts, and sub-component styles.
+- **Advanced views**: Methods like `setLeadingView`, `setSubtitleView`, `setTrailingView`, `setItemView`, and `setAuxiliaryButtonView` that let you replace default UI elements with custom layouts.
+
+## Implementation
+
 ### Actions
 
-[Actions](/ui-kit/android/components-overview#actions) dictate how a component functions. They are divided into two types: Predefined and User-defined. You can override either type, allowing you to tailor the behavior of the component to fit your specific needs.
+What you're changing: How the component responds to user interactions such as back-press and errors.
 
-The `MessageHeader` component does not have any exposed actions.
+- **Where**: Activity or Fragment where you hold a reference to `CometChatMessageHeader` (e.g., `cometchatMessageHeader`).
+- **Applies to**: `CometChatMessageHeader`.
+- **Default behavior**: Predefined actions execute automatically (e.g., pressing back navigates to the previous activity).
+- **Override**: Call the corresponding setter method to replace the default behavior with your own logic.
 
-##### OnError
+#### `setOnError`
 
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the Users component.
+Listens for any errors that occur in the component. This does not change the component's behavior.
 
 <Tabs>
 <Tab title="Java">
@@ -56,11 +93,11 @@ cometchatMessageHeader.setOnError {
 
 </Tabs>
 
-***
+> **What this does:** Registers an error listener. If the component encounters an error, your callback receives the `CometChatException`.
 
-##### setOnBackPressListener
+#### `setOnBackPressListener`
 
-`OnBackPressListener` is triggered when you press the back button in the app bar. It has a predefined behavior; when clicked, it navigates to the previous activity. However, you can override this action using the following code snippet.
+Triggered when the user presses the back button in the app bar. By default, it navigates to the previous activity.
 
 <Tabs>
 <Tab title="Java">
@@ -83,85 +120,24 @@ cometchatMessageHeader.onBackPressListener = OnBackPress {
 
 </Tabs>
 
-***
+> **What this does:** Overrides the default back-press navigation. When the user taps the back button, your custom logic runs instead.
 
-##### setNewChatButtonClick
-
-`setOnNewChatButtonClick` is triggered when you press the new chat button in the app bar. It has a predefined behavior; when clicked, it navigates to the previous activity. However, you can override this action using the following code snippet.
-
-<Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatMessageHeader.setNewChatButtonClick(() -> {
-
-    });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatMessageHeader.setNewChatButtonClick {
-
-    }
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-##### setChatHistoryButtonClick
-
-`setChatHistoryButtonClick` is triggered when you press the chat history button in the app bar. It has a predefined behavior; when clicked, it navigates to the previous activity. However, you can override this action using the following code snippet.
-
-<Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatMessageHeader.setChatHistoryButtonClick(() -> {
-
-    });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatMessageHeader.setChatHistoryButtonClick {
-
-    }
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-### Filters
-
-**Filters** allow you to customize the data displayed in a list within a `Component`. You can filter the list based on your specific criteria, allowing for a more customized. Filters can be applied using `RequestBuilders` of Chat SDK.
-
-The `MessageHeader` component does not have any exposed filters.
-
-### Events
-
-[Events](/ui-kit/android/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
-
-The `MessageHeader` component does not produce any events.
-
-## Customization
-
-To fit your app's design requirements, you can customize the appearance of the conversation component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+- **Verify**: After setting an action callback, trigger the corresponding user interaction (back-press) and confirm your custom logic executes instead of the default behavior.
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+What you're changing: The visual appearance of the Message Header component using XML theme styles.
+
+- **Where**: `themes.xml` for style definitions, and your Activity/Fragment for applying the style.
+- **Applies to**: `CometChatMessageHeader`.
+- **Default behavior**: The component uses the default `CometChatMessageHeaderStyle`.
+- **Override**: Define a custom style with parent `CometChatMessageHeaderStyle` in `themes.xml`, then call `setStyle()` on the component.
 
 <Frame>
   <img src="/images/c761803d-message_header_styling-ae4670a5a130374818f37e2144246748.png" />
 </Frame>
+
+- **Code**:
 
 ```xml themes.xml lines
     <style name="CustomCallButtonStyle" parent="CometChatCallButtonsStyle">
@@ -175,6 +151,8 @@ Using Style you can customize the look and feel of the component in your app, Th
         <item name="cometchatMessageHeaderCallButtonsStyle">@style/CustomCallButtonStyle</item>
     </style>
 ```
+
+> **What this does:** Defines two custom styles: `CustomCallButtonStyle` sets the video and voice call icon tints to `#F76808`; `CustomMessageHeaderStyle` sets the title text color to `#F76808` and applies custom avatar and call button sub-styles to the message header component.
 
 <Tabs>
 <Tab title="Java">
@@ -193,53 +171,53 @@ cometchatMessageHeader.setStyle(R.style.CustomMessageHeaderStyle)
 
 </Tabs>
 
-***
+> **What this does:** Applies the `CustomMessageHeaderStyle` theme to the `CometChatMessageHeader` component, changing the title text color, avatar style, and call button icon tints.
 
 To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_header.xml).
 
+- **Verify**: The header title text displays in orange (`#F76808`), and the voice and video call icons display with orange tint (`#F76808`).
+
 ### Functionality
 
-These are a set of small functional customizations that allow you to fine-tune the overall experience of the component. With these, you can change text, set custom icons, and toggle the visibility of UI elements.
+What you're changing: Small functional customizations such as toggling visibility of UI elements and setting the user or group object.
 
-Following is a list of customizations along with their corresponding code snippets:
+- **Where**: Activity or Fragment where you hold a reference to `CometChatMessageHeader`.
+- **Applies to**: `CometChatMessageHeader`.
+- **Default behavior**: All UI elements are visible with default settings.
+- **Override**: Call the corresponding method on the component instance.
 
-| Property                           | Description                                                                                                                                              | Code                                          |
-| --------------------------------   | -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| **User**                           | Used to pass user object of which header specific details will be shown. This is a one of the required property for the component to function properly.  | `.setUser(user)`                              |
-| **Group**                          | Used to pass group object of which header specific details will be shown. This is a one of the required property for the component to function properly. | `.setGroup(Group)`                            |
-| **setBackButtonVisibility**        | Used to toggle back button visibility                                                                                                                    | `.setBackButtonVisibility(View.GONE)`         |
-| **setUserStatusVisibility**        | Used to toggle functionality to show user's presence                                                                                                     | `.setUserStatusVisibility(View.VISIBLE)`      |
-| **setVideoCallButtonVisibility**   | Defines whether a user can initiate a video call                                                                                                         | `.setVideoCallButtonVisibility(View.VISIBLE)` |
-| **setVoiceCallButtonVisibility**   | Defines whether a user can initiate a voice call                                                                                                         | `.setVoiceCallButtonVisibility(View.VISIBLE)` |
-| **setNewChatButtonVisibility**     | Used to toggle the visibility of new chat button in case of chats with AI Assistants                                                                     | `.setNewChatButtonVisibility(View.GONE)`      |
-| **setChatHistoryButtonVisibility** | Used to toggle the visibility of chat history button in case of chats with AI Assistants                                                                 | `.setChatHistoryButtonVisibility(View.GONE)`  |
-| **setMenuIconVisibility**          | This method sets the visibility of the menu icon in the message header.                                                                                  | .setMenuIconVisibility(View.VISIBLE);         |
+| Methods | Description | Code |
+| --- | --- | --- |
+| `setUser` | Passes a user object to display that user's header details. This is a required property for the component to function. | `.setUser(user)` |
+| `setGroup` | Passes a group object to display that group's header details. This is a required property for the component to function. | `.setGroup(Group)` |
+| `setBackButtonVisibility` | Toggles visibility for the back button | `.setBackButtonVisibility(View.GONE)` |
+| `setUserStatusVisibility` | Toggles visibility for the user's online/offline status | `.setUserStatusVisibility(View.VISIBLE)` |
+| `setVideoCallButtonVisibility` | Toggles visibility for the video call button | `.setVideoCallButtonVisibility(View.VISIBLE)` |
+| `setVoiceCallButtonVisibility` | Toggles visibility for the voice call button | `.setVoiceCallButtonVisibility(View.VISIBLE)` |
 
-### Advanced
+- **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `setUser(user)`, confirm the header displays that user's name and avatar.
 
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
+### Advanced views
 
-#### setDateTimeFormatter
+What you're changing: The default UI elements of the message header, including date formatting, auxiliary buttons, menu options, the entire header layout, subtitle, leading view, and trailing view.
 
-By providing a custom implementation of the DateTimeFormatterCallback, you can configure how time and date values are displayed. This ensures consistent formatting for labels such as "Today", "Yesterday", "X minutes ago", and more.
+- **Where**: Activity or Fragment where you hold a reference to `CometChatMessageHeader`.
+- **Applies to**: `CometChatMessageHeader`.
+- **Default behavior**: The component renders its built-in views for each part of the header.
+- **Override**: Call the corresponding setter method and provide a custom view or callback.
 
-Each method in the interface corresponds to a specific case:
+#### `setDateTimeFormatter`
 
-`time(long timestamp)` → Custom full timestamp format
+Provides a custom implementation of `DateTimeFormatterCallback` to configure how time and date values are displayed. Each method corresponds to a specific case:
 
-`today(long timestamp)` → Called when a message is from today
-
-`yesterday(long timestamp)` → Called for yesterday’s messages
-
-`lastWeek(long timestamp)` → Messages from the past week
-
-`otherDays(long timestamp)` → Older messages
-
-`minute(long timestamp)` / `hour(long timestamp)` → Exact time unit
-
-`minutes(long diffInMinutesFromNow, long timestamp)` → e.g., "5 minutes ago"
-
-`hours(long diffInHourFromNow, long timestamp)` → e.g., "2 hours ago"
+- `time(long timestamp)` — Custom full timestamp format
+- `today(long timestamp)` — Called when a message is from today
+- `yesterday(long timestamp)` — Called for yesterday's messages
+- `lastWeek(long timestamp)` — Messages from the past week
+- `otherDays(long timestamp)` — Older messages
+- `minute(long timestamp)` / `hour(long timestamp)` — Exact time unit
+- `minutes(long diffInMinutesFromNow, long timestamp)` — e.g., "5 minutes ago"
+- `hours(long diffInHourFromNow, long timestamp)` — e.g., "2 hours ago"
 
 <Tabs>
 <Tab title="Java">
@@ -337,17 +315,11 @@ cometchatMessageHeader.setDateTimeFormatterCallback(object : DateTimeFormatterCa
 
 </Tabs>
 
-***
+> **What this does:** Overrides the default date/time formatting for the message header. Today's messages show "Today", yesterday's show "Yesterday", recent messages show "X mins ago" or "X hrs ago", last week's show "Last Week", and older messages show the full date in "dd MMM yyyy" format.
 
-#### setAuxiliaryButtonView
+#### `setAuxiliaryButtonView`
 
 Allows adding a custom button or additional action next to the title or trailing section.
-
-Use Cases:
-
-* Add a Call button (📞) for quick voice/video calls.
-* Include a Block/Report button for moderation.
-* Implement a Pin Chat feature.
 
 <Tabs>
 <Tab title="Java">
@@ -372,75 +344,11 @@ cometchatMessageHeader.setAuxiliaryButtonView(object : Function3<Context?, User?
 
 </Tabs>
 
-***
+> **What this does:** Registers a callback that returns a custom `View` to display as an auxiliary button in the header. The callback receives the current `Context`, `User`, and `Group` objects so you can customize the view based on the conversation.
 
-#### setOptions
+#### `setItemView`
 
-Allows adding custom options menu which will show on header menu tap. The header menu will only be visible when options are set using this method.
-
-<Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-        List<CometChatPopupMenu.MenuItem> options = new ArrayList<>();
-
-        options.add(new CometChatPopupMenu.MenuItem(
-                UIKitConstants.MessageHeaderMenuOptions.SEARCH,
-                getString(com.cometchat.chatuikit.R.string.cometchat_menu_search),
-                AppCompatResources.getDrawable(this, com.cometchat.chatuikit.R.drawable.cometchat_ic_search),
-                null,
-                this::navigateToSearchActivity
-        ));
-
-        options.add(new CometChatPopupMenu.MenuItem(
-                UIKitConstants.MessageHeaderMenuOptions.CONVERSATION_SUMMARY,
-                getString(com.cometchat.chatuikit.R.string.cometchat_menu_conversation_summary),
-                AppCompatResources.getDrawable(this, com.cometchat.chatuikit.R.drawable.cometchat_ic_menu_conversation_summary),
-                null,
-                this::generateConversationSummary
-        ));
-
-        binding.messageHeader.setOptions(options);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-val options = mutableListOf<CometChatPopupMenu.MenuItem>()
-        options.add(
-            CometChatPopupMenu.MenuItem(
-                UIKitConstants.MessageHeaderMenuOptions.SEARCH,
-                getString(com.cometchat.chatuikit.R.string.cometchat_menu_search),
-                AppCompatResources.getDrawable(this@MessagesActivity, com.cometchat.chatuikit.R.drawable.cometchat_ic_search),
-                null,
-            ) { navigateToSearchActivity() }
-        )
-        options.add(
-            CometChatPopupMenu.MenuItem(
-                UIKitConstants.MessageHeaderMenuOptions.CONVERSATION_SUMMARY,
-                getString(com.cometchat.chatuikit.R.string.cometchat_menu_conversation_summary),
-                AppCompatResources.getDrawable(this@MessagesActivity, com.cometchat.chatuikit.R.drawable.cometchat_ic_menu_conversation_summary),
-                null
-            ) { generateConversationSummary() }
-        )
-
-binding.messageHeader.options = options
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### setItemView
-
-Enables replacing the entire default header with a fully customized ListItem layout.
-
-Use Cases:
-
-* Create a completely unique message header style.
-* Include additional user details like bio, location, or last seen status.
+Replaces the entire default header with a fully customized layout.
 
 <Tabs>
 <Tab title="Java">
@@ -465,9 +373,13 @@ cometchatMessageHeader.setItemView(object : Function3<Context?, User?, Group?, V
 
 </Tabs>
 
+> **What this does:** Registers a callback that returns a custom `View` to replace the entire default message header layout. The callback receives the current `Context`, `User`, and `Group` objects.
+
 <Frame>
   <img src="/images/6fc1ac0d-message_header-3ef4b07948db07a2ec0b2aca8bcdc221.png" />
 </Frame>
+
+Create a `custom_message_header.xml` layout file:
 
 ```xml custom_message_header.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -572,6 +484,10 @@ cometchatMessageHeader.setItemView(object : Function3<Context?, User?, Group?, V
 </LinearLayout>
 ```
 
+> **What this does:** Defines a custom message header layout with a back button, avatar, title and subtitle text views, and call buttons. This layout replaces the entire default header when inflated in `setItemView`.
+
+Inflate the XML and initialize the views:
+
 <Tabs>
 <Tab title="Java">
 ```java lines
@@ -635,17 +551,11 @@ cometchatMessageHeader.setItemView { context, user, group ->
 
 </Tabs>
 
-***
+> **What this does:** Inflates the `custom_message_header.xml` layout and populates it with the user's or group's avatar, name, and status/member count. If the conversation is with a user, it sets the user's status as the subtitle and configures call buttons for that user. If the conversation is with a group, it sets the member count as the subtitle and configures call buttons for that group.
 
-#### setSubtitleView
+#### `setSubtitleView`
 
-Allows customizing the subtitle view, usually used for status messages or additional details.
-
-Use Cases:
-
-* Show the user's last seen or online status.
-* Display a custom typing indicator.
-* Show a custom role or tagline ("Customer Support", "Verified Seller").
+Allows customizing the subtitle view, used for status messages or additional details.
 
 <Tabs>
 <Tab title="Java">
@@ -670,13 +580,11 @@ cometchatMessageHeader.setSubtitleView(object : Function3<Context?, User?, Group
 
 </Tabs>
 
-**Example**
+> **What this does:** Registers a callback that returns a custom `View` for the subtitle area of the header. The callback receives the current `Context`, `User`, and `Group` objects so you can customize the subtitle based on the conversation.
 
 <Frame>
   <img src="/images/691ae5e8-message_header_subtitle_view-dc68ccaa0e5b42749247bd5e0b736f8f.png" />
 </Frame>
-
-You should create a `subtitle_layout.xml` file and inflate it inside `apply` function.
 
 <Tabs>
 <Tab title="Java">
@@ -714,16 +622,11 @@ cometChatMessageHeader.setSubtitleView(object : Function3<Context?, User?, Group
 
 </Tabs>
 
-***
+> **What this does:** Creates a `TextView` and sets its text to the user's status (for user conversations) or the group's member count and description (for group conversations). If the group has more than 1 member, it shows "X members"; otherwise it shows "1 member • [description]".
 
-#### setLeadingView
+#### `setLeadingView`
 
-Defines a custom leading view, typically used for the receiver's profile picture or avatar.
-
-Use Cases:
-
-* Display a circular profile picture with a status indicator.
-* Add a custom badge for special roles (Admin, Verified ✅).
+Defines a custom leading view, used for the receiver's profile picture or avatar.
 
 <Tabs>
 <Tab title="Java">
@@ -748,13 +651,13 @@ cometchatMessageHeader.setLeadingView(object : Function3<Context?, User?, Group?
 
 </Tabs>
 
-**Example**
+> **What this does:** Registers a callback that returns a custom `View` for the leading (left) area of the header. The callback receives the current `Context`, `User`, and `Group` objects.
 
 <Frame>
   <img src="/images/e09af665-message_header_leading_view-6d0be5fa6870e2bd8acf0af4b6393c93.png" />
 </Frame>
 
-You need to create a `header_leading_view.xml` file, inflate it, and then pass it to the `.setLeadingView(view)` method.
+Create a `header_leading_view.xml` layout file:
 
 ```html lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -778,6 +681,10 @@ You need to create a `header_leading_view.xml` file, inflate it, and then pass i
 
 </RelativeLayout>
 ```
+
+> **What this does:** Defines a custom leading view layout with a `CometChatAvatar` and a hidden admin badge view. The badge becomes visible when the user has an "admin" role or the group owner matches the logged-in user.
+
+Inflate the XML and initialize the views:
 
 <Tabs>
 <Tab title="Java">
@@ -839,17 +746,11 @@ cometChatMessageHeader.leadingView = object : Function3<Context?, User?, Group?,
 
 </Tabs>
 
-***
+> **What this does:** Inflates the `header_leading_view.xml` layout and sets the avatar image from the user or group. If the user has an "admin" role, or if the logged-in user is the group owner, the admin badge view becomes visible. The view is sized to 45dp × 45dp.
 
-#### setTrailingView
+#### `setTrailingView`
 
-Enables customization of the trailing view, typically used for action buttons or indicators.
-
-Use Cases:
-
-* Add an options menu (⋮) for more actions.
-* Display a mute/unmute toggle.
-* Show a connection strength indicator for calls.
+Customizes the trailing (end) view of the header, used for action buttons or indicators.
 
 <Tabs>
 <Tab title="Java">
@@ -874,7 +775,7 @@ cometchatMessageHeader.setTrailingView(object : Function3<Context?, User?, Group
 
 </Tabs>
 
-**Example**
+> **What this does:** Registers a callback that returns a custom `View` for the trailing (right) area of the header. The callback receives the current `Context`, `User`, and `Group` objects.
 
 <Frame>
   <img src="/images/b2a0551c-message_header_trailing_view-64dbdd471059cf2e92dc9646fb3e676b.png" />
@@ -913,3 +814,60 @@ cometChatMessageHeader.setTrailingView { context, user, group ->
 </Tab>
 
 </Tabs>
+
+> **What this does:** Creates an `ImageView` with a save icon drawable, sizes it to 24dp × 24dp with a 16dp left margin, and returns it as the trailing view in the header.
+
+- **Verify**: After setting any advanced view, confirm the custom view renders in the correct position within the message header, and the data binding populates correctly for the user or group.
+
+## Customization matrix
+
+| What you want to change | Where | Property/API | Example |
+| --- | --- | --- | --- |
+| Title text color | `themes.xml` | `CometChatMessageHeaderStyle` with `cometchatMessageHeaderTitleTextColor` | `<item name="cometchatMessageHeaderTitleTextColor">#F76808</item>` |
+| Avatar style | `themes.xml` | `CometChatMessageHeaderStyle` with `cometchatMessageHeaderAvatarStyle` | `<item name="cometchatMessageHeaderAvatarStyle">@style/CustomAvatarStyle</item>` |
+| Call button icon tints | `themes.xml` | `CometChatCallButtonsStyle` with `cometchatCallButtonsVideoCallIconTint` / `cometchatCallButtonsVoiceCallIconTint` | `<item name="cometchatCallButtonsVideoCallIconTint">#F76808</item>` |
+| Apply a custom style | Activity/Fragment | `setStyle(int styleRes)` | `cometchatMessageHeader.setStyle(R.style.CustomMessageHeaderStyle);` |
+| User object | Activity/Fragment | `setUser(User)` | `.setUser(user)` |
+| Group object | Activity/Fragment | `setGroup(Group)` | `.setGroup(Group)` |
+| Back button visibility | Activity/Fragment | `setBackButtonVisibility(int)` | `.setBackButtonVisibility(View.GONE)` |
+| User status visibility | Activity/Fragment | `setUserStatusVisibility(int)` | `.setUserStatusVisibility(View.VISIBLE)` |
+| Video call button visibility | Activity/Fragment | `setVideoCallButtonVisibility(int)` | `.setVideoCallButtonVisibility(View.VISIBLE)` |
+| Voice call button visibility | Activity/Fragment | `setVoiceCallButtonVisibility(int)` | `.setVoiceCallButtonVisibility(View.VISIBLE)` |
+| Date/time formatting | Activity/Fragment | `setDateTimeFormatter(DateTimeFormatterCallback)` | See `setDateTimeFormatter` code above |
+| Auxiliary button view | Activity/Fragment | `setAuxiliaryButtonView(Function3)` | See `setAuxiliaryButtonView` code above |
+| Entire header layout | Activity/Fragment | `setItemView(Function3)` | See `setItemView` code above |
+| Subtitle view | Activity/Fragment | `setSubtitleView(Function3)` | See `setSubtitleView` code above |
+| Leading view (avatar area) | Activity/Fragment | `setLeadingView(Function3)` | See `setLeadingView` code above |
+| Trailing view | Activity/Fragment | `setTrailingView(Function3)` | See `setTrailingView` code above |
+
+## Common pitfalls & fixes
+
+| Pitfall | Fix |
+| --- | --- |
+| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
+| Header shows no user or group details | Ensure you call `setUser(user)` or `setGroup(group)` on the `CometChatMessageHeader` instance. The component requires one of these to display header details. |
+| Back button not visible | Call `setBackButtonVisibility(View.VISIBLE)` on the component instance. The back button visibility may default to hidden depending on your layout. |
+| Custom style not applied | Verify the style parent is `CometChatMessageHeaderStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
+| Call buttons not visible | Ensure `setVideoCallButtonVisibility(View.VISIBLE)` and `setVoiceCallButtonVisibility(View.VISIBLE)` are called. If the calling feature is not enabled, the buttons may not appear. |
+| `setOnBackPressListener` not firing | Ensure the back button is visible by calling `setBackButtonVisibility(View.VISIBLE)`. If the back button is hidden, the listener will not trigger. |
+| Custom subtitle view not rendering | Ensure your `setSubtitleView` callback returns a valid `View` object. If the callback returns `null`, the default subtitle is used. |
+
+## FAQ
+
+**Q: Do I need to pass both a User and a Group object?**
+**A:** No. Pass either a `User` object using `setUser(user)` or a `Group` object using `setGroup(group)`. The component displays details for whichever object is set.
+
+**Q: How do I customize the call button icons in the header?**
+**A:** Define a custom style with parent `CometChatCallButtonsStyle` in `themes.xml`, set `cometchatCallButtonsVideoCallIconTint` and `cometchatCallButtonsVoiceCallIconTint`, then reference it in your `CometChatMessageHeaderStyle` using `cometchatMessageHeaderCallButtonsStyle`.
+
+**Q: Can I replace the entire header layout?**
+**A:** Yes. Use `setItemView` to provide a `Function3<Context, User, Group, View>` callback that returns your custom layout. This replaces the entire default header.
+
+**Q: Does the MessageHeader component emit any events?**
+**A:** No. The `MessageHeader` component does not produce any events. Use action callbacks (`setOnBackPressListener`) to respond to user interactions.
+
+## Next steps
+
+- [Message list component](/ui-kit/android/message-list)
+- [Message composer component](/ui-kit/android/message-composer)
+- [Conversations component](/ui-kit/android/conversations)

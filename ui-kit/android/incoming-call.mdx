@@ -2,23 +2,27 @@
 title: "Incoming Call"
 ---
 
-## Overview
+`CometChatIncomingCall` is a [Component](/ui-kit/android/components-overview#components) that serves as a visual representation when the user receives an incoming call, such as a voice call or video call, providing options to answer or decline the call.
 
-The `CometChatIncomingCall` is a [Component](/ui-kit/android/components-overview#components) that serves as a visual representation when the user receives an incoming call, such as a voice call or video call, providing options to answer or decline the call.
+## When to use this
 
-<Frame>
-  <img src="/images/ef9ae7b8-Incoming_call-060686ee2b9aa89ad7c163fc8290d390.png" />
-</Frame>
+- You need a full-screen UI that appears when the logged-in user receives an incoming voice or video call.
+- You want to provide accept and reject buttons so the user can answer or decline the call.
+- You need to display the caller's name and avatar on the incoming call screen.
+- You want to play a custom ringtone or disable the default call sound.
+- You need to customize the incoming call screen appearance with styles or custom views.
 
-***
+## Prerequisites
 
-## Usage
+- CometChat SDK initialized with `CometChatUIKit.init()` and a user logged in.
+- The `cometchat-chat-uikit-android` dependency added to your project.
+- A valid `layout_activity.xml` or Activity/Fragment where you will place the component.
+- A `User` object with `uid`, `name`, and `avatar` set, representing the caller.
 
-### Integration
+## Quick start
 
-`CometChatIncomingCall` being a custom component, offers versatility in its integration. It can be seamlessly launched via button clicks or any user-triggered action, enhancing the overall user experience and facilitating smoother interactions within the application.
-
-Since `CometChatIncomingCall` can be launched by adding the following code snippet into the XML layout file.
+1. Open your `layout_activity.xml` file.
+2. Add the `CometChatIncomingCall` XML element:
 
 <Tabs>
 <Tab title="XML">
@@ -33,13 +37,14 @@ Since `CometChatIncomingCall` can be launched by adding the following code snipp
 
 </Tabs>
 
-If you're defining the `CometChatIncomingCall` within the XML code or in your activity or fragment then you'll need to extract them and set them on the User object using the appropriate method.
+> **What this does:** Adds the `CometChatIncomingCall` component to your layout. It fills the available width and height and renders the incoming call screen.
+
+3. In your Activity or Fragment, get a reference to the component and set the `User` object:
 
 <Tabs>
 <Tab title="Java">
 ```java lines
 CometChatIncomingCall cometchatIncomingCall = binding.incomingCall; // 'binding' is a view binding instance. Initialize it with `binding = YourXmlFileNameBinding.inflate(getLayoutInflater());` to use views like `binding.incomingCall` after enabling view binding.
-
 User user = new User();
 user.setUid(""); //Required
 user.setName(""); //Required
@@ -53,7 +58,6 @@ cometchatIncomingCall.setUser(user); //Required - set the user object
 <Tab title="Kotlin">
 ```kotlin lines
 val cometchatIncomingCall: CometChatIncomingCall = binding.incomingCall  // 'binding' is a view binding instance. Initialize it with `binding = YourXmlFileNameBinding.inflate(layoutInflater)` to use views like `binding.incomingCall` after enabling view binding.
-
 val user = User()
 user.uid = "" //Required
 user.name = "" //Required
@@ -66,12 +70,40 @@ cometchatIncomingCall.setUser(user) //Required - set the user object
 
 </Tabs>
 
-##### Activity and Fragment
+> **What this does:** Retrieves the `CometChatIncomingCall` view from the layout binding, creates a `User` object with the caller's details, and passes it to the component using `setUser()`. The component then displays the caller's name and avatar.
 
-You can integrate `CometChatIncomingCall` into your Activity and Fragment by adding the following code snippets into the respective classes.
+4. Build and run your app.
+5. Verify that the incoming call screen appears with the caller's avatar, name, and accept/reject buttons.
+
+<Frame>
+  <img src="/images/ef9ae7b8-Incoming_call-060686ee2b9aa89ad7c163fc8290d390.png" />
+</Frame>
+
+6. If you need to add the component programmatically instead of XML, see the [Activity integration](#activity-integration) or [Fragment integration](#fragment-integration) subsections in Implementation.
+
+## Core concepts
+
+- **`CometChatIncomingCall`**: The main component class that renders the incoming call screen. It can be added via XML layout, Activity, or Fragment.
+- **Actions**: Callbacks such as `setOnAcceptClick`, `setOnRejectClick`, and `setOnError` that let you respond to user interactions on the call screen.
+- **Filters**: The `CometChatIncomingCall` component does not expose any filters.
+- **Events**: The `CometChatIncomingCall` component does not expose any events.
+- **Style**: XML theme styles (parent `CometChatIncomingCallStyle`) applied via `setStyle()` to customize colors, fonts, and sub-component styles.
+- **Advanced views**: Methods like `setItemView`, `setLeadingView`, `setTitleView`, `setSubtitleView`, and `setTrailingView` that let you replace default UI elements with custom layouts.
+
+## Implementation
+
+### Activity integration
+
+What you're changing: How you add `CometChatIncomingCall` to an Activity programmatically.
+
+- **Where**: Your Activity class (e.g., `YourActivity.java` or `YourActivity.kt`).
+- **Applies to**: `CometChatIncomingCall`.
+- **Default behavior**: The component is not added until you set it as the content view.
+- **Override**: Create a `CometChatIncomingCall` instance, set the `User` object, and call `setContentView`.
+- **Code**:
 
 <Tabs>
-<Tab title="Java (Activity)">
+<Tab title="Java">
 ```java YourActivity.java lines
 CometChatIncomingCall cometchatIncomingCall;
 
@@ -94,7 +126,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 </Tab>
 
-<Tab title="Kotlin (Activity)">
+<Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -114,7 +146,24 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 </Tab>
 
-<Tab title="Java (Fragment)">
+</Tabs>
+
+> **What this does:** Creates a new `CometChatIncomingCall` instance, configures a `User` object with the caller's details, passes it to the component, and sets the component as the entire content view of the Activity. The incoming call screen renders immediately after the Activity is created.
+
+- **Verify**: The incoming call screen fills the screen with the caller's avatar, name, and accept/reject buttons when the Activity launches.
+
+### Fragment integration
+
+What you're changing: How you add `CometChatIncomingCall` to a Fragment.
+
+- **Where**: Your Fragment class (e.g., `YourFragment.java` or `YourFragment.kt`).
+- **Applies to**: `CometChatIncomingCall`.
+- **Default behavior**: The component is not added until you return it from `onCreateView`.
+- **Override**: Create a `CometChatIncomingCall` instance, set the `User` object, and return it from `onCreateView`.
+- **Code**:
+
+<Tabs>
+<Tab title="Java">
 ```java YourFragment.java lines
 CometChatIncomingCall cometchatIncomingCall;
 
@@ -135,7 +184,7 @@ public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, 
 
 </Tab>
 
-<Tab title="Kotlin (Fragment)">
+<Tab title="Kotlin">
 ```kotlin YourFragment.kt lines
 private lateinit var cometchatIncomingCall: CometChatIncomingCall
 
@@ -161,15 +210,22 @@ override fun onCreateView(
 
 </Tabs>
 
-***
+> **What this does:** Creates a new `CometChatIncomingCall` instance inside the Fragment, configures a `User` object with the caller's details, passes it to the component, and returns it as the Fragment's root view. The incoming call screen renders when the Fragment is displayed.
+
+- **Verify**: The incoming call screen appears inside the Fragment's container with the caller's avatar, name, and accept/reject buttons.
 
 ### Actions
 
-[Actions](/ui-kit/android/components-overview#actions) dictate how a component functions. They are divided into two types: Predefined and User-defined. You can override either type, allowing you to tailor the behavior of the component to fit your specific needs.
+What you're changing: How the component responds to user interactions such as accepting a call, rejecting a call, or handling errors.
 
-##### setOnAcceptClick
+- **Where**: Activity or Fragment where you hold a reference to `CometChatIncomingCall` (e.g., `cometchatIncomingCall`).
+- **Applies to**: `CometChatIncomingCall`.
+- **Default behavior**: Predefined actions execute automatically (e.g., tapping the accept button answers the call, tapping the reject button declines the call).
+- **Override**: Call the corresponding setter method to replace the default behavior with your own logic.
 
-The `setOnAcceptClick` action is typically triggered when the user clicks on the accept button, initiating a predefined action. However, by implementing the following code snippet, you can easily customize or override this default behavior to suit your specific requirements.
+#### `setOnAcceptClick`
+
+Function invoked when the user clicks the accept button, initiating a predefined action. Override this to customize the accept behavior.
 
 <Tabs>
 <Tab title="Java">
@@ -195,11 +251,11 @@ cometchatIncomingCall.setOnAcceptCallClick(OnClick {
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default accept-button behavior. When the user taps the accept button, your custom `OnClick` lambda executes instead of the built-in call-accept logic.
 
-##### setOnRejectClick
+#### `setOnRejectClick`
 
-The `setOnRejectClick` action is typically triggered when the user clicks on the reject button, initiating a predefined action. However, by implementing the following code snippet, you can easily customize or override this default behavior to suit your specific requirements.
+Function invoked when the user clicks the reject button, initiating a predefined action. Override this to customize the reject behavior.
 
 <Tabs>
 <Tab title="Java">
@@ -225,9 +281,11 @@ cometchatIncomingCall.setOnDeclineCallClick(OnClick {
 
 </Tabs>
 
-##### setOnError
+> **What this does:** Replaces the default reject-button behavior. When the user taps the reject button, your custom `OnClick` lambda executes instead of the built-in call-decline logic.
 
-You can customize this behavior by using the provided code snippet to override the `setOnError` and improve error handling.
+#### `setOnError`
+
+Registers an error handler to customize error handling for the component.
 
 <Tabs>
 <Tab title="Java">
@@ -253,39 +311,42 @@ cometchatIncomingCall.setOnError(OnError { context, e ->
 
 </Tabs>
 
-***
+> **What this does:** Registers an error listener. If the component encounters an error (e.g., call failure), your callback receives the `Context` and `CometChatException` so you can handle it with custom logic.
+
+- **Verify**: After setting an action callback, trigger the corresponding user interaction (tap accept, tap reject) and confirm your custom logic executes instead of the default behavior.
 
 ### Filters
 
-**Filters** allow you to customize the data displayed in a list within a Component. You can filter the list based on your specific criteria, allowing for a more customized. Filters can be applied using RequestBuilders of Chat SDK.
+What you're changing: Which data is displayed in the component.
 
-The IncomingCall component does not have any exposed filters.
-
-***
+- **Where**: Activity or Fragment where you hold a reference to `CometChatIncomingCall`.
+- **Applies to**: `CometChatIncomingCall`.
+- **Default behavior**: The component displays the incoming call screen for the configured user.
+- **Override**: The `CometChatIncomingCall` component does not have any exposed filters.
 
 ### Events
 
-[Events](/ui-kit/android/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+What you're changing: How your app reacts to global events emitted by the component.
 
-The `CometChatIncomingCall` component does not have any exposed events.
-
-***
-
-## Customization
-
-To fit your app's design requirements, you can customize the appearance of the conversation component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+- **Where**: Any Activity, Fragment, or class where you want to listen for events.
+- **Applies to**: `CometChatIncomingCall`.
+- **Default behavior**: No external listeners are registered.
+- **Override**: The `CometChatIncomingCall` component does not have any exposed events.
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+What you're changing: The visual appearance of the `CometChatIncomingCall` component using XML theme styles.
 
-##### 1. IncomingCall Style
-
-You can customize the appearance of the `IncomingCall` Component by applying the `IncomingCallStyle` to it using the following code snippet.
+- **Where**: `themes.xml` for style definitions, and your Activity/Fragment for applying the style.
+- **Applies to**: `CometChatIncomingCall`.
+- **Default behavior**: The component uses the default `CometChatIncomingCallStyle`.
+- **Override**: Define a custom style with parent `CometChatIncomingCallStyle` in `themes.xml`, then call `setStyle()` on the component.
 
 <Frame>
   <img src="/images/d771544a-incoming_call_styled-4a37ea9ee6fd91529ac0dc12725739a7.png" />
 </Frame>
+
+- **Code**:
 
 ```xml themes.xml lines
 <style name="CustomAvatarStyle" parent="CometChatAvatarStyle">
@@ -306,6 +367,8 @@ You can customize the appearance of the `IncomingCall` Component by applying the
 </style>
 ```
 
+> **What this does:** Defines two custom styles: `CustomAvatarStyle` sets the avatar corner radius to 8dp and background color to `#FBAA75`; `CustomIncomingCallStyle` sets the background to `#AA9EE8`, configures accept/reject button colors and text appearances, and applies the custom avatar style.
+
 <Tabs>
 <Tab title="Java">
 ```java lines
@@ -323,29 +386,43 @@ cometchatIncomingCall.setStyle(R.style.CustomIncomingCallStyle)
 
 </Tabs>
 
+> **What this does:** Applies the `CustomIncomingCallStyle` theme to the `CometChatIncomingCall` component, changing the background color, button colors, text appearances, and avatar style.
+
 To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_incoming_call.xml).
+
+- **Verify**: The incoming call screen displays with a purple background (`#AA9EE8`), custom button colors, and avatars with rounded corners (8dp radius) and an orange background (`#FBAA75`).
 
 ### Functionality
 
-In this example, we're enhancing the interface by customizing the accept and decline button icons. By setting custom icons for both the accept and decline buttons, users can enjoy a more visually appealing and personalized experience.
+What you're changing: Functional customizations such as setting the call object, configuring custom sounds, or disabling call sounds.
 
-Below is a list of customizations along with corresponding code snippets
+- **Where**: Activity or Fragment where you hold a reference to `CometChatIncomingCall`.
+- **Applies to**: `CometChatIncomingCall`.
+- **Default behavior**: The component uses default call sound and requires a `User` object to display caller information.
+- **Override**: Call the corresponding method on the component instance.
 
-| Property                   | Description                                                                                      | Code                                   |
-| -------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------- |
-| **setCall**                | Sets the Call object for which the incoming call screen is displayed. Required for call actions. | `.setCall(call)`                       |
-| **setCustomSoundForCalls** | Defines the path for custom sound for calls on the incoming call screen.                         | `.setCustomSoundForCalls(@RawRes int)` |
-| **disableSoundForCalls**   | Defines whether to disable sound for the call on the incoming call screen.                       | `.disableSoundForCalls(true)`          |
+| Property | Description | Code |
+| --- | --- | --- |
+| `setCall` | Sets the Call object for which the incoming call screen is displayed. Required for call actions. | `.setCall(call)` |
+| `setCustomSoundForCalls` | Defines the path for custom sound for calls on the incoming call screen. | `.setCustomSoundForCalls(@RawRes int)` |
+| `disableSoundForCalls` | Defines whether to disable sound for the call on the incoming call screen. | `.disableSoundForCalls(true)` |
 
-***
+> **What this does:** These methods configure the call behavior. `setCall` associates a `Call` object with the screen so accept/reject actions work correctly. `setCustomSoundForCalls` plays a custom ringtone from your `res/raw` directory. `disableSoundForCalls` silences the incoming call ringtone.
 
-### Advanced
+- **Verify**: After calling `setCall(call)`, confirm the accept and reject buttons trigger the correct call actions. After calling `disableSoundForCalls(true)`, confirm no ringtone plays on incoming calls.
 
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
+### Advanced views
 
-#### setItemView
+What you're changing: The default UI elements of the incoming call screen with custom layouts.
 
-Allows setting a custom view for rendering each conversation item in the fetched list.
+- **Where**: Activity or Fragment where you hold a reference to `CometChatIncomingCall`.
+- **Applies to**: `CometChatIncomingCall`.
+- **Default behavior**: The component renders its built-in views for the caller's avatar, name, subtitle, and trailing area.
+- **Override**: Call the corresponding setter method and provide a custom view.
+
+#### `setItemView`
+
+Sets a custom view for rendering the entire incoming call card.
 
 Use Cases:
 
@@ -370,9 +447,11 @@ cometchatIncomingCall.setItemView(view)
 
 </Tabs>
 
-#### setLeadingView
+> **What this does:** Replaces the entire default incoming call card with your custom `View`. The custom view is responsible for rendering all caller information and call controls.
 
-Customizes the leading section of the component, usually the caller’s avatar or profile picture.
+#### `setLeadingView`
+
+Customizes the leading section of the component. This area displays the caller's avatar or profile picture by default.
 
 Use Cases:
 
@@ -397,6 +476,8 @@ cometchatIncomingCall.setLeadingView(view)
 
 </Tabs>
 
+> **What this does:** Replaces the default leading (left) area of the incoming call screen with your custom `View`.
+
 Example:
 
 <Frame>
@@ -417,6 +498,8 @@ Example:
 
 </RelativeLayout>
 ```
+
+> **What this does:** Defines a custom leading view layout with a `CometChatAvatar` inside a `RelativeLayout` sized at 45dp by 45dp.
 
 <Tabs>
 <Tab title="Java">
@@ -453,15 +536,15 @@ cometchatIncomingCall.setLeadingView(leadingView)
 
 </Tabs>
 
-***
+> **What this does:** Inflates the `leading_view.xml` layout, retrieves the caller's avatar from the `Call` object, sets the avatar image and name, configures the layout size to 45dp, clears the trailing view, and sets the custom leading view on the component.
 
-#### setTitleView
+#### `setTitleView`
 
-Allows setting a custom title view, typically used for the caller’s name or call type.
+Sets a custom title view, used for the caller's name or call type.
 
 Use Cases:
 
-* Display the caller’s full name with a verified badge.
+* Display the caller's full name with a verified badge.
 * Indicate the call type (Voice Call, Video Call).
 * Show real-time status ("Ringing...", "Call from Work Contact", etc.).
 
@@ -481,6 +564,8 @@ cometchatIncomingCall.setTitleView(view)
 </Tab>
 
 </Tabs>
+
+> **What this does:** Replaces the default title area of the incoming call screen with your custom `View`.
 
 Example:
 
@@ -515,6 +600,8 @@ Example:
 </LinearLayout>
 ```
 
+> **What this does:** Defines a custom title view layout with a `TextView` for the caller's name and a `View` element for a role badge indicator, arranged horizontally.
+
 <Tabs>
 <Tab title="Java">
 ```java YourActivity.java lines
@@ -546,11 +633,11 @@ cometchatIncomingCall.setTitleView(titleView)
 
 </Tabs>
 
-***
+> **What this does:** Inflates the `custom_title_view.xml` layout, sets the title text to "George Allen", configures wrap-content layout parameters, and applies the custom title view to the incoming call component.
 
-#### setSubtitleView
+#### `setSubtitleView`
 
-Enables customizing the subtitle view, typically used for additional call details.
+Customizes the subtitle view, used for additional call details below the title.
 
 Use Cases:
 
@@ -575,9 +662,9 @@ cometchatIncomingCall.setSubtitleView(view)
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default subtitle area of the incoming call screen with your custom `View`. Use this to show additional information below the caller's name.
 
-#### setTrailingView
+#### `setTrailingView`
 
 Customizes the trailing section for actions or additional call-related UI elements.
 
@@ -585,7 +672,7 @@ Use Cases:
 
 * Add custom accept/reject buttons.
 * Show a mute button before answering.
-* Display a text response option (e.g., "Can’t talk now")
+* Display a text response option (e.g., "Can't talk now")
 
 <Tabs>
 <Tab title="Java">
@@ -604,13 +691,13 @@ cometchatIncomingCall.setTrailingView(view)
 
 </Tabs>
 
+> **What this does:** Replaces the default trailing (right) area of the incoming call screen with your custom `View`.
+
 Example:
 
 <Frame>
   <img src="/images/3cff00d3-incoming_call_trailing_view-ac387445c4c331cad3b5c3d571cc4f9a.png" />
 </Frame>
-
-trailing\_view\.xml
 
 ```xml trailing_view.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -627,6 +714,8 @@ trailing\_view\.xml
 </RelativeLayout>
 ```
 
+> **What this does:** Defines a custom trailing view layout with a `CometChatAvatar` inside a `RelativeLayout` sized at 45dp by 45dp.
+
 <Tabs>
 <Tab title="Java">
 ```java YourActivity.java lines
@@ -635,7 +724,7 @@ CometChatAvatar avatar = trailingView.findViewById(R.id.avatar);
 User callUser = (User) call.getCallInitiator();
 if(callUser.getTags().contains("pro_user")){
             avatar.setAvatar(ResourcesCompat.getDrawable(getResources(), R.drawable.pro_user, null));
-        }
+            }
 avatar.setAvatar(callUser.getName(), callUser.getAvatar());
 trailingView.setLayoutParams(new LinearLayout.LayoutParams(
             Utils.convertDpToPx(requireContext(), 45),
@@ -653,7 +742,7 @@ val avatar = trailingView.findViewById<CometChatAvatar>(R.id.avatar)
 val callUser = call.getCallInitiator()
 if (callUser.tags.contains("pro_user")) {
             avatar.setAvatar(ResourcesCompat.getDrawable(resources, R.drawable.pro_user, null)!!)
-    }
+            }
 avatar.setAvatar(callUser.name, callUser.avatar)
 trailingView.layoutParams = LinearLayout.LayoutParams(
             Utils.convertDpToPx(this, 45),
@@ -666,4 +755,69 @@ cometchatIncomingCall.setTrailingView(trailingView)
 
 </Tabs>
 
-***
+> **What this does:** Inflates the `trailing_view.xml` layout, retrieves the caller from the `Call` object, checks if the caller has a "pro_user" tag and sets a pro badge avatar if so, sets the caller's avatar image and name, configures the layout size to 45dp, and applies the custom trailing view to the component.
+
+- **Verify**: After setting any advanced view, confirm the custom view renders in the correct position on the incoming call screen and displays the expected caller information.
+
+## Customization matrix
+
+| What you want to change | Where | Property/API | Example |
+| --- | --- | --- | --- |
+| Background color | `themes.xml` | `CometChatIncomingCallStyle` with `cometchatIncomingCallBackgroundColor` | `<item name="cometchatIncomingCallBackgroundColor">#AA9EE8</item>` |
+| Icon tint | `themes.xml` | `CometChatIncomingCallStyle` with `cometchatIncomingCallIconTint` | `<item name="cometchatIncomingCallIconTint">?attr/cometchatPrimaryColor</item>` |
+| Reject button background | `themes.xml` | `CometChatIncomingCallStyle` with `cometchatIncomingCallRejectButtonBackgroundColor` | `<item name="cometchatIncomingCallRejectButtonBackgroundColor">?attr/cometchatColorWhite</item>` |
+| Accept button background | `themes.xml` | `CometChatIncomingCallStyle` with `cometchatIncomingCallAcceptButtonBackgroundColor` | `<item name="cometchatIncomingCallAcceptButtonBackgroundColor">?attr/cometchatPrimaryColor</item>` |
+| Reject button text color | `themes.xml` | `CometChatIncomingCallStyle` with `cometchatIncomingCallRejectButtonTextColor` | `<item name="cometchatIncomingCallRejectButtonTextColor">?attr/cometchatErrorColor</item>` |
+| Accept button text color | `themes.xml` | `CometChatIncomingCallStyle` with `cometchatIncomingCallAcceptButtonTextColor` | `<item name="cometchatIncomingCallAcceptButtonTextColor">?attr/cometchatColorWhite</item>` |
+| Reject button text appearance | `themes.xml` | `CometChatIncomingCallStyle` with `cometchatIncomingCallRejectButtonTextAppearance` | `<item name="cometchatIncomingCallRejectButtonTextAppearance">?attr/cometchatTextAppearanceButtonMedium</item>` |
+| Accept button text appearance | `themes.xml` | `CometChatIncomingCallStyle` with `cometchatIncomingCallAcceptButtonTextAppearance` | `<item name="cometchatIncomingCallAcceptButtonTextAppearance">?attr/cometchatTextAppearanceButtonMedium</item>` |
+| Avatar style | `themes.xml` | `CometChatIncomingCallStyle` with `cometchatIncomingCallAvatarStyle` | `<item name="cometchatIncomingCallAvatarStyle">@style/CustomAvatarStyle</item>` |
+| Apply a custom style | Activity/Fragment | `setStyle(int styleRes)` | `cometchatIncomingCall.setStyle(R.style.CustomIncomingCallStyle);` |
+| Call object | Activity/Fragment | `setCall(Call)` | `.setCall(call)` |
+| Custom call sound | Activity/Fragment | `setCustomSoundForCalls(@RawRes int)` | `.setCustomSoundForCalls(@RawRes int)` |
+| Disable call sound | Activity/Fragment | `disableSoundForCalls(boolean)` | `.disableSoundForCalls(true)` |
+| Accept button action | Activity/Fragment | `setOnAcceptClick(OnClick)` | See `setOnAcceptClick` code above |
+| Reject button action | Activity/Fragment | `setOnRejectClick(OnClick)` | See `setOnRejectClick` code above |
+| Error handler | Activity/Fragment | `setOnError(OnError)` | See `setOnError` code above |
+| Entire call card view | Activity/Fragment | `setItemView(View)` | `cometchatIncomingCall.setItemView(view);` |
+| Leading view (avatar area) | Activity/Fragment | `setLeadingView(View)` | See `setLeadingView` code above |
+| Title view (caller name) | Activity/Fragment | `setTitleView(View)` | See `setTitleView` code above |
+| Subtitle view | Activity/Fragment | `setSubtitleView(View)` | `cometchatIncomingCall.setSubtitleView(view);` |
+| Trailing view | Activity/Fragment | `setTrailingView(View)` | See `setTrailingView` code above |
+
+## Common pitfalls & fixes
+
+| Pitfall | Fix |
+| --- | --- |
+| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
+| Incoming call screen is blank | Verify that you call `setUser(user)` with a valid `User` object that has `uid`, `name`, and `avatar` set. If any of these fields are empty, the screen may not display caller information. |
+| Accept or reject button does nothing | Ensure you call `setCall(call)` with a valid `Call` object. If no `Call` object is set, the accept and reject buttons cannot trigger call actions. |
+| Custom style not visible | Verify the style parent is `CometChatIncomingCallStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
+| Sound still plays after disabling | Ensure you call `disableSoundForCalls(true)` before the component starts loading. If called after the incoming call is already ringing, it may not take effect. |
+| Custom sound not playing | Verify the sound file exists in your `res/raw` directory and that you pass the correct `@RawRes int` resource ID to `setCustomSoundForCalls`. |
+| `setOnAcceptClick` not firing | Verify you are calling `setOnAcceptClick` on the correct `CometChatIncomingCall` instance. If you have multiple instances, the callback may be set on the wrong one. |
+| Custom leading view not showing | If you set a custom leading view but it does not appear, verify that the view is inflated correctly and has valid layout parameters. A view with zero width or height will not be visible. |
+| Kotlin method names differ from Java | In Kotlin, `setOnAcceptClick` maps to `setOnAcceptCallClick` and `setOnRejectClick` maps to `setOnDeclineCallClick`. Use the Kotlin-specific method names in Kotlin code. |
+
+## FAQ
+
+**Q: How do I display the incoming call screen when a call is received?**
+**A:** Add `CometChatIncomingCall` to your layout via XML or programmatically in an Activity/Fragment. Set the `User` object with `setUser(user)` and the `Call` object with `setCall(call)` to display the caller's information and enable accept/reject actions.
+
+**Q: Can I use `CometChatIncomingCall` in both an Activity and a Fragment?**
+**A:** Yes. In an Activity, create the instance with `new CometChatIncomingCall(this)` and call `setContentView`. In a Fragment, create it with `new CometChatIncomingCall(requireContext())` and return it from `onCreateView`.
+
+**Q: How do I customize the accept and reject button colors?**
+**A:** Define a custom style with parent `CometChatIncomingCallStyle` in `themes.xml`. Set `cometchatIncomingCallAcceptButtonBackgroundColor` and `cometchatIncomingCallRejectButtonBackgroundColor` to your desired colors, then apply the style with `setStyle()`.
+
+**Q: Why are the Kotlin method names different from Java for accept and reject actions?**
+**A:** In Kotlin, the accept action uses `setOnAcceptCallClick` and the reject action uses `setOnDeclineCallClick`. These are the Kotlin-specific method names exposed by the component.
+
+**Q: Does `CometChatIncomingCall` emit any global events?**
+**A:** No. The `CometChatIncomingCall` component does not have any exposed events. Use the action callbacks (`setOnAcceptClick`, `setOnRejectClick`, `setOnError`) to handle user interactions.
+
+## Next steps
+
+- [Outgoing Call component](/ui-kit/android/outgoing-call)
+- [Call Buttons component](/ui-kit/android/call-buttons)
+- [Call Logs component](/ui-kit/android/call-logs)

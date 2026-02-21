@@ -2,25 +2,29 @@
 title: "Users"
 ---
 
-## Overview
+`CometChatUsers` displays an accessible list of all available users, with built-in search, avatars, names, and online/offline status indicators.
 
-The Users is a [Component](/ui-kit/android/components-overview#components), showcasing an accessible list of all available users. It provides an integral search functionality, allowing you to locate any specific user swiftly and easily. For each user listed, the widget displays the user's name by default, in conjunction with their avatar when available. Furthermore, it includes a status indicator, visually informing you whether a user is currently online or offline.
+## When to use this
 
-<Frame>
-  <img src="/images/358a0b21-users-4e1d9c895a8ae47d23ac0d6646db160b.png" />
-</Frame>
+- You need a screen that lists all available users in your app.
+- You want to show each user's name, avatar, and online/offline status.
+- You need tap and long-press actions on user items (open profile, block, mute).
+- You want to filter users by status, role, tags, friends-only, or custom request builders.
+- You need real-time updates when users are blocked or unblocked.
+- You want to customize the user list appearance with styles, custom views, or selection modes.
 
-***
+## Prerequisites
 
-## Usage
+- CometChat SDK initialized with `CometChatUIKit.init()` and a user logged in.
+- The `cometchat-chat-uikit-android` dependency added to your project.
+- A valid `layout.xml` or Activity/Fragment where you will place the component.
 
-### Integration
+## Quick start
 
-The following code snippet illustrates how you can directly incorporate the Users component into your `layout.xml` file.
+1. Open your layout XML file.
+2. Add the `CometChatUsers` XML element:
 
-<Tabs>
-<Tab title="XML">
-```xml lines
+```xml layout.xml lines
 <com.cometchat.chatuikit.users.CometChatUsers
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,17 +32,40 @@ The following code snippet illustrates how you can directly incorporate the User
         />
 ```
 
-</Tab>
+> **What this does:** Adds the `CometChatUsers` component to your layout. It fills the available width and height and renders the user list for the logged-in user.
 
-</Tabs>
+3. Build and run your app.
+4. Verify that the user list appears with avatars, names, and online/offline status indicators.
+
+<Frame>
+  <img src="/images/358a0b21-users-4e1d9c895a8ae47d23ac0d6646db160b.png" />
+</Frame>
+
+5. If you need to add the component programmatically, see the Implementation section for actions, filters, events, and advanced views.
+
+## Core concepts
+
+- **`CometChatUsers`**: The main component class that renders the user list. It can be added via XML layout.
+- **Actions**: Callbacks such as `setOnItemClick`, `setOnItemLongClick`, `setOnBackPressListener`, `setOnSelect`, `setOnError`, `setOnLoad`, and `setOnEmpty` that let you respond to user interactions.
+- **Filters**: Use `UsersRequest.UsersRequestBuilder` to filter users by limit, search keyword, friends-only, roles, tags, status, or UIDs. Use `setSearchRequestBuilder` to customize the search list separately.
+- **Events**: Global events emitted via `CometChatUserEvents` (e.g., `ccUserBlocked`, `ccUserUnblocked`) that you can listen to from anywhere in your app.
+- **Style**: XML theme styles (parent `CometChatUsersStyle`) applied via `setStyle()` to customize colors, fonts, and sub-component styles.
+- **Advanced views**: Methods like `setLeadingView`, `setTitleView`, `setTrailingView`, `setItemView`, `setSubtitleView`, and `setOverflowMenu` that let you replace default UI elements with custom layouts.
+
+## Implementation
 
 ### Actions
 
-[Actions](/ui-kit/android/components-overview#actions) dictate how a component functions. They are divided into two types: Predefined and User-defined. You can override either type, allowing you to tailor the behavior of the component to fit your specific needs.
+What you're changing: How the component responds to user interactions such as taps, long-presses, back button, selection, errors, load completion, and empty states.
 
-##### setOnItemClick
+- **Where**: Activity or Fragment where you hold a reference to `CometChatUsers` (e.g., `cometchatUsers`).
+- **Applies to**: `CometChatUsers`.
+- **Default behavior**: Predefined actions execute automatically (e.g., tapping a user opens the chat, pressing back navigates to the previous screen).
+- **Override**: Call the corresponding setter method to replace the default behavior with your own logic.
 
-Function invoked when a user item is clicked, typically used to open a user profile or chat screen.
+#### `setOnItemClick`
+
+Function invoked when a user item is clicked, used to open a user profile or chat screen.
 
 <Tabs>
 <Tab title="Java">
@@ -61,9 +88,9 @@ cometchatUsers.onItemClick = OnItemClick { view, position, user ->
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default item-click behavior. When a user taps a user item, your custom lambda executes instead of the built-in navigation.
 
-##### setOnItemLongClick
+#### `setOnItemLongClick`
 
 Function executed when a user item is long-pressed, allowing additional actions like delete or block.
 
@@ -88,11 +115,11 @@ cometchatUsers.onItemLongClick = OnItemLongClick({ view, position, user ->
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default long-press behavior. When a user long-presses a user item, your custom lambda executes.
 
-##### setOnBackPressListener
+#### `setOnBackPressListener`
 
-`OnBackPressListener` is triggered when you press the back button in the app bar. It has a predefined behavior; when clicked, it navigates to the previous activity. However, you can override this action using the following code snippet.
+Triggered when the user presses the back button in the app bar. By default, it navigates to the previous activity.
 
 <Tabs>
 <Tab title="Java">
@@ -115,11 +142,11 @@ cometchatUsers.onBackPressListener = OnBackPress {
 
 </Tabs>
 
-***
+> **What this does:** Overrides the default back-press navigation. When the user taps the back button, your custom logic runs instead.
 
-##### setOnSelect
+#### `setOnSelect`
 
-Called when a item from the fetched list is selected, useful for multi-selection features.
+Called when an item from the fetched list is selected, useful for multi-selection features.
 
 <Tabs>
 <Tab title="Java">
@@ -144,11 +171,11 @@ cometchatUsers.setOnSelect(object : OnSelection<User?> {
 
 </Tabs>
 
-***
+> **What this does:** Registers a callback that fires when the user selects one or more users. The callback receives the list of selected `User` objects.
 
-##### OnError
+#### `setOnError`
 
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the Users component.
+Listens for any errors that occur in the Users component. This does not change the component's behavior.
 
 <Tabs>
 <Tab title="Java">
@@ -171,9 +198,9 @@ cometchatUsers.setOnError {
 
 </Tabs>
 
-***
+> **What this does:** Registers an error listener. If the component encounters an error (e.g., network failure), your callback receives the `CometChatException`.
 
-##### setOnLoad
+#### `setOnLoad`
 
 Invoked when the list is successfully fetched and loaded, helping track component readiness.
 
@@ -200,9 +227,9 @@ cometchatUsers.setOnLoad(object : OnLoad<User?> {
 
 </Tabs>
 
-***
+> **What this does:** Registers a callback that fires after the user list is fetched and rendered. The callback receives the list of loaded `User` objects.
 
-##### setOnEmpty
+#### `setOnEmpty`
 
 Called when the list is empty, enabling custom handling such as showing a placeholder message.
 
@@ -227,31 +254,36 @@ cometchatUsers.setOnEmpty{
 
 </Tabs>
 
-***
+> **What this does:** Registers a callback that fires when the user list has no items. Use this to show a custom empty-state message or trigger other logic.
+
+- **Verify**: After setting an action callback, trigger the corresponding user interaction (tap, long-press, back, select) and confirm your custom logic executes instead of the default behavior.
 
 ### Filters
 
-**Filters** allow you to customize the data displayed in a list within a Component. You can filter the list based on your specific criteria, allowing for a more customized. Filters can be applied using RequestBuilders of Chat SDK.
+What you're changing: Which users appear in the list.
 
-##### 1. UserRequestBuilder
+- **Where**: Activity or Fragment where you hold a reference to `CometChatUsers`.
+- **Applies to**: `CometChatUsers`.
+- **Default behavior**: All users are fetched and displayed.
+- **Override**: Create a `UsersRequest.UsersRequestBuilder`, configure it, and pass it to `setUsersRequestBuilder`.
 
-The [UserRequestBuilder](/sdk/android/retrieve-users) enables you to filter and customize the user list based on available parameters in UserRequestBuilder. This feature allows you to create more specific and targeted queries when fetching users. The following are the parameters available in [UserRequestBuilder](/sdk/android/retrieve-users)
+#### `UsersRequestBuilder`
 
-| Methods              | Type          | Description                                                                            |
-| -------------------- | ------------- | -------------------------------------------------------------------------------------- |
-| **setLimit**         | int           | sets the number users that can be fetched in a single request, suitable for pagination |
-| **setSearchKeyword** | String        | used for fetching users matching the passed string                                     |
-| **hideBlockedUsers** | bool          | used for fetching all those users who are not blocked by the logged in user            |
-| **friendsOnly**      | bool          | used for fetching only those users in which logged in user is a member                 |
-| **setRoles**         | List\<String> | used for fetching users containing the passed tags                                     |
-| **setTags**          | List\<String> | used for fetching users containing the passed tags                                     |
-| **withTags**         | bool          | used for fetching users containing tags                                                |
-| **setUserStatus**    | String        | used for fetching users by their status online or offline                              |
-| **setUIDs**          | List\<String> | used for fetching users containing the passed users                                    |
+The [UsersRequestBuilder](/sdk/android/retrieve-users) enables you to filter and customize the user list based on available parameters. The following parameters are available:
 
-**Example**
+| Methods | Type | Description |
+| --- | --- | --- |
+| `setLimit` | int | Sets the number of users that can be fetched in a single request, suitable for pagination |
+| `setSearchKeyword` | String | Used for fetching users matching the passed string |
+| `hideBlockedUsers` | bool | Used for fetching all those users who are not blocked by the logged in user |
+| `friendsOnly` | bool | Used for fetching only those users in which logged in user is a member |
+| `setRoles` | List\<String> | Used for fetching users containing the passed tags |
+| `setTags` | List\<String> | Used for fetching users containing the passed tags |
+| `withTags` | bool | Used for fetching users containing tags |
+| `setUserStatus` | String | Used for fetching users by their status online or offline |
+| `setUIDs` | List\<String> | Used for fetching users containing the passed users |
 
-In the example below, we are applying a filter to the UserList based on Friends.
+- **Code**:
 
 <Tabs>
 <Tab title="Java">
@@ -276,11 +308,15 @@ cometChatUsers.setUsersRequestBuilder(builder)
 
 </Tabs>
 
-##### 2. SearchRequestBuilder
+> **What this does:** Creates a `UsersRequestBuilder` that fetches all users (not friends-only) with a limit of 10 per fetch. The builder is then applied to the `CometChatUsers` component.
 
-The SearchRequestBuilder uses [UserRequestBuilder](/sdk/android/retrieve-users) enables you to filter and customize the search list based on available parameters in UserRequestBuilder. This feature allows you to keep uniformity between the displayed UserList and searched UserList.
+- **Verify**: The user list shows all users (not filtered to friends) and fetches at most 10 items per request.
 
-**Example**
+#### `SearchRequestBuilder`
+
+The `SearchRequestBuilder` uses [UsersRequestBuilder](/sdk/android/retrieve-users) to filter and customize the search list based on available parameters. This keeps uniformity between the displayed user list and searched user list.
+
+- **Code**:
 
 <Tabs>
 <Tab title="Java">
@@ -303,16 +339,27 @@ users.searchRequestBuilder = builder
 
 </Tabs>
 
+> **What this does:** Creates a `UsersRequestBuilder` configured with a search keyword and applies it as the search request builder. This controls how the search results are filtered when the user types in the search bar.
+
+- **Verify**: When searching in the user list, the search results are filtered according to the configured `SearchRequestBuilder` parameters.
+
 ### Events
 
-[Events](/ui-kit/android/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+What you're changing: How your app reacts to global events emitted by the Users component.
 
-To handle events supported by Users you have to add corresponding listeners by using `CometChatUserEvents`
+- **Where**: Any Activity, Fragment, or class where you want to listen for user events.
+- **Applies to**: `CometChatUserEvents`.
+- **Default behavior**: No external listeners are registered. Events are emitted but not handled outside the component.
+- **Override**: Add a listener using `CometChatUserEvents.addUserListener` and remove it when no longer needed using `CometChatUserEvents.removeListener`.
 
-| Events          | Description                                                           |
-| --------------- | --------------------------------------------------------------------- |
-| ccUserBlocked   | This will get triggered when the logged in user blocks another user   |
-| ccUserUnblocked | This will get triggered when the logged in user unblocks another user |
+The following events are available:
+
+| Events | Description |
+| --- | --- |
+| `ccUserBlocked` | This will get triggered when the logged in user blocks another user |
+| `ccUserUnblocked` | This will get triggered when the logged in user unblocks another user |
+
+- **Code**:
 
 <Tabs>
 <Tab title="Java">
@@ -361,19 +408,24 @@ Remove Listener
 
 </Tabs>
 
-## Customization
+> **What this does:** Registers a global event listener tagged with your identifier. When a user is blocked, the `ccUserBlocked` callback fires with the blocked `User` object. When a user is unblocked, the `ccUserUnblocked` callback fires. Call `removeListener` with the same tag to unsubscribe.
 
-To fit your app's design requirements, you can customize the appearance of the User component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+- **Verify**: Block a user in the UI and confirm your `ccUserBlocked` callback fires with the correct `User` object. Unblock a user and confirm `ccUserUnblocked` fires.
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+What you're changing: The visual appearance of the Users component using XML theme styles.
 
-You can set the styling object to the `CometChatUsers` Component to customize the styling.
+- **Where**: `themes.xml` for style definitions, and your Activity/Fragment for applying the style.
+- **Applies to**: `CometChatUsers`.
+- **Default behavior**: The component uses the default `CometChatUsersStyle`.
+- **Override**: Define a custom style with parent `CometChatUsersStyle` in `themes.xml`, then call `setStyle()` on the component.
 
 <Frame>
   <img src="/images/c8909b74-users_styling-3acb1ffef7870b6903a070fd83b5103f.png" />
 </Frame>
+
+- **Code**:
 
 ```xml themes.xml lines
     <style name="CustomAvatarStyle" parent="CometChatAvatarStyle">
@@ -386,6 +438,8 @@ You can set the styling object to the `CometChatUsers` Component to customize th
         <item name="cometchatUsersTitleTextColor">#F76808</item>
     </style>
 ```
+
+> **What this does:** Defines two custom styles: `CustomAvatarStyle` sets the avatar corner radius to 8dp and background color to `#FBAA75`; `CustomUsersStyle` applies the avatar sub-style and sets the separator and title text colors to `#F76808`.
 
 <Tabs>
 <Tab title="Java">
@@ -404,45 +458,49 @@ cometChatUsers.setStyle(R.style.CustomUsersStyle)
 
 </Tabs>
 
-***
+> **What this does:** Applies the `CustomUsersStyle` theme to the `CometChatUsers` component, changing the avatar, separator, and title text appearance.
 
 To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_users.xml).
 
+- **Verify**: The user list avatars display with rounded corners (8dp radius) and an orange background (`#FBAA75`), separators show in orange (`#F76808`), and title text appears in orange (`#F76808`).
+
 ### Functionality
 
-These are a set of small functional customizations that allow you to fine-tune the overall experience of the component. With these, you can toggle the visibility of UI elements.
+What you're changing: Small functional customizations such as toggling visibility of UI elements and configuring selection modes.
 
-Below is a list of customizations along with corresponding code snippets
+- **Where**: Activity or Fragment where you hold a reference to `CometChatUsers`.
+- **Applies to**: `CometChatUsers`.
+- **Default behavior**: All UI elements are visible with default settings.
+- **Override**: Call the corresponding method on the component instance.
 
-| Methods                   | Description                                                                                                                   | Code                                                        |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| setBackIconVisibility     | Used to toggle visibility for back button in the app bar                                                                      | `.setBackIconVisibility(View.VISIBLE);`                     |
-| setToolbarVisibility      | Used to toggle visibility for back button in the app bar                                                                      | `.setToolbarVisibility(View.GONE);`                         |
-| setStickyHeaderVisibility | Used to toggle visibility for back button in the app bar                                                                      | `.setStickyHeaderVisibility(View.GONE);`                    |
-| setErrorStateVisibility   | Used to hide error state on fetching Users                                                                                    | `.setErrorStateVisibility(View.GONE);`                      |
-| setEmptyStateVisibility   | Used to hide empty state on fetching Users                                                                                    | `.setEmptyStateVisibility(View.GONE);`                      |
-| setLoadingStateVisibility | Used to hide loading state while fetching Users                                                                               | `.setLoadingStateVisibility(View.GONE);`                    |
-| setSeparatorVisibility    | Used to control visibility of Separators in the list view                                                                     | `.setSeparatorVisibility(View.GONE);`                       |
-| setUsersStatusVisibility  | Used to control visibility of status indicator shown if user is online                                                        | `.setUsersStatusVisibility(View.GONE);`                     |
-| setSelectionMode          | This method determines the selection mode for Users, enabling users to select either a single User or multiple Users at once. | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
-| setSearchkeyword          | Used for fetching users matching the passed keywords                                                                          | `.setSearchkeyword("anything");`                            |
-| setSearchBoxVisibility    | Used to hide search box shown in the tool bar                                                                                 | `.setSearchBoxVisibility(View.GONE);`                       |
+| Methods | Description | Code |
+| --- | --- | --- |
+| `setBackIconVisibility` | Toggles visibility for the back button in the app bar | `.setBackIconVisibility(View.VISIBLE);` |
+| `setToolbarVisibility` | Toggles visibility for the toolbar in the app bar | `.setToolbarVisibility(View.GONE);` |
+| `setStickyHeaderVisibility` | Toggles visibility for the sticky header in the list | `.setStickyHeaderVisibility(View.GONE);` |
+| `setErrorStateVisibility` | Hides the error state on fetching users | `.setErrorStateVisibility(View.GONE);` |
+| `setEmptyStateVisibility` | Hides the empty state on fetching users | `.setEmptyStateVisibility(View.GONE);` |
+| `setLoadingStateVisibility` | Hides the loading state while fetching users | `.setLoadingStateVisibility(View.GONE);` |
+| `setSeparatorVisibility` | Controls visibility of separators in the list view | `.setSeparatorVisibility(View.GONE);` |
+| `setUsersStatusVisibility` | Controls visibility of the online status indicator | `.setUsersStatusVisibility(View.GONE);` |
+| `setSelectionMode` | Determines the selection mode (single or multiple) | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
+| `setSearchkeyword` | Used for fetching users matching the passed keywords | `.setSearchkeyword("anything");` |
+| `setSearchBoxVisibility` | Hides the search box shown in the toolbar | `.setSearchBoxVisibility(View.GONE);` |
 
-***
+- **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `setSelectionMode`, confirm the selection behavior matches the mode.
 
-### Advanced
+### Advanced views
 
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
+What you're changing: The default UI elements of user list items and the component's chrome (loading, empty, error states, overflow menu, options).
 
-***
+- **Where**: Activity or Fragment where you hold a reference to `CometChatUsers`.
+- **Applies to**: `CometChatUsers`.
+- **Default behavior**: The component renders its built-in views for each part of the user item and component chrome.
+- **Override**: Call the corresponding setter method and provide a custom view or callback.
 
-#### setOptions
+#### `setOptions`
 
-This method sets a predefined list of actions that users can perform when they long press a user in the list. These options typically include:
-
-* Muting notifications for a specific user
-
-By customizing these options, developers can provide a streamlined and contextually relevant user experience.
+Sets a predefined list of actions that users can perform when they long press a user in the list. This replaces the default options entirely.
 
 <Tabs>
 <Tab title="Java">
@@ -461,17 +519,11 @@ cometchatUsers.options = Function2<Context?, User?, List<CometChatPopupMenu.Menu
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default long-press options with an empty list, effectively removing all long-press menu items.
 
-#### addOptions
+#### `addOptions`
 
-This method extends the existing set of actions available when users long press a user item. Unlike setOptionsDefines, which replaces the default options, addOptionsAdds allows developers to append additional actions without removing the default ones. Example use cases include:
-
-* Adding a "Report Spam" action
-* Introducing a "Save to Notes" option
-* Integrating third-party actions such as "Share to Cloud Storage"
-
-This method provides flexibility in modifying user interaction capabilities.
+Extends the existing set of long-press actions without removing the default ones.
 
 <Tabs>
 <Tab title="Java">
@@ -490,17 +542,11 @@ cometchatUsers.addOptions { context, user -> emptyList<CometChatPopupMenu.MenuIt
 
 </Tabs>
 
-***
+> **What this does:** Appends an empty list to the existing long-press options, leaving the defaults unchanged. Replace the empty list with your custom `MenuItem` objects to add new actions.
 
-#### setLoadingView
+#### `setLoadingView`
 
-This method allows developers to set a custom loading view that is displayed when data is being fetched or loaded within the component. Instead of using a default loading spinner, a custom animation, progress bar, or branded loading screen can be displayed.
-
-Use cases:
-
-* Showing a skeleton loader for users while data loads
-* Displaying a custom progress indicator with branding
-* Providing an animated loading experience for a more engaging UI
+Sets a custom loading view displayed when data is being fetched.
 
 <Tabs>
 <Tab title="Java">
@@ -519,17 +565,11 @@ cometchatUsers.loadingView = R.layout.your_loading_view
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default loading spinner with your custom layout resource. The custom view displays while users are being fetched.
 
-#### setEmptyView
+#### `setEmptyView`
 
-Configures a custom view to be displayed when there are no users. This improves the user experience by providing meaningful content instead of an empty screen.
-
-Examples:
-
-* Displaying a message like "No users yet. Start a new chat!"
-* Showing an illustration or animation to make the UI visually appealing
-* Providing a button to start a new user
+Configures a custom view displayed when there are no users in the list.
 
 <Tabs>
 <Tab title="Java">
@@ -548,17 +588,11 @@ cometchatUsers.emptyView = R.layout.your_empty_view
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default empty state with your custom layout resource. The custom view displays when the user list has no items.
 
-#### setErrorView
+#### `setErrorView`
 
-Defines a custom error state view that appears when an issue occurs while loading users or messages. This enhances the user experience by displaying friendly error messages instead of generic system errors.
-
-Common use cases:
-
-* Showing "Something went wrong. Please try again." with a retry button
-* Displaying a connection issue message if the user is offline
-* Providing troubleshooting steps for the error
+Defines a custom error state view that appears when an issue occurs while loading users.
 
 <Tabs>
 <Tab title="Java">
@@ -577,17 +611,11 @@ cometchatUsers.errorView = R.layout.your_error_view
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default error state with your custom layout resource. The custom view displays when the component encounters an error during data fetching.
 
-#### setLeadingView
+#### `setLeadingView`
 
-This method allows developers to set a custom leading view element that appears at the beginning of each user item. Typically, this space is used for profile pictures, avatars, or user badges.
-
-Use Cases:
-
-* Profile Pictures & Avatars – Display user profile images with online/offline indicators.
-* Custom Icons or Badges – Show role-based badges (Admin, VIP, Verified) before the user name.
-* Status Indicators – Add an active status ring or colored border based on availability.
+Sets a custom leading view element that appears at the beginning of each user item (e.g., profile pictures, avatars, or user badges).
 
 <Tabs>
 <Tab title="Java">
@@ -623,17 +651,11 @@ cometchatUsers.setLeadingView(object: UsersViewHolderListener {
 
 </Tabs>
 
-***
+> **What this does:** Registers a `UsersViewHolderListener` that provides a custom view for the leading (left) area of each user item. `createView` inflates your layout, and `bindView` populates it with user data.
 
-#### setTitleView
+#### `setTitleView`
 
-This method customizes the title view of each user item, which typically displays the user’s name. It allows for styling modifications, additional metadata, or inline action buttons.
-
-Use Cases:
-
-* Styled Usernames – Customize fonts, colors, or text sizes for the name display.
-* Additional Metadata – Show extra details like username handles or job roles.
-* Inline Actions – Add a follow button or verification checkmark next to the name.
+Customizes the title view of each user item, which displays the user's name. It allows for styling modifications, additional metadata, or inline action buttons.
 
 <Tabs>
 <Tab title="Java">
@@ -669,15 +691,13 @@ cometchatUsers.setTitleView(object: UsersViewHolderListener {
 
 </Tabs>
 
+> **What this does:** Registers a `UsersViewHolderListener` that provides a custom view for the title area of each user item. `createView` inflates your layout, and `bindView` populates it with user data.
+
 <Frame>
   <img src="/images/868214e2-users_title_view-fffdf84d79897281f81e88aa67701656.png" />
 </Frame>
 
-You can indeed create a custom layout file named `custom_user_title_view.xml` for more complex or unique list items.
-
-Once this layout file is made, you would inflate it inside the `createView()` method of the `UsersViewHolderListener`. The inflation process prepares the layout for use in your application:
-
-Following this, you would use the `bindView()` method to initialize and assign values to your individual views. This could include setting text on TextViews, images on ImageViews, and so on based on the properties of the User object:
+Create a custom layout file named `custom_user_title_view.xml`:
 
 ```xml custom_user_title_view.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -705,6 +725,10 @@ Following this, you would use the `bindView()` method to initialize and assign v
 
 </LinearLayout>
 ```
+
+> **What this does:** Defines a custom title view layout with a `TextView` for the user name and a `View` for a role badge indicator. The role badge displays a drawable based on the user's role.
+
+Inflate the layout inside `createView()` and use `bindView()` to initialize and assign values based on the `User` object:
 
 <Tabs>
 <Tab title="Java">
@@ -787,17 +811,11 @@ cometchatUsers.setTitleView(object : UsersViewHolderListener() {
 
 </Tabs>
 
-***
+> **What this does:** Inflates the custom title view layout and populates it with the user's name. If the user's role is "teacher", "student", or "close_friend", the corresponding role badge drawable is shown. If the role does not match any of these, the badge is hidden.
 
-#### setTrailingView
+#### `setTrailingView`
 
-This method allows developers to customize the trailing (right-end) section of each user item, typically used for actions like buttons, icons, or extra information.
-
-Use Cases:
-
-* Quick Actions – Add a follow/unfollow button.
-* Notification Indicators – Show unread message counts or alert icons.
-* Custom Info Display – Display last active time or mutual connections.
+Customizes the trailing (right-end) section of each user item, used for actions like buttons, icons, or extra information.
 
 <Tabs>
 <Tab title="Java">
@@ -833,15 +851,13 @@ cometchatUsers.setTrailingView(object: UsersViewHolderListener {
 
 </Tabs>
 
+> **What this does:** Registers a `UsersViewHolderListener` that provides a custom view for the trailing (right) area of each user item. `createView` inflates your layout, and `bindView` populates it with user data.
+
 <Frame>
   <img src="/images/2456c417-users_trailing_view-9bb40a8246e8ebdaf081ac7b26f4fa01.png" />
 </Frame>
 
-You can indeed create a custom layout file named `custom_user_tail_view.xml` for more complex or unique list items.
-
-Once this layout file is made, you would inflate it inside the `createView()` method of the `UsersViewHolderListener`. The inflation process prepares the layout for use in your application:
-
-Following this, you would use the `bindView()` method to initialize and assign values to your individual views. This could include setting text on TextViews, images on ImageViews, and so on based on the properties of the User object:
+Create a custom layout file named `custom_user_tail_view.xml`:
 
 ```xml custom_user_tail_view.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -860,6 +876,10 @@ Following this, you would use the `bindView()` method to initialize and assign v
 
 </LinearLayout>
 ```
+
+> **What this does:** Defines a custom trailing view layout with a `View` element for displaying a tag badge based on the user's role.
+
+Inflate the layout inside `createView()` and use `bindView()` to initialize and assign values based on the `User` object:
 
 <Tabs>
 <Tab title="Java">
@@ -915,17 +935,11 @@ cometchatUsers.setTrailingView(object : UsersViewHolderListener() {
 
 </Tabs>
 
-***
+> **What this does:** Inflates the custom trailing view layout and checks the user's role. If the role is "pro", the tag badge is shown with the teacher drawable. If the role does not match, the badge is hidden.
 
-#### setItemView
+#### `setItemView`
 
-This method allows developers to assign a fully custom ListItem layout to the Users component, replacing the default design. It provides complete control over the appearance and structure of each user item in the list.
-
-Use Cases:
-
-* Customizing User Display – Modify how user information (name, avatar, status) is presented.
-* Adding Action Buttons – Include follow, message, or call buttons directly in the item view.
-* Highlighting User Roles – Display user badges such as Admin, Moderator, or VIP.
+Assigns a completely custom list item design to the Users component, replacing the default layout entirely.
 
 <Tabs>
 <Tab title="Java">
@@ -961,17 +975,13 @@ cometchatUsers.setItemView(object: UsersViewHolderListener {
 
 </Tabs>
 
-**Example**
+> **What this does:** Registers a `UsersViewHolderListener` that replaces the entire default user list item layout. `createView` inflates your custom layout, and `bindView` populates it with user data.
 
 <Frame>
   <img src="/images/de656dc8-users_list_item_view-e66a444aac7edcb18dec787a42b646c3.png" />
 </Frame>
 
-You can indeed create a custom layout file named `custom_list_item_view.xml` for more complex or unique list items.
-
-Once this layout file is made, you would inflate it inside the `createView()` method of the `UsersViewHolderListener`. The inflation process prepares the layout for use in your application:
-
-Following this, you would use the `bindView()` method to initialize and assign values to your individual views. This could include setting text on TextViews, images on ImageViews, and so on based on the properties of the User object:
+Create a custom layout file named `custom_list_item_view.xml`:
 
 ```xml custom_list_item_view.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -1023,6 +1033,10 @@ Following this, you would use the `bindView()` method to initialize and assign v
 
 </LinearLayout>
 ```
+
+> **What this does:** Defines a custom list item layout with a `CometChatAvatar` and a `TextView` for the user name, separated by a thin divider line at the bottom.
+
+Inflate the layout inside `createView()` and use `bindView()` to initialize and assign values based on the `User` object:
 
 <Tabs>
 <Tab title="Java">
@@ -1096,16 +1110,11 @@ users.setListItemView(object : UsersViewHolderListener() {
 
 </Tabs>
 
-***
+> **What this does:** Inflates a custom list item layout and populates it with the user's avatar and name. If the user's status is `ONLINE`, the parent layout background is set to a light green (`#E6F4ED`). If the user is offline, the background is transparent.
 
-#### setSubtitleView
+#### `setSubtitleView`
 
-This method customizes the subtitle view of each user item, typically shown below the user's name. It can display additional details such as user status, last seen time, or a brief bio.
-
-Use Cases:
-
-* Last Active Time – Show "Online Now", "Last seen 2 hours ago".
-* User Status – Display status messages like "Offine", "Available".
+Customizes the subtitle view of each user item, shown below the user's name. It can display additional details such as user status or last active time.
 
 <Tabs>
 <Tab title="Java">
@@ -1151,17 +1160,13 @@ cometChatUsers.setSubtitleView(object : UsersViewHolderListener() {
 
 </Tabs>
 
-**Example**
+> **What this does:** Registers a `UsersViewHolderListener` that provides a custom subtitle view for each user item. `createView` inflates your layout, and `bindView` populates it with user data.
 
 <Frame>
   <img src="/images/6e16192f-users_subtitle_view-51f448114408521010b6feb4a5bba41d.png" />
 </Frame>
 
-You can indeed create a custom layout file named `subtitle_layout.xml` for more complex or unique list items.
-
-Once this layout file is made, you would inflate it inside the `createView()` method of the `UsersViewHolderListener`. The inflation process prepares the layout for use in your application:
-
-Following this, you would use the `bindView()` method to initialize and assign values to your individual views. This could include setting text on TextViews, images on ImageViews, and so on based on the properties of the User object:
+The following example shows a custom subtitle view that displays the user's last active time:
 
 <Tabs>
 <Tab title="Java">
@@ -1213,17 +1218,11 @@ cometChatUsers.setSubtitleView(object : UsersViewHolderListener() {
 
 </Tabs>
 
-***
+> **What this does:** Replaces the default subtitle with a custom `TextView` that shows "Last Active at:" followed by the user's last active timestamp formatted as "dd/mm/yyyy, HH:MM:SS" in black text.
 
-#### setOverflowMenu
+#### `setOverflowMenu`
 
-This method customizes the overflow menu, typically appearing as a three-dot (⋮) icon, allowing additional options for each user in the list.
-
-Use Cases:
-
-* User Management Actions – "Block User", "Report", "Add to Favorites".
-* Friendship & Communication – "Send Message", "Follow/Unfollow".
-* Profile Settings – "View Profile", "Edit Contact Info".
+Customizes the overflow menu within the Users component. This menu appears as a three-dot (⋮) icon and provides additional options.
 
 <Tabs>
 <Tab title="Java">
@@ -1242,7 +1241,7 @@ users.setOverflowMenu(v)
 
 </Tabs>
 
-**Example**
+> **What this does:** Sets a custom `View` as the overflow menu in the users toolbar. Pass any view (e.g., an icon button, image) to replace the default overflow menu.
 
 <Frame>
   <img src="/images/50473531-user_menu-5b7eb7088d966ada9e751e591dbee212.png" />
@@ -1268,3 +1267,78 @@ users.setOverflowMenu(v)
 </Tab>
 
 </Tabs>
+
+> **What this does:** Creates an `ImageView` with a custom menu icon and sets it as the overflow menu in the users toolbar. The icon appears in the toolbar's overflow position.
+
+- **Verify**: After setting any advanced view, confirm the custom view renders in the correct position within the user list item, and the data binding populates correctly for each user.
+
+## Customization matrix
+
+| What you want to change | Where | Property/API | Example |
+| --- | --- | --- | --- |
+| Avatar style (corner radius, background) | `themes.xml` | `CometChatUsersStyle` with `cometchatUsersAvatarStyle` | `<item name="cometchatAvatarStrokeRadius">8dp</item>` |
+| Separator color | `themes.xml` | `CometChatUsersStyle` with `cometchatUsersSeparatorColor` | `<item name="cometchatUsersSeparatorColor">#F76808</item>` |
+| Title text color | `themes.xml` | `CometChatUsersStyle` with `cometchatUsersTitleTextColor` | `<item name="cometchatUsersTitleTextColor">#F76808</item>` |
+| Apply a custom style | Activity/Fragment | `setStyle(int styleRes)` | `cometChatUsers.setStyle(R.style.CustomUsersStyle);` |
+| Back button visibility | Activity/Fragment | `setBackIconVisibility(int)` | `.setBackIconVisibility(View.VISIBLE);` |
+| Toolbar visibility | Activity/Fragment | `setToolbarVisibility(int)` | `.setToolbarVisibility(View.GONE);` |
+| Sticky header visibility | Activity/Fragment | `setStickyHeaderVisibility(int)` | `.setStickyHeaderVisibility(View.GONE);` |
+| Error state visibility | Activity/Fragment | `setErrorStateVisibility(int)` | `.setErrorStateVisibility(View.GONE);` |
+| Empty state visibility | Activity/Fragment | `setEmptyStateVisibility(int)` | `.setEmptyStateVisibility(View.GONE);` |
+| Loading state visibility | Activity/Fragment | `setLoadingStateVisibility(int)` | `.setLoadingStateVisibility(View.GONE);` |
+| Separator visibility | Activity/Fragment | `setSeparatorVisibility(int)` | `.setSeparatorVisibility(View.GONE);` |
+| User online status visibility | Activity/Fragment | `setUsersStatusVisibility(int)` | `.setUsersStatusVisibility(View.GONE);` |
+| Selection mode (single/multiple) | Activity/Fragment | `setSelectionMode(SelectionMode)` | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
+| Search keyword | Activity/Fragment | `setSearchkeyword(String)` | `.setSearchkeyword("anything");` |
+| Search box visibility | Activity/Fragment | `setSearchBoxVisibility(int)` | `.setSearchBoxVisibility(View.GONE);` |
+| Long-press options (replace) | Activity/Fragment | `setOptions(Function2)` | See `setOptions` code above |
+| Long-press options (append) | Activity/Fragment | `addOptions(Function2)` | See `addOptions` code above |
+| Loading view | Activity/Fragment | `setLoadingView(int)` | `cometchatUsers.setLoadingView(R.layout.your_loading_view);` |
+| Empty view | Activity/Fragment | `setEmptyView(int)` | `cometchatUsers.setEmptyView(R.layout.your_empty_view);` |
+| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatUsers.setErrorView(R.layout.your_empty_view);` |
+| Leading view (avatar area) | Activity/Fragment | `setLeadingView(UsersViewHolderListener)` | See `setLeadingView` code above |
+| Title view | Activity/Fragment | `setTitleView(UsersViewHolderListener)` | See `setTitleView` code above |
+| Trailing view | Activity/Fragment | `setTrailingView(UsersViewHolderListener)` | See `setTrailingView` code above |
+| Entire list item | Activity/Fragment | `setItemView(UsersViewHolderListener)` / `setListItemView(UsersViewHolderListener)` | See `setItemView` code above |
+| Subtitle view | Activity/Fragment | `setSubtitleView(UsersViewHolderListener)` | See `setSubtitleView` code above |
+| Overflow menu | Activity/Fragment | `setOverflowMenu(View)` | `users.setOverflowMenu(imageView);` |
+| Filter users | Activity/Fragment | `setUsersRequestBuilder(UsersRequestBuilder)` | See Filters code above |
+| Search filter | Activity/Fragment | `setSearchRequestBuilder(UsersRequestBuilder)` | See SearchRequestBuilder code above |
+
+## Common pitfalls & fixes
+
+| Pitfall | Fix |
+| --- | --- |
+| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
+| User list is empty despite having users | Verify that a user is logged in with `CometChatUIKit.login()` before displaying the component. The component fetches users for the logged-in user only. |
+| Filters not applied | Ensure you call `setUsersRequestBuilder(builder)` on the `CometChatUsers` instance after creating and configuring the builder. |
+| Custom style not visible | Verify the style parent is `CometChatUsersStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
+| `setOnItemClick` not firing | If you set `setSelectionMode` to `MULTIPLE`, item clicks may be consumed by the selection logic. Set the selection mode to `NONE` if you need standard click behavior. |
+| Event listener not receiving events | Ensure you call `CometChatUserEvents.addUserListener` with a unique tag. If you use the same tag as another listener, the previous one is replaced. |
+| Search not working with custom filter | If you set a `UsersRequestBuilder` via `setUsersRequestBuilder`, the search may use different parameters. Use `setSearchRequestBuilder` to control search behavior separately. |
+| Custom view returns null in `createView` | If `createView` returns `null`, the default view is used. Return a valid inflated `View` to replace the default. |
+| Sticky header not showing | Ensure `setStickyHeaderVisibility` is set to `View.VISIBLE`. If set to `View.GONE`, the alphabetical sticky headers will not appear. |
+| Online status indicator not visible | Ensure `setUsersStatusVisibility` is set to `View.VISIBLE`. If set to `View.GONE`, the online/offline status indicator will not appear next to user avatars. |
+
+## FAQ
+
+**Q: How do I show only friends in the user list?**
+**A:** Create a `UsersRequest.UsersRequestBuilder`, call `friendsOnly(true)`, and pass it to `setUsersRequestBuilder`.
+
+**Q: How do I filter users by role?**
+**A:** Create a `UsersRequest.UsersRequestBuilder`, call `setRoles(List<String>)` with the desired role names, and pass it to `setUsersRequestBuilder`.
+
+**Q: How do I listen for user blocked/unblocked events outside the component?**
+**A:** Use `CometChatUserEvents.addUserListener("YOUR_TAG", ...)` and override `ccUserBlocked` and `ccUserUnblocked`. Call `CometChatUserEvents.removeListener("YOUR_TAG")` to unsubscribe.
+
+**Q: How do I customize the avatar style in the user list?**
+**A:** Define a custom style with parent `CometChatAvatarStyle` in `themes.xml`, reference it in a `CometChatUsersStyle` using `cometchatUsersAvatarStyle`, and apply with `setStyle()`.
+
+**Q: How do I add custom long-press options without removing the defaults?**
+**A:** Use `addOptions` instead of `setOptions`. `addOptions` appends your custom `MenuItem` objects to the existing default options.
+
+## Next steps
+
+- [Conversations component](/ui-kit/android/conversations)
+- [Groups component](/ui-kit/android/groups)
+- [Message list component](/ui-kit/android/message-list)
