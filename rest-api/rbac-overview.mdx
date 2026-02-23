@@ -14,11 +14,7 @@ CometChat provides two types of access control permissions:
 
 ## RBAC (Role-Based Access Control)
 
-<Info>
-**RBAC (Role-Based Access Control)** — Permissions applied globally based on the user's assigned role.
-</Info>
-
-Role-Based Access Control (RBAC) enables fine-grained control over **what actions a user can perform** and **what data they can access**, based on the role assigned to them (for example: `superadmin`, `admin`, `moderator`, `user`).
+Role-Based Access Control (RBAC) enables fine-grained control over **what actions a user can perform** and **what data they can access**, based on the role assigned to them (for example: `doctor`, `patient`, `buyer`, `seller`).
 
 ### How RBAC Works
 
@@ -30,7 +26,7 @@ Role-Based Access Control (RBAC) enables fine-grained control over **what action
 
 RBAC supports:
 - **Binary permissions** (`allow` / `deny`)
-- **Scoped permissions** using additional configuration keys such as `mode`, `allowedRoles`, and `allowedMessageTypes`
+- **Conditional permissions** using additional configuration keys such as `mode`, `allowedRoles`, and `allowedMessageTypes`
 
 Permissions can be restricted by additional conditions such as:
 - User relationships (all users vs friends)
@@ -170,13 +166,12 @@ When an array permission (e.g., `allowedRoles`, `allowedMimeTypes`) has a value 
 
 ### RBAC Example Configuration
 
-Below is an example of restricting a `user` role:
+Below is an example of restricting a particular role to deny sending a message:
 
 ```json
 {
   "permissions": {
-    "listMessages": "deny",
-    "sendThreadedMessage.allowedMessageTypes": ["image"]
+    "sendMessage": "deny"
   }
 }
 ```
@@ -192,10 +187,6 @@ If a permission is not explicitly configured for a role, the default value is us
 
 ## SBAC (Scope-Based Access Control)
 
-<Info>
-**SBAC (Scope-Based Access Control)** — Permissions applied within group context based on the member's scope.
-</Info>
-
 Scope-Based Access Control (SBAC) enables fine-grained control over **what actions a user can perform within a group**, based on their member scope (for example: `admin`, `moderator`, `participant`).
 
 ### How SBAC Works
@@ -209,7 +200,7 @@ Scope-Based Access Control (SBAC) enables fine-grained control over **what actio
 
 SBAC supports:
 - **Binary permissions** (`allow` / `deny`)
-- **Scoped permissions** using additional configuration keys such as `allowedScopes`, `allowedMessageTypes`, and `allowedMimeTypes`
+- **Conditional permissions** using additional configuration keys such as `allowedScopes`, `allowedMessageTypes`, and `allowedMimeTypes`
 
 Permissions can be restricted by additional conditions such as:
 - Member scopes within the group
@@ -246,10 +237,6 @@ When an array permission (e.g., `allowedScopes`, `allowedMimeTypes`) has a value
 #### `allow` / `deny` Values
 - `allow`: The action is permitted
 - `deny`: The action is blocked, returns `ERR_PERMISSION_DENIED`
-
-#### Mode Values
-- `all`: Action applies to all users
-- `friends`: Action is restricted to friends only
 
 ### SBAC Permissions
 
@@ -322,9 +309,6 @@ When an array permission (e.g., `allowedScopes`, `allowedMimeTypes`) has a value
 
 Based on the legacy CometChat group hierarchy, certain permissions are denied by default for specific scopes. These defaults apply when no explicit permission is configured.
 
-#### Owner Scope
-- **No default denies** — Full access to all group operations
-
 #### Admin Scope
 
 | Permission | Default |
@@ -353,10 +337,8 @@ Based on the legacy CometChat group hierarchy, certain permissions are denied by
 
 ### SBAC Permission Evaluation Order
 
-1. **Group-specific override** (permission_scope table) — Highest priority
-2. **Scope-based default** (permission_role table using scope as "role")
-3. **Scope default deny** (hardcoded defaults based on legacy hierarchy)
-4. **Permission default value** (from permission definition)
+1. Explicitly configured permission for the scope — Highest priority
+2. Permission default value (from permission definition)
 
 For group context, both SBAC and RBAC permissions are evaluated:
 - For `allow`/`deny`: If EITHER denies, result is `deny`
