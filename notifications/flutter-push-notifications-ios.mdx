@@ -202,7 +202,32 @@ This registers the device token against the APNs provider selected in `CometChat
 
 CometChat's Enhanced Push Notification payload includes an `unreadMessageCount` field (a string) representing the total unread messages across all conversations for the logged-in user. On iOS the badge can be updated from both the client side and the server side.
 
-### 7.1 Add the `app_badge_plus` dependency
+### 7.1 Expected payload format
+
+CometChat sends APNs payloads with this structure (relevant fields):
+
+```json
+{
+  "aps": {
+    "alert": {
+      "title": "New Message",
+      "body": "John: Hello!"
+    },
+    "badge": 5,
+    "sound": "default"
+  },
+  "unreadMessageCount": 5,
+  "conversationId": "user_abc123"
+}
+```
+
+The `aps.badge` field is set by CometChat server-side. iOS updates the app icon badge automatically when the push is delivered — no client code is needed for this path.
+
+### 7.2 Client-side badge via FCM on iOS
+
+The steps below apply only if you register FCM tokens on iOS and show local notifications from Flutter. If you use pure APNs, skip to section 7.3.
+
+Add the `app_badge_plus` dependency:
 
 ```yaml lines
 dependencies:
@@ -210,8 +235,6 @@ dependencies:
 ```
 
 Run `flutter pub get`.
-
-### 7.2 Update the badge from local notifications
 
 Inside your notification handler (for example `APNSService._showNotification`), parse `unreadMessageCount` and set the badge:
 
@@ -232,21 +255,43 @@ if (unreadMessageCount >= 0) {
 
 On iOS, `app_badge_plus` sets the native `UIApplication.shared.applicationIconBadgeNumber`. Passing `0` clears the badge.
 
-### 7.3 Server-side badge via APNs
+### 7.3 Clear badge and notifications when the app opens
 
-If you use APNs directly (not FCM on iOS), the CometChat push notification payload includes the badge count in the APNs `aps` dictionary. iOS updates the app icon badge automatically when the push is delivered — no client code is needed for this path.
-
-### 7.4 Clear badge when the app opens
-
-Reset the badge count when the app comes to the foreground:
+This is required regardless of whether you use APNs or FCM. Clear the badge count and dismiss all local notifications when the app launches and every time it resumes from the background. Add `WidgetsBindingObserver` to your dashboard or root widget:
 
 ```dart lines
+Future<void> _clearBadge() async {
+  try {
+    LocalNotificationService.flutterLocalNotificationsPlugin.cancelAll();
+    await AppBadgePlus.updateBadge(0);
+    debugPrint("The badge was cleared");
+  } catch (e) {
+    debugPrint("Error in clearing the badge value $e");
+  }
+}
+
 @override
 void initState() {
   super.initState();
-  AppBadgePlus.updateBadge(0);
+  WidgetsBinding.instance.addObserver(this);
+  _clearBadge();
+}
+
+@override
+void didChangeAppLifecycleState(AppLifecycleState state) {
+  if (state == AppLifecycleState.resumed) {
+    _clearBadge();
+  }
+}
+
+@override
+void dispose() {
+  WidgetsBinding.instance.removeObserver(this);
+  super.dispose();
 }
 ```
+
+`cancelAll()` removes stale notification banners from the tray so they stay in sync with the badge count.
 
 ## 8. Testing checklist
 

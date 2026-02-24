@@ -201,7 +201,25 @@ dependencies:
 
 Run `flutter pub get`.
 
-### 6.2 Update the app badge from the push payload
+### 6.2 Expected payload format
+
+CometChat sends FCM data messages with this structure (relevant fields):
+
+```json
+{
+  "data": {
+    "unreadMessageCount": "5",
+    "title": "New Message",
+    "alert": "John: Hello!",
+    "conversationId": "user_abc123",
+    "conversationType": "user"
+  }
+}
+```
+
+`unreadMessageCount` is a string representing the total unread messages across all conversations for the logged-in user.
+
+### 6.3 Update the app badge from the push payload
 
 Inside your local notification handler (for example `LocalNotificationService.showNotification`), parse `unreadMessageCount` and update the badge:
 
@@ -223,7 +241,7 @@ if (unreadMessageCount >= 0) {
 
 On Android, `app_badge_plus` uses launcher-specific APIs (Samsung, Huawei, etc.) to display a badge number on the app icon. Passing `0` clears the badge.
 
-### 6.3 Show grouped notifications with unread count
+### 6.4 Show grouped notifications with unread count
 
 Use `conversationId.hashCode` as the notification ID so each new message from the same conversation replaces the previous notification instead of creating a new one. Accumulate message lines per conversation for inbox-style display:
 
@@ -272,17 +290,43 @@ final androidDetails = AndroidNotificationDetails(
 - `number` displays a count badge on the notification icon (Samsung One UI).
 - When the user opens a conversation, clear its accumulated messages by removing the key from `_conversationMessages`.
 
-### 6.4 Clear badge when the app opens
+### 6.5 Clear badge and notifications when the app opens
 
-Reset the badge count when the app comes to the foreground:
+Clear the badge count and dismiss all local notifications when the app launches and every time it resumes from the background. Add `WidgetsBindingObserver` to your dashboard or root widget:
 
 ```dart lines
+Future<void> _clearBadge() async {
+  try {
+    LocalNotificationService.flutterLocalNotificationsPlugin.cancelAll();
+    await AppBadgePlus.updateBadge(0);
+    debugPrint("The badge was cleared");
+  } catch (e) {
+    debugPrint("Error in clearing the badge value $e");
+  }
+}
+
 @override
 void initState() {
   super.initState();
-  AppBadgePlus.updateBadge(0);
+  WidgetsBinding.instance.addObserver(this);
+  _clearBadge();
+}
+
+@override
+void didChangeAppLifecycleState(AppLifecycleState state) {
+  if (state == AppLifecycleState.resumed) {
+    _clearBadge();
+  }
+}
+
+@override
+void dispose() {
+  WidgetsBinding.instance.removeObserver(this);
+  super.dispose();
 }
 ```
+
+`cancelAll()` removes stale notification banners from the tray so they stay in sync with the badge count.
 
 ## 7. Testing checklist
 
