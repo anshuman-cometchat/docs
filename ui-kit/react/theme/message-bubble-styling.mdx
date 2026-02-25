@@ -39,10 +39,17 @@ Use this table to construct the correct CSS selector for any message bubble targ
 | Specific type (incoming) | `.cometchat .cometchat-message-bubble-incoming .cometchat-message-bubble__body.cometchat-message-bubble__<TYPE>-message` |
 | Action bubbles (no direction) | `.cometchat .cometchat-message-bubble__body .cometchat-action-bubble` |
 
-**Where `<TYPE>` is one of:** `text`, `image`, `video`, `audio`, `file`, `delete`, `meeting` (direct call), `whiteboard`, `document`, `poll`, `sticker`
+<Note>
+
+`<TYPE>`
+
+`<TYPE>` is one of `text`, `image`, `video`, `audio`, `file`, `delete`, `meeting` (direct call), `whiteboard`, `document`, `poll`, `sticker`
+</Note>
 
 <Note>
-Link Preview bubbles reuse the `text-message` type selector since link previews are rendered inside text messages.
+Link Preview Bubbles 
+
+It reuse the `text-message` type selector since link previews are rendered inside text messages.
 </Note>
 
 ---
