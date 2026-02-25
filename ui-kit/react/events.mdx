@@ -3,20 +3,12 @@ title: "Events"
 description: "Reference for CometChat React UI Kit events including conversation, user, group, message, and call events."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-**Event categories:**
-- `CometChatConversationEvents` → conversation deleted, updated
-- `CometChatUserEvents` → user blocked/unblocked
-- `CometChatGroupEvents` → group created, deleted, member changes
-- `CometChatMessageEvents` → message sent, edited, replied
-- `CometChatCallEvents` → outgoing call, accepted, rejected, ended
-- **UI events** → active chat changed
-
-Events enable decoupled communication between UI Kit components without direct references.
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Event categories:** `CometChatConversationEvents` (deleted, updated), `CometChatUserEvents` (blocked/unblocked), `CometChatGroupEvents` (created, deleted, member changes), `CometChatMessageEvents` (sent, edited, replied), `CometChatCallEvents` (outgoing, accepted, rejected, ended)
+- **UI events:** Active chat changed
+- **Purpose:** Decoupled communication between UI Kit components — subscribe to events to react to changes without direct component references
+</Accordion>
 
 ## Overview
 

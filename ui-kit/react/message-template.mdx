@@ -43,33 +43,14 @@ What this does: Renders the minimal version of the component.
 
 ## Implementation
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```tsx
-import { CometChatMessageTemplate } from "@cometchat/chat-uikit-react";
-import { ChatConfigurator } from "@cometchat/chat-uikit-react";
-
-// Get default templates
-const templates = ChatConfigurator.getDataSource().getAllMessageTemplates();
-
-// Pass custom templates to MessageList
-<CometChatMessageList templates={templates} />
-```
-What this does: Shows the code for this step.
-</Info>
-
-<Info>
-**AI Agent Component Spec**
-
-**Package:** `@cometchat/chat-uikit-react`
-**Import:** `import { CometChatMessageTemplate } from "@cometchat/chat-uikit-react";`
-**Usage:** Pass `templates` prop to `CometChatMessageList`
-**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
-**Key properties:** `category: string`, `type: string`, `contentView`, `bubbleView`, `headerView`, `footerView`
-**Related:** Used with `CometChatMessageList` via the `templates` prop
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Import:** `import { CometChatMessageTemplate } from "@cometchat/chat-uikit-react";`
+- **Usage:** Pass `templates` prop to `CometChatMessageList` — get defaults via `ChatConfigurator.getDataSource().getAllMessageTemplates()`
+- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")`
+- **Key properties:** `category: string`, `type: string`, `contentView`, `bubbleView`, `headerView`, `footerView`
+- **Related:** Used with [CometChatMessageList](/ui-kit/react/message-list) via the `templates` prop
+</Accordion>
 
 ### Overview
 

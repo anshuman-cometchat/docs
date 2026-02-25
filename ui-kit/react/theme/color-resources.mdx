@@ -3,39 +3,15 @@ title: "Color Resources"
 description: "Complete reference of all CSS variables and color tokens available in the CometChat React UI Kit, including primary, neutral, and semantic color palettes for light and dark modes."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```css
-/* Override primary brand color globally */
-.cometchat {
-  --cometchat-primary-color: #f76808;
-}
-
-/* Override for dark mode */
-.cometchat[data-theme="dark"] {
-  --cometchat-primary-color: #f76808;
-}
-
-/* Override a specific component's colors */
-.cometchat-conversations {
-  --cometchat-primary-color: #e63946;
-}
-```
-</Info>
-
-<Info>
-**AI Agent Styling Spec**
-
-**Goal:** Override UI Kit color tokens to match your brand
-**Where:** `App.css` (global) — import in app entry via `import "./App.css";`
-**Scope:** Override variables on `.cometchat` (global) or `.cometchat-<component>` (component-specific)
-**Key tokens:** `--cometchat-primary-color` (brand/accent), `--cometchat-neutral-color-300` (incoming bubbles), `--cometchat-background-color-01` (main background)
-**Dark mode:** Override in `.cometchat[data-theme="dark"]` selector
-**Source file:** [css-variables.css on GitHub](https://github.com/cometchat/cometchat-uikit-react/blob/v6/src/styles/css-variables.css)
-**Constraints:** Global CSS only (no CSS Modules), no `!important`, component-level overrides take precedence over global
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Goal:** Override UI Kit color tokens to match your brand
+- **Where:** `App.css` (global) — import in app entry via `import "./App.css";`
+- **Scope:** Override variables on `.cometchat` (global) or `.cometchat-<component>` (component-specific)
+- **Key tokens:** `--cometchat-primary-color` (brand/accent), `--cometchat-neutral-color-300` (incoming bubbles), `--cometchat-background-color-01` (main background)
+- **Dark mode:** Override in `.cometchat[data-theme="dark"]` selector
+- **Source file:** [css-variables.css on GitHub](https://github.com/cometchat/cometchat-uikit-react/blob/v6/src/styles/css-variables.css)
+- **Constraints:** Global CSS only (no CSS Modules), no `!important`, component-level overrides take precedence over global
+</Accordion>
 
 ## Introduction
 

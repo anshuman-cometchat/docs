@@ -3,32 +3,14 @@ title: "Call"
 description: "Overview of CometChat's audio and video calling features including incoming calls, outgoing calls, and call logs — with the UI Kit components that power each feature."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-Key components for call features:
-- **Call Buttons** → [CometChatCallButtons](/ui-kit/react/call-buttons)
-- **Incoming Call** → [CometChatIncomingCall](/ui-kit/react/incoming-call)
-- **Outgoing Call** → [CometChatOutgoingCall](/ui-kit/react/outgoing-call)
-- **Call Logs** → [CometChatCallLogs](/ui-kit/react/call-logs)
-
-```bash
-# Required: Install the Calls SDK separately
-npm install @cometchat/calls-sdk-javascript
-```
-</Info>
-
-<Info>
-**AI Agent Component Spec**
-
-- **Package:** `@cometchat/chat-uikit-react` + `@cometchat/calls-sdk-javascript`
-- **Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()` + Calls SDK installed
-- **Call features covered:** Incoming Call, Outgoing Call, Call Logs, Call Buttons
-- **Primary components:** `CometChatCallButtons`, `CometChatIncomingCall`, `CometChatOutgoingCall`, `CometChatCallLogs`
-- **CSS class prefix:** `.cometchat-`
+<Accordion title="AI Agent Component Spec">
+- **Packages:** `@cometchat/chat-uikit-react` + `@cometchat/calls-sdk-javascript` (`npm install @cometchat/calls-sdk-javascript`)
+- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")` — Calls SDK must also be installed
+- **Call features:** Incoming Call, Outgoing Call, Call Logs, Call Buttons
+- **Key components:** `CometChatCallButtons` → [Call Buttons](/ui-kit/react/call-buttons), `CometChatIncomingCall` → [Incoming Call](/ui-kit/react/incoming-call), `CometChatOutgoingCall` → [Outgoing Call](/ui-kit/react/outgoing-call), `CometChatCallLogs` → [Call Logs](/ui-kit/react/call-logs)
 - **Auto-detection:** UI Kit automatically detects the Calls SDK and enables call UI components
-</Info>
+- **CSS class prefix:** `.cometchat-`
+</Accordion>
 
 ## Overview
 

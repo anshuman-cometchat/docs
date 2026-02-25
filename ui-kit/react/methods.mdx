@@ -3,37 +3,15 @@ title: "Methods"
 description: "Reference for CometChat React UI Kit methods including init, login, logout, and message-sending wrappers."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```javascript
-import { CometChatUIKit } from "@cometchat/chat-uikit-react";
-
-// Init
-CometChatUIKit.init(UIKitSettings);
-
-// Login with UID (dev only)
-CometChatUIKit.login("UID");
-
-// Login with Auth Token (production)
-CometChatUIKit.loginWithAuthToken("AUTH_TOKEN");
-
-// Logout
-CometChatUIKit.logout();
-
-// Get logged-in user
-CometChatUIKit.getLoggedinUser();
-
-// Create user
-CometChatUIKit.createUser(user);
-
-// Send messages
-CometChatUIKit.sendTextMessage(textMessage);
-CometChatUIKit.sendMediaMessage(mediaMessage);
-CometChatUIKit.sendCustomMessage(customMessage);
-```
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Import:** `import { CometChatUIKit } from "@cometchat/chat-uikit-react";`
+- **Init:** `CometChatUIKit.init(UIKitSettings)`
+- **Login (dev):** `CometChatUIKit.login("UID")` | **Login (prod):** `CometChatUIKit.loginWithAuthToken("AUTH_TOKEN")`
+- **Other methods:** `CometChatUIKit.logout()`, `CometChatUIKit.getLoggedinUser()`, `CometChatUIKit.createUser(user)`
+- **Send messages:** `CometChatUIKit.sendTextMessage()`, `CometChatUIKit.sendMediaMessage()`, `CometChatUIKit.sendCustomMessage()`
+- **Note:** Use these wrapper methods instead of raw SDK calls — they manage internal UI Kit eventing
+</Accordion>
 
 ## Overview
 

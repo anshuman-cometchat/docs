@@ -50,31 +50,15 @@ What this does: Renders the conversations list UI.
 
 ## Core concepts
 
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```tsx
-import { CometChatConversations } from "@cometchat/chat-uikit-react";
-
-<CometChatConversations
-  onItemClick={(conversation) => setActiveChat(conversation)}
-  hideReceipts={false}
-  selectionMode={SelectionMode.none}
-/>
-```
-</Info>
-
-<Info>
-**AI Agent Component Spec**
-
-- Package: `@cometchat/chat-uikit-react`
-- Import: `import { CometChatConversations } from "@cometchat/chat-uikit-react";`
-- Minimal JSX: `<CometChatConversations />`
-- Required setup: `CometChatUIKit.init()` and `CometChatUIKit.login()`
-- Key props: `onItemClick`, `conversationsRequestBuilder`, `hideReceipts`, `selectionMode`, `activeConversation`
-- CSS class: `.cometchat-conversations`
-- Events: `CometChatConversationEvents.ccConversationDeleted`
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Import:** `import { CometChatConversations } from "@cometchat/chat-uikit-react";`
+- **Minimal JSX:** `<CometChatConversations />`
+- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")`
+- **Key props:** `onItemClick`, `conversationsRequestBuilder`, `hideReceipts`, `selectionMode`, `activeConversation`
+- **CSS class:** `.cometchat-conversations`
+- **Events:** `CometChatConversationEvents.ccConversationDeleted`
+</Accordion>
 
 - Conversation: A chat thread between the logged-in user and a user or group.
 - Selection mode: Controls single or multiple selection behavior for list items.

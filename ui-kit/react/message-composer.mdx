@@ -51,33 +51,15 @@ What this does: Renders the minimal version of the component.
 
 ## Implementation
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```tsx
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
-
-// For a user chat
-<CometChatMessageComposer user={chatUser} />
-
-// For a group chat
-<CometChatMessageComposer group={chatGroup} />
-```
-What this does: Shows the code for this step.
-</Info>
-
-<Info>
-**AI Agent Component Spec**
-
-**Package:** `@cometchat/chat-uikit-react`
-**Import:** `import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";`
-**Minimal JSX:** `<CometChatMessageComposer user={chatUser} />` or `<CometChatMessageComposer group={chatGroup} />`
-**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
-**Key props:** `user: CometChat.User`, `group: CometChat.Group`, `text: string`, `parentMessageId: number`, `hideVoiceRecording: boolean`
-**CSS class:** `.cometchat-message-composer`
-**Events:** `CometChatMessageEvents`
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Import:** `import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";`
+- **Minimal JSX:** `<CometChatMessageComposer user={chatUser} />` or `<CometChatMessageComposer group={chatGroup} />`
+- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")`
+- **Key props:** `user: CometChat.User`, `group: CometChat.Group`, `text: string`, `parentMessageId: number`, `hideVoiceRecording: boolean`
+- **CSS class:** `.cometchat-message-composer`
+- **Events:** `CometChatMessageEvents`
+</Accordion>
 </Info>
 
 ### Overview

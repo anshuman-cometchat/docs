@@ -43,37 +43,14 @@ What this does: Renders the minimal version of the component.
 
 ## Implementation
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```tsx
-import { CometChatGroups } from "@cometchat/chat-uikit-react";
-
-// Minimal usage
-<CometChatGroups />
-
-// With common props
-<CometChatGroups
-  onItemClick={(group) => console.log("Selected:", group)}
-  hideSearch={false}
-  selectionMode={SelectionMode.none}
-/>
-```
-What this does: Shows the code for this step.
-</Info>
-
-<Info>
-**AI Agent Component Spec**
-
-**Package:** `@cometchat/chat-uikit-react`
-**Import:** `import { CometChatGroups } from "@cometchat/chat-uikit-react";`
-**Minimal JSX:** `<CometChatGroups />`
-**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
-**Key props:** `onItemClick: (group: CometChat.Group) => void`, `selectionMode: SelectionMode`, `groupsRequestBuilder: CometChat.GroupsRequestBuilder`, `hideSearch: boolean`, `hideGroupType: boolean`
-**CSS class:** `.cometchat-groups`
-**Events:** None (does not emit events directly)
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Import:** `import { CometChatGroups } from "@cometchat/chat-uikit-react";`
+- **Minimal JSX:** `<CometChatGroups />`
+- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")`
+- **Key props:** `onItemClick: (group: CometChat.Group) => void`, `selectionMode: SelectionMode`, `groupsRequestBuilder: CometChat.GroupsRequestBuilder`, `hideSearch: boolean`, `hideGroupType: boolean`
+- **CSS class:** `.cometchat-groups`
+</Accordion>
 
 ### Overview
 

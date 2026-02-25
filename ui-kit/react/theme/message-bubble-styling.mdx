@@ -3,40 +3,14 @@ title: "Message Bubble Styling"
 description: "Customize incoming and outgoing message bubble colors, backgrounds, and styles using CSS variables and class selectors in the CometChat React UI Kit."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```css
-/* Override outgoing bubble color */
-.cometchat .cometchat-message-bubble-outgoing .cometchat-message-bubble__body {
-  --cometchat-primary-color: #f76808;
-}
-
-/* Override incoming bubble color */
-.cometchat .cometchat-message-bubble-incoming .cometchat-message-bubble__body {
-  --cometchat-neutral-color-300: #feede1;
-}
-
-/* Target a specific message type (e.g., image) */
-.cometchat .cometchat-message-bubble-outgoing .cometchat-message-bubble__body.cometchat-message-bubble__image-message {
-  --cometchat-primary-color: #f76808;
-}
-```
-</Info>
-
-<Info>
-**AI Agent Styling Spec**
-
-**Goal:** Customize message bubble appearance (colors, backgrounds) per direction and message type
-**Where:** `App.css` (global) — import in app entry via `import "./App.css";`
-**Scope:** All selectors must be under `.cometchat` root
-**Base selector:** `.cometchat .cometchat-message-bubble-(incoming|outgoing) .cometchat-message-bubble__body`
-**Type modifier:** Append `.cometchat-message-bubble__<TYPE>-message` to target specific types
-**Valid types:** `text`, `image`, `video`, `audio`, `file`, `delete`, `meeting`, `whiteboard`, `document`, `poll`, `sticker`
-**Key tokens:** `--cometchat-primary-color` (outgoing bg), `--cometchat-neutral-color-300` (incoming bg), `--cometchat-extended-primary-color-900` (outgoing shade)
-**Constraints:** Global CSS only (no CSS Modules), no `!important`, type selectors override generic bubble selectors
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Goal:** Customize message bubble appearance (colors, backgrounds) per direction and message type
+- **Where:** `App.css` (global) — import in app entry via `import "./App.css";`
+- **Base selector:** `.cometchat .cometchat-message-bubble-(incoming|outgoing) .cometchat-message-bubble__body`
+- **Type modifier:** Append `.cometchat-message-bubble__<TYPE>-message` to target specific types (`text`, `image`, `video`, `audio`, `file`, `delete`, `meeting`, `whiteboard`, `document`, `poll`, `sticker`)
+- **Key tokens:** `--cometchat-primary-color` (outgoing bg), `--cometchat-neutral-color-300` (incoming bg), `--cometchat-extended-primary-color-900` (outgoing shade)
+- **Constraints:** Global CSS only (no CSS Modules), no `!important`, type selectors override generic bubble selectors
+</Accordion>
 
 ## Introduction
 

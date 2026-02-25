@@ -3,31 +3,14 @@ title: "Core"
 description: "Overview of CometChat's core chat features including instant messaging, media sharing, read receipts, typing indicators, user presence, reactions, mentions, threaded conversations, search, and moderation — with the UI Kit components that power each feature."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-Key components for core chat features:
-- **Conversations** → [CometChatConversations](/ui-kit/react/conversations)
-- **Message List** → [CometChatMessageList](/ui-kit/react/message-list)
-- **Message Composer** → [CometChatMessageComposer](/ui-kit/react/message-composer)
-- **Message Header** → [CometChatMessageHeader](/ui-kit/react/message-header)
-- **Users** → [CometChatUsers](/ui-kit/react/users)
-- **Groups** → [CometChatGroups](/ui-kit/react/groups)
-- **Group Members** → [CometChatGroupMembers](/ui-kit/react/group-members)
-- **Search** → [CometChatSearch](/ui-kit/react/search)
-- **Threaded Message Preview** → [CometChatThreadedMessagePreview](/ui-kit/react/threaded-message-preview)
-</Info>
-
-<Info>
-**AI Agent Component Spec**
-
+<Accordion title="AI Agent Component Spec">
 - **Package:** `@cometchat/chat-uikit-react`
-- **Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
-- **Core features covered:** Instant Messaging, Media Sharing, Read Receipts, Mark as Unread, Typing Indicator, User Presence, Reactions, Mentions, Quoted Reply, Search, Threaded Conversations, Moderation, Report Message, Group Chat
-- **Primary components:** `CometChatConversations`, `CometChatMessageList`, `CometChatMessageComposer`, `CometChatMessageHeader`
+- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")` — must complete before rendering any component
+- **Core features:** Instant Messaging, Media Sharing, Read Receipts, Mark as Unread, Typing Indicator, User Presence, Reactions, Mentions, Quoted Reply, Search, Threaded Conversations, Moderation, Report Message, Group Chat
+- **Key components:** `CometChatConversations` → [Conversations](/ui-kit/react/conversations), `CometChatMessageList` → [Message List](/ui-kit/react/message-list), `CometChatMessageComposer` → [Message Composer](/ui-kit/react/message-composer), `CometChatMessageHeader` → [Message Header](/ui-kit/react/message-header), `CometChatUsers` → [Users](/ui-kit/react/users), `CometChatGroups` → [Groups](/ui-kit/react/groups), `CometChatGroupMembers` → [Group Members](/ui-kit/react/group-members)
 - **CSS class prefix:** `.cometchat-`
-</Info>
+- **Theming:** Override CSS variables on `.cometchat` class. See [Theming](/ui-kit/react/theme)
+</Accordion>
 
 ## Overview
 

@@ -4,33 +4,16 @@ sidebarTitle: "Localize"
 description: "Configure multi-language localization, custom translations, and date/time formatting in CometChat React UI Kit."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```javascript
-import { CometChatLocalize } from "@cometchat/chat-uikit-react";
-
-// Set language
-CometChatLocalize.setCurrentLanguage("fr");
-
-// Init with full config
-CometChatLocalize.init({
-  language: "es",
-  fallbackLanguage: "en-US",
-  disableAutoDetection: false,
-});
-
-// Add custom translations
-CometChatLocalize.addTranslation({
-  "en-US": { "welcome_message": "Welcome!" }
-});
-```
-
-- **19 supported languages** including en-US, fr, de, es, ja, ko, zh, and more
-- **CalendarObject** for custom date/time formatting
-- [GitHub source](https://github.com/cometchat/cometchat-uikit-react/blob/v6/src/resources/CometChatLocalize/cometchat-localize.ts)
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Import:** `import { CometChatLocalize } from "@cometchat/chat-uikit-react";`
+- **Set language:** `CometChatLocalize.setCurrentLanguage("fr")`
+- **Init with config:** `CometChatLocalize.init({ language: "es", fallbackLanguage: "en-US", disableAutoDetection: false })`
+- **Add translations:** `CometChatLocalize.addTranslation({ "en-US": { "welcome_message": "Welcome!" } })`
+- **19 supported languages:** en-US, en-GB, nl, fr, de, hi, it, ja, ko, pt, ru, es, tr, zh, zh-TW, ms, sv, lt, hu
+- **Date formatting:** Use `CalendarObject` for custom date/time patterns
+- **Source:** [GitHub](https://github.com/cometchat/cometchat-uikit-react/blob/v6/src/resources/CometChatLocalize/cometchat-localize.ts)
+</Accordion>
 
 ## **Overview**
 

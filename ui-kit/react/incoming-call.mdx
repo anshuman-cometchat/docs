@@ -40,37 +40,15 @@ What this does: Renders the minimal version of the component.
 
 ## Implementation
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```tsx
-import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";
-
-// Minimal usage — auto-detects incoming calls
-<CometChatIncomingCall />
-
-// With custom handlers
-<CometChatIncomingCall
-  onAccept={() => console.log("Call accepted")}
-  onDecline={() => console.log("Call declined")}
-  disableSoundForCalls={false}
-/>
-```
-What this does: Shows the code for this step.
-</Info>
-
-<Info>
-**AI Agent Component Spec**
-
-**Package:** `@cometchat/chat-uikit-react`
-**Import:** `import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";`
-**Minimal JSX:** `<CometChatIncomingCall />`
-**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
-**Key props:** `onAccept` (callback), `onDecline` (callback), `call` (CometChat.Call), `disableSoundForCalls` (boolean), `callSettingsBuilder` (function)
-**CSS class:** `.cometchat-incoming-call`
-**Events:** `ccCallRejected`, `ccCallAccepted`, `ccCallEnded`
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Import:** `import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";`
+- **Minimal JSX:** `<CometChatIncomingCall />` — auto-detects incoming calls when mounted at app root
+- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")` + `@cometchat/calls-sdk-javascript` installed
+- **Key props:** `onAccept` (callback), `onDecline` (callback), `call` (CometChat.Call), `disableSoundForCalls` (boolean), `callSettingsBuilder` (function)
+- **CSS class:** `.cometchat-incoming-call`
+- **Events:** `ccCallRejected`, `ccCallAccepted`, `ccCallEnded`
+</Accordion>
 
 ### Overview
 

@@ -4,44 +4,16 @@ sidebarTitle: "Overview"
 description: "Customize the CometChat React UI Kit appearance using CSS variables for colors, fonts, dark mode, and component-specific styling."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```css
-/* 1. Import base stylesheet in App.css */
-@import url("@cometchat/chat-uikit-react/css-variables.css");
-
-/* 2. Override global theme */
-.cometchat {
-  --cometchat-primary-color: #f76808;
-  --cometchat-font-family: "Inter", sans-serif;
-}
-
-/* 3. Override per-component */
-.cometchat .cometchat-conversations {
-  --cometchat-primary-color: #e63946;
-}
-
-/* 4. Dark mode */
-.cometchat-root[data-theme="dark"] .cometchat {
-  --cometchat-primary-color: #f76808;
-}
-```
-</Info>
-
-<Info>
-**AI Agent Styling Spec**
-
-**Goal:** Customize UI Kit appearance (colors, fonts, dark mode)
-**Where:** `App.css` (global) — import in app entry via `import "./App.css";`
-**Step 1:** Import base stylesheet: `@import url("@cometchat/chat-uikit-react/css-variables.css");`
-**Step 2:** Override variables on `.cometchat` (global) or `.cometchat-<component>` (component-specific)
-**Step 3:** For dark mode, override on `.cometchat-root[data-theme="dark"] .cometchat` or use `@media (prefers-color-scheme: dark)`
-**Key tokens:** `--cometchat-primary-color`, `--cometchat-neutral-color-300`, `--cometchat-font-family`, `--cometchat-background-color-03`
-**Constraints:** Global CSS only (no CSS Modules), no `!important`, component-level overrides beat global
-**Full token list:** [Color Resources](/ui-kit/react/theme/color-resources) | [GitHub source](https://github.com/cometchat/cometchat-uikit-react/blob/v6/src/styles/css-variables.css)
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Goal:** Customize UI Kit appearance (colors, fonts, dark mode)
+- **Where:** `App.css` (global) — import in app entry via `import "./App.css";`
+- **Step 1:** Import base stylesheet: `@import url("@cometchat/chat-uikit-react/css-variables.css");`
+- **Step 2:** Override variables on `.cometchat` (global) or `.cometchat-<component>` (component-specific)
+- **Step 3:** For dark mode, override on `.cometchat-root[data-theme="dark"] .cometchat` or use `@media (prefers-color-scheme: dark)`
+- **Key tokens:** `--cometchat-primary-color`, `--cometchat-neutral-color-300`, `--cometchat-font-family`, `--cometchat-background-color-03`
+- **Constraints:** Global CSS only (no CSS Modules), no `!important`, component-level overrides beat global
+- **Full token list:** [Color Resources](/ui-kit/react/theme/color-resources) | [GitHub source](https://github.com/cometchat/cometchat-uikit-react/blob/v6/src/styles/css-variables.css)
+</Accordion>
 
 Theming allows you to define the **look and feel** of your app by adjusting **colors, fonts, and other styles**. Using **CSS variables**, you can create a consistent and **on-brand** chat experience.
 

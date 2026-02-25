@@ -2,44 +2,13 @@
 title: "Property Changes"
 description: "Detailed reference of renamed, added, and removed properties and methods when upgrading from CometChat React UI Kit v5 to v6."
 ---
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-This page lists all property and method changes between v5 and v6 for each component:
-- **Conversations, Users, Groups, Group Members**
-- **Message Header, Message List, Message Composer**
-- **Incoming Call, Outgoing Call, Call Buttons, Call Logs**
-- **CometChatLocalize** methods
-
-See [Upgrading from v5](/ui-kit/react/upgrading-from-v5) for the full migration guide.
-</Info>
-
-
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-Key changes in v6:
-- **Date/Time formatting**: `datePattern` replaced with `CalendarObject`-based props
-- **Conversations**: Use `lastMessageDateTimeFormat` instead of `datePattern`
-- **Message List**: Use `separatorDateTimeFormat`, `stickyDateTimeFormat`, `messageSentAtDateTimeFormat`
-- **Call Logs**: Use `callInitiatedDateTimeFormat` instead of `datePattern`
-- **Localization**: `setLocale` → `setCurrentLanguage`, `localize` → `getLocalizedString`
-
-```tsx
-import { CalendarObject } from "@cometchat/chat-uikit-react";
-
-// New date formatting approach
-<CometChatConversations 
-  lastMessageDateTimeFormat={new CalendarObject({
-    today: "hh:mm A",
-    yesterday: "[Yesterday]",
-    otherDays: "DD MMM YYYY"
-  })}
-/>
-```
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Migration scope:** Property and method changes between v5 and v6 for all components
+- **Components affected:** Conversations, Users, Groups, Group Members, Message Header, Message List, Message Composer, Incoming Call, Outgoing Call, Call Buttons, Call Logs, CometChatLocalize
+- **Key pattern change:** `datePattern` (DatePatterns) replaced with `CalendarObject`-based props across all components
+- **Localization:** `setLocale` → `setCurrentLanguage`, `localize` → `getLocalizedString`
+- **Full migration guide:** [Upgrading from v5](/ui-kit/react/upgrading-from-v5)
+</Accordion>
 
 ## Conversations
 

@@ -4,32 +4,13 @@ sidebarTitle: "Integration"
 description: "Step-by-step guide to integrate CometChat React UI Kit into your React.js application with Vite or Create React App."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```bash
-# Install
-npm install @cometchat/chat-uikit-react
-```
-
-```tsx
-import { CometChatUIKit, UIKitSettingsBuilder } from "@cometchat/chat-uikit-react";
-
-const UIKitSettings = new UIKitSettingsBuilder()
-  .setAppId("APP_ID")
-  .setRegion("REGION")
-  .setAuthKey("AUTH_KEY")
-  .build();
-
-CometChatUIKit.init(UIKitSettings);
-CometChatUIKit.login("UID");
-```
-
-- **React.js** → This page
-- **Next.js** → [Next.js Integration](/ui-kit/react/next-js-integration)
-- **All Components** → [Components Overview](/ui-kit/react/components-overview)
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react` — `npm install @cometchat/chat-uikit-react`
+- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")` — must complete before rendering
+- **Init code:** `new UIKitSettingsBuilder().setAppId("APP_ID").setRegion("REGION").setAuthKey("AUTH_KEY").build()`
+- **Framework:** React.js (this page) | [Next.js](/ui-kit/react/next-js-integration) | [React Router](/ui-kit/react/react-router-integration) | [Astro](/ui-kit/react/astro-integration)
+- **All components:** [Components Overview](/ui-kit/react/components-overview)
+</Accordion>
 
 The **CometChat UI Kit for React** streamlines the integration of in-app chat functionality by providing a **comprehensive set of prebuilt UI components**. It offers seamless **theming options**, including **light and dark modes**, customizable fonts, colors, and extensive styling capabilities.
 

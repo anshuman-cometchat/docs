@@ -4,15 +4,13 @@ sidebarTitle: "One To One/Group Chat"
 description: "Build a focused one-to-one or group chat experience in Astro with CometChat React UI Kit."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-- **Framework:** Astro
-- **Key components:** `CometChatMessages`
-- **Prerequisites:** `CometChatUIKit.init()` + `CometChatUIKit.login()` must complete first
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Framework:** Astro (with `@astrojs/react` islands)
+- **Key component:** `CometChatMessages`
+- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")` — use `client:only="react"` directive
 - **Parent guide:** [Astro Integration](/ui-kit/react/astro-integration)
-</Info>
+</Accordion>
 
 
 The One‑to‑One/Group chat layout focuses on a single conversation, ideal for support chats and private messaging. This guide uses Astro with React islands and the CometChat React UI Kit.

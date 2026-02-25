@@ -3,28 +3,13 @@ title: "Extensions"
 description: "Overview of CometChat's extensions grouped by Dashboard categories (User Experience, User Engagement, Collaboration, Security, Customer Support, Smart Chat Features) and how they auto-integrate into React UI Kit components."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-Key components that support extensions:
-- **Message Composer** → [CometChatMessageComposer](/ui-kit/react/message-composer) (Stickers, Polls, Whiteboard, Document)
-- **Message List** → [CometChatMessageList](/ui-kit/react/message-list) (Translation, Link Preview, Thumbnails)
-
-Extensions are enabled via the [CometChat Dashboard](/fundamentals/extensions-overview) — no additional code required once activated.
-
-Supported extensions: User Experience, User Engagement, Collaboration, Security, Customer Support, Smart Chat Features
-</Info>
-
-<Info>
-**AI Agent Component Spec**
-
+<Accordion title="AI Agent Component Spec">
 - **Package:** `@cometchat/chat-uikit-react`
-- **Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()` + Extensions enabled in Dashboard
-- **Extensions covered:** User Experience, User Engagement, Collaboration, Security, Customer Support, Smart Chat Features
-- **Primary components:** `CometChatMessageComposer`, `CometChatMessageList`
-- **Activation:** Enable each extension from the CometChat Dashboard — UI Kit auto-integrates them
-</Info>
+- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")` + Extensions enabled in [CometChat Dashboard](/fundamentals/extensions-overview)
+- **Extension categories:** User Experience, User Engagement, Collaboration, Security, Customer Support, Smart Chat Features
+- **Key components:** `CometChatMessageComposer` → [Message Composer](/ui-kit/react/message-composer) (Stickers, Polls, Whiteboard, Document), `CometChatMessageList` → [Message List](/ui-kit/react/message-list) (Translation, Link Preview, Thumbnails)
+- **Activation:** Enable each extension from the CometChat Dashboard — UI Kit auto-integrates them, no additional code required
+</Accordion>
 
 ## Overview
 

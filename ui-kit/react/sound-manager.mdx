@@ -3,26 +3,13 @@ title: "Sound Manager"
 description: "Manage and customize audio cues for incoming/outgoing calls and messages in CometChat React UI Kit."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```javascript
-import { CometChatSoundManager, Sound } from "@cometchat/chat-uikit-react";
-
-// Play default incoming call sound
-CometChatSoundManager.play(Sound.incomingCall);
-
-// Play custom sound
-CometChatSoundManager.play(Sound.incomingCall, "path/to/custom.mp3");
-
-// Pause current sound
-CometChatSoundManager.pause();
-```
-
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Import:** `import { CometChatSoundManager, Sound } from "@cometchat/chat-uikit-react";`
+- **Play sound:** `CometChatSoundManager.play(Sound.incomingCall)` — or pass custom MP3 path as second arg
+- **Pause sound:** `CometChatSoundManager.pause()`
 - **Sound events:** `Sound.incomingCall`, `Sound.outgoingCall`, `Sound.incomingMessage`, `Sound.outgoingMessage`
-- Supports custom MP3 file paths
-</Info>
+</Accordion>
 
 ## Overview
 
