@@ -3,21 +3,35 @@ title: "Message List"
 description: "CometChatMessageList component renders a scrollable list of sent and received messages including text, media, reactions, read receipts, and threaded replies. Supports custom message templates, date separators, and CSS styling."
 ---
 
-Render a scrollable list of messages for a user or group conversation.
+{/* TL;DR for Agents and Quick Reference */}
+<Info>
+**Quick Reference for AI Agents & Developers**
 
-## When to use this
+```tsx
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatMessageList } from "@cometchat/chat-uikit-react";
 
-- You need to render chat messages in a conversation.
-- You want read receipts, reactions, and threads.
-- You want to customize message rendering with templates.
+// For a user chat
+<CometChatMessageList user={chatUser} />
+
+// For a group chat
+<CometChatMessageList group={chatGroup} />
+```
+</Info>
+
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Import:** `import { CometChatMessageList } from "@cometchat/chat-uikit-react";`
+**Minimal JSX:** `<CometChatMessageList user={chatUser} />` or `<CometChatMessageList group={chatGroup} />`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+**Key props:** `user: CometChat.User`, `group: CometChat.Group`, `messagesRequestBuilder: CometChat.MessagesRequestBuilder`, `templates: CometChatMessageTemplate[]`, `hideReceipts: boolean`
+**CSS class:** `.cometchat-message-list`
+**Events:** `CometChatMessageEvents`
+</Info>
 
 ## Overview
-
-- **What you’re changing**: Overview.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 `MessageList` is a composite component that displays a list of messages and effectively manages real-time operations. It includes various types of messages such as Text Messages, Media Messages, Stickers, and more.
 
@@ -25,23 +39,16 @@ Render a scrollable list of messages for a user or group conversation.
   <img src="/images/6612965e-message_list_overview_web_screens-26a01662c72f3b38c4b5d66f020f5d07.png" />
 </Frame>
 
+
 <Note>
 **Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
 </Note>
 
 ***
 
-### Integration
+## Usage
 
-<Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Import:** `import { CometChatMessageList } from "@cometchat/chat-uikit-react";`
-- **Minimal JSX:** `<CometChatMessageList user={chatUser} />` or `<CometChatMessageList group={chatGroup} />`
-- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")`
-- **Key props:** `user: CometChat.User`, `group: CometChat.Group`, `messagesRequestBuilder: CometChat.MessagesRequestBuilder`, `templates: CometChatMessageTemplate[]`, `hideReceipts: boolean`
-- **CSS class:** `.cometchat-message-list`
-- **Events:** `CometChatMessageEvents`
-</Accordion>
+### Integration
 
 The following code snippet illustrates how you can directly incorporate the MessageList component into your Application.
 
@@ -67,7 +74,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -92,7 +98,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -105,14 +110,6 @@ To fetch messages for a specific entity, you need to supplement it with `User` o
 </Warning>
 
 ***
-
-## Usage
-
-- **What you’re changing**: Usage.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 ### Actions
 
@@ -151,7 +148,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -184,7 +180,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -220,7 +215,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -250,7 +244,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -289,7 +282,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -319,7 +311,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -361,7 +352,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -394,7 +384,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -435,7 +424,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -466,7 +454,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -512,7 +499,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -543,7 +529,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -595,7 +580,6 @@ const ccMessageRead = CometChatMessageEvents.ccMessageRead.subscribe(() => {
   // Your Code
 });
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -627,7 +611,6 @@ const ccMessageRead = CometChatMessageEvents.ccMessageRead.subscribe(() => {
   // Your Code
 });
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -642,7 +625,6 @@ ccMessageEdited?.unsubscribe();
 ccReplyToMessage?.unsubscribe();
 ccActiveChatChanged?.unsubscribe();
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -652,7 +634,6 @@ ccMessageEdited?.unsubscribe();
 ccReplyToMessage?.unsubscribe();
 ccActiveChatChanged?.unsubscribe();
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -661,12 +642,6 @@ ccActiveChatChanged?.unsubscribe();
 ***
 
 ## Customization
-
-- **What you’re changing**: Customization.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 To fit your app's design requirements, you can customize the appearance of the Message List component. We provide exposed properties that allow you to modify the experience and behavior according to your specific needs.
 
@@ -689,7 +664,6 @@ import { CometChatMessageList } from "@cometchat/chat-uikit-react";
 
 <CometChatMessageList user={chatUser} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -701,7 +675,6 @@ import { CometChatMessageList } from "@cometchat/chat-uikit-react";
   font-family: "SF Pro";
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -737,7 +710,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -767,7 +739,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -887,7 +858,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -942,7 +912,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -963,7 +932,6 @@ new CalendarObject({
     otherDays: `DD MMM, YYYY`, // Example: "25 Jan, 2025"
 });
 ```
-**What this does**: Shows the code for this step.
 
 The following example demonstrates how to modify the **Date Separator** timestamp format using a custom [`CalendarObject`](/ui-kit/react/localize#calendarobject).
 
@@ -991,7 +959,6 @@ function getDateFormat() {
   separatorDateTimeFormat={getDateFormat()}
 />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1022,7 +989,6 @@ new CalendarObject({
     otherDays: `DD MMM, YYYY`, // Example: "25 Jan, 2025"
 });
 ```
-**What this does**: Shows the code for this step.
 
 The following example demonstrates how to modify the **Sticky Date** timestamp format using a custom [`CalendarObject`](/ui-kit/react/localize#calendarobject).
 
@@ -1047,7 +1013,6 @@ function getDateFormat() {
 // Apply the custom format to the CometChatMessageList component
 <CometChatMessageList user={chatUser} stickyDateTimeFormat={getDateFormat()} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1076,7 +1041,6 @@ new CalendarObject({
     otherDays: `hh:mm A`, // Example: "09:30 PM"
 });
 ```
-**What this does**: Shows the code for this step.
 
 The following example demonstrates how to modify the **Message SentAt** timestamp format using a custom [`CalendarObject`](/ui-kit/react/localize#calendarobject).
 
@@ -1104,7 +1068,6 @@ function getDateFormat() {
   messageSentAtDateTimeFormat={getDateFormat()}
 />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1133,7 +1096,6 @@ new CalendarObject({
   otherDays: `DD MMM, hh:mm A`, // Example: "29 Jan, 04:34 AM"
 });
 ```
-**What this does**: Shows the code for this step.
 
 The following example demonstrates how to modify the **Message Info** timestamp format using a custom [`CalendarObject`](/ui-kit/react/localize#calendarobject).
 
@@ -1161,7 +1123,6 @@ function getDateFormat() {
   messageInfoDateTimeFormat={getDateFormat()}
 />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1225,7 +1186,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1264,7 +1224,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1303,7 +1262,6 @@ export function MessageListDemo() {
   align-items: center;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1361,7 +1319,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1402,7 +1359,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1441,7 +1397,6 @@ export function MessageListDemo() {
   align-items: center;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1565,7 +1520,6 @@ class ShortcutFormatter extends CometChatTextFormatter {
 
 export default ShortcutFormatter;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1634,7 +1588,6 @@ export default class DialogHelper {
   }
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1663,7 +1616,6 @@ export function MessageListDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1687,34 +1639,19 @@ export function MessageListDemo() {
 
 ---
 
-## Customization matrix
+## Next Steps
 
-| What you want to change | Where | Property/API | Example |
-| --- | --- | --- | --- |
-| Hide receipts | `CometChatMessageList` | `hideReceipts` | `hideReceipts={true}` |
-| Custom templates | `CometChatMessageList` | `templates` | `templates={customTemplates}` |
-| Thread click handler | `CometChatMessageList` | `onThreadRepliesClick` | `onThreadRepliesClick={(m) => ...}` |
-| Filter messages | `CometChatMessageList` | `messagesRequestBuilder` | `new CometChat.MessagesRequestBuilder()` |
-
-## Common pitfalls and fixes
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| List does not render | Init/login not complete | Call `CometChatUIKit.init()` and `login()` first |
-| No messages | User/group not loaded | Fetch and pass a valid `CometChat.User` or `CometChat.Group` |
-| Errors at runtime | Both user and group passed | Pass only one of `user` or `group` |
-| Custom view not applied | Templates not passed | Pass templates via `templates` prop |
-
-## FAQ
-
-**Can I render group messages?**
-Yes. Pass `group={chatGroup}`.
-
-**How do I customize bubbles?**
-Use `templates` or CSS variables.
-
-## Next steps
-
-- [Message Composer](/ui-kit/react/message-composer)
-- [Message Template](/ui-kit/react/message-template)
-- [Message Bubble Styling](/ui-kit/react/theme/message-bubble-styling)
+<CardGroup cols={2}>
+  <Card title="Message Composer" icon="pen-to-square" href="/ui-kit/react/message-composer">
+    Compose and send messages
+  </Card>
+  <Card title="Message Header" icon="heading" href="/ui-kit/react/message-header">
+    Display user/group details in the toolbar
+  </Card>
+  <Card title="Message Template" icon="file-code" href="/ui-kit/react/message-template">
+    Customize message bubble rendering
+  </Card>
+  <Card title="Thread Header" icon="comments" href="/ui-kit/react/thread-header">
+    Display threaded message details
+  </Card>
+</CardGroup>

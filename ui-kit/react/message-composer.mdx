@@ -3,21 +3,35 @@ title: "Message Composer"
 description: "CometChatMessageComposer component provides a rich text input for composing and sending messages including text, media, attachments, reactions, mentions, and voice notes. Supports custom actions, AI features, and CSS styling."
 ---
 
-Compose and send messages with attachments, mentions, and actions.
+{/* TL;DR for Agents and Quick Reference */}
+<Info>
+**Quick Reference for AI Agents & Developers**
 
-## When to use this
+```tsx
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
 
-- You need a message input with send actions.
-- You want attachments, mentions, and rich actions.
-- You want to customize send behavior or UI.
+// For a user chat
+<CometChatMessageComposer user={chatUser} />
+
+// For a group chat
+<CometChatMessageComposer group={chatGroup} />
+```
+</Info>
+
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Import:** `import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";`
+**Minimal JSX:** `<CometChatMessageComposer user={chatUser} />` or `<CometChatMessageComposer group={chatGroup} />`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+**Key props:** `user: CometChat.User`, `group: CometChat.Group`, `text: string`, `parentMessageId: number`, `hideVoiceRecording: boolean`
+**CSS class:** `.cometchat-message-composer`
+**Events:** `CometChatMessageEvents`
+</Info>
 
 ## Overview
-
-- **What you’re changing**: Overview.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 MessageComposer is a Component that enables users to write and send a variety of messages, including text, image, video, and custom messages.
 
@@ -27,23 +41,14 @@ Features such as **Attachments**, and **Message Editing** are also supported by 
   <img src="/images/6c67574d-wGdWG0FDGDEYQAAAABJRU5ErkJggg.png" />
 </Frame>
 
+
 <Note>
 **Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
 </Note>
 
- 
+## Usage
 
 ### Integration
-
-<Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Import:** `import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";`
-- **Minimal JSX:** `<CometChatMessageComposer user={chatUser} />` or `<CometChatMessageComposer group={chatGroup} />`
-- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")`
-- **Key props:** `user: CometChat.User`, `group: CometChat.Group`, `text: string`, `parentMessageId: number`, `hideVoiceRecording: boolean`
-- **CSS class:** `.cometchat-message-composer`
-- **Events:** `CometChatMessageEvents`
-</Accordion>
 
 The following code snippet illustrates how you can directly incorporate the MessageComposer component into your app.
 
@@ -69,7 +74,6 @@ export function MessageComposerDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -94,19 +98,10 @@ export function MessageComposerDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
-
-## Usage
-
-- **What you’re changing**: Usage.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 ### Actions
 
@@ -143,7 +138,6 @@ export function MessageComposerDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -173,7 +167,6 @@ export function MessageComposerDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -210,7 +203,6 @@ export function MessageComposerDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -250,7 +242,6 @@ export function MessageComposerDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -311,7 +302,6 @@ export function MessageComposerDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -356,7 +346,6 @@ const ccMessageSent = CometChatMessageEvents.ccMessageSent.subscribe(() => {
   // Your Code
 });
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -373,7 +362,6 @@ ccMessageEdited?.unsubscribe();
 ccReplyToMessage?.unsubscribe();
 ccMessageSent?.unsubscribe();
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -382,12 +370,6 @@ ccMessageSent?.unsubscribe();
 ***
 
 ## Customization
-
-- **What you’re changing**: Customization.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 To fit your app's design requirements, you can customize the appearance of the MessageComposer component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
@@ -410,7 +392,6 @@ import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
 
 <CometChatMessageComposer user={chatUser} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -428,7 +409,6 @@ import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
   background: #e5484d;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -449,7 +429,6 @@ import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
 
 <CometChatMessageComposer user={chatUser} disableTypingEvents={true} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -552,7 +531,6 @@ function getAttachments() {
   user={userObj}
 />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -583,7 +561,6 @@ function getAttachments() {
   background: #141414;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -636,7 +613,6 @@ const auxiliaryButtonView = (
   user={userObj}
 />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -683,7 +659,6 @@ const sendButtonView = (
 
 <CometChatMessageComposer sendButtonView={sendButtonView} user={userObj} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -703,7 +678,6 @@ const sendButtonView = (
   background: #6852d6;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -749,7 +723,6 @@ const getHeaderView = () => {
 
 <CometChatMessageComposer user={chatUser} headerView={getHeaderView()} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -795,7 +768,6 @@ const getHeaderView = () => {
   mask-size: contain;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -919,7 +891,6 @@ class ShortcutFormatter extends CometChatTextFormatter {
 
 export default ShortcutFormatter;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -985,7 +956,6 @@ export default class DialogHelper {
   }
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1014,7 +984,6 @@ export function MessageComposerDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1038,32 +1007,19 @@ export function MessageComposerDemo() {
 
 ---
 
-## Customization matrix
+## Next Steps
 
-| What you want to change | Where | Property/API | Example |
-| --- | --- | --- | --- |
-| Hide voice recording | `CometChatMessageComposer` | `hideVoiceRecording` | `hideVoiceRecording={true}` |
-| Set default text | `CometChatMessageComposer` | `text` | `text="Hi"` |
-| Thread replies | `CometChatMessageComposer` | `parentMessageId` | `parentMessageId={messageId}` |
-
-## Common pitfalls and fixes
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| Composer does not render | Init/login not complete | Call `CometChatUIKit.init()` and `login()` first |
-| Cannot send messages | User/group not provided | Pass a valid `user` or `group` |
-| Voice icon missing | `hideVoiceRecording` enabled | Set `hideVoiceRecording={false}` |
-
-## FAQ
-
-**Can I use it in a thread?**
-Yes. Set `parentMessageId`.
-
-**How do I disable voice recording?**
-Set `hideVoiceRecording={true}`.
-
-## Next steps
-
-- [Message List](/ui-kit/react/message-list)
-- [Message Template](/ui-kit/react/message-template)
-- [Theming](/ui-kit/react/theme)
+<CardGroup cols={2}>
+  <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
+    Render messages in a chat view
+  </Card>
+  <Card title="Message Template" icon="file-code" href="/ui-kit/react/message-template">
+    Customize message bubble rendering
+  </Card>
+  <Card title="Message Header" icon="heading" href="/ui-kit/react/message-header">
+    Display user/group details in the toolbar
+  </Card>
+  <Card title="Extensions" icon="puzzle-piece" href="/ui-kit/react/extensions">
+    Add stickers, polls, and more to the composer
+  </Card>
+</CardGroup>

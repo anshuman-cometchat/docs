@@ -3,27 +3,52 @@ title: "AI Assistant Chat"
 description: "Build an AI agent chat experience with streaming responses, quick suggestions, chat history, and custom tools using the CometChatAIAssistantChat component."
 ---
 
-Build an AI assistant chat surface with streaming responses and suggestions.
+{/* TL;DR for Agents and Quick Reference */}
+<Info>
+**Quick Reference for AI Agents & Developers**
 
-## When to use this
+```tsx
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";
 
-- You need a dedicated AI agent chat experience.
-- You want streaming responses and suggested prompts.
-- You need a chat history sidebar for AI conversations.
+// Minimal usage — requires a CometChat.User (the AI agent)
+const [agent, setAgent] = React.useState<CometChat.User>();
+React.useEffect(() => {
+  CometChat.getUser("assistant_uid").then((u) => setAgent(u));
+}, []);
+
+<CometChatAIAssistantChat user={agent} />
+
+// With common props
+<CometChatAIAssistantChat
+  user={agent}
+  streamingSpeed={30}
+  suggestedMessages={["Help", "Summarize"]}
+  showCloseButton={true}
+/>
+```
+</Info>
+
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Import:** `import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";`
+**Minimal JSX:** `<CometChatAIAssistantChat user={agent} />`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()` + `CometChat.getUser("assistant_uid")`
+**Key props:** `user` (CometChat.User, required), `streamingSpeed` (number), `suggestedMessages` (string[]), `hideNewChat` (boolean), `hideChatHistory` (boolean)
+**CSS class:** `.cometchat-ai-assistant-chat`
+**Events:** none emitted directly
+</Info>
 
 ## Overview
-
-- **What you’re changing**: Overview.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 `CometChatAIAssistantChat` is a composite component that assembles the message header, message list, and message composer to provide an AI agent chat experience. It supports streaming responses, quick starter suggestions, "New Chat" to reset context, and a chat history sidebar.
 
 <Frame>
   <img src="/images/react-uikit_ai-assistant-chat-overview.png" />
 </Frame>
+
 
 <Note>
 **Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
@@ -53,7 +78,6 @@ export function AIAssistantChatDemo() {
     ); 
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -81,7 +105,6 @@ export function AIAssistantChatDemo() {
 }
 
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 </Tabs>
@@ -92,24 +115,7 @@ export function AIAssistantChatDemo() {
 
 ---
 
-## Usage
-
-<Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Import:** `import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";`
-- **Minimal JSX:** `<CometChatAIAssistantChat user={agent} />` — requires a `CometChat.User` representing the AI agent
-- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")` then `CometChat.getUser("assistant_uid")`
-- **Key props:** `user` (CometChat.User, required), `streamingSpeed` (number), `suggestedMessages` (string[]), `hideNewChat` (boolean), `hideChatHistory` (boolean)
-- **CSS class:** `.cometchat-ai-assistant-chat`
-</Accordion>
-
-### Actions
-
-- **What you’re changing**: Actions.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
+## Actions
 
 [Actions](/ui-kit/react/components-overview#actions) control how a component behaves. You can hook into the following callbacks:
 
@@ -147,7 +153,6 @@ export function AIAssistantChatDemo() {
 }
 
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -179,7 +184,6 @@ export function AIAssistantChatDemo() {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 </Tabs>
@@ -217,7 +221,6 @@ export function AIAssistantChatDemo() {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -249,7 +252,6 @@ export function AIAssistantChatDemo() {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 </Tabs>
@@ -286,7 +288,6 @@ export function AIAssistantChatDemo() {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -317,7 +318,6 @@ export function AIAssistantChatDemo() {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 </Tabs>
@@ -353,7 +353,6 @@ export function AIAssistantChatDemo() {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 </Tab>
 
 <Tab title="JavaScript">
@@ -382,20 +381,14 @@ export function AIAssistantChatDemo() {
     )
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 </Tabs>
 
+
 ---
 
 ## Customization
-
-- **What you’re changing**: Customization.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 To fit your app’s design requirements, you can customize the appearance of the Assistant Chat component. We provide exposed properties that allow you to modify the experience and behavior according to your specific needs.
 
@@ -430,7 +423,6 @@ export function AIAssistantChatDemo = () => {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -456,7 +448,6 @@ export function AIAssistantChatDemo = () => {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -488,7 +479,6 @@ export function AIAssistantChatDemo = () => {
     background: #30a46c;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 </Tabs>
@@ -525,7 +515,6 @@ export function AIAssistantChatDemo = () => {
     )
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -556,7 +545,6 @@ export function AIAssistantChatDemo = () => {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 </Tabs>
@@ -633,7 +621,6 @@ export function AIAssistantChatDemo = () => {
         <CometChatAIAssistantChat user={agent} aiAssistantTools={tools} />
     );
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -669,7 +656,6 @@ export function AIAssistantChatDemo = () => {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 </Tabs>
@@ -706,7 +692,6 @@ export function AIAssistantChatDemo() {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -733,7 +718,6 @@ export function AIAssistantChatDemo() {
     )
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 </Tabs>
@@ -775,7 +759,6 @@ export function AIAssistantChatDemo() {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -807,7 +790,6 @@ export function AIAssistantChatDemo() {
     )
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -832,7 +814,6 @@ export function AIAssistantChatDemo() {
   color: #6852d6;
 }
 ```
-**What this does**: Shows the code for this step.
 </Tab>
 </Tabs>
 
@@ -872,7 +853,6 @@ export function AIAssistantChatDemo() {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -903,7 +883,6 @@ export function AIAssistantChatDemo() {
     );
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -928,7 +907,6 @@ export function AIAssistantChatDemo() {
     margin: 10px 0;
 }
 ```
-**What this does**: Shows the code for this step.
 </Tab>
 </Tabs>
 
@@ -971,7 +949,6 @@ export function AIAssistantChatDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1008,13 +985,13 @@ export function AIAssistantChatDemo() {
   ) : null;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
 
 ***
+
 
 <AccordionGroup>
 <Accordion title="Common Failure Modes">
@@ -1033,32 +1010,19 @@ export function AIAssistantChatDemo() {
 
 ---
 
-## Customization matrix
+## Next Steps
 
-| What you want to change | Where | Property/API | Example |
-| --- | --- | --- | --- |
-| Set agent | `CometChatAIAssistantChat` | `user` | `user={agent}` |
-| Streaming speed | `CometChatAIAssistantChat` | `streamingSpeed` | `streamingSpeed={30}` |
-| Suggested messages | `CometChatAIAssistantChat` | `suggestedMessages` | `suggestedMessages={["Help"]}` |
-
-## Common pitfalls and fixes
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| Assistant does not render | Agent user missing | Fetch the agent `CometChat.User` first |
-| Init/login missing | SDK not initialized | Call `CometChatUIKit.init()` and `login()` |
-| No suggestions | `suggestedMessages` empty | Provide an array of suggestions |
-
-## FAQ
-
-**Do I need a CometChat user for the agent?**
-Yes. Pass the AI agent as a `CometChat.User`.
-
-**Can I change suggestions dynamically?**
-Yes. Update `suggestedMessages` prop.
-
-## Next steps
-
-- [AI Features](/ui-kit/react/ai-features)
-- [Message List](/ui-kit/react/message-list)
-- [Message Composer](/ui-kit/react/message-composer)
+<CardGroup cols={2}>
+  <Card title="AI Features" icon="wand-magic-sparkles" href="/ui-kit/react/ai-features">
+    Overview of all AI capabilities in the UI Kit
+  </Card>
+  <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
+    Render messages in a conversation
+  </Card>
+  <Card title="Message Template" icon="puzzle-piece" href="/ui-kit/react/message-template">
+    Customize message bubble rendering
+  </Card>
+  <Card title="Message Header" icon="heading" href="/ui-kit/react/message-header">
+    Customize the conversation header
+  </Card>
+</CardGroup>

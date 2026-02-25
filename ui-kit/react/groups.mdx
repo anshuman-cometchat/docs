@@ -3,27 +3,45 @@ title: "Groups"
 description: "CometChatGroups component displays a searchable list of all available groups with icons, names, member counts, and group type indicators. Supports selection modes, custom views, filtering via GroupsRequestBuilder, and CSS styling."
 ---
 
-Browse and select groups with search, member counts, and group type indicators.
+{/* TL;DR for Agents and Quick Reference */}
+<Info>
+**Quick Reference for AI Agents & Developers**
 
-## When to use this
+```tsx
+import { CometChatGroups } from "@cometchat/chat-uikit-react";
 
-- You need a searchable list of groups.
-- You want a group picker to start group chats.
-- You need to filter groups by tags or type.
+// Minimal usage
+<CometChatGroups />
+
+// With common props
+<CometChatGroups
+  onItemClick={(group) => console.log("Selected:", group)}
+  hideSearch={false}
+  selectionMode={SelectionMode.none}
+/>
+```
+</Info>
+
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Import:** `import { CometChatGroups } from "@cometchat/chat-uikit-react";`
+**Minimal JSX:** `<CometChatGroups />`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+**Key props:** `onItemClick: (group: CometChat.Group) => void`, `selectionMode: SelectionMode`, `groupsRequestBuilder: CometChat.GroupsRequestBuilder`, `hideSearch: boolean`, `hideGroupType: boolean`
+**CSS class:** `.cometchat-groups`
+**Events:** None (does not emit events directly)
+</Info>
 
 ## Overview
-
-- **What you’re changing**: Overview.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 The Groups is a Component, showcasing an accessible list of all available groups. It provides an integral search functionality, allowing you to locate any specific groups swiftly and easily. For each group listed, the group name is displayed by default, in conjunction with the group icon when available. Additionally, it provides a useful feature by displaying the number of members in each group as a subtitle, offering valuable context about group size and activity level.
 
 <Frame>
   <img src="/images/e06ce245-groups_overview_web_screens-76f09cda3f72c774c46829a547f37f3d.png" />
 </Frame>
+
 
 <Note>
 **Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
@@ -38,16 +56,9 @@ The Groups component is composed of the following BaseComponents:
 
 ***
 
-### Integration
+## Usage
 
-<Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Import:** `import { CometChatGroups } from "@cometchat/chat-uikit-react";`
-- **Minimal JSX:** `<CometChatGroups />`
-- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")`
-- **Key props:** `onItemClick: (group: CometChat.Group) => void`, `selectionMode: SelectionMode`, `groupsRequestBuilder: CometChat.GroupsRequestBuilder`, `hideSearch: boolean`, `hideGroupType: boolean`
-- **CSS class:** `.cometchat-groups`
-</Accordion>
+### Integration
 
 The following code snippet illustrates how you can directly incorporate the Groups component into your Application.
 
@@ -63,7 +74,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -78,21 +88,12 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
 
 ***
-
-## Usage
-
-- **What you’re changing**: Usage.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 ### Actions
 
@@ -126,7 +127,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -150,7 +150,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -176,7 +175,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -194,7 +192,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -220,7 +217,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -238,7 +234,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -283,7 +278,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -305,7 +299,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -336,7 +329,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -358,7 +350,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -377,12 +368,6 @@ The `Groups` component does not produce any events directly.
 ***
 
 ## Customization
-
-- **What you’re changing**: Customization.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 To fit your app's design requirements, you can customize the appearance of the Groups component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
@@ -408,7 +393,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -423,7 +407,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -485,7 +468,6 @@ export default GroupsDemo;
   line-height: 16.8px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -515,7 +497,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -536,7 +517,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -609,7 +589,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -638,7 +617,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -709,7 +687,6 @@ export default GroupsDemo;
   line-height: 16.8px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -744,7 +721,6 @@ const customTitleView = (group: CometChat.Group) => {
 
 <CometChatGroups user={userObj} titleView={customTitleView} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -788,7 +764,6 @@ const customTitleView = (group: CometChat.Group) => {
 	width: 12px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -839,7 +814,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -867,7 +841,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -884,7 +857,6 @@ export default GroupsDemo;
   line-height: 120%;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -920,6 +892,7 @@ import { CometChatGroups,CometChatAvatar } from "@cometchat/chat-uikit-react";
                 {/* Icon here */}
                 <span className="groups__leading-view-info"> Joined</span>
 
+
             </div> : <div className="groups__leading-view">
                 <CometChatAvatar
                     image={group?.getIcon()}
@@ -928,12 +901,12 @@ import { CometChatGroups,CometChatAvatar } from "@cometchat/chat-uikit-react";
                 {/* Icon here */}
                 <span className="groups__leading-view-info"> Join</span>
 
+
             </div>}</>;
     }
 
 <CometChatGroups  leadingView={customLeadingView} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -968,7 +941,6 @@ import { CometChatGroups,CometChatAvatar } from "@cometchat/chat-uikit-react";
 	position: relative;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1004,7 +976,6 @@ return <div className="groups__trailing-view">
 
 <CometChatGroups  trailingView={customTrailingButtonView} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1028,7 +999,6 @@ return <div className="groups__trailing-view">
 	height: fit-content;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1064,7 +1034,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1083,7 +1052,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1105,7 +1073,6 @@ export default GroupsDemo;
   mask-size: contain;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1149,7 +1116,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1176,7 +1142,6 @@ const GroupsDemo = () => {
 
 export default GroupsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1202,19 +1167,13 @@ export default GroupsDemo;
 	mask-size: contain;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
 
-## Component API Pattern
 
-- **What you’re changing**: Component API Pattern.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
+## Component API Pattern
 
 | Customization Type | Prop Pattern | Example |
 | --- | --- | --- |
@@ -1240,35 +1199,19 @@ export default GroupsDemo;
 
 ---
 
-## Customization matrix
+## Next Steps
 
-| What you want to change | Where | Property/API | Example |
-| --- | --- | --- | --- |
-| Handle item click | `CometChatGroups` | `onItemClick` | `onItemClick={(g) => setActive(g)}` |
-| Enable multi-select | `CometChatGroups` | `selectionMode` | `selectionMode={SelectionMode.multiple}` |
-| Filter groups | `CometChatGroups` | `groupsRequestBuilder` | `new CometChat.GroupsRequestBuilder().setLimit(10)` |
-| Hide group type | `CometChatGroups` | `hideGroupType` | `hideGroupType={true}` |
-
-## Common pitfalls and fixes
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| Component does not render | Init/login not complete | Call `CometChatUIKit.init()` and `login()` first |
-| List is empty | Filters too strict | Relax `groupsRequestBuilder` filters |
-| Group type icon missing | `hideGroupType` enabled | Set `hideGroupType={false}` |
-| Callbacks not firing | Wrong prop name | Use `onItemClick` or `onSelect` |
-| Styles not applying | CSS Modules used | Use global CSS with `.cometchat-groups` |
-
-## FAQ
-
-**Can I show only joined groups?**
-Yes. Use `GroupsRequestBuilder` filters for membership.
-
-**How do I hide the group type icon?**
-Set `hideGroupType={true}`.
-
-## Next steps
-
-- [Group Members](/ui-kit/react/group-members)
-- [Conversations](/ui-kit/react/conversations)
-- [Theming](/ui-kit/react/theme)
+<CardGroup cols={2}>
+  <Card title="Group Members" icon="user-group" href="/ui-kit/react/group-members">
+    View and manage members within a group
+  </Card>
+  <Card title="Users" icon="user" href="/ui-kit/react/users">
+    Display and manage user lists
+  </Card>
+  <Card title="Conversations" icon="comments" href="/ui-kit/react/conversations">
+    Display recent conversations
+  </Card>
+  <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
+    Render messages in a chat view
+  </Card>
+</CardGroup>

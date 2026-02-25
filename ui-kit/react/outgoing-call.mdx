@@ -3,21 +3,40 @@ title: "Outgoing Call"
 description: "Display and manage outgoing voice and video calls with cancel controls using the CometChatOutgoingCall component."
 ---
 
-Show the outgoing call screen after initiating a call.
+{/* TL;DR for Agents and Quick Reference */}
+<Info>
+**Quick Reference for AI Agents & Developers**
 
-## When to use this
+```tsx
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatOutgoingCall, CometChatUIKitConstants } from "@cometchat/chat-uikit-react";
 
-- You need to initiate voice or video calls.
-- You want a default outgoing call UI.
-- You need to handle call cancellation.
+// Requires a CometChat.Call object
+const callObject = new CometChat.Call("uid", CometChatUIKitConstants.MessageTypes.audio, CometChatUIKitConstants.MessageReceiverType.user);
+const initiatedCall = await CometChat.initiateCall(callObject);
+
+<CometChatOutgoingCall
+  call={initiatedCall}
+  onCallCanceled={() => console.log("Call canceled")}
+  disableSoundForCalls={false}
+/>
+```
+</Info>
+
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Import:** `import { CometChatOutgoingCall } from "@cometchat/chat-uikit-react";`
+**Minimal JSX:** `<CometChatOutgoingCall call={callObject} />`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()` + `CometChat.initiateCall()`
+**Key props:** `call` (CometChat.Call, required), `onCallCanceled` (callback), `disableSoundForCalls` (boolean), `titleView` (JSX), `subtitleView` (JSX)
+**CSS class:** `.cometchat-outgoing-call`
+**Events:** none emitted directly
+</Info>
 
 ## Overview
 
-- **What you’re changing**: Overview.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 The outgoing call component is a visual representation of a user-initiated call, whether it's a voice or video call. It serves as an interface for managing outgoing calls, providing users with essential options to control the call experience. This component typically includes information about the call recipient, call controls for canceling the call, and feedback on the call status, such as indicating when the call is in progress.
 
@@ -32,20 +51,14 @@ The `Outgoing Call` is comprised of the following components:
 | CometChat Button | This component represents a button with optional icon and text.                                                     |
 | CometChat Avatar | This component component displays an image or user's avatar with fallback to the first two letters of the username. |
 
+
 <Note>
 **Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
 </Note>
 
-### Integration
+## Usage
 
-<Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Import:** `import { CometChatOutgoingCall } from "@cometchat/chat-uikit-react";`
-- **Minimal JSX:** `<CometChatOutgoingCall call={callObject} />` — requires a `CometChat.Call` object from `CometChat.initiateCall()`
-- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")` + `@cometchat/calls-sdk-javascript` installed
-- **Key props:** `call` (CometChat.Call, required), `onCallCanceled` (callback), `disableSoundForCalls` (boolean), `titleView` (JSX), `subtitleView` (JSX)
-- **CSS class:** `.cometchat-outgoing-call`
-</Accordion>
+### Integration
 
 <Tabs>
 <Tab title="TypeScript">
@@ -80,7 +93,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -116,19 +128,10 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
-
-## Usage
-
-- **What you’re changing**: Usage.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 ### Actions
 
@@ -179,7 +182,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -224,7 +226,6 @@ const OutgoingCallDemo = () => {
 };
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -274,7 +275,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -315,7 +315,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -340,12 +339,6 @@ The `Outgoing Call` component does not have any exposed filters.
 ***
 
 ## Customization
-
-- **What you’re changing**: Customization.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 To fit your app's design requirements, you can customize the appearance of the Outgoing Call component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
@@ -393,7 +386,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -431,7 +423,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -458,7 +449,6 @@ export default OutgoingCallDemo;
   font: 400 32px/38px "Times New Roman";
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -505,7 +495,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -544,7 +533,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -621,7 +609,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -668,7 +655,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -680,7 +666,6 @@ export default OutgoingCallDemo;
   font: 500 24px Roboto;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -742,7 +727,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -790,7 +774,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -813,7 +796,6 @@ export default OutgoingCallDemo;
     width: 24px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -879,7 +861,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -931,7 +912,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -954,7 +934,6 @@ export default OutgoingCallDemo;
     right: -60px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1018,7 +997,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1068,7 +1046,6 @@ const OutgoingCallDemo = () => {
 
 export default OutgoingCallDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1102,11 +1079,11 @@ export default OutgoingCallDemo;
     width: 32px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
+
 
 <AccordionGroup>
 <Accordion title="Common Failure Modes">
@@ -1125,32 +1102,19 @@ export default OutgoingCallDemo;
 
 ---
 
-## Customization matrix
+## Next Steps
 
-| What you want to change | Where | Property/API | Example |
-| --- | --- | --- | --- |
-| Render outgoing call | `CometChatOutgoingCall` | `call` | `call={call}` |
-| Handle cancel | `CometChatOutgoingCall` | `onCallCanceled` | `onCallCanceled={() => ...}` |
-| Disable sounds | `CometChatOutgoingCall` | `disableSoundForCalls` | `disableSoundForCalls={true}` |
-
-## Common pitfalls and fixes
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| Outgoing UI not shown | Call not initiated | Call `CometChat.initiateCall()` and pass result |
-| Calls not available | Calls SDK missing | Install `@cometchat/calls-sdk-javascript` |
-| Init/login missing | SDK not initialized | Call `CometChatUIKit.init()` and `login()` |
-
-## FAQ
-
-**Do I need to initiate the call?**
-Yes. `call` must come from `CometChat.initiateCall()`.
-
-**How do I cancel a call?**
-Use the `onCallCanceled` callback.
-
-## Next steps
-
-- [Incoming Call](/ui-kit/react/incoming-call)
-- [Call Buttons](/ui-kit/react/call-buttons)
-- [Call Features](/ui-kit/react/call-features)
+<CardGroup cols={2}>
+  <Card title="Incoming Call" icon="phone-arrow-down-left" href="/ui-kit/react/incoming-call">
+    Handle incoming voice and video calls
+  </Card>
+  <Card title="Call Buttons" icon="phone" href="/ui-kit/react/call-buttons">
+    Add voice and video call buttons to your chat
+  </Card>
+  <Card title="Call Logs" icon="clock-rotate-left" href="/ui-kit/react/call-logs">
+    Display call history and call log details
+  </Card>
+  <Card title="Call Features" icon="video" href="/ui-kit/react/call-features">
+    Overview of all calling capabilities
+  </Card>
+</CardGroup>

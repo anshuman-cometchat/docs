@@ -3,21 +3,34 @@ title: "Message Template"
 description: "CometChatMessageTemplate provides a structure for defining custom message types and their rendering in the message list. Use templates to customize how different message categories and types are displayed."
 ---
 
-Define custom message templates to control bubble layout and rendering.
+{/* TL;DR for Agents and Quick Reference */}
+<Info>
+**Quick Reference for AI Agents & Developers**
 
-## When to use this
+```tsx
+import { CometChatMessageTemplate } from "@cometchat/chat-uikit-react";
+import { ChatConfigurator } from "@cometchat/chat-uikit-react";
 
-- You need custom message layouts or new message types.
-- You want to override header/content/footer views.
-- You want consistent rendering across message categories.
+// Get default templates
+const templates = ChatConfigurator.getDataSource().getAllMessageTemplates();
+
+// Pass custom templates to MessageList
+<CometChatMessageList templates={templates} />
+```
+</Info>
+
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Import:** `import { CometChatMessageTemplate } from "@cometchat/chat-uikit-react";`
+**Usage:** Pass `templates` prop to `CometChatMessageList`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+**Key properties:** `category: string`, `type: string`, `contentView`, `bubbleView`, `headerView`, `footerView`
+**Related:** Used with `CometChatMessageList` via the `templates` prop
+</Info>
 
 ## Overview
-
-- **What you’re changing**: Overview.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 <Note>
 **Before using message templates:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
@@ -25,7 +38,7 @@ Define custom message templates to control bubble layout and rendering.
 
 MessageTemplate provides you with the capability to define and customize both the structure and the behavior of the Message Bubble. It acts as a schema or design blueprint for the creation of a variety of Message Bubble components, allowing you to manage the appearance and interactions of Message Bubble within your application effectively and consistently.
 
-#### Structure
+### Structure
 
 <Frame>
   <img src="/images/6a9f68f4-message_template_overview_web_screens-6d58ee79c51030bf40fe253c8053fad5.png" />
@@ -51,18 +64,7 @@ The Message Bubble structure can typically be broken down into the following vie
 
 ***
 
-## Usage
-
-<Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Import:** `import { CometChatMessageTemplate } from "@cometchat/chat-uikit-react";`
-- **Usage:** Pass `templates` prop to `CometChatMessageList` — get defaults via `ChatConfigurator.getDataSource().getAllMessageTemplates()`
-- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")`
-- **Key properties:** `category: string`, `type: string`, `contentView`, `bubbleView`, `headerView`, `footerView`
-- **Related:** Used with [CometChatMessageList](/ui-kit/react/message-list) via the `templates` prop
-</Accordion>
-
-#### Properties
+### Properties
 
 MessageTemplate provides you with methods that allow you to alter various properties of the Message Bubble. These properties include aspects such as the `type` and `category` of a message, the appearance and behavior of the header, content, and footer sections of the message bubble,
 
@@ -112,12 +114,6 @@ MessageTemplate provides you with methods that allow you to alter various proper
 
 ## Customization
 
-- **What you’re changing**: Customization.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
-
 Let's dive into how you can use the [properties](#properties) of MessageTemplate to customize an existing template or add a new one to the [MessageList](/ui-kit/react/message-list) component.
 
 The first step is to fetch the list of existing templates when you want to modify or add to them. This can be done using the getAllMessageTemplates() method from the DataSource of the CometChatUIKit class.
@@ -125,9 +121,8 @@ The first step is to fetch the list of existing templates when you want to modif
 ```javascript
 let definedTemplates = CometChatUIKit.getDataSource().getAllMessageTemplates();
 ```
-**What this does**: Shows the code for this step.
 
-#### Existing Templates
+### Existing Templates
 
 You will need to first get the MessageTemplate object for the type of message you want to customize. You will be customizing the text message bubble here. The code snippet to get the Text MessageTemplate is as follows.
 
@@ -147,7 +142,6 @@ for (let i = 0; i < allTemplates.length; i++) {
   }
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -165,7 +159,6 @@ for (let i = 0; i < allTemplates.length; i++) {
   }
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -180,7 +173,6 @@ import { CometChatMessageList } from "@cometchat/uikit-react";
 
 <CometChatMessageList user={chatUser} templates={templates} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -190,7 +182,6 @@ import { CometChatMessageList } from "@cometchat/uikit-react";
 
 <CometChatMessageList user={chatUser} templates={templates} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -257,7 +248,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -311,7 +301,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -421,7 +410,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -518,7 +506,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -577,7 +564,6 @@ export { CustomMessageTemplate };
   font: 500 14px/1.2 Roboto;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -649,7 +635,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -699,7 +684,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -740,7 +724,6 @@ export { CustomMessageTemplate };
   background-color: #f44649;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -815,7 +798,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -877,7 +859,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -899,7 +880,6 @@ export { CustomMessageTemplate };
   border-radius: 12px 12px 0px 0px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1026,7 +1006,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1129,7 +1108,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1207,7 +1185,6 @@ export { CustomMessageTemplate };
   border-top: 10px solid #e8e8e8;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1290,7 +1267,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1357,7 +1333,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1384,7 +1359,6 @@ export { CustomMessageTemplate };
   padding: 8px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1403,6 +1377,7 @@ The `replyView` method of MessageTemplate allows you to add a reply view to your
 <Frame>
   <img src="/images/react-uikit-custom-reply-view.png" alt="Custom Reply View" />
 </Frame>
+
 
 <Tabs>
 <Tab title="TypeScript">
@@ -1433,7 +1408,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1461,7 +1435,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1482,7 +1455,6 @@ export { CustomMessageTemplate };
     --cometchat-primary-color: #f76808;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1575,7 +1547,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1644,7 +1615,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1662,13 +1632,12 @@ export { CustomMessageTemplate };
   background-color: #6852d6;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
 
-#### New Templates
+### New Templates
 
 You can create an entirely new template for custom messages is one of the powerful features of CometChat's MessageTemplate.
 
@@ -1801,7 +1770,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1814,6 +1782,7 @@ import { CometChat } from "@cometchat/chat-sdk-javascript";
 import readIcon from "../../assets/message-read.svg";
 import sentIcon from "../../assets/message-sent.svg";
 import deliveredIcon from "../../assets/message-delivered.svg";
+
 
 const CustomMessageTemplate = () => {
     const [templates, setTemplates] = React.useState([]);
@@ -1912,7 +1881,6 @@ const CustomMessageTemplate = () => {
 
 export { CustomMessageTemplate };
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1993,11 +1961,11 @@ export { CustomMessageTemplate };
   font-style: normal;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
+
 
 <AccordionGroup>
 <Accordion title="Common Failure Modes">
@@ -2015,32 +1983,19 @@ export { CustomMessageTemplate };
 
 ---
 
-## Customization matrix
+## Next Steps
 
-| What you want to change | Where | Property/API | Example |
-| --- | --- | --- | --- |
-| Use default templates | `CometChatMessageList` | `templates` | `templates={ChatConfigurator.getDataSource().getAllMessageTemplates()}` |
-| Override content | `CometChatMessageTemplate` | `contentView` | `contentView={(msg) => <MyView />}` |
-| Override footer | `CometChatMessageTemplate` | `footerView` | `footerView={(msg) => <MyFooter />}` |
-
-## Common pitfalls and fixes
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| Templates not applied | Not passed to MessageList | Pass templates via `templates` prop |
-| Custom view not showing | Returning null/undefined | Return valid JSX in view functions |
-| Wrong template mapping | Incorrect type/category | Match `type` and `category` to the message |
-
-## FAQ
-
-**Do I need to replace all templates?**
-No. You can modify a subset.
-
-**Where do templates render?**
-In `CometChatMessageList` via the `templates` prop.
-
-## Next steps
-
-- [Message List](/ui-kit/react/message-list)
-- [Message Bubble Styling](/ui-kit/react/theme/message-bubble-styling)
-- [Theming](/ui-kit/react/theme)
+<CardGroup cols={2}>
+  <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
+    Use templates with the message list component
+  </Card>
+  <Card title="Message Composer" icon="pen-to-square" href="/ui-kit/react/message-composer">
+    Compose and send messages
+  </Card>
+  <Card title="Theme" icon="palette" href="/ui-kit/react/theme">
+    Customize the look and feel of your chat UI
+  </Card>
+  <Card title="Message Bubble Styling" icon="paintbrush" href="/ui-kit/react/theme/message-bubble-styling">
+    Style individual message bubbles with CSS
+  </Card>
+</CardGroup>

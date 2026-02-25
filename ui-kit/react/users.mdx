@@ -3,24 +3,46 @@ title: "Users"
 description: "CometChatUsers component displays a searchable list of all available users with avatars, names, and online/offline status indicators. Supports selection modes, custom views, filtering via UsersRequestBuilder, and CSS styling."
 ---
 
-List and select users with search and presence using the CometChatUsers component.
+{/* TL;DR for Agents and Quick Reference */}
+<Info>
+**Quick Reference for AI Agents & Developers**
 
-## When to use this
+```tsx
+import { CometChatUsers } from "@cometchat/chat-uikit-react";
 
-- You need a searchable list of users.
-- You want a user picker to start new chats.
-- You need to filter users by tags, roles, or status.
+// Minimal usage
+<CometChatUsers />
+
+// With common props
+<CometChatUsers
+  onItemClick={(user) => console.log("Selected:", user)}
+  hideSearch={false}
+  showSectionHeader={true}
+  selectionMode={SelectionMode.none}
+/>
+```
+</Info>
+
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Import:** `import { CometChatUsers } from "@cometchat/chat-uikit-react";`
+**Minimal JSX:** `<CometChatUsers />`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+**Key props:** `onItemClick: (user: CometChat.User) => void`, `selectionMode: SelectionMode`, `usersRequestBuilder: CometChat.UsersRequestBuilder`, `hideSearch: boolean`, `showSectionHeader: boolean`
+**CSS class:** `.cometchat-users`
+**Events:** None (does not emit events directly)
+</Info>
 
 ## Overview
 
-- The Users is a Component, showcasing an accessible list of all available users. 
-- It provides an integral search functionality, allowing you to locate any specific user swiftly and easily. 
-- For each user listed, the widget displays the user's name by default, in conjunction with their avatar when available. 
-- Furthermore, it includes a status indicator, visually informing you whether a user is currently online or offline.
+The Users is a Component, showcasing an accessible list of all available users. It provides an integral search functionality, allowing you to locate any specific user swiftly and easily. For each user listed, the widget displays the user's name by default, in conjunction with their avatar when available. Furthermore, it includes a status indicator, visually informing you whether a user is currently online or offline.
 
 <Frame>
   <img src="/images/49c5082a-users_overview_web_screens-701c604eb9c2d04dcaa8013fe409fcd9.png" />
 </Frame>
+
 
 <Note>
 **Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
@@ -33,16 +55,11 @@ The Users component is composed of the following BaseComponents:
 | CometChatList     | A reusable container component having title, search box, customisable background and a list view.                        |
 | CometChatListItem | A component that renders data obtained from a User object on a Tile having a title, subtitle, leading and trailing view. |
 
-### Integration
+***
 
-<Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Import:** `import { CometChatUsers } from "@cometchat/chat-uikit-react";`
-- **Minimal JSX:** `<CometChatUsers />`
-- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")`
-- **Key props:** `onItemClick: (user: CometChat.User) => void`, `selectionMode: SelectionMode`, `usersRequestBuilder: CometChat.UsersRequestBuilder`, `hideSearch: boolean`, `showSectionHeader: boolean`
-- **CSS class:** `.cometchat-users`
-</Accordion>
+## Usage
+
+### Integration
 
 The following code snippet illustrates how you can directly incorporate the Users component into your Application.
 
@@ -57,7 +74,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -71,19 +87,10 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
-
-## Usage
-
-- **What you’re changing**: Usage.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 ### Actions
 
@@ -116,7 +123,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -140,7 +146,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -164,7 +169,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -181,7 +185,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -205,7 +208,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -223,7 +225,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -247,7 +248,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -265,7 +265,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -313,7 +312,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -334,7 +332,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -364,7 +361,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -385,7 +381,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -404,12 +399,6 @@ The `Users` component does not produce any events directly.
 ***
 
 ## Customization
-
-- **What you’re changing**: Customization.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 To fit your app's design requirements, you can customize the appearance of the Users component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
@@ -434,7 +423,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -448,7 +436,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -501,7 +488,6 @@ export default UsersDemo;
   border-radius: 9.6px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -530,7 +516,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -550,7 +535,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -631,7 +615,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -665,7 +648,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -690,7 +672,6 @@ export default UsersDemo;
   background: rgba(9, 194, 111, 0.1);
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -725,7 +706,6 @@ import { CometChatUsers } from "@cometchat/chat-uikit-react";
 
 <CometChatUsers titleView={customTitleView} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -765,7 +745,6 @@ import { CometChatUsers } from "@cometchat/chat-uikit-react";
  .users__title-view-teacher .users__title-view-type{
  }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -820,7 +799,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -852,7 +830,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -869,7 +846,6 @@ export default UsersDemo;
   line-height: 120%;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -914,7 +890,6 @@ const getHeaderView = () => {
 
 <CometChatUsers headerView={getHeaderView()} />
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -950,7 +925,6 @@ const getHeaderView = () => {
   display: block;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -988,7 +962,6 @@ const customLeadingView = (user: CometChat.User): JSX.Element => {
   };
 <CometChatUsers leadingView={customLeadingView} />
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1024,7 +997,6 @@ const customLeadingView = (user: CometChat.User): JSX.Element => {
 	margin-bottom: 3px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1063,7 +1035,6 @@ const customTrailingButtonView = (user:CometChat.User) =>  {
 
 <CometChatUsers  trailingView={customTrailingButtonView} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1096,7 +1067,6 @@ const customTrailingButtonView = (user:CometChat.User) =>  {
 	color: white;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1145,7 +1115,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1171,7 +1140,6 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1197,19 +1165,12 @@ export default UsersDemo;
 	mask-size: contain;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
 
 ## Component API Pattern
-
-- **What you’re changing**: Component API Pattern.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 | Customization Type | Prop Pattern | Example |
 | --- | --- | --- |
@@ -1235,35 +1196,19 @@ export default UsersDemo;
 
 ---
 
-## Customization matrix
+## Next Steps
 
-| What you want to change | Where | Property/API | Example |
-| --- | --- | --- | --- |
-| Handle item click | `CometChatUsers` | `onItemClick` | `onItemClick={(u) => setActive(u)}` |
-| Enable multi-select | `CometChatUsers` | `selectionMode` | `selectionMode={SelectionMode.multiple}` |
-| Filter users | `CometChatUsers` | `usersRequestBuilder` | `new CometChat.UsersRequestBuilder().friendsOnly(true)` |
-| Hide search | `CometChatUsers` | `hideSearch` | `hideSearch={true}` |
-
-## Common pitfalls and fixes
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| Component does not render | Init/login not complete | Call `CometChatUIKit.init()` and `login()` first |
-| List is empty | Filters too strict | Relax `usersRequestBuilder` filters |
-| Search shows no results | Search builder too restrictive | Adjust `searchRequestBuilder` |
-| Callbacks not firing | Wrong prop name | Use `onItemClick` or `onSelect` |
-| Styles not applying | CSS Modules used | Use global CSS with `.cometchat-users` |
-
-## FAQ
-
-**Can I hide the search bar?**
-Yes. Set `hideSearch={true}`.
-
-**How do I filter users by status?**
-Use `UsersRequestBuilder().setStatus(...)`.
-
-## Next steps
-
-- [Conversations](/ui-kit/react/conversations)
-- [Groups](/ui-kit/react/groups)
-- [Theming](/ui-kit/react/theme)
+<CardGroup cols={2}>
+  <Card title="Groups" icon="users" href="/ui-kit/react/groups">
+    Display and manage group lists
+  </Card>
+  <Card title="Group Members" icon="user-group" href="/ui-kit/react/group-members">
+    View and manage members within a group
+  </Card>
+  <Card title="Conversations" icon="comments" href="/ui-kit/react/conversations">
+    Display recent conversations
+  </Card>
+  <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
+    Render messages in a chat view
+  </Card>
+</CardGroup>

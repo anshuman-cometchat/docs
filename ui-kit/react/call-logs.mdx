@@ -3,23 +3,41 @@ title: "Call Logs"
 description: "Display and manage call history with filtering, custom views, and call-back functionality using the CometChatCallLogs component."
 ---
 
-Show call history with callbacks and filters.
+{/* TL;DR for Agents and Quick Reference */}
+<Info>
+**Quick Reference for AI Agents & Developers**
 
-## When to use this
+```tsx
+import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 
-- You need a call history view.
-- You want to handle call log item clicks.
-- You need to customize call back actions.
+// Minimal usage
+<CometChatCallLogs />
+
+// With common props
+<CometChatCallLogs
+  onItemClick={(callLog) => console.log("Selected:", callLog)}
+  onCallButtonClicked={(callLog) => console.log("Call back:", callLog)}
+  title="Call History"
+/>
+```
+</Info>
+
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Import:** `import { CometChatCallLogs } from "@cometchat/chat-uikit-react";`
+**Minimal JSX:** `<CometChatCallLogs />`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+**Key props:** `onItemClick` (callback), `onCallButtonClicked` (callback), `callLogRequestBuilder` (CallLogRequestBuilder), `title` (string), `activeCall` (object)
+**CSS class:** `.cometchat-call-logs`
+**Events:** `ccMessageSent`
+</Info>
 
 ## Overview
 
-- **What you’re changing**: Overview.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
-
 `CometChatCallLogs` is a Component that shows the list of Call Log available . By default, names are shown for all listed users, along with their avatar if available.
+
 
 <Frame>
   <img src="/images/1c67191c-call_logs_overview_web_screens-afafcceff93f3e09e9371c3996b258ed.png" />
@@ -33,21 +51,14 @@ The `Call Logs` is comprised of the following components:
 | CometChatListItem | A component that renders data obtained from a Group object on a Tile having a title, subtitle, leading and trailing view.   |
 | CometChatDate     | This component used to show the date and time. You can also customize the appearance of this widget by modifying its logic. |
 
+
 <Note>
 **Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
 </Note>
 
-### Integration
+## Usage
 
-<Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Import:** `import { CometChatCallLogs } from "@cometchat/chat-uikit-react";`
-- **Minimal JSX:** `<CometChatCallLogs />`
-- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")`
-- **Key props:** `onItemClick` (callback), `onCallButtonClicked` (callback), `callLogRequestBuilder` (CallLogRequestBuilder), `title` (string), `activeCall` (object)
-- **CSS class:** `.cometchat-call-logs`
-- **Events:** `ccMessageSent`
-</Accordion>
+### Integration
 
 <Tabs>
 <Tab title="TypeScript">
@@ -61,7 +72,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -76,18 +86,9 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 </Tabs>
-
-## Usage
-
-- **What you’re changing**: Usage.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 ### Actions
 
@@ -112,7 +113,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -130,7 +130,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -155,7 +154,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -173,7 +171,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -199,7 +196,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -217,7 +213,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -269,7 +264,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -292,7 +286,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -319,7 +312,6 @@ const ccMessageSent = CometChatMessageEvents.ccMessageSent.subscribe(() => {
   //Your Code
 });
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -332,7 +324,6 @@ const ccMessageSent = CometChatMessageEvents.ccMessageSent.subscribe(() => {
 ```tsx lines
 ccMessageSent?.unsubscribe();
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -341,12 +332,6 @@ ccMessageSent?.unsubscribe();
 ***
 
 ## Customization
-
-- **What you’re changing**: Customization.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 To fit your app's design requirements, you can customize the appearance of the Call Logs component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
@@ -372,7 +357,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -387,7 +371,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -432,7 +415,6 @@ export default CallLogDemo;
   border-radius: 8px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -458,7 +440,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -473,7 +454,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -515,7 +495,6 @@ new CalendarObject({
   otherDays: `DD MMM, hh:mm A`, // Example: "25 Jan, 10:30 AM"
 });
 ```
-**What this does**: Shows the code for this step.
 
 The following example demonstrates how to modify the **Call Initiated** timestamp format using a custom [`CalendarObject`](/ui-kit/react/localize#calendarobject).
 
@@ -537,7 +516,6 @@ function getDateFormat() {
 // Apply the custom format to the CometChatCallLogs component
 <CometChatCallLogs callInitiatedDateTimeFormat={getDateFormat()} />;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -643,7 +621,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -701,7 +678,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -742,7 +718,6 @@ export default CallLogDemo;
   font-style: normal;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -822,7 +797,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -868,7 +842,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -882,7 +855,6 @@ export default CallLogDemo;
   font-style: normal;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -946,7 +918,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -986,7 +957,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1001,7 +971,6 @@ export default CallLogDemo;
   font-style: normal;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1056,7 +1025,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1089,7 +1057,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1127,7 +1094,6 @@ export default CallLogDemo;
   width: 32px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1175,7 +1141,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1201,7 +1166,6 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1215,11 +1179,11 @@ export default CallLogDemo;
   font: 500 16px Roboto;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
+
 
 <AccordionGroup>
 <Accordion title="Common Failure Modes">
@@ -1238,32 +1202,19 @@ export default CallLogDemo;
 
 ---
 
-## Customization matrix
+## Next Steps
 
-| What you want to change | Where | Property/API | Example |
-| --- | --- | --- | --- |
-| Handle item click | `CometChatCallLogs` | `onItemClick` | `onItemClick={(log) => ...}` |
-| Handle call back | `CometChatCallLogs` | `onCallButtonClicked` | `onCallButtonClicked={(log) => ...}` |
-| Filter logs | `CometChatCallLogs` | `callLogRequestBuilder` | `new CometChat.CallLogRequestBuilder()` |
-
-## Common pitfalls and fixes
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| Logs not shown | Init/login missing | Call `CometChatUIKit.init()` and `login()` |
-| No data | No call history | Verify the logged-in user has calls |
-| Callbacks not firing | Wrong prop name | Use `onItemClick` or `onCallButtonClicked` |
-
-## FAQ
-
-**Can I trigger a call from a log?**
-Yes. Use `onCallButtonClicked`.
-
-**How do I filter logs?**
-Use `callLogRequestBuilder`.
-
-## Next steps
-
-- [Call Buttons](/ui-kit/react/call-buttons)
-- [Call Features](/ui-kit/react/call-features)
-- [Theming](/ui-kit/react/theme)
+<CardGroup cols={2}>
+  <Card title="Call Buttons" icon="phone" href="/ui-kit/react/call-buttons">
+    Add voice and video call buttons to your chat
+  </Card>
+  <Card title="Incoming Call" icon="phone-arrow-down-left" href="/ui-kit/react/incoming-call">
+    Handle incoming voice and video calls
+  </Card>
+  <Card title="Outgoing Call" icon="phone-arrow-up-right" href="/ui-kit/react/outgoing-call">
+    Manage outgoing voice and video calls
+  </Card>
+  <Card title="Call Log Details Guide" icon="book" href="/ui-kit/react/guide-call-log-details">
+    Build a call log details view
+  </Card>
+</CardGroup>

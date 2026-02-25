@@ -3,27 +3,45 @@ title: "Incoming Call"
 description: "Display and manage incoming voice and video calls with accept/decline controls using the CometChatIncomingCall component."
 ---
 
-Render the incoming call UI with accept and decline actions.
+{/* TL;DR for Agents and Quick Reference */}
+<Info>
+**Quick Reference for AI Agents & Developers**
 
-## When to use this
+```tsx
+import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";
 
-- You need to handle incoming audio/video calls.
-- You want a default accept/decline screen.
-- You need to customize call handling.
+// Minimal usage — auto-detects incoming calls
+<CometChatIncomingCall />
+
+// With custom handlers
+<CometChatIncomingCall
+  onAccept={() => console.log("Call accepted")}
+  onDecline={() => console.log("Call declined")}
+  disableSoundForCalls={false}
+/>
+```
+</Info>
+
+<Info>
+**AI Agent Component Spec**
+
+**Package:** `@cometchat/chat-uikit-react`
+**Import:** `import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";`
+**Minimal JSX:** `<CometChatIncomingCall />`
+**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+**Key props:** `onAccept` (callback), `onDecline` (callback), `call` (CometChat.Call), `disableSoundForCalls` (boolean), `callSettingsBuilder` (function)
+**CSS class:** `.cometchat-incoming-call`
+**Events:** `ccCallRejected`, `ccCallAccepted`, `ccCallEnded`
+</Info>
 
 ## Overview
-
-- **What you’re changing**: Overview.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 The `Incoming call` is a Component that serves as a visual representation when the user receives an incoming call, such as a voice call or video call, providing options to answer or decline the call.
 
 <Frame>
   <img src="/images/e63dbd67-incoming_calls_overview_web_screens-d0434dd2b66b78fe0bff43bdd34435d3.png" />
 </Frame>
+
 
 The `Incoming Call` is comprised of the following base components:
 
@@ -33,21 +51,14 @@ The `Incoming Call` is comprised of the following base components:
 | cometchat-button    | This component represents a button with optional icon and text.                                                                                |
 | cometchat-avatar    | This component component displays an image or user's avatar with fallback to the first two letters of the username.                            |
 
+
 <Note>
 **Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
 </Note>
 
-### Integration
+## Usage
 
-<Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Import:** `import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";`
-- **Minimal JSX:** `<CometChatIncomingCall />` — auto-detects incoming calls when mounted at app root
-- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")` + `@cometchat/calls-sdk-javascript` installed
-- **Key props:** `onAccept` (callback), `onDecline` (callback), `call` (CometChat.Call), `disableSoundForCalls` (boolean), `callSettingsBuilder` (function)
-- **CSS class:** `.cometchat-incoming-call`
-- **Events:** `ccCallRejected`, `ccCallAccepted`, `ccCallEnded`
-</Accordion>
+### Integration
 
 <Tabs>
 <Tab title="TypeScript">
@@ -61,7 +72,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -76,19 +86,10 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
-
-## Usage
-
-- **What you’re changing**: Usage.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 ### Actions
 
@@ -114,7 +115,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -133,7 +133,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -159,7 +158,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -178,7 +176,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -204,7 +201,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -223,7 +219,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -257,7 +252,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -282,7 +276,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -321,7 +314,6 @@ const ccCallEnded = CometChatCallEvents.ccCallEnded.subscribe(
   }
 );
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -338,7 +330,6 @@ ccCallAccepted?.unsubscribe();
 
 ccCallEnded?.unsubscribe();
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -347,12 +338,6 @@ ccCallEnded?.unsubscribe();
 ***
 
 ## Customization
-
-- **What you’re changing**: Customization.
-- **Where to change it**: Component props or CSS as shown below.
-- **Default behavior**: UI Kit defaults.
-- **Override**: Use the examples in this section.
-- **Verify**: The UI reflects the change shown below.
 
 To fit your app's design requirements, you can customize the appearance of the Incoming Call component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
@@ -378,7 +363,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -393,7 +377,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -508,7 +491,6 @@ export default IncomingCallsDemo;
   justify-content: center;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -536,7 +518,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -555,7 +536,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -598,7 +578,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -618,7 +597,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -657,7 +635,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -681,7 +658,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -691,7 +667,6 @@ export default IncomingCallsDemo;
   display: none;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -734,7 +709,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -762,7 +736,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -799,7 +772,6 @@ export default IncomingCallsDemo;
   width: 20px;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -839,7 +811,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -864,7 +835,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -891,7 +861,6 @@ export default IncomingCallsDemo;
   background-size: contain;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -938,7 +907,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -970,7 +938,6 @@ const IncomingCallsDemo = () => {
 
 export default IncomingCallsDemo;
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
@@ -1009,11 +976,11 @@ export default IncomingCallsDemo;
   font: 400 16px Roboto;
 }
 ```
-**What this does**: Shows the code for this step.
 
 </Tab>
 
 </Tabs>
+
 
 <AccordionGroup>
 <Accordion title="Common Failure Modes">
@@ -1032,32 +999,19 @@ export default IncomingCallsDemo;
 
 ---
 
-## Customization matrix
+## Next Steps
 
-| What you want to change | Where | Property/API | Example |
-| --- | --- | --- | --- |
-| Handle accept | `CometChatIncomingCall` | `onAccept` | `onAccept={() => ...}` |
-| Handle decline | `CometChatIncomingCall` | `onDecline` | `onDecline={() => ...}` |
-| Disable sounds | `CometChatIncomingCall` | `disableSoundForCalls` | `disableSoundForCalls={true}` |
-
-## Common pitfalls and fixes
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| Incoming UI not shown | Component not mounted | Render `CometChatIncomingCall` at root |
-| Calls not available | Calls SDK missing | Install `@cometchat/calls-sdk-javascript` |
-| Init/login missing | SDK not initialized | Call `CometChatUIKit.init()` and `login()` |
-
-## FAQ
-
-**Where should I mount it?**
-At the app root so it can listen globally.
-
-**Can I customize accept/decline?**
-Yes. Use `onAccept` and `onDecline`.
-
-## Next steps
-
-- [Outgoing Call](/ui-kit/react/outgoing-call)
-- [Call Buttons](/ui-kit/react/call-buttons)
-- [Call Features](/ui-kit/react/call-features)
+<CardGroup cols={2}>
+  <Card title="Outgoing Call" icon="phone-arrow-up-right" href="/ui-kit/react/outgoing-call">
+    Manage outgoing voice and video calls
+  </Card>
+  <Card title="Call Buttons" icon="phone" href="/ui-kit/react/call-buttons">
+    Add voice and video call buttons to your chat
+  </Card>
+  <Card title="Call Logs" icon="clock-rotate-left" href="/ui-kit/react/call-logs">
+    Display call history and call log details
+  </Card>
+  <Card title="Call Features" icon="video" href="/ui-kit/react/call-features">
+    Overview of all calling capabilities
+  </Card>
+</CardGroup>
