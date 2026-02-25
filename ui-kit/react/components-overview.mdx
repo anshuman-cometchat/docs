@@ -14,7 +14,7 @@ Browse and understand the full set of CometChat React UI Kit components. This pa
 
 ## Usage
 
-### Component import pattern
+Component import pattern
 
 - **What you’re changing**: Import the UI Kit components you plan to render.
 - **File**: Any React module (for example `src/App.tsx`)
@@ -36,12 +36,12 @@ import {
 
 ### Actions
 
-What you’re changing: Override component behavior via callbacks.
-Where to change it: Component props in JSX
-Applies to: Any component that exposes `on<Event>` props
-Default behavior: Predefined actions run automatically.
-Override: Provide your own handler using `on<Event>={(param) => {}}`.
-Verify: Your callback fires on interaction.
+- **What you’re changing**: Override component behavior via callbacks.
+- **Where to change it**: Component props in JSX
+- **Applies to**: Any component that exposes `on<Event>` props
+- **Default behavior**: Predefined actions run automatically.
+- **Override**: Provide your own handler using `on<Event>={(param) => {}}`.
+- **Verify**: Your callback fires on interaction.
 
 Example pattern:
 
@@ -53,12 +53,12 @@ Example pattern:
 
 ### Events
 
-What you’re changing: Listen to UI Kit events to coordinate UI.
-Where to change it: Your app-level state or event handlers
-Applies to: UI Kit events emitted by components
-Default behavior: Components emit events on state changes.
-Override: Subscribe where needed to respond.
-Verify: Your app updates when events emit.
+- **What you’re changing**: Listen to UI Kit events to coordinate UI.
+- **Where to change it**: Your app-level state or event handlers
+- **Applies to**: UI Kit events emitted by components
+- **Default behavior**: Components emit events on state changes.
+- **Override**: Subscribe where needed to respond.
+- **Verify**: Your app updates when events emit.
 
 ## Customization matrix
 
