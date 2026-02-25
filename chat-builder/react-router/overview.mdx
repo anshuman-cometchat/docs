@@ -1,69 +1,87 @@
 ---
 title: "CometChat UI Kit Builder For React Router"
 sidebarTitle: "Overview"
-description: "Overview of the CometChat UI Kit Builder for React Router — a prebuilt, customizable UI Kit solution for rapidly integrating chat into React Router applications."
+description: "Overview of the CometChat UI Kit Builder for React Router — a visual development tool for designing and configuring chat experiences in React Router applications."
 ---
 
-Build chat and calling into your React Router app in minutes. The **UI Kit Builder** gives you **prebuilt UI components** with toggle-based configuration—customize the theme, enable the features you need, and export production-ready code.
+CometChat UI Kit Builder for React Router is a visual development tool that helps you design and configure chat experiences for React Router applications without building the interface from scratch.
 
-<Info>
-  **For developers exploring chat solutions**: Learn what the UI Kit Builder
-  offers and how it simplifies chat integration. Ready to start? Follow the
-  [Integration Guide](/chat-builder/react-router/integration).
-</Info>
+It provides a set of prebuilt, production-ready messaging components backed by CometChat's real-time infrastructure.
 
----
+With CometChat UI Kit Builder, you can:
 
-## **Why Choose CometChat UI Kit Builder?**
+- Configure chat and calling features
+- Apply theming and layout options
+- Export React Router-ready code
 
-- **Rapid Integration** – Prebuilt UI components for faster deployment.
-- **Customizable & Flexible** – Modify the UI to align with your brand's identity.
-- **Cross-Platform Compatibility** – Works seamlessly across various React-based frameworks.
-- **Scalable & Reliable** – Built on CometChat's **robust chat infrastructure** for enterprise-grade performance.
+The exported UI connects to CometChat's SDK and infrastructure, which manages message transport, sync, and backend scaling.
 
----
-
-## **Key Features**
-
-| Feature             | Description                                          |
-| ------------------- | ---------------------------------------------------- |
-| 💬 Chat & Messaging | Instant messaging with rich media and quoted replies |
-| 🔔 Real-time        | Typing indicators, read receipts, and user presence  |
-| 📹 Voice & Video    | 1:1 and group calling built-in                       |
-| ✨ AI Copilot       | Smart replies, summaries, and conversation starters  |
-| 🔍 Search & History | Conversational search and message history            |
+<Card
+  title="Ready to add chat to your React Router app?"
+  icon="rocket"
+  href="/chat-builder/react-router/integration"
+>
+  Go to the Integration Guide
+</Card>
 
 ---
 
-## **Supported Frameworks**
+## UI Kit Builder Features
 
-The UI Kit Builder works seamlessly with popular React-based frameworks:
+**Visual Configuration** — UI Kit Builder provides a visual configuration environment for designing your chat interface before integration.
 
-- [**React**](/chat-builder/react/integration) (Vite, Create React App)
-- [**Next.js**](/chat-builder/nextjs/integration)
-- [**React Router**](/chat-builder/react-router/integration)
+**Toggle-Based Feature Control** — Messaging and calling features can be controlled through configuration settings in the UI Kit Builder.
 
----
-
-## **How It Works**
-
-1. **Design** – Customize your chat UI in the visual builder
-2. **Export** – Download production-ready React code
-3. **Integrate** – Drop into your app and go live
+**Ready-to-Export Code** — After configuration, UI Kit Builder generates a ready-to-integrate React Router codebase.
 
 ---
 
-## **User Interface Preview**
+## How to Use UI Kit Builder
+
+### 1. Design
+
+Customize your chat experience using the visual UI Kit Builder:
+
+- **Configure layout** — Toggle all the required features in the dashboard. Choose whether you want a sidebar or not.
+- **Themes** — Select between system, light, and dark themes. Choose custom colors and typography.
+- Customize component behavior directly from the builder interface.
 
 <Frame>
   <img src="/images/42d014ac-visual_chat_builder-3270b27870aa7586ed5b34d489b18e0b.png" />
 </Frame>
 
+### 2. Export
+
+Once configured, export production-ready React Router code tailored to your selected setup.
+
+1. Click on **Export Code**
+2. Review your export
+3. Your code will be successfully exported
+
+### 3. Integrate
+
+Add the exported code into your React Router application and connect using your CometChat App ID, Region, and Auth Key.
+
+1. **Install dependencies**
+2. **Copy CometChat folder** into your project's `src` directory
+3. **Initialize CometChat** in your app's entry file
+4. **User Authentication** — CometChat uses a UID (User ID) to identify each user. After initialization, authenticate users to enable chat functionality.
+5. **Render the CometChatApp component** — Render the chat UI by adding `CometChatApp` to your component
+6. **Run the app** — Start your application with the appropriate command based on your setup
+
+<Card
+  title="Follow the full Integration Guide"
+  icon="book"
+  href="/chat-builder/react-router/integration"
+>
+  Step-by-step instructions for integrating the UI Kit Builder into your React Router app
+</Card>
+
 ---
 
-## **Try Live Demo**
+## Try Live Demo
 
-**Experience the CometChat UI Kit Builder in action:**
+Experience the CometChat UI Kit Builder in action:
 
 <CardGroup>
   <Card
@@ -72,18 +90,6 @@ The UI Kit Builder works seamlessly with popular React-based frameworks:
     href="https://preview.cometchat.com/"
   />
 </CardGroup>
-
----
-
-## **Get Started**
-
-<Card
-  title="Get Started Now"
-  icon="rocket"
-  href="/chat-builder/react-router/integration"
->
-  Launch the UI Kit Builder and integrate chat in minutes
-</Card>
 
 <Frame>
   <iframe
@@ -98,7 +104,7 @@ The UI Kit Builder works seamlessly with popular React-based frameworks:
 
 ---
 
-## **Need Help?**
+## Need Help?
 
 <CardGroup cols={2}>
   <Card
@@ -114,5 +120,24 @@ The UI Kit Builder works seamlessly with popular React-based frameworks:
     href="https://help.cometchat.com/hc/en-us/requests/new"
   >
     Contact our support team for assistance
+  </Card>
+</CardGroup>
+
+---
+
+## Relevant Links
+
+<CardGroup cols={2}>
+  <Card title="React Chat SDK" href="/sdks/javascript/overview">
+    Learn more about the CometChat JavaScript SDK
+  </Card>
+  <Card title="React Chat UI Kit" href="/ui-kit/react/overview">
+    Explore the React UI Kit components
+  </Card>
+  <Card title="React UI Kit Builder" href="/chat-builder/react/overview">
+    UI Kit Builder for React applications
+  </Card>
+  <Card title="Next.js UI Kit Builder" href="/chat-builder/nextjs/overview">
+    UI Kit Builder for Next.js applications
   </Card>
 </CardGroup>
