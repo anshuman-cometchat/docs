@@ -4,17 +4,19 @@ description: "Customize incoming and outgoing message bubble colors, backgrounds
 ---
 
 <Accordion title="AI Agent Component Spec">
-- **Goal:** Customize message bubble appearance (colors, backgrounds) per direction and message type
-- **Where:** `App.css` (global) — import in app entry via `import "./App.css";`
-- **Base selector:** `.cometchat .cometchat-message-bubble-(incoming|outgoing) .cometchat-message-bubble__body`
-- **Type modifier:** Append `.cometchat-message-bubble__<TYPE>-message` to target specific types (`text`, `image`, `video`, `audio`, `file`, `delete`, `meeting`, `whiteboard`, `document`, `poll`, `sticker`)
-- **Key tokens:** `--cometchat-primary-color` (outgoing bg), `--cometchat-neutral-color-300` (incoming bg), `--cometchat-extended-primary-color-900` (outgoing shade)
-- **Constraints:** Global CSS only (no CSS Modules), no `!important`, type selectors override generic bubble selectors
+
+| Field | Value |
+| --- | --- |
+| Goal | Customize message bubble appearance (colors, backgrounds) per direction and message type |
+| Where | `App.css` (global) — imported in app entry via `import "./App.css";` |
+| Base selector | `.cometchat .cometchat-message-bubble-(incoming\|outgoing) .cometchat-message-bubble__body` |
+| Type modifier | Append `.cometchat-message-bubble__<TYPE>-message` to target specific types (`text`, `image`, `video`, `audio`, `file`, `delete`, `meeting`, `whiteboard`, `document`, `poll`, `sticker`) |
+| Key tokens | `--cometchat-primary-color` (outgoing bg), `--cometchat-neutral-color-300` (incoming bg), `--cometchat-extended-primary-color-900` (outgoing shade) |
+| Constraints | Global CSS only (no CSS Modules), no `!important`, type selectors override generic bubble selectors |
+
 </Accordion>
 
-## Introduction
-
-We offer customizable message bubble styling to enhance user experience and match your app's design. With distinct classes for incoming and outgoing messages, you can easily define colors, borders, and other styles. Each message type, from text to multimedia, has predefined classes for default styling, and developers can further customize using CSS.
+Message bubble styling uses distinct CSS classes for incoming and outgoing messages. Each message type (text, image, video, audio, file, etc.) has predefined classes for default styling, customizable via CSS variable overrides.
 
 <Warning>
 **Prerequisites before applying any CSS customization:**
@@ -1118,21 +1120,4 @@ The customized chat interface is displayed below.
 </Accordion>
 </AccordionGroup>
 
----
 
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Color Resources" icon="palette" href="/ui-kit/react/theme/color-resources">
-    Full reference of all CSS variables and color tokens available in the UI Kit
-  </Card>
-  <Card title="Theming Overview" icon="paintbrush" href="/ui-kit/react/theme">
-    Global theming with CSS variables, fonts, and component-specific overrides
-  </Card>
-  <Card title="Message List" icon="comments" href="/ui-kit/react/message-list">
-    Customize the message list component that renders these bubbles
-  </Card>
-  <Card title="Message Template" icon="code" href="/ui-kit/react/message-template">
-    Override message rendering with custom templates and views
-  </Card>
-</CardGroup>
