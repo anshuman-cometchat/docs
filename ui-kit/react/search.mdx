@@ -3,42 +3,32 @@ title: "Search"
 description: "Search across conversations and messages in real time with filtering, scopes, and custom views using the CometChatSearch component."
 ---
 
+<Frame>
+  <img src="/images/react-uikit-search-update.png" />
+</Frame>
+
 <Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Import:** `import { CometChatSearch } from "@cometchat/chat-uikit-react";`
-- **Minimal JSX:** `<CometChatSearch />`
-- **Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
-- **Key props:** `onConversationClicked` (callback), `onMessageClicked` (callback), `searchFilters` (array), `searchIn` (array), `hideBackButton` (boolean)
-- **CSS class:** `.cometchat-search`
-- **Events:** none
+
+| Field | Value |
+| --- | --- |
+| Purpose | Real-time search across conversations and messages with filtering, scopes, and custom views |
+| Package | `@cometchat/chat-uikit-react` |
+| Import | `import { CometChatSearch } from "@cometchat/chat-uikit-react";` |
+| Used in experiences | Conversation list search, message header search, standalone full-screen search |
+| Copy-paste base | See [Base Code](#base-code--stylesheet) below |
+| Primary output | Conversation click (from `onConversationClicked`), message click (from `onMessageClicked`) |
+| Primary hook points | `onConversationClicked`, `onMessageClicked`, `onBack`, `onError`, `conversationsRequestBuilder`, `messagesRequestBuilder`, view slots (`conversationItemView`, `messageItemView`, `messageLeadingView`, `messageTitleView`, `messageSubtitleView`, `messageTrailingView`) |
+| CSS root class | `.cometchat-search` |
+| Real-time events | None emitted |
+
 </Accordion>
 
-## Overview
+## Base Code and Stylesheet
 
-The `CometChatSearch` component is a powerful and customizable search interface that allows users to search across conversations and messages in real time. It supports a wide variety of filters, scopes, and customization options. `CometChatSearch` helps users find messages, conversations, media, and more through an intuitive and filterable search experience. It can be embedded in multiple contexts — as part of the conversation list, message header, or as a full-screen search experience.
-
-Import path: `import { CometChatSearch } from "@cometchat/chat-uikit-react";`
-
-<Note>
-**Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
-</Note>
-
-## Why Use / When to Use
-
-- Search across conversations and messages in real time to quickly locate specific content
-- Filter search results by conversations, messages, photos, audio, or documents using `searchFilters`
-- Scope search to specific entities (conversations only, messages only) using the `searchIn` prop
-- Navigate directly to a conversation or message from search results via `onConversationClicked` and `onMessageClicked` callbacks
-- Customize the search experience with custom views for conversation items, message items, leading views, trailing views, and more
-- Control search result pagination with `ConversationsRequestBuilder` and `MessagesRequestBuilder` to set page sizes and apply filters
-- Embed the search component in multiple contexts — conversation list, message header, or as a standalone full-screen experience
-
-## Usage
-
-### Integration
+Renders a search interface for conversations and messages.
 
 <Tabs>
-<Tab title="TypeScript">
+<Tab title="SearchDemo.tsx">
 ```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -52,41 +42,85 @@ function SearchDemo() {
 
 export default SearchDemo;
 ```
-
 </Tab>
-
-<Tab title="JavaScript">
-```jsx lines
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
-
-function SearchDemo() {
-  return (
-    <div className="conversations" style={{ width: "100%", height: "100%" }}>
-      <CometChatSearch />
-    </div>
-  );
-}
-
-export default SearchDemo;
-```
-
-</Tab>
-
 </Tabs>
 
-***
+Root CSS class for style overrides:
 
-### Actions
+```css lines
+.cometchat-search {
+  /* overrides here */
+}
+```
 
-[Actions](/ui-kit/react/components-overview#actions) dictate how a component functions. They are divided into two types: Predefined and User-defined. You can override either type, allowing you to tailor the behavior of the component to fit your specific needs.
+## Functionality
 
-#### 1. onConversationClicked
+Props that control component behavior, grouped by surface area.
 
-`onConversationClicked` is triggered when you click on a Conversation from the search result. The `onConversationClicked` action doesn't have a predefined behavior. You can override this action using the following code snippet.
+### Data
 
-<Tabs>
-<Tab title="TypeScript">
-```tsx lines
+| Property | Type | Default | Effect | Pitfall |
+| --- | --- | --- | --- | --- |
+| `user` | `CometChat.User` | `undefined` | Scopes search to a specific user's conversation | — |
+| `group` | `CometChat.Group` | `undefined` | Scopes search to a specific group's conversation | — |
+
+### UI Visibility Toggles
+
+| Property | Type | Default | Effect | Pitfall |
+| --- | --- | --- | --- | --- |
+| `hideBackButton` | `boolean` | `false` | Hides the back button | — |
+| `hideUserStatus` | `boolean` | `false` | Hides the user's online/offline status indicator | — |
+| `hideGroupType` | `boolean` | `false` | Hides the group type icon in conversation leading view | — |
+| `hideReceipts` | `boolean` | `false` | Disables the display of message read receipts in conversation results | — |
+
+### Search Configuration
+
+| Property | Type | Default | Effect | Pitfall |
+| --- | --- | --- | --- | --- |
+| `searchFilters` | `CometChatSearchFilter[]` | All filters | Filters rendered in the search UI (Messages, Photos, Audio, Documents) | — |
+| `initialSearchFilter` | `CometChatSearchFilter` | `undefined` | The filter active by default on load | — |
+| `searchIn` | `CometChatSearchScope[]` | All scopes | Entities in which search is performed (Conversations, Messages) | — |
+
+### Custom Views (Render Props)
+
+| Property | Type | Effect |
+| --- | --- | --- |
+| `initialView` | `JSX.Element` | Shown when no search is performed yet |
+| `loadingView` | `JSX.Element` | Shown while search results are loading |
+| `emptyView` | `JSX.Element` | Shown when no results are found |
+| `errorView` | `JSX.Element` | Shown when an error occurs |
+
+### Date Formatting
+
+| Property | Type | Default | Effect |
+| --- | --- | --- | --- |
+| `messageSentAtDateTimeFormat` | `CalendarObject` | `DD MMM, YYYY` | Customizes the message sent-at timestamp |
+
+<Note>
+If a property is not passed in the CalendarObject, the component checks the [global configuration](/ui-kit/react/localize#customisation) first, then falls back to the component's default formatting.
+</Note>
+
+## Actions
+
+[Actions](/ui-kit/react/components-overview#actions) split into predefined (built-in triggers) and user-defined (callbacks).
+
+### Predefined Actions
+
+The component handles search execution, result rendering, and pagination internally.
+
+### User-Defined Actions
+
+#### onConversationClicked
+
+Fires when a conversation is clicked from the search results.
+
+| Detail | Value |
+| --- | --- |
+| When it fires | User clicks a conversation in search results |
+| Payload type | `(conversation: CometChat.Conversation) => void` |
+| What devs typically do next | Navigate to the conversation, open chat view |
+
+```ts lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 const openConversation = (conversation: CometChat.Conversation) => {
@@ -96,32 +130,17 @@ const openConversation = (conversation: CometChat.Conversation) => {
 <CometChatSearch onConversationClicked={openConversation} />;
 ```
 
-</Tab>
+#### onMessageClicked
 
-<Tab title="JavaScript">
-```jsx lines
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
+Fires when a message is clicked from the search results.
 
-const openConversation = (conversation) => {
-  console.log("Conversation Selected:", conversation);
-};
+| Detail | Value |
+| --- | --- |
+| When it fires | User clicks a message in search results |
+| Payload type | `(message: CometChat.BaseMessage) => void` |
+| What devs typically do next | Navigate to the message in context, scroll to message |
 
-<CometChatSearch onConversationClicked={openConversation} />;
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### 2. onMessageClicked
-
-`onMessageClicked` is triggered when you click on a Message from the search result. The `onMessageClicked` action doesn't have a predefined behavior. You can override this action using the following code snippet.
-
-<Tabs>
-<Tab title="TypeScript">
-```tsx lines
+```ts lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 const goToMessage = (message: CometChat.BaseMessage) => {
@@ -131,32 +150,17 @@ const goToMessage = (message: CometChat.BaseMessage) => {
 <CometChatSearch onMessageClicked={goToMessage} />;
 ```
 
-</Tab>
+#### onBack
 
-<Tab title="JavaScript">
-```jsx lines
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
+Fires when the back button is clicked.
 
-const goToMessage = (message) => {
-  console.log("Message Selected:", message);
-};
+| Detail | Value |
+| --- | --- |
+| When it fires | User clicks the back button |
+| Payload type | `() => void` |
+| What devs typically do next | Navigate back to previous view |
 
-<CometChatSearch onMessageClicked={goToMessage} />;
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### 3. OnBack
-
-`OnBack` is triggered when you click on the back button of the Message Header component. You can override this action using the following code snippet.
-
-<Tabs>
-<Tab title="TypeScript">
-```tsx lines
+```ts lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 const onBack = () => {
@@ -166,32 +170,17 @@ const onBack = () => {
 <CometChatSearch onBack={onBack} />;
 ```
 
-</Tab>
+#### onError
 
-<Tab title="JavaScript">
-```jsx lines
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
+Fires when the component encounters an error.
 
-const onBack = () => {
-  console.log("Back button pressed");
-};
+| Detail | Value |
+| --- | --- |
+| When it fires | Any internal error during search or rendering |
+| Payload type | `(error: CometChat.CometChatException) => void` |
+| What devs typically do next | Log to error tracking service |
 
-<CometChatSearch onBack={onBack} />;
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### 4. onError
-
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the Search component.
-
-<Tabs>
-<Tab title="TypeScript">
-```tsx lines
+```ts lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 const handleOnError = (error: CometChat.CometChatException) => {
@@ -201,127 +190,410 @@ const handleOnError = (error: CometChat.CometChatException) => {
 <CometChatSearch onError={handleOnError} />;
 ```
 
-</Tab>
+## Filters
 
-<Tab title="JavaScript">
-```jsx lines
+Control which results appear using `ConversationsRequestBuilder` and `MessagesRequestBuilder`.
+
+### ConversationsRequestBuilder
+
+Filter conversation search results. Refer to [ConversationsRequestBuilder](/sdk/javascript/retrieve-conversations) for the full API.
+
+```ts lines
+import { CometChatSearch } from "@cometchat/chat-uikit-react";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+
+<CometChatSearch
+  conversationsRequestBuilder={new CometChat.ConversationsRequestBuilder().setLimit(
+    5
+  )}
+/>;
+```
+
+### MessagesRequestBuilder
+
+Filter message search results. Refer to [MessagesRequestBuilder](/sdk/javascript/additional-message-filtering) for the full API.
+
+```ts lines
+import { CometChatSearch } from "@cometchat/chat-uikit-react";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+
+<CometChatSearch
+  messagesRequestBuilder={new CometChat.MessagesRequestBuilder().setLimit(5)}
+/>;
+```
+
+## Events
+
+### UI Events
+
+The `CometChatSearch` component does not emit any UI events.
+
+### SDK Events (Real-Time)
+
+The component does not attach SDK listeners. Search is on-demand, not real-time.
+
+## Advanced: Custom View Slots
+
+Customization override points for the search UI. The component exposes separate slots for conversation results and message results.
+
+### Slot Catalog
+
+| Slot | Params | What it replaces | Section |
+| --- | --- | --- | --- |
+| `conversationItemView` | `(conversation: CometChat.Conversation) => JSX.Element` | Entire conversation list item | Conversation results |
+| `conversationLeadingView` | `(conversation: CometChat.Conversation) => JSX.Element` | Conversation avatar / left section | Conversation results |
+| `conversationTitleView` | `(conversation: CometChat.Conversation) => JSX.Element` | Conversation title text | Conversation results |
+| `conversationSubtitleView` | `(conversation: CometChat.Conversation) => JSX.Element` | Conversation subtitle text | Conversation results |
+| `conversationTrailingView` | `(conversation: CometChat.Conversation) => JSX.Element` | Conversation right section | Conversation results |
+| `conversationOptions` | `(conversation: CometChat.Conversation) => CometChatActionsIcon[]` | Hover actions on conversation item | Conversation results |
+| `messageItemView` | `(message: CometChat.BaseMessage) => JSX.Element` | Entire message list item | Message results |
+| `messageLeadingView` | `(message: CometChat.BaseMessage) => JSX.Element` | Message avatar / left section | Message results |
+| `messageTitleView` | `(message: CometChat.BaseMessage) => JSX.Element` | Message title text | Message results |
+| `messageSubtitleView` | `(message: CometChat.BaseMessage) => JSX.Element` | Message subtitle text | Message results |
+| `messageTrailingView` | `(message: CometChat.BaseMessage) => JSX.Element` | Message right section | Message results |
+
+### Conversation View Slots
+
+The conversation view slots (`conversationItemView`, `conversationLeadingView`, `conversationTitleView`, `conversationSubtitleView`, `conversationTrailingView`, `conversationOptions`) follow the same pattern as the [CometChatConversations](/ui-kit/react/conversations) component. Refer to the Conversations component documentation for detailed examples.
+
+### messageItemView
+
+Replace the entire message list item in search results.
+
+<Frame>
+  <img src="/images/3d0a9273-search_message_item_view_custom_web_screens-bf216d1eab67d0d95362a3ef1996f752.png" />
+</Frame>
+
+<Tabs>
+<Tab title="TypeScript">
+```ts lines
+import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
-const handleOnError = (error) => {
-  // Your exception handling code
+const getMessageItemView = (message: CometChat.BaseMessage) => {
+  return (
+    <div className="cometchat-search__message-list-item">
+      <div className="cometchat-search__message-list-item-sender">
+        {message.getSender()?.getName()}:
+      </div>
+      <div className="cometchat-search__message-list-item-text">
+        {message instanceof CometChat.TextMessage ? (message as CometChat.TextMessage).getText() : message.getType()}
+      </div>
+    </div>
+  );
 };
 
-<CometChatSearch onError={handleOnError} />;
+<CometChatSearch messageItemView={getMessageItemView} />;
 ```
-
 </Tab>
+<Tab title="CSS">
+```css lines
+.cometchat-search__message-list-item {
+  background: var(--cometchat-extended-primary-color-100);
+  border-bottom: 1px solid var(--cometchat-border-color-highlight);
+  padding: var(--cometchat-padding-3) var(--cometchat-padding-4);
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--cometchat-padding-2);
+}
 
+.cometchat-search__message-list-item .cometchat-search__message-list-item-sender {
+  color: var(--cometchat-text-color-highlight);
+  font: var(--cometchat-font-body-regular);
+}
+
+.cometchat-search__message-list-item .cometchat-search__message-list-item-text {
+  color: var(--cometchat-text-color-secondary);
+  font: var(--cometchat-font-body-regular);
+}
+```
+</Tab>
 </Tabs>
 
-***
+### messageLeadingView
 
-### Filters
+Replace the message avatar / left section in search results.
 
-#### 1. ConversationsRequestBuilder
-
-You can set the `ConversationsRequestBuilder` in the Search Component to filter the search result. You can modify the builder as per your specific requirements with multiple options available to know more refer to [ConversationRequestBuilder](/sdk/javascript/retrieve-conversations).
+<Frame>
+  <img src="/images/8ec51714-search_message_leading_view_custom_web_screens-af08d61c02454c807100907c1156d46d.png" />
+</Frame>
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx lines
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-
-<CometChatSearch
-  conversationsRequestBuilder={new CometChat.ConversationsRequestBuilder().setLimit(
-    5
-  )}
-/>;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```jsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
-import { CometChat } from "@cometchat/chat-sdk-javascript";
 
-<CometChatSearch
-  conversationsRequestBuilder={new CometChat.ConversationsRequestBuilder().setLimit(
-    5
-  )}
-/>;
+const getMessageLeadingView = (message: CometChat.BaseMessage) => {
+  return (
+    <div className="cometchat-search__message-list-item-leading-view">
+      <img src={ICON_URL}></img>
+    </div>
+  );
+};
+
+<CometChatSearch messageLeadingView={getMessageLeadingView} />;
 ```
-
 </Tab>
+<Tab title="CSS">
+```css lines
+.cometchat-search__message-list-item-leading-view {
+  height: 48px;
+  width: 48px;
+  border-radius: var(--cometchat-radius-2);
+  background: var(--cometchat-extended-primary-color-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.cometchat-search__message-list-item-leading-view img {
+  height: 32px;
+  width: 32px;
+}
+```
+</Tab>
 </Tabs>
 
-***
+### messageTitleView
 
-#### 2. MessagesRequestBuilder
+Replace the message title text in search results.
 
-You can set the `MessagesRequestBuilder` in the Search Component to filter the search result. You can modify the builder as per your specific requirements with multiple options available to know more refer to [MessagesRequestBuilder](/sdk/javascript/additional-message-filtering).
+<Frame>
+  <img src="/images/0b1cf07c-search_message_title_view_custom_web_screens-df6cb1c0e91a105d4f708e47c62de992.png" />
+</Frame>
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx lines
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
+```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-
-<CometChatSearch
-  messagesRequestBuilder={new CometChat.MessagesRequestBuilder().setLimit(5)}
-/>;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```jsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
-import { CometChat } from "@cometchat/chat-sdk-javascript";
 
-<CometChatSearch
-  messagesRequestBuilder={new CometChat.MessagesRequestBuilder().setLimit(5)}
-/>;
+const getMessageTitleView = (message: CometChat.BaseMessage) => {
+  return (
+    <div className="cometchat-search__message-list-item-title">
+      <div className="cometchat-search__message-list-item-title-text">
+        {message.getSender()?.getName()}
+      </div>
+      <span>|</span>
+      <div className="cometchat-search__message-list-item-title-role">
+        {message.getSender().getRole() ?? "Pro User"}
+      </div>
+    </div>
+  );
+};
+
+<CometChatSearch messageTitleView={getMessageTitleView} />;
 ```
-
 </Tab>
+<Tab title="CSS">
+```css lines
+.cometchat-search__message-list-item-title {
+  display: flex;
+  align-items: center;
+  gap: var(--cometchat-spacing-1);
+}
 
+.cometchat-search__message-list-item-title .cometchat-search__message-list-item-title-text {
+  font: var(--cometchat-font-heading4-medium);
+  color: var(--cometchat-text-color-secondary);
+}
+
+.cometchat-search__message-list-item-title .cometchat-search__message-list-item-title-role {
+  font: var(--cometchat-font-heading4-medium);
+  color: var(--cometchat-text-color-highlight);
+  text-decoration-color: var(--cometchat-border-color-highlight);
+  text-decoration: underline;
+}
+```
+</Tab>
 </Tabs>
 
-***
+### messageSubtitleView
 
-### Events
+Replace the message subtitle text in search results.
 
-[Events](/ui-kit/react/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in multiple locations and are capable of being added or removed.
+<Frame>
+  <img src="/images/67721bd7-search_message_subtitle_view_custom_web_screens-96e7a678fc3920eb12db00b43c4f6860.png" />
+</Frame>
 
-The `CometChatSearch` component does not produce any events.
+<Tabs>
+<Tab title="TypeScript">
+```ts lines
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
-***
+const getMessageSubtitleView = (message: CometChat.BaseMessage) => {
+  return (
+    <div className="cometchat-search__message-list-item-subtitle">
+      <div className="cometchat-search__message-list-item-subtitle-sender">
+        {message.getSender()?.getName()}:
+      </div>
+      <div className="cometchat-search__message-list-item-subtitle-text">
+        {message instanceof CometChat.TextMessage ? (message as CometChat.TextMessage).getText() : message.getType()}
+      </div>
+    </div>
+  );
+};
 
-### Style
+<CometChatSearch messageSubtitleView={getMessageSubtitleView} />;
+```
+</Tab>
+<Tab title="CSS">
+```css lines
+.cometchat-search__message-list-item-subtitle {
+  background: var(--cometchat-extended-primary-color-100);
+  padding: var(--cometchat-padding-1);
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--cometchat-padding-2);
+  width: 100%;
+}
 
-Using CSS you can customize the look and feel of the component in your app like the color, size, shape, and fonts. The root CSS class for this component is `.cometchat-search`.
+.cometchat-search__message-list-item-subtitle .cometchat-search__message-list-item-subtitle-sender {
+  color: var(--cometchat-text-color-highlight);
+  font: var(--cometchat-font-body-regular);
+}
 
-**Example**
+.cometchat-search__message-list-item-subtitle .cometchat-search__message-list-item-subtitle-text {
+  color: var(--cometchat-text-color-secondary);
+  font: var(--cometchat-font-body-regular);
+}
+```
+</Tab>
+</Tabs>
+
+### messageTrailingView
+
+Replace the message right section in search results.
+
+<Frame>
+  <img src="/images/1c199c35-search_message_trailing_view_custom_web_screens-75c38143a2439190b3198dd93923c6fd.png" />
+</Frame>
+
+<Tabs>
+<Tab title="TypeScript">
+```ts lines
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatSearch } from "@cometchat/chat-uikit-react";
+
+const getMessageTrailingView = (message: CometChat.BaseMessage) => {
+  const timestamp = message.getSentAt() * 1000;
+  const now = new Date();
+  const time = new Date(timestamp);
+      
+  const diffInMs = now.getTime() - time.getTime();
+  const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+      
+  let backgroundColorClass = "cometchat-search__message-trailing-view-min";
+  let topLabel = `${diffInMinutes}`;
+  let bottomLabel = `${diffInMinutes === 1 ? "Min ago" : "Mins ago"}`;
+      
+  if (diffInHours >= 1 && diffInHours <= 10) {
+    backgroundColorClass = "cometchat-search__message-trailing-view-hour";
+    topLabel = `${diffInHours}`;
+    bottomLabel = `${diffInHours === 1 ? "Hour ago" : "Hours ago"}`;
+  } else if (diffInHours > 10) {
+    backgroundColorClass = "cometchat-search__message-trailing-view-date";
+    topLabel = time.toLocaleDateString("en-US", { day: "numeric" });
+    bottomLabel = time.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
+  }
+
+  return (
+    <div className={`cometchat-search__message-trailing-view ${backgroundColorClass}`}>
+      <span className="cometchat-search__message-trailing-view-time">{topLabel}</span>
+      <span className="cometchat-search__message-trailing-view-status">{bottomLabel}</span>
+    </div>
+  );
+};
+
+<CometChatSearch messageTrailingView={getMessageTrailingView} />;
+```
+</Tab>
+<Tab title="CSS">
+```css lines
+.cometchat-search__message-trailing-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  height: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.cometchat-search__message-trailing-view-min {
+  background-color: #e0d4f7;
+}
+
+.cometchat-search__message-trailing-view-hour {
+  background-color: #fff3cd;
+}
+
+.cometchat-search__message-trailing-view-date {
+  background-color: #f8d7da;
+}
+
+.cometchat-search__message-trailing-view-time {
+  font-size: 20px;
+  font-weight: bold;
+  color: #4a3f99;
+  margin-bottom: 4px;
+  font: 600 18px Roboto;
+}
+
+.cometchat-search__message-trailing-view-status {
+  font: 600 8px Roboto;
+  color: #6a5b99;
+}
+```
+</Tab>
+</Tabs>
+
+### messageSentAtDateTimeFormat
+
+Customize the message sent-at timestamp format using a `CalendarObject`.
+
+```ts lines
+import {
+  CometChatSearch,
+  CalendarObject
+} from "@cometchat/chat-uikit-react";
+
+function getDateFormat() {
+  const dateFormat = new CalendarObject({
+    today: `DD MMM, hh:mm A`,
+    yesterday: `DD MMM, hh:mm A`,
+    otherDays: `DD MMM, hh:mm A`,
+  });
+  return dateFormat;
+}
+
+<CometChatSearch messageSentAtDateTimeFormat={getDateFormat()} />;
+```
+
+<Note>
+If a property is not passed in the CalendarObject, the component checks the [global configuration](/ui-kit/react/localize#customisation) first, then falls back to the component's default formatting.
+</Note>
+
+## Theme and Styling
+
+Using CSS, customize the look and feel of the component. The root CSS class is `.cometchat-search`.
 
 <Frame>
   <img src="/images/react-uikit-search-update.png" />
 </Frame>
 
-<Tabs>
-<Tab title="TypeScript">
 ```tsx lines
-import React from "react";
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
-
-<CometChatSearch />;
+<CometChatSearch />
 ```
 
-</Tab>
-
-<Tab title="CSS">
 ```css lines
 .cometchat-search * {
   font-family: 'Times New Roman', Times !important;
@@ -390,612 +662,3 @@ import { CometChatSearch } from "@cometchat/chat-uikit-react";
   font-weight: 700;
 }
 ```
-
-</Tab>
-
-</Tabs>
-
-### Functionality
-
-These are a set of small functional customizations that allow you to fine-tune the overall experience of the component. With these, you can change text, set custom icons, and toggle the visibility of UI elements.
-
-Here is a code snippet demonstrating how you can customize the functionality of the Search component.
-
-<Tabs>
-<Tab title="TypeScript">
-```tsx lines
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
-
-<CometChatSearch hideBackButton={true} />;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```jsx lines
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
-
-<CometChatSearch hideBackButton={true} />;
-```
-
-</Tab>
-
-</Tabs>
-
-Following is a list of customizations along with their corresponding code snippets:
-
-| Property                  | Description                                                                                           | Code                                                                                                                                           |
-| ------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| **User**                  | A `CometChat.User` object representing the user in whose conversation the search will be performed.   | `user={chatUser}`                                                                                                                              |
-| **Group**                 | A `CometChat.Group` object representing the group in whose conversation the search will be performed. | `group={chatGroup}`                                                                                                                            |
-| **Hide Back Button**      | Hides the back button in the Search component.                                                        | `hideBackButton={true}`                                                                                                                        |
-| **Hide User Status**      | Hides the user's online/offline status indicator.                                                     | `hideUserStatus={true}`                                                                                                                        |
-| **Hide Group Type**       | Hides the group type icon in conversation leading view.                                               | `hideGroupType={false}`                                                                                                                        |
-| **Hide Receipts**         | Disables the display of message read receipts in conversation result.                                 | `hideReceipts={false}`                                                                                                                         |
-| **Search Filters**        | List of filters to be rendered in the Search component.                                               | `searchFilters={[CometChatSearchFilter.Messages, CometChatSearchFilter.Photos, CometChatSearchFilter.Audio, CometChatSearchFilter.Documents]}` |
-| **Initial Search Filter** | The filter which will be active by default on load.                                                   | `initialSearchFilter={CometChatSearchFilter.Messages}`                                                                                         |
-| **Search In**             | List of entities in which the search should be performed.                                             | `searchIn={[CometChatSearchScope.Conversations]}`                                                                                              |
-| **Initial View**          | Custom view to be shown when CometChat Search is rendered & no search is performed.                   | `initialView={<>Custom Initial View</>}`                                                                                                       |
-| **Loading View**          | A custom component to display during the loading state.                                               | `loadingView={<>Custom Loading View</>}`                                                                                                       |
-| **Empty View**            | A custom component to display when there are no conversations available.                              | `emptyView={<>Custom Empty View</>}`                                                                                                           |
-| **Error View**            | A custom component to display when an error occurs.                                                   | `errorView={<>Custom Error View</>}`                                                                                                           |
-
-## Advanced Features
-
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
-
-### Custom View Slots
-
-***
-
-#### ConversationItemView
-
-With this function, you can assign a custom list item view to an conversation in the search result. For more information, refer to the [itemView](/ui-kit/react/conversations#itemview) prop of the `CometChatConversations` component.
-
-#### ConversationLeadingView
-
-With this function, you can assign a custom leading view of an conversation in the search result. For more information, refer to the [leadingView](/ui-kit/react/conversations#leadingview) prop of the `CometChatConversations` component.
-
-#### ConversationTitleView
-
-With this function, you can assign a custom title view to an conversation in the search result. For more information, refer to the [titleView](/ui-kit/react/conversations#titleview) prop of the `CometChatConversations` component.
-
-#### ConversationSubtitleView
-
-With this function, you can assign a custom subtitle view to an conversation in the search result. For more information, refer to the [subtitleView](/ui-kit/react/conversations#subtitleview) prop of the `CometChatConversations` component.
-
-#### ConversationTrailingView
-
-With this function, you can assign a custom trailing view to an conversation in the search result. For more information, refer to the [trailingView](/ui-kit/react/conversations#trailingview) prop of the `CometChatConversations` component.
-
-#### ConversationOptions
-
-A function that returns a list of actions available when hovering over a conversation item in the search result. For more information, refer to the [options](/ui-kit/react/conversations#options) prop of the `CometChatConversations` component.
-
-#### MessageItemView
-
-With this function, you can assign a custom item view of a message in the search result.
-
-Shown below is the default message search interface.
-
-<Frame>
-  <img src="/images/1ab7cd1b-search_message_item_view_default_web_screens-2895b996369fcaa0e59203664c628b7b.png" />
-</Frame>
-
-The customized message search interface is displayed below.
-
-<Frame>
-  <img src="/images/3d0a9273-search_message_item_view_custom_web_screens-bf216d1eab67d0d95362a3ef1996f752.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
-
-const getMessageItemView = (message: CometChat.BaseMessage) => {
-  return (
-    <div className="cometchat-search__message-list-item">
-      <div className="cometchat-search__message-list-item-sender">
-        {message.getSender()?.getName()}:
-      </div>
-      <div className="cometchat-search__message-list-item-text">
-        {message instanceof CometChat.TextMessage ? (message as CometChat.TextMessage).getText() : message.getType()}
-      </div>
-    </div>
-  );
-};
-
-<CometChatSearch
-  messageItemView={getMessageItemView} // Custom message item view
-/>;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.cometchat-search__message-list-item {
-  background: var(--cometchat-extended-primary-color-100);
-  border-bottom: 1px solid var(--cometchat-border-color-highlight);
-  padding: var(--cometchat-padding-3) var(--cometchat-padding-4);
-  display: flex;
-  justify-content: flex-start;
-  gap: var(--cometchat-padding-2);
-}
-
-.cometchat-search__message-list-item .cometchat-search__message-list-item-sender {
-  color: var(--cometchat-text-color-highlight);
-  font: var(--cometchat-font-body-regular);
-}
-
-.cometchat-search__message-list-item .cometchat-search__message-list-item-text {
-  color: var(--cometchat-text-color-secondary);
-  font: var(--cometchat-font-body-regular);
-}
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### MessageLeadingView
-
-With this function, you can assign a custom leading view of a message in the search result.
-
-Shown below is the default message leading view interface.
-
-<Frame>
-  <img src="/images/1ab7cd1b-search_message_item_view_default_web_screens-2895b996369fcaa0e59203664c628b7b.png" />
-</Frame>
-
-The customized message leading view interface is displayed below.
-
-<Frame>
-  <img src="/images/8ec51714-search_message_leading_view_custom_web_screens-af08d61c02454c807100907c1156d46d.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
-
-const getMessageLeadingView = (message: CometChat.BaseMessage) => {
-  return (
-    <div className="cometchat-search__message-list-item-leading-view">
-      <img src={ICON_URL}></img>
-    </div>
-  );
-};
-
-<CometChatSearch
-  messageLeadingView={getMessageLeadingView} // Custom message leading view
-/>;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.cometchat-search__message-list-item-leading-view {
-  height: 48px;
-  width: 48px;
-  border-radius: var(--cometchat-radius-2);
-  background: var(--cometchat-extended-primary-color-500);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cometchat-search__message-list-item-leading-view img {
-  height: 32px;
-  width: 32px;
-}
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### MessageTitleView
-
-With this function, you can assign a custom title view of a message in the search result.
-
-Shown below is the default message title view interface.
-
-<Frame>
-  <img src="/images/1ab7cd1b-search_message_item_view_default_web_screens-2895b996369fcaa0e59203664c628b7b.png" />
-</Frame>
-
-The customized message title view interface is displayed below.
-
-<Frame>
-  <img src="/images/0b1cf07c-search_message_title_view_custom_web_screens-df6cb1c0e91a105d4f708e47c62de992.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
-
-const getMessageTitleView = (message: CometChat.BaseMessage) => {
-  return (
-    <div className="cometchat-search__message-list-item-title">
-      <div className="cometchat-search__message-list-item-title-text">
-        {message.getSender()?.getName()}
-      </div>
-      <span>|</span>
-      <div className="cometchat-search__message-list-item-title-role">
-        {message.getSender().getRole() ?? "Pro User"}
-      </div>
-    </div>
-  );
-};
-
-<CometChatSearch
-  messageTitleView={getMessageTitleView} // Custom message title view
-/>;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.cometchat-search__message-list-item-title {
-  display: flex;
-  align-items: center;
-  gap: var(--cometchat-spacing-1);
-}
-
-.cometchat-search__message-list-item-title .cometchat-search__message-list-item-title-text {
-  font: var(--cometchat-font-heading4-medium);
-  color: var(--cometchat-text-color-secondary);
-}
-
-.cometchat-search__message-list-item-title .cometchat-search__message-list-item-title-role {
-  font: var(--cometchat-font-heading4-medium);
-  color: var(--cometchat-text-color-highlight);
-  text-decoration-color: var(--cometchat-border-color-highlight);
-  text-decoration: underline;
-}
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### MessageSubtitleView
-
-With this function, you can assign a custom subtitle view of a message in the search result.
-
-Shown below is the default message subtitle view interface.
-
-<Frame>
-  <img src="/images/1ab7cd1b-search_message_item_view_default_web_screens-2895b996369fcaa0e59203664c628b7b.png" />
-</Frame>
-
-The customized message subtitle view interface is displayed below.
-
-<Frame>
-  <img src="/images/67721bd7-search_message_subtitle_view_custom_web_screens-96e7a678fc3920eb12db00b43c4f6860.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
-
-const getMessageSubtitleView = (message: CometChat.BaseMessage) => {
-  return (
-    <div className="cometchat-search__message-list-item-subtitle">
-      <div className="cometchat-search__message-list-item-subtitle-sender">
-        {message.getSender()?.getName()}:
-      </div>
-      <div className="cometchat-search__message-list-item-subtitle-text">
-        {message instanceof CometChat.TextMessage ? (message as CometChat.TextMessage).getText() : message.getType()}
-      </div>
-    </div>
-  );
-};
-
-<CometChatSearch
-  messageSubtitleView={getMessageSubtitleView} // Custom message subtitle view
-/>;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.cometchat-search__message-list-item-subtitle {
-  background: var(--cometchat-extended-primary-color-100);
-  padding: var(--cometchat-padding-1);
-  display: flex;
-  justify-content: flex-start;
-  gap: var(--cometchat-padding-2);
-  width: 100%;
-}
-
-.cometchat-search__message-list-item-subtitle .cometchat-search__message-list-item-subtitle-sender {
-  color: var(--cometchat-text-color-highlight);
-  font: var(--cometchat-font-body-regular);
-}
-
-.cometchat-search__message-list-item-subtitle .cometchat-search__message-list-item-subtitle-text {
-  color: var(--cometchat-text-color-secondary);
-  font: var(--cometchat-font-body-regular);
-}
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### MessageTrailingView
-
-With this function, you can assign a custom trailing view of a message in the search result.
-
-Shown below is the default message trailing view interface.
-
-<Frame>
-  <img src="/images/1ab7cd1b-search_message_item_view_default_web_screens-2895b996369fcaa0e59203664c628b7b.png" />
-</Frame>
-
-The customized message trailing view interface is displayed below.
-
-<Frame>
-  <img src="/images/1c199c35-search_message_trailing_view_custom_web_screens-75c38143a2439190b3198dd93923c6fd.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSearch } from "@cometchat/chat-uikit-react";
-
-const getMessageTrailingView = (message: CometChat.BaseMessage) => {
-  const timestamp = message.getSentAt() * 1000;
-  const now = new Date();
-  const time = new Date(timestamp);
-      
-  // Calculate time difference
-  const diffInMs = now.getTime() - time.getTime();
-  const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
-  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
-      
-  // Determine the labels
-  let backgroundColorClass = "cometchat-search__message-trailing-view-min"; // Default (less than 1 hour)
-  let topLabel = `${diffInMinutes}`; // Default minutes
-  let bottomLabel = `${diffInMinutes === 1 ? "Min ago" : "Mins ago"}`; // Default "Mins ago"
-      
-  if (diffInHours >= 1 && diffInHours <= 10) {
-    // 1-10 hours
-    backgroundColorClass = "cometchat-search__message-trailing-view-hour";
-    topLabel = `${diffInHours}`;
-    bottomLabel = `${diffInHours === 1 ? "Hour ago" : "Hours ago"}`;
-  } else if (diffInHours > 10) {
-    // More than 10 hours
-    backgroundColorClass = "cometchat-search__message-trailing-view-date";
-    topLabel = time.toLocaleDateString("en-US", { day: "numeric" });
-    bottomLabel = time.toLocaleDateString("en-US", {
-      month: "short",
-      year: "numeric",
-    });
-  }
-
-  return (
-    <div className={`cometchat-search__message-trailing-view ${backgroundColorClass}`}>
-      <span className="cometchat-search__message-trailing-view-time">{topLabel}</span>
-      <span className="cometchat-search__message-trailing-view-status">{bottomLabel}</span>
-    </div>
-  );
-};
-
-<CometChatSearch
-  messageTrailingView={getMessageTrailingView} // Custom message trailing view
-/>;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.cometchat-search__message-trailing-view {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 55px;
-  height: 40px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-}
-
-.cometchat-search__message-trailing-view-min {
-  background-color: #e0d4f7;
-}
-
-.cometchat-search__message-trailing-view-hour {
-  background-color: #fff3cd;
-}
-
-.cometchat-search__message-trailing-view-date {
-  background-color: #f8d7da;
-}
-
-.cometchat-search__message-trailing-view-time {
-  font-size: 20px;
-  font-weight: bold;
-  color: #4a3f99;
-  margin-bottom: 4px;
-  font: 600 18px Roboto;
-}
-
-.cometchat-search__message-trailing-view-status {
-  font: 600 8px Roboto;
-  color: #6a5b99;
-}
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### Message SentAt Date Time Format
-
-The `MessageSentAtDateTimeFormat` property allows you to customize the **Message Sent At** timestamp displayed in the Search.
-
-Default Date Time Format:
-
-```javascript lines
-new CalendarObject({
-    yesterday: "DD MMM, YYYY", // Example: "04 Jun, 2025"
-    otherDays: `DD MMM, YYYY`, // Example: "04 Jun, 2025"
-    today: "DD MMM, YYYY" // Example: "04 Jun, 2025"
-});
-```
-
-The following example demonstrates how to modify the **Sent At** timestamp format using a custom [`CalendarObject`](/ui-kit/react/localize#calendarobject).
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import {
-  CometChatSearch,
-  CalendarObject
-} from "@cometchat/chat-uikit-react";
-
-// Define a custom date format pattern
-function getDateFormat() {
-  const dateFormat = new CalendarObject({
-    today: `DD MMM, hh:mm A`,   // Example: "25 Jan, 10:30 AM"
-    yesterday: `DD MMM, hh:mm A`, // Example: "25 Jan, 10:30 AM"
-    otherDays: `DD MMM, hh:mm A`,  // Example: "25 Jan, 10:30 AM"
-  });
-  return dateFormat;
-}
-
-// Apply the custom format to the CometChatSearch component
-<CometChatSearch messageSentAtDateTimeFormat={getDateFormat()} />;
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### Text Formatters
-
-Assigns the list of text formatters. If the provided list is not null, it sets the list. Otherwise, it assigns the default text formatters retrieved from the data source.
-
-### Customization Matrix
-
-| What you want to change | Where | Property/API | Example |
-| --- | --- | --- | --- |
-| Override behavior on conversation/message click | Component props | `on<Event>` callbacks | `onConversationClicked={(c) => openChat(c)}` |
-| Filter search results by type | Component props | `searchFilters` array | `searchFilters={[CometChatSearchFilter.Messages]}` |
-| Scope search to specific entities | Component props | `searchIn` array | `searchIn={[CometChatSearchScope.Conversations]}` |
-| Toggle visibility of UI elements | Component props | `hide<Feature>` boolean props | `hideBackButton={true}` |
-| Replace conversation item views | Component props | `conversation<Slot>View` render props | `conversationItemView={(c) => <CustomItem />}` |
-| Replace message item views | Component props | `message<Slot>View` render props | `messageItemView={(m) => <CustomMessage />}` |
-| Customize message timestamp format | Component props | `messageSentAtDateTimeFormat` | `messageSentAtDateTimeFormat={new CalendarObject({...})}` |
-| Control pagination page size | Component props | `conversationsRequestBuilder`, `messagesRequestBuilder` | `conversationsRequestBuilder={new CometChat.ConversationsRequestBuilder().setLimit(5)}` |
-| Change colors, fonts, spacing | Global CSS | Target `.cometchat-search` class | `.cometchat-search { gap: 0; }` |
-
-## Pagination, Batching, and Performance
-
-The CometChatSearch component supports pagination for both conversation and message search results through `ConversationsRequestBuilder` and `MessagesRequestBuilder`. You can control the page size using the `setLimit` method on each builder — for example, `new CometChat.ConversationsRequestBuilder().setLimit(5)` fetches 5 conversations per page, and `new CometChat.MessagesRequestBuilder().setLimit(5)` fetches 5 messages per page. See the code examples in [Basic Usage > Filters](#filters) for the implementation pattern.
-
-The component handles loading states internally and supports a custom `loadingView` prop to display a custom loading indicator while results are being fetched.
-
-## Error Handling and Retries
-
-The CometChatSearch component supports an `onError` callback prop that fires when an error occurs within the component. You can use this to log errors or display custom error UI.
-
-See the `onError` callback example in [Basic Usage > Actions](#actions) for the implementation pattern. The `onError` prop receives a `CometChat.CometChatException` object containing the error details.
-
-The component also supports an `errorView` prop to display a custom error component when an error occurs. See the Functionality table in [Basic Usage > Functionality](#functionality) for the `errorView` prop.
-
-<AccordionGroup>
-<Accordion title="Common Failure Modes">
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| Component doesn't render | `CometChatUIKit.init()` not called or not awaited | Ensure init completes before rendering. See [Methods](/ui-kit/react/methods) |
-| Component renders but shows no results | User not logged in or no matching data | Call `CometChatUIKit.login("UID")` after init. Verify search term matches existing data. |
-| Callback not firing | Wrong prop name or signature | Check the Actions section for exact prop name and parameter types |
-| Custom view not appearing | Returning `null` or `undefined` from view prop | Ensure view function returns valid JSX |
-| Filters not applied | `RequestBuilder` not configured correctly | Verify builder methods and parameters. See [ConversationsRequestBuilder](/sdk/javascript/retrieve-conversations) |
-| SSR hydration error | Component uses browser APIs on server | Wrap in `useEffect` or dynamic import with `ssr: false`. See [Next.js Integration](/ui-kit/react/next-js-integration) |
-
-</Accordion>
-</AccordionGroup>
-
-## Configuration and Environment
-
-The CometChatSearch component requires `CometChatUIKit.init()` to be called with a valid `appId` and `region` before rendering. The user must be logged in via `CometChatUIKit.login()`. The component depends on the `@cometchat/chat-uikit-react` package, which includes `@cometchat/chat-sdk-javascript` as a peer dependency.
-
-React 18+ is supported. For Next.js, wrap the component in `useEffect` or use dynamic imports with `ssr: false` to avoid SSR hydration errors. See [Next.js Integration](/ui-kit/react/next-js-integration) and [React.js Integration](/ui-kit/react/react-js-integration) for setup details.
-
-## Files and Media
-
-Files and media handling does not apply to the Search component. The Search component displays search results for conversations and messages but does not render or send media directly. For file and media support, see the [Message Composer](/ui-kit/react/message-composer) and [Message List](/ui-kit/react/message-list) components.
-
-## Logging, Tracing, and Observability
-
-To troubleshoot issues with the Search component (such as search results not appearing or callbacks not firing), enable CometChat SDK debug logging. Set the log level to `DEBUG` during `CometChat.init()` to see detailed SDK activity in the browser console. The `onError` callback prop can also be used to capture and log errors for observability. Refer to the CometChat SDK documentation for the full logging configuration API.
-
-## Versioning, Beta Features, and Breaking Changes
-
-### Current Version
-
-This documentation covers CometChat React UI Kit V6 (`@cometchat/chat-uikit-react@6.x`).
-
-### Upgrading from V5
-
-If you are migrating from V5, see the [Upgrading from V5](/ui-kit/react/upgrading-from-v5) guide for a complete list of breaking changes and migration steps.
-
----
-
-### Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Conversations" icon="comments" href="/ui-kit/react/conversations">
-    Display and manage conversation lists
-  </Card>
-  <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
-    Render messages in a conversation
-  </Card>
-  <Card title="Search Messages Guide" icon="magnifying-glass" href="/ui-kit/react/guide-search-messages">
-    Build a message search experience
-  </Card>
-  <Card title="Components Overview" icon="grid-2" href="/ui-kit/react/components-overview">
-    Explore all available UI Kit components
-  </Card>
-</CardGroup>
