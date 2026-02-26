@@ -75,6 +75,13 @@ Props that control component behavior, grouped by surface area.
 | `hideVideoCallButton` | `boolean` | `false` | Hides the video call button | — |
 | `hideVoiceCallButton` | `boolean` | `false` | Hides the voice call button | — |
 
+### Callbacks
+
+| Property | Type | Default | Effect | Pitfall |
+| --- | --- | --- | --- | --- |
+| `onVoiceCallClick` | `(user?: CometChat.User, group?: CometChat.Group) => void` | `undefined` | Overrides the default voice call initiation behavior | — |
+| `onVideoCallClick` | `(user?: CometChat.User, group?: CometChat.Group) => void` | `undefined` | Overrides the default video call initiation behavior | — |
+
 ## Actions
 
 [Actions](/ui-kit/react/components-overview#actions) split into predefined (built-in triggers) and user-defined (callbacks).
@@ -113,6 +120,62 @@ const CallButtonDemo = () => {
 };
 ```
 
+#### onVoiceCallClick
+
+Fires when the voice call button is clicked. Overrides the default voice call initiation.
+
+| Detail | Value |
+| --- | --- |
+| When it fires | User clicks the voice call button |
+| Payload type | `(user?: CometChat.User, group?: CometChat.Group) => void` |
+| What devs typically do next | Custom call initiation logic, pre-call checks |
+
+```ts lines
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
+
+const CallButtonDemo = () => {
+  const [chatUser, setChatUser] = React.useState<CometChat.User>();
+  React.useEffect(() => {
+    CometChat.getUser("uid").then((user) => setChatUser(user));
+  }, []);
+
+  const handleVoiceCallClick = (user?: CometChat.User, group?: CometChat.Group) => {
+    console.log("Voice call clicked", user, group);
+  };
+
+  return <CometChatCallButtons user={chatUser} onVoiceCallClick={handleVoiceCallClick} />;
+};
+```
+
+#### onVideoCallClick
+
+Fires when the video call button is clicked. Overrides the default video call initiation.
+
+| Detail | Value |
+| --- | --- |
+| When it fires | User clicks the video call button |
+| Payload type | `(user?: CometChat.User, group?: CometChat.Group) => void` |
+| What devs typically do next | Custom call initiation logic, pre-call checks |
+
+```ts lines
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
+
+const CallButtonDemo = () => {
+  const [chatUser, setChatUser] = React.useState<CometChat.User>();
+  React.useEffect(() => {
+    CometChat.getUser("uid").then((user) => setChatUser(user));
+  }, []);
+
+  const handleVideoCallClick = (user?: CometChat.User, group?: CometChat.Group) => {
+    console.log("Video call clicked", user, group);
+  };
+
+  return <CometChatCallButtons user={chatUser} onVideoCallClick={handleVideoCallClick} />;
+};
+```
+
 ## Filters
 
 Set `CallSettingsBuilder` to customize the calling experience. Refer to [CallSettingsBuilder](/sdk/javascript/direct-call#settings).
@@ -127,11 +190,9 @@ const CallButtonDemo = () => {
     CometChat.getUser("uid").then((user) => setChatUser(user));
   }, []);
 
-  const getCallSettingsBuilder = (call: CometChat.Call) => {
+  const getCallSettingsBuilder = (isAudioOnlyCall: boolean, user?: CometChat.User, group?: CometChat.Group) => {
     return new CometChatCalls.CallSettingsBuilder()
-      .setIsAudioOnlyCall(
-        call?.getType() === CometChatUIKitConstants.MessageTypes.audio
-      )
+      .setIsAudioOnlyCall(isAudioOnlyCall)
       .build();
   };
 
