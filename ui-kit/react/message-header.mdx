@@ -3,53 +3,32 @@ title: "Message Header"
 description: "CometChatMessageHeader component displays user or group details in the toolbar including avatar, name, status, typing indicator, and back navigation. Supports custom views and CSS styling."
 ---
 
-<Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Import:** `import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";`
-- **Minimal JSX:** `<CometChatMessageHeader user={chatUser} />` or `<CometChatMessageHeader group={chatGroup} />`
-- **Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
-- **Key props:** `user: CometChat.User`, `group: CometChat.Group`, `hideBackButton: boolean`, `hideUserStatus: boolean`
-- **CSS class:** `.cometchat-message-header`
-- **Events:** None (does not emit events directly)
-</Accordion>
-
-## Overview
-
-`MessageHeader` is a Component that showcases the [User](/sdk/javascript/users-overview) or [Group](/sdk/javascript/groups-overview) details in the toolbar. Furthermore, it also presents a typing indicator and a back navigation button for ease of use.
-
-Import path: `import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";`
-
 <Frame>
   <img src="/images/af3844a0-messages_header_overview_web_screens-e2e210ec4afa809b4d4dd038df2b4073.png" />
 </Frame>
 
-<Note>
-**Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
-</Note>
+<Accordion title="AI Agent Component Spec">
 
-The `MessageHeader` is comprised of the following components:
+| Field | Value |
+| --- | --- |
+| Purpose | Toolbar displaying user/group avatar, name, status, typing indicator, back button, and call controls for a single conversation |
+| Package | `@cometchat/chat-uikit-react` |
+| Import | `import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";` |
+| Used in experiences | Chat view header, message detail toolbar, conversation screen top bar |
+| Copy-paste base | See [Base Code](#base-code--stylesheet) below |
+| Primary output | Navigation callback (from `onBack`), item click (from `onItemClick`) |
+| Primary hook points | `onBack`, `onError`, `onItemClick`, `onSearchOptionClicked`, view slots (`itemView`, `titleView`, `subtitleView`, `leadingView`, `trailingView`, `auxiliaryButtonView`) |
+| CSS root class | `.cometchat-message-header` |
+| Real-time events | None emitted; internally listens for typing indicators and user presence |
 
-| Component         | Description                                                                                                                                    |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| CometChatListItem | This component's view consists of avatar, status indicator , title, and subtitle. The fields are then mapped with the SDK's user, group class. |
-| Back Button       | BackButton that allows users to navigate back from the current activity or screen to the previous one.                                         |
+</Accordion>
 
-## Why Use / When to Use
+## Base Code and Stylesheet
 
-- Display user or group details (avatar, name, status) at the top of a chat view
-- Show a real-time typing indicator when the other participant is composing a message
-- Provide back navigation so users can return to the conversation list from the message view
-- Toggle visibility of voice and video call buttons for call-enabled conversations
-- Customize the header layout with custom view slots for title, subtitle, leading, trailing, and auxiliary button areas
-- Show or hide the user's online/offline status indicator based on your app's requirements
-- Enable a conversation summary button for AI-powered message summarization
-
-## Usage
-
-### Integration
+Renders a toolbar with avatar, name, status, and typing indicator for a user or group conversation.
 
 <Tabs>
-<Tab title="TypeScript">
+<Tab title="MessageHeaderDemo.tsx">
 ```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -68,47 +47,104 @@ export function MessageHeaderDemo() {
   ) : null;
 }
 ```
-
 </Tab>
+<Tab title="App.tsx">
+```tsx lines
+import { MessageHeaderDemo } from "./MessageHeaderDemo";
 
-<Tab title="JavaScript">
-```jsx lines
-import React, { useState, useEffect } from "react";
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
+export default function App() {
+  return (
+    <div className="App">
+      <MessageHeaderDemo />
+    </div>
+  );
+}
+```
+</Tab>
+</Tabs>
 
-export function MessageHeaderDemo() {
-  const [chatUser, setChatUser] = useState(null);
-  useEffect(() => {
-    CometChat.getUser("uid").then((user) => {
-      setChatUser(user);
-    });
-  }, []);
+Root CSS class for style overrides:
 
-  return chatUser ? (
-    <div>{chatUser && <CometChatMessageHeader user={chatUser} />}</div>
-  ) : null;
+```css lines
+.cometchat-message-header {
+  /* overrides here */
 }
 ```
 
-</Tab>
+## Functionality
 
-</Tabs>
+Props that control component behavior, grouped by surface area.
 
-### Actions
+### Data
 
-[Actions](/ui-kit/react/components-overview#actions) dictate how a component functions. They are divided into two types: Predefined and User-defined. You can override either type, allowing you to tailor the behavior of the component to fit your specific needs.
+| Property | Type | Default | Effect | Pitfall |
+| --- | --- | --- | --- | --- |
+| `user` | `CometChat.User` | `undefined` | Displays user details (avatar, name, status) in the header | Pass either `user` or `group`, not both |
+| `group` | `CometChat.Group` | `undefined` | Displays group details (icon, name, member count) in the header | Pass either `user` or `group`, not both |
 
-#### 1. OnBack
+### UI Visibility Toggles
 
-`OnBack` is triggered when you click on the back button of the Message Header component. You can override this action using the following code snippet.
+| Property | Type | Default | Effect | Pitfall |
+| --- | --- | --- | --- | --- |
+| `showBackButton` | `boolean` | `false` | Shows the back navigation button | — |
+| `hideVideoCallButton` | `boolean` | `false` | Hides the video call button | — |
+| `hideVoiceCallButton` | `boolean` | `false` | Hides the voice call button | — |
+| `hideUserStatus` | `boolean` | `false` | Hides the user's online/offline status indicator | — |
+| `showConversationSummaryButton` | `boolean` | `false` | Shows the AI conversation summary button | Requires AI features to be enabled |
+| `showSearchOption` | `boolean` | `false` | Shows the search option in the header | — |
 
-**Example**
+### AI / Summary
 
-In this example, we are employing the `onBack` action.
+| Property | Type | Default | Effect | Pitfall |
+| --- | --- | --- | --- | --- |
+| `summaryGenerationMessageCount` | `number` | `1000` | Number of messages used for AI summary generation | Higher values may increase latency |
+| `disableAutoSummaryGeneration` | `boolean` | `false` | Disables automatic conversation summary generation | — |
 
-<Tabs>
-<Tab title="MessageHeaderDemo.tsx">
+### Date Formatting
+
+| Property | Type | Default | Effect |
+| --- | --- | --- | --- |
+| `lastActiveAtDateTimeFormat` | `CalendarObject` | See default below | Customizes the "last seen" timestamp format |
+
+Default `lastActiveAtDateTimeFormat`:
+
+```ruby lines
+new CalendarObject({
+  today: `[Last seen DD MMM at] hh:mm A`,
+  yesterday: `[Last seen DD MMM at] hh:mm A`,
+  otherDays: `[Last seen DD MMM at] hh:mm A`,
+  relativeTime: {
+    hour: `Last seen  %d hour ago`,
+    minute: `Last seen  %d minute ago`,
+    minutes: `Last seen  %d minutes ago`,
+  },
+});
+```
+
+<Note>
+If a property is not passed in the CalendarObject, the component checks the [global configuration](/ui-kit/react/localize#customisation) first, then falls back to the component's default formatting.
+</Note>
+
+## Actions
+
+[Actions](/ui-kit/react/components-overview#actions) split into predefined (built-in triggers) and user-defined (callbacks).
+
+### Predefined Actions
+
+The component has no built-in navigation behavior. The back button fires `onBack` but does not navigate automatically.
+
+### User-Defined Actions
+
+#### onBack
+
+Fires when the back button is clicked. Requires `showBackButton={true}`.
+
+| Detail | Value |
+| --- | --- |
+| When it fires | User clicks the back button |
+| Payload type | `() => void` |
+| What devs typically do next | Navigate back to conversation list |
+
 ```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -136,22 +172,16 @@ export function MessageHeaderDemo() {
 }
 ```
 
-</Tab>
+#### onError
 
-</Tabs>
+Fires when the component encounters an error.
 
-***
+| Detail | Value |
+| --- | --- |
+| When it fires | Any internal error during rendering |
+| Payload type | `(error: CometChat.CometChatException) => void` |
+| What devs typically do next | Log to error tracking service |
 
-#### 2. OnError
-
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the Message Header component.
-
-**Example**
-
-In this example, we are employing the `onError` action.
-
-<Tabs>
-<Tab title="MessageHeaderDemo.tsx">
 ```tsx lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -178,18 +208,16 @@ export function MessageHeaderDemo() {
 }
 ```
 
-</Tab>
+#### onSearchOptionClicked
 
-</Tabs>
+Fires when the search option is clicked. Requires `showSearchOption={true}`.
 
-***
+| Detail | Value |
+| --- | --- |
+| When it fires | User clicks the search option |
+| Payload type | `() => void` |
+| What devs typically do next | Open search UI, filter messages |
 
-#### 3. onSearchOptionClicked
-
-The `onSearchOptionClicked` event is triggered when the user clicks the search option. It does not have a default behavior. However, you can override its behavior using the following code snippet.
-
-<Tabs>
-<Tab title="MessageHeaderDemo.tsx">
 ```tsx lines
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 
@@ -200,130 +228,68 @@ const handleSearchClick = () => {
 <CometChatMessageHeader onSearchOptionClicked={handleSearchClick} />;
 ```
 
-</Tab>
+#### onItemClick
 
-</Tabs>
+Fires when the list item area (avatar + name) is clicked.
 
-***
+| Detail | Value |
+| --- | --- |
+| When it fires | User clicks the header list item |
+| Payload type | `() => void` |
+| What devs typically do next | Open user/group detail panel |
 
-#### 4. OnItemClick
-
-`OnItemClick` is triggered when you click on a ListItem of the `CometChatMessageHeader` component. The `OnItemClick` action doesn't have a predefined behavior. You can override this action using the following code snippet.
-
-<Tabs>
-<Tab title="MessageHeaderDemo.tsx">
 ```tsx lines
-import { MessageHeaderDemo } from "@cometchat/chat-uikit-react";
+import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 
 const getOnItemClick = () => {
   console.log("List item clicked");
 };
 
-<MessageHeaderDemo onItemClick={getOnItemClick} />;
+<CometChatMessageHeader user={chatUser} onItemClick={getOnItemClick} />;
 ```
 
-</Tab>
+## Filters
 
-</Tabs>
+The MessageHeader component does not have any exposed filters. It displays details for a single user or group and does not fetch paginated lists.
 
-***
+## Events
 
-### Filters
+### UI Events
 
-**Filters** allow you to customize the data displayed in a list within a `Component`. You can filter the list based on your specific criteria, allowing for a more customized. Filters can be applied using `RequestBuilders` of Chat SDK.
+The MessageHeader component does not emit any custom UI events.
 
-The `MessageHeader` component does not have any exposed filters.
+### SDK Events (Real-Time)
 
-### Events
+The component internally listens to SDK events for real-time updates. No manual attachment needed.
 
-[Events](/ui-kit/react/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+| SDK Listener | What it does inside the component |
+| --- | --- |
+| `onUserOnline` / `onUserOffline` | Updates the user's online/offline status indicator |
+| `onTypingStarted` / `onTypingEnded` | Shows/hides the typing indicator in the subtitle area |
+| Group member events | Updates group member count when members join/leave |
 
-The `MessageHeader` component does not produce any events.
+## Advanced: Custom View Slots
 
-### Style
+Customization override points for the message header UI.
 
-To customize the appearance, you can customise css of `CometChatMessageHeader`. The root CSS class for this component is `.cometchat-message-header`.
+### Slot Catalog
 
-<Frame>
-  <img src="/images/2a21baeb-messages_header_style_web_screens-f4b1c171012576f4fb7fc25cf02f92d5.png" />
-</Frame>
+| Slot | Params | What it replaces | Section |
+| --- | --- | --- | --- |
+| `itemView` | `JSX.Element` | Entire list item (avatar + name + subtitle) | Whole item |
+| `leadingView` | `JSX.Element` | Avatar / left section | Sub-section (leading) |
+| `trailingView` | `JSX.Element` | Right section (call buttons area) | Sub-section (trailing) |
+| `titleView` | `JSX.Element` | Name / title text | Sub-section (title) |
+| `subtitleView` | `JSX.Element` | Subtitle text (status / typing indicator) | Sub-section (subtitle) |
+| `auxiliaryButtonView` | `JSX.Element` | Auxiliary button area (next to call buttons) | Sub-section (auxiliary) |
 
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import React from "react";
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
+### itemView
 
-// Assuming groupObj is defined elsewhere in your code
-<CometChatMessageHeader group={groupObj} />;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.cometchat-message-header .cometchat-list-item .cometchat-avatar {
-  background: #f0999b;
-  border-radius: 8px;
-}
-.cometchat-message-header .cometchat-avatar__text {
-  font-family: "SF Pro";
-}
-```
-
-</Tab>
-
-</Tabs>
-
-### Functionality
-
-These are a set of small functional customizations that allow you to fine-tune the overall experience of the component. With these, you can change text, set custom icons, and toggle the visibility of UI elements.
-
-Here is a code snippet demonstrating how you can customize the functionality of the Message Header component.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
-
-<CometChatMessageHeader user={chatUser} showBackButton={true} />;
-```
-
-</Tab>
-
-</Tabs>
-
-Following is a list of customizations along with their corresponding code snippets:
-
-| Property                             | Description                                                                                         | Code                                   |
-| ------------------------------------ | --------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| **Show Back Button**                 | Shows the back button.                                                                              | `showBackButton={true}`                |
-| **Hide Video Call Button**           | Hides the video call button.                                                                        | `hideVideoCallButton={true}`           |
-| **Hide Voice Call Button**           | Hides the voice call button.                                                                        | `hideVoiceCallButton={true}`           |
-| **Show Conversation Summary Button** | Shows the conversation summary button.                                                              | `showConversationSummaryButton={true}` |
-| **Hide User Status**                 | Hides the user's online/offline status indicator.                                                   | `hideUserStatus={true}`                |
-| **Show Search Option**               | Shows the search option.                                                                            | `showSearchOption={true}`              |
-| **User**                             | A `CometChat.User` object representing the user whose information (e.g., status) is displayed.      | `user={chatUser}`                      |
-| **Group**                            | A `CometChat.Group` object representing the group whose details (e.g., member count) are displayed. | `group={chatGroup}`                    |
-| **Summary Generation Message Count** | Number of messages for which the summary should be shown.                                           | `summaryGenerationMessageCount={1000}` |
-| **Disable Auto Summary Generation**  | Disables the auto generation of conversation summary.                                               | `disableAutoSummaryGeneration={true}`  |
-
-## Advanced Features
-
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
-
-### Custom View Slots
-
-#### ItemView
-
-The customized chat interface is displayed below.
+Replace the entire list item (avatar + name + subtitle).
 
 <Frame>
   <img src="/images/0a3d38de-messages_header_list_item_view_web_screens-024979a70f09486b76e913633bfc9e81.png" />
 </Frame>
-
-Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
@@ -335,7 +301,6 @@ import {
   CometChatListItem,
 } from "@cometchat/chat-uikit-react";
 
-// Custom list item view definition
 const CustomItemView = (
   <>
     <CometChatListItem
@@ -353,31 +318,23 @@ const CustomItemView = (
   showBackButton={true}
 />;
 ```
-
 </Tab>
-
 <Tab title="CSS">
 ```css lines
 .cometchat-message-header .cometchat-list-item .cometchat-avatar {
   border-radius: 8px;
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+### titleView
 
-#### TitleView
-
-The customized chat interface is displayed below.
+Replace the name / title text.
 
 <Frame>
   <img src="/images/1ee88b50-message_header_custom_title_web_screens-d8b5c4b4ef21f6ea1e5e87c536ddfbd6.png" />
 </Frame>
-
-Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
@@ -386,7 +343,6 @@ import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 
-// Custom title view component
 function CustomTitleView() {
   return (
     <div className="message-header__title-view">
@@ -402,54 +358,43 @@ function CustomTitleView() {
 
 <CometChatMessageHeader user={userObj} titleView={CustomTitleView()} />;
 ```
-
 </Tab>
-
 <Tab title="CSS">
 ```css lines
 .cometchat-message-header .message-header__title-view {
-    display: flex;
-    gap: 4px;
-    width: 100%;
+  display: flex;
+  gap: 4px;
+  width: 100%;
 }
 
 .cometchat-message-header .message-header__title-view .message-header__title-view-name {
-    color: #141414;
-    font: 500 16px/19.2px Roboto;
-    text-align: left;
+  color: #141414;
+  font: 500 16px/19.2px Roboto;
+  text-align: left;
 }
 
 .cometchat-message-header .message-header__title-view .message-header__title-view-status {
-    color: #6852d6;
-    font: 400 16px/19.2px Roboto;
-    text-align: left;
+  color: #6852d6;
+  font: 400 16px/19.2px Roboto;
+  text-align: left;
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+### subtitleView
 
-#### SubtitleView
-
-The customized chat interface is displayed below.
+Replace the subtitle text (status / typing indicator area).
 
 <Frame>
   <img src="/images/7f5924bc-messages_header_subtitle_view_web_screens-2b9e776b10d555785c6cdcc224433167.png" />
 </Frame>
 
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
 ```ts lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 
-// Custom subtitle view component
 function CustomSubtitleView() {
   return <>{group?.getMembersCount() + " • " + group?.getDescription()}</>;
 }
@@ -457,21 +402,13 @@ function CustomSubtitleView() {
 <CometChatMessageHeader group={groupObj} subtitleView={CustomSubtitleView()} />;
 ```
 
-</Tab>
+### leadingView
 
-</Tabs>
-
-***
-
-#### LeadingView
-
-The customized chat interface is displayed below.
+Replace the avatar / left section.
 
 <Frame>
   <img src="/images/e084dde6-message_header_custom_leading_web_screens-fd38a005ae8bfcce9e2310031b1a90e5.png" />
 </Frame>
-
-Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
@@ -483,7 +420,6 @@ import {
   CometChatAvatar,
 } from "@cometchat/chat-uikit-react";
 
-// Custom title view component
 function CustomLeadingView() {
   return (
     <div className="message-header__leading-view">
@@ -497,52 +433,44 @@ function CustomLeadingView() {
 
 <CometChatMessageHeader user={userObj} leadingView={CustomLeadingView()} />;
 ```
-
 </Tab>
-
 <Tab title="CSS">
 ```css lines
 .cometchat-message-header .cometchat-list-item .message-header__leading-view .cometchat-avatar__image,
 .cometchat-message-header .cometchat-list-item .message-header__leading-view .cometchat-avatar {
-    border-radius: 8px;
-    height: 48px;
-    width: 48px;
+  border-radius: 8px;
+  height: 48px;
+  width: 48px;
 }
 
 .message-header__leading-view-role {
-    display: flex;
-    width: 48px;
-    height: 15px;
-    padding: 1px 3px;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font: 600 8px/9.6px Roboto;
-    background: #0b7bea;
-    position: absolute;
-    bottom: -2px;
+  display: flex;
+  width: 48px;
+  height: 15px;
+  padding: 1px 3px;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font: 600 8px/9.6px Roboto;
+  background: #0b7bea;
+  position: absolute;
+  bottom: -2px;
 }
 
 .message-header__leading-view {
-    position: relative;
+  position: relative;
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+### trailingView
 
-#### TrailingView
-
-The customized chat interface is displayed below.
+Replace the right section (call buttons area).
 
 <Frame>
   <img src="/images/b640e72a-message_header_custom_trailing_web_screens-4961a5bdae2839b245b87f641a6c9c2f.png" />
 </Frame>
-
-Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
@@ -554,7 +482,6 @@ import {
   CometChatButton,
 } from "@cometchat/chat-uikit-react";
 
-// Custom trailing view component
 function CustomTrailingButtonView() {
   return (
     <>
@@ -562,7 +489,7 @@ function CustomTrailingButtonView() {
         onClick={() => {
           // Your logic here
         }}
-        iconURL={icon} // Ensure `icon` is defined or passed as a prop
+        iconURL={icon}
       />
     </>
   );
@@ -573,38 +500,30 @@ function CustomTrailingButtonView() {
   trailingView={CustomTrailingButtonView()}
 />;
 ```
-
 </Tab>
-
 <Tab title="CSS">
 ```css lines
 .cometchat-message-header .cometchat-list-item__trailing-view .cometchat-button {
-    background: transparent;
-    height: 24px;
-    width: 24px;
-    padding: 0;
+  background: transparent;
+  height: 24px;
+  width: 24px;
+  padding: 0;
 }
 
 .cometchat-message-header .cometchat-list-item__trailing-view .cometchat-button__icon {
-    background: black;
+  background: black;
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+### auxiliaryButtonView
 
-#### AuxiliaryButtonView
-
-The customized chat interface is displayed below.
+Replace the auxiliary button area (next to call buttons).
 
 <Frame>
   <img src="/images/1ab8252d-messages_header_menu_web_screens-5d6e2d212881585e5761e1f53e328ea4.png" />
 </Frame>
-
-Use the following code to achieve the customization shown above.
 
 <Tabs>
 <Tab title="TypeScript">
@@ -616,7 +535,6 @@ import {
   CometChatButton,
 } from "@cometchat/chat-uikit-react";
 
-// Custom auxiliary view component
 function CustomAuxiliaryButtonView() {
   return (
     <>
@@ -624,7 +542,7 @@ function CustomAuxiliaryButtonView() {
         onClick={() => {
           // Your logic here
         }}
-        iconURL={icon} // Ensure `icon` is defined or passed as a prop
+        iconURL={icon}
       />
     </>
   );
@@ -635,157 +553,70 @@ function CustomAuxiliaryButtonView() {
   auxiliaryButtonView={CustomAuxiliaryButtonView()}
 />;
 ```
-
 </Tab>
-
 <Tab title="CSS">
 ```css lines
 .cometchat-message-header .cometchat-message-header__auxiliary-view .cometchat-button {
-    background: transparent;
-    height: 24px;
-    width: 24px;
-    padding: 0;
+  background: transparent;
+  height: 24px;
+  width: 24px;
+  padding: 0;
 }
 
 .cometchat-message-header .cometchat-message-header__auxiliary-view .cometchat-button__icon {
-    background: black;
+  background: black;
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-#### LastActiveAt Date Time Format
+### lastActiveAtDateTimeFormat
 
-The `lastActiveAtDateTimeFormat` property allows you to customize the **last active** timestamp displayed in the message header.
+Customize the "last seen" timestamp format using a `CalendarObject`.
 
-Default Date Time Format:
-
-```ruby lines
-new CalendarObject({
-  today: `[Last seen DD MMM at] hh:mm A`, // Example: "today at 10:30 AM"
-  yesterday: `[Last seen DD MMM at] hh:mm A`, // Example: "yesterday at 08:15 PM"
-  otherDays: `[Last seen DD MMM at] hh:mm A`, // Example: "25, Jan 05:45 PM"
-  relativeTime: {
-    hour: `Last seen  %d hour ago`, // Example: "1 hour ago"
-    minute: `Last seen  %d minute ago`, // Example: "1 minute ago"
-    minutes: `Last seen  %d minutes ago`, // Example: "5 minutes ago"
-  },
-});
-```
-
-The following example demonstrates how to modify the **last active** timestamp format using a custom [`CalendarObject`](/ui-kit/react/localize#calendarobject).
-
-<Tabs>
-<Tab title="TypeScript">
 ```ts lines
 import {
   CometChatMessageHeader,
   CalendarObject,
 } from "@cometchat/chat-uikit-react";
 
-// Define a custom date format pattern
 function getDateFormat() {
   const dateFormat = new CalendarObject({
-    today: `hh:mm A`, // Example: "10:30 AM"
-    yesterday: `[yesterday]`, // Example: "yesterday"
-    otherDays: `DD MM YYYY`, // Example: "25 01 2025"
+    today: `hh:mm A`,
+    yesterday: `[yesterday]`,
+    otherDays: `DD MM YYYY`,
   });
   return dateFormat;
 }
 
-// Apply the custom format to the CometChatMessageHeader component
 <CometChatMessageHeader
   group={groupObj}
   lastActiveAtDateTimeFormat={getDateFormat()}
 />;
 ```
 
-</Tab>
-
-</Tabs>
-
 <Note>
-
-**Fallback Mechanism**
-
-* If you **do not** pass any property in the [**CalendarObject**](/ui-kit/react/localize#calendarobject), the component will first check the [**global configuration**](/ui-kit/react/localize#customisation). If the property is **also missing in the global configuration**, it will **fallback to the component's default formatting**.
-
+If a property is not passed in the CalendarObject, the component checks the [global configuration](/ui-kit/react/localize#customisation) first, then falls back to the component's default formatting.
 </Note>
 
-### Customization Matrix
+## Theme and Styling
 
-| What you want to change | Where | Property/API | Example |
-| --- | --- | --- | --- |
-| Override behavior on user interaction | Component props | `on<Event>` callbacks | `onBack={() => navigate(-1)}` |
-| Toggle visibility of UI elements | Component props | `hide<Feature>` / `show<Feature>` boolean props | `hideUserStatus={true}` |
-| Replace a section of the header | Component props | `<slot>View` render props | `titleView={<CustomTitle />}` |
-| Change colors, fonts, spacing | Global CSS | Target `.cometchat-message-header` class | `.cometchat-message-header .cometchat-avatar { border-radius: 8px; }` |
+Using CSS, customize the look and feel of the component. The root CSS class is `.cometchat-message-header`.
 
-## Pagination, Batching, and Performance
+<Frame>
+  <img src="/images/2a21baeb-messages_header_style_web_screens-f4b1c171012576f4fb7fc25cf02f92d5.png" />
+</Frame>
 
-Pagination does not apply to the MessageHeader component. The MessageHeader displays details for a single user or group conversation and does not fetch or paginate lists of data. For list-based pagination, see the [Conversations](/ui-kit/react/conversations), [Users](/ui-kit/react/users), or [Message List](/ui-kit/react/message-list) components.
+```tsx lines
+<CometChatMessageHeader group={groupObj} />
+```
 
-## Error Handling and Retries
-
-The MessageHeader component supports an `onError` callback prop that fires when an error occurs during rendering or data fetching. You can use this to log errors or display custom error UI.
-
-See the `onError` callback example in [Basic Usage > Actions](#actions) for the implementation pattern. The `onError` prop receives a `CometChat.CometChatException` object containing the error details.
-
-<AccordionGroup>
-<Accordion title="Common Failure Modes">
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| Component doesn't render | `CometChatUIKit.init()` not called or not awaited | Ensure init completes before rendering. See [Methods](/ui-kit/react/methods) |
-| Component renders but shows no data | User not logged in | Call `CometChatUIKit.login("UID")` after init |
-| Typing indicator not showing | No active typing in the conversation | Typing indicator appears only when the other user is actively typing |
-| Back button not visible | `hideBackButton={true}` is set | Remove or set `hideBackButton={false}` |
-| SSR hydration error | Component uses browser APIs on server | Wrap in `useEffect` or dynamic import with `ssr: false`. See [Next.js Integration](/ui-kit/react/next-js-integration) |
-
-</Accordion>
-</AccordionGroup>
-
-## Configuration and Environment
-
-The CometChatMessageHeader component requires `CometChatUIKit.init()` to be called with a valid `appId` and `region` before rendering. The user must be logged in via `CometChatUIKit.login()`. The component depends on the `@cometchat/chat-uikit-react` package, which includes `@cometchat/chat-sdk-javascript` as a peer dependency.
-
-React 18+ is supported. For Next.js, wrap the component in `useEffect` or use dynamic imports with `ssr: false` to avoid SSR hydration errors. See [Next.js Integration](/ui-kit/react/next-js-integration) and [React.js Integration](/ui-kit/react/react-js-integration) for setup details.
-
-## Files and Media
-
-Files and media handling does not apply to the MessageHeader component. The header displays user or group details but does not render or send media. For file and media support, see the [Message Composer](/ui-kit/react/message-composer) and [Message List](/ui-kit/react/message-list) components.
-
-## Logging, Tracing, and Observability
-
-To troubleshoot issues with the MessageHeader component (such as user status not updating or typing indicators not appearing), enable CometChat SDK debug logging. Set the log level to `DEBUG` during `CometChat.init()` to see detailed SDK activity in the browser console. Refer to the CometChat SDK documentation for the full logging configuration API.
-
-## Versioning, Beta Features, and Breaking Changes
-
-### Current Version
-
-This documentation covers CometChat React UI Kit V6 (`@cometchat/chat-uikit-react@6.x`).
-
-### Upgrading from V5
-
-If you are migrating from V5, see the [Upgrading from V5](/ui-kit/react/upgrading-from-v5) guide for a complete list of breaking changes and migration steps.
-
----
-
-### Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
-    Render messages in a chat view
-  </Card>
-  <Card title="Message Composer" icon="pen-to-square" href="/ui-kit/react/message-composer">
-    Compose and send messages
-  </Card>
-  <Card title="Thread Header" icon="comments" href="/ui-kit/react/thread-header">
-    Display threaded message details
-  </Card>
-  <Card title="Conversations" icon="comments" href="/ui-kit/react/conversations">
-    Display recent conversations
-  </Card>
-</CardGroup>
+```css lines
+.cometchat-message-header .cometchat-list-item .cometchat-avatar {
+  background: #f0999b;
+  border-radius: 8px;
+}
+.cometchat-message-header .cometchat-avatar__text {
+  font-family: "SF Pro";
+}
+```
