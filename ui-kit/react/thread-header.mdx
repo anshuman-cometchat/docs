@@ -87,6 +87,7 @@ Props that control component behavior, grouped by surface area.
 | --- | --- | --- | --- | --- |
 | `parentMessage` | `CometChat.BaseMessage` | — (required) | Sets the parent message displayed in the thread header | Must be a valid message object |
 | `template` | `CometChatMessageTemplate` | SDK default | Custom template for the parent message bubble rendering | Template `type`/`category` must match the parent message |
+| `textFormatters` | `CometChatTextFormatter[]` | `[]` | Custom text formatters for styling or formatting message text in the thread header | — |
 
 ### UI Visibility Toggles
 
@@ -94,6 +95,7 @@ Props that control component behavior, grouped by surface area.
 | --- | --- | --- | --- | --- |
 | `hideDate` | `boolean` | `false` | Hides the date header | — |
 | `hideReplyCount` | `boolean` | `false` | Hides the reply count | — |
+| `hideReceipts` | `boolean` | `false` | Hides the receipt indicator in the thread header | — |
 | `showScrollbar` | `boolean` | `false` | Shows the scrollbar in the component | — |
 
 ### Date Formatting
@@ -169,6 +171,16 @@ Fires when the component encounters an error.
 | Payload type | `(error: CometChat.CometChatException) => void` |
 | What devs typically do next | Log to error tracking service |
 
+#### onSubtitleClicked
+
+Fires when the subtitle area is clicked.
+
+| Detail | Value |
+| --- | --- |
+| When it fires | User clicks the subtitle area |
+| Payload type | `() => void` |
+| What devs typically do next | Open thread details, navigate to parent message context |
+
 ## Filters
 
 The ThreadHeader component does not have any exposed filters. It displays a single parent message and reply count.
@@ -193,6 +205,7 @@ Customization override points for the thread header UI.
 | --- | --- | --- | --- |
 | `messageBubbleView` | `(message: CometChat.BaseMessage) => JSX.Element` | Parent message bubble | Whole item |
 | `template` | `CometChatMessageTemplate` | Message template for bubble rendering | Whole item |
+| `subtitleView` | `JSX.Element` | Subtitle text below the thread title | Sub-section (subtitle) |
 
 ### messageBubbleView
 
