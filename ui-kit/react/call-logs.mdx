@@ -3,55 +3,32 @@ title: "Call Logs"
 description: "Display and manage call history with filtering, custom views, and call-back functionality using the CometChatCallLogs component."
 ---
 
-<Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Import:** `import { CometChatCallLogs } from "@cometchat/chat-uikit-react";`
-- **Minimal JSX:** `<CometChatCallLogs />`
-- **Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
-- **Key props:** `onItemClick` (callback), `onCallButtonClicked` (callback), `callLogRequestBuilder` (CallLogRequestBuilder), `title` (string), `activeCall` (object)
-- **CSS class:** `.cometchat-call-logs`
-- **Events:** `ccMessageSent`
-</Accordion>
-
-## Overview
-
-`CometChatCallLogs` is a Component that shows the list of Call Log available . By default, names are shown for all listed users, along with their avatar if available.
-
-Import path: `import { CometChatCallLogs } from "@cometchat/chat-uikit-react";`
-
 <Frame>
   <img src="/images/1c67191c-call_logs_overview_web_screens-afafcceff93f3e09e9371c3996b258ed.png" />
 </Frame>
 
-The `Call Logs` is comprised of the following components:
+<Accordion title="AI Agent Component Spec">
 
-| Components        | Description                                                                                                                 |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| CometChatList     | A reusable container component having title, search box, customizable background and a list view.                           |
-| CometChatListItem | A component that renders data obtained from a Group object on a Tile having a title, subtitle, leading and trailing view.   |
-| CometChatDate     | This component used to show the date and time. You can also customize the appearance of this widget by modifying its logic. |
+| Field | Value |
+| --- | --- |
+| Purpose | Scrollable list of call history entries with filtering, call-back actions, and custom views |
+| Package | `@cometchat/chat-uikit-react` |
+| Import | `import { CometChatCallLogs } from "@cometchat/chat-uikit-react";` |
+| Used in experiences | Call history panel, call log sidebar |
+| Copy-paste base | See [Base Code](#base-code--stylesheet) below |
+| Primary output | Item click (from `onItemClick`), call-back (from `onCallButtonClicked`) |
+| Primary hook points | `onItemClick`, `onCallButtonClicked`, `onError`, `callLogRequestBuilder`, view slots (`subtitleView`, `trailingView`, `leadingView`, `titleView`, `itemView`) |
+| CSS root class | `.cometchat-call-logs` |
+| Real-time events | `CometChatMessageEvents.ccMessageSent` |
 
+</Accordion>
 
-<Note>
-**Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
-</Note>
+## Base Code and Stylesheet
 
-## Why Use / When to Use
-
-- Display a chronological list of all voice and video calls so users can review their call history at a glance
-- Filter call logs by type, status, direction, or recording availability using `CallLogRequestBuilder` for targeted views
-- Trigger call-back actions directly from the call log list via the `onCallButtonClicked` callback
-- Customize the appearance of each call log entry using view slots (`subtitleView`, `trailingView`, `leadingView`, `titleView`, `itemView`) for a branded experience
-- Handle item selection with `onItemClick` to navigate to call details or initiate follow-up actions
-- Control pagination with `setLimit` on the `CallLogRequestBuilder` to manage large call histories efficiently
-- Replace default empty, loading, and error states with custom views (`emptyView`, `loadingView`, `errorView`) to match your application design
-
-## Usage
-
-### Integration
+Renders a scrollable list of call log entries.
 
 <Tabs>
-<Tab title="TypeScript">
+<Tab title="CallLogDemo.tsx">
 ```tsx lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 import React from "react";
@@ -62,37 +39,74 @@ const CallLogDemo = () => {
 
 export default CallLogDemo;
 ```
-
-</Tab>
-
-<Tab title="JavaScript">
-```jsx lines
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-  return <CometChatCallLogs />;
-};
-
-export default CallLogDemo;
-```
-
 </Tab>
 </Tabs>
 
-### Actions
+Root CSS class for style overrides:
 
-[Actions](/ui-kit/react/components-overview#actions) dictate how a component functions. They are divided into two types: Predefined and User-defined. You can override either type, allowing you to tailor the behavior of the component to fit your specific needs.
+```css lines
+.cometchat-call-logs {
+  /* overrides here */
+}
+```
 
-#### 1. onItemClick
+## Functionality
 
-`onItemClick` is a callback function which triggers when a call log list item is clicked. It does not have a default behavior. However, you can override its behavior using the following code snippet.
+Props that control component behavior, grouped by surface area.
 
-<Tabs>
-<Tab title="TypeScript">
+### Data
+
+| Property | Type | Default | Effect | Pitfall |
+| --- | --- | --- | --- | --- |
+| `activeCall` | `object` | `undefined` | Highlights the currently active/selected call log entry | — |
+| `title` | `string` | `"Call Logs"` | Sets the header title | — |
+
+### UI Visibility Toggles
+
+| Property | Type | Default | Effect | Pitfall |
+| --- | --- | --- | --- | --- |
+| `showScrollbar` | `boolean` | `false` | Shows the scrollbar in the list | — |
+
+### Custom Views (Render Props)
+
+| Property | Type | Effect |
+| --- | --- | --- |
+| `loadingView` | `JSX.Element` | Shown while call logs are loading |
+| `emptyView` | `JSX.Element` | Shown when no call logs are available |
+| `errorView` | `JSX.Element` | Shown when an error occurs |
+
+### Date Formatting
+
+| Property | Type | Default | Effect |
+| --- | --- | --- | --- |
+| `callInitiatedDateTimeFormat` | `CalendarObject` | `DD MMM, hh:mm A` | Customizes the call initiated timestamp |
+
+<Note>
+If a property is not passed in the CalendarObject, the component checks the [global configuration](/ui-kit/react/localize#customisation) first, then falls back to the component's default formatting.
+</Note>
+
+## Actions
+
+[Actions](/ui-kit/react/components-overview#actions) split into predefined (built-in triggers) and user-defined (callbacks).
+
+### Predefined Actions
+
+The component handles list rendering and pagination internally.
+
+### User-Defined Actions
+
+#### onItemClick
+
+Fires when a call log list item is clicked.
+
+| Detail | Value |
+| --- | --- |
+| When it fires | User clicks a call log entry |
+| Payload type | `(callLog: any) => void` |
+| What devs typically do next | Navigate to call details, show call info |
+
 ```ts lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
 
 const CallLogDemo = () => {
   const handleOnItemClick = (callLog: any) => {
@@ -100,146 +114,58 @@ const CallLogDemo = () => {
   };
   return <CometChatCallLogs onItemClick={handleOnItemClick} />;
 };
-
-export default CallLogDemo;
 ```
 
-</Tab>
+#### onCallButtonClicked
 
-<Tab title="JavaScript">
-```js lines
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
+Fires when the call button in the trailing view is clicked.
 
-const CallLogDemo = () => {
-  const handleOnItemClick = (callLog) => {
-    console.log("custom on item click", callLog);
-  };
-  return <CometChatCallLogs onItemClick={handleOnItemClick} />;
-};
+| Detail | Value |
+| --- | --- |
+| When it fires | User clicks the call-back button on a log entry |
+| Payload type | `(callLog: any) => void` |
+| What devs typically do next | Initiate a call-back |
 
-export default CallLogDemo;
-```
-
-</Tab>
-
-</Tabs>
-
-#### 2. onCallButtonClicked
-
-`onCallButtonClicked` is a callback function which triggers when the call button in the trailing view is clicked.
-
-<Tabs>
-<Tab title="TypeScript">
 ```ts lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
 
 const CallLogDemo = () => {
   const handleOnCallButtonClick = (callLog: any) => {
-    console.log("custom on info click", callLog);
+    console.log("custom on call button click", callLog);
   };
   return <CometChatCallLogs onCallButtonClicked={handleOnCallButtonClick} />;
 };
-
-export default CallLogDemo;
 ```
 
-</Tab>
+#### onError
 
-<Tab title="JavaScript">
-```js lines
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
+Fires when the component encounters an error.
 
-const CallLogDemo = () => {
-  const handleOnCallButtonClick = (callLog) => {
-    console.log("custom on info click", callLog);
-  };
-  return <CometChatCallLogs onCallButtonClicked={handleOnCallButtonClick} />;
-};
+| Detail | Value |
+| --- | --- |
+| When it fires | Any internal error during data fetching or rendering |
+| Payload type | `(error: CometChat.CometChatException) => void` |
+| What devs typically do next | Log to error tracking service |
 
-export default CallLogDemo;
-```
+## Filters
 
-</Tab>
+Control which call logs appear using `CallLogRequestBuilder`. Refer to [CallLogRequestBuilder](/sdk/javascript/call-logs) for the full API.
 
-</Tabs>
+| Method | Type | Description |
+| --- | --- | --- |
+| `setLimit` | `number` | Number of call logs to fetch |
+| `setCallType` | `string` | Type of calls (call or meet) |
+| `setCallStatus` | `callStatus` | Status filter (initiated, ongoing, etc.) |
+| `setHasRecording` | `boolean` | Filter calls with recordings |
+| `setCallCategory` | `string` | Category filter (call or meet) |
+| `setCallDirection` | `string` | Direction filter (incoming or outgoing) |
+| `setUid` | `string` | Filter by user UID |
+| `setGuid` | `string` | Filter by group GUID |
+| `setAuthToken` | `string` | Auth token of the logged-in user |
 
-#### 3. onError
-
-This is a callback function which is triggered when the component encounters an error.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-  const handleOnError = (error: CometChat.CometChatException) => {
-    console.log("your custom on error actions", error);
-  };
-  return <CometChatCallLogs onError={handleOnError} />;
-};
-
-export default CallLogDemo;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-  const handleOnError = (error) => {
-    console.log("your custom on error actions", error);
-  };
-  return <CometChatCallLogs onError={handleOnError} />;
-};
-
-export default CallLogDemo;
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-### Filters
-
-**Filters** allow you to customize the data displayed in a list within a `Component`. You can filter the list based on your specific criteria, allowing for a more customized. Filters can be applied using `RequestBuilders` of Chat SDK.
-
-#### 1. CallLogRequestBuilder
-
-The [CallLogRequestBuilder](/sdk/javascript/call-logs) enables you to filter and customize the Call Log based on available parameters in [CallLogRequestBuilder](/sdk/javascript/call-logs). This feature allows you to create more specific and targeted queries when fetching the call logs. The following are the parameters available in [CallLogRequestBuilder](/sdk/javascript/call-logs)
-
-| Methods              | Type       | Description                                                  |
-| -------------------- | ---------- | ------------------------------------------------------------ |
-| **setLimit**         | number     | Specifies the number of call logs to fetch.                  |
-| **setCallType**      | String     | Sets the type of calls to fetch (call or meet).              |
-| **setCallStatus**    | callStatus | Sets the status of calls to fetch (initiated, ongoing, etc.) |
-| **setHasRecording**  | boolean    | Sets whether to fetch calls that have recordings.            |
-| **setCallCategory**  | string     | Sets the category of calls to fetch (call or meet).          |
-| **setCallDirection** | string     | Sets the direction of calls to fetch (incoming or outgoing)  |
-| **setUid**           | string     | Sets the UID of the user whose call logs to fetch.           |
-| **setGuid**          | string     | Sets the GUID of the user whose call logs to fetch.          |
-| **setAuthToken**     | string     | Sets the Auth token of the logged-in user.                   |
-
-**Example**
-
-In the example below, we're filtering Call Logs to show only canceled calls and setting the limit to five.
-
-<Tabs>
-<Tab title="TypeScript">
 ```ts lines
 import { CallLogRequestBuilder } from "@cometchat/calls-sdk-javascript";
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
 
 const CallLogDemo = () => {
   return (
@@ -251,1004 +177,300 @@ const CallLogDemo = () => {
     />
   );
 };
-
-export default CallLogDemo;
 ```
 
-</Tab>
+## Events
 
-<Tab title="JavaScript">
-```js lines
-import { CallLogRequestBuilder } from "@cometchat/calls-sdk-javascript";
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
+### UI Events
 
-const CallLogDemo = () => {
-  return (
-    <CometChatCallLogs
-      callLogRequestBuilder={new CallLogRequestBuilder()
-        .setAuthToken("authtoken")
-        .setLimit(5)
-        .setCallStatus("cancelled")}
-    />
-  );
-};
+| Event | Source | When it fires |
+| --- | --- | --- |
+| `ccMessageSent` | `CometChatMessageEvents` | Call message is sent |
 
-export default CallLogDemo;
-```
+#### Subscribe
 
-</Tab>
-
-</Tabs>
-
-***
-
-### Events
-
-[Events](/ui-kit/react/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
-
-The list of events emitted by the `Call Logs` component is as follows.
-
-| Event             | Description                                                                                               |
-| ----------------- | --------------------------------------------------------------------------------------------------------- |
-| **ccMessageSent** | This event is triggered when the sent message is in transit and also when it is received by the receiver. |
-
-***
-
-<Tabs>
-<Tab title="Add Listener">
 ```tsx lines
 const ccMessageSent = CometChatMessageEvents.ccMessageSent.subscribe(() => {
   //Your Code
 });
 ```
 
-</Tab>
+#### Unsubscribe
 
-</Tabs>
-
-***
-
-<Tabs>
-<Tab title="Remove Listener">
 ```tsx lines
 ccMessageSent?.unsubscribe();
 ```
 
-</Tab>
+### SDK Events (Real-Time)
 
-</Tabs>
+The component internally listens to SDK events for real-time updates. No manual attachment needed.
 
-***
 
-### Style
+## Advanced: Custom View Slots
 
-Using CSS you can customize the look and feel of the component in your app like the color, size, shape, and fonts. The root CSS class for this component is `.cometchat-call-logs`.
+Customization override points for the call logs UI.
 
-**Example:**
+### Slot Catalog
+
+| Slot | Params | What it replaces | Section |
+| --- | --- | --- | --- |
+| `itemView` | `(callLog: any) => JSX.Element` | Entire call log list item | Whole item |
+| `leadingView` | `(callLog: any) => JSX.Element` | Avatar / left section | Sub-section (leading) |
+| `trailingView` | `(callLog: any) => JSX.Element` | Right section (call-back button area) | Sub-section (trailing) |
+| `titleView` | `(callLog: any) => JSX.Element` | Name / title text | Sub-section (title) |
+| `subtitleView` | `(callLog: any) => JSX.Element` | Subtitle text (call type, duration) | Sub-section (subtitle) |
+
+### itemView
+
+Replace the entire call log list item.
 
 <Frame>
-  <img src="/images/c4c9cab0-call_logs_style_web_screens-c68c3a514fda10039e6c2f11a2c09c2b.png" />
+  <img src="/images/call_logs_list_item_view_web_screens.png" />
 </Frame>
 
 <Tabs>
 <Tab title="TypeScript">
 ```ts lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
 
-const CallLogDemo = () => {
-  return <CometChatCallLogs />;
+const getItemView = (callLog: any) => {
+  return (
+    <div className="custom-call-log-item">
+      <div className="custom-call-log-item__name">
+        {callLog?.getInitiator()?.getName()}
+      </div>
+      <div className="custom-call-log-item__status">
+        {callLog?.getStatus()}
+      </div>
+    </div>
+  );
 };
 
-export default CallLogDemo;
+<CometChatCallLogs itemView={getItemView} />;
 ```
-
 </Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-  return <CometChatCallLogs />;
-};
-
-export default CallLogDemo;
-```
-
-</Tab>
-
 <Tab title="CSS">
 ```css lines
-.cometchat .cometchat-call-logs .cometchat-list__header-title {
-  background-color: #fce9ea;
-  color: #f76808;
-  border: 0px 1px 1px 0px solid #e5484d;
-  font-family: "Times New Roman";
+.custom-call-log-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--cometchat-border-color-light);
 }
 
-.cometchat .cometchat-call-logs .cometchat-list-item__body-title {
-  overflow: hidden;
-  color: #141414;
-  text-overflow: ellipsis;
-  font-family: "Times New Roman";
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 19.2px;
+.custom-call-log-item__name {
+  font: var(--cometchat-font-heading4-medium);
+  color: var(--cometchat-text-color-primary);
 }
 
-.cometchat .cometchat-call-logs .cometchat-list-item__body-subtitle {
-  overflow: hidden;
-  color: #727272;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: "Times New Roman";
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 16.8px;
-}
-
-.cometchat .cometchat-call-logs .cometchat-avatar {
-  border-radius: 8px;
-  background: #fbaa75;
-}
-
-.cometchat .cometchat-call-logs .cometchat-avatar__image {
-  border-radius: 8px;
+.custom-call-log-item__status {
+  font: var(--cometchat-font-body-regular);
+  color: var(--cometchat-text-color-secondary);
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-***
+### subtitleView
 
-### Functionality
+Replace the subtitle text (call type, duration).
 
-These are a set of small functional customizations that allow you to fine-tune the overall experience of the component. With these, you can change text, set custom icons, and toggle the visibility of UI elements.
-
-Here is a code snippet demonstrating how you can customize the functionality of the `Call Logs` component.
+<Frame>
+  <img src="/images/call_logs_subtitle_view_web_screens.png" />
+</Frame>
 
 <Tabs>
 <Tab title="TypeScript">
 ```ts lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
 
-const CallLogDemo = () => {
-  return <CometChatCallLogs title="Your Custom Title" />;
+const getSubtitleView = (callLog: any) => {
+  return (
+    <div className="custom-call-log-subtitle">
+      {callLog?.getStatus()} • {callLog?.getType()}
+    </div>
+  );
 };
 
-export default CallLogDemo;
+<CometChatCallLogs subtitleView={getSubtitleView} />;
 ```
-
 </Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-  return <CometChatCallLogs title="Your Custom Title" />;
-};
-
-export default CallLogDemo;
+<Tab title="CSS">
+```css lines
+.custom-call-log-subtitle {
+  font: var(--cometchat-font-body-regular);
+  color: var(--cometchat-text-color-secondary);
+}
 ```
-
 </Tab>
-
 </Tabs>
 
-Below is a list of customizations along with corresponding code snippets
+### trailingView
 
-| Property           | Description                                                                 | Code                                                              |
-| ------------------ | --------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| **Active Call**    | Object representing the active call that is currently selected.             | `activeCall={call}`                                               |
-| **Show Scrollbar** | Controls the visibility of the scrollbar in the list.                       | `showScrollbar={true}`                                            |
-| **Loading View**   | A custom view to display when call logs are being loaded.                   | `loadingView={<>Custom Loading View</>}`                          |
-| **Empty View**     | A custom view to display when no call logs are available.                   | `emptyView={<>Custom Empty View</>}`                              |
-| **Error View**     | A custom view to display when an error occurs while fetching the call logs. | `errorView={<>Custom Error View</>}`                              |
-| **Item View**      | A function that renders a JSX element to display the item view.             | `itemView={(call) => { return (<>Custom Item View</>)}}`          |
-| **Leading View**   | A function that renders a JSX element to display the leading view.          | `leadingView={(call) => { return (<>Custom Leading View</>)}}`    |
-| **Title View**     | A function that renders a JSX element to display the title view.            | `titleView={(call) => { return (<>Custom Title View</>)}}`        |
-| **Sub Title View** | A function that renders a JSX element to display the subtitle view.         | `subtitleView={(call) => { return (<>Custom Sub Title View</>)}}` |
-| **Trailing View**  | A function that renders a JSX element to display the trailing view.         | `trailingView={(call) => { return (<>Custom Trailing View</>)}}`  |
+Replace the right section (call-back button area).
 
-## Advanced Features
-
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
-
-### Custom View Slots
-
-#### Call Initiated Date Time Format
-
-The `callInitiatedDateTimeFormat` property allows you to customize the **Call Initiated** timestamp displayed in the call logs.
-
-Default Date Time Format:
-
-```ruby
-new CalendarObject({
-  today: `DD MMM, hh:mm A`, // Example: "25 Jan, 10:30 AM"
-  yesterday: `DD MMM, hh:mm A`, // Example: "25 Jan, 10:30 AM"
-  otherDays: `DD MMM, hh:mm A`, // Example: "25 Jan, 10:30 AM"
-});
-```
-
-The following example demonstrates how to modify the **Call Initiated** timestamp format using a custom [`CalendarObject`](/ui-kit/react/localize#calendarobject).
+<Frame>
+  <img src="/images/call_logs_trailing_view_web_screens.png" />
+</Frame>
 
 <Tabs>
 <Tab title="TypeScript">
 ```ts lines
-import { CometChatCallLogs, CalendarObject } from "@cometchat/chat-uikit-react";
+import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 
-// Define a custom date format pattern
+const getTrailingView = (callLog: any) => {
+  return (
+    <div className="custom-call-log-trailing">
+      <button onClick={() => console.log("Call back", callLog)}>
+        📞 Call Back
+      </button>
+    </div>
+  );
+};
+
+<CometChatCallLogs trailingView={getTrailingView} />;
+```
+</Tab>
+<Tab title="CSS">
+```css lines
+.custom-call-log-trailing button {
+  background: var(--cometchat-primary-color);
+  color: var(--cometchat-static-white);
+  border: none;
+  border-radius: var(--cometchat-radius-2);
+  padding: 4px 12px;
+  cursor: pointer;
+  font: var(--cometchat-font-body-regular);
+}
+```
+</Tab>
+</Tabs>
+
+### leadingView
+
+Replace the avatar / left section.
+
+<Frame>
+  <img src="/images/call_logs_leading_view_web_screens.png" />
+</Frame>
+
+<Tabs>
+<Tab title="TypeScript">
+```ts lines
+import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
+
+const getLeadingView = (callLog: any) => {
+  return (
+    <div className="custom-call-log-leading">
+      <img
+        src={callLog?.getInitiator()?.getAvatar()}
+        alt={callLog?.getInitiator()?.getName()}
+      />
+    </div>
+  );
+};
+
+<CometChatCallLogs leadingView={getLeadingView} />;
+```
+</Tab>
+<Tab title="CSS">
+```css lines
+.custom-call-log-leading img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+```
+</Tab>
+</Tabs>
+
+### titleView
+
+Replace the name / title text.
+
+<Tabs>
+<Tab title="TypeScript">
+```ts lines
+import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
+
+const getTitleView = (callLog: any) => {
+  return (
+    <div className="custom-call-log-title">
+      {callLog?.getInitiator()?.getName()} — {callLog?.getType()}
+    </div>
+  );
+};
+
+<CometChatCallLogs titleView={getTitleView} />;
+```
+</Tab>
+<Tab title="CSS">
+```css lines
+.custom-call-log-title {
+  font: var(--cometchat-font-heading4-bold);
+  color: var(--cometchat-text-color-primary);
+}
+```
+</Tab>
+</Tabs>
+
+### callInitiatedDateTimeFormat
+
+Customize the call initiated timestamp format using a `CalendarObject`.
+
+```ts lines
+import {
+  CometChatCallLogs,
+  CalendarObject,
+} from "@cometchat/chat-uikit-react";
+
 function getDateFormat() {
   const dateFormat = new CalendarObject({
-    today: `hh:mm A`, // Example: "10:30 AM"
-    yesterday: `[yesterday]`, // Example: "yesterday"
-    otherDays: `DD/MM/YYYY`, // Example: "25/05/2025"
+    today: `hh:mm A`,
+    yesterday: `[yesterday]`,
+    otherDays: `DD MM YYYY`,
   });
   return dateFormat;
 }
 
-// Apply the custom format to the CometChatCallLogs component
 <CometChatCallLogs callInitiatedDateTimeFormat={getDateFormat()} />;
 ```
 
-</Tab>
-
-</Tabs>
-
 <Note>
-
-**Fallback Mechanism**
-
-* If you **do not** pass any property in the [**CalendarObject**](/ui-kit/react/localize#calendarobject), the component will first check the [**global configuration**](/ui-kit/react/localize#customisation). If the property is **also missing in the global configuration**, it will **fallback to the component's default formatting**.
-
+If a property is not passed in the CalendarObject, the component checks the [global configuration](/ui-kit/react/localize#customisation) first, then falls back to the component's default formatting.
 </Note>
 
-***
+## Theme and Styling
 
-#### ItemView
-
-With this property, you can assign a custom ListItem to the Call Logs Component.
-
-Shown below is the default chat interface.
+Using CSS, customize the look and feel of the component. The root CSS class is `.cometchat-call-logs`.
 
 <Frame>
-  <img src="/images/9651913d-call_logs_list_item_view_default_web_screens-dbfe4577abc175dfae4be457278229e1.png" />
+  <img src="/images/call_logs_style_web_screens.png" />
 </Frame>
 
-The customized chat interface is displayed below.
-
-<Frame>
-  <img src="/images/0979b620-call_logs_list_item_view_custom_web_screens-3e6cbb0ab8e9f5e53dcd010be28d79c5.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import {
-  CometChatCallLogs,
-  CometChatUIKitLoginListener,
-  isMissedCall,
-  isSentByMe,
-  verifyCallUser,
-} from "@cometchat/chat-uikit-react";
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-
-const CallLogDemo = () => {
-  const getItemView = (call: any) => {
-    const missedCall = isMissedCall(
-      call,
-      CometChatUIKitLoginListener?.getLoggedInUser()!
-    );
-    const isCallSentByMe = isSentByMe(
-      call,
-      CometChatUIKitLoginListener?.getLoggedInUser()!
-    );
-
-    let callStatus = missedCall
-      ? "Missed Call"
-      : isCallSentByMe
-      ? "Outgoing Call"
-      : "Incoming Call";
-
-    let callIcon = missedCall
-      ? missedIcon
-      : isCallSentByMe
-      ? outgoingIcon
-      : incomingIcon;
-
-    function formatDate(timestamp: number) {
-      // Convert the timestamp from seconds to milliseconds
-      const date = new Date(timestamp * 1000);
-
-      // Define options for formatting
-      const options: Object = {
-        day: "2-digit",
-        month: "short",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      };
-
-      // Format the date with the specified options
-      return date.toLocaleDateString("en-GB", options);
-    }
-
-    return (
-      <div>
-        <CometChatListItem
-          title={verifyCallUser(
-            call,
-            CometChatUIKitLoginListener?.getLoggedInUser()!
-          )?.getName()}
-          subtitleView={callStatus}
-          avatarURL={callIcon}
-          trailingView={formatDate(call?.getInitiatedAt())}
-        />
-      </div>
-    );
-  };
-
-  return <CometChatCallLogs itemView={getItemView} />;
-};
-
-export default CallLogDemo;
+```tsx lines
+<CometChatCallLogs />
 ```
 
-</Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChatCallLogs, CometChatUIKitLoginListener, isMissedCall, isSentByMe, verifyCallUser } from "@cometchat/chat-uikit-react";
-
-const CallLogDemo = () => {
-  const getItemView = (call) => {
-    const missedCall = isMissedCall(call, CometChatUIKitLoginListener?.getLoggedInUser()!);
-    const isCallSentByMe = isSentByMe(call, CometChatUIKitLoginListener?.getLoggedInUser()!);
-
-    let callStatus = missedCall
-      ? "Missed Call"
-      : isCallSentByMe
-        ? "Outgoing Call"
-        : "Incoming Call";
-
-    let callIcon = missedCall
-      ? missedIcon
-      : isCallSentByMe
-        ? outgoingIcon
-        : incomingIcon;
-
-    function formatDate(timestamp: number) {
-      // Convert the timestamp from seconds to milliseconds
-      const date = new Date(timestamp * 1000);
-
-      // Define options for formatting
-      const options: Object = {
-        day: '2-digit',
-        month: 'short',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      };
-
-      // Format the date with the specified options
-      return date.toLocaleDateString('en-GB', options);
-    }
-
-    return (
-      <div>
-        <CometChatListItem
-          title={verifyCallUser(call, CometChatUIKitLoginListener?.getLoggedInUser()!)?.getName()}
-          subtitleView={callStatus}
-          avatarURL={callIcon}
-          trailingView={formatDate(call?.getInitiatedAt())}
-        />
-      </div>
-    )
-  }
-  return <CometChatCallLogs itemView={getItemView} />;
-};
-
-export default CallLogDemo;
-```
-
-</Tab>
-
-<Tab title="CSS">
 ```css lines
-.cometchat .cometchat-call-logs .cometchat-list-item__trailing-view {
-  width: auto;
+.cometchat-call-logs {
+  border-radius: 16px;
+  border: 1px solid #e8e8e8;
   overflow: hidden;
-  color: #727272;
-  text-overflow: ellipsis;
-  font: 400 14px/120% roboto;
-  font-style: normal;
 }
 
-.cometchat .cometchat-call-logs .cometchat-avatar {
-  background-color: #edeafa;
+.cometchat-call-logs .cometchat-list-item {
+  background: #f9f8fd;
 }
 
-.cometchat .cometchat-call-logs .cometchat-avatar__image {
-  height: 24px;
-  width: 24px;
-}
-
-.cometchat .cometchat-call-logs .cometchat-list-item__body-title {
-  overflow: hidden;
-  color: #141414;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font: 500 16px/19.2px roboto;
-  font-style: normal;
-}
-
-.cometchat .cometchat-call-logs .cometchat-list-item__body-subtitle {
-  overflow: hidden;
-  color: #727272;
-  text-overflow: ellipsis;
-  font: 400 14px/120% roboto;
-  font-style: normal;
-}
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### SubtitleView
-
-You can customize the subtitle view for each call logs item to meet your requirements.
-
-Shown below is the default chat interface.
-
-<Frame>
-  <img src="/images/cd420317-call_logs_subtitle_view_default_web_screens-ba813e3d3f2de41842c56e96bb25b631.png" />
-</Frame>
-
-The customized chat interface is displayed below.
-
-<Frame>
-  <img src="/images/7ee48798-call_logs_subtitle_view_custom_web_screens-ebeac5546ecaef2b48b6e416e7c79ef9.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import {
-  CometChatCallLogs,
-  CometChatUIKitLoginListener,
-  isMissedCall,
-  isSentByMe,
-} from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-  const getSubtitleView = (call: any): JSX.Element => {
-    const missedCall = isMissedCall(
-      call,
-      CometChatUIKitLoginListener?.getLoggedInUser()!
-    );
-    const isCallSentByMe = isSentByMe(
-      call,
-      CometChatUIKitLoginListener?.getLoggedInUser()!
-    );
-
-    const iconClass = missedCall
-      ? "cometchat-call-logs__list-item-subtitle-icon-missed-call"
-      : isCallSentByMe
-      ? "cometchat-call-logs__list-item-subtitle-icon-outgoing-call"
-      : "cometchat-call-logs__list-item-subtitle-icon-incoming-call";
-
-    const callStatus = missedCall
-      ? "Missed Call"
-      : isCallSentByMe
-      ? "Outgoing Call"
-      : "Incoming Call";
-
-    return (
-      <>
-        <div className={`cometchat-call-logs__list-item-subtitle`}>
-          <div
-            className={`cometchat-call-logs__list-item-subtitle-icon ${iconClass}`}
-          />
-          <div className="cometchat-call-logs__list-item-subtitle-text">
-            {" "}
-            {callStatus}
-          </div>
-        </div>
-      </>
-    );
-  };
-
-  return <CometChatCallLogs subtitleView={getSubtitleView} />;
-};
-
-export default CallLogDemo;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChatCallLogs,CometChatUIKitLoginListener,isMissedCall,isSentByMe } from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-   const getSubtitleView = (call) => {
-
-    const missedCall = isMissedCall(call, CometChatUIKitLoginListener?.getLoggedInUser()!);
-    const isCallSentByMe = isSentByMe(call, CometChatUIKitLoginListener?.getLoggedInUser()!);
-
-    const iconClass = missedCall
-      ? "cometchat-call-logs__list-item-subtitle-icon-missed-call"
-      : isCallSentByMe
-        ? "cometchat-call-logs__list-item-subtitle-icon-outgoing-call"
-        : "cometchat-call-logs__list-item-subtitle-icon-incoming-call";
-
-    const callStatus = missedCall
-      ? "Missed Call"
-      : isCallSentByMe
-        ? "Outgoing Call"
-        : "Incoming Call";
-
-    return (
-      <>
-        <div className={`cometchat-call-logs__list-item-subtitle`}>
-          <div
-            className={`cometchat-call-logs__list-item-subtitle-icon ${iconClass}`}
-          />
-          <div className="cometchat-call-logs__list-item-subtitle-text">
-            {callStatus}
-          </div>
-        </div>
-      </>
-    )
-  }
-
-  return <CometChatCallLogs subtitleView={getSubtitleView} />;
-};
-
-export default CallLogDemo;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.cometchat-call-logs__list-item-subtitle-text {
-  overflow: hidden;
-  color: #727272;
-  text-overflow: ellipsis;
-  font: 400 14px/120% Roboto;
-  font-style: normal;
-}
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### TrailingView
-
-You can customize the trailing view for each call logs item to meet your requirements.
-
-Shown below is the default chat interface.
-
-<Frame>
-  <img src="/images/14479acb-call_logs_tailview_view_default_web_screens-637d9069b78e7385f223b24c0716960e.png" />
-</Frame>
-
-The customized chat interface is displayed below.
-
-<Frame>
-  <img src="/images/e63ef5d3-call_logs_tailview_view_custom_web_screens-b7298d6dc412a1d6d7772b6f0ec0f98d.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CallLog } from "@cometchat/calls-sdk-javascript";
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-  function formatDate(timestamp: number) {
-    // Convert the timestamp from seconds to milliseconds
-    const date = new Date(timestamp * 1000);
-
-    // Define options for formatting
-    const options: Object = {
-      day: "2-digit",
-      month: "short",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    };
-
-    // Format the date with the specified options
-    return date.toLocaleDateString("en-GB", options);
-  }
-
-  const getTrailingView = (call: any) => {
-    return (
-      <div className="call-log-trailing-view">
-        {formatDate(call?.getInitiatedAt())}
-      </div>
-    );
-  };
-
-  return <CometChatCallLogs trailingView={getTrailingView} />;
-};
-
-export default CallLogDemo;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-  function formatDate(timestamp) {
-    // Convert the timestamp from seconds to milliseconds
-    const date = new Date(timestamp * 1000);
-
-    // Define options for formatting
-    const options = {
-      day: "2-digit",
-      month: "short",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    };
-
-    // Format the date with the specified options
-    return date.toLocaleDateString("en-GB", options);
-  }
-
-  const getTrailingView = (call) => {
-    return (
-      <div className="call-log-trailing-view">
-        {formatDate(call?.getInitiatedAt())}
-      </div>
-    );
-  };
-
-  return <CometChatCallLogs trailingView={getTrailingView} />;
-};
-
-export default CallLogDemo;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.cometchat .cometchat-call-logs .cometchat-list-item__trailing-view {
-  width: auto;
-  overflow: hidden;
-  color: #727272;
-  text-overflow: ellipsis;
-  font: 400 14px/120% roboto;
-  font-style: normal;
-}
-```
-
-</Tab>
-
-</Tabs>
-
-#### LeadingView
-
-You can customize the leading view for each call logs item to meet your requirements.
-
-Shown below is the default chat interface.
-
-<Frame>
-  <img src="/images/14479acb-call_logs_tailview_view_default_web_screens-637d9069b78e7385f223b24c0716960e.png" />
-</Frame>
-
-The customized chat interface is displayed below.
-
-<Frame>
-  <img src="/images/c6a567b1-call_logs_leading_view_custom_web_screens-bf8a34b7c9a03d8875ab886c2e0d13db.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CallLog } from "@cometchat/calls-sdk-javascript";
-import {
-  CometChatUIKitLoginListener,
-  CometChatCallLogs,
-} from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-  const getLeadingView = (call: any) => {
-    const loggedInUser = CometChatUIKitLoginListener.getLoggedInUser();
-    return (
-      <div className="call-log-avatar">
-        {call.status === "unanswered" || call.status === "cancelled" ? (
-          <div className="call-log-missed" />
-        ) : call.initiator?.uid === loggedInUser?.getUid() ? (
-          <div className="call-log-outgoing" />
-        ) : (
-          <div className="call-log-incoming" />
-        )}
-      </div>
-    );
-  };
-
-  return <CometChatCallLogs leadingView={getLeadingView} />;
-};
-
-export default CallLogDemo;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```js lines
-import {
-  CometChatUIKitLoginListener,
-  CometChatCallLogs,
-} from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-  const getLeadingView = (call) => {
-    const loggedInUser = CometChatUIKitLoginListener.getLoggedInUser();
-    return (
-      <div className="call-log-avatar">
-        {call.status === "unanswered" || call.status === "cancelled" ? (
-          <div className="call-log-missed" />
-        ) : call.initiator?.uid === loggedInUser?.getUid() ? (
-          <div className="call-log-outgoing" />
-        ) : (
-          <div className="call-log-incoming" />
-        )}
-      </div>
-    );
-  };
-
-  return <CometChatCallLogs leadingView={getLeadingView} />;
-};
-
-export default CallLogDemo;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.call-log-avatar {
-  display: flex;
-  width: 48px;
-  height: 48px;
-  padding: 8px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 1000px;
+.cometchat-call-logs .cometchat-list-item:hover {
   background: #edeafa;
 }
 
-.call-log-missed {
-  background-image: url("<relative path to your missed call icon>");
-  background-size: contain;
-  height: 32px;
-  width: 32px;
-}
-
-.call-log-incoming {
-  background-image: url("<relative path to your incoming call icon>");
-  background-size: contain;
-  height: 32px;
-  width: 32px;
-}
-
-.call-log-outgoing {
-  background-image: url("<relative path to your outgoing call icon>");
-  background-size: contain;
-  height: 32px;
-  width: 32px;
-}
-```
-
-</Tab>
-
-</Tabs>
-
-#### TitleView
-
-You can customize the title view for each call logs item to meet your requirements.
-
-Shown below is the default chat interface.
-
-<Frame>
-  <img src="/images/14479acb-call_logs_tailview_view_default_web_screens-637d9069b78e7385f223b24c0716960e.png" />
-</Frame>
-
-The customized chat interface is displayed below.
-
-<Frame>
-  <img src="/images/61cb0fe0-call_logs_title_view_custom_web_screens-0a5cf4fac95f5c74ab4c19b1508ccda2.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CallLog } from "@cometchat/calls-sdk-javascript";
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-  const getTitleView = (call: any) => {
-    return (
-      <div className="call-log-title">
-        {call.initiator?.name}
-        {call.status !== "unanswered" && call.status !== "cancelled" && (
-          <>{" • 🕚️ " + Math.ceil(call.totalDurationInMinutes) + " mins"}</>
-        )}
-      </div>
-    );
-  };
-
-  return <CometChatCallLogs titleView={getTitleView} />;
-};
-
-export default CallLogDemo;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
-import React from "react";
-
-const CallLogDemo = () => {
-  const getTitleView = (call) => {
-    return (
-      <div className="call-log-title">
-        {call.initiator?.name}
-        {call.status !== "unanswered" && call.status !== "cancelled" && (
-          <>{" • 🕚️ " + Math.ceil(call.totalDurationInMinutes) + " mins"}</>
-        )}
-      </div>
-    );
-  };
-
-  return <CometChatCallLogs titleView={getTitleView} />;
-};
-
-export default CallLogDemo;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.call-log-title {
-  overflow: hidden;
+.cometchat-call-logs .cometchat-list-item__title {
   color: #141414;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font: 500 16px Roboto;
 }
 ```
-
-</Tab>
-
-</Tabs>
-
-### Customization Matrix
-
-| What you want to change | Where | Property/API | Example |
-| --- | --- | --- | --- |
-| Override behavior on item click or call-back | Component props | `on<Event>` callbacks | `onItemClick={(callLog) => handleClick(callLog)}` |
-| Filter call logs by type, status, or direction | Component props | `callLogRequestBuilder` | `callLogRequestBuilder={new CallLogRequestBuilder().setLimit(5)}` |
-| Toggle visibility of UI elements | Component props | `hide<Feature>` boolean props | `showScrollbar={true}` |
-| Replace a section of the call log UI | Component props | `<slot>View` render props | `subtitleView={(call) => <CustomSubtitle />}` |
-| Replace empty, loading, or error states | Component props | `emptyView`, `loadingView`, `errorView` | `emptyView={<>No calls yet</>}` |
-| Change colors, fonts, spacing | Global CSS | Target `.cometchat-call-logs` class | `.cometchat-call-logs { background: #f5f5f5; }` |
-
-## Pagination, Batching, and Performance
-
-The Call Logs component fetches call history using `CallLogRequestBuilder` from the CometChat Calls SDK. You can control the page size by calling `setLimit(n)` on the builder — for example, `.setLimit(5)` fetches five call logs per page. The component supports infinite scroll, loading additional pages as the user scrolls down. You can provide a custom `loadingView` prop to display a branded loading indicator while pages are being fetched.
-
-See the `callLogRequestBuilder` example in [Basic Usage > Filters](#filters) for the implementation pattern.
-
-## Error Handling and Retries
-
-The Call Logs component supports an `onError` callback prop that fires when an error occurs within the component (such as a failed API request to fetch call logs). You can use this to log errors or display custom error UI.
-
-See the `onError` callback example in [Basic Usage > Actions](#actions) for the implementation pattern. The `onError` prop receives a `CometChat.CometChatException` object containing the error details.
-
-The component also supports `hideError` and `errorView` props. Set `errorView` to provide a custom error state UI, as documented in the [Functionality](#functionality) table above.
-
-<AccordionGroup>
-<Accordion title="Common Failure Modes">
-
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| Component doesn't render | `CometChatUIKit.init()` not called or not awaited | Ensure init completes before rendering. See [Methods](/ui-kit/react/methods) |
-| Component renders but shows no data | User not logged in or no call history exists | Call `CometChatUIKit.login("UID")` after init. Make some test calls first. |
-| Callback not firing | Wrong prop name or signature | Check the Actions section for exact prop name and parameter types |
-| Custom view not appearing | Returning `null` or `undefined` from view prop | Ensure view function returns valid JSX |
-| Filter not working | `CallLogRequestBuilder` missing auth token | Set `.setAuthToken("authtoken")` on the builder |
-| SSR hydration error | Component uses browser APIs on server | Wrap in `useEffect` or dynamic import with `ssr: false`. See [Next.js Integration](/ui-kit/react/next-js-integration) |
-
-</Accordion>
-</AccordionGroup>
-
-## Configuration and Environment
-
-The CometChatCallLogs component requires `CometChatUIKit.init()` to be called with a valid `appId` and `region` before rendering. The user must be logged in via `CometChatUIKit.login()`. The component depends on the `@cometchat/chat-uikit-react` package, which includes `@cometchat/chat-sdk-javascript` as a peer dependency.
-
-The Call Logs component also requires the CometChat Calls SDK (`@cometchat/calls-sdk-javascript`) as a peer dependency. The `callLogRequestBuilder` prop uses `CallLogRequestBuilder` from this package to configure call log queries, and the `CallLogRequestBuilder` requires a valid auth token set via `.setAuthToken()`.
-
-React 18+ is supported. For Next.js, wrap the component in `useEffect` or use dynamic imports with `ssr: false` to avoid SSR hydration errors. See [Next.js Integration](/ui-kit/react/next-js-integration) and [React.js Integration](/ui-kit/react/react-js-integration) for setup details.
-
-## Files and Media
-
-Files and media handling does not apply to the Call Logs component. The Call Logs component displays call history records but does not render or send media. For file and media support, see the [Message Composer](/ui-kit/react/message-composer) and [Message List](/ui-kit/react/message-list) components.
-
-## Logging, Tracing, and Observability
-
-To troubleshoot issues with the Call Logs component (such as call logs not loading or filters not applying), enable CometChat SDK debug logging. Set the log level to `DEBUG` during `CometChat.init()` to see detailed SDK activity in the browser console. The component emits `ccMessageSent` events via `CometChatMessageEvents` that can be used for observability and analytics. Refer to the CometChat SDK documentation for the full logging configuration API.
-
-## Versioning, Beta Features, and Breaking Changes
-
-### Current Version
-
-This documentation covers CometChat React UI Kit V6 (`@cometchat/chat-uikit-react@6.x`).
-
-### Upgrading from V5
-
-If you are migrating from V5, see the [Upgrading from V5](/ui-kit/react/upgrading-from-v5) guide for a complete list of breaking changes and migration steps.
-
----
-
-### Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Call Buttons" icon="phone" href="/ui-kit/react/call-buttons">
-    Add voice and video call buttons to your chat
-  </Card>
-  <Card title="Incoming Call" icon="phone-arrow-down-left" href="/ui-kit/react/incoming-call">
-    Handle incoming voice and video calls
-  </Card>
-  <Card title="Outgoing Call" icon="phone-arrow-up-right" href="/ui-kit/react/outgoing-call">
-    Manage outgoing voice and video calls
-  </Card>
-  <Card title="Call Log Details Guide" icon="book" href="/ui-kit/react/guide-call-log-details">
-    Build a call log details view
-  </Card>
-</CardGroup>
