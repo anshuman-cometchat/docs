@@ -73,6 +73,13 @@ Props that control component behavior, grouped by surface area.
 | `hideGroupType` | `boolean` | `false` | Hides the group type icon in conversation leading view | — |
 | `hideReceipts` | `boolean` | `false` | Disables the display of message read receipts in conversation results | — |
 
+### Data Scoping
+
+| Property | Type | Default | Effect | Pitfall |
+| --- | --- | --- | --- | --- |
+| `uid` | `string` | `undefined` | Limits search to messages with a specific user | — |
+| `guid` | `string` | `undefined` | Limits search to messages in a specific group | — |
+
 ### Search Configuration
 
 | Property | Type | Default | Effect | Pitfall |
@@ -96,6 +103,12 @@ Props that control component behavior, grouped by surface area.
 | --- | --- | --- | --- |
 | `messageSentAtDateTimeFormat` | `CalendarObject` | `DD MMM, YYYY` | Customizes the message sent-at timestamp |
 
+### Text Formatting
+
+| Property | Type | Default | Effect |
+| --- | --- | --- | --- |
+| `textFormatters` | `CometChatTextFormatter[]` | `[]` | Custom text formatters for message content (e.g., emoji, links, mentions) |
+
 <Note>
 If a property is not passed in the CalendarObject, the component checks the [global configuration](/ui-kit/react/localize#customisation) first, then falls back to the component's default formatting.
 </Note>
@@ -117,7 +130,7 @@ Fires when a conversation is clicked from the search results.
 | Detail | Value |
 | --- | --- |
 | When it fires | User clicks a conversation in search results |
-| Payload type | `(conversation: CometChat.Conversation) => void` |
+| Payload type | `(conversation: CometChat.Conversation, searchKeyword?: string) => void` |
 | What devs typically do next | Navigate to the conversation, open chat view |
 
 ```ts lines
@@ -137,7 +150,7 @@ Fires when a message is clicked from the search results.
 | Detail | Value |
 | --- | --- |
 | When it fires | User clicks a message in search results |
-| Payload type | `(message: CometChat.BaseMessage) => void` |
+| Payload type | `(message: CometChat.BaseMessage, searchKeyword?: string) => void` |
 | What devs typically do next | Navigate to the message in context, scroll to message |
 
 ```ts lines
