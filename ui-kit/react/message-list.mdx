@@ -3,48 +3,40 @@ title: "Message List"
 description: "CometChatMessageList component renders a scrollable list of sent and received messages including text, media, reactions, read receipts, and threaded replies. Supports custom message templates, date separators, and CSS styling."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```tsx
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatMessageList } from "@cometchat/chat-uikit-react";
-
-// For a user chat
-<CometChatMessageList user={chatUser} />
-
-// For a group chat
-<CometChatMessageList group={chatGroup} />
-```
-</Info>
-
-<Info>
-**AI Agent Component Spec**
-
-**Package:** `@cometchat/chat-uikit-react`
-**Import:** `import { CometChatMessageList } from "@cometchat/chat-uikit-react";`
-**Minimal JSX:** `<CometChatMessageList user={chatUser} />` or `<CometChatMessageList group={chatGroup} />`
-**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
-**Key props:** `user: CometChat.User`, `group: CometChat.Group`, `messagesRequestBuilder: CometChat.MessagesRequestBuilder`, `templates: CometChatMessageTemplate[]`, `hideReceipts: boolean`
-**CSS class:** `.cometchat-message-list`
-**Events:** `CometChatMessageEvents`
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Import:** `import { CometChatMessageList } from "@cometchat/chat-uikit-react";`
+- **Minimal JSX:** `<CometChatMessageList user={chatUser} />` or `<CometChatMessageList group={chatGroup} />`
+- **Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+- **Key props:** `user: CometChat.User`, `group: CometChat.Group`, `messagesRequestBuilder: CometChat.MessagesRequestBuilder`, `templates: CometChatMessageTemplate[]`, `hideReceipts: boolean`
+- **CSS class:** `.cometchat-message-list`
+- **Events:** `CometChatMessageEvents`
+</Accordion>
 
 ## Overview
 
 `MessageList` is a composite component that displays a list of messages and effectively manages real-time operations. It includes various types of messages such as Text Messages, Media Messages, Stickers, and more.
 
+Import path: `import { CometChatMessageList } from "@cometchat/chat-uikit-react";`
+
 <Frame>
   <img src="/images/6612965e-message_list_overview_web_screens-26a01662c72f3b38c4b5d66f020f5d07.png" />
 </Frame>
-
 
 <Note>
 **Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
 </Note>
 
-***
+## Why Use / When to Use
+
+- Display a scrollable list of sent and received messages in a user or group chat
+- Render different message types including text, media, stickers, reactions, and threaded replies
+- Show read receipts, date separators, and sticky date headers for message context
+- Support real-time message updates via `CometChatMessageEvents` (new messages, edits, deletes)
+- Customize message rendering with `CometChatMessageTemplate` for custom message bubbles
+- Control message fetching with `MessagesRequestBuilder` filters (search, limit, categories)
+- Enable threaded conversations with `onThreadRepliesClick` and `parentMessageId`
+- Provide custom header and footer views above and below the message list
 
 ## Usage
 
@@ -641,13 +633,9 @@ ccActiveChatChanged?.unsubscribe();
 
 ***
 
-## Customization
-
-To fit your app's design requirements, you can customize the appearance of the Message List component. We provide exposed properties that allow you to modify the experience and behavior according to your specific needs.
-
 ### Style
 
-You can set the css to the MessageList Component Component to customize the styling.
+You can set the css to the MessageList Component Component to customize the styling. The root CSS class for this component is `.cometchat-message-list`.
 
 **Example**
 
@@ -787,11 +775,11 @@ Below is a list of customizations along with corresponding code snippets
 | **Loading View**                     | A custom view displayed while messages are being fetched.                                   | `loadingView={<LoadingSpinner />}`             |
 | **Go To MessageId**                  | The ID of the message that the list should automatically scroll to when it is first loaded. | `goToMessageId={1}`                            |
 
-***
-
-### Advanced
+## Advanced Features
 
 For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
+
+### Custom View Slots
 
 #### Templates
 
@@ -977,8 +965,6 @@ function getDateFormat() {
 #### Sticky DateTime Format
 
 The `stickyDateTimeFormat` property allows you to customize the **Sticky Date** timestamp displayed in the Message List.
-
-!\[]\(Screenshot HERE)
 
 Default Date Time Format:
 
@@ -1621,7 +1607,28 @@ export function MessageListDemo() {
 
 </Tabs>
 
-***
+### Customization Matrix
+
+| What you want to change | Where | Property/API | Example |
+| --- | --- | --- | --- |
+| Override behavior on user interaction | Component props | `on<Event>` callbacks | `onThreadRepliesClick={() => handleThread()}` |
+| Toggle visibility of UI elements | Component props | `hide<Feature>` boolean props | `hideReceipts={true}` |
+| Replace a section of the message list | Component props | `<slot>View` render props | `headerView={<CustomHeader />}` |
+| Customize message bubbles | Component props | `templates` prop | `templates={getTemplates()}` |
+| Control message fetching | Component props | `messagesRequestBuilder` | `messagesRequestBuilder={builder}` |
+| Change colors, fonts, spacing | Global CSS | Target `.cometchat-message-list` class | `.cometchat-message-list { background: #fff; }` |
+
+## Pagination, Batching, and Performance
+
+The MessageList component supports pagination through the `messagesRequestBuilder` prop. Use `CometChat.MessagesRequestBuilder().setLimit(n)` to control how many messages are fetched per page. The component handles infinite scroll automatically — as the user scrolls up, older messages are fetched in batches based on the configured limit. See the [Filters > Messages Request Builder](#1-messages-request-builder) section above for the code example.
+
+The `scrollToBottomOnNewMessages` prop controls whether the list auto-scrolls when new messages arrive. The `goToMessageId` prop allows jumping to a specific message on initial load. The `startFromUnreadMessages` prop loads from the first unread message when available.
+
+## Error Handling and Retries
+
+The MessageList component supports an `onError` callback prop that fires when an error occurs during rendering or data fetching. You can use this to log errors or display custom error UI. See the `onError` callback example in [Basic Usage > Actions](#2-onerror) for the implementation pattern.
+
+The `hideError` prop controls whether the default error view is shown. You can also provide a custom `errorView` prop to render your own error UI. The `onError` prop receives a `CometChat.CometChatException` object containing the error details.
 
 <AccordionGroup>
 <Accordion title="Common Failure Modes">
@@ -1637,9 +1644,35 @@ export function MessageListDemo() {
 </Accordion>
 </AccordionGroup>
 
+## Configuration and Environment
+
+The CometChatMessageList component requires `CometChatUIKit.init()` to be called with a valid `appId` and `region` before rendering. The user must be logged in via `CometChatUIKit.login()`. The component depends on the `@cometchat/chat-uikit-react` package, which includes `@cometchat/chat-sdk-javascript` as a peer dependency.
+
+React 18+ is supported. For Next.js, wrap the component in `useEffect` or use dynamic imports with `ssr: false` to avoid SSR hydration errors. See [Next.js Integration](/ui-kit/react/next-js-integration) and [React.js Integration](/ui-kit/react/react-js-integration) for setup details.
+
+## Files and Media
+
+The MessageList component renders media messages (images, videos, audio, files) inline within the message list. Media rendering is handled automatically by the component's built-in message templates. The component supports text messages, media messages (image, video, audio, file), stickers, reactions, and custom message types via the `templates` prop.
+
+You can control sound notifications for incoming messages using the `disableSoundForMessages` and `customSoundForMessages` props documented in the [Functionality](#functionality) table above.
+
+## Logging, Tracing, and Observability
+
+To troubleshoot issues with the MessageList component (such as messages not loading, real-time updates not appearing, or custom templates not rendering), enable CometChat SDK debug logging. Set the log level to `DEBUG` during `CometChat.init()` to see detailed SDK activity in the browser console. Refer to the CometChat SDK documentation for the full logging configuration API.
+
+## Versioning, Beta Features, and Breaking Changes
+
+### Current Version
+
+This documentation covers CometChat React UI Kit V6 (`@cometchat/chat-uikit-react@6.x`).
+
+### Upgrading from V5
+
+If you are migrating from V5, see the [Upgrading from V5](/ui-kit/react/upgrading-from-v5) guide for a complete list of breaking changes and migration steps.
+
 ---
 
-## Next Steps
+### Next Steps
 
 <CardGroup cols={2}>
   <Card title="Message Composer" icon="pen-to-square" href="/ui-kit/react/message-composer">

@@ -3,93 +3,31 @@ title: "Conversations"
 description: "Display and manage the list of recent conversations for the logged-in user using the CometChatConversations component in the React UI Kit."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Import:** `import { CometChatConversations } from "@cometchat/chat-uikit-react";`
+- **Minimal JSX:** `<CometChatConversations />`
+- **Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+- **Key props:** `onItemClick: (conversation: CometChat.Conversation) => void`, `conversationsRequestBuilder: CometChat.ConversationsRequestBuilder`, `hideReceipts: boolean`, `selectionMode: SelectionMode`, `activeConversation: CometChat.Conversation`
+- **CSS class:** `.cometchat-conversations`
+- **Events:** `CometChatConversationEvents.ccConversationDeleted`
+</Accordion>
 
-```tsx
-import { CometChatConversations } from "@cometchat/chat-uikit-react";
+The CometChatConversations component renders a scrollable list of recent conversations for the currently logged-in user. Each list item displays the avatar, name, last message preview, timestamp, and unread badge. It supports real-time updates, typing indicators, read receipts, and customizable views for building a complete chat inbox experience.
 
-// Minimal usage
-<CometChatConversations />
+**Import path**: `import { CometChatConversations } from "@cometchat/chat-uikit-react";`
 
-// With common props
-<CometChatConversations
-  onItemClick={(conversation) => setActiveChat(conversation)}
-  hideReceipts={false}
-  selectionMode={SelectionMode.none}
-/>
-```
-</Info>
+## Why Use / When to Use
 
-<Info>
-**AI Agent Component Spec**
-
-**Package:** `@cometchat/chat-uikit-react`
-**Import:** `import { CometChatConversations } from "@cometchat/chat-uikit-react";`
-**Minimal JSX:** `<CometChatConversations />`
-**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
-**Key props:** `onItemClick: (conversation: CometChat.Conversation) => void`, `conversationsRequestBuilder: CometChat.ConversationsRequestBuilder`, `hideReceipts: boolean`, `selectionMode: SelectionMode`, `activeConversation: CometChat.Conversation`
-**CSS class:** `.cometchat-conversations`
-**Events:** `CometChatConversationEvents.ccConversationDeleted`
-</Info>
-
-## Overview
-
-The Conversations is a Component, that shows all conversations related to the currently logged-in user.
-
+- Display a real-time list of all recent one-on-one and group conversations for the logged-in user
+- Allow users to select a conversation and navigate to the message view with `onItemClick`
+- Filter conversations by type, tags, or custom criteria using `ConversationsRequestBuilder`
+- Show unread message counts, delivery and read receipts, and typing indicators in the conversation list
+- Customize the appearance of each conversation item using view slots like `itemView`, `subtitleView`, and `trailingView`
+- Enable multi-select mode for batch operations such as deleting or muting conversations
+- Integrate a search bar to let users find specific conversations quickly
 
 ## Usage
-
-### Integration
-
-<Tabs>
-<Tab title="TypeScript">
-```tsx lines
-import {
-  CometChatConversations,
-  TitleAlignment,
-} from "@cometchat/chat-uikit-react";
-
-function ConversationsDemo() {
-  return (
-    <div className="conversations" style={{ width: "100%", height: "100%" }}>
-      <div>
-        <CometChatConversations />
-      </div>
-    </div>
-  );
-}
-
-export default ConversationsDemo;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```jsx lines
-import {
-  CometChatConversations,
-} from "@cometchat/chat-uikit-react";
-
-function ConversationsDemo() {
-  return (
-    <div className="conversations" style={{ width: "100%", height: "100%" }}>
-      <div>
-        <CometChatConversations />
-      </div>
-    </div>
-  );
-}
-
-export default ConversationsDemo;
-```
-
-</Tab>
-
-</Tabs>
-
-**Expected result:** The `CometChatConversations` component renders a scrollable list of recent conversations. Each list item shows: avatar, name, last message preview, timestamp, and unread badge.
 
 ### Actions
 
@@ -99,8 +37,6 @@ export default ConversationsDemo;
 
 `OnItemClick` is triggered when you click on a ListItem of the Conversations component. The `OnItemClick` action doesn't have a predefined behavior. You can override this action using the following code snippet.
 
-<Tabs>
-<Tab title="TypeScript">
 ```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -113,32 +49,10 @@ const getOnItemClick = (conversation: CometChat.Conversation) => {
 <CometChatConversations onItemClick={getOnItemClick} />;
 ```
 
-</Tab>
-
-<Tab title="JavaScript">
-```jsx lines
-import { CometChatConversations } from "@cometchat/chat-uikit-react";
-
-const getOnItemClick = (conversation) => {
-  console.log("ItemClick:", conversation);
-  // Your custom action here
-};
-
-<CometChatConversations onItemClick={getOnItemClick} />;
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
 #### 2. OnSelect
 
 The `OnSelect` event is triggered upon the completion of a selection in `SelectionMode`. It does not have a default behavior. However, you can override its behavior using the following code snippet.
 
-<Tabs>
-<Tab title="TypeScript">
 ```tsx lines
 import {
   CometChatConversations,
@@ -160,38 +74,10 @@ const getOnSelect = (
 />;
 ```
 
-</Tab>
-
-<Tab title="JavaScript">
-```jsx lines
-import {
-  CometChatConversations,
-  SelectionMode,
-} from "@cometchat/chat-uikit-react";
-
-const getOnSelect = (conversation, selected) => {
-  console.log("Selected, ", conversation.getConversationId(), selected);
-  // Your custom action on select
-};
-
-<CometChatConversations
-  selectionMode={SelectionMode.multiple}
-  onSelect={getOnSelect}
-/>;
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
 #### 3. OnError
 
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the Conversations component.
+This action listens for any errors that occur in the Conversations component.
 
-<Tabs>
-<Tab title="TypeScript">
 ```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -203,31 +89,10 @@ const handleOnError = (error: CometChat.CometChatException) => {
 <CometChatConversations onError={handleOnError} />;
 ```
 
-</Tab>
-
-<Tab title="JavaScript">
-```jsx lines
-import { CometChatConversations } from "@cometchat/chat-uikit-react";
-
-const handleOnError = (error) => {
-  // Your exception handling code
-};
-
-<CometChatConversations onError={handleOnError} />;
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
 #### 4. onSearchBarClicked
 
 The `onSearchBarClicked` event is triggered when the user clicks the search bar. It does not have a default behavior. However, you can override its behavior using the following code snippet.
 
-<Tabs>
-<Tab title="TypeScript">
 ```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 
@@ -237,25 +102,6 @@ const handleSearchClick = () => {
 
 <CometChatConversations onSearchBarClicked={handleSearchClick} />;
 ```
-
-</Tab>
-
-<Tab title="JavaScript">
-```jsx lines
-import { CometChatConversations } from "@cometchat/chat-uikit-react";
-
-const handleSearchClick = () => {
-  console.log("Search bar clicked");
-};
-
-<CometChatConversations onSearchBarClicked={handleSearchClick} />;
-```
-
-</Tab>
-
-</Tabs>
-
-***
 
 ### Filters
 
@@ -270,8 +116,6 @@ You can set filters using the following parameters.
 5. **UserTags:** Filters on specific User `Tag`
 6. **GroupTags:** Filters on specific Group `Tag`
 
-<Tabs>
-<Tab title="TypeScript">
 ```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -283,33 +127,13 @@ import { CometChat } from "@cometchat/chat-sdk-javascript";
 />;
 ```
 
-</Tab>
-
-<Tab title="JavaScript">
-```jsx lines
-import { CometChatConversations } from "@cometchat/chat-uikit-react";
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-
-<CometChatConversations
-  conversationsRequestBuilder={new CometChat.ConversationsRequestBuilder().setLimit(
-    10
-  )}
-/>;
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
 ### Events
 
 [Events](/ui-kit/react/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
 
-<Tabs>
-<Tab title="Add Listener">
-```tsxtsx lines
+Subscribe to conversation events:
+
+```tsx lines
 const ccConversationDeleted =
   CometChatConversationEvents.ccConversationDeleted.subscribe(
     (conversation: CometChat.Conversation) => {
@@ -318,43 +142,24 @@ const ccConversationDeleted =
   );
 ```
 
-</Tab>
+Unsubscribe from conversation events:
 
-</Tabs>
-
-<Tabs>
-<Tab title="Remove Listener">
-```tsxtsx lines
+```tsx lines
 ccConversationDeleted?.unsubscribe();
 ```
 
-</Tab>
-
-</Tabs>
-
-***
-
-## Customization
-
-To fit your app's design requirements, you can customize the appearance of the conversation component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
-
 ### Style
 
-Using CSS you can customize the look and feel of the component in your app like the color, size, shape, and fonts.
+Using CSS you can customize the look and feel of the component in your app like the color, size, shape, and fonts. The root CSS class for this component is `.cometchat-conversations`.
 
 <Frame>
   <img src="/images/46655ced-style_custom_web_screens-967e2c7c42b5c97c59c10a9212aef0c4.png" />
 </Frame>
 
-<Tabs>
-<Tab title="TypeScript">
 ```tsx lines
 <CometChatConversations />
 ```
 
-</Tab>
-
-<Tab title="CSS">
 ```css lines
 .cometchat-conversations .cometchat-list-item__body-title,
 .cometchat-conversations .cometchat-list__header-title,
@@ -387,16 +192,10 @@ Using CSS you can customize the look and feel of the component in your app like 
 }
 ```
 
-</Tab>
-
-</Tabs>
-
 ### Functionality
 
 These are a set of small functional customizations that allow you to fine-tune the overall experience of the component. With these, you can change text, set custom icons, and toggle the visibility of UI elements.
 
-<Tabs>
-<Tab title="TypeScript">
 ```tsx lines
 <div className="conversations" style={{ width: "100%", height: "100%" }}>
   <div>
@@ -405,45 +204,31 @@ These are a set of small functional customizations that allow you to fine-tune t
 </div>
 ```
 
-</Tab>
+Below is a list of customizations along with corresponding code snippets:
 
-<Tab title="JavaScript">
-```jsx lines
-<div className="conversations" style={{ width: "100%", height: "100%" }}>
-  <div>
-    <CometChatConversations title="Your Custom Title" />
-  </div>
-</div>
-```
+| Property | Description | Code |
+| --- | --- | --- |
+| **Hide Receipts** | Disables the display of message read receipts. If set to `true`, the receipt status of the sent message won't be displayed. | `hideReceipts={false}` |
+| **Hide Error** | Hides the default and the custom error view passed in the `errorView` prop. | `hideError={true}` |
+| **Hide Delete Conversation** | Hides the delete conversation option in the default context menu. | `hideDeleteConversation={false}` |
+| **Hide User Status** | Hides the user's online/offline status indicator. | `hideUserStatus={true}` |
+| **Hide Group Type** | Hides the group type icon. | `hideGroupType={false}` |
+| **Show Search Bar** | Shows the search bar. | `showSearchBar={true}` |
+| **Active Conversation** | Specifies the conversation to highlight in the list. | `activeConversation={activeConversation}` |
+| **Selection Mode** | Determines the selection mode for the component. | `selectionMode={SelectionMode.multiple}` |
+| **Disable Sound For Messages** | Used to Disable sound for incoming messages. | `disableSoundForMessages={false}` |
+| **Custom Sound For Messages** | Custom audio sound for incoming messages. | `customSoundForMessages="Your custom sound url"` |
+| **Search View** | A custom search view which replaces the default search bar. | `searchView={<>Custom Search View</>}` |
+| **Loading View** | A custom component to display during the loading state. | `loadingView={<>Custom Loading View</>}` |
+| **Empty View** | A custom component to display when there are no conversations available. | `emptyView={<>Custom Empty View</>}` |
+| **Error View** | A custom component to display when an error occurs. | `errorView={<>Custom Error View</>}` |
 
-</Tab>
 
-</Tabs>
+## Advanced Features
 
-Below is a list of customizations along with corresponding code snippets
+For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics.
 
-| Property                       | Description                                                                                                                 | Code                                             |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| **Hide Receipts**              | Disables the display of message read receipts. If set to `true`, the receipt status of the sent message won't be displayed. | `hideReceipts={false}`                           |
-| **Hide Error**                 | Hides the default and the custom error view passed in the `errorView` prop.                                                 | `hideError={true}`                               |
-| **Hide Delete Conversation**   | Hides the delete conversation option in the default context menu.                                                           | `hideDeleteConversation={false}`                 |
-| **Hide User Status**           | Hides the user's online/offline status indicator.                                                                           | `hideUserStatus={true}`                          |
-| **Hide Group Type**            | Hides the group type icon.                                                                                                  | `hideGroupType={false}`                          |
-| **Show Search Bar**            | Shows the search bar.                                                                                                       | `showSearchBar={true}`                           |
-| **Active Conversation**        | Specifies the conversation to highlight in the list.                                                                        | `activeConversation={activeConversation}`        |
-| **Selection Mode**             | Determines the selection mode for the component.                                                                            | `selectionMode={SelectionMode.multiple}`         |
-| **Disable Sound For Messages** | Used to Disable sound for incoming messages.                                                                                | `disableSoundForMessages={false}`                |
-| **Custom Sound For Messages**  | Custom audio sound for incoming messages.                                                                                   | `customSoundForMessages="Your custom sound url"` |
-| **Search View**                | A custom search view which replaces the default search bar.                                                                 | `searchView={<>Custom Search View</>}`           |
-| **Loading View**               | A custom component to display during the loading state.                                                                     | `loadingView={<>Custom Loading View</>}`         |
-| **Empty View**                 | A custom component to display when there are no conversations available.                                                    | `emptyView={<>Custom Empty View</>}`             |
-| **Error View**                 | A custom component to display when an error occurs.                                                                         | `errorView={<>Custom Error View</>}`             |
-
-### Advanced
-
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
-
-***
+### Custom View Slots
 
 #### ItemView
 
@@ -493,9 +278,7 @@ const getItemView = (conversation: CometChat.Conversation) => {
   itemView={getItemView} // Custom list item view
 />;
 ```
-
 </Tab>
-
 <Tab title="CSS">
 ```css lines
 .cometchat-conversations .cometchat-avatar {
@@ -508,12 +291,8 @@ const getItemView = (conversation: CometChat.Conversation) => {
   gap: 4px;
 }
 ```
-
 </Tab>
-
 </Tabs>
-
-***
 
 #### LeadingView
 
@@ -525,8 +304,6 @@ The customized chat interface is displayed below.
 
 Use the following code to achieve the customization shown above.
 
-<Tabs>
-<Tab title="TypeScript">
 ```ts lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -596,12 +373,6 @@ const CustomLeadingView = (conversation: CometChat.Conversation) => {
 <CometChatConversations leadingView={CustomLeadingView} />;
 ```
 
-</Tab>
-
-</Tabs>
-
-***
-
 #### TrailingView
 
 The customized chat interface is displayed below.
@@ -662,9 +433,7 @@ const CustomTrailingButtonView = (conv: CometChat.Conversation) => {
 
 <CometChatConversations trailingView={CustomTrailingButtonView} />;
 ```
-
 </Tab>
-
 <Tab title="CSS">
 ```css lines
 .conversations__trailing-view {
@@ -706,17 +475,315 @@ const CustomTrailingButtonView = (conv: CometChat.Conversation) => {
 .cometchat-conversations .cometchat-list-item__trailing-view {
   height: 50px;
 }
-```
-
+``` 
 </Tab>
-
 </Tabs>
 
-***
+#### Header View
+
+You can set the Custom Header view to add more options to the Conversations component.
+
+The customized chat interface is displayed below.
+
+<Frame>
+  <img src="/images/c8e9953f-conversations_headerview-334738e0afe495ef89165ee0cea86b5c.png" />
+</Frame>
+
+Use the following code to achieve the customization shown above.
+
+<Tabs>
+<Tab title="TypeScript">
+```ts lines
+import {
+  CometChatButton,
+  CometChatConversations,
+} from "@cometchat/chat-uikit-react";
+
+const getHeaderView = () => {
+  return (
+    <div className="conversations__header">
+      <div className="conversations__header__title">{localize("CHATS")}</div>
+      <CometChatButton
+        onClick={() => {
+          // logic here
+        }}
+        iconURL={ICON_URL}
+      />
+    </div>
+  );
+};
+
+<CometChatConversations headerView={getHeaderView()} />;
+```
+</Tab>
+<Tab title="CSS">
+```css lines
+.conversations__header {
+  display: flex;
+  width: 100%;
+  padding: 8px 16px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 1 0 0;
+  align-self: stretch;
+  border-radius: 10px;
+  border: 1px solid #e8e8e8;
+  background: #edeafa;
+}
+.conversations__header__title {
+  overflow: hidden;
+  color: #141414;
+  text-overflow: ellipsis;
+  font: 700 24px Roboto;
+}
+.conversations__header .cometchat-button .cometchat-button__icon {
+  background: #141414;
+}
+.conversations__header .cometchat-button {
+  width: 24px;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  display: block;
+}
+```
+</Tab>
+</Tabs>
+
+#### TitleView
+
+The customized chat interface is displayed below.
+
+<Frame>
+  <img src="/images/015d947c-conversations_titleview-b5822bb42232ef47727b553cbf1facd8.png" />
+</Frame>
+
+Use the following code to achieve the customization shown above.
+
+<Tabs>
+<Tab title="TypeScript">
+```ts lines
+import React from "react";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatConversations } from "@cometchat/chat-uikit-react";
+
+// Custom title view component
+const customTitleView = (conversation: CometChat.Conversation) => {
+  let user =
+    conversation.getConversationType() == "user"
+      ? (conversation.getConversationWith() as CometChat.User)
+      : undefined;
+  return (
+    <div className="conversations__title-view">
+      <span className="conversations__title-view-name">
+        {user
+          ? conversation.getConversationWith().getName() + " • "
+          : conversation.getConversationWith().getName()}
+      </span>
+      {user ? (
+        <span className="conversations__title-view-status">
+          {user.getStatusMessage()}
+        </span>
+      ) : null}
+    </div>
+  );
+};
+
+<CometChatConversations titleView={customTitleView} />;
+```
+</Tab>
+<Tab title="CSS">
+```css lines
+.cometchat-conversations .conversations__title-view {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+}
+
+.cometchat-conversations
+  .conversations__title-view
+  .conversations__title-view-name {
+  color: #141414;
+  font: 500 16px/19.2px Roboto;
+  text-align: left;
+}
+.cometchat-conversations
+  .conversations__title-view
+  .conversations__title-view-status {
+  color: #6852d6;
+  font: 400 16px/19.2px Roboto;
+  text-align: left;
+}
+```
+</Tab>
+</Tabs>
+
+#### SubtitleView
+
+You can customize the subtitle view for each conversation item to meet your requirements.
+
+Shown below is the default chat interface.
+
+<Frame>
+  <img src="/images/68f87420-subtitle_View_default_web_screens-981f3ae54a9cef1c1f774bbda2f05a81.png" />
+</Frame>
+
+The customized chat interface is displayed below.
+
+<Frame>
+  <img src="/images/a5a0ef3f-subtitle_View_custom_web_screens-cc38fdf73a8f272804d2c3b73e898ce5.png" />
+</Frame>
+
+Use the following code to achieve the customization shown above.
+
+<Tabs>
+<Tab title="TypeScript">
+```ts lines
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { CometChatConversations } from "@cometchat/chat-uikit-react";
+
+const subtitleView = (conversation: CometChat.Conversation) => {
+  if (conversation.getConversationType() === "user") {
+    return (
+      <>
+        Last Message at:{" "}
+        {getFormattedTimestamp(
+          (
+            conversation.getConversationWith() as CometChat.User
+          ).getLastActiveAt()
+        )}
+      </>
+    );
+  } else {
+    return (
+      <>
+        Created at:{" "}
+        {getFormattedTimestamp(
+          (conversation.getConversationWith() as CometChat.Group).getCreatedAt()
+        )}
+      </>
+    );
+  }
+};
+
+function getFormattedTimestamp(timestamp: number): string {
+  const date = new Date(timestamp * 1000);
+  return date.toLocaleString();
+}
+
+<CometChatConversations subtitleView={subtitleView} />;
+```
+</Tab>
+<Tab title="CSS">
+```css lines
+.cometchat-conversations .cometchat-list-item__body-subtitle {
+  overflow: hidden;
+  color: var(--cometchat-text-color-secondary, #727272);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--cometchat-font-body-regular);
+  font-family: "SF Pro";
+  font-style: normal;
+}
+```
+</Tab>
+</Tabs>
+
+#### Options
+
+A function that returns a list of actions available when hovering over a conversation item.
+
+Shown below is the default chat interface.
+
+<Frame>
+  <img src="/images/c75bf066-options_default_web_screens-504fece998247b272a5ba5ca5d2f6678.png" />
+</Frame>
+
+The customized chat interface is displayed below.
+
+<Frame>
+  <img src="/images/e089983a-options_custom_web_screens-7996ecee34fa203d7bc68bd45ab1a875.png" />
+</Frame>
+
+Use the following code to achieve the customization shown above.
+
+<Tabs>
+<Tab title="TypeScript">
+```ts lines
+import {
+  CometChatOption,
+  CometChatConversations,
+} from "@cometchat/chat-uikit-react";
+
+const getOptions = (conversation: CometChat.Conversation) => {
+  return [
+    new CometChatOption({
+      title: "Delete",
+      iconURL: deleteIcon,
+      id: "delete",
+      onClick: () => {
+        // Logic here
+      },
+    }),
+    new CometChatOption({
+      title: "Mute Notification",
+      id: "mute",
+      onClick: () => {
+        // Logic here
+      },
+    }),
+    new CometChatOption({
+      title: "Mark as Unread",
+      id: "unread",
+      onClick: () => {
+        // Logic here
+      },
+    }),
+    new CometChatOption({
+      title: "Block",
+      id: "block",
+      onClick: () => {
+        // Logic here
+      },
+    }),
+  ];
+};
+
+<CometChatConversations options={getOptions} />;
+```
+</Tab>
+<Tab title="CSS">
+```css lines
+.cometchat-conversations .cometchat-menu-list__main-menu-item-icon-delete {
+  background: red;
+}
+
+.cometchat-conversations .cometchat-menu-list__sub-menu {
+  background: transparent;
+  box-shadow: none;
+}
+
+.cometchat-conversations .cometchat-menu-list__sub-menu-icon {
+  -webkit-mask: url(./assets/down-arrow.svg) center center no-repeat;
+  -webkit-mask-size: contain;
+}
+```
+</Tab>
+</Tabs>
+
+##### Structure of CometChatOption
+
+| Name | Description |
+| --- | --- |
+| **id** | Unique identifier for each option. |
+| **title** | Heading text for each option. |
+| **iconURL** | Sets the asset URL of the icon for each option. |
+| **onClick** | Method to be invoked when user clicks on each option. |
 
 #### TextFormatters
 
-Assigns the list of text formatters. If the provided list is not null, it sets the list. Otherwise, it assigns the default text formatters retrieved from the data source. To configure the existing Mentions look and feel check out [CometChatMentionsFormatter](/ui-kit/react/mentions-formatter-guide)
+Assigns the list of text formatters. If the provided list is not null, it sets the list. Otherwise, it assigns the default text formatters retrieved from the data source. To configure the existing Mentions look and feel check out [CometChatMentionsFormatter](/ui-kit/react/mentions-formatter-guide).
 
 <Tabs>
 <Tab title="ShortCutFormatter.ts">
@@ -830,9 +897,7 @@ class ShortcutFormatter extends CometChatTextFormatter {
 
 export default ShortcutFormatter;
 ```
-
 </Tab>
-
 <Tab title="Dialog.tsx">
 ```tsx lines
 import React from "react";
@@ -898,105 +963,23 @@ export default class DialogHelper {
   }
 }
 ```
-
 </Tab>
-
-<Tab title="TypeScript">
+<Tab title="Usage">
 ```tsx lines
 import ShortcutFormatter from "./ShortCutFormatter";
 
 <CometChatConversations textFormatters={[new ShortcutFormatter()]} />;
 ```
-
 </Tab>
-
 </Tabs>
-
-#### Header View
-
-You can set the Custom Header view to add more options to the Conversations component.
-
-The customized chat interface is displayed below.
-
-<Frame>
-  <img src="/images/c8e9953f-conversations_headerview-334738e0afe495ef89165ee0cea86b5c.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import {
-  CometChatButton,
-  CometChatConversations,
-} from "@cometchat/chat-uikit-react";
-
-const getHeaderView = () => {
-  return (
-    <div className="conversations__header">
-      <div className="conversations__header__title">{localize("CHATS")}</div>
-      <CometChatButton
-        onClick={() => {
-          // logic here
-        }}
-        iconURL={ICON_URL}
-      />
-    </div>
-  );
-};
-
-<CometChatConversations headerView={getHeaderView()} />;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.conversations__header {
-  display: flex;
-  width: 100%;
-  padding: 8px 16px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex: 1 0 0;
-  align-self: stretch;
-  border-radius: 10px;
-  border: 1px solid #e8e8e8;
-  background: #edeafa;
-}
-.conversations__header__title {
-  overflow: hidden;
-  color: #141414;
-  text-overflow: ellipsis;
-  font: 700 24px Roboto;
-}
-.conversations__header .cometchat-button .cometchat-button__icon {
-  background: #141414;
-}
-.conversations__header .cometchat-button {
-  width: 24px;
-  border: none;
-  background: transparent;
-  border-radius: 0;
-  display: block;
-}
-```
-
-</Tab>
-
-</Tabs>
-
-***
 
 #### Last Message Date Time Format
 
-The `lastMessageDateTimeFormat` property allows you to customize the **Last Message** timestamp is displayed in the conversations.
+The `lastMessageDateTimeFormat` property allows you to customize the **Last Message** timestamp displayed in the conversations.
 
 Default Date Time Format:
 
-```ruby lines
+```ts lines
 new CalendarObject({
   today: `hh:mm A`, // Example: "10:30 AM"
   yesterday: `[yesterday]`, // Example: "yesterday"
@@ -1006,8 +989,6 @@ new CalendarObject({
 
 The following example demonstrates how to modify the **Last Message** timestamp format using a custom [`CalendarObject`](/ui-kit/react/localize#calendarobject).
 
-<Tabs>
-<Tab title="TypeScript">
 ```ts lines
 import {
   CometChatConversations,
@@ -1028,10 +1009,6 @@ function getDateFormat() {
 <CometChatConversations lastMessageDateTimeFormat={getDateFormat()} />;
 ```
 
-</Tab>
-
-</Tabs>
-
 <Note>
 
 **Fallback Mechanism**
@@ -1040,258 +1017,38 @@ function getDateFormat() {
 
 </Note>
 
-***
+### Real-Time Conversation Events
 
-#### TitleView
+The CometChatConversations component emits events via `CometChatConversationEvents`. You can subscribe to these events to react to conversation changes across your application.
 
-The customized chat interface is displayed below.
+Subscribe to the conversation deleted event:
 
-<Frame>
-  <img src="/images/015d947c-conversations_titleview-b5822bb42232ef47727b553cbf1facd8.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import React from "react";
+```tsx lines
+import { CometChatConversationEvents } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatConversations } from "@cometchat/chat-uikit-react";
 
-// Custom title view component
-const customTitleView = (conversation: CometChat.Conversation) => {
-  let user =
-    conversation.getConversationType() == "user"
-      ? (conversation.getConversationWith() as CometChat.User)
-      : undefined;
-  return (
-    <div className="conversations__title-view">
-      <span className="conversations__title-view-name">
-        {user
-          ? conversation.getConversationWith().getName() + " • "
-          : conversation.getConversationWith().getName()}
-      </span>
-      {user ? (
-        <span className="conversations__title-view-status">
-          {user.getStatusMessage()}
-        </span>
-      ) : null}
-    </div>
-  );
-};
-
-<CometChatConversations titleView={customTitleView} />;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.cometchat-conversations .conversations__title-view {
-  display: flex;
-  gap: 4px;
-  width: 100%;
-}
-
-.cometchat-conversations
-  .conversations__title-view
-  .conversations__title-view-name {
-  color: #141414;
-  font: 500 16px/19.2px Roboto;
-  text-align: left;
-}
-.cometchat-conversations
-  .conversations__title-view
-  .conversations__title-view-status {
-  color: #6852d6;
-  font: 400 16px/19.2px Roboto;
-  text-align: left;
-}
-```
-
-</Tab>
-
-</Tabs>
-
-***
-
-#### SubtitleView
-
-You can customize the subtitle view for each conversation item to meet your requirements.
-
-Shown below is the default chat interface.
-
-<Frame>
-  <img src="/images/68f87420-subtitle_View_default_web_screens-981f3ae54a9cef1c1f774bbda2f05a81.png" />
-</Frame>
-
-The customized chat interface is displayed below.
-
-<Frame>
-  <img src="/images/a5a0ef3f-subtitle_View_custom_web_screens-cc38fdf73a8f272804d2c3b73e898ce5.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatConversations } from "@cometchat/chat-uikit-react";
-
-const subtitleView = (conversation: CometChat.Conversation) => {
-  if (conversation.getConversationType() === "user") {
-    return (
-      <>
-        Last Message at:{" "}
-        {getFormattedTimestamp(
-          (
-            conversation.getConversationWith() as CometChat.User
-          ).getLastActiveAt()
-        )}
-      </>
-    );
-  } else {
-    return (
-      <>
-        Created at:{" "}
-        {getFormattedTimestamp(
-          (conversation.getConversationWith() as CometChat.Group).getCreatedAt()
-        )}
-      </>
-    );
+// Subscribe
+const subscription = CometChatConversationEvents.ccConversationDeleted.subscribe(
+  (conversation: CometChat.Conversation) => {
+    console.log("Conversation deleted:", conversation.getConversationId());
   }
-};
+);
 
-function getFormattedTimestamp(timestamp: number): string {
-  const date = new Date(timestamp * 1000);
-  return date.toLocaleString();
-}
-
-<CometChatConversations subtitleView={subtitleView} />;
+// Unsubscribe when no longer needed (e.g., in useEffect cleanup)
+subscription?.unsubscribe();
 ```
 
-</Tab>
+### Customization Matrix
 
-<Tab title="CSS">
-```css lines
-.cometchat-conversations .cometchat-list-item__body-subtitle {
-  overflow: hidden;
-  color: var(--cometchat-text-color-secondary, #727272);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font: var(--cometchat-font-body-regular);
-  font-family: "SF Pro";
-  font-style: normal;
-}
-```
+| What you want to change | Where | Property/API | Example |
+| --- | --- | --- | --- |
+| Override behavior on user interaction | Component props | `on<Event>` callbacks | `onItemClick={(c) => setActive(c)}` |
+| Filter which conversations appear | Component props | `conversationsRequestBuilder` | `conversationsRequestBuilder={new CometChat.ConversationsRequestBuilder().setLimit(10)}` |
+| Toggle visibility of UI elements | Component props | `hide<Feature>` boolean props | `hideReceipts={true}` |
+| Replace a section of the list item | Component props | `<slot>View` render props | `itemView={(conversation) => <div>...</div>}` |
+| Change colors, fonts, spacing | Global CSS | Target `.cometchat-conversations` class | `.cometchat-conversations .cometchat-badge { background: #e5484d; }` |
 
-</Tab>
-
-</Tabs>
-
-***
-
-#### Options
-
-A function that returns a list of actions available when hovering over a conversation item.
-
-Shown below is the default chat interface.
-
-<Frame>
-  <img src="/images/c75bf066-options_default_web_screens-504fece998247b272a5ba5ca5d2f6678.png" />
-</Frame>
-
-The customized chat interface is displayed below.
-
-<Frame>
-  <img src="/images/e089983a-options_custom_web_screens-7996ecee34fa203d7bc68bd45ab1a875.png" />
-</Frame>
-
-Use the following code to achieve the customization shown above.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import {
-  CometChatOption,
-  CometChatConversations,
-} from "@cometchat/chat-uikit-react";
-
-const getOptions = (conversation: CometChat.Conversation) => {
-  return [
-    new CometChatOption({
-      title: "Delete",
-      iconURL: deleteIcon,
-      id: "delete",
-      onClick: () => {
-        // Logic here
-      },
-    }),
-    new CometChatOption({
-      title: "Mute Notification",
-      id: "mute",
-      onClick: () => {
-        // Logic here
-      },
-    }),
-    new CometChatOption({
-      title: "Mark as Unread",
-      id: "unread",
-      onClick: () => {
-        // Logic here
-      },
-    }),
-    new CometChatOption({
-      title: "Block",
-      id: "block",
-      onClick: () => {
-        // Logic here
-      },
-    }),
-  ];
-};
-
-<CometChatConversations options={getOptions} />;
-```
-
-</Tab>
-
-<Tab title="CSS">
-```css lines
-.cometchat-conversations .cometchat-menu-list__main-menu-item-icon-delete {
-  background: red;
-}
-
-.cometchat-conversations .cometchat-menu-list__sub-menu {
-  background: transparent;
-  box-shadow: none;
-}
-
-.cometchat-conversations .cometchat-menu-list__sub-menu-icon {
-  -webkit-mask: url(./assets/down-arrow.svg) center center no-repeat;
-  -webkit-mask-size: contain;
-}
-```
-
-</Tab>
-
-</Tabs>
-
-#### Structure of CometChatOption
-
-| Name        | Description                                           |
-| ----------- | ----------------------------------------------------- |
-| **id**      | Unique identifier for each option.                    |
-| **title**   | Heading text for each option.                         |
-| **iconURL** | Sets the asset URL of the icon for each option.       |
-| **onClick** | Method to be invoked when user clicks on each option. |
-
-***
-
-
-## Component API Pattern
+### Component API Pattern
 
 | Customization Type | Prop Pattern | Example |
 | --- | --- | --- |
@@ -1301,37 +1058,135 @@ const getOptions = (conversation: CometChat.Conversation) => {
 | Custom rendering | `<slot>View={(<params>) => JSX}` | `itemView={(conversation) => <div>...</div>}` |
 | CSS overrides | Target `.cometchat-conversations` class in global CSS | `.cometchat-conversations .cometchat-list-item { ... }` |
 
-<AccordionGroup>
-<Accordion title="Common Failure Modes">
+{/* ## Pagination, Batching, and Performance
 
-| Symptom | Cause | Fix |
-| --- | --- | --- |
-| Component doesn't render | `CometChatUIKit.init()` not called or not awaited | Ensure init completes before rendering. See [Methods](/ui-kit/react/methods) |
-| Component renders but shows no data | User not logged in | Call `CometChatUIKit.login("UID")` after init |
-| `onItemClick` not firing | Wrong prop name or missing callback | Use `onItemClick` (not `onClick` or `onPress`) |
-| Custom view not appearing | Returning `null` or `undefined` from view prop | Ensure view function returns valid JSX |
-| SSR hydration error | Component uses browser APIs on server | Wrap in `useEffect` or dynamic import with `ssr: false`. See [Next.js Integration](/ui-kit/react/next-js-integration) |
-| Conversations list empty after login | `ConversationsRequestBuilder` filters too restrictive | Remove or adjust the `conversationsRequestBuilder` prop |
-| Events not received | Listener not subscribed or unsubscribed too early | Subscribe in `useEffect` and unsubscribe in cleanup |
+The CometChatConversations component fetches conversations in pages using `ConversationsRequestBuilder`. The default page size is 30 conversations per request.
 
-</Accordion>
-</AccordionGroup>
+### Customizing Page Size
 
----
+Use `setLimit` on the `ConversationsRequestBuilder` to control how many conversations are fetched per page:
 
-## Next Steps
+```tsx lines
+import { CometChatConversations } from "@cometchat/chat-uikit-react";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
 
-<CardGroup cols={2}>
-  <Card title="Message List" icon="comments" href="/ui-kit/react/message-list">
-    Display messages for the selected conversation
-  </Card>
-  <Card title="Users" icon="users" href="/ui-kit/react/users">
-    Browse and select users to start new conversations
-  </Card>
-  <Card title="Groups" icon="people-group" href="/ui-kit/react/groups">
-    Browse and manage group conversations
-  </Card>
-  <Card title="Theming" icon="paintbrush" href="/ui-kit/react/theme">
-    Customize the appearance of the conversations list
-  </Card>
-</CardGroup>
+<CometChatConversations
+  conversationsRequestBuilder={
+    new CometChat.ConversationsRequestBuilder().setLimit(15)
+  }
+/>;
+```
+
+### Infinite Scroll
+
+The component uses infinite scroll by default. As the user scrolls to the bottom of the list, the next page of conversations is fetched automatically. No additional configuration is required.
+
+### Custom Loading View
+
+You can provide a custom loading indicator that displays while conversations are being fetched:
+
+```tsx lines
+import { CometChatConversations } from "@cometchat/chat-uikit-react";
+
+<CometChatConversations
+  loadingView={<div className="custom-loader">Loading conversations...</div>}
+/>;
+```
+
+## Error Handling and Retries
+
+The CometChatConversations component displays a default error view when conversation fetching fails. You can customize this behavior using the `onError`, `hideError`, and `errorView` props.
+
+### Default Behavior
+
+When an error occurs (such as a network failure or authentication issue), the component renders a built-in error state and logs the error to the console.
+
+### onError Callback
+
+Use the `onError` prop to intercept errors and implement custom error handling logic:
+
+```tsx lines
+import { CometChatConversations } from "@cometchat/chat-uikit-react";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+
+const handleOnError = (error: CometChat.CometChatException) => {
+  console.error("Conversations error:", error.message);
+  // Send to your error tracking service
+};
+
+<CometChatConversations onError={handleOnError} />;
+```
+
+### Hiding the Error View
+
+Set `hideError` to `true` to suppress the default error UI entirely:
+
+```tsx lines
+import { CometChatConversations } from "@cometchat/chat-uikit-react";
+
+<CometChatConversations hideError={true} />;
+```
+
+### Custom Error View
+
+Provide a custom error component using the `errorView` prop:
+
+```tsx lines
+import { CometChatConversations } from "@cometchat/chat-uikit-react";
+
+<CometChatConversations
+  errorView={
+    <div className="custom-error">
+      <p>Something went wrong. Please try again.</p>
+    </div>
+  }
+/>;
+``` */}
+
+{/* ## Files and Media
+
+Files and media handling does not apply to the Conversations component. The conversation list displays message previews but does not render or send media directly. For file and media support, see the [Message Composer](/ui-kit/react/message-composer) and [Message List](/ui-kit/react/message-list) components. */}
+
+{/* ## Logging, Tracing, and Observability
+
+### Enabling Debug Logging
+
+Enable CometChat SDK debug logging to troubleshoot conversation fetching and real-time event issues:
+
+```tsx lines
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+
+const appSettings = new CometChat.AppSettingsBuilder()
+  .subscribePresenceForAllUsers()
+  .setRegion("REGION")
+  .autoEstablishSocketConnection(true)
+  .build();
+
+CometChat.init("APP_ID", appSettings).then(() => {
+  CometChat.setLogLevel(CometChat.LogLevel.DEBUG);
+});
+```
+
+### Observable Events
+
+The component emits events through `CometChatConversationEvents` that can be used for observability:
+
+- `ccConversationDeleted` — fired when a conversation is deleted
+
+You can subscribe to these events to log user actions or feed analytics dashboards. See the [Events](#events) subsection in Basic Usage for subscribe/unsubscribe patterns.
+
+## Versioning, Beta Features, and Breaking Changes
+
+### Current Version
+
+This documentation covers CometChat React UI Kit V6 (`@cometchat/chat-uikit-react@6.x`).
+
+### Upgrading from V5
+
+If you are migrating from V5, see the [Upgrading from V5](/ui-kit/react/upgrading-from-v5) guide for a complete list of breaking changes and migration steps.
+
+### Breaking Changes from V5
+
+- The `conversationsStyle` object prop has been replaced by direct CSS class targeting on `.cometchat-conversations`
+- Event subscription now uses RxJS-style `.subscribe()` / `.unsubscribe()` instead of listener IDs
+- The `listItemView` prop has been renamed to `itemView` */}

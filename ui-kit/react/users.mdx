@@ -1,48 +1,27 @@
 ---
 title: "Users"
-description: "CometChatUsers component displays a searchable list of all available users with avatars, names, and online/offline status indicators. Supports selection modes, custom views, filtering via UsersRequestBuilder, and CSS styling."
+description: "Display and manage the list of all available users with avatars, names, and online/offline status using the CometChatUsers component in the React UI Kit."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
-
-```tsx
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-// Minimal usage
-<CometChatUsers />
-
-// With common props
-<CometChatUsers
-  onItemClick={(user) => console.log("Selected:", user)}
-  hideSearch={false}
-  showSectionHeader={true}
-  selectionMode={SelectionMode.none}
-/>
-```
-</Info>
-
-<Info>
-**AI Agent Component Spec**
-
-**Package:** `@cometchat/chat-uikit-react`
-**Import:** `import { CometChatUsers } from "@cometchat/chat-uikit-react";`
-**Minimal JSX:** `<CometChatUsers />`
-**Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
-**Key props:** `onItemClick: (user: CometChat.User) => void`, `selectionMode: SelectionMode`, `usersRequestBuilder: CometChat.UsersRequestBuilder`, `hideSearch: boolean`, `showSectionHeader: boolean`
-**CSS class:** `.cometchat-users`
-**Events:** None (does not emit events directly)
-</Info>
+<Accordion title="AI Agent Component Spec">
+- **Package:** `@cometchat/chat-uikit-react`
+- **Import:** `import { CometChatUsers } from "@cometchat/chat-uikit-react";`
+- **Minimal JSX:** `<CometChatUsers />`
+- **Required setup:** `CometChatUIKit.init()` + `CometChatUIKit.login()`
+- **Key props:** `onItemClick: (user: CometChat.User) => void`, `selectionMode: SelectionMode`, `usersRequestBuilder: CometChat.UsersRequestBuilder`, `hideSearch: boolean`, `showSectionHeader: boolean`
+- **CSS class:** `.cometchat-users`
+- **Events:** None (does not emit events directly)
+</Accordion>
 
 ## Overview
 
-The Users is a Component, showcasing an accessible list of all available users. It provides an integral search functionality, allowing you to locate any specific user swiftly and easily. For each user listed, the widget displays the user's name by default, in conjunction with their avatar when available. Furthermore, it includes a status indicator, visually informing you whether a user is currently online or offline.
+The CometChatUsers component renders a searchable, scrollable list of all available users in your application. Each list item displays the user's avatar, name, and online/offline status indicator. It supports selection modes, custom view slots, filtering via `UsersRequestBuilder`, and CSS styling for building user directory and contact list experiences.
+
+Import path: `import { CometChatUsers } from "@cometchat/chat-uikit-react";`
 
 <Frame>
   <img src="/images/49c5082a-users_overview_web_screens-701c604eb9c2d04dcaa8013fe409fcd9.png" />
 </Frame>
-
 
 <Note>
 **Before using this component:** Ensure `CometChatUIKit.init(UIKitSettings)` has completed and the user is logged in via `CometChatUIKit.login("UID")`. See [React.js Integration](/ui-kit/react/react-js-integration).
@@ -50,396 +29,158 @@ The Users is a Component, showcasing an accessible list of all available users. 
 
 The Users component is composed of the following BaseComponents:
 
-| Components        | Description                                                                                                              |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| CometChatList     | A reusable container component having title, search box, customisable background and a list view.                        |
+| Components        | Description                                                                                                     |
+| ----------------- | --------------------------------------------------------------------------------------------------------------- |
+| CometChatList     | A reusable container component having title, search box, customisable background and a list view.               |
 | CometChatListItem | A component that renders data obtained from a User object on a Tile having a title, subtitle, leading and trailing view. |
 
-***
+## Why Use / When to Use
+
+- Display a searchable directory of all registered users in your application
+- Allow users to select a contact and navigate to a chat view with `onItemClick`
+- Filter users by status, role, tags, or friends-only using `UsersRequestBuilder`
+- Show online/offline presence indicators for each user in the list
+- Customize the appearance of each user item using view slots like `itemView`, `subtitleView`, and `leadingView`
+- Enable multi-select mode for batch operations such as creating group chats or sending broadcast messages
+- Display alphabetical section headers to organize users by name
 
 ## Usage
-
-### Integration
-
-The following code snippet illustrates how you can directly incorporate the Users component into your Application.
-
-<Tabs>
-<Tab title="TypeScript">
-```tsx lines
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  return <CometChatUsers />;
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```jsx lines
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  return <CometChatUsers />;
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
-</Tabs>
 
 ### Actions
 
 [Actions](/ui-kit/react/components-overview#actions) dictate how a component functions. They are divided into two types: Predefined and User-defined. You can override either type, allowing you to tailor the behavior of the component to fit your specific needs.
 
-#### 1. onSelect
+#### 1. OnItemClick
 
-The `onSelect` action is activated when you select the done icon while in selection mode. This returns a list of all the users that you have selected.
+`OnItemClick` is triggered when you click on a user item in the list. This action does not have a predefined behavior. You can override this action using the following code snippet.
 
-This action does not come with any predefined behavior. However, you have the flexibility to override this event and tailor it to suit your needs using the following code snippet.
+```tsx lines
+import { CometChatUsers } from "@cometchat/chat-uikit-react";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
 
-<Tabs>
-<Tab title="UsersDemo (TypeScript)">
-```ts lines
+const handleOnItemClick = (user: CometChat.User) => {
+  console.log("User clicked:", user.getName());
+  // Your custom action here
+};
+
+<CometChatUsers onItemClick={handleOnItemClick} />;
+```
+
+#### 2. OnSelect
+
+The `OnSelect` event is triggered upon the completion of a selection in `SelectionMode`. It does not have a default behavior. However, you can override its behavior using the following code snippet.
+
+```tsx lines
 import { CometChatUsers, SelectionMode } from "@cometchat/chat-uikit-react";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
 
-function UsersDemo() {
-  function handleOnSelect(users: CometChat.User, selected: boolean): void {
-    console.log(users);
-    //your custom onSelect actions
-  }
+const handleOnSelect = (user: CometChat.User, selected: boolean) => {
+  console.log("Selected:", user.getName(), selected);
+  // Your custom action on select
+};
 
-  return (
-    <CometChatUsers
-      selectionMode={SelectionMode.multiple}
-      onSelect={handleOnSelect}
-    />
-  );
-}
-
-export default UsersDemo;
+<CometChatUsers
+  selectionMode={SelectionMode.multiple}
+  onSelect={handleOnSelect}
+/>;
 ```
 
-</Tab>
+#### 3. OnEmpty
 
-<Tab title="JavaScript">
-```js lines
-import { CometChatUsers, SelectionMode } from "@cometchat/chat-uikit-react";
+This action allows you to specify a callback function to be executed when the user list is empty.
 
-function UsersDemo() {
-  function handleOnSelect(users, selected) {
-    console.log(users);
-    //your custom onSelect actions
-  }
-
-  return (
-    <CometChatUsers
-      selectionMode={SelectionMode.multiple}
-      onSelect={handleOnSelect}
-    />
-  );
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
-</Tabs>
-
-#### 2. onItemClick
-
-The `OnItemClick` event is activated when you click on the UserList item. This action does not come with any predefined behavior. However, you have the flexibility to override this event and tailor it to suit your needs using the following code snippet.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
+```tsx lines
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 
-function UsersDemo() {
-  function handleOnItemClick(user: CometChat.User): void {
-    console.log(user, "your custom on item click action");
-  }
-  return <CometChatUsers onItemClick={handleOnItemClick} />;
-}
+const handleOnEmpty = () => {
+  console.log("No users available");
+};
 
-export default UsersDemo;
+<CometChatUsers onEmpty={handleOnEmpty} />;
 ```
 
-</Tab>
+#### 4. OnError
 
-<Tab title="JavaScript">
-```js lines
+This action listens for any errors that occur in the Users component.
+
+```tsx lines
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
 
-function UsersDemo() {
-  function handleOnItemClick(user) {
-    console.log(user, "your custom on item click action");
-  }
-  return <CometChatUsers onItemClick={handleOnItemClick} />;
-}
+const handleOnError = (error: CometChat.CometChatException) => {
+  console.error("Users error:", error.message);
+  // Your exception handling code
+};
 
-export default UsersDemo;
+<CometChatUsers onError={handleOnError} />;
 ```
-
-</Tab>
-
-</Tabs>
-
-#### 3. onEmpty
-
-This action allows you to specify a callback function to be executed when a certain condition, typically the absence of data or content, is met within the component or element.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  function handleOnEmpty(): void {
-    console.log("your custom on Empty action");
-  }
-  return <CometChatUsers onEmpty={handleOnEmpty} />;
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  function handleOnEmpty() {
-    console.log("your custom on Empty action");
-  }
-
-  return <CometChatUsers onEmpty={handleOnEmpty} />;
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
-</Tabs>
-
-#### 4. onError
-
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the User component.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  const handleOnError = (error: CometChat.CometChatException) => {
-    console.log("Your custom on error actions");
-  };
-  return <CometChatUsers onError={handleOnError} />;
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  const handleOnError = (error) => {
-    console.log("Your custom on error actions");
-  };
-
-  return <CometChatUsers onError={handleOnError} />;
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
-</Tabs>
 
 ### Filters
 
-**Filters** allow you to customize the data displayed in a list within a Component. You can filter the list based on your specific criteria, allowing for a more customized. Filters can be applied using RequestBuilders of Chat SDK.
+You can set `UsersRequestBuilder` in the Users component to filter the user list. You can modify the builder as per your specific requirements with multiple options available to know more refer to [UsersRequestBuilder](/sdk/javascript/retrieve-users).
 
-#### 1. UserRequestBuilder
+You can set filters using the following parameters:
 
-The [UserRequestBuilder](/sdk/javascript/retrieve-users) enables you to filter and customize the user list based on available parameters in UserRequestBuilder. This feature allows you to create more specific and targeted queries when fetching users. The following are the parameters available in [UserRequestBuilder](/sdk/javascript/retrieve-users)
+1. **Limit:** Number of users fetched in a single request.
+2. **SearchKeyword:** Fetches users matching the passed string.
+3. **HideBlockedUsers:** Filters out users blocked by the logged-in user.
+4. **FriendsOnly:** Fetches only friends of the logged-in user.
+5. **Roles:** Filters users by specific roles.
+6. **Tags:** Filters users by specific tags.
+7. **Status:** Filters users by online or offline status.
+8. **UIDs:** Fetches specific users by their UIDs.
 
-| Methods              | Type          | Description                                                                            |
-| -------------------- | ------------- | -------------------------------------------------------------------------------------- |
-| **setLimit**         | number        | sets the number users that can be fetched in a single request, suitable for pagination |
-| **setSearchKeyword** | String        | used for fetching users matching the passed string                                     |
-| **hideBlockedUsers** | boolean       | used for fetching all those users who are not blocked by the logged in user            |
-| **friendsOnly**      | boolean       | used for fetching only those users in which logged in user is a member                 |
-| **setRoles**         | List\<String> | used for fetching users containing the passed tags                                     |
-| **setTags**          | List\<String> | used for fetching users containing the passed tags                                     |
-| **withTags**         | boolean       | used for fetching users containing tags                                                |
-| **setStatus**        | String        | used for fetching users by their status online or offline                              |
-| **setUIDs**          | List\<String> | used for fetching users containing the passed users                                    |
-
-**Example**
-
-In the example below, we are applying a filter to the UserList based on Friends.
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
+```tsx lines
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  return (
-    <CometChatUsers
-      usersRequestBuilder={new CometChat.UsersRequestBuilder().friendsOnly(
-        true
-      )}
-    />
-  );
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```js lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
 
-function UsersDemo() {
-  return (
-    <CometChatUsers
-      usersRequestBuilder={new CometChat.UsersRequestBuilder().friendsOnly(
-        true
-      )}
-    />
-  );
-}
-
-export default UsersDemo;
+<CometChatUsers
+  usersRequestBuilder={
+    new CometChat.UsersRequestBuilder().friendsOnly(true)
+  }
+/>;
 ```
-
-</Tab>
-
-</Tabs>
-
-#### 2. SearchRequestBuilder
-
-The SearchRequestBuilder uses [UserRequestBuilder](/sdk/javascript/retrieve-users) enables you to filter and customize the search list based on available parameters in UserRequestBuilder. This feature allows you to keep uniformity between the displayed UserList and searched UserList.
-
-**Example**
-
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  return (
-    <CometChatUsers
-      searchRequestBuilder={new CometChat.UsersRequestBuilder().setSearchKeyword(
-        "**"
-      )}
-    />
-  );
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  return (
-    <CometChatUsers
-      searchRequestBuilder={new CometChat.UsersRequestBuilder().setSearchKeyword(
-        "**"
-      )}
-    />
-  );
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
-</Tabs>
-
-***
 
 ### Events
 
 [Events](/ui-kit/react/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
 
-To handle events supported by Users you have to add corresponding listeners by using `CometChatUserEvents`
+The `Users` component does not produce any events directly. However, you can listen for user presence changes using the CometChat SDK:
 
-The `Users` component does not produce any events directly.
+```tsx lines
+import { CometChat } from "@cometchat/chat-sdk-javascript";
 
-***
+const listenerID = "USERS_PRESENCE_LISTENER";
 
-## Customization
+// Subscribe to user presence events
+CometChat.addUserListener(
+  listenerID,
+  new CometChat.UserListener({
+    onUserOnline: (onlineUser: CometChat.User) => {
+      console.log("User online:", onlineUser.getName());
+    },
+    onUserOffline: (offlineUser: CometChat.User) => {
+      console.log("User offline:", offlineUser.getName());
+    },
+  })
+);
 
-To fit your app's design requirements, you can customize the appearance of the Users component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+// Unsubscribe when no longer needed (e.g., in useEffect cleanup)
+CometChat.removeUserListener(listenerID);
+```
 
 ### Style
 
-Using CSS you can customize the look and feel of the component in your app like the color, size, shape, and fonts.
-
-**Example**
+Using CSS you can customize the look and feel of the component in your app like the color, size, shape, and fonts. The root CSS class for this component is `.cometchat-users`.
 
 <Frame>
   <img src="/images/448b5518-users_style-269bf9feb319c99c79d270a1117f35b7.png" />
 </Frame>
 
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  return <CometChatUsers showSectionHeader={false} />;
-}
-
-export default UsersDemo;
+```tsx lines
+<CometChatUsers showSectionHeader={false} />
 ```
 
-</Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  return <CometChatUsers showSectionHeader={false} />;
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
-<Tab title="CSS">
 ```css lines
 .cometchat .cometchat-users .cometchat-list__header-title {
   background-color: #fce9ea;
@@ -489,82 +230,40 @@ export default UsersDemo;
 }
 ```
 
-</Tab>
-
-</Tabs>
-
-***
-
 ### Functionality
 
 These are a set of small functional customizations that allow you to fine-tune the overall experience of the component. With these, you can change text, set custom icons, and toggle the visibility of UI elements.
 
-<Tabs>
-<Tab title="TypeScript">
-```ts lines
-import { CometChatUsers, TitleAlignment } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  return (
-    <CometChatUsers
-      title="Your Custom Title"
-      showSectionHeader={true}
-      tileAlignment={TitleAlignment.center}
-    />
-  );
-}
-
-export default UsersDemo;
+```tsx lines
+<CometChatUsers
+  title="Your Custom Title"
+  showSectionHeader={true}
+/>
 ```
 
-</Tab>
+Below is a list of customizations along with corresponding code snippets:
 
-<Tab title="JavaScript">
-```js lines
-import { CometChatUsers, TitleAlignment } from "@cometchat/chat-uikit-react";
+| Property | Description | Code |
+| --- | --- | --- |
+| **Hide Search** | Hides the default search bar. | `hideSearch={true}` |
+| **Show Section Header** | Displays an alphabetical section header for the user list. | `showSectionHeader={true}` |
+| **Hide Error** | Hides both the default and custom error view passed in `errorView` prop. | `hideError={true}` |
+| **Hide User Status** | Hides the user's online/offline status indicator. | `hideUserStatus={true}` |
+| **Active User** | The user to be highlighted in the users list. | `activeUser={chatUser}` |
+| **Search Keyword** | The search keyword used to filter the user list. | `searchKeyword="Alice"` |
+| **Section Header Key** | The property on the user object used to extract the section header character. | `sectionHeaderKey={getName}` |
+| **Selection Mode** | Selection mode to use for the default trailing view. | `selectionMode={SelectionMode.multiple}` |
+| **Show Scrollbar** | Controls the visibility of the scrollbar in the list. | `showScrollbar={true}` |
+| **Loading View** | A custom view to display during the loading state. | `loadingView={<>Custom Loading View</>}` |
+| **Empty View** | A custom view to display when no users are available in the list. | `emptyView={<>Custom Empty View</>}` |
+| **Error View** | A custom view to display when an error occurs. | `errorView={<>Custom Error View</>}` |
+| **Show Selected Users Preview** | Shows a preview of selected users when selectionMode is multiple. | `showSelectedUsersPreview={true}` |
 
-function UsersDemo() {
-  return (
-    <CometChatUsers
-      title="Your Custom Title"
-      showSectionHeader={true}
-      tileAlignment={TitleAlignment.center}
-    />
-  );
-}
+## Advanced Features
 
-export default UsersDemo;
-```
+For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics.
 
-</Tab>
-
-</Tabs>
-
-Below is a list of customizations along with corresponding code snippets
-
-| Property                        | Description                                                                   | Code                                     |
-| ------------------------------- | ----------------------------------------------------------------------------- | ---------------------------------------- |
-| **Hide Search**                 | Hides the default search bar.                                                 | `hideSearch={true}`                      |
-| **Show Section Header**         | Displays an alphabetical section header for the user list.                    | `showSectionHeader={true}`               |
-| **Hide Error**                  | Hides both the default and custom error view passed in `errorView` prop.      | `hideError={true}`                       |
-| **Hide User Status**            | Hides the user's online/offline status indicator.                             | `hideUserStatus={true}`                  |
-| **Active User**                 | The user to be highlighted in the users list.                                 | `activeUser={chatUser}`                  |
-| **Search Keyword**              | The search keyword used to filter the user list.                              | `searchKeyword="Alice"`                  |
-| **Section Header Key**          | The property on the user object used to extract the section header character. | `sectionHeaderKey={getName}`             |
-| **Selection Mode**              | Selection mode to use for the default trailing view.                          | `selectionMode={SelectionMode.multiple}` |
-| **Show Scrollbar**              | Controls the visibility of the scrollbar in the list.                         | `showScrollbar={true}`                   |
-| **Loading View**                | A custom view to display during the loading state.                            | `loadingView={<>Custom Loading View</>}` |
-| **Empty View**                  | A custom view to display when no users are available in the list.             | `emptyView={<>Custom Empty View</>}`     |
-| **Error View**                  | A custom view to display when an error occurs.                                | `errorView={<>Custom Error View</>}`     |
-| **Show Selected Users Preview** | Shows a preview of selected users when selectionMode is multiple.             | `showSelectedUsersPreview={true}`        |
-
-***
-
-### Advanced
-
-For advanced-level customization, you can set custom views to the component. This lets you tailor each aspect of the component to fit your exact needs and application aesthetics. You can create and define your views, layouts, and UI elements and then incorporate those into the component.
-
-***
+### Custom View Slots
 
 #### ItemView
 
@@ -588,7 +287,7 @@ Use the following code to achieve the customization shown above.
 <Tab title="TypeScript">
 ```ts lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
+import { CometChatUsers, CometChatListItem } from "@cometchat/chat-uikit-react";
 
 function UsersDemo() {
   const getItemView = (user: CometChat.User) => {
@@ -615,42 +314,7 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-
 </Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  const getItemView = (user) => {
-    const status = user.getStatus();
-
-    return (
-      <div
-        className={`cometchat-users__list-item cometchat-users__list-item-${status}
-          ${status === "online" ? `cometchat-users__list-item-active` : ""}
-         `}
-      >
-        <CometChatListItem
-          title={user.getName()}
-          subtitleView={user.getStatus()}
-          avatarURL={user.getAvatar()}
-          avatarName={user.getName()}
-        />
-      </div>
-    );
-  };
-
-  return <CometChatUsers itemView={getItemView} />;
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
 <Tab title="CSS">
 ```css lines
 .cometchat .cometchat-users .cometchat-list-item__body-subtitle {
@@ -672,12 +336,8 @@ export default UsersDemo;
   background: rgba(9, 194, 111, 0.1);
 }
 ```
-
 </Tab>
-
 </Tabs>
-
-***
 
 #### TitleView
 
@@ -696,36 +356,37 @@ import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 
-// Custom title view component
- const customTitleView = (user: CometChat.User) => {
-    return <div className={`users__title-view users__title-view-${user.getRole()}`}>
+const customTitleView = (user: CometChat.User) => {
+  return (
+    <div className={`users__title-view users__title-view-${user.getRole()}`}>
       <span className="users__title-view-name">{user.getName()}</span>
-      <span className="users__title-view-type"><img src="ICON_HERE"></img>{user.getRole()}</span>
-     </div>;
-  }
+      <span className="users__title-view-type">
+        <img src="ICON_HERE" />
+        {user.getRole()}
+      </span>
+    </div>
+  );
+};
 
 <CometChatUsers titleView={customTitleView} />;
 ```
-
 </Tab>
-
 <Tab title="CSS">
 ```css lines
-
-.users__title-view{
+.users__title-view {
   display: flex;
   align-items: center;
   gap: 4px;
   align-self: stretch;
-  }
-  .users__title-view-name{
+}
+.users__title-view-name {
   overflow: hidden;
   color: #141414;
   text-overflow: ellipsis;
-  font:500 16px Roboto
-  }
-  .users__title-view-type{
-  color: #FFF;
+  font: 500 16px Roboto;
+}
+.users__title-view-type {
+  color: #fff;
   font: 600 8px Roboto;
   display: flex;
   height: 15px;
@@ -734,23 +395,16 @@ import { CometChatUsers } from "@cometchat/chat-uikit-react";
   align-items: center;
   gap: 3px;
   border-radius: 7px;
-  background: #09C26F;
-  }
-  .users__title-view-type img{
-    border-radius: 4px;
-    height: 12px;
-    width: 12px;
-  }
-  //different roles customisation
- .users__title-view-teacher .users__title-view-type{
- }
+  background: #09c26f;
+}
+.users__title-view-type img {
+  border-radius: 4px;
+  height: 12px;
+  width: 12px;
+}
 ```
-
 </Tab>
-
 </Tabs>
-
-***
 
 #### SubtitleView
 
@@ -799,40 +453,7 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-
 </Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatUsers } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  const getSubtitleView = (user) => {
-    if (!(user instanceof CometChat.User)) {
-      return <></>;
-    }
-
-    function formatTime(timestamp) {
-      const date = new Date(timestamp * 1000);
-      return date.toLocaleString();
-    }
-
-    return (
-      <div className="users-subtitle">
-        Last Active At: {formatTime(user.getLastActiveAt())}
-      </div>
-    );
-  };
-
-  return <CometChatUsers subtitleView={getSubtitleView} />;
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
 <Tab title="CSS">
 ```css lines
 .users-subtitle {
@@ -846,12 +467,8 @@ export default UsersDemo;
   line-height: 120%;
 }
 ```
-
 </Tab>
-
 </Tabs>
-
-***
 
 #### HeaderView
 
@@ -868,31 +485,27 @@ Use the following code to achieve the customization shown above.
 <Tabs>
 <Tab title="TypeScript">
 ```ts lines
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatUsers,localize,CometChatButton } from "@cometchat/chat-uikit-react";
-import React from "react";
+import { CometChatUsers, localize, CometChatButton } from "@cometchat/chat-uikit-react";
 
 const getHeaderView = () => {
-    return (
-        <div className="cometchat-users__header">
-            <div className="cometchat-users__header__title">
-                {localize("USERS")}
-            </div>
-            <CometChatButton 
-                onClick={() => {
-                    // logic here
-                }}
-                iconURL={ICON_URL} 
-            />
-        </div>
-    );
+  return (
+    <div className="cometchat-users__header">
+      <div className="cometchat-users__header__title">
+        {localize("USERS")}
+      </div>
+      <CometChatButton
+        onClick={() => {
+          // logic here
+        }}
+        iconURL={ICON_URL}
+      />
+    </div>
+  );
 };
 
-<CometChatUsers headerView={getHeaderView()} />
+<CometChatUsers headerView={getHeaderView()} />;
 ```
-
 </Tab>
-
 <Tab title="CSS">
 ```css lines
 .cometchat-users__header {
@@ -905,8 +518,8 @@ const getHeaderView = () => {
   flex: 1 0 0;
   align-self: stretch;
   border-radius: 10px;
-  border: 1px solid #E8E8E8;
-  background: #EDEAFA;
+  border: 1px solid #e8e8e8;
+  background: #edeafa;
 }
 .cometchat-users__header__title {
   overflow: hidden;
@@ -917,7 +530,7 @@ const getHeaderView = () => {
 .cometchat-users__header .cometchat-button .cometchat-button__icon {
   background: #141414;
 }
-.cometchat-users__header .cometchat-button{
+.cometchat-users__header .cometchat-button {
   width: 24px;
   border: none;
   background: transparent;
@@ -925,12 +538,8 @@ const getHeaderView = () => {
   display: block;
 }
 ```
-
 </Tab>
-
 </Tabs>
-
-***
 
 #### LeadingView
 
@@ -947,62 +556,59 @@ Use the following code to achieve the customization shown above.
 ```ts lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatUsers,CometChatAvatar } from "@cometchat/chat-uikit-react";
+import { CometChatUsers, CometChatAvatar } from "@cometchat/chat-uikit-react";
 
 const customLeadingView = (user: CometChat.User): JSX.Element => {
-    return (
-      <div className={`users__leading-view users__leading-view-${user.getRole()}`}>
-        <CometChatAvatar 
-          image={user?.getAvatar()} 
-          name={user?.getName()} 
-        />
-        <span className="users__leading-view-role"><img src={"ICON_URL"}/></span>
-      </div>
-    );
-  };
-<CometChatUsers leadingView={customLeadingView} />
+  return (
+    <div className={`users__leading-view users__leading-view-${user.getRole()}`}>
+      <CometChatAvatar
+        image={user?.getAvatar()}
+        name={user?.getName()}
+      />
+      <span className="users__leading-view-role">
+        <img src={"ICON_URL"} />
+      </span>
+    </div>
+  );
+};
+
+<CometChatUsers leadingView={customLeadingView} />;
 ```
-
 </Tab>
-
 <Tab title="CSS">
 ```css lines
 .cometchat-users .cometchat-list-item .users__leading-view .cometchat-avatar__image,
 .cometchat-users .cometchat-list-item .users__leading-view .cometchat-avatar {
-	border-radius: 8px;
-	height: 48px;
-	width: 48px;
-	filter: blur(1px);
+  border-radius: 8px;
+  height: 48px;
+  width: 48px;
+  filter: blur(1px);
 }
 
 .users__leading-view-role {
-	display: flex;
-	width: 48px;
-	height: 15px;
-	padding: 1px 3px;
-	justify-content: center;
-	align-items: center;
-	font: 600 8px/9.6px Roboto;
-	position: absolute;
-	bottom: -2px;
+  display: flex;
+  width: 48px;
+  height: 15px;
+  padding: 1px 3px;
+  justify-content: center;
+  align-items: center;
+  font: 600 8px/9.6px Roboto;
+  position: absolute;
+  bottom: -2px;
 }
 
 .users__leading-view {
-	position: relative;
+  position: relative;
 }
 
 .users__leading-view-role img {
-	height: 18px;
-	width: 18px;
-	margin-bottom: 3px;
+  height: 18px;
+  width: 18px;
+  margin-bottom: 3px;
 }
 ```
-
 </Tab>
-
 </Tabs>
-
-***
 
 #### TrailingView
 
@@ -1019,60 +625,54 @@ Use the following code to achieve the customization shown above.
 ```ts lines
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import {
-  CometChatUsers,
-} from "@cometchat/chat-uikit-react";
+import { CometChatUsers } from "@cometchat/chat-uikit-react";
 
-const customTrailingButtonView = (user:CometChat.User) =>  {
+const customTrailingButtonView = (user: CometChat.User) => {
   let tag = user?.getTags() ? user?.getTags()[0] : "";
-  return <div className="users__trailing-view">
-   <span className="users__trailing-view-icon">
-   <img src="ICON_HERE"/>
-   </span>
-   <span className="users__trailing-view-text">{tag}</span>
-  </div>
-}
+  return (
+    <div className="users__trailing-view">
+      <span className="users__trailing-view-icon">
+        <img src="ICON_HERE" />
+      </span>
+      <span className="users__trailing-view-text">{tag}</span>
+    </div>
+  );
+};
 
-<CometChatUsers  trailingView={customTrailingButtonView} />;
+<CometChatUsers trailingView={customTrailingButtonView} />;
 ```
-
 </Tab>
-
 <Tab title="CSS">
 ```css lines
 .users__trailing-view {
-	display: flex;
-	width: 33px;
-	padding: 5px 3px;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	gap: 3px;
-	border-radius: 4px;
-	background: #6852D6;
+  display: flex;
+  width: 33px;
+  padding: 5px 3px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  border-radius: 4px;
+  background: #6852d6;
 }
 
 .users__trailing-view-icon {
-	width: 10px;
-	height: 10px;
+  width: 10px;
+  height: 10px;
 }
 
 .users__trailing-view-icon img {
-	height: inherit;
-	width: inherit;
+  height: inherit;
+  width: inherit;
 }
 
 .users__trailing-view-text {
-	font: 600 8px Inter;
-	color: white;
+  font: 600 8px Inter;
+  color: white;
 }
 ```
-
 </Tab>
-
 </Tabs>
-
-***
 
 #### Options
 
@@ -1095,6 +695,7 @@ Use the following code to achieve the customization shown above.
 <Tabs>
 <Tab title="TypeScript">
 ```ts lines
+import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatUsers, CometChatOption } from "@cometchat/chat-uikit-react";
 
 function UsersDemo() {
@@ -1115,62 +716,71 @@ function UsersDemo() {
 
 export default UsersDemo;
 ```
-
 </Tab>
-
-<Tab title="JavaScript">
-```js lines
-import { CometChatUsers, CometChatOption } from "@cometchat/chat-uikit-react";
-
-function UsersDemo() {
-  const getOptions = (user) => {
-    return [
-      new CometChatOption({
-        id: "delete",
-        title: "delete",
-        onClick: () => {
-          console.log("Custom option clicked for user:", user);
-        },
-      }),
-    ];
-  };
-
-  return <CometChatUsers options={getOptions} />;
-}
-
-export default UsersDemo;
-```
-
-</Tab>
-
 <Tab title="CSS">
 ```css lines
 .cometchat .cometchat-users .cometchat-menu-list__menu {
-	background: none;
+  background: none;
 }
 
 .cometchat .cometchat-users .cometchat-menu-list__main-menu-item-icon {
-	height: 24px;
-	width: 24px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border: none;
-	align-self: center;
-	background: #f44649;
-	flex-shrink: 0;
-	-webkit-mask: url("../assets/delete.svg") center center no-repeat;
-	mask: url("../assets/delete.svg") center center no-repeat;
-	-webkit-mask-size: contain;
-	mask-size: contain;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  align-self: center;
+  background: #f44649;
+  flex-shrink: 0;
+  -webkit-mask: url("../assets/delete.svg") center center no-repeat;
+  mask: url("../assets/delete.svg") center center no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-## Component API Pattern
+### Real-Time User Presence Events
+
+The CometChatUsers component automatically reflects user presence changes. You can also subscribe to presence events directly using the CometChat SDK to react to user status changes across your application.
+
+Subscribe to user presence events:
+
+```tsx lines
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+
+const listenerID = "USERS_PRESENCE_LISTENER";
+
+// Subscribe
+CometChat.addUserListener(
+  listenerID,
+  new CometChat.UserListener({
+    onUserOnline: (onlineUser: CometChat.User) => {
+      console.log("User came online:", onlineUser.getName());
+    },
+    onUserOffline: (offlineUser: CometChat.User) => {
+      console.log("User went offline:", offlineUser.getName());
+    },
+  })
+);
+
+// Unsubscribe when no longer needed (e.g., in useEffect cleanup)
+CometChat.removeUserListener(listenerID);
+```
+
+### Customization Matrix
+
+| What you want to change | Where | Property/API | Example |
+| --- | --- | --- | --- |
+| Override behavior on user interaction | Component props | `on<Event>` callbacks | `onItemClick={(user) => setActive(user)}` |
+| Filter which users appear | Component props | `usersRequestBuilder` | `usersRequestBuilder={new CometChat.UsersRequestBuilder().friendsOnly(true)}` |
+| Toggle visibility of UI elements | Component props | `hide<Feature>` boolean props | `hideSearch={true}` |
+| Replace a section of the list item | Component props | `<slot>View` render props | `itemView={(user) => <div>...</div>}` |
+| Change colors, fonts, spacing | Global CSS | Target `.cometchat-users` class | `.cometchat-users .cometchat-avatar { border-radius: 8px; }` |
+
+### Component API Pattern
 
 | Customization Type | Prop Pattern | Example |
 | --- | --- | --- |
@@ -1180,35 +790,177 @@ export default UsersDemo;
 | Custom rendering | `<slot>View={(<params>) => JSX}` | `itemView={(user) => <div>...</div>}` |
 | CSS overrides | Target `.cometchat-users` class in global CSS | `.cometchat-users { ... }` |
 
-<AccordionGroup>
-<Accordion title="Common Failure Modes">
+## Pagination, Batching, and Performance
 
-| Symptom | Cause | Fix |
+The CometChatUsers component fetches users in pages using `UsersRequestBuilder`. The default page size is 30 users per request.
+
+### Customizing Page Size
+
+Use `setLimit` on the `UsersRequestBuilder` to control how many users are fetched per page:
+
+```tsx lines
+import { CometChatUsers } from "@cometchat/chat-uikit-react";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+
+<CometChatUsers
+  usersRequestBuilder={
+    new CometChat.UsersRequestBuilder().setLimit(15)
+  }
+/>;
+```
+
+### Infinite Scroll
+
+The component uses infinite scroll by default. As the user scrolls to the bottom of the list, the next page of users is fetched automatically. No additional configuration is required.
+
+### Custom Loading View
+
+You can provide a custom loading indicator that displays while users are being fetched:
+
+```tsx lines
+import { CometChatUsers } from "@cometchat/chat-uikit-react";
+
+<CometChatUsers
+  loadingView={<div className="custom-loader">Loading users...</div>}
+/>;
+```
+
+### UsersRequestBuilder Methods
+
+| Methods | Type | Description |
 | --- | --- | --- |
-| Component doesn't render | `CometChatUIKit.init()` not called or not awaited | Ensure init completes before rendering. See [Methods](/ui-kit/react/methods) |
-| Component renders but shows no data | User not logged in | Call `CometChatUIKit.login("UID")` after init |
-| Callback not firing | Wrong prop name or signature | Check the Actions section for exact prop name and parameter types |
-| Custom view not appearing | Returning `null` or `undefined` from view prop | Ensure view function returns valid JSX |
-| SSR hydration error | Component uses browser APIs on server | Wrap in `useEffect` or dynamic import with `ssr: false`. See [Next.js Integration](/ui-kit/react/next-js-integration) |
+| **setLimit** | number | Sets the number of users that can be fetched in a single request, suitable for pagination |
+| **setSearchKeyword** | String | Used for fetching users matching the passed string |
+| **hideBlockedUsers** | boolean | Used for fetching all those users who are not blocked by the logged-in user |
+| **friendsOnly** | boolean | Used for fetching only those users in which logged-in user is a friend |
+| **setRoles** | List\<String> | Used for fetching users containing the passed roles |
+| **setTags** | List\<String> | Used for fetching users containing the passed tags |
+| **withTags** | boolean | Used for fetching users containing tags |
+| **setStatus** | String | Used for fetching users by their status online or offline |
+| **setUIDs** | List\<String> | Used for fetching specific users by their UIDs |
 
-</Accordion>
-</AccordionGroup>
+## Error Handling and Retries
 
----
+The CometChatUsers component displays a default error view when user fetching fails. You can customize this behavior using the `onError`, `hideError`, and `errorView` props.
 
-## Next Steps
+### Default Behavior
 
-<CardGroup cols={2}>
-  <Card title="Groups" icon="users" href="/ui-kit/react/groups">
-    Display and manage group lists
-  </Card>
-  <Card title="Group Members" icon="user-group" href="/ui-kit/react/group-members">
-    View and manage members within a group
-  </Card>
-  <Card title="Conversations" icon="comments" href="/ui-kit/react/conversations">
-    Display recent conversations
-  </Card>
-  <Card title="Message List" icon="messages" href="/ui-kit/react/message-list">
-    Render messages in a chat view
-  </Card>
-</CardGroup>
+When an error occurs (such as a network failure or authentication issue), the component renders a built-in error state and logs the error to the console.
+
+### onError Callback
+
+Use the `onError` prop to intercept errors and implement custom error handling logic:
+
+```tsx lines
+import { CometChatUsers } from "@cometchat/chat-uikit-react";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+
+const handleOnError = (error: CometChat.CometChatException) => {
+  console.error("Users error:", error.message);
+  // Send to your error tracking service
+};
+
+<CometChatUsers onError={handleOnError} />;
+```
+
+### Hiding the Error View
+
+Set `hideError` to `true` to suppress the default error UI entirely:
+
+```tsx lines
+import { CometChatUsers } from "@cometchat/chat-uikit-react";
+
+<CometChatUsers hideError={true} />;
+```
+
+### Custom Error View
+
+Provide a custom error component using the `errorView` prop:
+
+```tsx lines
+import { CometChatUsers } from "@cometchat/chat-uikit-react";
+
+<CometChatUsers
+  errorView={
+    <div className="custom-error">
+      <p>Something went wrong. Please try again.</p>
+    </div>
+  }
+/>;
+```
+
+## Configuration and Environment
+
+### CometChat Initialization
+
+The CometChatUsers component requires `CometChatUIKit.init()` to be called before rendering. The initialization requires `appId`, `region`, and `authKey`:
+
+```tsx lines
+import { CometChatUIKit, UIKitSettingsBuilder } from "@cometchat/chat-uikit-react";
+
+const settings = new UIKitSettingsBuilder()
+  .setAppId("APP_ID")
+  .setRegion("REGION")
+  .setAuthKey("AUTH_KEY")
+  .build();
+
+await CometChatUIKit.init(settings);
+await CometChatUIKit.login("USER_UID");
+```
+
+### Required Packages
+
+The Users component requires only the core UI Kit package:
+
+- `@cometchat/chat-uikit-react` — the React UI Kit containing all components
+- `@cometchat/chat-sdk-javascript` — installed automatically as a peer dependency
+
+### Supported React Versions and Frameworks
+
+- React 18+ is supported
+- Compatible with Next.js (wrap in `useEffect` or use dynamic imports with `ssr: false` to avoid SSR hydration errors), React Router, and Astro
+- For Next.js integration details, see [Next.js Integration](/ui-kit/react/next-js-integration)
+
+## Files and Media
+
+Files and media handling does not apply to the Users component. The user list displays user profiles but does not render or send media directly. For file and media support, see the [Message Composer](/ui-kit/react/message-composer) and [Message List](/ui-kit/react/message-list) components.
+
+## Logging, Tracing, and Observability
+
+### Enabling Debug Logging
+
+Enable CometChat SDK debug logging to troubleshoot user fetching and presence event issues:
+
+```tsx lines
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+
+const appSettings = new CometChat.AppSettingsBuilder()
+  .subscribePresenceForAllUsers()
+  .setRegion("REGION")
+  .autoEstablishSocketConnection(true)
+  .build();
+
+CometChat.init("APP_ID", appSettings).then(() => {
+  CometChat.setLogLevel(CometChat.LogLevel.DEBUG);
+});
+```
+
+### Observable Events
+
+The Users component reflects real-time presence changes via the CometChat SDK's user listeners. You can subscribe to `onUserOnline` and `onUserOffline` events to log user activity or feed analytics dashboards. See the [Events](#events) subsection in Basic Usage and the [Real-Time User Presence Events](#real-time-user-presence-events) section in Advanced Features for subscribe/unsubscribe patterns.
+
+## Versioning, Beta Features, and Breaking Changes
+
+### Current Version
+
+This documentation covers CometChat React UI Kit V6 (`@cometchat/chat-uikit-react@6.x`).
+
+### Upgrading from V5
+
+If you are migrating from V5, see the [Upgrading from V5](/ui-kit/react/upgrading-from-v5) guide for a complete list of breaking changes and migration steps.
+
+### Breaking Changes from V5
+
+- The `usersStyle` object prop has been replaced by direct CSS class targeting on `.cometchat-users`
+- The `listItemView` prop has been renamed to `itemView`
+- Presence subscription configuration has moved to `AppSettingsBuilder` with `subscribePresenceForAllUsers()`
