@@ -200,7 +200,9 @@ This registers the device token against the APNs provider selected in `CometChat
 
 ## 7. Badge count using `unreadMessageCount`
 
-CometChat's Enhanced Push Notification payload includes an `unreadMessageCount` field (a string) representing the total unread messages across all conversations for the logged-in user. On iOS the badge can be updated from both the client side and the server side.
+CometChat's Enhanced Push Notification payload includes an `unreadMessageCount` field representing the total unread messages across all conversations for the logged-in user. On iOS the badge can be updated from both the client side and the server side.
+
+If you use only APNs (no FCM on iOS), the badge is handled entirely by the server. CometChat sets the `aps.badge` value in the push payload, and iOS updates the app icon badge automatically when the notification is delivered. No additional dependency or client-side code is required — you can skip straight to section 7.3 to handle clearing the badge when the app opens.
 
 ### 7.1 Expected payload format
 
