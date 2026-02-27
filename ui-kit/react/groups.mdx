@@ -409,7 +409,9 @@ The component listens to these SDK events internally. No manual attachment neede
 | `onGroupMemberBanned` | Removes group if current user was banned, otherwise updates member count |
 | `onGroupMemberScopeChanged` | Updates scope if current user's scope changed, updates member count |
 
-**React StrictMode note:** In React 18 StrictMode, `useEffect` runs twice on mount in development. The component handles listener cleanup internally, but any additional listeners added alongside the component need cleanup in the `useEffect` return function to avoid duplicate event handling.
+<Note>
+In React 18 StrictMode, `useEffect` runs twice on mount in development. The component handles listener cleanup internally, but any additional listeners added alongside the component need cleanup in the `useEffect` return function to avoid duplicate event handling.
+</Note>
 
 ---
 

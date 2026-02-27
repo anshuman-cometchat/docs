@@ -426,7 +426,9 @@ Automatic: new messages, typing indicators, receipts, user presence, group membe
 
 Manual: deleting a conversation via the SDK directly (not through the component's context menu) requires emitting `CometChatConversationEvents.ccConversationDeleted` for the UI to update.
 
-**React StrictMode note:** In React 18 StrictMode, `useEffect` runs twice on mount in development. The component handles listener cleanup internally, but any additional listeners added alongside the component need cleanup in the `useEffect` return function to avoid duplicate event handling.
+<Note>
+In React 18 StrictMode, `useEffect` runs twice on mount in development. The component handles listener cleanup internally, but any additional listeners added alongside the component need cleanup in the `useEffect` return function to avoid duplicate event handling.
+</Note>
 
 ---
 
