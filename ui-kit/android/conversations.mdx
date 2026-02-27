@@ -4,45 +4,133 @@ title: "Conversations"
 
 `CometChatConversations` displays all conversations for the currently logged-in user, showing recent messages, user or group details, and unread counts.
 
-## When to use this
+## AI Agent Component Spec
 
-- You need a screen that lists all one-on-one and group conversations for the logged-in user.
-- You want to show the last message, unread badge count, and user/group avatar for each conversation.
-- You need tap and long-press actions on conversation items (open chat, delete, pin, mute).
-- You want to filter conversations by type (user or group), tags, or custom request builders.
-- You need real-time updates when conversations are deleted or modified.
-- You want to customize the conversation list appearance with styles, custom views, or text formatters.
-
-## Prerequisites
-
-- CometChat SDK initialized with `CometChatUIKit.init()` and a user logged in.
-- The `cometchat-chat-uikit-android` dependency added to your project.
-- A valid `layout_activity.xml` or Activity/Fragment where you will place the component.
-
-## Quick start
-
-1. Open your `layout_activity.xml` file.
-2. Add the `CometChatConversations` XML element:
-
-```xml layout_activity.xml lines
-<com.cometchat.chatuikit.conversations.CometChatConversations
-        android:id="@+id/conversation"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+```json
+{
+  "component": "CometChatConversations",
+  "package": "com.cometchat.chatuikit.conversations",
+  "xmlElement": "<com.cometchat.chatuikit.conversations.CometChatConversations />",
+  "description": "Scrollable list of recent one-on-one and group conversations for the logged-in user.",
+  "primaryOutput": {
+    "method": "setOnItemClick",
+    "type": "OnItemClick<Conversation>"
+  },
+  "methods": {
+    "data": {
+      "setConversationsRequestBuilder": {
+        "type": "ConversationsRequest.ConversationsRequestBuilder",
+        "default": "SDK default (30 per page)",
+        "note": "Pass the builder, not the result of .build()"
+      },
+      "setDateTimeFormatter": {
+        "type": "DateTimeFormatterCallback",
+        "default": "Component default (hh:mm a today, Yesterday, dd MMM yyyy)"
+      },
+      "setDateFormat": {
+        "type": "SimpleDateFormat",
+        "default": "Component default"
+      }
+    },
+    "callbacks": {
+      "setOnItemClick": "OnItemClick<Conversation>",
+      "setOnItemLongClick": "OnItemLongClick<Conversation>",
+      "setOnBackPressListener": "OnBackPress",
+      "setOnSelect": "OnSelection<Conversation>",
+      "setOnError": "OnError",
+      "setOnLoad": "OnLoad<Conversation>",
+      "setOnEmpty": "OnEmpty",
+      "setOnSearchClickListener": "OnSearchClick"
+    },
+    "visibility": {
+      "setBackIconVisibility": { "type": "int (View.VISIBLE | View.GONE)", "default": "View.VISIBLE" },
+      "setToolbarVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setLoadingStateVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setDeleteConversationOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setErrorStateVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setEmptyStateVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setSeparatorVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setUserStatusVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setGroupTypeVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setReceiptsVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setSearchBoxVisibility": { "type": "int", "default": "View.VISIBLE" }
+    },
+    "sound": {
+      "disableSoundForMessages": { "type": "boolean", "default": false },
+      "setCustomSoundForMessages": { "type": "@RawRes int", "default": "built-in" }
+    },
+    "selection": {
+      "setSelectionMode": {
+        "type": "UIKitConstants.SelectionMode",
+        "values": ["NONE", "SINGLE", "MULTIPLE"],
+        "default": "NONE"
+      }
+    },
+    "viewSlots": {
+      "setItemView": "ConversationsViewHolderListener — entire list item row",
+      "setLeadingView": "ConversationsViewHolderListener — avatar / left section",
+      "setTitleView": "ConversationsViewHolderListener — name / title text",
+      "setSubtitleView": "ConversationsViewHolderListener — last message preview",
+      "setTrailingView": "ConversationsViewHolderListener — timestamp / badge / right section",
+      "setLoadingView": "@LayoutRes int — loading spinner",
+      "setEmptyView": "@LayoutRes int — empty state",
+      "setErrorView": "@LayoutRes int — error state",
+      "setOverflowMenu": "View — toolbar menu",
+      "setOptions": "Function2<Context, Conversation, List<MenuItem>> — long-press context menu (replaces defaults)",
+      "addOptions": "Function2<Context, Conversation, List<MenuItem>> — long-press context menu (appends to defaults)"
+    },
+    "formatting": {
+      "setTextFormatters": {
+        "type": "List<CometChatTextFormatter>",
+        "default": "default formatters from data source"
+      }
+    },
+    "style": {
+      "setStyle": {
+        "type": "@StyleRes int",
+        "parent": "CometChatConversationsStyle"
+      }
+    }
+  },
+  "events": [
+    {
+      "name": "CometChatConversationEvents.ccConversationDeleted",
+      "payload": "Conversation",
+      "description": "Conversation deleted from list"
+    }
+  ],
+  "sdkListeners": [
+    "onTextMessageReceived",
+    "onMediaMessageReceived",
+    "onCustomMessageReceived",
+    "onTypingStarted",
+    "onTypingEnded",
+    "onMessagesDelivered",
+    "onMessagesRead",
+    "onMessagesDeliveredToAll",
+    "onMessagesReadByAll",
+    "onUserOnline",
+    "onUserOffline",
+    "onGroupMemberJoined",
+    "onGroupMemberLeft",
+    "onGroupMemberKicked",
+    "onGroupMemberBanned",
+    "onMemberAddedToGroup"
+  ],
+  "compositionExample": {
+    "description": "Sidebar conversations wired to message view",
+    "components": [
+      "CometChatConversations",
+      "CometChatMessageHeader",
+      "CometChatMessageList",
+      "CometChatMessageComposer"
+    ],
+    "flow": "setOnItemClick emits Conversation -> extract User/Group via getConversationWith() -> pass to MessageHeader, MessageList, MessageComposer"
+  }
+}
 ```
 
-> **What this does:** Adds the `CometChatConversations` component to your layout. It fills the available width and height and renders the conversation list for the logged-in user.
-
-3. Build and run your app.
-4. Verify that the conversation list appears with avatars, names, last messages, and unread badges.
-
-<Frame>
-  <img src="/images/f2c77c5b-Conversation-ac41cc6650fbb941c64f389aee910dbc.png" />
-</Frame>
-
-5. If you need to add the component programmatically instead of XML, see the [Activity integration](#activity-integration) or [Fragment integration](#fragment-integration) subsections in Implementation.
-
-## Where it fits
+## Where It Fits
 
 `CometChatConversations` is a list component. It renders recent conversations and emits the selected `Conversation` via `setOnItemClick`. Wire it to `CometChatMessageHeader`, `CometChatMessageList`, and `CometChatMessageComposer` to build a standard chat layout.
 
@@ -164,28 +252,26 @@ class ChatActivity : AppCompatActivity() {
 </Tab>
 </Tabs>
 
-> **What this does:** Creates a two-panel layout where the conversation list sits on the left and the message view on the right. When a user taps a conversation, `setOnItemClick` extracts the `User` or `Group` and passes it to the message components. On phones, you'd typically use separate Activities instead of a side-by-side layout — see the [Conversation List + Message View](/ui-kit/android/android-conversation) getting started guide.
+> On phones, you'd typically use separate Activities instead of a side-by-side layout — see the [Conversation List + Message View](/ui-kit/android/android-conversation) getting started guide.
 
-## Core concepts
+## Quick Start
 
-- **`CometChatConversations`**: The main component class that renders the conversation list. It can be added via XML layout, Activity, or Fragment.
-- **Actions**: Callbacks such as `setOnItemClick`, `setOnItemLongClick`, and `setOnBackPressListener` that let you respond to user interactions.
-- **Filters**: Use `ConversationsRequest.ConversationsRequestBuilder` to filter conversations by type, limit, tags, user tags, or group tags.
-- **Events**: Global events emitted by the component (e.g., `ccConversationDeleted`) that you can listen to from anywhere in your app using `CometChatConversationEvents`.
-- **Style**: XML theme styles (parent `CometChatConversationsStyle`) applied via `setStyle()` to customize colors, fonts, and sub-component styles.
-- **Advanced views**: Methods like `setLeadingView`, `setTitleView`, `setTrailingView`, `setItemView`, and `setSubtitleView` that let you replace default UI elements with custom layouts.
+Add the component to your layout XML:
 
-## Implementation
+```xml layout_activity.xml lines
+<com.cometchat.chatuikit.conversations.CometChatConversations
+        android:id="@+id/conversation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+```
 
-### Activity integration
+<Frame>
+  <img src="/images/f2c77c5b-Conversation-ac41cc6650fbb941c64f389aee910dbc.png" />
+</Frame>
 
-What you're changing: How you add `CometChatConversations` to an Activity programmatically.
+Prerequisites: CometChat SDK initialized with `CometChatUIKit.init()`, a user logged in, and the `cometchat-chat-uikit-android` dependency added.
 
-- **Where**: Your Activity class (e.g., `YourActivity.java` or `YourActivity.kt`).
-- **Applies to**: `CometChatConversations`.
-- **Default behavior**: The component is not added until you set it as the content view.
-- **Override**: Call `setContentView(new CometChatConversations(this))` in `onCreate`.
-- **Code**:
+To add programmatically in an Activity:
 
 <Tabs>
 <Tab title="Java">
@@ -196,7 +282,6 @@ What you're changing: How you add `CometChatConversations` to an Activity progra
        setContentView(new CometChatConversations(this));
     }
 ```
-
 </Tab>
 
 <Tab title="Kotlin">
@@ -206,24 +291,10 @@ What you're changing: How you add `CometChatConversations` to an Activity progra
     setContentView(CometChatConversations(this))
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-> **What this does:** Creates a new `CometChatConversations` instance and sets it as the entire content view of the Activity. The conversation list renders immediately after the Activity is created.
-
-- **Verify**: The conversation list fills the screen when the Activity launches.
-
-### Fragment integration
-
-What you're changing: How you add `CometChatConversations` to a Fragment.
-
-- **Where**: Your Fragment class (e.g., `YourFragment.java` or `YourFragment.kt`).
-- **Applies to**: `CometChatConversations`.
-- **Default behavior**: The component is not added until you return it from `onCreateView`.
-- **Override**: Return `new CometChatConversations(getContext())` from `onCreateView`.
-- **Code**:
+Or in a Fragment:
 
 <Tabs>
 <Tab title="Java">
@@ -234,7 +305,6 @@ What you're changing: How you add `CometChatConversations` to a Fragment.
        return new CometChatConversations(getContext());
     }
 ```
-
 </Tab>
 
 <Tab title="Kotlin">
@@ -243,249 +313,22 @@ What you're changing: How you add `CometChatConversations` to a Fragment.
     return CometChatConversations(requireContext())
 }
 ```
-
 </Tab>
-
 </Tabs>
 
-> **What this does:** Creates a new `CometChatConversations` instance and returns it as the Fragment's root view. The conversation list renders when the Fragment is displayed.
+## Filtering Conversations
 
-- **Verify**: The conversation list appears inside the Fragment's container.
-
-### Actions
-
-What you're changing: How the component responds to user interactions such as taps, long-presses, back button, selection, errors, load completion, and empty states.
-
-- **Where**: Activity or Fragment where you hold a reference to `CometChatConversations` (e.g., `cometchatConversations`).
-- **Applies to**: `CometChatConversations`.
-- **Default behavior**: Predefined actions execute automatically (e.g., tapping a conversation opens the chat, pressing back navigates to the previous screen).
-- **Override**: Call the corresponding setter method to replace the default behavior with your own logic.
-
-#### `setOnItemClick`
-
-Function invoked when a conversation item is clicked, used to open a detailed chat screen.
+Pass a `ConversationsRequest.ConversationsRequestBuilder` to `setConversationsRequestBuilder`. Pass the builder instance — not the result of `.build()`.
 
 <Tabs>
 <Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnItemClick((view1, position, conversation) -> {
-            
-    });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatConversations.onItemClick = OnItemClick { view, position, conversation ->
-            
-    }
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Replaces the default item-click behavior. When a user taps a conversation, your custom lambda executes instead of the built-in navigation.
-
-#### `setOnItemLongClick`
-
-Function executed when a conversation item is long-pressed, allowing additional actions like delete or select.
-
-<Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnItemLongClick((view1, position, conversation) -> {
-
-    });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatConversations.onItemLongClick = OnItemLongClick({ view, position, conversation ->
-            
-    })
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Replaces the default long-press behavior. When a user long-presses a conversation, your custom lambda executes.
-
-#### `setOnBackPressListener`
-
-Triggered when the user presses the back button in the app bar. By default, it navigates to the previous activity.
-
-<Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnBackPressListener(() -> {
-            
-    });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatConversations.onBackPressListener = OnBackPress {
-
-    }
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Overrides the default back-press navigation. When the user taps the back button, your custom logic runs instead.
-
-#### `setOnSelect`
-
-Called when an item from the fetched list is selected, useful for multi-selection features.
-
-<Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnSelect(t -> {
-
-    });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatConversations.setOnSelect(object : OnSelection<Conversation?> {
-        override fun onSelection(t: MutableList<Conversation?>?) {
-                
-        }
-    })
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Registers a callback that fires when the user selects one or more conversations. The callback receives the list of selected `Conversation` objects.
-
-#### `setOnError`
-
-Listens for any errors that occur in the Conversations component. This does not change the component's behavior.
-
-<Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnError(cometchatException -> {
-
-    });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatConversations.setOnError {
-
-    }
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Registers an error listener. If the component encounters an error (e.g., network failure), your callback receives the `CometChatException`.
-
-#### `setOnLoad`
-
-Invoked when the list is successfully fetched and loaded, helping track component readiness.
-
-<Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnLoad(list -> {
-
-});
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatConversations.setOnLoad(object : OnLoad<Conversation?> {
-    override fun onLoad(list: MutableList<Conversation?>?) {
-
-    }
-})
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Registers a callback that fires after the conversation list is fetched and rendered. The callback receives the list of loaded `Conversation` objects.
-
-#### `setOnEmpty`
-
-Called when the list is empty, enabling custom handling such as showing a placeholder message.
-
-<Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnEmpty(() -> {
-            
-    });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatConversations.setOnEmpty{
-            
-    }
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Registers a callback that fires when the conversation list has no items. Use this to show a custom empty-state message or trigger other logic.
-
-- **Verify**: After setting an action callback, trigger the corresponding user interaction (tap, long-press, back, select) and confirm your custom logic executes instead of the default behavior.
-
-### Filters
-
-What you're changing: Which conversations appear in the list.
-
-- **Where**: Activity or Fragment where you hold a reference to `CometChatConversations`.
-- **Applies to**: `CometChatConversations`.
-- **Default behavior**: All conversations for the logged-in user are fetched and displayed.
-- **Override**: Create a `ConversationsRequest.ConversationsRequestBuilder`, configure it, and pass it to `setConversationsRequestBuilder`.
-
-You can filter using the following parameters:
-
-1. **Conversation Type**: Filters on type of Conversation, `User` or `Groups`.
-2. **Limit**: Number of conversations fetched in a single request.
-3. **WithTags**: Filter on fetching conversations containing tags.
-4. **Tags**: Filters on specific `Tag`.
-5. **UserTags**: Filters on specific User `Tag`.
-6. **GroupTags**: Filters on specific Group `Tag`.
-
-- **Code**:
-
-<Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
+```java lines
 ConversationsRequest.ConversationsRequestBuilder builder = new ConversationsRequest.ConversationsRequestBuilder();
             builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_USER);
             builder.setLimit(50);
 
 cometChatConversations.setConversationsRequestBuilder(builder);
 ```
-
 </Tab>
 
 <Tab title="Kotlin">
@@ -496,29 +339,207 @@ val builder = ConversationsRequest.ConversationsRequestBuilder()
 
 cometChatConversations.setConversationsRequestBuilder(builder)
 ```
-
 </Tab>
-
 </Tabs>
 
-> **What this does:** Creates a `ConversationsRequestBuilder` that filters conversations to show only user (one-on-one) conversations with a limit of 50 per fetch. The builder is then applied to the `CometChatConversations` component.
+### Filter Recipes
 
-- **Verify**: The conversation list shows only user conversations (no group conversations) and fetches at most 50 items per request.
+| Recipe | Code |
+| --- | --- |
+| Only user conversations | `builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_USER)` |
+| Only group conversations | `builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_GROUP)` |
+| Limit to 10 per page | `builder.setLimit(10)` |
+| With specific tags | `builder.setTags(Arrays.asList("vip"))` |
+| Filter by user tags | `builder.withUserAndGroupTags(true); builder.setUserTags(Arrays.asList("premium"))` |
+| Filter by group tags | `builder.withUserAndGroupTags(true); builder.setGroupTags(Arrays.asList("support"))` |
 
-### Events
+> Default page size is 30. The component uses infinite scroll — the next page loads as the user scrolls to the bottom. Refer to [ConversationsRequestBuilder](/sdk/android/retrieve-conversations) for the full builder API.
 
-What you're changing: How your app reacts to global events emitted by the Conversations component.
+## Actions and Events
 
-- **Where**: Any Activity, Fragment, or class where you want to listen for conversation events.
-- **Applies to**: `CometChatConversationEvents`.
-- **Default behavior**: No external listeners are registered. Events are emitted but not handled outside the component.
-- **Override**: Add a listener using `CometChatConversationEvents.addListener` and remove it when no longer needed using `CometChatConversationEvents.removeListener`.
+### Callback Methods
 
-#### ConversationDeleted
+#### `setOnItemClick`
 
-This event is emitted when the user deletes a conversation.
+Fires when a conversation row is tapped. Primary navigation hook — set the active conversation and render the message view.
 
-- **Code**:
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnItemClick((view1, position, conversation) -> {
+            
+    });
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatConversations.onItemClick = OnItemClick { view, position, conversation ->
+            
+    }
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Replaces the default item-click behavior. When a user taps a conversation, your custom lambda executes instead of the built-in navigation.
+
+#### `setOnItemLongClick`
+
+Fires when a conversation row is long-pressed. Use for additional actions like delete or select.
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnItemLongClick((view1, position, conversation) -> {
+
+    });
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatConversations.onItemLongClick = OnItemLongClick({ view, position, conversation ->
+            
+    })
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Replaces the default long-press behavior. When a user long-presses a conversation, your custom lambda executes.
+
+#### `setOnBackPressListener`
+
+Fires when the user presses the back button in the app bar. Default: navigates to the previous activity.
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnBackPressListener(() -> {
+            
+    });
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatConversations.onBackPressListener = OnBackPress {
+
+    }
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Overrides the default back-press navigation. When the user taps the back button, your custom logic runs instead.
+
+#### `setOnSelect`
+
+Fires when a conversation is checked/unchecked in multi-select mode. Requires `setSelectionMode` to be set.
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnSelect(t -> {
+
+    });
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatConversations.setOnSelect(object : OnSelection<Conversation?> {
+        override fun onSelection(t: MutableList<Conversation?>?) {
+                
+        }
+    })
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Registers a callback that fires when the user selects one or more conversations. The callback receives the list of selected `Conversation` objects.
+
+#### `setOnError`
+
+Fires on internal errors (network failure, auth issue, SDK exception).
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnError(cometchatException -> {
+
+    });
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatConversations.setOnError {
+
+    }
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Registers an error listener. If the component encounters an error (e.g., network failure), your callback receives the `CometChatException`.
+
+#### `setOnLoad`
+
+Fires when the list is successfully fetched and loaded.
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnLoad(list -> {
+
+});
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatConversations.setOnLoad(object : OnLoad<Conversation?> {
+    override fun onLoad(list: MutableList<Conversation?>?) {
+
+    }
+})
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Registers a callback that fires after the conversation list is fetched and rendered. The callback receives the list of loaded `Conversation` objects.
+
+#### `setOnEmpty`
+
+Fires when the list is empty, enabling custom handling such as showing a placeholder.
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnEmpty(() -> {
+            
+    });
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatConversations.setOnEmpty{
+            
+    }
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Registers a callback that fires when the conversation list has no items. Use this to show a custom empty-state message or trigger other logic.
+
+- **Verify**: After setting an action callback, trigger the corresponding user interaction (tap, long-press, back, select) and confirm your custom logic executes instead of the default behavior.
+
+### Global UI Events
+
+`CometChatConversationEvents` emits events subscribable from anywhere in the application. Add a listener and remove it when no longer needed.
+
+| Event | Fires when | Payload |
+| --- | --- | --- |
+| `ccConversationDeleted` | A conversation is deleted from the list | `Conversation` |
 
 <Tabs>
 <Tab title="Java">
@@ -536,7 +557,6 @@ Remove Listener
 ```
 CometChatConversationEvents.removeListener("YOUR_LISTENER_TAG");
 ```
-
 </Tab>
 
 <Tab title="Kotlin">
@@ -553,81 +573,27 @@ Remove Listener
 ```
  CometChatConversationEvents.removeListener("LISTENER_TAG");
 ```
-
 </Tab>
-
 </Tabs>
 
-> **What this does:** Registers a global event listener tagged with your identifier. When a conversation is deleted, the `ccConversationDeleted` callback fires with the deleted `Conversation` object. Call `removeListener` with the same tag to unsubscribe.
+### SDK Events (Real-Time, Automatic)
 
-- **Verify**: Delete a conversation in the UI and confirm your `ccConversationDeleted` callback fires with the correct `Conversation` object.
+The component listens to these SDK events internally. No manual attachment needed unless additional side effects are required.
 
-### Style
+| SDK Listener | Internal behavior |
+| --- | --- |
+| `onTextMessageReceived` / `onMediaMessageReceived` / `onCustomMessageReceived` | Moves conversation to top, updates last message preview and unread count |
+| `onTypingStarted` / `onTypingEnded` | Shows/hides typing indicator in the subtitle |
+| `onMessagesDelivered` / `onMessagesRead` / `onMessagesDeliveredToAll` / `onMessagesReadByAll` | Updates receipt ticks (unless `setReceiptsVisibility(View.GONE)`) |
+| `onUserOnline` / `onUserOffline` | Updates online/offline status dot (unless `setUserStatusVisibility(View.GONE)`) |
+| `onGroupMemberJoined` / `onGroupMemberLeft` / `onGroupMemberKicked` / `onGroupMemberBanned` / `onMemberAddedToGroup` | Updates group conversation metadata |
 
-What you're changing: The visual appearance of the Conversations component using XML theme styles.
+> Automatic: new messages, typing indicators, receipts, user presence, group membership changes.
+> Manual: deleting a conversation via the SDK directly (not through the component's context menu) requires emitting `CometChatConversationEvents.ccConversationDeleted` for the UI to update.
 
-- **Where**: `themes.xml` for style definitions, and your Activity/Fragment for applying the style.
-- **Applies to**: `CometChatConversations`.
-- **Default behavior**: The component uses the default `CometChatConversationsStyle`.
-- **Override**: Define a custom style with parent `CometChatConversationsStyle` in `themes.xml`, then call `setStyle()` on the component.
+## Functionality
 
-<Frame>
-  <img src="/images/433c987e-Conversation_Styling-1e5686a26eb349d5cbc40262b9b6df0e.png" />
-</Frame>
-
-- **Code**:
-
-```xml themes.xml lines
-    <style name="CustomAvatarStyle" parent="CometChatAvatarStyle">
-        <item name="cometchatAvatarStrokeRadius">8dp</item>
-        <item name="cometchatAvatarBackgroundColor">#FBAA75</item>
-    </style>
-
-    <style name="CustomBadgeCountStyle" parent="CometChatBadgeStyle">
-        <item name="cometchatBadgeBackgroundColor">#F76808</item>
-        <item name="cometchatBadgeTextColor">#FFFFFF</item>
-    </style>
-
-    <style name="CustomConversationsStyle" parent="CometChatConversationsStyle">
-        <item name="cometchatConversationsAvatarStyle">@style/CustomAvatarStyle</item>
-        <item name="cometchatConversationsBadgeStyle">@style/CustomBadgeCountStyle</item>
-    </style>
-```
-
-> **What this does:** Defines three custom styles: `CustomAvatarStyle` sets the avatar corner radius to 8dp and background color to `#FBAA75`; `CustomBadgeCountStyle` sets the badge background to `#F76808` with white text; `CustomConversationsStyle` applies both sub-styles to the conversations component.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometChatConversations.setStyle(R.style.CustomConversationsStyle);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometChatConversations.setStyle(R.style.CustomConversationsStyle)
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Applies the `CustomConversationsStyle` theme to the `CometChatConversations` component, changing the avatar and badge appearance.
-
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_conversations.xml).
-
-- **Verify**: The conversation list avatars display with rounded corners (8dp radius) and an orange background (`#FBAA75`), and unread badges show an orange background (`#F76808`) with white text.
-
-
-### Functionality
-
-What you're changing: Small functional customizations such as toggling visibility of UI elements, setting custom sounds, and configuring selection modes.
-
-- **Where**: Activity or Fragment where you hold a reference to `CometChatConversations`.
-- **Applies to**: `CometChatConversations`.
-- **Default behavior**: All UI elements are visible with default settings.
-- **Override**: Call the corresponding method on the component instance.
+Small functional customizations such as toggling visibility of UI elements, setting custom sounds, and configuring selection modes.
 
 | Methods | Description | Code |
 | --- | --- | --- |
@@ -647,11 +613,9 @@ What you're changing: Small functional customizations such as toggling visibilit
 
 - **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `disableSoundForMessages(true)`, confirm no sound plays on incoming messages.
 
-### Advanced views
+## Custom View Slots
 
-What you're changing: The default UI elements of conversation list items and the component's chrome (loading, empty, error states, overflow menu, date formatting, text formatting).
-
-Each view slot replaces a section of the default UI. Slots that accept a `Conversation` parameter receive the conversation object for that row via the `ConversationsViewHolderListener` pattern (`createView` + `bindView`).
+Each slot replaces a section of the default UI. Slots that accept a `Conversation` parameter receive the conversation object for that row via the `ConversationsViewHolderListener` pattern (`createView` + `bindView`).
 
 | Slot | Method | Replaces |
 | --- | --- | --- |
@@ -660,406 +624,16 @@ Each view slot replaces a section of the default UI. Slots that accept a `Conver
 | Subtitle view | `setSubtitleView(ConversationsViewHolderListener)` | Last message preview |
 | Trailing view | `setTrailingView(ConversationsViewHolderListener)` | Timestamp / badge / right section |
 | Item view | `setItemView(ConversationsViewHolderListener)` | Entire list item row |
-| Loading view | `setLoadingView(int layoutRes)` | Loading spinner |
-| Empty view | `setEmptyView(int layoutRes)` | Empty state |
-| Error view | `setErrorView(int layoutRes)` | Error state |
+| Loading view | `setLoadingView(@LayoutRes int)` | Loading spinner |
+| Empty view | `setEmptyView(@LayoutRes int)` | Empty state |
+| Error view | `setErrorView(@LayoutRes int)` | Error state |
 | Overflow menu | `setOverflowMenu(View)` | Toolbar menu |
-| Options (replace) | `setOptions(Function2)` | Long-press context menu |
-| Options (append) | `addOptions(Function2)` | Appends to long-press menu |
+| Options (replace) | `setOptions(Function2)` | Long-press context menu (replaces defaults) |
+| Options (append) | `addOptions(Function2)` | Long-press context menu (appends to defaults) |
 
-- **Where**: Activity or Fragment where you hold a reference to `CometChatConversations`.
-- **Applies to**: `CometChatConversations`.
-- **Default behavior**: The component renders its built-in views for each part of the conversation item and component chrome.
-- **Override**: Call the corresponding setter method and provide a custom view or callback.
+### `setLeadingView`
 
-#### `setDateTimeFormatter`
-
-Provides a custom implementation of `DateTimeFormatterCallback` to configure how time and date values are displayed. Each method corresponds to a specific case:
-
-- `time(long timestamp)` — Custom full timestamp format
-- `today(long timestamp)` — Called when a message is from today
-- `yesterday(long timestamp)` — Called for yesterday's messages
-- `lastWeek(long timestamp)` — Messages from the past week
-- `otherDays(long timestamp)` — Older messages
-- `minute(long timestamp)` / `hour(long timestamp)` — Exact time unit
-- `minutes(long diffInMinutesFromNow, long timestamp)` — e.g., "5 minutes ago"
-- `hours(long diffInHourFromNow, long timestamp)` — e.g., "2 hours ago"
-
-<Tabs>
-<Tab title="Java">
-```java lines
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-
-cometchatConversations.setDateTimeFormatter(new DateTimeFormatterCallback() {
-
-        private final SimpleDateFormat fullTimeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-        private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-
-        @Override
-        public String time(long timestamp) {
-            return fullTimeFormatter.format(new Date(timestamp));
-        }
-
-        @Override
-        public String today(long timestamp) {
-            return "Today";
-        }
-
-        @Override
-        public String yesterday(long timestamp) {
-            return "Yesterday";
-        }
-
-        @Override
-        public String lastWeek(long timestamp) {
-            return "Last Week";
-        }
-
-        @Override
-        public String otherDays(long timestamp) {
-            return dateFormatter.format(new Date(timestamp));
-        }
-
-        @Override
-        public String minutes(long diffInMinutesFromNow, long timestamp) {
-            return diffInMinutesFromNow + " mins ago";
-        }
-
-        @Override
-        public String hours(long diffInHourFromNow, long timestamp) {
-            return diffInHourFromNow + " hrs ago";
-        }
-    });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-import java.text.SimpleDateFormat
-import java.util.*
-
-cometchatConversations.setDateTimeFormatter(object : DateTimeFormatterCallback {
-
-        private val fullTimeFormatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
-        private val dateFormatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-
-        override fun time(timestamp: Long): String {
-            return fullTimeFormatter.format(Date(timestamp))
-        }
-
-        override fun today(timestamp: Long): String {
-            return "Today"
-        }
-
-        override fun yesterday(timestamp: Long): String {
-            return "Yesterday"
-        }
-
-        override fun lastWeek(timestamp: Long): String {
-            return "Last Week"
-        }
-
-        override fun otherDays(timestamp: Long): String {
-            return dateFormatter.format(Date(timestamp))
-        }
-
-        override fun minutes(diffInMinutesFromNow: Long, timestamp: Long): String {
-            return "$diffInMinutesFromNow mins ago"
-        }
-
-        override fun hours(diffInHourFromNow: Long, timestamp: Long): String {
-            return "$diffInHourFromNow hrs ago"
-        }
-    });
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Overrides the default date/time formatting for conversation timestamps. Today's messages show "Today", yesterday's show "Yesterday", recent messages show "X mins ago" or "X hrs ago", last week's show "Last Week", and older messages show the full date in "dd MMM yyyy" format.
-
-#### `setOptions`
-
-Sets a predefined list of actions that users can perform when they long press a conversation in the list. This replaces the default options entirely.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.setOptions((context, conversation) -> Collections.emptyList());
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatConversations.options = Function2<Context?, Conversation?, List<CometChatPopupMenu.MenuItem?>?> { context, conversation -> emptyList<CometChatPopupMenu.MenuItem?>() }
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Replaces the default long-press options with an empty list, effectively removing all long-press menu items.
-
-<Frame>
-  <img src="/images/9415d47d-conversation_set_option-42a75eb50360de67a9bfab69beefbda3.png" />
-</Frame>
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.setOptions((context, conversation) -> {
-List<CometChatPopupMenu.MenuItem> optionsArrayList = new ArrayList<>();
-optionsArrayList.add(new CometChatPopupMenu.MenuItem(UIKitConstants.ConversationOption.DELETE,
-                                                                 "Delete",
-                                                                 getResources().getDrawable(com.cometchat.chatuikit.R.drawable.cometchat_ic_delete),
-                                                                 null,
-                                                                 CometChatTheme.getErrorColor(context),
-                                                                 0,
-                                                                 CometChatTheme.getErrorColor(context),
-                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
-                                                                 () -> {
-                                                                     Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
-                                                                 }));
-            return optionsArrayList;
-        });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatConversations.setOptions { context, conversation ->
-            val optionsArrayList: MutableList<CometChatPopupMenu.MenuItem> =
-                ArrayList()
-            optionsArrayList.add(
-                CometChatPopupMenu.MenuItem(
-                    UIKitConstants.ConversationOption.DELETE,
-                    "Delete",
-                    ResourcesCompat. getDrawable(resources,com.cometchat.chatuikit.R.drawable.cometchat_ic_delete, getContext()?.theme),
-                    null,
-                    CometChatTheme.getErrorColor(context),
-                    0,
-                    CometChatTheme.getErrorColor(context),
-                    CometChatTheme.getTextAppearanceBodyRegular(context)
-                ) {
-                    Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show()
-                }
-            )
-            optionsArrayList
-        }
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Replaces the default long-press options with a single "Delete" menu item. The item uses the error color from the theme and shows a toast when tapped.
-
-#### `addOptions`
-
-Extends the existing set of long-press actions without removing the default ones.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.addOptions((context, conversation) -> Collections.emptyList());
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatConversations.addOptions { context, conversation -> emptyList<CometChatPopupMenu.MenuItem?>() }
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Appends an empty list to the existing long-press options, leaving the defaults unchanged. Replace the empty list with your custom `MenuItem` objects to add new actions.
-
-<Frame>
-  <img src="/images/88283fe5-conversation_add_options-c0f407ccc43b5f040d9ab9147e17def0.png" />
-</Frame>
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.addOptions((context, conversation) -> {
-            List<CometChatPopupMenu.MenuItem> optionsArrayList = new ArrayList<>();
-            optionsArrayList.add(new CometChatPopupMenu.MenuItem("ARCHIVE",
-                                                                 "Archive",
-                                                                 getResources().getDrawable(R.drawable.archive),
-                                                                 null,
-                                                                 CometChatTheme.getTextColorPrimary(context),
-                                                                 0,
-                                                                 CometChatTheme.getTextColorPrimary(context),
-                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
-                                                                 () -> Toast.makeText(context, "Archive", Toast.LENGTH_SHORT).show()));
-            optionsArrayList.add(new CometChatPopupMenu.MenuItem("PIN",
-                                                                 "Pin",
-                                                                 getResources().getDrawable(R.drawable.pin),
-                                                                 null,
-                                                                 CometChatTheme.getTextColorPrimary(context),
-                                                                 0,
-                                                                 CometChatTheme.getTextColorPrimary(context),
-                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
-                                                                 () -> Toast.makeText(context, "Pin", Toast.LENGTH_SHORT).show()));
-            optionsArrayList.add(new CometChatPopupMenu.MenuItem("MARKASREAD",
-                                                                 "Mark as read",
-                                                                 getResources().getDrawable(R.drawable.mark_as_read),
-                                                                 null,
-                                                                 CometChatTheme.getTextColorPrimary(context),
-                                                                 0,
-                                                                 CometChatTheme.getTextColorPrimary(context),
-                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
-                                                                 () -> Toast.makeText(context, "Mark as read", Toast.LENGTH_SHORT).show()));
-            return optionsArrayList;
-        });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatConversations.addOptions { context, conversation ->
-            val optionsArrayList: MutableList<CometChatPopupMenu.MenuItem> = ArrayList()
-            optionsArrayList.add(
-                CometChatPopupMenu.MenuItem(
-                    "ARCHIVE",
-                    "Archive",
-                    resources.getDrawable(R.drawable.archive),
-                    null,
-                    CometChatTheme.getTextColorPrimary(context),
-                    0,
-                    CometChatTheme.getTextColorPrimary(context),
-                    CometChatTheme.getTextAppearanceBodyRegular(context)
-                ) {
-                    Toast
-                        .makeText(context, "Archive", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            )
-            optionsArrayList.add(
-                CometChatPopupMenu.MenuItem(
-                    "PIN",
-                    "Pin",
-                    resources.getDrawable(R.drawable.pin),
-                    null,
-                    CometChatTheme.getTextColorPrimary(context),
-                    0,
-                    CometChatTheme.getTextColorPrimary(context),
-                    CometChatTheme.getTextAppearanceBodyRegular(context)
-                ) {
-                    Toast
-                        .makeText(context, "Pin", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            )
-            optionsArrayList.add(
-                CometChatPopupMenu.MenuItem(
-                    "MARKASREAD",
-                    "Mark as read",
-                    resources.getDrawable(R.drawable.mark_as_read),
-                    null,
-                    CometChatTheme.getTextColorPrimary(context),
-                    0,
-                    CometChatTheme.getTextColorPrimary(context),
-                    CometChatTheme.getTextAppearanceBodyRegular(context)
-                ) {
-                    Toast
-                        .makeText(context, "Mark as read", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            )
-            optionsArrayList
-        }
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Appends three custom menu items (Archive, Pin, Mark as read) to the existing default long-press options. Each item uses the primary text color from the theme and shows a toast when tapped.
-
-#### `setLoadingView`
-
-Sets a custom loading view displayed when data is being fetched.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.setLoadingView(R.layout.your_loading_view);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatConversations.loadingView = R.layout.your_loading_view
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Replaces the default loading spinner with your custom layout resource. The custom view displays while conversations are being fetched.
-
-#### `setEmptyView`
-
-Configures a custom view displayed when there are no conversations in the list.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.setEmptyView(R.layout.your_empty_view);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatConversations.emptyView = R.layout.your_empty_view
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Replaces the default empty state with your custom layout resource. The custom view displays when the conversation list has no items.
-
-#### `setErrorView`
-
-Defines a custom error state view that appears when an issue occurs while loading conversations.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.setErrorView(R.layout.your_error_view);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatConversations.errorView = R.layout.your_error_view
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Replaces the default error state with your custom layout resource. The custom view displays when the component encounters an error during data fetching.
-
-#### `setLeadingView`
-
-Sets a custom leading view element that appears at the beginning of each conversation item (e.g., avatars with online/offline status indicators).
+Replace the avatar / left section. Typing-aware avatar example.
 
 <Tabs>
 <Tab title="Java">
@@ -1076,7 +650,6 @@ Sets a custom leading view element that appears at the beginning of each convers
             }
         });
 ```
-
 </Tab>
 
 <Tab title="Kotlin">
@@ -1101,9 +674,7 @@ Sets a custom leading view element that appears at the beginning of each convers
             }
         })
 ```
-
 </Tab>
-
 </Tabs>
 
 > **What this does:** Registers a `ConversationsViewHolderListener` that provides a custom view for the leading (left) area of each conversation item. `createView` inflates your layout, and `bindView` populates it with conversation data.
@@ -1136,7 +707,7 @@ The following example shows a custom leading view with a chat-dots icon for typi
 
 > **What this does:** Defines a vector drawable of a chat bubble with three dots, used as a typing indicator icon in the custom leading view.
 
-Create a `leading_view.xml` custom layout file to inflate in `setLeadingView()`:
+Create a `leading_view.xml` custom layout:
 
 ```html lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -1180,15 +751,12 @@ Create a `leading_view.xml` custom layout file to inflate in `setLeadingView()`:
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
 ```
 
-> **What this does:** Defines a custom layout with a `CometChatAvatar` and `CometChatStatusIndicator` for the normal state, and a hidden `ImageView` for the typing indicator icon. The layout switches between the two based on typing state.
-
-Inflate the XML and initialize the views using the conversation objects in `setLeadingView`:
+Inflate and bind with typing indicator tracking:
 
 <Tabs>
 <Tab title="Java">
@@ -1201,7 +769,6 @@ CometChat.addMessageListener(System.currentTimeMillis() + "", new CometChat.Mess
                     if (typingIndicatorHashMap.containsKey(typingIndicator.getSender().getUid())) {
                         return;
                     }
-                    Log.e(TAG, "bindView: " + typingIndicator.getSender().getUid());
                     typingIndicatorHashMap.put(typingIndicator.getSender().getUid(), true);
                 } else {
                     if (typingIndicatorHashMap.containsKey(typingIndicator.getReceiverId())) {
@@ -1240,9 +807,7 @@ cometchatConversations.setLeadingView(new ConversationsViewHolderListener() {
                 CometChatAvatar avatar = createdView.findViewById(R.id.conversations_avatar);
                 CometChatStatusIndicator statusIndicator = createdView.findViewById(R.id.status_and_type_indicator);
 
-
                 avatar.setAvatar(ConversationsUtils.getConversationTitle(conversation), ConversationsUtils.getConversationAvatar(conversation));
-
 
                 if (conversation.getConversationType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
                     if (((User) conversation.getConversationWith()).getStatus().equalsIgnoreCase(CometChatConstants.USER_STATUS_ONLINE)) {
@@ -1270,11 +835,9 @@ cometchatConversations.setLeadingView(new ConversationsViewHolderListener() {
                         constraintLayout.setVisibility(View.VISIBLE);
                     }
                 }
-
             }
         });
 ```
-
 </Tab>
 
 <Tab title="Kotlin">
@@ -1322,9 +885,7 @@ cometchatConversations.setLeadingView(new ConversationsViewHolderListener() {
                 val avatar = createdView.findViewById<CometChatAvatar>(R.id.conversations_avatar)
                 val statusIndicator = createdView.findViewById<CometChatStatusIndicator>(R.id.status_and_type_indicator)
 
-
                 avatar.setAvatar(ConversationsUtils.getConversationTitle(conversation), ConversationsUtils.getConversationAvatar(conversation))
-
 
                 if (conversation.conversationType == CometChatConstants.RECEIVER_TYPE_USER) {
                     if ((conversation.conversationWith as User).status.equals(CometChatConstants.USER_STATUS_ONLINE, ignoreCase = true)) {
@@ -1355,195 +916,14 @@ cometchatConversations.setLeadingView(new ConversationsViewHolderListener() {
             }
         })
 ```
-
 </Tab>
-
 </Tabs>
 
-> **What this does:** Implements a custom leading view that shows a typing indicator icon (chat dots) when the other user is typing, and an avatar with online/offline status indicator otherwise. A `CometChat.MessageListener` tracks typing state in a `HashMap`, and the `bindView` method switches between the icon and avatar based on that state.
+### `setTrailingView`
 
-#### `setTitleView`
+Replace the timestamp / badge / right section. Relative time badge example.
 
-Overrides the default title view in the conversation list with a custom layout.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-        cometchatConversations.setTitleView(new ConversationsViewHolderListener() {
-            @Override
-            public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
-                return null;
-            }
-
-            @Override
-            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
-
-            }
-        });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-        cometchatConversations.setTitleView(object :
-            ConversationsViewHolderListener() {
-            override fun createView(
-                context: Context?,
-                listItem: CometchatConversationsListItemsBinding?
-            ): View? {
-                return null
-            }
-
-            override fun bindView(
-                context: Context,
-                createdView: View,
-                conversation: Conversation,
-                holder: RecyclerView.ViewHolder,
-                conversationList: List<Conversation>,
-                position: Int
-            ) {
-            }
-        })
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Registers a `ConversationsViewHolderListener` that provides a custom view for the title area of each conversation item. `createView` inflates your layout, and `bindView` populates it with conversation data.
-
-<Frame>
-  <img src="/images/50dd219e-conversation_leading_view-65768f699fe3f064c14b0491f7ce0f91.png" />
-</Frame>
-
-Create a `custom_title_view.xml` custom layout file to inflate in `setTitleView()`:
-
-```html lines
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/conversation_leading_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true">
-
-        <ImageView
-            android:id="@+id/leading_iv"
-            android:layout_width="@dimen/cometchat_48dp"
-            android:layout_height="@dimen/cometchat_48dp"
-            android:src="@drawable/chat_dots"
-            android:visibility="gone"
-            tools:ignore="MissingConstraints" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/leading_view"
-            android:layout_width="@dimen/cometchat_48dp"
-            android:layout_height="@dimen/cometchat_48dp"
-            tools:ignore="MissingConstraints">
-
-            <com.cometchat.chatuikit.shared.views.avatar.CometChatAvatar
-                android:id="@+id/conversations_avatar"
-                android:layout_width="@dimen/cometchat_48dp"
-                android:layout_height="@dimen/cometchat_48dp" />
-
-            <com.cometchat.chatuikit.shared.views.statusindicator.CometChatStatusIndicator
-                android:id="@+id/status_and_type_indicator"
-                android:layout_width="@dimen/cometchat_15dp"
-                android:layout_height="@dimen/cometchat_15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
-```
-
-> **What this does:** Defines a custom title view layout with an avatar, status indicator, and a hidden typing indicator icon.
-
-Inflate the XML and initialize the views using the conversation objects in `setTitleView`:
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.setTitleView(new ConversationsViewHolderListener() {
-            @Override
-            public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
-                return LayoutInflater.from(context).inflate(R.layout.custom_title_view, null);
-            }
-
-            @Override
-            public void bindView(Context context,
-                                 View createdView,
-                                 Conversation conversation,
-                                 RecyclerView.ViewHolder holder,
-                                 List<Conversation> conversationList,
-                                 int position) {
-
-                TextView name = createdView.findViewById(R.id.name);
-                TextView status = createdView.findViewById(R.id.status);
-
-                name.setText(ConversationsUtils.getConversationTitle(conversation));
-                if (conversation.getConversationType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
-                    status.setVisibility(View.VISIBLE);
-                    status.setText("• " + ((User) conversation.getConversationWith()).getStatusMessage());
-                } else {
-                    status.setVisibility(View.GONE);
-                }
-            }
-        });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatConversations.setTitleView(object : ConversationsViewHolderListener() {
-            override fun createView(context: Context?, listItem: CometchatConversationsListItemsBinding?): View {
-                return LayoutInflater.from(context).inflate(R.layout.custom_title_view, null)
-            }
-
-            override fun bindView(
-                context: Context,
-                createdView: View,
-                conversation: Conversation,
-                holder: RecyclerView.ViewHolder,
-                conversationList: List<Conversation>,
-                position: Int
-            ) {
-                val name = createdView.findViewById<TextView>(R.id.name)
-                val status = createdView.findViewById<TextView>(R.id.status)
-
-                name.text = ConversationsUtils.getConversationTitle(conversation)
-                if (conversation.conversationType == CometChatConstants.RECEIVER_TYPE_USER) {
-                    status.visibility = View.VISIBLE
-                    status.text = "• " + (conversation.conversationWith as User).statusMessage
-                } else {
-                    status.visibility = View.GONE
-                }
-            }
-        })
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Inflates a custom title view layout and populates it with the conversation name and user status message. If the conversation is a user conversation, the status message is shown; if it is a group conversation, the status is hidden.
-
-#### `setTrailingView`
-
-Customizes the trailing (end) view of a conversation item, used for action buttons or additional information such as time-since-last-message badges.
-
-Create a `custom_tail_view.xml` custom layout file to inflate in `setTrailingView()`:
+Create a `custom_tail_view.xml` custom layout file:
 
 ```html lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -1588,7 +968,7 @@ Create a `custom_tail_view.xml` custom layout file to inflate in `setTrailingVie
 
 > **What this does:** Defines a custom trailing view layout with a `MaterialCardView` containing two `TextView` elements for displaying the time value and unit (e.g., "5" and "Min ago").
 
-Inflate the XML and initialize the views using the conversation objects in `setTrailingView`:
+Inflate and bind with color-coded time badges:
 
 <Tabs>
 <Tab title="Java">
@@ -1614,7 +994,6 @@ cometchatConversations.setTrailingView(new ConversationsViewHolderListener() {
                 long timestamp = conversation.getUpdatedAt() * 1000;
 
                 if (String.valueOf(timestamp).length() == 10) {
-                    // Convert seconds to milliseconds
                     timestamp *= 1000;
                 }
 
@@ -1626,32 +1005,24 @@ cometchatConversations.setTrailingView(new ConversationsViewHolderListener() {
                 long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillis);
                 long diffInHours = TimeUnit.MILLISECONDS.toHours(diffInMillis);
 
-                // Check if the timestamp is within the last hour
                 if (diffInMinutes == 0) {
                     tvHours.setText("1");
                     tvMessage.setText("Min ago");
                     card.setCardBackgroundColor(Utils.applyColorWithAlphaValue(Color.parseColor("#6852D6"), 40));
                     tvMessage.setTextColor(Color.parseColor("#6852D6"));
                     tvHours.setTextColor(Color.parseColor("#6852D6"));
-                    return;
-
                 } else if (diffInMinutes < 60) {
                     tvHours.setText(diffInMinutes + "");
                     tvMessage.setText("Min ago");
                     card.setCardBackgroundColor(Utils.multiplyColorAlpha(Color.parseColor("#6852D6"), 40));
                     tvMessage.setTextColor(Color.parseColor("#6852D6"));
                     tvHours.setTextColor(Color.parseColor("#6852D6"));
-                    return;
-                }
-
-                // Check if the timestamp is within the last 24 hours
-                if (diffInHours < 10) {
+                } else if (diffInHours < 10) {
                     tvHours.setText(diffInHours + "");
                     tvMessage.setText("Hr ago");
                     tvMessage.setTextColor(Color.parseColor("#FFAB00"));
                     tvHours.setTextColor(Color.parseColor("#FFAB00"));
                     card.setCardBackgroundColor(Utils.multiplyColorAlpha(Color.parseColor("#FFAB00"), 40));
-                    
                 } else if (diffInHours < 1000) {
                     tvHours.setText(diffInHours + "");
                     tvMessage.setText("Hr ago");
@@ -1662,7 +1033,6 @@ cometchatConversations.setTrailingView(new ConversationsViewHolderListener() {
             }
         });
 ```
-
 </Tab>
 
 <Tab title="Kotlin">
@@ -1687,7 +1057,6 @@ cometchatConversations.setTrailingView(object : ConversationsViewHolderListener(
                 var timestamp = conversation.updatedAt * 1000
 
                 if (timestamp.toString().length == 10) {
-                    // Convert seconds to milliseconds
                     timestamp *= 1000
                 }
 
@@ -1699,32 +1068,26 @@ cometchatConversations.setTrailingView(object : ConversationsViewHolderListener(
                 val diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillis)
                 val diffInHours = TimeUnit.MILLISECONDS.toHours(diffInMillis)
 
-                // Check if the timestamp is within the last hour
                 if (diffInMinutes == 0L) {
                     tvHours.text = "1"
                     tvMessage.text = "Min ago"
                     card.setCardBackgroundColor(Utils.applyColorWithAlphaValue(Color.parseColor("#6852D6"), 40))
                     tvMessage.setTextColor(Color.parseColor("#6852D6"))
                     tvHours.setTextColor(Color.parseColor("#6852D6"))
-                    return
                 } else if (diffInMinutes < 60) {
-                    tvHours.text = diffInMinutes.toString() + ""
+                    tvHours.text = diffInMinutes.toString()
                     tvMessage.text = "Min ago"
                     card.setCardBackgroundColor(Utils.multiplyColorAlpha(Color.parseColor("#6852D6"), 40))
                     tvMessage.setTextColor(Color.parseColor("#6852D6"))
                     tvHours.setTextColor(Color.parseColor("#6852D6"))
-                    return
-                }
-
-                // Check if the timestamp is within the last 24 hours
-                if (diffInHours < 10) {
-                    tvHours.text = diffInHours.toString() + ""
+                } else if (diffInHours < 10) {
+                    tvHours.text = diffInHours.toString()
                     tvMessage.text = "Hr ago"
                     tvMessage.setTextColor(Color.parseColor("#FFAB00"))
                     tvHours.setTextColor(Color.parseColor("#FFAB00"))
                     card.setCardBackgroundColor(Utils.multiplyColorAlpha(Color.parseColor("#FFAB00"), 40))
                 } else if (diffInHours < 1000) {
-                    tvHours.text = diffInHours.toString() + ""
+                    tvHours.text = diffInHours.toString()
                     tvMessage.text = "Hr ago"
                     tvMessage.setTextColor(Color.parseColor("#F44649"))
                     tvHours.setTextColor(Color.parseColor("#F44649"))
@@ -1733,48 +1096,54 @@ cometchatConversations.setTrailingView(object : ConversationsViewHolderListener(
             }
         })
 ```
-
 </Tab>
-
 </Tabs>
-
-> **What this does:** Inflates a custom trailing view that displays a color-coded time badge showing how long ago the conversation was last updated. Messages within the last hour show purple ("Min ago"), messages within 10 hours show amber ("Hr ago"), and older messages show red ("Hr ago").
 
 <Frame>
   <img src="/images/9c92115a-conversation_trailing_view-15ca261b8d20291c19b48c7f7af81976.png" />
 </Frame>
 
-#### `setItemView`
+### `setTitleView`
 
-Assigns a completely custom list item design to the Conversations component, replacing the default layout entirely.
+Replace the name / title text. Inline user status example.
 
 <Tabs>
 <Tab title="Java">
 ```java lines
-        cometchatConversations.setItemView(new ConversationsViewHolderListener() {
+cometchatConversations.setTitleView(new ConversationsViewHolderListener() {
             @Override
             public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
-                return null;
+                return LayoutInflater.from(context).inflate(R.layout.custom_title_view, null);
             }
 
             @Override
-            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
+            public void bindView(Context context,
+                                 View createdView,
+                                 Conversation conversation,
+                                 RecyclerView.ViewHolder holder,
+                                 List<Conversation> conversationList,
+                                 int position) {
 
+                TextView name = createdView.findViewById(R.id.name);
+                TextView status = createdView.findViewById(R.id.status);
+
+                name.setText(ConversationsUtils.getConversationTitle(conversation));
+                if (conversation.getConversationType().equals(CometChatConstants.RECEIVER_TYPE_USER)) {
+                    status.setVisibility(View.VISIBLE);
+                    status.setText("• " + ((User) conversation.getConversationWith()).getStatusMessage());
+                } else {
+                    status.setVisibility(View.GONE);
+                }
             }
         });
 ```
-
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin lines
-        cometchatConversations.setItemView(object :
-            ConversationsViewHolderListener() {
-            override fun createView(
-                context: Context?,
-                listItem: CometchatConversationsListItemsBinding?
-            ): View? {
-                return null
+cometchatConversations.setTitleView(object : ConversationsViewHolderListener() {
+            override fun createView(context: Context?, listItem: CometchatConversationsListItemsBinding?): View {
+                return LayoutInflater.from(context).inflate(R.layout.custom_title_view, null)
             }
 
             override fun bindView(
@@ -1785,21 +1154,89 @@ Assigns a completely custom list item design to the Conversations component, rep
                 conversationList: List<Conversation>,
                 position: Int
             ) {
+                val name = createdView.findViewById<TextView>(R.id.name)
+                val status = createdView.findViewById<TextView>(R.id.status)
+
+                name.text = ConversationsUtils.getConversationTitle(conversation)
+                if (conversation.conversationType == CometChatConstants.RECEIVER_TYPE_USER) {
+                    status.visibility = View.VISIBLE
+                    status.text = "• " + (conversation.conversationWith as User).statusMessage
+                } else {
+                    status.visibility = View.GONE
+                }
             }
         })
 ```
-
 </Tab>
-
 </Tabs>
 
-> **What this does:** Registers a `ConversationsViewHolderListener` that replaces the entire default conversation list item layout. `createView` inflates your custom layout, and `bindView` populates it with conversation data.
+### `setSubtitleView`
+
+Replace the last message preview text.
+
+<Frame>
+  <img src="/images/48bf8e47-Conversation_Subtitle_View-a52dabb66ff516b5afb85540c95ed92d.png" />
+</Frame>
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+    cometchatConversations.setSubtitleView(new ConversationsViewHolderListener() {
+            @Override
+            public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
+                return new TextView(context);
+            }
+
+            @Override
+            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
+                TextView tvSubtitle = (TextView) createdView;
+                tvSubtitle.setText("Last Active at: "+new SimpleDateFormat("dd/MM/yyyy, HH:mm:ss").format(conversation.getUpdatedAt() * 1000));
+                tvSubtitle.setTextColor(Color.BLACK);
+            }
+        });
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+    cometchatConversations.setSubtitleView(object :
+            ConversationsViewHolderListener() {
+            override fun createView(
+                context: Context?,
+                listItem: CometchatConversationsListItemsBinding?
+            ): View {
+                return TextView(context)
+            }
+
+            override fun bindView(
+                context: Context,
+                createdView: View,
+                conversation: Conversation,
+                holder: RecyclerView.ViewHolder,
+                conversationList: List<Conversation>,
+                position: Int
+            ) {
+                val tvSubtitle = createdView as TextView
+                tvSubtitle.text =
+                    "Last Active at: " + SimpleDateFormat("dd/MM/yyyy, HH:mm:ss").format(
+                        conversation.updatedAt * 1000
+                    )
+                tvSubtitle.setTextColor(Color.BLACK)
+            }
+        })
+```
+</Tab>
+</Tabs>
+
+### `setItemView`
+
+Replace the entire list item row.
 
 <Frame>
   <img src="/images/c6aa2b6b-Conversation_List_Item_View-60ff280389ca87aea84133ea03a6a620.png" />
 </Frame>
 
-Create an `item_converation_list.xml` custom layout file to inflate in `setListItemView()`:
+Create an `item_converation_list.xml` custom layout file:
 
 ```html lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -1807,8 +1244,7 @@ Create an `item_converation_list.xml` custom layout file to inflate in `setListI
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -1840,7 +1276,7 @@ Create an `item_converation_list.xml` custom layout file to inflate in `setListI
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        
+
         <TextView
             android:id="@+id/tvName"
             android:layout_width="0dp"
@@ -1866,7 +1302,7 @@ Create an `item_converation_list.xml` custom layout file to inflate in `setListI
 
 > **What this does:** Defines a custom list item layout with a `CometChatAvatar`, status indicator, conversation name, and date — providing a compact, single-line conversation item design.
 
-Inflate the XML and initialize the views using the conversation objects in `setItemView`:
+Inflate the XML and bind:
 
 <Tabs>
 <Tab title="Java">
@@ -1894,7 +1330,6 @@ Inflate the XML and initialize the views using the conversation objects in `setI
             }
         });
 ```
-
 </Tab>
 
 <Tab title="Kotlin">
@@ -1933,16 +1368,237 @@ Inflate the XML and initialize the views using the conversation objects in `setI
             }
         })
 ```
-
 </Tab>
-
 </Tabs>
 
-> **What this does:** Inflates a custom list item layout and populates it with the conversation avatar, name, and formatted date. The avatar uses the default `CometChatAvatarStyle` and the date is formatted as "hh:mm a" (e.g., "02:30 PM").
+### `setDateTimeFormatter`
 
-#### `setTextFormatters`
+Custom date/time formatting for conversation timestamps.
 
-Defines and applies text formatters that dynamically modify or transform message content before rendering it in the UI. See the [MentionsFormatter Guide](/ui-kit/android/mentions-formatter-guide) for more details.
+<Tabs>
+<Tab title="Java">
+```java lines
+cometchatConversations.setDateTimeFormatter(new DateTimeFormatterCallback() {
+
+        private final SimpleDateFormat fullTimeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+
+        @Override
+        public String time(long timestamp) {
+            return fullTimeFormatter.format(new Date(timestamp));
+        }
+
+        @Override
+        public String today(long timestamp) {
+            return "Today";
+        }
+
+        @Override
+        public String yesterday(long timestamp) {
+            return "Yesterday";
+        }
+
+        @Override
+        public String lastWeek(long timestamp) {
+            return "Last Week";
+        }
+
+        @Override
+        public String otherDays(long timestamp) {
+            return dateFormatter.format(new Date(timestamp));
+        }
+
+        @Override
+        public String minutes(long diffInMinutesFromNow, long timestamp) {
+            return diffInMinutesFromNow + " mins ago";
+        }
+
+        @Override
+        public String hours(long diffInHourFromNow, long timestamp) {
+            return diffInHourFromNow + " hrs ago";
+        }
+    });
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.setDateTimeFormatter(object : DateTimeFormatterCallback {
+
+        private val fullTimeFormatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        private val dateFormatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+
+        override fun time(timestamp: Long): String {
+            return fullTimeFormatter.format(Date(timestamp))
+        }
+
+        override fun today(timestamp: Long): String {
+            return "Today"
+        }
+
+        override fun yesterday(timestamp: Long): String {
+            return "Yesterday"
+        }
+
+        override fun lastWeek(timestamp: Long): String {
+            return "Last Week"
+        }
+
+        override fun otherDays(timestamp: Long): String {
+            return dateFormatter.format(Date(timestamp))
+        }
+
+        override fun minutes(diffInMinutesFromNow: Long, timestamp: Long): String {
+            return "$diffInMinutesFromNow mins ago"
+        }
+
+        override fun hours(diffInHourFromNow: Long, timestamp: Long): String {
+            return "$diffInHourFromNow hrs ago"
+        }
+    });
+```
+</Tab>
+</Tabs>
+
+### `setOptions`
+
+Replace the long-press context menu entirely.
+
+<Frame>
+  <img src="/images/9415d47d-conversation_set_option-42a75eb50360de67a9bfab69beefbda3.png" />
+</Frame>
+
+<Tabs>
+<Tab title="Java">
+```java lines
+cometchatConversations.setOptions((context, conversation) -> {
+List<CometChatPopupMenu.MenuItem> optionsArrayList = new ArrayList<>();
+optionsArrayList.add(new CometChatPopupMenu.MenuItem(UIKitConstants.ConversationOption.DELETE,
+                                                                 "Delete",
+                                                                 getResources().getDrawable(com.cometchat.chatuikit.R.drawable.cometchat_ic_delete),
+                                                                 null,
+                                                                 CometChatTheme.getErrorColor(context),
+                                                                 0,
+                                                                 CometChatTheme.getErrorColor(context),
+                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
+                                                                 () -> {
+                                                                     Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
+                                                                 }));
+            return optionsArrayList;
+        });
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.setOptions { context, conversation ->
+            val optionsArrayList: MutableList<CometChatPopupMenu.MenuItem> =
+                ArrayList()
+            optionsArrayList.add(
+                CometChatPopupMenu.MenuItem(
+                    UIKitConstants.ConversationOption.DELETE,
+                    "Delete",
+                    ResourcesCompat. getDrawable(resources,com.cometchat.chatuikit.R.drawable.cometchat_ic_delete, getContext()?.theme),
+                    null,
+                    CometChatTheme.getErrorColor(context),
+                    0,
+                    CometChatTheme.getErrorColor(context),
+                    CometChatTheme.getTextAppearanceBodyRegular(context)
+                ) {
+                    Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show()
+                }
+            )
+            optionsArrayList
+        }
+```
+</Tab>
+</Tabs>
+
+### `addOptions`
+
+Append to the long-press context menu without removing defaults.
+
+<Frame>
+  <img src="/images/88283fe5-conversation_add_options-c0f407ccc43b5f040d9ab9147e17def0.png" />
+</Frame>
+
+<Tabs>
+<Tab title="Java">
+```java lines
+cometchatConversations.addOptions((context, conversation) -> {
+            List<CometChatPopupMenu.MenuItem> optionsArrayList = new ArrayList<>();
+            optionsArrayList.add(new CometChatPopupMenu.MenuItem("ARCHIVE",
+                                                                 "Archive",
+                                                                 getResources().getDrawable(R.drawable.archive),
+                                                                 null,
+                                                                 CometChatTheme.getTextColorPrimary(context),
+                                                                 0,
+                                                                 CometChatTheme.getTextColorPrimary(context),
+                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
+                                                                 () -> Toast.makeText(context, "Archive", Toast.LENGTH_SHORT).show()));
+            optionsArrayList.add(new CometChatPopupMenu.MenuItem("PIN",
+                                                                 "Pin",
+                                                                 getResources().getDrawable(R.drawable.pin),
+                                                                 null,
+                                                                 CometChatTheme.getTextColorPrimary(context),
+                                                                 0,
+                                                                 CometChatTheme.getTextColorPrimary(context),
+                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
+                                                                 () -> Toast.makeText(context, "Pin", Toast.LENGTH_SHORT).show()));
+            optionsArrayList.add(new CometChatPopupMenu.MenuItem("MARKASREAD",
+                                                                 "Mark as read",
+                                                                 getResources().getDrawable(R.drawable.mark_as_read),
+                                                                 null,
+                                                                 CometChatTheme.getTextColorPrimary(context),
+                                                                 0,
+                                                                 CometChatTheme.getTextColorPrimary(context),
+                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
+                                                                 () -> Toast.makeText(context, "Mark as read", Toast.LENGTH_SHORT).show()));
+            return optionsArrayList;
+        });
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.addOptions { context, conversation ->
+            val optionsArrayList: MutableList<CometChatPopupMenu.MenuItem> = ArrayList()
+            optionsArrayList.add(
+                CometChatPopupMenu.MenuItem(
+                    "ARCHIVE", "Archive",
+                    resources.getDrawable(R.drawable.archive), null,
+                    CometChatTheme.getTextColorPrimary(context), 0,
+                    CometChatTheme.getTextColorPrimary(context),
+                    CometChatTheme.getTextAppearanceBodyRegular(context)
+                ) { Toast.makeText(context, "Archive", Toast.LENGTH_SHORT).show() }
+            )
+            optionsArrayList.add(
+                CometChatPopupMenu.MenuItem(
+                    "PIN", "Pin",
+                    resources.getDrawable(R.drawable.pin), null,
+                    CometChatTheme.getTextColorPrimary(context), 0,
+                    CometChatTheme.getTextColorPrimary(context),
+                    CometChatTheme.getTextAppearanceBodyRegular(context)
+                ) { Toast.makeText(context, "Pin", Toast.LENGTH_SHORT).show() }
+            )
+            optionsArrayList.add(
+                CometChatPopupMenu.MenuItem(
+                    "MARKASREAD", "Mark as read",
+                    resources.getDrawable(R.drawable.mark_as_read), null,
+                    CometChatTheme.getTextColorPrimary(context), 0,
+                    CometChatTheme.getTextColorPrimary(context),
+                    CometChatTheme.getTextAppearanceBodyRegular(context)
+                ) { Toast.makeText(context, "Mark as read", Toast.LENGTH_SHORT).show() }
+            )
+            optionsArrayList
+        }
+```
+</Tab>
+</Tabs>
+
+### `setTextFormatters`
+
+Custom text formatters for the conversation subtitle. See the [MentionsFormatter Guide](/ui-kit/android/mentions-formatter-guide) for details.
 
 <Frame>
   <img src="/images/55490fa9-mentions_conversations-1a7b847ad0af53848dc106216ac64e74.png" />
@@ -1959,74 +1615,123 @@ Defines and applies text formatters that dynamically modify or transform message
 </style>
 ```
 
-> **What this does:** Defines a custom mentions style where other-user mentions appear in pink (`#D6409F`) and self-mentions appear in green (`#30A46C`), both using the body-regular text appearance.
-
 <Tabs>
 <Tab title="Java">
 ```java lines
-
-// Initialize CometChatMentionsFormatter
 CometChatMentionsFormatter mentionFormatter = new CometChatMentionsFormatter(context);
-
-//set style to customize conversation mention text
 mentionFormatter.setConversationsMentionTextStyle(context, R.style.CustomConversationsMentionsStyle);
 
-// This can be passed as an array of formatter in CometChatConversations by using setTextFormatters method.
 List<CometChatTextFormatter> textFormatters = new ArrayList<>();
 textFormatters.add(mentionFormatter);
 cometChatConversations.setTextFormatters(textFormatters);
 ```
-
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin lines
-
-// Initialize CometChatMentionsFormatter
 val mentionFormatter = CometChatMentionsFormatter(context)
-//set style to customize conversation mention text
 mentionFormatter.setConversationsMentionTextStyle(context, R.style.CustomConversationsMentionsStyle)
 
-// This can be passed as an array of formatter in CometChatConversations by using setTextFormatters method.
 val textFormatters: MutableList<CometChatTextFormatter> = ArrayList()
 textFormatters.add(mentionFormatter)
 cometChatConversations.setTextFormatters(textFormatters)
 ```
-
 </Tab>
-
 </Tabs>
 
-> **What this does:** Creates a `CometChatMentionsFormatter`, applies the custom mentions style, adds it to a list of text formatters, and passes that list to the conversations component. Mentions in conversation subtitles render with the custom colors.
+### `setLoadingView`
 
-#### `setOverflowMenu`
-
-Customizes the overflow menu within the Conversations component. This menu appears as a three-dot or hamburger icon and provides additional options.
+Sets a custom loading view displayed when data is being fetched.
 
 <Tabs>
 <Tab title="Java">
 ```java lines
-    cometChatConversations.setOverflowMenu(View v);
+cometchatConversations.setLoadingView(R.layout.your_loading_view);
 ```
-
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin lines
-    cometChatConversations.setOverflowMenu(v)
+cometchatConversations.loadingView = R.layout.your_loading_view
 ```
-
 </Tab>
-
 </Tabs>
 
-> **What this does:** Sets a custom `View` as the overflow menu in the conversations toolbar. Pass any view (e.g., an avatar, icon button) to replace the default overflow menu.
+> **What this does:** Replaces the default loading spinner with your custom layout resource. The custom view displays while conversations are being fetched.
+
+### `setEmptyView`
+
+Configures a custom view displayed when there are no conversations in the list.
+
+<Tabs>
+<Tab title="Java">
+```java lines
+cometchatConversations.setEmptyView(R.layout.your_empty_view);
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.emptyView = R.layout.your_empty_view
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Replaces the default empty state with your custom layout resource. The custom view displays when the conversation list has no items.
+
+### `setErrorView`
+
+Defines a custom error state view that appears when an issue occurs while loading conversations.
+
+<Tabs>
+<Tab title="Java">
+```java lines
+cometchatConversations.setErrorView(R.layout.your_error_view);
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.errorView = R.layout.your_error_view
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Replaces the default error state with your custom layout resource. The custom view displays when the component encounters an error during data fetching.
+
+### `setDateFormat`
+
+Customizes the date format used for displaying timestamps in conversations.
+
+<Frame>
+  <img src="/images/def1212b-Conversation_Date_Pattern-62d23e137a26c9a0ee22e2c2cac64d80.png" />
+</Frame>
+
+<Tabs>
+<Tab title="Java">
+```java lines
+cometchatConversations.setDateFormat(new SimpleDateFormat("dd MMM, hh:mm a",Locale.getDefault()));
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.setDateFormat(SimpleDateFormat("dd MMM, hh:mm a",Locale.getDefault()))
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Sets the conversation date format to "dd MMM, hh:mm a" (e.g., "10 Jul, 02:30 PM") using the device's default locale.
+
+### `setOverflowMenu`
+
+Replace the toolbar overflow menu.
 
 <Frame>
   <img src="/images/6ca194c9-Conversation_Menu-f8faec49b81b7391b9b0291c77fe34e3.png" />
 </Frame>
 
-Create a `view_menu.xml` custom view file to inflate and pass to `setOverflowMenu`:
+Create a `user_profile_popup_menu_layout.xml` custom view file:
 
 ```xml user_profile_popup_menu_layout.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -2119,27 +1824,11 @@ Create a `view_menu.xml` custom view file to inflate and pass to `setOverflowMen
 
 > **What this does:** Defines a popup menu layout with options for creating a conversation, viewing the user profile, logging out, and displaying the app version.
 
-Inflate the view and pass it to `setOverflowMenu`. Get child view references to handle click actions:
+Inflate the view and pass it to `setOverflowMenu`:
 
 <Tabs>
 <Tab title="Java">
 ```java lines
-
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import androidx.appcompat.app.AppCompatActivity;
-import com.cometchat.chat.models.User;
-import com.cometchat.chatuikit.conversations.CometChatConversations;
-import com.cometchat.chatuikit.shared.cometchatuikit.CometChatUIKit;
-import com.cometchat.chatuikit.shared.views.cometchatavatar.CometChatAvatar;
-import com.cometchat.sampleapp.java.BuildConfig;
-import com.cometchat.sampleapp.java.R;
-import com.cometchat.sampleapp.java.databinding.UserProfilePopupMenuLayoutBinding;
-
 public class YourActivity extends AppCompatActivity {
     private CometChatConversations cometChatConversations;
     @Override
@@ -2154,8 +1843,10 @@ public class YourActivity extends AppCompatActivity {
         User user = CometChatUIKit.getLoggedInUser();
         if (user != null) {
             CometChatAvatar cometchatAvatar = new CometChatAvatar(this);
-            cometchatAvatar.setAvatar(CometChatUIKit.getLoggedInUser().getName(), CometChatUIKit.getLoggedInUser().getAvatar());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_40dp), getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_40dp));
+            cometchatAvatar.setAvatar(user.getName(), user.getAvatar());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_40dp),
+                getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_40dp));
             layoutParams.setLayoutDirection(Gravity.CENTER_VERTICAL);
             cometchatAvatar.setLayoutParams(layoutParams);
             cometchatAvatar.setOnClickListener(v -> {
@@ -2165,61 +1856,36 @@ public class YourActivity extends AppCompatActivity {
         }
         return null;
     }
+
     private void showCustomMenu(View anchorView) {
         UserProfilePopupMenuLayoutBinding popupMenuBinding = UserProfilePopupMenuLayoutBinding.inflate(LayoutInflater.from(this));
-        final PopupWindow popupWindow = new PopupWindow(popupMenuBinding.getRoot(), getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_250dp), LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        final PopupWindow popupWindow = new PopupWindow(popupMenuBinding.getRoot(),
+            getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_250dp),
+            LinearLayout.LayoutParams.WRAP_CONTENT, true);
 
         popupMenuBinding.tvUserName.setText(CometChatUIKit.getLoggedInUser().getName());
         String version = "V" + BuildConfig.VERSION_NAME + "(" + BuildConfig.VERSION_CODE + ")";
         popupMenuBinding.tvVersion.setText(version);
 
-        popupMenuBinding.tvCreateConversation.setOnClickListener(view -> {
-            popupWindow.dismiss();
-        });
-
-        popupMenuBinding.tvUserName.setOnClickListener(view -> {
-            popupWindow.dismiss();
-        });
-
-
-        popupMenuBinding.tvLogout.setOnClickListener(view -> {
-            popupWindow.dismiss();
-        });
+        popupMenuBinding.tvCreateConversation.setOnClickListener(view -> popupWindow.dismiss());
+        popupMenuBinding.tvUserName.setOnClickListener(view -> popupWindow.dismiss());
+        popupMenuBinding.tvLogout.setOnClickListener(view -> popupWindow.dismiss());
 
         popupWindow.setElevation(5);
-
         int endMargin = getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_margin_2);
         int anchorWidth = anchorView.getWidth();
         int offsetX = anchorWidth - popupWindow.getWidth() - endMargin;
-        int offsetY = 0;
-        popupWindow.showAsDropDown(anchorView, offsetX, offsetY);
+        popupWindow.showAsDropDown(anchorView, offsetX, 0);
     }
-
 }
 ```
-
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin lines
-import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.LinearLayout
-import android.widget.PopupWindow
-import androidx.appcompat.app.AppCompatActivity
-import com.cometchat.chatuikit.conversations.CometChatConversations
-import com.cometchat.chatuikit.shared.cometchatuikit.CometChatUIKit
-import com.cometchat.chatuikit.shared.views.cometchatavatar.CometChatAvatar
-import com.cometchat.sampleapp.java.BuildConfig
-
-import com.cometchat.sampleapp.java.R
-import com.cometchat.sampleapp.java.databinding.UserProfilePopupMenuLayoutBinding
-
 class YourActivity : AppCompatActivity() {
     private lateinit var cometChatConversations: CometChatConversations
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -2232,20 +1898,14 @@ class YourActivity : AppCompatActivity() {
             val user = CometChatUIKit.getLoggedInUser()
             if (user != null) {
                 val cometchatAvatar = CometChatAvatar(this)
-                cometchatAvatar.setAvatar(
-                    CometChatUIKit.getLoggedInUser().name,
-                    CometChatUIKit.getLoggedInUser().avatar
-                )
+                cometchatAvatar.setAvatar(user.name, user.avatar)
                 val layoutParams = LinearLayout.LayoutParams(
                     resources.getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_40dp),
-                    resources.getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_40dp)
-                )
+                    resources.getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_40dp))
                 layoutParams.layoutDirection = Gravity.CENTER_VERTICAL
                 cometchatAvatar.layoutParams = layoutParams
-                cometchatAvatar.setOnClickListener { v: View? ->
-                    showCustomMenu(
-                        cometChatConversations!!.binding.toolbarLayout
-                    )
+                cometchatAvatar.setOnClickListener {
+                    showCustomMenu(cometChatConversations.binding.toolbarLayout)
                 }
                 return cometchatAvatar
             }
@@ -2254,217 +1914,34 @@ class YourActivity : AppCompatActivity() {
 
     private fun showCustomMenu(anchorView: View) {
         val popupMenuBinding = UserProfilePopupMenuLayoutBinding.inflate(LayoutInflater.from(this))
-        val popupWindow = PopupWindow(
-            popupMenuBinding.root,
+        val popupWindow = PopupWindow(popupMenuBinding.root,
             resources.getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_250dp),
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            true
-        )
+            LinearLayout.LayoutParams.WRAP_CONTENT, true)
 
         popupMenuBinding.tvUserName.text = CometChatUIKit.getLoggedInUser().name
         val version = "V" + BuildConfig.VERSION_NAME + "(" + BuildConfig.VERSION_CODE + ")"
         popupMenuBinding.tvVersion.text = version
 
-        popupMenuBinding.tvCreateConversation.setOnClickListener { view ->
-            popupWindow.dismiss()
-        }
-
-        popupMenuBinding.tvUserName.setOnClickListener { view ->
-            popupWindow.dismiss()
-        }
-
-
-        popupMenuBinding.tvLogout.setOnClickListener { view ->
-            popupWindow.dismiss()
-        }
+        popupMenuBinding.tvCreateConversation.setOnClickListener { popupWindow.dismiss() }
+        popupMenuBinding.tvUserName.setOnClickListener { popupWindow.dismiss() }
+        popupMenuBinding.tvLogout.setOnClickListener { popupWindow.dismiss() }
 
         popupWindow.elevation = 5f
-
-        val endMargin =
-            resources.getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_margin_2)
+        val endMargin = resources.getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_margin_2)
         val anchorWidth = anchorView.width
         val offsetX = anchorWidth - popupWindow.width - endMargin
-        val offsetY = 0
-        popupWindow.showAsDropDown(anchorView, offsetX, offsetY)
-        }
+        popupWindow.showAsDropDown(anchorView, offsetX, 0)
     }
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Creates a complete overflow menu implementation. An avatar of the logged-in user is set as the overflow menu view. When tapped, it shows a popup window with options for creating a conversation, viewing the user profile, logging out, and displaying the app version. Each option dismisses the popup when clicked.
-
-#### `setDateFormat`
-
-Customizes the date format used for displaying timestamps in conversations.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometChatConversations.setDateFormat(SimpleDateFormat)
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometChatConversations.setDateFormat(SimpleDateFormat)
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Sets a custom `SimpleDateFormat` for conversation timestamps. Pass a format pattern such as "dd/MM/yyyy HH:mm", "MMM dd, yyyy", or "hh:mm a".
-
-<Frame>
-  <img src="/images/def1212b-Conversation_Date_Pattern-62d23e137a26c9a0ee22e2c2cac64d80.png" />
-</Frame>
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.setDateFormat(new SimpleDateFormat("dd MMM, hh:mm a",Locale.getDefault()));
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatConversations.setDateFormat(SimpleDateFormat("dd MMM, hh:mm a",Locale.getDefault()))
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Sets the conversation date format to "dd MMM, hh:mm a" (e.g., "10 Jul, 02:30 PM") using the device's default locale.
-
-#### `setSubtitleView`
-
-Customizes the subtitle view of each conversation item. The subtitle displays additional information below the conversation title, such as the last message or typing indicators.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometChatConversations.setSubtitleView(new ConversationsViewHolderListener() {
-            @Override
-            public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
-                return null;
-            }
-
-            @Override
-            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
-
-            }
-        });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometChatConversations.setSubtitleView(object : ConversationsViewHolderListener() {
-            override fun createView(context: Context?, listItem: CometchatConversationsListItemsBinding?): View? {
-                return null
-            }
-
-            override fun bindView(context: Context, createdView: View, conversation: Conversation, holder: RecyclerView.ViewHolder, conversationList: List<Conversation>, position: Int) {
-
-            }
-        })
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Registers a custom subtitle view for conversation items. Override `createView` and `bindView` in the `ConversationsViewHolderListener` to provide your custom subtitle layout and data binding.
-
-<Frame>
-  <img src="/images/48bf8e47-Conversation_Subtitle_View-a52dabb66ff516b5afb85540c95ed92d.png" />
-</Frame>
-
-<Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-    cometchatConversations.setSubtitleView(new ConversationsViewHolderListener() {
-            @Override
-            public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
-                return new TextView(context);
-            }
-
-            @Override
-            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
-                TextView tvSubtitle = (TextView) createdView;
-                tvSubtitle.setText("Last Active at: "+new SimpleDateFormat("dd/MM/yyyy, HH:mm:ss").format(conversation.getUpdatedAt() * 1000));
-                tvSubtitle.setTextColor(Color.BLACK);
-            }
-        });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-    cometchatConversations.setSubtitleView(object :
-            ConversationsViewHolderListener() {
-            override fun createView(
-                context: Context?,
-                listItem: CometchatConversationsListItemsBinding?
-            ): View {
-                return TextView(context)
-            }
-
-            override fun bindView(
-                context: Context,
-                createdView: View,
-                conversation: Conversation,
-                holder: RecyclerView.ViewHolder,
-                conversationList: List<Conversation>,
-                position: Int
-            ) {
-                val tvSubtitle = createdView as TextView
-                tvSubtitle.text =
-                    "Last Active at: " + SimpleDateFormat("dd/MM/yyyy, HH:mm:ss").format(
-                        conversation.updatedAt * 1000
-                    )
-                tvSubtitle.setTextColor(Color.BLACK)
-            }
-        })
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Replaces the default subtitle with a custom `TextView` that shows "Last Active at:" followed by the conversation's last update timestamp formatted as "dd/MM/yyyy, HH:mm:ss" in black text.
-
-- **Verify**: After setting any advanced view, confirm the custom view renders in the correct position within the conversation list item, and the data binding populates correctly for each conversation.
-
-## Common patterns
-
-### Filter to user conversations only
-
-<Tabs>
-<Tab title="Java">
-```java lines
-ConversationsRequest.ConversationsRequestBuilder builder = new ConversationsRequest.ConversationsRequestBuilder();
-builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_USER);
-cometChatConversations.setConversationsRequestBuilder(builder);
-```
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-val builder = ConversationsRequest.ConversationsRequestBuilder()
-    .setConversationType(CometChatConstants.CONVERSATION_TYPE_USER)
-cometChatConversations.setConversationsRequestBuilder(builder)
+}
 ```
 </Tab>
 </Tabs>
+
+> **What this does:** Creates a complete overflow menu implementation. An avatar of the logged-in user is set as the overflow menu view. When tapped, it shows a popup window with options for creating a conversation, viewing the user profile, logging out, and displaying the app version.
+
+- **Verify**: After setting any custom view slot, confirm the custom view renders in the correct position within the conversation list item, and the data binding populates correctly for each conversation.
+
+## Common Patterns
 
 ### Custom empty state with action button
 
@@ -2531,33 +2008,78 @@ cometChatConversations.setToolbarVisibility(View.GONE)
 </Tab>
 </Tabs>
 
-### Filter recipes
+### Filter to user conversations only
 
-| Recipe | Code |
-| --- | --- |
-| Only user conversations | `builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_USER)` |
-| Only group conversations | `builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_GROUP)` |
-| Limit to 10 per page | `builder.setLimit(10)` |
-| With specific tags | `builder.setTags(Arrays.asList("vip"))` |
-| Filter by user tags | `builder.withUserAndGroupTags(true); builder.setUserTags(Arrays.asList("premium"))` |
-| Filter by group tags | `builder.withUserAndGroupTags(true); builder.setGroupTags(Arrays.asList("support"))` |
+<Tabs>
+<Tab title="Java">
+```java lines
+ConversationsRequest.ConversationsRequestBuilder builder = new ConversationsRequest.ConversationsRequestBuilder();
+builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_USER);
+cometChatConversations.setConversationsRequestBuilder(builder);
+```
+</Tab>
 
-> Default page size is 30. The component uses infinite scroll — the next page loads as the user scrolls to the bottom. Refer to [ConversationsRequestBuilder](/sdk/android/retrieve-conversations) for the full builder API.
+<Tab title="Kotlin">
+```kotlin lines
+val builder = ConversationsRequest.ConversationsRequestBuilder()
+    .setConversationType(CometChatConstants.CONVERSATION_TYPE_USER)
+cometChatConversations.setConversationsRequestBuilder(builder)
+```
+</Tab>
+</Tabs>
 
-## Accessibility
+## Style
 
-The component renders a scrollable `RecyclerView` of interactive conversation items. Each conversation row responds to tap and long-press gestures. The unread badge count is rendered as a `TextView` with the count as text content, accessible to TalkBack. Avatar images include the conversation name as content description.
+The component uses XML theme styles. Define a custom style with parent `CometChatConversationsStyle` in `themes.xml`, then apply with `setStyle()`.
 
-For custom views provided via `setLeadingView`, `setTitleView`, `setTrailingView`, or `setItemView`, ensure you set `android:contentDescription` on visual-only elements (status indicators, icons) so TalkBack can announce them. The default views handle this automatically.
+<Frame>
+  <img src="/images/433c987e-Conversation_Styling-1e5686a26eb349d5cbc40262b9b6df0e.png" />
+</Frame>
 
-Group type indicators and online/offline status dots are visual-only by default. If screen reader descriptions are needed for these, provide them via a custom view with appropriate `contentDescription` attributes.
+```xml themes.xml lines
+    <style name="CustomAvatarStyle" parent="CometChatAvatarStyle">
+        <item name="cometchatAvatarStrokeRadius">8dp</item>
+        <item name="cometchatAvatarBackgroundColor">#FBAA75</item>
+    </style>
 
-## Customization matrix
+    <style name="CustomBadgeCountStyle" parent="CometChatBadgeStyle">
+        <item name="cometchatBadgeBackgroundColor">#F76808</item>
+        <item name="cometchatBadgeTextColor">#FFFFFF</item>
+    </style>
 
-| What you want to change | Where | Property/API | Example |
+    <style name="CustomConversationsStyle" parent="CometChatConversationsStyle">
+        <item name="cometchatConversationsAvatarStyle">@style/CustomAvatarStyle</item>
+        <item name="cometchatConversationsBadgeStyle">@style/CustomBadgeCountStyle</item>
+    </style>
+```
+
+<Tabs>
+<Tab title="Java">
+```java lines
+cometChatConversations.setStyle(R.style.CustomConversationsStyle);
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+cometChatConversations.setStyle(R.style.CustomConversationsStyle)
+```
+</Tab>
+</Tabs>
+
+To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_conversations.xml).
+
+## Customization Matrix
+
+| What to change | Where | Property/API | Example |
 | --- | --- | --- | --- |
-| Avatar style (corner radius, background) | `themes.xml` | `CometChatConversationsStyle` with `cometchatConversationsAvatarStyle` | `<item name="cometchatAvatarStrokeRadius">8dp</item>` |
-| Badge count style (background, text color) | `themes.xml` | `CometChatConversationsStyle` with `cometchatConversationsBadgeStyle` | `<item name="cometchatBadgeBackgroundColor">#F76808</item>` |
+| Override behavior on user interaction | Activity/Fragment | `setOn<Event>` callbacks | `setOnItemClick((v, pos, c) -> { ... })` |
+| Filter which conversations appear | Activity/Fragment | `setConversationsRequestBuilder` | `setConversationsRequestBuilder(builder)` |
+| Toggle visibility of UI elements | Activity/Fragment | `set<Feature>Visibility(int)` | `setReceiptsVisibility(View.GONE)` |
+| Replace a section of the list item | Activity/Fragment | `set<Slot>View` | `setLeadingView(listener)` |
+| Change colors, fonts, spacing | `themes.xml` | `CometChatConversationsStyle` | `<item name="cometchatConversationsBadgeStyle">@style/...</item>` |
+| Avatar style (corner radius, background) | `themes.xml` | `cometchatConversationsAvatarStyle` | `<item name="cometchatAvatarStrokeRadius">8dp</item>` |
+| Badge count style (background, text color) | `themes.xml` | `cometchatConversationsBadgeStyle` | `<item name="cometchatBadgeBackgroundColor">#F76808</item>` |
 | Apply a custom style | Activity/Fragment | `setStyle(int styleRes)` | `cometChatConversations.setStyle(R.style.CustomConversationsStyle);` |
 | Back button visibility | Activity/Fragment | `setBackIconVisibility(int)` | `.setBackIconVisibility(View.VISIBLE);` |
 | Toolbar visibility | Activity/Fragment | `setToolbarVisibility(int)` | `.setToolbarVisibility(View.GONE);` |
@@ -2570,25 +2092,33 @@ Group type indicators and online/offline status dots are visual-only by default.
 | Group type indicator visibility | Activity/Fragment | `setGroupTypeVisibility(int)` | `.setGroupTypeVisibility(View.GONE);` |
 | Read/delivered receipts visibility | Activity/Fragment | `setReceiptsVisibility(int)` | `.setReceiptsVisibility(View.GONE);` |
 | Incoming message sound | Activity/Fragment | `disableSoundForMessages(boolean)` | `.disableSoundForMessages(true);` |
-| Custom message sound | Activity/Fragment | `setCustomSoundForMessages(int)` | `.setCustomSoundForMessages(com.cometchat.chatuikit.R.raw.cometchat_beep2);` |
+| Custom message sound | Activity/Fragment | `setCustomSoundForMessages(int)` | `.setCustomSoundForMessages(R.raw.cometchat_beep2);` |
 | Selection mode (single/multiple) | Activity/Fragment | `setSelectionMode(SelectionMode)` | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
 | Date/time formatting | Activity/Fragment | `setDateTimeFormatter(DateTimeFormatterCallback)` | See `setDateTimeFormatter` code above |
-| Date format | Activity/Fragment | `setDateFormat(SimpleDateFormat)` | `cometchatConversations.setDateFormat(new SimpleDateFormat("dd MMM, hh:mm a", Locale.getDefault()));` |
+| Date format | Activity/Fragment | `setDateFormat(SimpleDateFormat)` | `.setDateFormat(new SimpleDateFormat("dd MMM, hh:mm a", Locale.getDefault()));` |
 | Long-press options (replace) | Activity/Fragment | `setOptions(Function2)` | See `setOptions` code above |
 | Long-press options (append) | Activity/Fragment | `addOptions(Function2)` | See `addOptions` code above |
-| Loading view | Activity/Fragment | `setLoadingView(int)` | `cometchatConversations.setLoadingView(R.layout.your_loading_view);` |
-| Empty view | Activity/Fragment | `setEmptyView(int)` | `cometchatConversations.setEmptyView(R.layout.your_empty_view);` |
-| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatConversations.setErrorView(R.layout.your_error_view);` |
+| Loading view | Activity/Fragment | `setLoadingView(int)` | `.setLoadingView(R.layout.your_loading_view);` |
+| Empty view | Activity/Fragment | `setEmptyView(int)` | `.setEmptyView(R.layout.your_empty_view);` |
+| Error view | Activity/Fragment | `setErrorView(int)` | `.setErrorView(R.layout.your_error_view);` |
 | Leading view (avatar area) | Activity/Fragment | `setLeadingView(ConversationsViewHolderListener)` | See `setLeadingView` code above |
 | Title view | Activity/Fragment | `setTitleView(ConversationsViewHolderListener)` | See `setTitleView` code above |
 | Trailing view | Activity/Fragment | `setTrailingView(ConversationsViewHolderListener)` | See `setTrailingView` code above |
 | Entire list item | Activity/Fragment | `setItemView(ConversationsViewHolderListener)` | See `setItemView` code above |
 | Subtitle view | Activity/Fragment | `setSubtitleView(ConversationsViewHolderListener)` | See `setSubtitleView` code above |
 | Text formatters (mentions) | Activity/Fragment | `setTextFormatters(List<CometChatTextFormatter>)` | See `setTextFormatters` code above |
-| Overflow menu | Activity/Fragment | `setOverflowMenu(View)` | `cometChatConversations.setOverflowMenu(View v);` |
+| Overflow menu | Activity/Fragment | `setOverflowMenu(View)` | `cometChatConversations.setOverflowMenu(view);` |
 | Filter conversations | Activity/Fragment | `setConversationsRequestBuilder(ConversationsRequestBuilder)` | See Filters code above |
 
-## Common pitfalls & fixes
+## Accessibility
+
+The component renders a scrollable `RecyclerView` of interactive conversation items. Each conversation row responds to tap and long-press gestures. The unread badge count is rendered as a `TextView` with the count as text content, accessible to TalkBack. Avatar images include the conversation name as content description.
+
+For custom views provided via `setLeadingView`, `setTitleView`, `setTrailingView`, or `setItemView`, ensure you set `android:contentDescription` on visual-only elements (status indicators, icons) so TalkBack can announce them. The default views handle this automatically.
+
+Group type indicators and online/offline status dots are visual-only by default. If screen reader descriptions are needed for these, provide them via a custom view with appropriate `contentDescription` attributes.
+
+## Common Pitfalls & Fixes
 
 | Pitfall | Fix |
 | --- | --- |
@@ -2620,7 +2150,7 @@ Group type indicators and online/offline status dots are visual-only by default.
 **Q: How do I add custom long-press options without removing the defaults?**
 **A:** Use `addOptions` instead of `setOptions`. `addOptions` appends your custom `MenuItem` objects to the existing default options.
 
-## Next steps
+## Next Steps
 
 - [Users component](/ui-kit/android/users)
 - [Message list component](/ui-kit/android/message-list)
