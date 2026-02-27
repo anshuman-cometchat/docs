@@ -72,7 +72,7 @@ Ensure your system meets the following **prerequisites** before proceeding with 
 **System Requirements:**
 
 * **Android Studio** installed on your machine.
-* An **Android emulator or physical device** running Android 6.0 or higher.
+* An **Android emulator or physical device** running Android 7.0 (API 24) or higher.
 * **Java 8 or higher** installed.
 * **Gradle plugin 4.0.1 or later** installed.
 
@@ -85,7 +85,7 @@ Ensure your system meets the following **prerequisites** before proceeding with 
 1. Open **Android Studio** and start a **new project**.
 2. Choose **Empty Activity** as the project template.
 3. Enter a project name and choose **Java** or **Kotlin** as the language.
-4. Set **minimum API level** to **21 or higher**.
+4. Set **minimum API level** to **24 or higher**.
 
 ***
 
@@ -140,7 +140,7 @@ Inside `libs.versions.toml`, add the CometChat Chat UI Kit version under the `[v
 
 ```toml libs.versions.toml lines
 [versions]
-cometchat-ui-kit = "5.2.7"
+cometchat-ui-kit = "5.2.9"
 cometchat-calls-sdk = "4.3.3"
 ```
 
@@ -171,7 +171,7 @@ Open the **app level** `build.gradle` file and add the following dependency to f
 ```gradle build.gradle lines
 dependencies {
     // CometChat UIKit
-    implementation 'com.cometchat:chat-uikit-android:5.2.7'
+    implementation 'com.cometchat:chat-uikit-android:5.2.9'
 
     // (Optional) Include this if your app uses voice/video calling features
     implementation 'com.cometchat:calls-sdk-android:4.3.3'
