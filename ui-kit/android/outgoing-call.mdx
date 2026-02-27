@@ -2,107 +2,150 @@
 title: "Outgoing Call"
 ---
 
-`CometChatOutgoingCall` is a visual representation of a user-initiated call, whether voice or video. It provides call recipient information, call controls for canceling the call, and feedback on the call status such as indicating when the call is in progress.
+`CometChatOutgoingCall` displays a full-screen outgoing call UI with the recipient's avatar, name, call status, and an end-call button. It handles call-accepted and call-rejected transitions automatically.
 
-## When to use this
+## AI Agent Component Spec
 
-- You need a full-screen outgoing call UI when a user initiates a voice or video call.
-- You want to display the call recipient's name and avatar during the outgoing call.
-- You need an end-call button so the caller can cancel the call before it is answered.
-- You want to listen for call-accepted or call-rejected events to transition to the appropriate screen.
-- You need to customize the outgoing call appearance with styles, custom views, or sound settings.
+<Accordion title="AI Agent Component Spec">
 
-## Prerequisites
+```json
+{
+  "component": "CometChatOutgoingCall",
+  "package": "com.cometchat.chatuikit.calls.outgoingcall",
+  "xmlElement": "<com.cometchat.chatuikit.calls.outgoingcall.CometChatOutgoingCall />",
+  "description": "Full-screen outgoing call UI with recipient avatar, name, call status, and end-call button.",
+  "primaryOutput": {
+    "method": "setOnEndCallClick",
+    "type": "OnClick"
+  },
+  "methods": {
+    "data": {
+      "setCall": {
+        "type": "Call",
+        "note": "Sets the call object and extracts the receiver User automatically"
+      },
+      "setUser": {
+        "type": "User",
+        "note": "Sets the user directly (uid, name, avatar required)"
+      }
+    },
+    "callbacks": {
+      "setOnEndCallClick": "OnClick",
+      "setOnError": "OnError"
+    },
+    "functionality": {
+      "disableSoundForCall": { "type": "boolean", "default": "false" },
+      "setCustomSoundForCalls": { "type": "@RawRes int", "default": "SDK default" }
+    },
+    "viewSlots": {
+      "setTitleView": "Function2<Context, Call, View> — title text area",
+      "setSubtitleView": "Function2<Context, Call, View> — subtitle text area",
+      "setAvatarView": "Function2<Context, Call, View> — avatar / profile picture area",
+      "setEndCallView": "Function2<Context, Call, View> — end-call button area"
+    },
+    "advanced": {
+      "setCallSettingsBuilder": "CometChatCalls.CallSettingsBuilder — ongoing call configuration",
+      "getViewModel": "OutgoingViewModel — internal ViewModel access"
+    },
+    "style": {
+      "setStyle": {
+        "type": "@StyleRes int",
+        "parent": "CometChatOutgoingCallStyle"
+      }
+    }
+  },
+  "events": [
+    {
+      "name": "CometChatCallEvents.ccCallAccepted",
+      "payload": "Call",
+      "description": "Outgoing call was accepted by the receiver"
+    },
+    {
+      "name": "CometChatCallEvents.ccCallRejected",
+      "payload": "Call",
+      "description": "Outgoing call was rejected by the receiver"
+    }
+  ]
+}
+```
 
-- CometChat SDK initialized with `CometChatUIKit.init()` and a user logged in.
-- The `cometchat-chat-uikit-android` dependency added to your project.
-- A valid `User` or `Call` object to pass to the component.
-- A layout XML file or Activity/Fragment where you will place the component.
+</Accordion>
 
-## Quick start
+## Where It Fits
 
-1. Open your layout XML file.
-2. Add the `CometChatOutgoingCall` XML element:
+`CometChatOutgoingCall` is a call-initiation component. It renders the outgoing call screen and transitions to the ongoing call screen when the receiver accepts. Wire it to `CometChatCallEvents` to handle call-accepted and call-rejected transitions.
 
-```xml lines
+<Tabs>
+<Tab title="Kotlin">
+```kotlin CallActivity.kt lines
+class CallActivity : AppCompatActivity() {
+
+    private lateinit var outgoingCall: CometChatOutgoingCall
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_call)
+
+        outgoingCall = findViewById(R.id.outgoing_call)
+        outgoingCall.setCall(call) // pass the Call object from CometChat SDK
+    }
+}
+```
+</Tab>
+
+<Tab title="Java">
+```java CallActivity.java lines
+public class CallActivity extends AppCompatActivity {
+
+    private CometChatOutgoingCall outgoingCall;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_call);
+
+        outgoingCall = findViewById(R.id.outgoing_call);
+        outgoingCall.setCall(call); // pass the Call object from CometChat SDK
+    }
+}
+```
+</Tab>
+</Tabs>
+
+## Quick Start
+
+Add the component to your layout XML:
+
+```xml layout_activity.xml lines
 <com.cometchat.chatuikit.calls.outgoingcall.CometChatOutgoingCall
     android:id="@+id/outgoing_call"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
 ```
 
-> **What this does:** Adds the `CometChatOutgoingCall` component to your layout. It fills the available width and height.
-
-3. In your Activity or Fragment, get a reference to the component and set a `User` or `Call` object:
-
-<Tabs>
-<Tab title="Java">
-```java lines
-CometChatOutgoingCall cometchatOutgoingCall = binding.outgoingCall; // 'binding' is a view binding instance. Initialize it with `binding = YourXmlFileNameBinding.inflate(getLayoutInflater());` to use views like `binding.outgoingCall` after enabling view binding.
-
-User user = new User();
-user.setUid(""); //Required
-user.setName(""); //Required
-user.setAvatar(""); //Required
-
-cometchatOutgoingCall.setUser(user); //Required - set the user object
-//OR
-cometchatOutgoingCall.setCall(call); //Required - set the call object
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-val cometchatOutgoingCall: CometChatOutgoingCall = binding.outgoingCall // 'binding' is a view binding instance. Initialize it with `binding = YourXmlFileNameBinding.inflate(layoutInflater)` to use views like `binding.outgoingCall` after enabling view binding.
-
-
-val user = User()
-user.uid = "" //Required
-user.name = "" //Required
-user.avatar = "" //Required
-
-cometchatOutgoingCall.setUser(user) //Required - set the user object
-//OR
-cometchatOutgoingCall.setCall(call) //Required - set the call object
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Retrieves the `CometChatOutgoingCall` instance from the XML layout using view binding, creates a `User` object with required fields (`uid`, `name`, `avatar`), and sets it on the component. You can use `setUser(user)` or `setCall(call)` depending on whether you have a `User` or `Call` object.
-
-4. Build and run your app.
-5. Verify that the outgoing call screen appears with the recipient's avatar, name, and an end-call button.
-
 <Frame>
   <img src="/images/703120eb-outgoing_call-c24eb1936c04bb40ea873ac19b973b56.png" />
 </Frame>
 
-6. If you need to add the component programmatically instead of XML, see the [Activity integration](#activity-integration) or [Fragment integration](#fragment-integration) subsections in Implementation.
+Prerequisites: CometChat SDK initialized with `CometChatUIKit.init()`, a user logged in, and the `cometchat-chat-uikit-android` dependency added.
 
-## Core concepts
-
-- **`CometChatOutgoingCall`**: The main component class that renders the outgoing call screen. It can be added via XML layout, Activity, or Fragment.
-- **Actions**: Callbacks such as `setOnError` and `setOnEndCallClick` that let you respond to errors and user interactions.
-- **Events**: Global events emitted by the component (`ccCallAccepted`, `ccCallRejected`) that you can listen to from anywhere in your app using `CometChatCallEvents`.
-- **Style**: XML theme styles (parent `CometChatOutgoingCallStyle`) applied via `setStyle()` to customize colors, avatar appearance, and sub-component styles.
-- **Advanced views**: Methods like `setTitleView`, `setSubtitleView`, `setAvatarView`, and `setEndCallView` that let you replace default UI elements with custom layouts.
-
-## Implementation
-
-### Activity integration
-
-What you're changing: How you add `CometChatOutgoingCall` to an Activity programmatically.
-
-- **Where**: Your Activity class (e.g., `YourActivity.java` or `YourActivity.kt`).
-- **Applies to**: `CometChatOutgoingCall`.
-- **Default behavior**: The component is not added until you set it as the content view.
-- **Override**: Create a `CometChatOutgoingCall` instance, set a `User` or `Call` object, and call `setContentView`.
-- **Code**:
+To add programmatically in an Activity:
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+private lateinit var cometchatOutgoingCall: CometChatOutgoingCall
+
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    cometchatOutgoingCall = CometChatOutgoingCall(this)
+    cometchatOutgoingCall.setCall(call) // Required — set the Call object
+    setContentView(cometchatOutgoingCall)
+}
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourActivity.java lines
 CometChatOutgoingCall cometchatOutgoingCall;
@@ -112,86 +155,16 @@ protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     cometchatOutgoingCall = new CometChatOutgoingCall(this);
-
-    User user = new User();
-    user.setUid(""); //Required
-    user.setName(""); //Required
-    user.setAvatar(""); //Required
-
-    cometchatOutgoingCall.setUser(user); //Required - set the user object
-    //OR
-    cometchatOutgoingCall.setCall(call); //Required - set the call object
-
+    cometchatOutgoingCall.setCall(call); // Required — set the Call object
     setContentView(cometchatOutgoingCall);
 }
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-private lateinit var cometchatOutgoingCall: CometChatOutgoingCall
-
-override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-
-    cometchatOutgoingCall = CometChatOutgoingCall(this)
-
-    val user = User()
-    user.uid = "" //Required
-    user.name = "" //Required
-    user.avatar = "" //Required
-
-    cometchatOutgoingCall.setUser(user) //Required - set the user object
-    //OR
-    cometchatOutgoingCall.setCall(call) //Required - set the call object
-
-    setContentView(cometchatOutgoingCall)
-}
-```
-
-</Tab>
-
 </Tabs>
 
-> **What this does:** Creates a new `CometChatOutgoingCall` instance in the Activity's `onCreate`, sets the required `User` (or `Call`) object, and sets the component as the entire content view. The outgoing call screen renders immediately after the Activity is created.
-
-- **Verify**: The outgoing call screen fills the screen when the Activity launches, showing the recipient's avatar and name.
-
-### Fragment integration
-
-What you're changing: How you add `CometChatOutgoingCall` to a Fragment.
-
-- **Where**: Your Fragment class (e.g., `YourFragment.java` or `YourFragment.kt`).
-- **Applies to**: `CometChatOutgoingCall`.
-- **Default behavior**: The component is not added until you return it from `onCreateView`.
-- **Override**: Create a `CometChatOutgoingCall` instance, set a `User` or `Call` object, and return it from `onCreateView`.
-- **Code**:
+Or in a Fragment:
 
 <Tabs>
-<Tab title="Java">
-```java YourFragment.java lines
-CometChatOutgoingCall cometchatOutgoingCall;
-
-@Override
-public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    cometchatOutgoingCall = new CometChatOutgoingCall(requireContext());
-
-    User user = new User();
-    user.setUid(""); //Required
-    user.setName(""); //Required
-    user.setAvatar(""); //Required
-
-    cometchatOutgoingCall.setUser(user); //Required - set the user object
-    //OR
-    cometchatOutgoingCall.setCall(call); //Required - set the call object
-
-    return cometchatOutgoingCall;
-}
-```
-
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourFragment.kt lines
 private lateinit var cometchatOutgoingCall: CometChatOutgoingCall
@@ -202,145 +175,101 @@ override fun onCreateView(
     savedInstanceState: Bundle?
 ): View {
     cometchatOutgoingCall = CometChatOutgoingCall(requireContext())
-
-    val user = User()
-    user.uid = "" //Required
-    user.name = "" //Required
-    user.avatar = "" //Required
-
-    cometchatOutgoingCall.setUser(user) //Required - set the user object
-    //OR
-    cometchatOutgoingCall.setCall(call) //Required - set the call object
-
+    cometchatOutgoingCall.setCall(call) // Required — set the Call object
     return cometchatOutgoingCall
 }
 ```
-
 </Tab>
 
-</Tabs>
-
-> **What this does:** Creates a new `CometChatOutgoingCall` instance in the Fragment's `onCreateView`, sets the required `User` (or `Call`) object, and returns it as the Fragment's root view. The outgoing call screen renders when the Fragment is displayed.
-
-- **Verify**: The outgoing call screen appears inside the Fragment's container with the recipient's avatar and name.
-
-### Actions
-
-What you're changing: How the component responds to errors and user interactions such as ending the call.
-
-- **Where**: Activity or Fragment where you hold a reference to `CometChatOutgoingCall` (e.g., `cometchatOutgoingCall`).
-- **Applies to**: `CometChatOutgoingCall`.
-- **Default behavior**: Predefined actions execute automatically (e.g., tapping the end-call button cancels the outgoing call).
-- **Override**: Call the corresponding setter method to replace the default behavior with your own logic.
-
-#### `setOnError`
-
-Listens for any errors that occur in the component.
-
-<Tabs>
 <Tab title="Java">
-```java YourActivity.java lines
- cometchatOutgoingCall.setOnError(new OnError() {
-                    @Override
-                    public void onError(CometChatException cometchatException) {
-                        
-                    }
-                });
+```java YourFragment.java lines
+CometChatOutgoingCall cometchatOutgoingCall;
+
+@Override
+public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    cometchatOutgoingCall = new CometChatOutgoingCall(requireContext());
+    cometchatOutgoingCall.setCall(call); // Required — set the Call object
+    return cometchatOutgoingCall;
+}
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
- cometchatOutgoingCall.setOnError(object : OnError {
-    override fun onError(context: Context, e: CometChatException) {
-        // Your Exception Handling code.
-    }
-})
-```
-
-</Tab>
-
 </Tabs>
 
-> **What this does:** Registers an error callback on the `CometChatOutgoingCall` instance. When an error occurs within the component, the `onError` method is invoked with the `CometChatException` containing error details.
+## Actions and Events
+
+### Callback Methods
 
 #### `setOnEndCallClick`
 
-Triggered when the end-call button is clicked. By default, it cancels the outgoing call.
+Fires when the end-call button is tapped. Default: cancels the outgoing call via the SDK.
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatOutgoingCall.setOnEndCallClick(OnClick {
+    // Your custom end-call logic
+})
+```
+</Tab>
+
 <Tab title="Java">
-```java lines
+```java YourActivity.java lines
 cometchatOutgoingCall.setOnEndCallClick(new OnClick() {
     @Override
     public void onClick() {
-        //TODO
+        // Your custom end-call logic
     }
 });
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatOutgoingCall.setOnEndCallClick(OnClick { 
-    //TODO
-})
-```
-
-</Tab>
-
 </Tabs>
 
 > **What this does:** Replaces the default end-call button behavior. When the user taps the end-call button, your custom `OnClick` lambda executes instead of the built-in call cancellation.
 
-- **Verify**: After setting `setOnEndCallClick`, tap the end-call button and confirm your custom logic executes instead of the default call cancellation.
+#### `setOnError`
 
-### Filters
-
-The `CometChatOutgoingCall` component does not have any exposed filters.
-
-### Events
-
-What you're changing: How you listen for global call events emitted by the `CometChatOutgoingCall` component.
-
-- **Where**: Any Activity or Fragment where you want to respond to outgoing call state changes.
-- **Applies to**: `CometChatOutgoingCall`.
-- **Default behavior**: The component emits events when the outgoing call is accepted or rejected.
-- **Override**: Add a `CometChatCallEvents` listener with a unique ID to receive these events.
-
-Events emitted by the outgoing call component:
-
-| Event | Description |
-| --- | --- |
-| `onOutgoingCallAccepted` | Triggers when the outgoing call is accepted. |
-| `onOutgoingCallRejected` | Triggers when the outgoing call is rejected. |
-
-#### Add `CometChatCallEvents`
+Fires on internal errors (network failure, auth issue, SDK exception).
 
 <Tabs>
-<Tab title="Java">
-```java lines
-CometChatCallEvents.addListener("UNIQUE_ID", new CometChatCallEvents() {
-    @Override
-    public void ccCallAccepted(Call call) {
-        super.ccCallAccepted(call);
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatOutgoingCall.setOnError(object : OnError {
+    override fun onError(context: Context, e: CometChatException) {
+        // Your error handling logic
     }
-
-    @Override
-    public void ccCallRejected(Call call) {
-        super.ccCallRejected(call);
-    }
-
-});
+})
 ```
-
 </Tab>
 
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatOutgoingCall.setOnError(new OnError() {
+    @Override
+    public void onError(CometChatException cometchatException) {
+        // Your error handling logic
+    }
+});
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Registers an error callback on the `CometChatOutgoingCall` instance. When an error occurs within the component, the `onError` method is invoked with the `CometChatException` containing error details.
+
+- **Verify**: After setting an action callback, trigger the corresponding user interaction (tap end-call, cause an error) and confirm your custom logic executes instead of the default behavior.
+
+### Global UI Events (CometChatCallEvents)
+
+`CometChatCallEvents` emits events subscribable from anywhere in the application. Add a listener and remove it when no longer needed.
+
+| Event | Fires when | Payload |
+| --- | --- | --- |
+| `ccCallAccepted` | The outgoing call is accepted by the receiver | `Call` |
+| `ccCallRejected` | The outgoing call is rejected by the receiver | `Call` |
+
+<Tabs>
 <Tab title="Kotlin">
-```kotlin lines
-CometChatCallEvents.addListener("UNIQUE_ID", object : CometChatCallEvents() {
+```kotlin Add Listener lines
+CometChatCallEvents.addListener("LISTENER_TAG", object : CometChatCallEvents() {
     override fun ccCallAccepted(call: Call) {
         super.ccCallAccepted(call)
     }
@@ -351,127 +280,100 @@ CometChatCallEvents.addListener("UNIQUE_ID", object : CometChatCallEvents() {
 })
 ```
 
+Remove Listener
+
+```
+CometChatCallEvents.removeListener("LISTENER_TAG")
+```
 </Tab>
 
-</Tabs>
-
-> **What this does:** Registers a `CometChatCallEvents` listener with the ID `"UNIQUE_ID"`. When the outgoing call is accepted, `ccCallAccepted` is invoked with the `Call` object. When the outgoing call is rejected, `ccCallRejected` is invoked with the `Call` object.
-
-#### Remove `CometChatCallEvents`
-
-<Tabs>
 <Tab title="Java">
-```java lines
-CometChatCallEvents.removeListener("LISTENER_ID_USED_FOR_ADDING_THIS_LISTENER");
+```java Add Listener lines
+CometChatCallEvents.addListener("LISTENER_TAG", new CometChatCallEvents() {
+    @Override
+    public void ccCallAccepted(Call call) {
+        super.ccCallAccepted(call);
+    }
+
+    @Override
+    public void ccCallRejected(Call call) {
+        super.ccCallRejected(call);
+    }
+});
 ```
 
-</Tab>
+Remove Listener
 
-<Tab title="Kotlin">
-```kotlin lines
-CometChatCallEvents.removeListener("LISTENER_ID_USED_FOR_ADDING_THIS_LISTENER")
 ```
-
+CometChatCallEvents.removeListener("LISTENER_TAG");
+```
 </Tab>
-
 </Tabs>
 
-> **What this does:** Removes the previously registered `CometChatCallEvents` listener identified by the string ID. Call this when you no longer need to receive call events (e.g., in `onDestroy`).
+### SDK Events
 
-- **Verify**: After adding the listener, initiate an outgoing call and have the recipient accept or reject it. Confirm that `ccCallAccepted` or `ccCallRejected` fires with the correct `Call` object.
+The component listens to SDK call events internally. No manual attachment needed unless additional side effects are required.
 
-### Style
+| SDK Listener | Internal behavior |
+| --- | --- |
+| `onOutgoingCallAccepted` | Transitions to the ongoing call screen |
+| `onOutgoingCallRejected` | Finishes the activity or invokes the back-press handler |
 
-What you're changing: The visual appearance of the outgoing call screen using XML theme styles.
+## Functionality
 
-- **Where**: `themes.xml` for style definitions; Activity or Fragment for applying the style.
-- **Applies to**: `CometChatOutgoingCall`.
-- **Default behavior**: The component uses the default `CometChatOutgoingCallStyle` theme.
-- **Override**: Define a custom style with parent `CometChatOutgoingCallStyle` in `themes.xml` and apply it with `setStyle()`.
-- **Code**:
+Small functional customizations for sound and call behavior.
 
-<Frame>
-  <img src="/images/430add9e-outgoing_call_styling-4478d162278403121a8f89d481625c9e.png" />
-</Frame>
+| Method | Description | Code |
+| --- | --- | --- |
+| `disableSoundForCall` | Enables or disables the outgoing call ringtone | `.disableSoundForCall(true);` |
+| `setCustomSoundForCalls` | Sets a custom sound resource for the outgoing call ringtone | `.setCustomSoundForCalls(R.raw.custom_ringtone);` |
 
-```xml themes.xml lines
-    <style name="CustomAvatarStyle" parent="CometChatAvatarStyle">
-        <item name="cometchatAvatarStrokeRadius">8dp</item>
-        <item name="cometchatAvatarBackgroundColor">#FBAA75</item>
-    </style>
-    <style name="CustomOutgoingCall" parent="CometChatOutgoingCallStyle">
-        <item name="cometchatOutgoingCallAvatarStyle">@style/CustomAvatarStyle</item>
-    </style>
-```
+- **Verify**: After calling `disableSoundForCall(true)`, initiate an outgoing call and confirm no ringtone plays.
 
-> **What this does:** Defines a `CustomAvatarStyle` with an 8dp stroke radius and `#FBAA75` background color, then applies it to the outgoing call component through a `CustomOutgoingCall` style that sets `cometchatOutgoingCallAvatarStyle` to the custom avatar style.
+## Custom View Slots
+
+Each slot replaces a section of the default UI. All view slots accept a `Function2<Context, Call, View>` that receives the current context and `Call` object and returns a custom `View`.
+
+| Slot | Method | Replaces |
+| --- | --- | --- |
+| Title view | `setTitleView(Function2<Context, Call, View>)` | Name / title text |
+| Subtitle view | `setSubtitleView(Function2<Context, Call, View>)` | Subtitle text (e.g., "Calling...") |
+| Avatar view | `setAvatarView(Function2<Context, Call, View>)` | Avatar / profile picture area |
+| End-call view | `setEndCallView(Function2<Context, Call, View>)` | End-call button |
+
+### `setTitleView`
+
+Replace the name / title text area.
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometChatOutgoingCall.setStyle(R.style.CustomOutgoingCall);
-```
-
-</Tab>
-
 <Tab title="Kotlin">
-```kotlin lines
-cometChatOutgoingCall.setStyle(R.style.CustomOutgoingCall)
+```kotlin YourActivity.kt lines
+cometchatOutgoingCall.setTitleView(object : Function2<Context?, Call?, View?> {
+    override fun apply(context: Context?, call: Call?): View? {
+        return null
+    }
+})
 ```
-
 </Tab>
 
-</Tabs>
-
-> **What this does:** Applies the `CustomOutgoingCall` style resource to the `CometChatOutgoingCall` instance, overriding the default visual appearance.
-
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_outgoing_call.xml).
-
-- **Verify**: The outgoing call screen displays the avatar with an 8dp stroke radius and `#FBAA75` background color.
-
-### Advanced views
-
-What you're changing: Replacing default UI elements in the outgoing call screen with custom layouts.
-
-- **Where**: Activity or Fragment where you hold a reference to `CometChatOutgoingCall`.
-- **Applies to**: `CometChatOutgoingCall`.
-- **Default behavior**: The component renders its built-in title, subtitle, avatar, and end-call button views.
-- **Override**: Call `setTitleView`, `setSubtitleView`, `setAvatarView`, or `setEndCallView` to provide custom views.
-
-#### `setTitleView`
-
-Sets a custom title view rendered on the outgoing call screen.
-
-<Tabs>
 <Tab title="Java">
 ```java YourActivity.java lines
 cometchatOutgoingCall.setTitleView((context, call) -> {
-            
-    });
+    return null;
+});
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatOutgoingCall.setTitleView(object : Function3<Context?, Call?, View?> {
-            override fun apply(context: Context?, call: Call?): View? {
-             
-            }
-        })
-```
-
-</Tab>
-
 </Tabs>
 
 > **What this does:** Registers a callback that receives the `Context` and `Call` object and returns a custom `View` to replace the default title area on the outgoing call screen.
 
-**Example:**
+Example with sender and receiver names:
 
 <Frame>
   <img src="/images/7e3e0d88-outgoing_call_title_view-0fd6e88ca01f03ba95560faa430c4a44.png" />
 </Frame>
+
+Create a `custom_title_view.xml` layout:
 
 ```xml custom_title_view.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -487,7 +389,7 @@ cometchatOutgoingCall.setTitleView(object : Function3<Context?, Call?, View?> {
         android:layout_height="@dimen/cometchat_24dp" />
 
     <TextView
-        android:id="@+id/subtitle_text"
+        android:id="@+id/title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
@@ -497,81 +399,74 @@ cometchatOutgoingCall.setTitleView(object : Function3<Context?, Call?, View?> {
 </LinearLayout>
 ```
 
-> **What this does:** Defines a custom XML layout with a horizontal `LinearLayout` containing an `ImageView` for a call icon and a `TextView` for the title text, styled with CometChat theme attributes.
-
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatOutgoingCall.setTitleView(object : Function2<Context?, Call?, View?> {
+    override fun apply(context: Context?, call: Call?): View? {
+        val titleView: View = LayoutInflater.from(context).inflate(R.layout.custom_title_view, null)
+        val tvTitle = titleView.findViewById<TextView>(R.id.title_text)
+        val user = call?.callReceiver as User
+        tvTitle.text = user.name + " <> " + call.sender.uid
+        return titleView
+    }
+})
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourActivity.java lines
 cometchatOutgoingCall.setTitleView(new Function2<Context, Call, View>() {
-        @Override
-        public View apply(Context context, Call call) {
-            View titleView = LayoutInflater.from(context).inflate(R.layout.custom_title_view, null);
-            TextView tvTitle = titleView.findViewById(R.id.title_text);
-            User user = (User) call.getCallReceiver();
-            tvTitle.setText(user.getName() + " <> " + call.getSender().getUid());
-            return titleView;
-            }
-        });
+    @Override
+    public View apply(Context context, Call call) {
+        View titleView = LayoutInflater.from(context).inflate(R.layout.custom_title_view, null);
+        TextView tvTitle = titleView.findViewById(R.id.title_text);
+        User user = (User) call.getCallReceiver();
+        tvTitle.setText(user.getName() + " <> " + call.getSender().getUid());
+        return titleView;
+    }
+});
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-
-cometchatOutgoingCall.setTitleView(object : Function2<Context?, Call?, View?> {
-        override fun apply(context: Context?, call: Call?): View? {
-                val titleView: View = LayoutInflater.from(context).inflate(R.layout.custom_title_view, null)
-                val tvTitle = titleView.findViewById<TextView>(R.id.title_text)
-                val user = call?.callReceiver as User
-                tvTitle.text = user.name + " <> " + call.sender.uid
-                return titleView
-            }
-        })
-```
-
-</Tab>
-
 </Tabs>
 
 > **What this does:** Inflates the `custom_title_view` layout, retrieves the call receiver's name and the sender's UID, and sets the title text to display them separated by " <> ".
 
-#### `setSubtitleView`
+### `setSubtitleView`
 
-Sets a custom subtitle view, used for additional call details below the title.
+Replace the subtitle text below the title.
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatOutgoingCall.setSubtitleView(object : Function2<Context?, Call?, View?> {
+    override fun apply(context: Context?, call: Call?): View? {
+        return null
+    }
+})
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourActivity.java lines
 cometchatOutgoingCall.setSubtitleView((context, call) -> {
-            
-    });
+    return null;
+});
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatOutgoingCall.setSubtitleView(object : Function3<Context?, Call?, View?> {
-            override fun apply(context: Context?, call: Call?): View? {
-             
-            }
-        })
-```
-
-</Tab>
-
 </Tabs>
 
 > **What this does:** Registers a callback that receives the `Context` and `Call` object and returns a custom `View` to replace the default subtitle area on the outgoing call screen.
 
-**Example:**
+Example with call-type icon and "Calling...." text:
 
 <Frame>
   <img src="/images/7e3e0d88-outgoing_call_title_view-0fd6e88ca01f03ba95560faa430c4a44.png" />
 </Frame>
 
-```html custom_subtitle_view.xml lines
+Create a `custom_subtitle_view.xml` layout:
+
+```xml custom_subtitle_view.xml lines
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -596,108 +491,100 @@ cometchatOutgoingCall.setSubtitleView(object : Function3<Context?, Call?, View?>
         android:textAppearance="?attr/cometchatTextAppearanceCaption1Regular"
         android:textColor="?attr/cometchatTextColorPrimary" />
 </LinearLayout>
-</LinearLayout>
 ```
 
-> **What this does:** Defines a custom XML layout with a horizontal `LinearLayout` containing an `ImageView` for a call-type icon and a `TextView` for subtitle text such as "Calling....", styled with CometChat theme attributes.
-
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatOutgoingCall.setSubtitleView(object : Function2<Context?, Call?, View?> {
+    override fun apply(context: Context?, call: Call?): View? {
+        val subtitleView: View = LayoutInflater.from(context).inflate(R.layout.custom_subtitle_view, null)
+        val tvTitle = subtitleView.findViewById<TextView>(R.id.subtitle_text)
+        tvTitle.text = "Calling...."
+        val ivCall = subtitleView.findViewById<ImageView>(R.id.call_iv)
+
+        if (CometChatConstants.CALL_TYPE_AUDIO == call?.type) {
+            ivCall.setImageResource(com.cometchat.chatuikit.R.drawable.cometchat_ic_call_voice)
+        } else {
+            ivCall.setImageResource(com.cometchat.chatuikit.R.drawable.cometchat_ic_call_video)
+        }
+
+        val layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        layoutParams.gravity = Gravity.CENTER_VERTICAL
+        subtitleView.layoutParams = layoutParams
+        return subtitleView
+    }
+})
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourActivity.java lines
 cometchatOutgoingCall.setSubtitleView(new Function2<Context, Call, View>() {
-            @Override
-            public View apply(Context context, Call call) {
-                View subtitleView = LayoutInflater.from(context).inflate(R.layout.custom_subtitle_view, null);
-                TextView tvTitle = subtitleView.findViewById(R.id.subtitle_text);
-                tvTitle.setText("Calling....");
-                ImageView ivCall = subtitleView.findViewById(R.id.call_iv);
+    @Override
+    public View apply(Context context, Call call) {
+        View subtitleView = LayoutInflater.from(context).inflate(R.layout.custom_subtitle_view, null);
+        TextView tvTitle = subtitleView.findViewById(R.id.subtitle_text);
+        tvTitle.setText("Calling....");
+        ImageView ivCall = subtitleView.findViewById(R.id.call_iv);
 
-                if (CometChatConstants.CALL_TYPE_AUDIO.equals(call.getType())) {
-                    ivCall.setImageResource(com.cometchat.chatuikit.R.drawable.cometchat_ic_call_voice);
-                } else {
-                    ivCall.setImageResource(com.cometchat.chatuikit.R.drawable.cometchat_ic_call_video);
-                }
+        if (CometChatConstants.CALL_TYPE_AUDIO.equals(call.getType())) {
+            ivCall.setImageResource(com.cometchat.chatuikit.R.drawable.cometchat_ic_call_voice);
+        } else {
+            ivCall.setImageResource(com.cometchat.chatuikit.R.drawable.cometchat_ic_call_video);
+        }
 
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                layoutParams.gravity = Gravity.CENTER_VERTICAL;
-                subtitleView.setLayoutParams(layoutParams);
-                return subtitleView;
-            }
-        });
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.gravity = Gravity.CENTER_VERTICAL;
+        subtitleView.setLayoutParams(layoutParams);
+        return subtitleView;
+    }
+});
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-
-cometchatOutgoingCall.setSubtitleView(object : Function2<Context?, Call?, View?> {
-            override fun apply(context: Context?, call: Call?): View? {
-                val subtitleView: View = LayoutInflater.from(context).inflate(R.layout.custom_title_view, null)
-                val tvTitle = subtitleView.findViewById<TextView>(R.id.subtitle_text)
-                tvTitle.text = "Calling...."
-                val ivCall = subtitleView.findViewById<ImageView>(R.id.call_iv)
-
-                if (CometChatConstants.CALL_TYPE_AUDIO == call.type) {
-                    ivCall.setImageResource(com.cometchat.chatuikit.R.drawable.cometchat_ic_call_voice)
-                } else {
-                    ivCall.setImageResource(com.cometchat.chatuikit.R.drawable.cometchat_ic_call_video)
-                }
-
-                val layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                layoutParams.gravity = Gravity.CENTER_VERTICAL
-                subtitleView.layoutParams = layoutParams
-                return subtitleView
-            }
-        })
-```
-
-</Tab>
-
 </Tabs>
 
-> **What this does:** Inflates the `custom_subtitle_view` layout, sets the subtitle text to "Calling....", and displays a voice call icon (`cometchat_ic_call_voice`) if the call type is `CALL_TYPE_AUDIO`, or a video call icon (`cometchat_ic_call_video`) otherwise. Layout params are set to center the view vertically.
+> **What this does:** Inflates the `custom_subtitle_view` layout, sets the subtitle text to "Calling....", and displays a voice call icon if the call type is `CALL_TYPE_AUDIO`, or a video call icon otherwise.
 
-#### `setAvatarView`
+### `setAvatarView`
 
-Sets a custom avatar view, used for the contact's profile picture or avatar area.
+Replace the avatar / profile picture area.
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatOutgoingCall.setAvatarView(object : Function2<Context?, Call?, View?> {
+    override fun apply(context: Context?, call: Call?): View? {
+        return null
+    }
+})
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourActivity.java lines
 cometchatOutgoingCall.setAvatarView((context, call) -> {
-            
-    });
+    return null;
+});
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatOutgoingCall.setAvatarView(object : Function3<Context?, Call?, View?> {
-            override fun apply(context: Context?, call: Call?): View? {
-             
-            }
-        })
-```
-
-</Tab>
-
 </Tabs>
 
 > **What this does:** Registers a callback that receives the `Context` and `Call` object and returns a custom `View` to replace the default avatar area on the outgoing call screen.
 
-**Example:**
+Example with admin badge:
 
 <Frame>
   <img src="/images/8d7cb75f-outgoing_call_avatar_view-e10a7fa5b1aadf63858f836108b11776.png" />
 </Frame>
+
+Create a `custom_avatar_view.xml` layout:
 
 ```xml custom_avatar_view.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -726,93 +613,86 @@ cometchatOutgoingCall.setAvatarView(object : Function3<Context?, Call?, View?> {
 </RelativeLayout>
 ```
 
-> **What this does:** Defines a custom XML layout with a `RelativeLayout` containing a `CometChatAvatar` (100dp x 100dp) and a badge `View` positioned below the avatar with an `admin_batch` background drawable.
-
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatOutgoingCall.setAvatarView(object : Function2<Context?, Call?, View?> {
+    override fun apply(context: Context?, call: Call?): View? {
+        val avatarView: View = LayoutInflater.from(context).inflate(R.layout.custom_avatar_view, null)
+        val avatar = avatarView.findViewById<CometChatAvatar>(R.id.avatar)
+        val user = call?.receiver as User
+        avatar.setAvatar(user.uid, user.avatar)
+
+        val layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        layoutParams.gravity = Gravity.CENTER_VERTICAL
+        avatarView.layoutParams = layoutParams
+        return avatarView
+    }
+})
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourActivity.java lines
 cometchatOutgoingCall.setAvatarView(new Function2<Context, Call, View>() {
-            @Override
-            public View apply(Context context, Call call) {
-                View avatarView = LayoutInflater.from(context).inflate(R.layout.custom_avatar_view, null);
-                CometChatAvatar avatar = avatarView.findViewById(R.id.avatar);
-                User user = (User) call.getReceiver();
-                avatar.setAvatar(user.getUid(), user.getAvatar());
+    @Override
+    public View apply(Context context, Call call) {
+        View avatarView = LayoutInflater.from(context).inflate(R.layout.custom_avatar_view, null);
+        CometChatAvatar avatar = avatarView.findViewById(R.id.avatar);
+        User user = (User) call.getReceiver();
+        avatar.setAvatar(user.getUid(), user.getAvatar());
 
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                layoutParams.gravity = Gravity.CENTER_VERTICAL;
-                avatarView.setLayoutParams(layoutParams);
-                return avatarView;
-            }
-        });
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.gravity = Gravity.CENTER_VERTICAL;
+        avatarView.setLayoutParams(layoutParams);
+        return avatarView;
+    }
+});
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-
-cometchatOutgoingCall.setAvatarView(object : Function2<Context?, Call?, View?> {
-        override fun apply(context: Context?, call: Call?): View? {
-                val avatarView: View = LayoutInflater.from(context).inflate(R.layout.custom_avatar_view, null)
-                val avatar = avatarView.findViewById<CometChatAvatar>(R.id.avatar)
-                val user = call?.receiver as User
-                avatar.setAvatar(user.uid, user.avatar)
-
-                val layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                layoutParams.gravity = Gravity.CENTER_VERTICAL
-                avatarView.layoutParams = layoutParams
-                return avatarView
-            }
-        })
-```
-
-</Tab>
-
 </Tabs>
 
 > **What this does:** Inflates the `custom_avatar_view` layout, retrieves the call receiver's UID and avatar URL, sets them on the `CometChatAvatar` widget, and applies centered layout params.
 
-#### `setEndCallView`
+### `setEndCallView`
 
-Sets a custom view for the end-call button, allowing modifications to the call termination UI.
+Replace the end-call button.
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatOutgoingCall.setEndCallView(object : Function2<Context?, Call?, View?> {
+    override fun apply(context: Context?, call: Call?): View? {
+        return null
+    }
+})
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourActivity.java lines
 cometchatOutgoingCall.setEndCallView((context, call) -> {
-            
-    });
+    return null;
+});
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatOutgoingCall.setEndCallView(object : Function3<Context?, Call?, View?> {
-            override fun apply(context: Context?, call: Call?): View? {
-             
-            }
-        })
-```
-
-</Tab>
-
 </Tabs>
 
 > **What this does:** Registers a callback that receives the `Context` and `Call` object and returns a custom `View` to replace the default end-call button on the outgoing call screen.
 
-**Example:**
+Example with custom end-call card:
 
 <Frame>
   <img src="/images/04c02293-outgoing_call_cancel_button_view-8a8ca9780eea5fbc9c07e4ca6da8e28c.png" />
 </Frame>
+
+Create an `end_call_button.xml` layout:
 
 ```xml end_call_button.xml lines
 <?xml version="1.0" encoding="utf-8"?>
@@ -855,80 +735,323 @@ cometchatOutgoingCall.setEndCallView(object : Function3<Context?, Call?, View?> 
 </com.google.android.material.card.MaterialCardView>
 ```
 
-> **What this does:** Defines a custom end-call button layout using a `MaterialCardView` with an error-colored background, containing an end-call icon and "End Call" text in white.
-
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatOutgoingCall.setEndCallView(object : Function2<Context?, Call?, View?> {
+    override fun apply(context: Context?, call: Call?): View? {
+        val endCallButtonView: View = LayoutInflater.from(context).inflate(R.layout.end_call_button, null)
+
+        endCallButtonView.setOnClickListener { Toast.makeText(context, "End call clicked", Toast.LENGTH_SHORT).show() }
+        val layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        layoutParams.bottomMargin = Utils.convertDpToPx(context, 40)
+        endCallButtonView.layoutParams = layoutParams
+        return endCallButtonView
+    }
+})
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourActivity.java lines
 cometchatOutgoingCall.setEndCallView(new Function2<Context, Call, View>() {
-            @Override
-            public View apply(Context context, Call call) {
-                View endCallButtonView = LayoutInflater.from(context).inflate(R.layout.end_call_button, null);
+    @Override
+    public View apply(Context context, Call call) {
+        View endCallButtonView = LayoutInflater.from(context).inflate(R.layout.end_call_button, null);
 
-                endCallButtonView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(context, "End call clicked", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                layoutParams.bottomMargin = Utils.convertDpToPx(context, 40);
-                endCallButtonView.setLayoutParams(layoutParams);
-                return endCallButtonView;
+        endCallButtonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "End call clicked", Toast.LENGTH_SHORT).show();
             }
         });
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.bottomMargin = Utils.convertDpToPx(context, 40);
+        endCallButtonView.setLayoutParams(layoutParams);
+        return endCallButtonView;
+    }
+});
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-
-cometchatOutgoingCall.setEndCallView(object : Function2<Context?, Call?, View?> {
-            override fun apply(context: Context?, call: Call?): View? {
-                val endCallButtonView: View = LayoutInflater.from(context).inflate(R.layout.end_call_button, null)
-
-                endCallButtonView.setOnClickListener { Toast.makeText(context, "End call clicked", Toast.LENGTH_SHORT).show() }
-                val layoutParams = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                layoutParams.bottomMargin = Utils.convertDpToPx(context, 40)
-                endCallButtonView.layoutParams = layoutParams
-                return endCallButtonView
-            }
-        })
-```
-
-</Tab>
-
 </Tabs>
 
 > **What this does:** Inflates the `end_call_button` layout, attaches a click listener that shows a toast message "End call clicked", sets a 40dp bottom margin, and returns the custom end-call button view.
 
-- **Verify**: After setting any advanced view, confirm the custom view renders in the correct position on the outgoing call screen and that the data binding populates correctly.
+- **Verify**: After setting any custom view slot, confirm the custom view renders in the correct position on the outgoing call screen and that the data binding populates correctly.
 
-## Customization matrix
+## Common Patterns
 
-| What you want to change | Where | Property/API | Example |
+### Silent outgoing call
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatOutgoingCall.disableSoundForCall(true)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatOutgoingCall.disableSoundForCall(true);
+```
+</Tab>
+</Tabs>
+
+### Custom ringtone
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatOutgoingCall.setCustomSoundForCalls(R.raw.custom_ringtone)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatOutgoingCall.setCustomSoundForCalls(R.raw.custom_ringtone);
+```
+</Tab>
+</Tabs>
+
+### Custom call settings for ongoing call
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+val callSettingsBuilder = CometChatCalls.CallSettingsBuilder(this, true)
+    .setDefaultAudioMode("SPEAKER")
+cometchatOutgoingCall.setCallSettingsBuilder(callSettingsBuilder)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+CometChatCalls.CallSettingsBuilder callSettingsBuilder = new CometChatCalls.CallSettingsBuilder(this, true)
+    .setDefaultAudioMode("SPEAKER");
+cometchatOutgoingCall.setCallSettingsBuilder(callSettingsBuilder);
+```
+</Tab>
+</Tabs>
+
+### Handle end-call with custom navigation
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatOutgoingCall.setOnEndCallClick(OnClick {
+    finish() // navigate back instead of default SDK rejection
+})
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatOutgoingCall.setOnEndCallClick(() -> {
+    finish(); // navigate back instead of default SDK rejection
+});
+```
+</Tab>
+</Tabs>
+
+## Advanced Methods
+
+### `setCall`
+
+Sets the call object and extracts the receiver `User` automatically. Use this when you have a `Call` object from the SDK.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatOutgoingCall.setCall(call)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatOutgoingCall.setCall(call);
+```
+</Tab>
+</Tabs>
+
+> `setCall` internally extracts the receiver from the `Call` object and calls `setUser` with it. The component then displays the receiver's name and avatar.
+
+### `setUser`
+
+Sets the user directly when you don't have a `Call` object. The `uid`, `name`, and `avatar` fields are required.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatOutgoingCall.setUser(user)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatOutgoingCall.setUser(user);
+```
+</Tab>
+</Tabs>
+
+### `setCallSettingsBuilder`
+
+Configures the ongoing call settings (audio mode, video settings, etc.) that apply once the call is accepted.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+val callSettingsBuilder = CometChatCalls.CallSettingsBuilder(this, true)
+    .setIsAudioOnly(true)
+cometChatOutgoingCall.setCallSettingsBuilder(callSettingsBuilder)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+CometChatCalls.CallSettingsBuilder callSettingsBuilder = new CometChatCalls.CallSettingsBuilder(this, true)
+    .setIsAudioOnly(true);
+cometChatOutgoingCall.setCallSettingsBuilder(callSettingsBuilder);
+```
+</Tab>
+</Tabs>
+
+### `setCustomSoundForCalls`
+
+Sets a custom ringtone sound that plays while the outgoing call is ringing.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatOutgoingCall.setCustomSoundForCalls(R.raw.custom_ringtone)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatOutgoingCall.setCustomSoundForCalls(R.raw.custom_ringtone);
+```
+</Tab>
+</Tabs>
+
+### `disposeObservers`
+
+Removes lifecycle observers manually. Normally handled automatically when the view detaches from the window.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatOutgoingCall.disposeObservers()
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatOutgoingCall.disposeObservers();
+```
+</Tab>
+</Tabs>
+
+### Internal Access
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `getViewModel()` | `OutgoingViewModel` | The ViewModel managing call state and SDK listeners |
+
+> Use this only when the standard API is insufficient. Directly manipulating the ViewModel may conflict with the component's internal state management.
+
+## Style
+
+The component uses XML theme styles. Define a custom style with parent `CometChatOutgoingCallStyle` in `themes.xml`, then apply with `setStyle()`.
+
+<Frame>
+  <img src="/images/430add9e-outgoing_call_styling-4478d162278403121a8f89d481625c9e.png" />
+</Frame>
+
+```xml themes.xml lines
+    <style name="CustomAvatarStyle" parent="CometChatAvatarStyle">
+        <item name="cometchatAvatarStrokeRadius">8dp</item>
+        <item name="cometchatAvatarBackgroundColor">#FBAA75</item>
+    </style>
+    <style name="CustomOutgoingCall" parent="CometChatOutgoingCallStyle">
+        <item name="cometchatOutgoingCallAvatarStyle">@style/CustomAvatarStyle</item>
+    </style>
+```
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatOutgoingCall.setStyle(R.style.CustomOutgoingCall)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatOutgoingCall.setStyle(R.style.CustomOutgoingCall);
+```
+</Tab>
+</Tabs>
+
+To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_outgoing_call.xml).
+
+### Programmatic Style Properties
+
+In addition to XML theme styles, the component exposes programmatic setters for fine-grained control:
+
+| Method | Type | Description |
+| --- | --- | --- |
+| `setBackgroundColor` | `@ColorInt int` | Background color of the component |
+| `setTitleTextColor` | `@ColorInt int` | Title text color |
+| `setTitleTextAppearance` | `@StyleRes int` | Title text appearance |
+| `setSubtitleTextColor` | `@ColorInt int` | Subtitle text color |
+| `setSubtitleTextAppearance` | `@StyleRes int` | Subtitle text appearance |
+| `setEndCallIcon` | `Drawable` | Custom end-call button icon |
+| `setEndCallIconTint` | `@ColorInt int` | Tint color for the end-call icon |
+| `setEndCallButtonBackgroundColor` | `@ColorInt int` | Background color for the end-call button |
+| `setAvatarStyle` | `@StyleRes int` | Style for the avatar |
+| `setCornerRadius` | `@Dimension int` | Corner radius of the component |
+| `setStrokeWidth` | `@Dimension int` | Stroke width of the component border |
+| `setStrokeColor` | `@ColorInt int` | Stroke color of the component border |
+
+## Customization Matrix
+
+| What to change | Where | Property/API | Example |
 | --- | --- | --- | --- |
-| Avatar style (corner radius, background) | `themes.xml` | `CometChatOutgoingCallStyle` with `cometchatOutgoingCallAvatarStyle` | `<item name="cometchatAvatarStrokeRadius">8dp</item>` |
-| Apply a custom style | Activity/Fragment | `setStyle(int styleRes)` | `cometChatOutgoingCall.setStyle(R.style.CustomOutgoingCall);` |
-| Set the call object | Activity/Fragment | `setCall(Call call)` | `.setCall(call)` |
-| Set call settings | Activity/Fragment | `setCallSettingsBuilder(CometChatCalls.CallSettingsBuilder)` | `setCallSettingsBuilder(callSettingsBuilder)` |
-| Disable outgoing call sound | Activity/Fragment | `disableSoundForCalls` | `.disableSoundForMessages(false);` |
-| Set custom outgoing call sound | Activity/Fragment | `setCustomSoundForCalls` | `.setCustomSoundForMessages(@RawRes resource);` |
+| Set the call object | Activity/Fragment | `setCall(Call)` | `.setCall(call)` |
+| Set the user directly | Activity/Fragment | `setUser(User)` | `.setUser(user)` |
+| Override end-call behavior | Activity/Fragment | `setOnEndCallClick(OnClick)` | See `setOnEndCallClick` code above |
+| Handle errors | Activity/Fragment | `setOnError(OnError)` | See `setOnError` code above |
+| Disable outgoing call sound | Activity/Fragment | `disableSoundForCall(boolean)` | `.disableSoundForCall(true);` |
+| Set custom outgoing call sound | Activity/Fragment | `setCustomSoundForCalls(@RawRes int)` | `.setCustomSoundForCalls(R.raw.custom_ringtone);` |
+| Configure ongoing call settings | Activity/Fragment | `setCallSettingsBuilder(CallSettingsBuilder)` | `.setCallSettingsBuilder(builder)` |
 | Title view | Activity/Fragment | `setTitleView(Function2)` | See `setTitleView` code above |
 | Subtitle view | Activity/Fragment | `setSubtitleView(Function2)` | See `setSubtitleView` code above |
 | Avatar view | Activity/Fragment | `setAvatarView(Function2)` | See `setAvatarView` code above |
 | End-call button view | Activity/Fragment | `setEndCallView(Function2)` | See `setEndCallView` code above |
-| Error handling | Activity/Fragment | `setOnError(OnError)` | See `setOnError` code above |
-| End-call button click | Activity/Fragment | `setOnEndCallClick(OnClick)` | See `setOnEndCallClick` code above |
+| Avatar style (corner radius, background) | `themes.xml` | `CometChatOutgoingCallStyle` with `cometchatOutgoingCallAvatarStyle` | `<item name="cometchatAvatarStrokeRadius">8dp</item>` |
+| Apply a custom style | Activity/Fragment | `setStyle(@StyleRes int)` | `cometChatOutgoingCall.setStyle(R.style.CustomOutgoingCall);` |
+| Title text color | Activity/Fragment | `setTitleTextColor(@ColorInt int)` | `.setTitleTextColor(Color.WHITE);` |
+| Subtitle text color | Activity/Fragment | `setSubtitleTextColor(@ColorInt int)` | `.setSubtitleTextColor(Color.GRAY);` |
+| End-call icon | Activity/Fragment | `setEndCallIcon(Drawable)` | `.setEndCallIcon(drawable);` |
+| End-call icon tint | Activity/Fragment | `setEndCallIconTint(@ColorInt int)` | `.setEndCallIconTint(Color.WHITE);` |
+| End-call button background | Activity/Fragment | `setEndCallButtonBackgroundColor(@ColorInt int)` | `.setEndCallButtonBackgroundColor(Color.RED);` |
+| Background color | Activity/Fragment | `setBackgroundColor(@ColorInt int)` | `.setBackgroundColor(Color.BLACK);` |
+| Corner radius | Activity/Fragment | `setCornerRadius(@Dimension int)` | `.setCornerRadius(16);` |
+| Stroke width | Activity/Fragment | `setStrokeWidth(@Dimension int)` | `.setStrokeWidth(2);` |
+| Stroke color | Activity/Fragment | `setStrokeColor(@ColorInt int)` | `.setStrokeColor(Color.GRAY);` |
 
-## Common pitfalls & fixes
+## Accessibility
+
+The component renders a full-screen outgoing call view. The end-call button responds to tap gestures. The avatar image includes the user name as content description. The title and subtitle text views are readable by screen readers.
+
+For custom views provided via `setTitleView`, `setSubtitleView`, `setAvatarView`, or `setEndCallView`, ensure you set `android:contentDescription` on visual-only elements so TalkBack can announce them. The default views handle this automatically.
+
+## Common Pitfalls & Fixes
 
 | Pitfall | Fix |
 | --- | --- |
@@ -938,7 +1061,7 @@ cometchatOutgoingCall.setEndCallView(object : Function2<Context?, Call?, View?> 
 | Call events not received | Ensure you call `CometChatCallEvents.addListener` with a unique string ID. If you reuse the same ID as another listener, the previous one is replaced. |
 | Call events still firing after screen is closed | Call `CometChatCallEvents.removeListener("YOUR_LISTENER_ID")` in your Activity's `onDestroy` or Fragment's `onDestroyView` to unsubscribe from events. |
 | Custom style not visible | Verify the style parent is `CometChatOutgoingCallStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| Sound still plays after disabling | Ensure you call `disableSoundForCalls` before the component starts the outgoing call. If called after the call is initiated, it may not take effect. |
+| Sound still plays after disabling | Ensure you call `disableSoundForCall` before the component starts the outgoing call. If called after the call is initiated, it may not take effect. |
 | Custom avatar view not centered | Set `LinearLayout.LayoutParams` with `Gravity.CENTER_VERTICAL` on your custom view, as shown in the `setAvatarView` example. |
 
 ## FAQ
@@ -958,7 +1081,7 @@ cometchatOutgoingCall.setEndCallView(object : Function2<Context?, Call?, View?> 
 **Q: Does the outgoing call component support filters?**
 **A:** No. The `CometChatOutgoingCall` component does not have any exposed filters.
 
-## Next steps
+## Next Steps
 
 - [Incoming Call component](/ui-kit/android/incoming-call)
 - [Call Buttons component](/ui-kit/android/call-buttons)

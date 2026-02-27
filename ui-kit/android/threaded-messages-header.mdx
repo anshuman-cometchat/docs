@@ -2,31 +2,133 @@
 title: "Threaded Messages Header"
 ---
 
-`CometChatThreadHeader` displays the parent message and the number of replies in a thread. It provides context for threaded conversations, showing the original message bubble along with a reply count indicator.
+`CometChatThreadHeader` displays the parent message and the number of replies in a thread. It renders the original message bubble along with a reply count indicator, providing context for threaded conversations.
 
-<Frame>
-  <img src="/images/ccfded5e-thread_header-02deacd1056bec41b2d4862bc713a4df.png" />
-</Frame>
+## AI Agent Component Spec
 
-## When to use this
+<Accordion title="AI Agent Component Spec">
 
-- You need to display the parent message at the top of a threaded message view.
-- You want to show the number of replies in a thread.
-- You need to customize the appearance of incoming and outgoing message bubbles in the thread header.
-- You want to control the visibility of reply counts, receipts, or avatars in the thread header.
-- You need to set custom date or time formats for the parent message display.
+```json
+{
+  "component": "CometChatThreadHeader",
+  "package": "com.cometchat.chatuikit.threadheader",
+  "xmlElement": "<com.cometchat.chatuikit.threadheader.CometChatThreadHeader />",
+  "description": "Displays the parent message bubble and reply count for a threaded conversation. Requires setParentMessage(BaseMessage) to render.",
+  "primaryInput": {
+    "method": "setParentMessage",
+    "type": "BaseMessage",
+    "note": "Must be called to display the parent message in the thread header"
+  },
+  "methods": {
+    "data": {
+      "setParentMessage": {
+        "type": "BaseMessage",
+        "note": "Sets the parent message for the thread header. Required."
+      }
+    },
+    "visibility": {
+      "setReactionVisibility": { "type": "int (View.VISIBLE | View.GONE)", "default": "View.VISIBLE" },
+      "setAvatarVisibility": { "type": "int (View.VISIBLE | View.GONE)", "default": "View.VISIBLE" },
+      "setReceiptsVisibility": { "type": "int (View.VISIBLE | View.GONE)", "default": "View.VISIBLE" },
+      "setReplyCountVisibility": { "type": "int (View.VISIBLE | View.GONE)", "default": "View.VISIBLE" },
+      "setReplyCountBarVisibility": { "type": "int (View.VISIBLE | View.GONE)", "default": "View.VISIBLE" }
+    },
+    "templates": {
+      "setTemplates": {
+        "type": "List<CometChatMessageTemplate>",
+        "note": "Replaces the default list of message templates"
+      },
+      "addTemplate": {
+        "type": "CometChatMessageTemplate",
+        "note": "Adds a single template to the existing list"
+      }
+    },
+    "advanced": {
+      "setAlignment": "UIKitConstants.MessageListAlignment — STANDARD or LEFT_ALIGNED",
+      "setMaxHeight": "@Dimension int — maximum height in pixels",
+      "setTimeFormat": "SimpleDateFormat — custom time format for the parent message",
+      "setTextFormatters": "List<CometChatTextFormatter> — custom text formatters",
+      "setIncomingMessageBubbleStyle": "@StyleRes int — incoming bubble style",
+      "setOutgoingMessageBubbleStyle": "@StyleRes int — outgoing bubble style",
+      "getRecyclerView": "RecyclerView — internal RecyclerView",
+      "getBinding": "CometchatThreadHeaderBinding — root ViewBinding",
+      "getThreadedHeaderViewModel": "ThreadHeaderViewModel — internal ViewModel",
+      "getAdapter": "MessageAdapter — internal adapter"
+    },
+    "style": {
+      "setStyle": {
+        "type": "@StyleRes int",
+        "parent": "CometChatThreadHeaderStyle"
+      }
+    }
+  },
+  "events": [],
+  "sdkListeners": []
+}
+```
 
-## Prerequisites
+</Accordion>
 
-- CometChat SDK initialized with `CometChatUIKit.init()` and a user logged in.
-- The `cometchat-chat-uikit-android` dependency added to your project.
-- A valid `layout_activity.xml` or Activity/Fragment where you will place the component.
-- A `BaseMessage` object representing the parent message to display in the thread header.
+## Where It Fits
 
-## Quick start
+`CometChatThreadHeader` is a header component for threaded message views. It renders the parent message bubble and reply count. Wire it above a `CometChatMessageList` and `CometChatMessageComposer` to build a complete threaded conversation layout.
 
-1. Open your layout XML file (e.g., `layout_activity.xml`).
-2. Add the `CometChatThreadHeader` XML element:
+<Tabs>
+<Tab title="Kotlin">
+```kotlin ThreadActivity.kt lines
+class ThreadActivity : AppCompatActivity() {
+
+    private lateinit var threadHeader: CometChatThreadHeader
+    private lateinit var messageList: CometChatMessageList
+    private lateinit var messageComposer: CometChatMessageComposer
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_thread)
+
+        threadHeader = findViewById(R.id.thread_header)
+        messageList = findViewById(R.id.message_list)
+        messageComposer = findViewById(R.id.message_composer)
+
+        // parentMessage is the BaseMessage that started the thread
+        threadHeader.setParentMessage(parentMessage)
+        messageList.setParentMessage(parentMessage)
+        messageComposer.setParentMessage(parentMessage)
+    }
+}
+```
+</Tab>
+
+<Tab title="Java">
+```java ThreadActivity.java lines
+public class ThreadActivity extends AppCompatActivity {
+
+    private CometChatThreadHeader threadHeader;
+    private CometChatMessageList messageList;
+    private CometChatMessageComposer messageComposer;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_thread);
+
+        threadHeader = findViewById(R.id.thread_header);
+        messageList = findViewById(R.id.message_list);
+        messageComposer = findViewById(R.id.message_composer);
+
+        // parentMessage is the BaseMessage that started the thread
+        threadHeader.setParentMessage(parentMessage);
+        messageList.setParentMessage(parentMessage);
+        messageComposer.setParentMessage(parentMessage);
+    }
+}
+```
+</Tab>
+</Tabs>
+
+## Quick Start
+
+Add the component to your layout XML:
 
 ```xml layout_activity.xml lines
 <com.cometchat.chatuikit.threadheader.CometChatThreadHeader
@@ -35,61 +137,363 @@ title: "Threaded Messages Header"
     android:layout_height="wrap_content" />
 ```
 
-> **What this does:** Adds the `CometChatThreadHeader` component to your layout. It fills the available width and wraps its height to fit the parent message bubble and reply count.
+<Frame>
+  <img src="/images/ccfded5e-thread_header-02deacd1056bec41b2d4862bc713a4df.png" />
+</Frame>
 
-3. In your Activity or Fragment, get a reference to the component and set the parent message:
+Prerequisites: CometChat SDK initialized with `CometChatUIKit.init()`, a user logged in, and the `cometchat-chat-uikit-android` dependency added.
+
+Set the parent message in your Activity:
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-CometChatThreadHeader cometChatThreadHeader = findViewById(R.id.thread_header);
-cometChatThreadHeader.setParentMessage(baseMessage);
-```
-
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
-val cometChatThreadHeader = findViewById<CometChatThreadHeader>(R.id.thread_header)
-cometChatThreadHeader.setParentMessage(baseMessage)
-```
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_thread)
 
+    val threadHeader = findViewById<CometChatThreadHeader>(R.id.thread_header)
+    threadHeader.setParentMessage(baseMessage)
+}
+```
 </Tab>
 
+<Tab title="Java">
+```java YourActivity.java lines
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_thread);
+
+    CometChatThreadHeader threadHeader = findViewById(R.id.thread_header);
+    threadHeader.setParentMessage(baseMessage);
+}
+```
+</Tab>
 </Tabs>
 
-> **What this does:** Retrieves the `CometChatThreadHeader` from the layout and sets the parent message. The component renders the parent message bubble and displays the reply count for that thread.
+Or in a Fragment:
 
-4. Build and run your app.
-5. Verify that the thread header displays the parent message bubble and the reply count.
+<Tabs>
+<Tab title="Kotlin">
+```kotlin YourFragment.kt lines
+override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    val view = inflater.inflate(R.layout.fragment_thread, container, false)
+    val threadHeader = view.findViewById<CometChatThreadHeader>(R.id.thread_header)
+    threadHeader.setParentMessage(baseMessage)
+    return view
+}
+```
+</Tab>
 
-## Core concepts
+<Tab title="Java">
+```java YourFragment.java lines
+@Override
+public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment_thread, container, false);
+    CometChatThreadHeader threadHeader = view.findViewById(R.id.thread_header);
+    threadHeader.setParentMessage(baseMessage);
+    return view;
+}
+```
+</Tab>
+</Tabs>
 
-- **`CometChatThreadHeader`**: The main component class that renders the parent message and reply count in a threaded message view. It can be added via XML layout.
-- **Style**: XML theme styles (parent `CometChatThreadHeaderStyle`) applied via `setStyle()` to customize colors, message bubble styles, and reply count appearance.
-- **Functionality methods**: Methods like `setParentMessage`, `setReceiptsVisibility`, `setReplyCountVisibility`, `setAlignment`, `setDateFormat`, and `setTimeFormat` that let you configure the component behavior.
-- **Templates**: Use `setTemplates` or `addTemplate` to configure custom message templates for the thread header bubble.
-- **Text formatters**: Use `setTextFormatters` to add custom text formatting to the thread header message content.
+## Actions and Events
 
-## Implementation
+### Callback Methods
 
-### Style
+`CometChatThreadHeader` does not expose component-specific callback methods like `setOnItemClick` or `setOnError`. It is a display-only header that renders the parent message and reply count.
 
-What you're changing: The visual appearance of the thread header component using XML theme styles.
+### Global UI Events (CometChatMessageEvents)
 
-- **Where**: `themes.xml` for style definitions, and your Activity/Fragment for applying the style.
-- **Applies to**: `CometChatThreadHeader`.
-- **Default behavior**: The component uses the default `CometChatThreadHeaderStyle`.
-- **Override**: Define a custom style with parent `CometChatThreadHeaderStyle` in `themes.xml`, then call `setStyle()` on the component.
+`CometChatThreadHeader` does not emit its own global UI events. The parent message updates are handled internally via the `ThreadHeaderViewModel`, which listens for message edits, deletes, and reaction changes on the parent message.
+
+### SDK Events (Real-Time, Automatic)
+
+The component listens to SDK events internally via its ViewModel. No manual attachment needed.
+
+| SDK Listener | Internal behavior |
+| --- | --- |
+| Message edited | Updates the parent message bubble if the parent message is edited |
+| Message deleted | Updates the parent message bubble if the parent message is deleted |
+| Reply count changed | Updates the reply count indicator when new replies are added |
+
+> Automatic: parent message changes and reply count updates reflect in real time.
+
+## Functionality
+
+Small functional customizations such as toggling visibility of UI elements and configuring alignment.
+
+| Method | Description | Code |
+| --- | --- | --- |
+| `setReactionVisibility` | Shows or hides reactions on the parent message bubble | `.setReactionVisibility(View.GONE)` |
+| `setAvatarVisibility` | Shows or hides the avatar in the thread header | `.setAvatarVisibility(View.GONE)` |
+| `setReceiptsVisibility` | Shows or hides read receipts on the parent message bubble | `.setReceiptsVisibility(View.GONE)` |
+| `setReplyCountVisibility` | Shows or hides the reply count text | `.setReplyCountVisibility(View.GONE)` |
+| `setReplyCountBarVisibility` | Shows or hides the reply count bar/layout | `.setReplyCountBarVisibility(View.GONE)` |
+| `setMaxHeight` | Sets the maximum height limit for the thread header in pixels | `.setMaxHeight(500)` |
+| `setAlignment` | Sets bubble alignment: STANDARD (left/right by message type) or LEFT_ALIGNED (all left) | `.setAlignment(UIKitConstants.MessageListAlignment.LEFT_ALIGNED)` |
+
+- **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden.
+
+## Custom View Slots
+
+`CometChatThreadHeader` does not use the traditional `ViewHolderListener` pattern for view slots. Instead, it uses `CometChatMessageTemplate` to customize how the parent message bubble is rendered.
+
+### `setTemplates`
+
+Replaces the default list of message templates used to render the parent message bubble.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+val customTemplates: List<CometChatMessageTemplate> = listOf(myCustomTemplate)
+threadHeader.setTemplates(customTemplates)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+List<CometChatMessageTemplate> customTemplates = Arrays.asList(myCustomTemplate);
+threadHeader.setTemplates(customTemplates);
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Replaces the entire set of message templates. The parent message bubble renders using the custom template configuration. If you pass an empty list, no message bubble renders.
+
+### `addTemplate`
+
+Adds a single message template to the existing list without replacing defaults.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+threadHeader.addTemplate(myCustomTemplate)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+threadHeader.addTemplate(myCustomTemplate);
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Appends a new `CometChatMessageTemplate` to the existing template list. Use this when you want to support an additional message type without removing the built-in templates.
+
+- **Verify**: After calling `setTemplates` or `addTemplate`, confirm the parent message bubble renders using the custom template configuration.
+
+## Common Patterns
+
+### Hide reactions on the parent message
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+threadHeader.setReactionVisibility(View.GONE)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+threadHeader.setReactionVisibility(View.GONE);
+```
+</Tab>
+</Tabs>
+
+### Left-align all message bubbles
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+threadHeader.setAlignment(UIKitConstants.MessageListAlignment.LEFT_ALIGNED)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+threadHeader.setAlignment(UIKitConstants.MessageListAlignment.LEFT_ALIGNED);
+```
+</Tab>
+</Tabs>
+
+### Custom time format
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+threadHeader.setTimeFormat(SimpleDateFormat("hh:mm a", Locale.getDefault()))
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+threadHeader.setTimeFormat(new SimpleDateFormat("hh:mm a", Locale.getDefault()));
+```
+</Tab>
+</Tabs>
+
+### Hide reply count and reply count bar
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+threadHeader.setReplyCountVisibility(View.GONE)
+threadHeader.setReplyCountBarVisibility(View.GONE)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+threadHeader.setReplyCountVisibility(View.GONE);
+threadHeader.setReplyCountBarVisibility(View.GONE);
+```
+</Tab>
+</Tabs>
+
+## Advanced Methods
+
+### `setParentMessage`
+
+Sets the parent message for the thread header. This is required — the component will not render without it.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+threadHeader.setParentMessage(baseMessage)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+threadHeader.setParentMessage(baseMessage);
+```
+</Tab>
+</Tabs>
+
+### `setTemplates`
+
+Replaces the default list of message templates used to render the parent message bubble.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+threadHeader.setTemplates(customTemplateList)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+threadHeader.setTemplates(customTemplateList);
+```
+</Tab>
+</Tabs>
+
+### `addTemplate`
+
+Adds a single message template to the existing list.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+threadHeader.addTemplate(customTemplate)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+threadHeader.addTemplate(customTemplate);
+```
+</Tab>
+</Tabs>
+
+### `setTextFormatters`
+
+Adds custom text formatters to the current list of formatters used in the thread header.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+threadHeader.setTextFormatters(listOf(myCustomFormatter))
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+threadHeader.setTextFormatters(Arrays.asList(myCustomFormatter));
+```
+</Tab>
+</Tabs>
+
+### `setTimeFormat`
+
+Sets a custom time format for the parent message display.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+threadHeader.setTimeFormat(SimpleDateFormat("hh:mm a", Locale.getDefault()))
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+threadHeader.setTimeFormat(new SimpleDateFormat("hh:mm a", Locale.getDefault()));
+```
+</Tab>
+</Tabs>
+
+### `setAlignment`
+
+Sets the bubble alignment for the parent message.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+threadHeader.setAlignment(UIKitConstants.MessageListAlignment.LEFT_ALIGNED)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+threadHeader.setAlignment(UIKitConstants.MessageListAlignment.LEFT_ALIGNED);
+```
+</Tab>
+</Tabs>
+
+> In `STANDARD` mode, the bubble appears on the left or right based on whether the message is incoming or outgoing. In `LEFT_ALIGNED` mode, all bubbles appear on the left.
+
+### Internal Access
+
+These methods provide direct access to internal components for advanced use cases.
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `getRecyclerView()` | `RecyclerView` | The RecyclerView used for the parent message bubble |
+| `getBinding()` | `CometchatThreadHeaderBinding` | The ViewBinding for the component's root layout |
+| `getThreadedHeaderViewModel()` | `ThreadHeaderViewModel` | The ViewModel managing thread header state |
+| `getAdapter()` | `MessageAdapter` | The adapter powering the parent message RecyclerView |
+
+### Bubble Style Methods
+
+| Method | Type | Description |
+| --- | --- | --- |
+| `setIncomingMessageBubbleStyle` | `@StyleRes int` | Sets the style for incoming message bubbles |
+| `setOutgoingMessageBubbleStyle` | `@StyleRes int` | Sets the style for outgoing message bubbles |
+
+> Use internal access methods only when the standard API is insufficient. Directly manipulating the adapter or ViewModel may conflict with the component's internal state management.
+
+## Style
+
+The component uses XML theme styles. Define a custom style with parent `CometChatThreadHeaderStyle` in `themes.xml`, then apply with `setStyle()`.
 
 <Frame>
   <img src="/images/76d4d00d-thread_header_styling-447011f9a5da276b357ce91cafa04e94.png" />
 </Frame>
 
-- **Code**:
-
 ```xml themes.xml lines
-    <!-- themes.xml -->
     <style name="CustomOutgoingMessageBubbleStyle" parent="CometChatOutgoingMessageBubbleStyle">
         <item name="cometchatMessageBubbleBackgroundColor">#F76808</item>
     </style>
@@ -106,116 +510,72 @@ What you're changing: The visual appearance of the thread header component using
     </style>
 ```
 
-> **What this does:** Defines three custom styles: `CustomOutgoingMessageBubbleStyle` and `CustomIncomingMessageBubbleStyle` set the message bubble background color to `#F76808`; `CustomThreadHeaderStyle` applies both bubble styles to the thread header, sets the header background to `#FEEDE1`, and sets the reply count text color to `#F76808` with a `#FEEDE1` background.
-
 <Tabs>
-<Tab title="Java">
-```java lines
-cometChatThreadHeader.setStyle(R.style.CustomThreadHeaderStyle);
-```
-
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
-cometChatThreadHeader.setStyle(R.style.CustomThreadHeaderStyle)
+threadHeader.setStyle(R.style.CustomThreadHeaderStyle)
 ```
-
 </Tab>
 
+<Tab title="Java">
+```java lines
+threadHeader.setStyle(R.style.CustomThreadHeaderStyle);
+```
+</Tab>
 </Tabs>
-
-> **What this does:** Applies the `CustomThreadHeaderStyle` theme to the `CometChatThreadHeader` component, changing the message bubble colors, header background, and reply count appearance.
 
 To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_thread_header.xml).
 
-- **Verify**: The thread header displays with an orange (`#F76808`) message bubble background, a light orange (`#FEEDE1`) header background, and orange reply count text.
+### Programmatic Style Properties
 
-### Functionality
+In addition to XML theme styles, the component exposes programmatic setters for fine-grained control:
 
-What you're changing: Small functional customizations such as setting the parent message, toggling visibility of UI elements, configuring alignment, and setting date/time formats.
-
-- **Where**: Activity or Fragment where you hold a reference to `CometChatThreadHeader`.
-- **Applies to**: `CometChatThreadHeader`.
-- **Default behavior**: The component displays the parent message with default alignment, visible receipts, reply count, reply count bar, and avatar.
-- **Override**: Call the corresponding method on the component instance.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-CometChatThreadHeader cometChatThreadHeader = findViewById(R.id.threaded_header);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-val threadedMessages = findViewById<CometChatMessageList>(R.id.threaded_messages)
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Retrieves a reference to the thread header component from the layout so you can call customization methods on it.
-
-| Methods | Description | Code |
+| Method | Type | Description |
 | --- | --- | --- |
-| `setParentMessage` | Used to set the message for which the replies need to be fetched | `.setParentMessage(BaseMessage)` |
-| `setIncomingMessageBubbleStyle` | Used to set Incoming Bubble style | `.setIncomingMessageBubbleStyle(@StyleRes int)` |
-| `setOutgoingMessageBubbleStyle` | Used to set Outgoing Bubble style | `.setOutgoingMessageBubbleStyle(@StyleRes int)` |
-| `setReceiptsVisibility` | Used to hide Receipt from Message Bubble | `setReceiptsVisibility(View.GONE)` |
-| `setReplyCountVisibility` | Used to hide reply count from the component | `setReplyCountVisibility(View.GONE)` |
-| `setReplyCountBarVisibility` | Used to hide reply count bar from component | `setReplyCountBarVisibility(View.GONE)` |
-| `setAlignment` | Used to set the bubble alignment: either leftAligned or standard. If set to standard, the bubble will appear on the left or right based on the message type (incoming or outgoing). If set to leftAligned, all message bubbles will appear on the left regardless of their type. | `setAlignment(UIKitConstants.MessageListAlignment alignment)` |
-| `setAvatarVisibility` | Shows or hides the avatar in the Thread Header. | `setAvatarVisibility(true)` |
-| `setDateFormat` | Sets the date pattern for displaying message dates in the Thread Header. | `setDateFormat(new SimpleDateFormat("MMM dd, yyyy",Locale.getDefault()))` |
-| `setTimeFormat` | Sets the date pattern for displaying message dates in the Thread Header. | `setDateFormat(new SimpleDateFormat("hh:mm a",Locale.getDefault()))` |
-| `addTemplate` | Adds a new message template to the existing list of templates to the Thread Header. | `addTemplate(CometChatMessageTemplate template)` |
-| `setTemplates` | Replace the default list of message template and sets a new list. | `setTemplates(List<CometChatMessageTemplate> cometchatMessageTemplates)` |
-| `setTextFormatters` | This method allows the addition of custom text formatters to the current list of formatters used in the Thread Header. | `setTextFormatters(List<CometChatTextFormatter> cometchatTextFormatters)` |
+| `setReplyCountBackgroundColor` | `@ColorInt int` | Background color of the reply count view |
+| `setReplyCountTextColor` | `@ColorInt int` | Text color of the reply count view |
+| `setReplyCountTextAppearance` | `@StyleRes int` | Text appearance of the reply count view |
+| `setIncomingMessageBubbleStyle` | `@StyleRes int` | Style for incoming message bubbles |
+| `setOutgoingMessageBubbleStyle` | `@StyleRes int` | Style for outgoing message bubbles |
 
-- **Verify**: After calling `setParentMessage(baseMessage)`, the thread header displays the parent message bubble. After calling `setReplyCountVisibility(View.GONE)`, the reply count is hidden. After calling `setAlignment(UIKitConstants.MessageListAlignment.LEFT_ALIGNED)`, all message bubbles appear on the left side.
+## Customization Matrix
 
-### Advanced views
-
-What you're changing: The message templates used to render the parent message bubble in the thread header.
-
-- **Where**: Activity or Fragment where you hold a reference to `CometChatThreadHeader`.
-- **Applies to**: `CometChatThreadHeader`.
-- **Default behavior**: The component uses the default set of message templates to render the parent message bubble.
-- **Override**: Call `setTemplates` to replace the default list of message templates, or call `addTemplate` to add a new template to the existing list.
-
-The `setTemplates` method is used to configure and set a list of templates for message bubbles. It allows for dynamic customization of message appearance, content, or other predefined settings based on the templates provided. Call `setTemplates` to update or apply a new set of templates to the thread header.
-
-- **Verify**: After calling `setTemplates` with a custom list of `CometChatMessageTemplate` objects, the parent message bubble in the thread header renders using the custom template configuration.
-
-## Customization matrix
-
-| What you want to change | Where | Property/API | Example |
+| What to change | Where | Property/API | Example |
 | --- | --- | --- | --- |
-| Outgoing message bubble style | `themes.xml` | `CometChatThreadHeaderStyle` with `cometchatThreadHeaderOutgoingMessageBubbleStyle` | `<item name="cometchatThreadHeaderOutgoingMessageBubbleStyle">@style/CustomOutgoingMessageBubbleStyle</item>` |
-| Incoming message bubble style | `themes.xml` | `CometChatThreadHeaderStyle` with `cometchatThreadHeaderIncomingMessageBubbleStyle` | `<item name="cometchatThreadHeaderIncomingMessageBubbleStyle">@style/CustomIncomingMessageBubbleStyle</item>` |
-| Header background color | `themes.xml` | `CometChatThreadHeaderStyle` with `cometchatThreadHeaderBackgroundColor` | `<item name="cometchatThreadHeaderBackgroundColor">#FEEDE1</item>` |
-| Reply count text color | `themes.xml` | `CometChatThreadHeaderStyle` with `cometchatThreadHeaderReplyCountTextColor` | `<item name="cometchatThreadHeaderReplyCountTextColor">#F76808</item>` |
-| Reply count background color | `themes.xml` | `CometChatThreadHeaderStyle` with `cometchatThreadHeaderReplyCountBackgroundColor` | `<item name="cometchatThreadHeaderReplyCountBackgroundColor">#FEEDE1</item>` |
-| Message bubble background color | `themes.xml` | `CometChatOutgoingMessageBubbleStyle` / `CometChatIncomingMessageBubbleStyle` with `cometchatMessageBubbleBackgroundColor` | `<item name="cometchatMessageBubbleBackgroundColor">#F76808</item>` |
-| Apply a custom style | Activity/Fragment | `setStyle(int styleRes)` | `cometChatThreadHeader.setStyle(R.style.CustomThreadHeaderStyle);` |
-| Parent message | Activity/Fragment | `setParentMessage(BaseMessage)` | `.setParentMessage(baseMessage)` |
-| Incoming bubble style (programmatic) | Activity/Fragment | `setIncomingMessageBubbleStyle(@StyleRes int)` | `.setIncomingMessageBubbleStyle(R.style.CustomIncomingMessageBubbleStyle)` |
-| Outgoing bubble style (programmatic) | Activity/Fragment | `setOutgoingMessageBubbleStyle(@StyleRes int)` | `.setOutgoingMessageBubbleStyle(R.style.CustomOutgoingMessageBubbleStyle)` |
-| Receipt visibility | Activity/Fragment | `setReceiptsVisibility(int)` | `setReceiptsVisibility(View.GONE)` |
-| Reply count visibility | Activity/Fragment | `setReplyCountVisibility(int)` | `setReplyCountVisibility(View.GONE)` |
-| Reply count bar visibility | Activity/Fragment | `setReplyCountBarVisibility(int)` | `setReplyCountBarVisibility(View.GONE)` |
-| Bubble alignment | Activity/Fragment | `setAlignment(UIKitConstants.MessageListAlignment)` | `setAlignment(UIKitConstants.MessageListAlignment alignment)` |
-| Avatar visibility | Activity/Fragment | `setAvatarVisibility(boolean)` | `setAvatarVisibility(true)` |
-| Date format | Activity/Fragment | `setDateFormat(SimpleDateFormat)` | `setDateFormat(new SimpleDateFormat("MMM dd, yyyy",Locale.getDefault()))` |
-| Time format | Activity/Fragment | `setTimeFormat(SimpleDateFormat)` | `setDateFormat(new SimpleDateFormat("hh:mm a",Locale.getDefault()))` |
-| Message templates (replace) | Activity/Fragment | `setTemplates(List<CometChatMessageTemplate>)` | `setTemplates(List<CometChatMessageTemplate> cometchatMessageTemplates)` |
-| Message templates (add) | Activity/Fragment | `addTemplate(CometChatMessageTemplate)` | `addTemplate(CometChatMessageTemplate template)` |
-| Text formatters | Activity/Fragment | `setTextFormatters(List<CometChatTextFormatter>)` | `setTextFormatters(List<CometChatTextFormatter> cometchatTextFormatters)` |
+| Parent message | Activity/Fragment | `setParentMessage(BaseMessage)` | `threadHeader.setParentMessage(baseMessage)` |
+| Reaction visibility | Activity/Fragment | `setReactionVisibility(int)` | `.setReactionVisibility(View.GONE)` |
+| Avatar visibility | Activity/Fragment | `setAvatarVisibility(int)` | `.setAvatarVisibility(View.GONE)` |
+| Receipt visibility | Activity/Fragment | `setReceiptsVisibility(int)` | `.setReceiptsVisibility(View.GONE)` |
+| Reply count visibility | Activity/Fragment | `setReplyCountVisibility(int)` | `.setReplyCountVisibility(View.GONE)` |
+| Reply count bar visibility | Activity/Fragment | `setReplyCountBarVisibility(int)` | `.setReplyCountBarVisibility(View.GONE)` |
+| Max height | Activity/Fragment | `setMaxHeight(int)` | `.setMaxHeight(500)` |
+| Bubble alignment | Activity/Fragment | `setAlignment(MessageListAlignment)` | `.setAlignment(UIKitConstants.MessageListAlignment.LEFT_ALIGNED)` |
+| Time format | Activity/Fragment | `setTimeFormat(SimpleDateFormat)` | `.setTimeFormat(new SimpleDateFormat("hh:mm a", Locale.getDefault()))` |
+| Text formatters | Activity/Fragment | `setTextFormatters(List)` | `.setTextFormatters(formatterList)` |
+| Message templates (replace) | Activity/Fragment | `setTemplates(List<CometChatMessageTemplate>)` | `.setTemplates(templateList)` |
+| Message templates (add) | Activity/Fragment | `addTemplate(CometChatMessageTemplate)` | `.addTemplate(template)` |
+| Outgoing bubble style | `themes.xml` | `cometchatThreadHeaderOutgoingMessageBubbleStyle` | `<item name="cometchatThreadHeaderOutgoingMessageBubbleStyle">@style/CustomOutgoingStyle</item>` |
+| Incoming bubble style | `themes.xml` | `cometchatThreadHeaderIncomingMessageBubbleStyle` | `<item name="cometchatThreadHeaderIncomingMessageBubbleStyle">@style/CustomIncomingStyle</item>` |
+| Header background color | `themes.xml` | `cometchatThreadHeaderBackgroundColor` | `<item name="cometchatThreadHeaderBackgroundColor">#FEEDE1</item>` |
+| Reply count text color | `themes.xml` | `cometchatThreadHeaderReplyCountTextColor` | `<item name="cometchatThreadHeaderReplyCountTextColor">#F76808</item>` |
+| Reply count background color | `themes.xml` | `cometchatThreadHeaderReplyCountBackgroundColor` | `<item name="cometchatThreadHeaderReplyCountBackgroundColor">#FEEDE1</item>` |
+| Apply a custom style | Activity/Fragment | `setStyle(int styleRes)` | `threadHeader.setStyle(R.style.CustomThreadHeaderStyle)` |
+| Incoming bubble style (programmatic) | Activity/Fragment | `setIncomingMessageBubbleStyle(int)` | `.setIncomingMessageBubbleStyle(R.style.CustomIncomingStyle)` |
+| Outgoing bubble style (programmatic) | Activity/Fragment | `setOutgoingMessageBubbleStyle(int)` | `.setOutgoingMessageBubbleStyle(R.style.CustomOutgoingStyle)` |
+| Reply count background (programmatic) | Activity/Fragment | `setReplyCountBackgroundColor(int)` | `.setReplyCountBackgroundColor(Color.parseColor("#FEEDE1"))` |
+| Reply count text color (programmatic) | Activity/Fragment | `setReplyCountTextColor(int)` | `.setReplyCountTextColor(Color.parseColor("#F76808"))` |
+| Reply count text appearance (programmatic) | Activity/Fragment | `setReplyCountTextAppearance(int)` | `.setReplyCountTextAppearance(R.style.CustomTextAppearance)` |
+| Internal adapter access | Activity/Fragment | `getAdapter()` | Advanced use only |
 
-## Common pitfalls & fixes
+## Accessibility
+
+The component renders a `RecyclerView` containing the parent message bubble. The reply count text is readable by screen readers. Avatar images include content descriptions derived from the sender's name.
+
+For custom message templates provided via `setTemplates` or `addTemplate`, ensure you set `android:contentDescription` on visual-only elements so TalkBack can announce them. The default templates handle this automatically.
+
+Reaction indicators and read receipts are visual-only by default. If screen reader descriptions are needed, provide them via custom templates with appropriate `contentDescription` attributes.
+
+## Common Pitfalls & Fixes
 
 | Pitfall | Fix |
 | --- | --- |
@@ -223,9 +583,9 @@ The `setTemplates` method is used to configure and set a list of templates for m
 | Thread header shows no message | Ensure you call `setParentMessage(baseMessage)` with a valid `BaseMessage` object. If no parent message is set, the thread header has no message to display. |
 | Custom style not visible | Verify the style parent is `CometChatThreadHeaderStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
 | Reply count not showing | Ensure `setReplyCountVisibility` is not set to `View.GONE`. If the parent message has no replies, the reply count may not appear. |
-| Bubble alignment not changing | Ensure you pass a valid `UIKitConstants.MessageListAlignment` value to `setAlignment`. If set to standard, the bubble position depends on whether the message is incoming or outgoing. |
+| Bubble alignment not changing | Ensure you pass a valid `UIKitConstants.MessageListAlignment` value to `setAlignment`. If set to STANDARD, the bubble position depends on whether the message is incoming or outgoing. |
 | Message bubble style not applied | If you set `setIncomingMessageBubbleStyle` or `setOutgoingMessageBubbleStyle` programmatically, ensure the style resource ID points to a valid style with parent `CometChatIncomingMessageBubbleStyle` or `CometChatOutgoingMessageBubbleStyle`. |
-| Date or time format not changing | Ensure you pass a valid `SimpleDateFormat` object to `setDateFormat` or `setTimeFormat`. If the format pattern is invalid, the default format is used. |
+| Date or time format not changing | Ensure you pass a valid `SimpleDateFormat` object to `setTimeFormat`. If the format pattern is invalid, the default format is used. |
 | Custom templates not rendering | If you call `setTemplates` with an empty list, no message bubble renders. Ensure the list contains at least one valid `CometChatMessageTemplate`. |
 
 ## FAQ
@@ -240,13 +600,13 @@ The `setTemplates` method is used to configure and set a list of templates for m
 **A:** Define custom styles with parents `CometChatOutgoingMessageBubbleStyle` and `CometChatIncomingMessageBubbleStyle` in `themes.xml`, reference them in a `CometChatThreadHeaderStyle`, and apply with `setStyle()`.
 
 **Q: How do I change the bubble alignment so all bubbles appear on the left?**
-**A:** Call `setAlignment` with `UIKitConstants.MessageListAlignment` set to left-aligned. If set to standard, the bubble position depends on whether the message is incoming or outgoing.
+**A:** Call `setAlignment` with `UIKitConstants.MessageListAlignment.LEFT_ALIGNED`. If set to STANDARD, the bubble position depends on whether the message is incoming or outgoing.
 
 **Q: Can I add custom message templates to the thread header?**
 **A:** Yes. Use `addTemplate(CometChatMessageTemplate template)` to add a single template to the existing list, or use `setTemplates(List<CometChatMessageTemplate>)` to replace the entire template list.
 
-## Next steps
+## Next Steps
 
 - [Message list component](/ui-kit/android/message-list)
-- [Message composer component](/ui-kit/android/message-composer)
 - [Message header component](/ui-kit/android/message-header)
+- [Message composer component](/ui-kit/android/message-composer)

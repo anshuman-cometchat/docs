@@ -2,27 +2,176 @@
 title: "Message List"
 ---
 
-`CometChatMessageList` displays a list of messages for a conversation and manages real-time message operations. It renders various message types including text, media, stickers, and more using `MessageBubble` components.
+`CometChatMessageList` displays a scrollable list of messages for a one-on-one or group conversation, with real-time updates, reactions, threaded replies, and message actions.
 
-## When to use this
+## AI Agent Component Spec
 
-- You need a scrollable list of messages for a one-on-one or group conversation.
-- You want real-time updates when new messages arrive, are edited, or deleted.
-- You need support for threaded replies, reactions, and message actions (copy, edit, delete, translate, report).
-- You want to customize message bubble appearance, date/time formatting, and message filtering.
-- You need AI-powered features such as smart replies, conversation starters, conversation summaries, or AI assistant integration.
-- You want to add custom header or footer views above or below the message list.
+<Accordion title="AI Agent Component Spec">
 
-## Prerequisites
+```json
+{
+  "component": "CometChatMessageList",
+  "package": "com.cometchat.chatuikit.messagelist",
+  "xmlElement": "<com.cometchat.chatuikit.messagelist.CometChatMessageList />",
+  "description": "Scrollable list of messages for a conversation with real-time updates, reactions, threaded replies, and message actions.",
+  "primaryOutput": {
+    "method": "setOnThreadRepliesClick",
+    "type": "ThreadReplyClick"
+  },
+  "methods": {
+    "data": {
+      "setUser": {
+        "type": "User",
+        "note": "Sets the user for a one-on-one conversation"
+      },
+      "setGroup": {
+        "type": "Group",
+        "note": "Sets the group for a group conversation"
+      },
+      "setMessagesRequestBuilder": {
+        "type": "MessagesRequest.MessagesRequestBuilder",
+        "default": "SDK default",
+        "note": "Pass the builder, not the result of .build()"
+      },
+      "setReactionsRequestBuilder": {
+        "type": "ReactionsRequest.ReactionsRequestBuilder",
+        "default": "SDK default",
+        "note": "Custom builder for fetching reactions"
+      }
+    },
+    "callbacks": {
+      "setOnThreadRepliesClick": "ThreadReplyClick",
+      "setOnReactionClick": "OnReactionClick",
+      "setOnReactionLongClick": "OnReactionLongClick",
+      "setOnAddMoreReactionsClick": "OnAddMoreReactionsClick",
+      "setOnReactionListItemClick": "OnReactionListItemClick",
+      "setOnError": "OnError",
+      "setOnLoad": "OnLoad<BaseMessage>",
+      "setOnEmpty": "OnEmpty"
+    },
+    "visibility": {
+      "setErrorStateVisibility": { "type": "int (View.VISIBLE | View.GONE)", "default": "View.VISIBLE" },
+      "setAvatarVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setReceiptsVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setStickyDateVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setReplyInThreadOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setTranslateMessageOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setEditMessageOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setDeleteMessageOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setMessageReactionOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setMessagePrivatelyOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setCopyMessageOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setMessageInfoOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setGroupActionMessageVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setReplyOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setShareMessageOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setMarkAsUnreadOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setFlagOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
+      "setModerationViewVisibility": { "type": "int", "default": "View.VISIBLE" }
+    },
+    "viewSlots": {
+      "setHeaderView": "View — custom view above the message list",
+      "setFooterView": "View — custom view below the message list",
+      "setLoadingStateView": "@LayoutRes int — loading spinner",
+      "setEmptyStateView": "@LayoutRes int — empty state",
+      "setErrorStateView": "@LayoutRes int — error state",
+      "setNewMessageIndicatorView": "View — new message indicator",
+      "setAIAssistantEmptyChatGreetingView": "@LayoutRes int — AI assistant greeting",
+      "setTemplates": "List<CometChatMessageTemplate> — message bubble templates",
+      "setTextFormatters": "List<CometChatTextFormatter> — text formatters (mentions, etc.)"
+    },
+    "advanced": {
+      "scrollToBottom": "void — scrolls to the bottom of the list",
+      "scrollToMessageId": "long — scrolls to a specific message",
+      "gotoMessage": "long — navigates to a specific message by ID",
+      "generateConversationSummary": "void — triggers AI conversation summary",
+      "getAdapter": "MessageAdapter — internal adapter access",
+      "setAdapter": "MessageAdapter — replace the default adapter",
+      "getViewModel": "MessageListViewModel — internal ViewModel access",
+      "getRecyclerView": "RecyclerView — internal RecyclerView access",
+      "setParentMessage": "long — sets parent message ID for threaded view",
+      "setAutoFetch": "boolean — controls automatic message fetching",
+      "addMessage": "BaseMessage — programmatically adds a message",
+      "setList": "List<BaseMessage> — replaces the entire message list",
+      "updateMessage": "int — updates a message at a given index",
+      "copyMessage": "BaseMessage — copies message text to clipboard",
+      "shareMessage": "void — shares the selected message",
+      "showMessageInformation": "void — shows message info bottom sheet"
+    },
+    "style": {
+      "setStyle": {
+        "type": "@StyleRes int",
+        "parent": "CometChatMessageListStyle"
+      }
+    }
+  },
+  "events": [],
+  "sdkListeners": []
+}
+```
 
-- CometChat SDK initialized with `CometChatUIKit.init()` and a user logged in.
-- The `cometchat-chat-uikit-android` dependency added to your project.
-- A valid `User` or `Group` object to pass to the component (the component does not load messages without one).
+</Accordion>
 
-## Quick start
+## Where It Fits
 
-1. Open your layout XML file (e.g., `layout_activity.xml`).
-2. Add the `CometChatMessageList` XML element:
+`CometChatMessageList` is a message display component. It requires either a `User` or `Group` object to fetch and render messages. Wire it with `CometChatMessageHeader` and `CometChatMessageComposer` to build a complete messaging layout.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin ChatActivity.kt lines
+class ChatActivity : AppCompatActivity() {
+
+    private lateinit var messageHeader: CometChatMessageHeader
+    private lateinit var messageList: CometChatMessageList
+    private lateinit var messageComposer: CometChatMessageComposer
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_chat)
+
+        messageHeader = findViewById(R.id.message_header)
+        messageList = findViewById(R.id.message_list)
+        messageComposer = findViewById(R.id.message_composer)
+
+        // Set the user for all components
+        messageHeader.setUser(user)
+        messageList.setUser(user)
+        messageComposer.setUser(user)
+    }
+}
+```
+</Tab>
+
+<Tab title="Java">
+```java ChatActivity.java lines
+public class ChatActivity extends AppCompatActivity {
+
+    private CometChatMessageHeader messageHeader;
+    private CometChatMessageList messageList;
+    private CometChatMessageComposer messageComposer;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
+
+        messageHeader = findViewById(R.id.message_header);
+        messageList = findViewById(R.id.message_list);
+        messageComposer = findViewById(R.id.message_composer);
+
+        // Set the user for all components
+        messageHeader.setUser(user);
+        messageList.setUser(user);
+        messageComposer.setUser(user);
+    }
+}
+```
+</Tab>
+</Tabs>
+
+## Quick Start
+
+Add the component to your layout XML:
 
 ```xml layout_activity.xml lines
 <com.cometchat.chatuikit.messagelist.CometChatMessageList
@@ -34,39 +183,31 @@ title: "Message List"
                 android:background="@android:color/transparent" />
 ```
 
-> **What this does:** Adds the `CometChatMessageList` component to your layout. It fills the available width and height with transparent background and 16dp horizontal margins.
+<Frame>
+  <img src="/images/7c6476ad-message_list-f571abbea715b343416ff5ca1cbc8c9b.png" />
+</Frame>
 
-3. In your Activity or Fragment, get a reference to the component and set a `User` or `Group` object:
+Prerequisites: CometChat SDK initialized with `CometChatUIKit.init()`, a user logged in, and the `cometchat-chat-uikit-android` dependency added.
+
+Set a `User` or `Group` object in your Activity:
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-CometChatMessageList cometChatMessageList = findViewById(R.id.message_list);
-cometChatMessageList.setUser(user);
-```
-
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 val cometChatMessageList = findViewById<CometChatMessageList>(R.id.message_list)
 cometChatMessageList.setUser(user)
 ```
-
 </Tab>
 
+<Tab title="Java">
+```java YourActivity.java lines
+CometChatMessageList cometChatMessageList = findViewById(R.id.message_list);
+cometChatMessageList.setUser(user);
+```
+</Tab>
 </Tabs>
 
-> **What this does:** Gets a reference to the `CometChatMessageList` from the layout and sets the `User` object. The component fetches and displays messages for that user's conversation.
-
-4. Build and run your app.
-5. Verify that the message list appears with message bubbles, timestamps, and read receipts.
-
-<Frame>
-  <img src="/images/7c6476ad-message_list-f571abbea715b343416ff5ca1cbc8c9b.png" />
-</Frame>
-
-6. If you need to display messages for a group conversation instead, call `.setGroup(group)` with a `Group` object instead of `.setUser(user)`.
+For a group conversation, call `.setGroup(group)` with a `Group` object instead of `.setUser(user)`.
 
 <Warning>
 
@@ -74,58 +215,120 @@ Simply adding the `MessageList` component to the layout will only display the lo
 
 </Warning>
 
-## Core concepts
+## Filtering Messages
 
-- **`CometChatMessageList`**: The main component class that renders a scrollable list of messages. It must be supplied with a `User` or `Group` object to fetch messages.
-- **Message bubbles**: Each message is rendered as a `MessageBubble` component. The bubble type depends on the message type (text, media, sticker, etc.). See [MessageBubble styling](/ui-kit/android/message-bubble-styling#message-bubbles) for details.
-- **Actions**: Callbacks such as `setOnThreadRepliesClick`, `setOnError`, `setOnReactionClick`, and `setOnReactionLongClick` that let you respond to user interactions.
-- **Filters**: Use `MessagesRequest.MessagesRequestBuilder` to filter messages by search keyword, UID, or other criteria.
-- **Events**: The MessageList component does not emit any events of its own.
-- **Style**: XML theme styles (parent `CometChatMessageListStyle`) applied via `setStyle()` to customize colors, fonts, and sub-component styles.
-- **Advanced views**: Methods like `setHeaderView`, `setFooterView`, `setLoadingView`, `setEmptyView`, `setErrorView`, `setDateTimeFormatter`, and `setTextFormatters` that let you replace default UI elements with custom layouts.
+Pass a `MessagesRequest.MessagesRequestBuilder` to `setMessagesRequestBuilder`. Pass the builder instance — not the result of `.build()`.
 
-## Implementation
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+val messagesRequest = MessagesRequest.MessagesRequestBuilder()
+    .setSearchKeyword("your search keyword")
+    .setUID("user uid")
 
-### Actions
+messageList.messagesRequestBuilder = messagesRequest
+```
+</Tab>
 
-What you're changing: How the component responds to user interactions such as thread reply taps, errors, load completion, empty states, and reaction interactions.
+<Tab title="Java">
+```java lines
+MessagesRequest.MessagesRequestBuilder messagesRequest = new MessagesRequest.MessagesRequestBuilder()
+    .setSearchKeyword("your search keyword")
+    .setUID("user uid");
 
-- **Where**: Activity or Fragment where you hold a reference to `CometChatMessageList` (e.g., `cometchatMessageList`).
-- **Applies to**: `CometChatMessageList`.
-- **Default behavior**: Predefined actions execute automatically (e.g., tapping a threaded message bubble has no predefined behavior for `onThreadRepliesClick`).
-- **Override**: Call the corresponding setter method to replace the default behavior with your own logic.
+messageList.setMessagesRequestBuilder(messagesRequest);
+```
+</Tab>
+</Tabs>
+
+### Filter Recipes
+
+| Recipe | Code |
+| --- | --- |
+| Search by keyword | `builder.setSearchKeyword("hello")` |
+| Filter by UID | `builder.setUID("user_uid")` |
+| Filter by GUID | `builder.setGUID("group_guid")` |
+| Limit per page | `builder.setLimit(30)` |
+| Filter by category | `builder.setCategory("message")` |
+| Filter by type | `builder.setType("text")` |
+| Unread only | `builder.setUnread(true)` |
+| Hide deleted messages | `builder.hideDeletedMessages(true)` |
+
+<Note>
+
+The following parameters in `MessagesRequestBuilder` will always be altered inside the message list:
+
+1. UID
+2. GUID
+3. types
+4. categories
+
+</Note>
+
+> The component uses infinite scroll — older messages load as the user scrolls up. Refer to [MessagesRequestBuilder](/sdk/android/additional-message-filtering) for the full builder API.
+
+### Reactions Request Builder
+
+Use `setReactionsRequestBuilder` to customize how reactions are fetched:
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+val reactionsBuilder = ReactionsRequest.ReactionsRequestBuilder()
+messageList.setReactionsRequestBuilder(reactionsBuilder)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+ReactionsRequest.ReactionsRequestBuilder reactionsBuilder = new ReactionsRequest.ReactionsRequestBuilder();
+messageList.setReactionsRequestBuilder(reactionsBuilder);
+```
+</Tab>
+</Tabs>
+
+## Actions and Events
+
+### Callback Methods
 
 #### `setOnThreadRepliesClick`
 
-Triggered when you click on the threaded message bubble. The `onThreadRepliesClick` action does not have a predefined behavior.
+Fires when a user taps a threaded message bubble. No predefined behavior.
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatMessageList.onThreadRepliesClick =
+            ThreadReplyClick { context, baseMessage, cometchatMessageTemplate -> }
+```
+</Tab>
+
 <Tab title="Java">
-```java lines
+```java YourActivity.java lines
 cometchatMessageList.setOnThreadRepliesClick((context, baseMessage, cometchatMessageTemplate) -> {
 
         });
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatMessageList.onThreadRepliesClick =
-            ThreadReplyClick { context, baseMessage, cometchatMessageTemplate -> }
-```
-
-</Tab>
-
 </Tabs>
 
 > **What this does:** Registers a callback that fires when a user taps a threaded message bubble. The callback receives the `context`, the `baseMessage`, and the `cometchatMessageTemplate`.
 
 #### `setOnError`
 
-Listens for any errors that occur in the MessageList component. This does not change the component's behavior.
+Fires on internal errors (network failure, auth issue, SDK exception).
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatMessageList.setOnError(object : OnError {
+    override fun onError(e: CometChatException) {
+        // Your Exception Handling code.
+    }
+})
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourActivity.java lines
 cometchatMessageList.setOnError(new OnError() {
@@ -135,38 +338,16 @@ cometchatMessageList.setOnError(new OnError() {
     }
 });
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatMessageList.setOnError(object : OnError {
-    override fun onError(e: CometChatException) {
-        // Your Exception Handling code.
-    }
-})
-```
-
-</Tab>
-
 </Tabs>
 
 > **What this does:** Registers an error listener. If the component encounters an error (e.g., network failure), your callback receives the `CometChatException`.
 
 #### `setOnLoad`
 
-Invoked when the list is successfully fetched and loaded, helping track component readiness.
+Fires when the list is successfully fetched and loaded.
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatMessageList.setOnLoad(list -> {
-
-});
-```
-
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 cometchatMessageList.setOnLoad(object : OnLoad<BaseMessage?> {
@@ -175,79 +356,92 @@ cometchatMessageList.setOnLoad(object : OnLoad<BaseMessage?> {
     }
 })
 ```
-
 </Tab>
 
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatMessageList.setOnLoad(list -> {
+
+});
+```
+</Tab>
 </Tabs>
 
 > **What this does:** Registers a callback that fires after the message list is fetched and rendered. The callback receives the list of loaded `BaseMessage` objects.
 
 #### `setOnEmpty`
 
-Called when the list is empty, enabling custom handling such as showing a placeholder message.
+Fires when the list is empty, enabling custom handling such as showing a placeholder.
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatMessageList.setOnEmpty(() -> {
-            
-    });
-```
-
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 cometchatMessageList.setOnEmpty{
             
     }
 ```
-
 </Tab>
 
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatMessageList.setOnEmpty(() -> {
+            
+    });
+```
+</Tab>
 </Tabs>
 
 > **What this does:** Registers a callback that fires when the message list has no items. Use this to show a custom empty-state message or trigger other logic.
 
-#### `setOnReactionLongClick`
+#### `setOnReactionClick`
 
-Triggered when a user long presses on a reaction pill.
+Fires when a reaction is tapped, enabling custom reaction interactions.
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatMessageList.onReactionClick = OnReactionClick { emoji, baseMessage -> }
+```
+</Tab>
+
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatMessageList.setOnReactionClick((emoji, baseMessage) -> {
+
+    });
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Replaces the default reaction-click behavior. When a user taps a reaction, your custom lambda executes with the `emoji` and `baseMessage`.
+
+#### `setOnReactionLongClick`
+
+Fires when a user long-presses on a reaction pill.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatMessageList.onReactionLongClick = OnReactionLongClick { emoji, baseMessage -> }
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourActivity.java lines
 cometchatMessageList.setOnReactionLongClick((emoji, baseMessage) -> {
 
     });
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatMessageList.onReactionLongClick = OnReactionLongClick { emoji, baseMessage -> }
-```
-
-</Tab>
-
 </Tabs>
 
 > **What this does:** Replaces the default reaction long-press behavior. When a user long-presses a reaction pill, your custom lambda executes with the `emoji` and `baseMessage`.
 
 #### `setOnAddMoreReactionsClick`
 
-Triggered when a user clicks on the "Add More Reactions" button.
+Fires when a user clicks the "Add More Reactions" button.
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatMessageList.setOnAddMoreReactionsClick(baseMessage -> {
-            
-    });
-```
-
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 cometchatMessageList.onAddMoreReactionsClick =
@@ -255,600 +449,152 @@ cometchatMessageList.onAddMoreReactionsClick =
                 
     }
 ```
-
 </Tab>
 
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatMessageList.setOnAddMoreReactionsClick(baseMessage -> {
+            
+    });
+```
+</Tab>
 </Tabs>
 
 > **What this does:** Replaces the default "Add More Reactions" button behavior. Your callback receives the `baseMessage` that the user wants to react to.
 
-#### `setOnReactionClick`
-
-Triggered when a reaction is clicked, enabling custom reaction interactions.
-
-<Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatMessageList.setOnReactionClick((emoji, baseMessage) -> {
-
-    });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatMessageList.onReactionClick = OnReactionClick { emoji, baseMessage -> }
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Replaces the default reaction-click behavior. When a user taps a reaction, your custom lambda executes with the `emoji` and `baseMessage`.
-
 #### `setOnReactionListItemClick`
 
-Triggered when a reaction list item is clicked in `CometChatReactionsList`.
+Fires when a reaction list item is clicked in `CometChatReactionsList`.
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatMessageList.onReactionListItemClick =
+            OnReactionListItemClick { reaction, message -> } 
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourActivity.java lines
 cometchatMessageList.setOnReactionListItemClick((reaction, message) -> {
 
     });
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
-cometchatMessageList.onReactionListItemClick =
-            OnReactionListItemClick { reaction, message -> } 
-```
-
-</Tab>
-
 </Tabs>
 
 > **What this does:** Replaces the default reaction list item click behavior. Your callback receives the `reaction` and `message` objects.
 
 - **Verify**: After setting an action callback, trigger the corresponding user interaction (thread reply tap, reaction click, reaction long-press) and confirm your custom logic executes instead of the default behavior.
 
-### Filters
+### Global UI Events
 
-What you're changing: Which messages appear in the list.
+The MessageList component does not emit any global UI events of its own.
 
-- **Where**: Activity or Fragment where you hold a reference to `CometChatMessageList`.
-- **Applies to**: `CometChatMessageList`.
-- **Default behavior**: All messages for the specified `User` or `Group` are fetched and displayed.
-- **Override**: Create a `MessagesRequest.MessagesRequestBuilder`, configure it, and pass it to `setMessagesRequestBuilder`.
+### SDK Events (Real-Time, Automatic)
 
-- **Code**:
+The component listens to SDK message events internally. No manual attachment needed unless additional side effects are required.
 
-<Tabs>
-<Tab title="Java">
-```java lines
-MessagesRequest.MessagesRequestBuilder messagesRequest = new MessagesRequest.MessagesRequestBuilder()
-    .setSearchKeyword("your search keyword")
-    .setUID("user uid");
+> Automatic: new messages, edits, deletions, and reactions update the list in real time.
 
-messageList.setMessagesRequestBuilder(messagesRequest);
-```
+## Functionality
 
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-val messagesRequest = MessagesRequest.MessagesRequestBuilder()
-    .setSearchKeyword("your search keyword")
-    .setUID("user uid")
-    .build()
-
-messageList.messagesRequestBuilder = messagesRequest
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Creates a `MessagesRequestBuilder` that filters messages by a search keyword and a specific user UID. The builder is then applied to the `CometChatMessageList` component.
-
-<Note>
-
-The following parameters in messageRequestBuilder will always be altered inside the message list
-
-1. UID
-2. GUID
-3. types
-4. categories
-
-</Note>
-
-For additional details on `MessagesRequestBuilder`, visit [MessagesRequestBuilder](/sdk/android/additional-message-filtering).
-
-- **Verify**: The message list shows only messages matching the search keyword for the specified user.
-
-### Events
-
-What you're changing: How your app reacts to global events emitted by the MessageList component.
-
-- **Where**: Any Activity, Fragment, or class.
-- **Applies to**: `CometChatMessageList`.
-- **Default behavior**: The MessageList component does not emit any events of its own.
-- **Override**: Not applicable. If you need to listen for message-level events, use the CometChat SDK's message listeners directly.
-
-- **Verify**: Not applicable — the MessageList component does not emit events.
-
-### Style
-
-What you're changing: The visual appearance of the MessageList component using XML theme styles.
-
-- **Where**: `themes.xml` for style definitions, and your Activity/Fragment for applying the style.
-- **Applies to**: `CometChatMessageList`.
-- **Default behavior**: The component uses the default `CometChatMessageListStyle`.
-- **Override**: Define a custom style with parent `CometChatMessageListStyle` in `themes.xml`, then call `setStyle()` on the component.
-
-<Frame>
-  <img src="/images/03a08ce8-message_list_styling-ebbb6bea74da1c21078f037fb50d8bff.png" />
-</Frame>
-
-- **Code**:
-
-```xml themes.xml lines
-    <style name="CustomOutgoingMessageBubbleStyle" parent="CometChatOutgoingMessageBubbleStyle">
-        <item name="cometchatMessageBubbleBackgroundColor">#F76808</item>
-    </style>
-
-    <style name="CustomCometChatMessageListStyle" parent="CometChatMessageListStyle">
-        <item name="cometchatMessageListBackgroundColor">#FEEDE1</item>
-        <item name="cometchatMessageListOutgoingMessageBubbleStyle">@style/CustomOutgoingMessageBubbleStyle</item>
-    </style>
-```
-
-> **What this does:** Defines two custom styles: `CustomOutgoingMessageBubbleStyle` sets the outgoing message bubble background to orange (`#F76808`); `CustomCometChatMessageListStyle` sets the message list background to light peach (`#FEEDE1`) and applies the custom outgoing bubble style.
+Small functional customizations such as toggling visibility of UI elements, setting custom sounds, configuring alignment, and enabling AI features.
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometChatMessageList.setStyle(R.style.CustomCometChatMessageListStyle);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometChatMessageList.setStyle(R.style.CustomCometChatMessageListStyle);
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Applies the `CustomCometChatMessageListStyle` theme to the `CometChatMessageList` component, changing the background color and outgoing message bubble appearance.
-
-To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_list.xml).
-
-- **Verify**: The message list background displays as light peach (`#FEEDE1`) and outgoing message bubbles display with an orange background (`#F76808`).
-
-### Functionality
-
-What you're changing: Small functional customizations such as toggling visibility of UI elements, setting custom sounds, configuring alignment, and enabling AI features.
-
-- **Where**: Activity or Fragment where you hold a reference to `CometChatMessageList`.
-- **Applies to**: `CometChatMessageList`.
-- **Default behavior**: All UI elements are visible with default settings.
-- **Override**: Call the corresponding method on the component instance.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-CometChatMessageList cometChatMessageList = findViewById(R.id.message_list);
-cometChatMessageList.setUser(user);
-cometChatMessageList.hideError(true);
-cometChatMessageList.hideReceipt(true);
-```
-
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 val cometChatMessageList = findViewById<CometChatMessageList>(R.id.message_list)
 cometChatMessageList.setUser(user)
-cometChatMessageList.hideError(true)
-cometChatMessageList.hideReceipt(true)
+cometChatMessageList.setErrorStateVisibility(View.GONE)
+cometChatMessageList.setReceiptsVisibility(View.GONE)
 ```
-
 </Tab>
 
+<Tab title="Java">
+```java lines
+CometChatMessageList cometChatMessageList = findViewById(R.id.message_list);
+cometChatMessageList.setUser(user);
+cometChatMessageList.setErrorStateVisibility(View.GONE);
+cometChatMessageList.setReceiptsVisibility(View.GONE);
+```
+</Tab>
 </Tabs>
-
-> **What this does:** Gets a reference to the `CometChatMessageList`, sets the user, hides the error state, and hides read receipts.
 
 <Frame>
   <img src="/images/7c6476ad-message_list-f571abbea715b343416ff5ca1cbc8c9b.png" />
 </Frame>
 
-| Property | Description | Code |
+| Method | Description | Code |
 | --- | --- | --- |
-| `setUser` | Used to pass user object of which header specific details will be shown | `.setUser(user);` |
-| `setGroup` | Used to pass group object of which header specific details will be shown | `.setGroup(Group);` |
-| `setAlignment` | Used to set the alignment of messages in CometChatMessageList. It can be either `leftAligned` or `standard` | `.setAlignment(UIKitConstants.MessageListAlignment);` |
-| `setErrorStateVisibility` | Used to toggle visibility of error state in MessageList | `.setErrorStateVisibility(View.GONE);` |
-| `disableSoundForMessages` | Used to enable/disable sound for incoming/outgoing messages, default false | `.disableSoundForMessages(false);` |
-| `setCustomSoundForMessages` | Used to set custom sound for outgoing message | `.setCustomSoundForMessages(@RawRes resource);` |
-| `setAvatarVisibility` | Used to toggle visibility for avatar | `.setAvatarVisibility(View.GONE);` |
+| `setUser` | Sets the user object to fetch messages for a one-on-one conversation | `.setUser(user);` |
+| `setGroup` | Sets the group object to fetch messages for a group conversation | `.setGroup(group);` |
+| `setMessageAlignment` | Sets the alignment of messages (`leftAligned` or `standard`) | `.setMessageAlignment(UIKitConstants.MessageListAlignment.STANDARD);` |
+| `setErrorStateVisibility` | Toggles visibility of the error state | `.setErrorStateVisibility(View.GONE);` |
+| `disableSoundForMessages` | Enables/disables sound for incoming/outgoing messages, default false | `.disableSoundForMessages(false);` |
+| `setCustomSoundForMessages` | Sets a custom sound for outgoing messages | `.setCustomSoundForMessages(@RawRes resource);` |
+| `setAvatarVisibility` | Toggles visibility for avatar | `.setAvatarVisibility(View.GONE);` |
 | `scrollToBottomOnNewMessage` | If true, scrolls to bottom on new message. Default is false | `.scrollToBottomOnNewMessage(true);` |
-| `setReceiptsVisibility` | Used to control visibility of read receipts without disabling the functionality of marking messages as read and delivered | `.setReceiptsVisibility(View.GONE);` |
-| `setQuickReactions` | The list of quick reactions to be set. This list replaces the predefined set of reactions | `.setQuickReactions(Arrays.asList("👻","😈","🙀","🤡","❤️");` |
-| `setStickyDateVisibility` | Used to toggle visibility for sticky header | `.setStickyDateVisibility(View.GONE);` |
-| `replyInThreadOptionVisibility` | Used to toggle visibility for thread option | `.replyInThreadOptionVisibility(View.GONE);` |
-| `translateMessageOptionVisibility` | Used to toggle visibility for translate option | `.translateMessageOptionVisibility(View.GONE);` |
-| `editMessageOptionVisibility` | Used to toggle visibility for edit option | `.editMessageOptionVisibility(View.GONE);` |
-| `deleteMessageOptionVisibility` | Used to toggle visibility for delete option | `.deleteMessageOptionVisibility(View.GONE);` |
-| `setMessageReactionOptionVisibility` | Used to toggle visibility for reaction option | `.setMessageReactionOptionVisibility(View.GONE);` |
-| `messagePrivatelyOptionVisibility` | Used to toggle visibility for private option | `.messagePrivatelyOptionVisibility(View.GONE);` |
-| `copyMessageOptionVisibility` | Used to toggle visibility for copy option | `.copyMessageOptionVisibility(View.GONE);` |
-| `messageInfoOptionVisibility` | Used to toggle visibility for info option | `.messageInfoOptionVisibility(View.GONE);` |
-| `groupActionMessageVisibility` | Used to toggle visibility for action message option | `.groupActionMessageVisibility(View.GONE);` |
-| `enableConversationStarters` | Controls whether conversation starters are generated in new conversations | `.enableConversationStarters(true);` |
-
-| `enableSmartReplies` | Enables smart replies for quick responses | `.enableSmartReplies(true);` |
-| `smartRepliesKeywords` | Defines specific keywords in an incoming message that trigger Smart Replies | `.setAISmartRepliesKeywords(Arrays.asList("hello", "hi", "how are you", "good morning", "good evening", "good night"));` |
-| `smartRepliesDelayDuration` | Sets the delay time before Smart Replies are fetched and displayed after a message is received | `.smartRepliesDelayDuration(5000);` |
-
-| `refreshStyle` | Used to refresh the style of message list | `.refreshStyle();` |
-| `setSwipeToReplyEnabled` | Enables or disables the swipe-to-reply gesture on message bubbles. Default is true | `.setSwipeToReplyEnabled(false);` |
-| `setReplyOptionVisibility` | Toggles visibility for the reply option in the message action sheet | `.setReplyOptionVisibility(View.GONE);` |
-| `setShareMessageOptionVisibility` | Toggles visibility for the share message option in the message action sheet | `.setShareMessageOptionVisibility(View.GONE);` |
-| `setMarkAsUnreadOptionVisibility` | Toggles visibility for the mark-as-unread option in the message action sheet | `.setMarkAsUnreadOptionVisibility(View.GONE);` |
-| `setFlagOptionVisibility` | Toggles visibility for the flag/report option in the message action sheet | `.setFlagOptionVisibility(View.GONE);` |
-| `setStartFromUnreadMessages` | When true, the message list scrolls to the first unread message on load | `.setStartFromUnreadMessages(true);` |
+| `setReceiptsVisibility` | Controls visibility of read receipts without disabling marking messages as read/delivered | `.setReceiptsVisibility(View.GONE);` |
+| `setQuickReactions` | Replaces the predefined set of quick reactions | `.setQuickReactions(Arrays.asList("👻","😈","🙀","🤡","❤️"));` |
+| `setStickyDateVisibility` | Toggles visibility for sticky date header | `.setStickyDateVisibility(View.GONE);` |
+| `setReplyInThreadOptionVisibility` | Toggles visibility for thread reply option | `.setReplyInThreadOptionVisibility(View.GONE);` |
+| `setTranslateMessageOptionVisibility` | Toggles visibility for translate option | `.setTranslateMessageOptionVisibility(View.GONE);` |
+| `setEditMessageOptionVisibility` | Toggles visibility for edit option | `.setEditMessageOptionVisibility(View.GONE);` |
+| `setDeleteMessageOptionVisibility` | Toggles visibility for delete option | `.setDeleteMessageOptionVisibility(View.GONE);` |
+| `setMessageReactionOptionVisibility` | Toggles visibility for reaction option | `.setMessageReactionOptionVisibility(View.GONE);` |
+| `setMessagePrivatelyOptionVisibility` | Toggles visibility for private message option | `.setMessagePrivatelyOptionVisibility(View.GONE);` |
+| `setCopyMessageOptionVisibility` | Toggles visibility for copy option | `.setCopyMessageOptionVisibility(View.GONE);` |
+| `setMessageInfoOptionVisibility` | Toggles visibility for info option | `.setMessageInfoOptionVisibility(View.GONE);` |
+| `setGroupActionMessageVisibility` | Toggles visibility for group action messages | `.setGroupActionMessageVisibility(View.GONE);` |
+| `setReplyOptionVisibility` | Toggles visibility for the reply option in the action sheet | `.setReplyOptionVisibility(View.GONE);` |
+| `setShareMessageOptionVisibility` | Toggles visibility for the share message option | `.setShareMessageOptionVisibility(View.GONE);` |
+| `setMarkAsUnreadOptionVisibility` | Toggles visibility for the mark-as-unread option | `.setMarkAsUnreadOptionVisibility(View.GONE);` |
+| `setFlagOptionVisibility` | Toggles visibility for the flag/report option | `.setFlagOptionVisibility(View.GONE);` |
+| `setModerationViewVisibility` | Toggles visibility for the moderation view | `.setModerationViewVisibility(View.GONE);` |
+| `setSwipeToReplyEnabled` | Enables or disables swipe-to-reply gesture. Default is true | `.setSwipeToReplyEnabled(false);` |
+| `setStartFromUnreadMessages` | When true, scrolls to the first unread message on load | `.setStartFromUnreadMessages(true);` |
 | `setEnableConversationSummary` | Controls whether AI conversation summary is generated for conversations with many unread messages | `.setEnableConversationSummary(true);` |
-| `generateConversationSummary` | Triggers the generation of a conversation summary by fetching it from the ViewModel | `.generateConversationSummary();` |
-
+| `setEnableConversationStarter` | Controls whether conversation starters are generated in new conversations | `.setEnableConversationStarter(true);` |
+| `setEnableSmartReplies` | Enables smart replies for quick responses | `.setEnableSmartReplies(true);` |
+| `setAISmartRepliesKeywords` | Defines keywords in incoming messages that trigger Smart Replies | `.setAISmartRepliesKeywords(Arrays.asList("hello", "hi"));` |
+| `setSmartRepliesDelayDuration` | Sets the delay before Smart Replies are fetched after a message is received | `.setSmartRepliesDelayDuration(5000);` |
+| `setUnreadMessageThreshold` | Sets the threshold for unread messages before triggering conversation summary | `.setUnreadMessageThreshold(10);` |
+| `setFlagRemarkInputFieldVisibility` | Toggles visibility for the remark input field in the flag/report dialog | `.setFlagRemarkInputFieldVisibility(View.GONE);` |
+| `setFlagReasonLocalization` | Sets localization map for flag/report reason labels | `.setFlagReasonLocalization(map);` |
+| `setStreamingSpeed` | Sets the streaming speed for AI-generated content | `.setStreamingSpeed(100);` |
+| `refreshStyle` | Refreshes the style of the message list | `.refreshStyle();` |
 
 - **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `disableSoundForMessages(true)`, confirm no sound plays on incoming messages.
 
-### Advanced views
+## Custom View Slots
 
-What you're changing: The default UI elements of the message list including loading, empty, error states, date/time formatting, text formatting, header/footer views, AI assistant views, and message templates.
+Each slot replaces a section of the default UI.
 
-- **Where**: Activity or Fragment where you hold a reference to `CometChatMessageList`.
-- **Applies to**: `CometChatMessageList`.
-- **Default behavior**: The component renders its built-in views for loading, empty, error states, date separators, message timestamps, and message content.
-- **Override**: Call the corresponding setter method and provide a custom view, layout resource, or callback.
+| Slot | Method | Replaces |
+| --- | --- | --- |
+| Header view | `setHeaderView(View)` | Custom view above the message list |
+| Footer view | `setFooterView(View)` | Custom view below the message list |
+| Loading view | `setLoadingStateView(@LayoutRes int)` | Loading spinner |
+| Empty view | `setEmptyStateView(@LayoutRes int)` | Empty state |
+| Error view | `setErrorStateView(@LayoutRes int)` | Error state |
+| New message indicator | `setNewMessageIndicatorView(View)` | New message indicator |
+| AI greeting view | `setAIAssistantEmptyChatGreetingView(@LayoutRes int)` | AI assistant empty chat greeting |
+| Message templates | `setTemplates(List<CometChatMessageTemplate>)` | Message bubble templates |
+| Text formatters | `setTextFormatters(List<CometChatTextFormatter>)` | Text formatters (mentions, etc.) |
 
-#### `SetTemplate`
 
-`CometChatMessageTemplate` is a pre-defined structure for creating message views that can be used as a starting point or blueprint for creating message views often known as message bubbles. For more information, refer to [CometChatMessageTemplate](/ui-kit/android/message-template).
+### `setHeaderView`
 
-#### `setDateFormat`
-
-Specifies a custom format for displaying sticky date separators in the chat.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-messageList.setDateFormat(new SimpleDateFormat("MMM dd, yyyy",Locale.getDefault()));
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-messageList.setDateFormat(SimpleDateFormat("MMM dd, yyyy",Locale.getDefault()))
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Sets the sticky date separator format to "MMM dd, yyyy" (e.g., "Jul 10, 2024") using the device's default locale.
-
-#### `setDateTimeFormatter`
-
-Provides a custom implementation of `DateTimeFormatterCallback` to configure how time and date values are displayed. Each method corresponds to a specific case:
-
-- `time(long timestamp)` — Custom full timestamp format
-- `today(long timestamp)` — Called when a message is from today
-- `yesterday(long timestamp)` — Called for yesterday's messages
-- `lastWeek(long timestamp)` — Messages from the past week
-- `otherDays(long timestamp)` — Older messages
-- `minute(long timestamp)` / `hour(long timestamp)` — Exact time unit
-- `minutes(long diffInMinutesFromNow, long timestamp)` — e.g., "5 minutes ago"
-- `hours(long diffInHourFromNow, long timestamp)` — e.g., "2 hours ago"
-
-<Tabs>
-<Tab title="Java">
-```java lines
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-
-cometchatMessageList.setDateTimeFormatter(new DateTimeFormatterCallback() {
-
-        private final SimpleDateFormat fullTimeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-        private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-
-        @Override
-        public String time(long timestamp) {
-            return fullTimeFormatter.format(new Date(timestamp));
-        }
-
-        @Override
-        public String today(long timestamp) {
-            return "Today";
-        }
-
-        @Override
-        public String yesterday(long timestamp) {
-            return "Yesterday";
-        }
-
-        @Override
-        public String lastWeek(long timestamp) {
-            return "Last Week";
-        }
-
-        @Override
-        public String otherDays(long timestamp) {
-            return dateFormatter.format(new Date(timestamp));
-        }
-
-        @Override
-        public String minutes(long diffInMinutesFromNow, long timestamp) {
-            return diffInMinutesFromNow + " mins ago";
-        }
-
-        @Override
-        public String hours(long diffInHourFromNow, long timestamp) {
-            return diffInHourFromNow + " hrs ago";
-        }
-    });
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-import java.text.SimpleDateFormat
-import java.util.*
-
-cometchatMessageList.setDateTimeFormatter(object : DateTimeFormatterCallback {
-
-        private val fullTimeFormatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
-        private val dateFormatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-
-        override fun time(timestamp: Long): String {
-            return fullTimeFormatter.format(Date(timestamp))
-        }
-
-        override fun today(timestamp: Long): String {
-            return "Today"
-        }
-
-        override fun yesterday(timestamp: Long): String {
-            return "Yesterday"
-        }
-
-        override fun lastWeek(timestamp: Long): String {
-            return "Last Week"
-        }
-
-        override fun otherDays(timestamp: Long): String {
-            return dateFormatter.format(Date(timestamp))
-        }
-
-        override fun minutes(diffInMinutesFromNow: Long, timestamp: Long): String {
-            return "$diffInMinutesFromNow mins ago"
-        }
-
-        override fun hours(diffInHourFromNow: Long, timestamp: Long): String {
-            return "$diffInHourFromNow hrs ago"
-        }
-    });
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Overrides the default date/time formatting for message timestamps. Today's messages show "Today", yesterday's show "Yesterday", recent messages show "X mins ago" or "X hrs ago", last week's show "Last Week", and older messages show the full date in "dd MMM yyyy" format.
-
-#### `setTimeFormat`
-
-Defines the format in which time appears for each message bubble.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-messageList.setTimeFormat(new SimpleDateFormat("hh:mm a",Locale.getDefault()));
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-messageList.setTimeFormat(SimpleDateFormat("hh:mm a",Locale.getDefault()))
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Sets the message bubble time format to "hh:mm a" (e.g., "02:30 PM") using the device's default locale.
-
-#### `setLoadingView`
-
-Customizes the loading indicator when messages are being fetched.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometchatMessageList.setLoadingView(R.layout.your_loading_view);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatMessageList.loadingView = R.layout.your_loading_view
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Replaces the default loading spinner with your custom layout resource. The custom view displays while messages are being fetched.
-
-#### `setEmptyView`
-
-Defines a custom view to be displayed when no messages are available.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometchatMessageList.setEmptyView(R.layout.your_empty_view);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatMessageList.emptyView = R.layout.your_empty_view
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Replaces the default empty state with your custom layout resource. The custom view displays when the message list has no items.
-
-#### `setErrorView`
-
-Custom error state view displayed when fetching messages fails.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometchatMessageList.setErrorView(R.layout.your_error_view);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatMessageList.errorView = R.layout.your_error_view
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Replaces the default error state with your custom layout resource. The custom view displays when the component encounters an error during message fetching.
-
-#### `setTextFormatters`
-
-Assigns the list of text formatters. If the provided list is not null, it sets the list. Otherwise, it assigns the default text formatters retrieved from the data source. To configure the existing Mentions look and feel check out [MentionsFormatter Guide](/ui-kit/android/mentions-formatter-guide).
-
-<Frame>
-  <img src="/images/e2732868-mentions_message_bubble-fccf9cbdd63a54c2f734803e4480418a.png" />
-</Frame>
-
-```xml themes.xml lines
-<style name="CustomIncomingMessageBubbleMentionStyle" parent="CometChatIncomingBubbleMentionsStyle">
-    <item name="cometchatMentionTextAppearance">?attr/cometchatTextAppearanceBodyRegular</item>
-    <item name="cometchatMentionTextColor">#D6409F</item>
-    <item name="cometchatMentionBackgroundColor">#D6409F</item>
-    <item name="cometchatSelfMentionTextColor">#30A46C</item>
-    <item name="cometchatSelfMentionTextAppearance">?attr/cometchatTextAppearanceBodyRegular</item>
-    <item name="cometchatSelfMentionBackgroundColor">#30A46C</item>
-</style>
-
-<style name="CustomOutgoingMessageBubbleMentionStyle" parent="CometChatOutgoingBubbleMentionsStyle">
-    <item name="cometchatMentionTextAppearance">?attr/cometchatTextAppearanceBodyRegular</item>
-    <item name="cometchatMentionTextColor">#FFFFFF</item>
-    <item name="cometchatMentionBackgroundColor">#F9F8FD</item>
-    <item name="cometchatSelfMentionTextColor">#30A46C</item>
-    <item name="cometchatSelfMentionTextAppearance">?attr/cometchatTextAppearanceBodyRegular</item>
-    <item name="cometchatSelfMentionBackgroundColor">#30A46C</item>
-</style>
-```
-
-> **What this does:** Defines custom mention styles for incoming and outgoing message bubbles. Incoming mentions appear in pink (`#D6409F`) and outgoing mentions appear in white (`#FFFFFF`), both with green self-mentions (`#30A46C`).
-
-<Tabs>
-<Tab title="Java">
-```java lines
-// Initialize CometChatMentionsFormatter
-CometChatMentionsFormatter mentionFormatter = new CometChatMentionsFormatter(context);
-
-//set style to customize bubble mention text
-mentionFormatter.setOutgoingBubbleMentionTextStyle(context, R.style.CustomOutgoingMessageBubbleMentionStyle);
-
-mentionFormatter.setIncomingBubbleMentionTextStyle(context, R.style.CustomIncomingMessageBubbleMentionStyle);
-
-// This can be passed as an array of formatter in CometChatMessageList by using setTextFormatters method.
-List<CometChatTextFormatter> textFormatters = new ArrayList<>();
-textFormatters.add(mentionFormatter);
-messageList.setTextFormatters(textFormatters);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-
-// Initialize CometChatMentionsFormatter
-val mentionFormatter = CometChatMentionsFormatter(context)
-
-//set style to customize bubble mention text
-mentionFormatter.setOutgoingBubbleMentionTextStyle(context, R.style.CustomOutgoingMessageBubbleMentionStyle)
-
-mentionFormatter.setIncomingBubbleMentionTextStyle(context, R.style.CustomIncomingMessageBubbleMentionStyle)
-
-// This can be passed as an array of formatter in CometChatMessageList by using setTextFormatters method.
-val textFormatters: MutableList<CometChatTextFormatter> = ArrayList()
-textFormatters.add(mentionFormatter)
-messageList.setTextFormatters(textFormatters)
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Creates a `CometChatMentionsFormatter`, applies custom outgoing and incoming mention styles, adds it to a list of text formatters, and passes that list to the message list component. Mentions in message bubbles render with the custom colors.
-
-#### `setHeaderView`
-
-Sets a custom header view for the message list. The header displays at the top of the message list.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometChatMessageList.setHeaderView(view);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometChatMessageList.setHeaderView(view)
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Sets a custom `View` as the header of the message list. Pass any view (e.g., a toolbar with action buttons) to display above the messages.
+Sets a custom header view displayed at the top of the message list.
 
 <Frame>
   <img src="/images/ce4ca595-message_list_header_veiw-886f367b48234ddad6bdff6871a7d5fb.png" />
 </Frame>
 
-```html custom_header_layout.xml lines
+Create a `custom_header_layout.xml` layout:
+
+```xml custom_header_layout.xml lines
 
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -978,46 +724,24 @@ cometChatMessageList.setHeaderView(view)
 > **What this does:** Defines a custom header layout with three pill-shaped buttons: "Notes", "Pinned Messages", and "Saved Links". Each button uses a `MaterialCardView` with an icon and label styled with the primary color.
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometChatMessageList.setHeaderView(View.inflate(getContext(), R.layout.custom_header_layout, null));
-```
-
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 cometChatMessageList.setHeaderView(View.inflate(context, R.layout.custom_header_layout, null))
 ```
-
 </Tab>
 
+<Tab title="Java">
+```java lines
+cometChatMessageList.setHeaderView(View.inflate(getContext(), R.layout.custom_header_layout, null));
+```
+</Tab>
 </Tabs>
 
 > **What this does:** Inflates the `custom_header_layout.xml` and sets it as the header view of the message list. The three pill buttons display above the messages.
 
-#### `setFooterView`
+### `setFooterView`
 
-Sets a custom footer view for the message list. The footer displays at the bottom of the message list.
-
-<Tabs>
-<Tab title="Java">
-```java lines
-cometChatMessageList.setFooterView(view);
-```
-
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometChatMessageList.setFooterView(view)
-```
-
-</Tab>
-
-</Tabs>
-
-> **What this does:** Sets a custom `View` as the footer of the message list. Pass any view (e.g., quick reply buttons, typing indicators, or a disclaimer) to display below the messages.
+Sets a custom footer view displayed at the bottom of the message list.
 
 <Frame>
   <img src="/images/53d4119c-message_list_footer_view-7210ad9b52c7d141691091518bd6e4e3.png" />
@@ -1153,104 +877,797 @@ cometChatMessageList.setFooterView(view)
 > **What this does:** Defines a custom footer layout with three pill-shaped buttons: "Notes", "Pinned Messages", and "Saved Links". Each button uses a `MaterialCardView` with an icon and label styled with the primary color.
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometChatMessageList.setFooterView(View.inflate(getContext(), R.layout.custom_footer_layout, null));
-```
-
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 cometChatMessageList.setFooterView(View.inflate(context, R.layout.custom_footer_layout, null))
 ```
-
 </Tab>
 
+<Tab title="Java">
+```java lines
+cometChatMessageList.setFooterView(View.inflate(getContext(), R.layout.custom_footer_layout, null));
+```
+</Tab>
 </Tabs>
 
 > **What this does:** Inflates the `custom_footer_layout.xml` and sets it as the footer view of the message list. The three pill buttons display below the messages.
 
-- **Verify**: After setting any advanced view, confirm the custom view renders in the correct position within the message list, and the data binding populates correctly.
+### `setLoadingStateView`
 
-#### `setNewMessageIndicatorView`
+Customizes the loading indicator when messages are being fetched.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatMessageList.setLoadingStateView(R.layout.your_loading_view)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatMessageList.setLoadingStateView(R.layout.your_loading_view);
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Replaces the default loading spinner with your custom layout resource. The custom view displays while messages are being fetched.
+
+### `setEmptyStateView`
+
+Defines a custom view displayed when no messages are available.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatMessageList.setEmptyStateView(R.layout.your_empty_view)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatMessageList.setEmptyStateView(R.layout.your_empty_view);
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Replaces the default empty state with your custom layout resource. The custom view displays when the message list has no items.
+
+### `setErrorStateView`
+
+Custom error state view displayed when fetching messages fails.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatMessageList.setErrorStateView(R.layout.your_error_view)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatMessageList.setErrorStateView(R.layout.your_error_view);
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Replaces the default error state with your custom layout resource. The custom view displays when the component encounters an error during message fetching.
+
+### `setNewMessageIndicatorView`
 
 Replaces the default "new messages" indicator that appears when new messages arrive while the user has scrolled up.
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-View customIndicator = LayoutInflater.from(this).inflate(R.layout.custom_new_message_indicator, null);
-cometchatMessageList.setNewMessageIndicatorView(customIndicator);
-```
-
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 val customIndicator = LayoutInflater.from(this).inflate(R.layout.custom_new_message_indicator, null)
 cometchatMessageList.setNewMessageIndicatorView(customIndicator)
 ```
-
 </Tab>
 
+<Tab title="Java">
+```java YourActivity.java lines
+View customIndicator = LayoutInflater.from(this).inflate(R.layout.custom_new_message_indicator, null);
+cometchatMessageList.setNewMessageIndicatorView(customIndicator);
+```
+</Tab>
 </Tabs>
 
 > **What this does:** Replaces the default new message indicator with a custom layout. The indicator appears when new messages arrive while the user is scrolled up in the message list.
 
-## Customization matrix
+### `setTemplates`
 
-| What you want to change | Where | Property/API | Example |
+`CometChatMessageTemplate` is a pre-defined structure for creating message views (message bubbles). For more information, refer to [CometChatMessageTemplate](/ui-kit/android/message-template).
+
+### `setTextFormatters`
+
+Assigns the list of text formatters. If the provided list is not null, it sets the list. Otherwise, it assigns the default text formatters retrieved from the data source. To configure the existing Mentions look and feel check out [MentionsFormatter Guide](/ui-kit/android/mentions-formatter-guide).
+
+<Frame>
+  <img src="/images/e2732868-mentions_message_bubble-fccf9cbdd63a54c2f734803e4480418a.png" />
+</Frame>
+
+```xml themes.xml lines
+<style name="CustomIncomingMessageBubbleMentionStyle" parent="CometChatIncomingBubbleMentionsStyle">
+    <item name="cometchatMentionTextAppearance">?attr/cometchatTextAppearanceBodyRegular</item>
+    <item name="cometchatMentionTextColor">#D6409F</item>
+    <item name="cometchatMentionBackgroundColor">#D6409F</item>
+    <item name="cometchatSelfMentionTextColor">#30A46C</item>
+    <item name="cometchatSelfMentionTextAppearance">?attr/cometchatTextAppearanceBodyRegular</item>
+    <item name="cometchatSelfMentionBackgroundColor">#30A46C</item>
+</style>
+
+<style name="CustomOutgoingMessageBubbleMentionStyle" parent="CometChatOutgoingBubbleMentionsStyle">
+    <item name="cometchatMentionTextAppearance">?attr/cometchatTextAppearanceBodyRegular</item>
+    <item name="cometchatMentionTextColor">#FFFFFF</item>
+    <item name="cometchatMentionBackgroundColor">#F9F8FD</item>
+    <item name="cometchatSelfMentionTextColor">#30A46C</item>
+    <item name="cometchatSelfMentionTextAppearance">?attr/cometchatTextAppearanceBodyRegular</item>
+    <item name="cometchatSelfMentionBackgroundColor">#30A46C</item>
+</style>
+```
+
+> **What this does:** Defines custom mention styles for incoming and outgoing message bubbles. Incoming mentions appear in pink (`#D6409F`) and outgoing mentions appear in white (`#FFFFFF`), both with green self-mentions (`#30A46C`).
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+
+// Initialize CometChatMentionsFormatter
+val mentionFormatter = CometChatMentionsFormatter(context)
+
+//set style to customize bubble mention text
+mentionFormatter.setOutgoingBubbleMentionTextStyle(context, R.style.CustomOutgoingMessageBubbleMentionStyle)
+
+mentionFormatter.setIncomingBubbleMentionTextStyle(context, R.style.CustomIncomingMessageBubbleMentionStyle)
+
+// This can be passed as an array of formatter in CometChatMessageList by using setTextFormatters method.
+val textFormatters: MutableList<CometChatTextFormatter> = ArrayList()
+textFormatters.add(mentionFormatter)
+messageList.setTextFormatters(textFormatters)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+// Initialize CometChatMentionsFormatter
+CometChatMentionsFormatter mentionFormatter = new CometChatMentionsFormatter(context);
+
+//set style to customize bubble mention text
+mentionFormatter.setOutgoingBubbleMentionTextStyle(context, R.style.CustomOutgoingMessageBubbleMentionStyle);
+
+mentionFormatter.setIncomingBubbleMentionTextStyle(context, R.style.CustomIncomingMessageBubbleMentionStyle);
+
+// This can be passed as an array of formatter in CometChatMessageList by using setTextFormatters method.
+List<CometChatTextFormatter> textFormatters = new ArrayList<>();
+textFormatters.add(mentionFormatter);
+messageList.setTextFormatters(textFormatters);
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Creates a `CometChatMentionsFormatter`, applies custom outgoing and incoming mention styles, adds it to a list of text formatters, and passes that list to the message list component. Mentions in message bubbles render with the custom colors.
+
+### `setDateFormat`
+
+Specifies a custom format for displaying sticky date separators in the chat.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+messageList.setDateFormat(SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()))
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+messageList.setDateFormat(new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()));
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Sets the sticky date separator format to "MMM dd, yyyy" (e.g., "Jul 10, 2024") using the device's default locale.
+
+### `setTimeFormat`
+
+Defines the format in which time appears for each message bubble.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+messageList.setTimeFormat(SimpleDateFormat("hh:mm a", Locale.getDefault()))
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+messageList.setTimeFormat(new SimpleDateFormat("hh:mm a", Locale.getDefault()));
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Sets the message bubble time format to "hh:mm a" (e.g., "02:30 PM") using the device's default locale.
+
+### `setDateTimeFormatter`
+
+Provides a custom implementation of `DateTimeFormatterCallback` to configure how time and date values are displayed. Each method corresponds to a specific case:
+
+- `time(long timestamp)` — Custom full timestamp format
+- `today(long timestamp)` — Called when a message is from today
+- `yesterday(long timestamp)` — Called for yesterday's messages
+- `lastWeek(long timestamp)` — Messages from the past week
+- `otherDays(long timestamp)` — Older messages
+- `minutes(long diffInMinutesFromNow, long timestamp)` — e.g., "5 minutes ago"
+- `hours(long diffInHourFromNow, long timestamp)` — e.g., "2 hours ago"
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+import java.text.SimpleDateFormat
+import java.util.*
+
+cometchatMessageList.setDateTimeFormatter(object : DateTimeFormatterCallback {
+
+        private val fullTimeFormatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        private val dateFormatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+
+        override fun time(timestamp: Long): String {
+            return fullTimeFormatter.format(Date(timestamp))
+        }
+
+        override fun today(timestamp: Long): String {
+            return "Today"
+        }
+
+        override fun yesterday(timestamp: Long): String {
+            return "Yesterday"
+        }
+
+        override fun lastWeek(timestamp: Long): String {
+            return "Last Week"
+        }
+
+        override fun otherDays(timestamp: Long): String {
+            return dateFormatter.format(Date(timestamp))
+        }
+
+        override fun minutes(diffInMinutesFromNow: Long, timestamp: Long): String {
+            return "$diffInMinutesFromNow mins ago"
+        }
+
+        override fun hours(diffInHourFromNow: Long, timestamp: Long): String {
+            return "$diffInHourFromNow hrs ago"
+        }
+    });
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+
+cometchatMessageList.setDateTimeFormatter(new DateTimeFormatterCallback() {
+
+        private final SimpleDateFormat fullTimeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+
+        @Override
+        public String time(long timestamp) {
+            return fullTimeFormatter.format(new Date(timestamp));
+        }
+
+        @Override
+        public String today(long timestamp) {
+            return "Today";
+        }
+
+        @Override
+        public String yesterday(long timestamp) {
+            return "Yesterday";
+        }
+
+        @Override
+        public String lastWeek(long timestamp) {
+            return "Last Week";
+        }
+
+        @Override
+        public String otherDays(long timestamp) {
+            return dateFormatter.format(new Date(timestamp));
+        }
+
+        @Override
+        public String minutes(long diffInMinutesFromNow, long timestamp) {
+            return diffInMinutesFromNow + " mins ago";
+        }
+
+        @Override
+        public String hours(long diffInHourFromNow, long timestamp) {
+            return diffInHourFromNow + " hrs ago";
+        }
+    });
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Overrides the default date/time formatting for message timestamps. Today's messages show "Today", yesterday's show "Yesterday", recent messages show "X mins ago" or "X hrs ago", last week's show "Last Week", and older messages show the full date in "dd MMM yyyy" format.
+
+- **Verify**: After setting any custom view slot, confirm the custom view renders in the correct position within the message list, and the data binding populates correctly.
+
+
+## Common Patterns
+
+### Hide all chrome — minimal message list
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.setAvatarVisibility(View.GONE)
+cometChatMessageList.setReceiptsVisibility(View.GONE)
+cometChatMessageList.setStickyDateVisibility(View.GONE)
+cometChatMessageList.setGroupActionMessageVisibility(View.GONE)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.setAvatarVisibility(View.GONE);
+cometChatMessageList.setReceiptsVisibility(View.GONE);
+cometChatMessageList.setStickyDateVisibility(View.GONE);
+cometChatMessageList.setGroupActionMessageVisibility(View.GONE);
+```
+</Tab>
+</Tabs>
+
+### Hide all message action options
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.setReplyInThreadOptionVisibility(View.GONE)
+cometChatMessageList.setEditMessageOptionVisibility(View.GONE)
+cometChatMessageList.setDeleteMessageOptionVisibility(View.GONE)
+cometChatMessageList.setCopyMessageOptionVisibility(View.GONE)
+cometChatMessageList.setMessageReactionOptionVisibility(View.GONE)
+cometChatMessageList.setTranslateMessageOptionVisibility(View.GONE)
+cometChatMessageList.setMessagePrivatelyOptionVisibility(View.GONE)
+cometChatMessageList.setMessageInfoOptionVisibility(View.GONE)
+cometChatMessageList.setReplyOptionVisibility(View.GONE)
+cometChatMessageList.setShareMessageOptionVisibility(View.GONE)
+cometChatMessageList.setMarkAsUnreadOptionVisibility(View.GONE)
+cometChatMessageList.setFlagOptionVisibility(View.GONE)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.setReplyInThreadOptionVisibility(View.GONE);
+cometChatMessageList.setEditMessageOptionVisibility(View.GONE);
+cometChatMessageList.setDeleteMessageOptionVisibility(View.GONE);
+cometChatMessageList.setCopyMessageOptionVisibility(View.GONE);
+cometChatMessageList.setMessageReactionOptionVisibility(View.GONE);
+cometChatMessageList.setTranslateMessageOptionVisibility(View.GONE);
+cometChatMessageList.setMessagePrivatelyOptionVisibility(View.GONE);
+cometChatMessageList.setMessageInfoOptionVisibility(View.GONE);
+cometChatMessageList.setReplyOptionVisibility(View.GONE);
+cometChatMessageList.setShareMessageOptionVisibility(View.GONE);
+cometChatMessageList.setMarkAsUnreadOptionVisibility(View.GONE);
+cometChatMessageList.setFlagOptionVisibility(View.GONE);
+```
+</Tab>
+</Tabs>
+
+### Enable AI features
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.setEnableSmartReplies(true)
+cometChatMessageList.setEnableConversationStarter(true)
+cometChatMessageList.setEnableConversationSummary(true)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.setEnableSmartReplies(true);
+cometChatMessageList.setEnableConversationStarter(true);
+cometChatMessageList.setEnableConversationSummary(true);
+```
+</Tab>
+</Tabs>
+
+### Custom quick reactions
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.setQuickReactions(listOf("👻", "😈", "🙀", "🤡", "❤️"))
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.setQuickReactions(Arrays.asList("👻", "😈", "🙀", "🤡", "❤️"));
+```
+</Tab>
+</Tabs>
+
+### Start from unread messages
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.setStartFromUnreadMessages(true)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.setStartFromUnreadMessages(true);
+```
+</Tab>
+</Tabs>
+
+## Advanced Methods
+
+### Scroll and Navigation
+
+#### `scrollToBottom`
+
+Programmatically scrolls to the bottom of the message list.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.scrollToBottom()
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.scrollToBottom();
+```
+</Tab>
+</Tabs>
+
+#### `scrollToMessageId`
+
+Scrolls to a specific message by its ID and highlights it.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.scrollToMessageId(messageId)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.scrollToMessageId(messageId);
+```
+</Tab>
+</Tabs>
+
+#### `gotoMessage`
+
+Navigates to a specific message by ID.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.gotoMessage(messageId)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.gotoMessage(messageId);
+```
+</Tab>
+</Tabs>
+
+### Message Manipulation
+
+#### `addMessage`
+
+Programmatically adds a message to the list.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.addMessage(baseMessage)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.addMessage(baseMessage);
+```
+</Tab>
+</Tabs>
+
+#### `setList`
+
+Replaces the entire message list with a new list.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.setList(messageList)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.setList(messageList);
+```
+</Tab>
+</Tabs>
+
+#### `updateMessage`
+
+Updates a message at a given index.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.updateMessage(index)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.updateMessage(index);
+```
+</Tab>
+</Tabs>
+
+### Threaded Messages
+
+#### `setParentMessage`
+
+Sets the parent message ID for threaded message view.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.setParentMessage(parentMessageId)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.setParentMessage(parentMessageId);
+```
+</Tab>
+</Tabs>
+
+### AI Features
+
+#### `generateConversationSummary`
+
+Triggers the generation of a conversation summary by fetching it from the ViewModel.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.generateConversationSummary()
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.generateConversationSummary();
+```
+</Tab>
+</Tabs>
+
+#### `setAIAssistantSuggestedMessages`
+
+Sets suggested messages for the AI assistant.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.setAIAssistantSuggestedMessages(listOf("How can I help?", "Tell me more"))
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.setAIAssistantSuggestedMessages(Arrays.asList("How can I help?", "Tell me more"));
+```
+</Tab>
+</Tabs>
+
+#### `setAiAssistantTools`
+
+Registers custom AI assistant tool call listeners.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+val tools = HashMap<String, ToolCallListener>()
+cometChatMessageList.setAiAssistantTools(tools)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+HashMap<String, ToolCallListener> tools = new HashMap<>();
+cometChatMessageList.setAiAssistantTools(tools);
+```
+</Tab>
+</Tabs>
+
+### Bubble Margins
+
+| Method | Description |
+| --- | --- |
+| `setLeftBubbleMargin(top, bottom, left, right)` | Sets margins for incoming (left) message bubbles |
+| `setRightBubbleMargin(top, bottom, left, right)` | Sets margins for outgoing (right) message bubbles |
+| `setBubbleMargin(top, bottom, left, right)` | Sets margins for all message bubbles |
+
+### Internal Access
+
+These methods provide direct access to internal components for advanced use cases.
+
+| Method | Returns | Description |
+| --- | --- | --- |
+| `getAdapter()` | `MessageAdapter` | The adapter powering the RecyclerView |
+| `setAdapter(MessageAdapter)` | `void` | Replaces the default adapter with a custom one |
+| `getViewModel()` | `MessageListViewModel` | The ViewModel managing message data and state |
+| `getRecyclerView()` | `RecyclerView` | The internal RecyclerView |
+| `getView()` | `LinearLayout` | The root view of the component |
+| `getNewMessageLayout()` | `MaterialCardView` | The new message indicator layout |
+| `getNewMessageImageView()` | `ImageView` | The new message indicator image |
+| `getStickyHeaderDecoration()` | `StickyHeaderDecoration` | The sticky date header decoration |
+| `getParentMessageId()` | `long` | The parent message ID for threaded view |
+| `getMentionsFormatter()` | `CometChatMentionsFormatter` | The mentions formatter instance |
+| `atBottom()` | `boolean` | Whether the list is scrolled to the bottom |
+| `isHasMore()` | `boolean` | Whether more messages are available to load |
+| `setAutoFetch(boolean)` | `void` | Controls automatic message fetching |
+| `setMentionAllLabelId(String, String)` | `void` | Sets the mention-all label ID and display text |
+
+> Use these only when the standard API is insufficient. Directly manipulating the adapter or ViewModel may conflict with the component's internal state management.
+
+## Style
+
+The component uses XML theme styles. Define a custom style with parent `CometChatMessageListStyle` in `themes.xml`, then apply with `setStyle()`.
+
+<Frame>
+  <img src="/images/03a08ce8-message_list_styling-ebbb6bea74da1c21078f037fb50d8bff.png" />
+</Frame>
+
+```xml themes.xml lines
+    <style name="CustomOutgoingMessageBubbleStyle" parent="CometChatOutgoingMessageBubbleStyle">
+        <item name="cometchatMessageBubbleBackgroundColor">#F76808</item>
+    </style>
+
+    <style name="CustomCometChatMessageListStyle" parent="CometChatMessageListStyle">
+        <item name="cometchatMessageListBackgroundColor">#FEEDE1</item>
+        <item name="cometchatMessageListOutgoingMessageBubbleStyle">@style/CustomOutgoingMessageBubbleStyle</item>
+    </style>
+```
+
+> **What this does:** Defines two custom styles: `CustomOutgoingMessageBubbleStyle` sets the outgoing message bubble background to orange (`#F76808`); `CustomCometChatMessageListStyle` sets the message list background to light peach (`#FEEDE1`) and applies the custom outgoing bubble style.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageList.setStyle(R.style.CustomCometChatMessageListStyle)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatMessageList.setStyle(R.style.CustomCometChatMessageListStyle);
+```
+</Tab>
+</Tabs>
+
+To know more such attributes, visit the [attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_message_list.xml).
+
+### Programmatic Style Properties
+
+In addition to XML theme styles, the component exposes programmatic setters for fine-grained control:
+
+| Method | Type | Description |
+| --- | --- | --- |
+| `setIncomingMessageBubbleStyle` | `@StyleRes int` | Style for incoming message bubbles |
+| `setOutgoingMessageBubbleStyle` | `@StyleRes int` | Style for outgoing message bubbles |
+| `setDateSeparatorStyle` | `@StyleRes int` | Style for date separator headers |
+| `setDeleteDialogStyle` | `@StyleRes int` | Style for the delete confirmation dialog |
+| `setMessageInformationStyle` | `@StyleRes int` | Style for the message information sheet |
+| `setMessageOptionSheetStyle` | `@StyleRes int` | Style for the message option action sheet |
+| `setReactionListStyle` | `@StyleRes int` | Style for the reaction list bottom sheet |
+| `setModerationViewStyle` | `@StyleRes int` | Style for the moderation view |
+| `setFlagMessageStyle` | `@StyleRes int` | Style for the flag/report message dialog |
+| `setBadgeStyle` | `@StyleRes int` | Style for the unread message badge |
+| `setAISmartRepliesStyle` | `@StyleRes int` | Style for AI smart replies |
+| `setAIConversationStarterStyle` | `@StyleRes int` | Style for AI conversation starters |
+| `setAIConversationSummaryStyle` | `@StyleRes int` | Style for AI conversation summary |
+| `setErrorStateTitleTextColor` | `@ColorInt int` | Title text color for the error state |
+| `setErrorStateTitleTextAppearance` | `@StyleRes int` | Title text appearance for the error state |
+| `setErrorStateSubtitleTextColor` | `@ColorInt int` | Subtitle text color for the error state |
+| `setErrorStateSubtitleTextAppearance` | `@StyleRes int` | Subtitle text appearance for the error state |
+| `setNewMessageIndicatorIconTint` | `@ColorInt int` | Tint color for the new message indicator icon |
+| `setAddReactionIcon` | `int` | Custom icon for the add reaction button |
+
+
+## Customization Matrix
+
+| What to change | Where | Property/API | Example |
 | --- | --- | --- | --- |
-| Outgoing message bubble background | `themes.xml` | `CometChatMessageListStyle` with `cometchatMessageListOutgoingMessageBubbleStyle` | `<item name="cometchatMessageBubbleBackgroundColor">#F76808</item>` |
-| Message list background color | `themes.xml` | `CometChatMessageListStyle` with `cometchatMessageListBackgroundColor` | `<item name="cometchatMessageListBackgroundColor">#FEEDE1</item>` |
+| Override behavior on user interaction | Activity/Fragment | `setOn<Event>` callbacks | `setOnThreadRepliesClick((ctx, msg, tpl) -> { ... })` |
+| Filter which messages appear | Activity/Fragment | `setMessagesRequestBuilder` | `setMessagesRequestBuilder(builder)` |
+| Customize reactions fetching | Activity/Fragment | `setReactionsRequestBuilder` | `setReactionsRequestBuilder(builder)` |
+| Toggle visibility of UI elements | Activity/Fragment | `set<Feature>Visibility(int)` | `setReceiptsVisibility(View.GONE)` |
+| Replace header/footer views | Activity/Fragment | `setHeaderView` / `setFooterView` | `setHeaderView(view)` |
+| Change colors, fonts, spacing | `themes.xml` | `CometChatMessageListStyle` | `<item name="cometchatMessageListBackgroundColor">#FEEDE1</item>` |
+| Outgoing bubble style | `themes.xml` | `cometchatMessageListOutgoingMessageBubbleStyle` | `<item name="cometchatMessageBubbleBackgroundColor">#F76808</item>` |
 | Apply a custom style | Activity/Fragment | `setStyle(int styleRes)` | `cometChatMessageList.setStyle(R.style.CustomCometChatMessageListStyle);` |
 | Set user for messages | Activity/Fragment | `setUser(User)` | `.setUser(user);` |
-| Set group for messages | Activity/Fragment | `setGroup(Group)` | `.setGroup(Group);` |
-| Message alignment | Activity/Fragment | `setAlignment(UIKitConstants.MessageListAlignment)` | `.setAlignment(UIKitConstants.MessageListAlignment);` |
+| Set group for messages | Activity/Fragment | `setGroup(Group)` | `.setGroup(group);` |
+| Message alignment | Activity/Fragment | `setMessageAlignment(UIKitConstants.MessageListAlignment)` | `.setMessageAlignment(UIKitConstants.MessageListAlignment.STANDARD);` |
 | Error state visibility | Activity/Fragment | `setErrorStateVisibility(int)` | `.setErrorStateVisibility(View.GONE);` |
-| Incoming/outgoing message sound | Activity/Fragment | `disableSoundForMessages(boolean)` | `.disableSoundForMessages(false);` |
+| Incoming/outgoing message sound | Activity/Fragment | `disableSoundForMessages(boolean)` | `.disableSoundForMessages(true);` |
 | Custom message sound | Activity/Fragment | `setCustomSoundForMessages(int)` | `.setCustomSoundForMessages(@RawRes resource);` |
 | Avatar visibility | Activity/Fragment | `setAvatarVisibility(int)` | `.setAvatarVisibility(View.GONE);` |
 | Scroll to bottom on new message | Activity/Fragment | `scrollToBottomOnNewMessage(boolean)` | `.scrollToBottomOnNewMessage(true);` |
 | Read/delivered receipts visibility | Activity/Fragment | `setReceiptsVisibility(int)` | `.setReceiptsVisibility(View.GONE);` |
-| Quick reactions list | Activity/Fragment | `setQuickReactions(List)` | `.setQuickReactions(Arrays.asList("👻","😈","🙀","🤡","❤️");` |
+| Quick reactions list | Activity/Fragment | `setQuickReactions(List)` | `.setQuickReactions(Arrays.asList("👻","😈","🙀","🤡","❤️"));` |
 | Sticky date visibility | Activity/Fragment | `setStickyDateVisibility(int)` | `.setStickyDateVisibility(View.GONE);` |
-| Thread reply option visibility | Activity/Fragment | `replyInThreadOptionVisibility(int)` | `.replyInThreadOptionVisibility(View.GONE);` |
-| Translate option visibility | Activity/Fragment | `translateMessageOptionVisibility(int)` | `.translateMessageOptionVisibility(View.GONE);` |
-| Edit option visibility | Activity/Fragment | `editMessageOptionVisibility(int)` | `.editMessageOptionVisibility(View.GONE);` |
-| Delete option visibility | Activity/Fragment | `deleteMessageOptionVisibility(int)` | `.deleteMessageOptionVisibility(View.GONE);` |
+| Thread reply option visibility | Activity/Fragment | `setReplyInThreadOptionVisibility(int)` | `.setReplyInThreadOptionVisibility(View.GONE);` |
+| Translate option visibility | Activity/Fragment | `setTranslateMessageOptionVisibility(int)` | `.setTranslateMessageOptionVisibility(View.GONE);` |
+| Edit option visibility | Activity/Fragment | `setEditMessageOptionVisibility(int)` | `.setEditMessageOptionVisibility(View.GONE);` |
+| Delete option visibility | Activity/Fragment | `setDeleteMessageOptionVisibility(int)` | `.setDeleteMessageOptionVisibility(View.GONE);` |
 | Reaction option visibility | Activity/Fragment | `setMessageReactionOptionVisibility(int)` | `.setMessageReactionOptionVisibility(View.GONE);` |
-| Private message option visibility | Activity/Fragment | `messagePrivatelyOptionVisibility(int)` | `.messagePrivatelyOptionVisibility(View.GONE);` |
-| Copy option visibility | Activity/Fragment | `copyMessageOptionVisibility(int)` | `.copyMessageOptionVisibility(View.GONE);` |
-| Message info option visibility | Activity/Fragment | `messageInfoOptionVisibility(int)` | `.messageInfoOptionVisibility(View.GONE);` |
-| Group action message visibility | Activity/Fragment | `groupActionMessageVisibility(int)` | `.groupActionMessageVisibility(View.GONE);` |
-| Conversation starters | Activity/Fragment | `enableConversationStarters(boolean)` | `.enableConversationStarters(true);` |
-| Smart replies | Activity/Fragment | `enableSmartReplies(boolean)` | `.enableSmartReplies(true);` |
-| Smart replies keywords | Activity/Fragment | `setAISmartRepliesKeywords(List)` | `.setAISmartRepliesKeywords(Arrays.asList("hello", "hi"));` |
-| Smart replies delay | Activity/Fragment | `smartRepliesDelayDuration(int)` | `.smartRepliesDelayDuration(5000);` |
-| Date/time formatting | Activity/Fragment | `setDateTimeFormatter(DateTimeFormatterCallback)` | See `setDateTimeFormatter` code above |
-| Sticky date format | Activity/Fragment | `setDateFormat(SimpleDateFormat)` | `messageList.setDateFormat(new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()));` |
-| Message bubble time format | Activity/Fragment | `setTimeFormat(SimpleDateFormat)` | `messageList.setTimeFormat(new SimpleDateFormat("hh:mm a", Locale.getDefault()));` |
-| Loading view | Activity/Fragment | `setLoadingView(int)` | `cometchatMessageList.setLoadingView(R.layout.your_loading_view);` |
-| Empty view | Activity/Fragment | `setEmptyView(int)` | `cometchatMessageList.setEmptyView(R.layout.your_empty_view);` |
-| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatMessageList.setErrorView(R.layout.your_error_view);` |
-| Header view | Activity/Fragment | `setHeaderView(View)` | `cometChatMessageList.setHeaderView(view);` |
-| Footer view | Activity/Fragment | `setFooterView(View)` | `cometChatMessageList.setFooterView(view);` |
-| Text formatters (mentions) | Activity/Fragment | `setTextFormatters(List<CometChatTextFormatter>)` | See `setTextFormatters` code above |
-| Refresh style | Activity/Fragment | `refreshStyle()` | `.refreshStyle();` |
-| Swipe to reply | Activity/Fragment | `setSwipeToReplyEnabled(boolean)` | `.setSwipeToReplyEnabled(false);` |
+| Private message option visibility | Activity/Fragment | `setMessagePrivatelyOptionVisibility(int)` | `.setMessagePrivatelyOptionVisibility(View.GONE);` |
+| Copy option visibility | Activity/Fragment | `setCopyMessageOptionVisibility(int)` | `.setCopyMessageOptionVisibility(View.GONE);` |
+| Message info option visibility | Activity/Fragment | `setMessageInfoOptionVisibility(int)` | `.setMessageInfoOptionVisibility(View.GONE);` |
+| Group action message visibility | Activity/Fragment | `setGroupActionMessageVisibility(int)` | `.setGroupActionMessageVisibility(View.GONE);` |
 | Reply option visibility | Activity/Fragment | `setReplyOptionVisibility(int)` | `.setReplyOptionVisibility(View.GONE);` |
 | Share option visibility | Activity/Fragment | `setShareMessageOptionVisibility(int)` | `.setShareMessageOptionVisibility(View.GONE);` |
 | Mark as unread option | Activity/Fragment | `setMarkAsUnreadOptionVisibility(int)` | `.setMarkAsUnreadOptionVisibility(View.GONE);` |
 | Flag/report option | Activity/Fragment | `setFlagOptionVisibility(int)` | `.setFlagOptionVisibility(View.GONE);` |
+| Moderation view visibility | Activity/Fragment | `setModerationViewVisibility(int)` | `.setModerationViewVisibility(View.GONE);` |
+| Swipe to reply | Activity/Fragment | `setSwipeToReplyEnabled(boolean)` | `.setSwipeToReplyEnabled(false);` |
 | Start from unread messages | Activity/Fragment | `setStartFromUnreadMessages(boolean)` | `.setStartFromUnreadMessages(true);` |
+| Conversation starters | Activity/Fragment | `setEnableConversationStarter(boolean)` | `.setEnableConversationStarter(true);` |
+| Smart replies | Activity/Fragment | `setEnableSmartReplies(boolean)` | `.setEnableSmartReplies(true);` |
+| Smart replies keywords | Activity/Fragment | `setAISmartRepliesKeywords(List)` | `.setAISmartRepliesKeywords(Arrays.asList("hello", "hi"));` |
+| Smart replies delay | Activity/Fragment | `setSmartRepliesDelayDuration(int)` | `.setSmartRepliesDelayDuration(5000);` |
+| Conversation summary | Activity/Fragment | `setEnableConversationSummary(boolean)` | `.setEnableConversationSummary(true);` |
+| Unread message threshold | Activity/Fragment | `setUnreadMessageThreshold(int)` | `.setUnreadMessageThreshold(10);` |
+| Date/time formatting | Activity/Fragment | `setDateTimeFormatter(DateTimeFormatterCallback)` | See `setDateTimeFormatter` code above |
+| Sticky date format | Activity/Fragment | `setDateFormat(SimpleDateFormat)` | `messageList.setDateFormat(new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()));` |
+| Message bubble time format | Activity/Fragment | `setTimeFormat(SimpleDateFormat)` | `messageList.setTimeFormat(new SimpleDateFormat("hh:mm a", Locale.getDefault()));` |
+| Loading view | Activity/Fragment | `setLoadingStateView(int)` | `cometchatMessageList.setLoadingStateView(R.layout.your_loading_view);` |
+| Empty view | Activity/Fragment | `setEmptyStateView(int)` | `cometchatMessageList.setEmptyStateView(R.layout.your_empty_view);` |
+| Error view | Activity/Fragment | `setErrorStateView(int)` | `cometchatMessageList.setErrorStateView(R.layout.your_error_view);` |
+| Header view | Activity/Fragment | `setHeaderView(View)` | `cometChatMessageList.setHeaderView(view);` |
+| Footer view | Activity/Fragment | `setFooterView(View)` | `cometChatMessageList.setFooterView(view);` |
 | New message indicator view | Activity/Fragment | `setNewMessageIndicatorView(View)` | `cometchatMessageList.setNewMessageIndicatorView(view);` |
-| Enable conversation summary | Activity/Fragment | `setEnableConversationSummary(boolean)` | `.setEnableConversationSummary(true);` |
-| Generate conversation summary | Activity/Fragment | `generateConversationSummary()` | `.generateConversationSummary();` |
-| Filter messages | Activity/Fragment | `setMessagesRequestBuilder(MessagesRequestBuilder)` | See Filters code above |
+| Text formatters (mentions) | Activity/Fragment | `setTextFormatters(List<CometChatTextFormatter>)` | See `setTextFormatters` code above |
+| Message templates | Activity/Fragment | `setTemplates(List<CometChatMessageTemplate>)` | See [CometChatMessageTemplate](/ui-kit/android/message-template) |
+| Refresh style | Activity/Fragment | `refreshStyle()` | `.refreshStyle();` |
+| Streaming speed | Activity/Fragment | `setStreamingSpeed(Integer)` | `.setStreamingSpeed(100);` |
+| Bubble margins | Activity/Fragment | `setLeftBubbleMargin` / `setRightBubbleMargin` / `setBubbleMargin` | `.setBubbleMargin(4, 4, 8, 8);` |
+| Internal adapter access | Activity/Fragment | `getAdapter()` / `setAdapter()` | Advanced use only |
 
-## Common pitfalls & fixes
+## Accessibility
+
+The component renders a scrollable `RecyclerView` of message bubbles. Each message bubble responds to tap and long-press gestures. Avatar images include the user name as content description. Date separators and sticky headers provide temporal navigation context for screen readers.
+
+For custom views provided via `setHeaderView`, `setFooterView`, or `setNewMessageIndicatorView`, ensure you set `android:contentDescription` on visual-only elements so TalkBack can announce them. The default views handle this automatically.
+
+Read receipt indicators and reaction pills are visual-only by default. If screen reader descriptions are needed, provide them via custom views with appropriate `contentDescription` attributes.
+
+## Common Pitfalls & Fixes
 
 | Pitfall | Fix |
 | --- | --- |
@@ -1261,7 +1678,7 @@ cometchatMessageList.setNewMessageIndicatorView(customIndicator)
 | Filters not applied | Ensure you call `setMessagesRequestBuilder(builder)` on the `CometChatMessageList` instance after creating and configuring the builder. Note that UID, GUID, types, and categories are always altered inside the message list. |
 | `setOnThreadRepliesClick` not firing | Verify that threaded messages exist in the conversation. The callback only fires when a user taps a message bubble that has thread replies. |
 | Reactions not responding to custom click handlers | Ensure you set the reaction callbacks (`setOnReactionClick`, `setOnReactionLongClick`, `setOnAddMoreReactionsClick`) before the component loads messages. |
-| Smart replies not appearing | Ensure `enableSmartReplies(true)` is called. If you set `smartRepliesKeywords`, verify that incoming messages contain at least one of the specified keywords. |
+| Smart replies not appearing | Ensure `setEnableSmartReplies(true)` is called. If you set `setAISmartRepliesKeywords`, verify that incoming messages contain at least one of the specified keywords. |
 | Sound still plays after `disableSoundForMessages(true)` | Ensure you call `disableSoundForMessages(true)` before the component starts loading. If called after data is already loaded, it may not take effect for existing notifications. |
 
 ## FAQ
@@ -1281,8 +1698,14 @@ cometchatMessageList.setNewMessageIndicatorView(customIndicator)
 **Q: How do I add a custom header or footer to the message list?**
 **A:** Call `cometChatMessageList.setHeaderView(view)` to add a custom view above the messages, or `cometChatMessageList.setFooterView(view)` to add one below the messages. Pass any inflated `View` object.
 
-## Next steps
+**Q: How do I enable AI-powered features like smart replies and conversation starters?**
+**A:** Call `setEnableSmartReplies(true)` for smart replies, `setEnableConversationStarter(true)` for conversation starters, and `setEnableConversationSummary(true)` for conversation summaries. You can also configure keywords with `setAISmartRepliesKeywords` and delay with `setSmartRepliesDelayDuration`.
 
-- [Message Composer component](/ui-kit/android/message-composer)
+**Q: How do I scroll to a specific message programmatically?**
+**A:** Use `cometChatMessageList.scrollToMessageId(messageId)` to scroll to and highlight a specific message, or `cometChatMessageList.scrollToBottom()` to scroll to the latest message.
+
+## Next Steps
+
 - [Message Header component](/ui-kit/android/message-header)
-- [Threaded Messages Header component](/ui-kit/android/threaded-messages-header)
+- [Message Composer component](/ui-kit/android/message-composer)
+- [Conversations component](/ui-kit/android/conversations)
