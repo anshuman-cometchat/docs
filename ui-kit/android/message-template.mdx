@@ -27,12 +27,12 @@ A `MessageTemplate` defines and customizes both the structure and the behavior o
 <Tabs>
 <Tab title="Kotlin">
 ```kotlin
-val messageTemplates = CometChatUIKit.dataSource.messageTemplates(messagelist.getAddtionalParameters())
+val messageTemplates = CometChatUIKit.getDataSource().getMessageTemplates(messagelist.additionParameter)
 ```
 </Tab>
 <Tab title="Java">
 ```java
-List<CometChatMessageTemplate> messageTemplates = CometChatUIKit.getDataSource().getAllMessageTemplates(messagelist.getAddtionalParameters());
+List<CometChatMessageTemplate> messageTemplates = CometChatUIKit.getDataSource().getMessageTemplates(messagelist.getAdditionParameter());
 ```
 </Tab>
 </Tabs>
@@ -69,7 +69,7 @@ for(CometChatMessageTemplate template : messageTemplates){
 <Tabs>
 <Tab title="Kotlin">
 ```kotlin
-template.setContentView(object : MessagesViewHolderListener {
+template.setContentView(object : MessagesViewHolderListener() {
     override fun createView(
         context: Context,
         cometChatMessageBubble: CometChatMessageBubble,
@@ -160,7 +160,7 @@ The `MessageBubble` structure is broken down into these views:
 
 **Type**: Use `setType()` to set the type of `CometChatMessage`. This maps your `MessageTemplate` to the corresponding `CometChatMessage`.
 
-```swift
+```java
 messageTemplate.setType(UIKitConstants.MessageType.CUSTOM);
 ```
 
@@ -168,7 +168,7 @@ messageTemplate.setType(UIKitConstants.MessageType.CUSTOM);
 
 **Category**: Use `setCategory()` to set the category of a `MessageTemplate`. This creates a `MessageTemplate` with the specified category and links it with a `CometChatMessage` of the same category. Refer to the guide on [Message Categories](/sdk/android/message-structure-and-hierarchy) for a deeper understanding.
 
-```swift
+```java
 messageTemplate.setCategory(UIKitConstants.MessageCategory.CUSTOM);
 ```
 
@@ -215,7 +215,7 @@ What you are changing: The header area of the message bubble, which displays abo
 <Tabs>
 <Tab title="Kotlin">
 ```kotlin lines
-template.setHeaderView(object : MessagesViewHolderListener {
+template.setHeaderView(object : MessagesViewHolderListener() {
     override fun createView(
         context: Context,
         cometChatMessageBubble: CometChatMessageBubble,
@@ -234,7 +234,7 @@ template.setHeaderView(object : MessagesViewHolderListener {
         i: Int
     ) {
         val textView = view.findViewById<TextView>(R.id.name_with_status)
-        textView.setText(message.getSender().getName() + " • " + "\uD83D\uDDD3\uFE0F In meeting")
+        textView.setText(baseMessage.getSender().getName() + " • " + "\uD83D\uDDD3\uFE0F In meeting")
     }
 })
 ```
@@ -296,7 +296,7 @@ What you are changing: The main content area of the message bubble where the mes
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.cometchat.chatuikit.shared.views.cometchatimagebubble.CometChatImageBubble
+        <com.cometchat.chatuikit.shared.views.imagebubble.CometChatImageBubble
             android:id="@+id/imageBubble"
             android:layout_width="@dimen/cometchat_240dp"
             android:layout_height="@dimen/cometchat_232dp" />
@@ -496,7 +496,7 @@ What you are changing: The status info area inside the message bubble, which dis
         android:textAppearance="?attr/cometchatTextAppearanceCaption2Regular"
         android:textColor="?attr/cometchatTextColorSecondary" />
 
-    <com.cometchat.chatuikit.shared.views.cometchatmessagereceipt.CometChatMessageReceipt
+    <com.cometchat.chatuikit.shared.views.messagereceipt.CometChatMessageReceipt
         android:id="@+id/receipt"
         android:layout_width="@dimen/cometchat_17dp"
         android:layout_height="@dimen/cometchat_17dp"
@@ -713,7 +713,7 @@ What you are changing: The bottom area of the message bubble, placed beneath the
 <Tabs>
 <Tab title="Kotlin">
 ```kotlin lines
-template.setBottomView(object : MessagesViewHolderListener {
+template.setBottomView(object : MessagesViewHolderListener() {
     override fun createView(
         context: Context,
         cometChatMessageBubble: CometChatMessageBubble,
@@ -731,9 +731,9 @@ template.setBottomView(object : MessagesViewHolderListener {
         list: List<BaseMessage>,
         i: Int
     ) {
-        createdView.setVisibility(View.GONE);
+        view.setVisibility(View.GONE);
         if (baseMessage.getMetadata() != null && MessageReceiptUtils.MessageReceipt(baseMessage).equals(Receipt.ERROR)) {
-            createdView.setVisibility(View.VISIBLE);
+            view.setVisibility(View.VISIBLE);
         }
     }
 })
@@ -756,7 +756,7 @@ template.setBottomView(new MessagesViewHolderListener() {
                                          List<BaseMessage> messageList,
                                          int position) {
                         createdView.setVisibility(View.GONE);
-                        if (baseMessage.getMetadata() != null && MessageReceiptUtils.MessageReceipt(baseMessage).equals(Receipt.ERROR)) {
+                        if (message.getMetadata() != null && MessageReceiptUtils.MessageReceipt(message).equals(Receipt.ERROR)) {
                             createdView.setVisibility(View.VISIBLE);
                         }
                     }
@@ -802,7 +802,7 @@ What you are changing: The footer area of the message bubble, located at the bot
             android:layout_height="1dp"
             android:background="?attr/cometchatStrokeColorLight" />
 
-        <com.cometchat.chatuikit.extensions.reaction.CometChatMessageReaction
+        <com.cometchat.chatuikit.shared.views.reaction.CometChatMessageReaction
             android:id="@+id/cometchat_reaction_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -974,7 +974,7 @@ outgoing\_text\_bubble\_view.xml
             android:textAppearance="?attr/cometchatTextAppearanceCaption2Regular"
             android:textColor="?attr/cometchatTextColorSecondary" />
 
-        <com.cometchat.chatuikit.shared.views.cometchatmessagereceipt.CometChatMessageReceipt
+        <com.cometchat.chatuikit.shared.views.messagereceipt.CometChatMessageReceipt
             android:id="@+id/receipt"
             android:layout_width="@dimen/cometchat_17dp"
             android:layout_height="@dimen/cometchat_17dp"
@@ -1288,7 +1288,7 @@ What you are changing: Adding an entirely new message template for a custom mess
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.cometchat.chatuikit.shared.views.cometchatavatar.CometChatAvatar
+            <com.cometchat.chatuikit.shared.views.avatar.CometChatAvatar
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/cometchat_40dp"
                 android:layout_height="@dimen/cometchat_40dp"
@@ -1320,7 +1320,7 @@ What you are changing: Adding an entirely new message template for a custom mess
                 android:textAppearance="?attr/cometchatTextAppearanceCaption2Regular"
                 android:textColor="?attr/cometchatColorWhite" />
 
-            <com.cometchat.chatuikit.shared.views.cometchatmessagereceipt.CometChatMessageReceipt
+            <com.cometchat.chatuikit.shared.views.messagereceipt.CometChatMessageReceipt
                 android:id="@+id/receipt"
                 android:layout_width="@dimen/cometchat_17dp"
                 android:layout_height="@dimen/cometchat_17dp"
