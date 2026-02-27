@@ -192,7 +192,14 @@ FirebaseMessaging.instance.onTokenRefresh.listen(
 
 CometChat's Enhanced Push Notification payload includes an `unreadMessageCount` field (a string) representing the total unread messages across all conversations for the logged-in user. You can use this to set the app icon badge and enrich local notifications.
 
-### 6.1 Add the `app_badge_plus` dependency
+### 6.1 Enable unread badge count on the CometChat Dashboard
+
+1. Go to **CometChat Dashboard → Notification Engine → Settings → Preferences → Push Notification Preferences**.
+2. Scroll to the bottom and enable the **Unread Badge Count** toggle.
+
+This ensures CometChat includes the `unreadMessageCount` field in every push payload sent to your app.
+
+### 6.2 Add the `app_badge_plus` dependency
 
 ```yaml lines
 dependencies:
@@ -201,7 +208,7 @@ dependencies:
 
 Run `flutter pub get`.
 
-### 6.2 Expected payload format
+### 6.3 Expected payload format
 
 CometChat sends FCM data messages with this structure (relevant fields):
 
@@ -219,7 +226,7 @@ CometChat sends FCM data messages with this structure (relevant fields):
 
 `unreadMessageCount` is a string representing the total unread messages across all conversations for the logged-in user.
 
-### 6.3 Update the app badge from the push payload
+### 6.4 Update the app badge from the push payload
 
 Inside your local notification handler (for example `LocalNotificationService.showNotification`), parse `unreadMessageCount` and update the badge:
 
@@ -241,7 +248,7 @@ if (unreadMessageCount >= 0) {
 
 On Android, `app_badge_plus` uses launcher-specific APIs (Samsung, Huawei, etc.) to display a badge number on the app icon. Passing `0` clears the badge.
 
-### 6.4 Show grouped notifications with unread count
+### 6.5 Show grouped notifications with unread count
 
 Use `conversationId.hashCode` as the notification ID so each new message from the same conversation replaces the previous notification instead of creating a new one. Accumulate message lines per conversation for inbox-style display:
 
@@ -290,7 +297,7 @@ final androidDetails = AndroidNotificationDetails(
 - `number` displays a count badge on the notification icon (Samsung One UI).
 - When the user opens a conversation, clear its accumulated messages by removing the key from `_conversationMessages`.
 
-### 6.5 Clear badge and notifications when the app opens
+### 6.6 Clear badge and notifications when the app opens
 
 Clear the badge count and dismiss all local notifications when the app launches and every time it resumes from the background. Add `WidgetsBindingObserver` to your root widget and register/remove the observer in `initState()` and `dispose()`:
 
