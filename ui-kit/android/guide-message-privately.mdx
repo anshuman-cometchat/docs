@@ -40,6 +40,8 @@ Users tap **Message Privately** → launch `MessagesActivity` with the target us
 
 Navigate from `UserDetailsActivity` to `MessagesActivity` with the selected user.
 
+<Tabs>
+<Tab title="Java">
 ```java lines
 // In UserDetailsActivity.java
 binding.messagePrivatelyBtn.setOnClickListener(v -> {
@@ -48,6 +50,19 @@ binding.messagePrivatelyBtn.setOnClickListener(v -> {
   startActivity(intent);
 });
 ```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+// In UserDetailsActivity.kt
+binding.messagePrivatelyBtn.setOnClickListener {
+    val intent = Intent(this, MessagesActivity::class.java)
+    intent.putExtra(getString(R.string.app_user), Gson().toJson(user))
+    startActivity(intent)
+}
+```
+</Tab>
+</Tabs>
 
 **File reference:**  
 [`UserDetailsActivity.java`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-java/src/main/java/com/cometchat/sampleapp/java/ui/activity/UserDetailsActivity.java)
@@ -56,6 +71,8 @@ binding.messagePrivatelyBtn.setOnClickListener(v -> {
 
 Deserialize the `User` JSON extra and configure the chat UI.
 
+<Tabs>
+<Tab title="Java">
 ```java lines
 // In MessagesActivity.java
 @Override
@@ -72,6 +89,26 @@ protected void onCreate(Bundle savedInstanceState) {
   }
 }
 ```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+// In MessagesActivity.kt
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_messages)
+
+    val userJson = intent.getStringExtra(getString(R.string.app_user))
+    if (userJson != null) {
+        val user = Gson().fromJson(userJson, User::class.java)
+        messageHeader.setUser(user)
+        messageList.setUser(user)
+        composer.setUser(user)
+    }
+}
+```
+</Tab>
+</Tabs>
 
 **File reference:**  
 [`MessagesActivity.java`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-java/src/main/java/com/cometchat/sampleapp/java/ui/activity/MessagesActivity.java)
@@ -80,6 +117,8 @@ protected void onCreate(Bundle savedInstanceState) {
 
 Send an initial greeting to ensure the chat appears in conversation lists.
 
+<Tabs>
+<Tab title="Java">
 ```java lines
 // In MainActivity.java
 txtMessage = new TextMessage(
@@ -96,6 +135,27 @@ CometChat.sendMessage(txtMessage, new CometChat.CallbackListener<BaseMessage>() 
   }
 });
 ```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+// In MainActivity.kt
+val txtMessage = TextMessage(
+    "cometchat-uid-2",
+    "👋",
+    CometChatConstants.RECEIVER_TYPE_USER
+)
+CometChat.sendMessage(txtMessage, object : CometChat.CallbackListener<BaseMessage>() {
+    override fun onSuccess(msg: BaseMessage) {
+        Log.d("SendMsg", "Initial message sent.")
+    }
+    override fun onError(e: CometChatException?) {
+        Log.e("SendMsg", e?.message ?: "Error sending message")
+    }
+})
+```
+</Tab>
+</Tabs>
 
 **File reference:**  
 [`MainActivity.java`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-java/src/main/java/com/cometchat/sampleapp/java/ui/activity/MainActivity.java)

@@ -71,7 +71,9 @@ Add a FAB to launch the group-management dialog.
 
 Initialize UIKit views and respond to FAB clicks.
 
-```java lines
+<Tabs>
+<Tab title="Java">
+```java MessagesActivity.java lines
 // In MessagesActivity.java
 FloatingActionButton fab = findViewById(R.id.fab_group_actions);
 fab.setOnClickListener(v -> showGroupActionsDialog());
@@ -80,14 +82,27 @@ private void showGroupActionsDialog() {
   // Present options: Create, Join, View Members, etc.
 }
 ```
+</Tab>
 
-**File reference:**  
-[`MessagesActivity.java`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-java/src/main/java/com/cometchat/sampleapp/java/ui/activity/MessagesActivity.java)
+<Tab title="Kotlin">
+```kotlin MessagesActivity.kt lines
+// In MessagesActivity.kt
+val fab = findViewById<FloatingActionButton>(R.id.fab_group_actions)
+fab.setOnClickListener { showGroupActionsDialog() }
+
+private fun showGroupActionsDialog() {
+    // Present options: Create, Join, View Members, etc.
+}
+```
+</Tab>
+</Tabs>
 
 ### 3. Create & Join Group
 
 Allow users to create or join a group via Core SDK.
 
+<Tabs>
+<Tab title="Java">
 ```java lines
 // Create Group
 CometChat.createGroup(new Group(
@@ -109,14 +124,39 @@ CometChat.joinGroup(
   }
 );
 ```
+</Tab>
 
-**File reference:**  
-[`GroupDetailsActivity.java`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-java/src/main/java/com/cometchat/sampleapp/java/ui/activity/GroupDetailsActivity.java)
+<Tab title="Kotlin">
+```kotlin lines
+// Create Group
+CometChat.createGroup(
+    Group(groupGuid, groupName, CometChatConstants.GROUP_TYPE_PUBLIC, ""),
+    object : CometChat.CallbackListener<Group>() {
+        override fun onSuccess(group: Group) { /* handle success */ }
+        override fun onError(e: CometChatException?) { /* handle error */ }
+    }
+)
+
+// Join Group
+CometChat.joinGroup(
+    groupGuid,
+    CometChatConstants.GROUP_TYPE_PUBLIC,
+    "",
+    object : CometChat.CallbackListener<Group>() {
+        override fun onSuccess(group: Group) { /* handle success */ }
+        override fun onError(e: CometChatException?) { /* handle error */ }
+    }
+)
+```
+</Tab>
+</Tabs>
 
 ### 4. View Group Members
 
 Fetch and display the current member list.
 
+<Tabs>
+<Tab title="Java">
 ```java lines
 GroupMembersRequest membersRequest = new GroupMembersRequest.Builder(groupGuid).setLimit(50).build();
 membersRequest.fetchNext(new CometChat.CallbackListener<List<GroupMember>>() {
@@ -128,14 +168,27 @@ membersRequest.fetchNext(new CometChat.CallbackListener<List<GroupMember>>() {
   public void onError(CometChatException e) {}
 });
 ```
+</Tab>
 
-**File reference:**  
-[`GroupDetailsActivity.java`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-java/src/main/java/com/cometchat/sampleapp/java/ui/activity/GroupDetailsActivity.java)
+<Tab title="Kotlin">
+```kotlin lines
+val membersRequest = GroupMembersRequest.Builder(groupGuid).setLimit(50).build()
+membersRequest.fetchNext(object : CometChat.CallbackListener<List<GroupMember>>() {
+    override fun onSuccess(members: List<GroupMember>) {
+        showMembersDialog(members)
+    }
+    override fun onError(e: CometChatException?) {}
+})
+```
+</Tab>
+</Tabs>
 
 ### 5. Add Member
 
 Select users not in the group and add them.
 
+<Tabs>
+<Tab title="Java">
 ```java lines
 UsersRequest usersRequest = new UsersRequest.UsersRequestBuilder().setLimit(50).build();
 usersRequest.fetchNext(new CometChat.CallbackListener<List<User>>() {
@@ -153,6 +206,30 @@ CometChat.addMembersToGroup(
   }
 );
 ```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+val usersRequest = UsersRequest.UsersRequestBuilder().setLimit(50).build()
+usersRequest.fetchNext(object : CometChat.CallbackListener<List<User>>() {
+    override fun onSuccess(allUsers: List<User>) {
+        // filter out existing members, show selection dialog
+    }
+    override fun onError(e: CometChatException?) {}
+})
+// On selection:
+CometChat.addMembersToGroup(
+    groupGuid,
+    selectedUids,
+    CometChatConstants.SCOPE_PARTICIPANT,
+    object : CometChat.CallbackListener<HashMap<String, String>>() {
+        override fun onSuccess(result: HashMap<String, String>) { /* handle result */ }
+        override fun onError(e: CometChatException?) { /* handle error */ }
+    }
+)
+```
+</Tab>
+</Tabs>
 
 **File reference:**  
 [`GroupDetailsActivity.java`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-java/src/main/java/com/cometchat/sampleapp/java/ui/activity/GroupDetailsActivity.java)
@@ -161,6 +238,8 @@ CometChat.addMembersToGroup(
 
 Perform moderation actions on selected members.
 
+<Tabs>
+<Tab title="Java">
 ```java lines
 // Ban Member
 CometChat.banGroupMember(
@@ -184,9 +263,39 @@ CometChat.transferGroupOwnership(
   new CometChat.CallbackListener<String>() { /*...*/ }
 );
 ```
+</Tab>
 
-**File reference:**  
-[`GroupDetailsActivity.java`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-java/src/main/java/com/cometchat/sampleapp/java/ui/activity/GroupDetailsActivity.java)
+<Tab title="Kotlin">
+```kotlin lines
+// Ban Member
+CometChat.banGroupMember(
+    uid, groupGuid,
+    object : CometChat.CallbackListener<String>() {
+        override fun onSuccess(result: String) { /* handle success */ }
+        override fun onError(e: CometChatException?) { /* handle error */ }
+    }
+)
+
+// Change Scope
+CometChat.updateGroupMemberScope(
+    uid, groupGuid, CometChatConstants.SCOPE_MODERATOR,
+    object : CometChat.CallbackListener<String>() {
+        override fun onSuccess(result: String) { /* handle success */ }
+        override fun onError(e: CometChatException?) { /* handle error */ }
+    }
+)
+
+// Transfer Ownership
+CometChat.transferGroupOwnership(
+    uid, groupGuid,
+    object : CometChat.CallbackListener<String>() {
+        override fun onSuccess(result: String) { /* handle success */ }
+        override fun onError(e: CometChatException?) { /* handle error */ }
+    }
+)
+```
+</Tab>
+</Tabs>
 
 ## Implementation Flow Summary
 

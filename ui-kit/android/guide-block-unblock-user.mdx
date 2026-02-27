@@ -39,6 +39,8 @@ Blocking a user stops them from sending messages to the blocker. The CometChat U
 
 Update UI when block state changes.
 
+<Tabs>
+<Tab title="Java">
 ```java lines
 // In MessagesActivity.java
 private void updateUserBlockStatus(User user) {
@@ -47,9 +49,22 @@ private void updateUserBlockStatus(User user) {
     binding.unblockLayout.setVisibility(blocked ? View.VISIBLE : View.GONE);
 }
 ```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+// In MessagesActivity.kt
+private fun updateUserBlockStatus(user: User) {
+    val blocked = user.isBlockedByMe
+    binding.messageComposer.visibility = if (blocked) View.GONE else View.VISIBLE
+    binding.unblockLayout.visibility = if (blocked) View.VISIBLE else View.GONE
+}
+```
+</Tab>
+</Tabs>
 
 **File reference:**  
-[`MessagesActivity.java`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-java/app/src/main/java/com/cometchat/sampleapp/MessagesActivity.java#L120-L130)
+[`MessagesActivity.java`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-java/src/main/java/com/cometchat/sampleapp/java/ui/activity/MessagesActivity.java)
 
 Ensures the composer and unblock UI reflect the current block state.
 
@@ -57,20 +72,27 @@ Ensures the composer and unblock UI reflect the current block state.
 
 Define layout elements and their visibility toggles.
 
-```xml lines
+```xml activity_messages.xml lines
 <!-- In activity_messages.xml -->
 <com.cometchat.chatuikit.messagecomposer.CometChatMessageComposer
     android:id="@+id/messageComposer"
-    ... />
-<View
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+<LinearLayout
     android:id="@+id/unblockLayout"
-    android:visibility="gone"
-    ...>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="12dp"
+    android:visibility="gone">
+
     <Button
         android:id="@+id/unblockBtn"
-        android:text="Unblock"
-        ... />
-</View>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Unblock" />
+</LinearLayout>
 ```
 
 **File reference:**  
@@ -82,6 +104,8 @@ Prepares the UI containers for dynamic show/hide operations.
 
 Call the unblock API and observe status updates.
 
+<Tabs>
+<Tab title="Java">
 ```java lines
 // In MessagesActivity.java
 binding.unblockBtn.setOnClickListener(v -> viewModel.unblockUser());
@@ -100,6 +124,27 @@ public void unblockUser() {
     });
 }
 ```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+// In MessagesActivity.kt
+binding.unblockBtn.setOnClickListener { viewModel.unblockUser() }
+
+// In MessagesViewModel.kt
+fun unblockUser() {
+    CometChatUIKit.unblockUsers(listOf(currentUser.uid), object : CometChat.CallbackListener<List<String>>() {
+        override fun onSuccess(uids: List<String>) {
+            unblockButtonState.postValue(false)
+        }
+        override fun onError(e: CometChatException?) {
+            // Handle error
+        }
+    })
+}
+```
+</Tab>
+</Tabs>
 
 **File references:**  
 - [`MessagesActivity.java`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-java/src/main/java/com/cometchat/sampleapp/java/ui/activity/MessagesActivity.java)  
@@ -111,6 +156,8 @@ Executes unblock logic and updates LiveData to refresh UI.
 
 Allow blocking directly from a user’s profile.
 
+<Tabs>
+<Tab title="Java">
 ```java lines
 // In UserDetailActivity.java
 binding.blockMenuItem.setOnClickListener(v -> {
@@ -126,6 +173,24 @@ binding.blockMenuItem.setOnClickListener(v -> {
     });
 });
 ```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+// In UserDetailActivity.kt
+binding.blockMenuItem.setOnClickListener {
+    CometChatUIKit.blockUsers(listOf(user.uid), object : CometChat.CallbackListener<List<String>>() {
+        override fun onSuccess(uids: List<String>) {
+            viewModel.refreshUser()
+        }
+        override fun onError(e: CometChatException?) {
+            // Handle error
+        }
+    })
+}
+```
+</Tab>
+</Tabs>
 
 **File reference:**  
 [`UserDetailActivity.java`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/sample-app-java/src/main/java/com/cometchat/sampleapp/java/ui/activity/UserDetailsActivity.java)
