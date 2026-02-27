@@ -45,7 +45,7 @@ title: "Conversations"
       "setOnSearchClickListener": "OnSearchClick"
     },
     "visibility": {
-      "setBackIconVisibility": { "type": "int (View.VISIBLE | View.GONE)", "default": "View.VISIBLE" },
+      "setBackIconVisibility": { "type": "int (View.VISIBLE | View.GONE)", "default": "View.GONE" },
       "setToolbarVisibility": { "type": "int", "default": "View.VISIBLE" },
       "setLoadingStateVisibility": { "type": "int", "default": "View.VISIBLE" },
       "setDeleteConversationOptionVisibility": { "type": "int", "default": "View.VISIBLE" },
@@ -1520,14 +1520,14 @@ Create an `item_converation_list.xml` custom layout file:
             android:layout_width="@dimen/cometchat_45dp"
             android:layout_height="@dimen/cometchat_45dp">
 
-            <com.cometchat.chatuikit.shared.views.cometchatavatar.CometChatAvatar
+            <com.cometchat.chatuikit.shared.views.avatar.CometChatAvatar
                 android:id="@+id/custom_avatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:cometchatAvatarPlaceHolderTextAppearance="@style/CometChatTextAppearanceHeading4.Bold"
                 app:cometchatAvatarStrokeRadius="@dimen/cometchat_8dp" />
 
-            <com.cometchat.chatuikit.shared.views.cometchatstatusindicator.CometChatStatusIndicator
+            <com.cometchat.chatuikit.shared.views.statusindicator.CometChatStatusIndicator
                 android:id="@+id/status_and_type_indicator"
                 android:layout_width="@dimen/cometchat_12dp"
                 android:layout_height="@dimen/cometchat_12dp"
@@ -1634,7 +1634,19 @@ Inflate the XML and bind:
 
 ### `setDateTimeFormatter`
 
-Custom date/time formatting for conversation timestamps.
+Custom date/time formatting for conversation timestamps. Implement the `DateTimeFormatterCallback` interface to control how each time range is displayed:
+
+| Method | Called when |
+| --- | --- |
+| `time(long timestamp)` | Custom full timestamp format |
+| `today(long timestamp)` | Message is from today |
+| `yesterday(long timestamp)` | Message is from yesterday |
+| `lastWeek(long timestamp)` | Message is from the past week |
+| `otherDays(long timestamp)` | Message is older than a week |
+| `minute(long timestamp)` | Exactly 1 minute ago |
+| `minutes(long diffInMinutesFromNow, long timestamp)` | Multiple minutes ago (e.g., "5 minutes ago") |
+| `hour(long timestamp)` | Exactly 1 hour ago |
+| `hours(long diffInHourFromNow, long timestamp)` | Multiple hours ago (e.g., "2 hours ago") |
 
 <Tabs>
 <Tab title="Kotlin">
@@ -1671,7 +1683,7 @@ cometchatConversations.setDateTimeFormatter(object : DateTimeFormatterCallback {
         override fun hours(diffInHourFromNow: Long, timestamp: Long): String {
             return "$diffInHourFromNow hrs ago"
         }
-    });
+    })
 ```
 </Tab>
 
