@@ -42,6 +42,130 @@ title: "Conversations"
 
 5. If you need to add the component programmatically instead of XML, see the [Activity integration](#activity-integration) or [Fragment integration](#fragment-integration) subsections in Implementation.
 
+## Where it fits
+
+`CometChatConversations` is a list component. It renders recent conversations and emits the selected `Conversation` via `setOnItemClick`. Wire it to `CometChatMessageHeader`, `CometChatMessageList`, and `CometChatMessageComposer` to build a standard chat layout.
+
+<Tabs>
+<Tab title="Java">
+```java ChatActivity.java lines
+public class ChatActivity extends AppCompatActivity {
+
+    private CometChatConversations conversations;
+    private CometChatMessageHeader messageHeader;
+    private CometChatMessageList messageList;
+    private CometChatMessageComposer messageComposer;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
+
+        conversations = findViewById(R.id.conversations);
+        messageHeader = findViewById(R.id.message_header);
+        messageList = findViewById(R.id.message_list);
+        messageComposer = findViewById(R.id.message_composer);
+
+        conversations.setOnItemClick((view, position, conversation) -> {
+            if (CometChatConstants.CONVERSATION_TYPE_USER.equals(conversation.getConversationType())) {
+                User user = (User) conversation.getConversationWith();
+                messageHeader.setUser(user);
+                messageList.setUser(user);
+                messageComposer.setUser(user);
+            } else {
+                Group group = (Group) conversation.getConversationWith();
+                messageHeader.setGroup(group);
+                messageList.setGroup(group);
+                messageComposer.setGroup(group);
+            }
+        });
+    }
+}
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin ChatActivity.kt lines
+class ChatActivity : AppCompatActivity() {
+
+    private lateinit var conversations: CometChatConversations
+    private lateinit var messageHeader: CometChatMessageHeader
+    private lateinit var messageList: CometChatMessageList
+    private lateinit var messageComposer: CometChatMessageComposer
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_chat)
+
+        conversations = findViewById(R.id.conversations)
+        messageHeader = findViewById(R.id.message_header)
+        messageList = findViewById(R.id.message_list)
+        messageComposer = findViewById(R.id.message_composer)
+
+        conversations.setOnItemClick { view, position, conversation ->
+            if (conversation.conversationType == CometChatConstants.CONVERSATION_TYPE_USER) {
+                val user = conversation.conversationWith as User
+                messageHeader.setUser(user)
+                messageList.setUser(user)
+                messageComposer.setUser(user)
+            } else {
+                val group = conversation.conversationWith as Group
+                messageHeader.setGroup(group)
+                messageList.setGroup(group)
+                messageComposer.setGroup(group)
+            }
+        }
+    }
+}
+```
+</Tab>
+
+<Tab title="XML">
+```xml activity_chat.xml lines
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <!-- Conversation sidebar -->
+    <com.cometchat.chatuikit.conversations.CometChatConversations
+        android:id="@+id/conversations"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <!-- Message panel -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <com.cometchat.chatuikit.messageheader.CometChatMessageHeader
+            android:id="@+id/message_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.cometchat.chatuikit.messagelist.CometChatMessageList
+            android:id="@+id/message_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.cometchat.chatuikit.messagecomposer.CometChatMessageComposer
+            android:id="@+id/message_composer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>
+```
+</Tab>
+</Tabs>
+
+> **What this does:** Creates a two-panel layout where the conversation list sits on the left and the message view on the right. When a user taps a conversation, `setOnItemClick` extracts the `User` or `Group` and passes it to the message components. On phones, you'd typically use separate Activities instead of a side-by-side layout — see the [Conversation List + Message View](/ui-kit/android/android-conversation) getting started guide.
+
 ## Core concepts
 
 - **`CometChatConversations`**: The main component class that renders the conversation list. It can be added via XML layout, Activity, or Fragment.
@@ -526,6 +650,22 @@ What you're changing: Small functional customizations such as toggling visibilit
 ### Advanced views
 
 What you're changing: The default UI elements of conversation list items and the component's chrome (loading, empty, error states, overflow menu, date formatting, text formatting).
+
+Each view slot replaces a section of the default UI. Slots that accept a `Conversation` parameter receive the conversation object for that row via the `ConversationsViewHolderListener` pattern (`createView` + `bindView`).
+
+| Slot | Method | Replaces |
+| --- | --- | --- |
+| Leading view | `setLeadingView(ConversationsViewHolderListener)` | Avatar / left section |
+| Title view | `setTitleView(ConversationsViewHolderListener)` | Name / title text |
+| Subtitle view | `setSubtitleView(ConversationsViewHolderListener)` | Last message preview |
+| Trailing view | `setTrailingView(ConversationsViewHolderListener)` | Timestamp / badge / right section |
+| Item view | `setItemView(ConversationsViewHolderListener)` | Entire list item row |
+| Loading view | `setLoadingView(int layoutRes)` | Loading spinner |
+| Empty view | `setEmptyView(int layoutRes)` | Empty state |
+| Error view | `setErrorView(int layoutRes)` | Error state |
+| Overflow menu | `setOverflowMenu(View)` | Toolbar menu |
+| Options (replace) | `setOptions(Function2)` | Long-press context menu |
+| Options (append) | `addOptions(Function2)` | Appends to long-press menu |
 
 - **Where**: Activity or Fragment where you hold a reference to `CometChatConversations`.
 - **Applies to**: `CometChatConversations`.
@@ -2303,6 +2443,114 @@ cometChatConversations.setSubtitleView(object : ConversationsViewHolderListener(
 > **What this does:** Replaces the default subtitle with a custom `TextView` that shows "Last Active at:" followed by the conversation's last update timestamp formatted as "dd/MM/yyyy, HH:mm:ss" in black text.
 
 - **Verify**: After setting any advanced view, confirm the custom view renders in the correct position within the conversation list item, and the data binding populates correctly for each conversation.
+
+## Common patterns
+
+### Filter to user conversations only
+
+<Tabs>
+<Tab title="Java">
+```java lines
+ConversationsRequest.ConversationsRequestBuilder builder = new ConversationsRequest.ConversationsRequestBuilder();
+builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_USER);
+cometChatConversations.setConversationsRequestBuilder(builder);
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+val builder = ConversationsRequest.ConversationsRequestBuilder()
+    .setConversationType(CometChatConstants.CONVERSATION_TYPE_USER)
+cometChatConversations.setConversationsRequestBuilder(builder)
+```
+</Tab>
+</Tabs>
+
+### Custom empty state with action button
+
+```xml layout/empty_conversations.xml lines
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="40dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No conversations yet"
+        android:textAppearance="?attr/cometchatTextAppearanceHeading3Bold" />
+
+    <Button
+        android:id="@+id/btn_start_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Start a conversation" />
+
+</LinearLayout>
+```
+
+<Tabs>
+<Tab title="Java">
+```java lines
+cometChatConversations.setEmptyView(R.layout.empty_conversations);
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+cometChatConversations.emptyView = R.layout.empty_conversations
+```
+</Tab>
+</Tabs>
+
+### Hide all chrome — minimal list
+
+<Tabs>
+<Tab title="Java">
+```java lines
+cometChatConversations.setReceiptsVisibility(View.GONE);
+cometChatConversations.setUserStatusVisibility(View.GONE);
+cometChatConversations.setGroupTypeVisibility(View.GONE);
+cometChatConversations.setDeleteConversationOptionVisibility(View.GONE);
+cometChatConversations.setToolbarVisibility(View.GONE);
+```
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+cometChatConversations.setReceiptsVisibility(View.GONE)
+cometChatConversations.setUserStatusVisibility(View.GONE)
+cometChatConversations.setGroupTypeVisibility(View.GONE)
+cometChatConversations.setDeleteConversationOptionVisibility(View.GONE)
+cometChatConversations.setToolbarVisibility(View.GONE)
+```
+</Tab>
+</Tabs>
+
+### Filter recipes
+
+| Recipe | Code |
+| --- | --- |
+| Only user conversations | `builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_USER)` |
+| Only group conversations | `builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_GROUP)` |
+| Limit to 10 per page | `builder.setLimit(10)` |
+| With specific tags | `builder.setTags(Arrays.asList("vip"))` |
+| Filter by user tags | `builder.withUserAndGroupTags(true); builder.setUserTags(Arrays.asList("premium"))` |
+| Filter by group tags | `builder.withUserAndGroupTags(true); builder.setGroupTags(Arrays.asList("support"))` |
+
+> Default page size is 30. The component uses infinite scroll — the next page loads as the user scrolls to the bottom. Refer to [ConversationsRequestBuilder](/sdk/android/retrieve-conversations) for the full builder API.
+
+## Accessibility
+
+The component renders a scrollable `RecyclerView` of interactive conversation items. Each conversation row responds to tap and long-press gestures. The unread badge count is rendered as a `TextView` with the count as text content, accessible to TalkBack. Avatar images include the conversation name as content description.
+
+For custom views provided via `setLeadingView`, `setTitleView`, `setTrailingView`, or `setItemView`, ensure you set `android:contentDescription` on visual-only elements (status indicators, icons) so TalkBack can announce them. The default views handle this automatically.
+
+Group type indicators and online/offline status dots are visual-only by default. If screen reader descriptions are needed for these, provide them via a custom view with appropriate `contentDescription` attributes.
 
 ## Customization matrix
 
