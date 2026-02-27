@@ -292,7 +292,7 @@ final androidDetails = AndroidNotificationDetails(
 
 ### 6.5 Clear badge and notifications when the app opens
 
-Clear the badge count and dismiss all local notifications when the app launches and every time it resumes from the background. Add `WidgetsBindingObserver` to your dashboard or root widget:
+Clear the badge count and dismiss all local notifications when the app launches and every time it resumes from the background. Add `WidgetsBindingObserver` to your root widget and register/remove the observer in `initState()` and `dispose()`:
 
 ```dart lines
 Future<void> _clearBadge() async {

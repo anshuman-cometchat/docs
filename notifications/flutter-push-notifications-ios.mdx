@@ -127,7 +127,13 @@ dependencies:
   permission_handler: ^11.3.0
 ```
 
-Run `flutter pub get`, then `flutterfire configure` if you still need to generate `firebase_options.dart`.
+Run `flutter pub get`, then install the native pods:
+
+```bash
+cd ios && pod install && cd ..
+```
+
+Then run `flutterfire configure` if you still need to generate `firebase_options.dart`.
 
 ## 5. Configure the native iOS layer
 
@@ -236,7 +242,11 @@ dependencies:
   app_badge_plus: ^1.2.6
 ```
 
-Run `flutter pub get`.
+Run `flutter pub get`, then install the native pods:
+
+```bash
+cd ios && pod install && cd ..
+```
 
 ### 7.2 Update the badge from local notifications
 
@@ -261,7 +271,7 @@ On iOS, `app_badge_plus` sets the native `UIApplication.shared.applicationIconBa
 
 ### 7.3 Clear badge and notifications when the app opens
 
-This is required regardless of whether you use APNs or FCM. Clear the badge count and dismiss all local notifications when the app launches and every time it resumes from the background. Add `WidgetsBindingObserver` to your dashboard or root widget:
+This is required regardless of whether you use APNs or FCM. Clear the badge count and dismiss all local notifications when the app launches and every time it resumes from the background. Add `WidgetsBindingObserver` to your root widget and register/remove the observer in `initState()` and `dispose()`:
 
 ```dart lines
 Future<void> _clearBadge() async {
