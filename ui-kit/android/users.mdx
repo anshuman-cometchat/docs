@@ -482,9 +482,9 @@ What you're changing: Small functional customizations such as toggling visibilit
 | `setEmptyStateVisibility` | Hides the empty state on fetching users | `.setEmptyStateVisibility(View.GONE);` |
 | `setLoadingStateVisibility` | Hides the loading state while fetching users | `.setLoadingStateVisibility(View.GONE);` |
 | `setSeparatorVisibility` | Controls visibility of separators in the list view | `.setSeparatorVisibility(View.GONE);` |
-| `setUsersStatusVisibility` | Controls visibility of the online status indicator | `.setUsersStatusVisibility(View.GONE);` |
+| `setUserStatusVisibility` | Controls visibility of the online status indicator | `.setUserStatusVisibility(View.GONE);` |
 | `setSelectionMode` | Determines the selection mode (single or multiple) | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
-| `setSearchkeyword` | Used for fetching users matching the passed keywords | `.setSearchkeyword("anything");` |
+| `setSearchKeyword` | Used for fetching users matching the passed keywords | `.setSearchKeyword("anything");` |
 | `setSearchBoxVisibility` | Hides the search box shown in the toolbar | `.setSearchBoxVisibility(View.GONE);` |
 
 - **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `setSelectionMode`, confirm the selection behavior matches the mode.
@@ -597,7 +597,7 @@ Defines a custom error state view that appears when an issue occurs while loadin
 <Tabs>
 <Tab title="Java">
 ```java lines
-cometchatUsers.setErrorView(R.layout.your_empty_view);
+cometchatUsers.setErrorView(R.layout.your_error_view);
 ```
 
 </Tab>
@@ -941,6 +941,10 @@ cometchatUsers.setTrailingView(object : UsersViewHolderListener() {
 
 Assigns a completely custom list item design to the Users component, replacing the default layout entirely.
 
+<Note>
+The Java method name is `seItemView` (note the missing 't'). This is a known typo in the SDK. In Kotlin, property access syntax normalizes this to `setItemView`.
+</Note>
+
 <Tabs>
 <Tab title="Java">
 ```java lines
@@ -1041,7 +1045,7 @@ Inflate the layout inside `createView()` and use `bindView()` to initialize and 
 <Tabs>
 <Tab title="Java">
 ```java YourActivity.java lines
-binding.users.setListItemView(new UsersViewHolderListener() {
+binding.users.seItemView(new UsersViewHolderListener() {
             @Override
             public View createView(Context context, CometchatListBaseItemsBinding listItem) {
                 return LayoutInflater.from(context).inflate(R.layout.custom_list_item_view, null, false);
@@ -1071,7 +1075,7 @@ binding.users.setListItemView(new UsersViewHolderListener() {
 
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
-users.setListItemView(object : UsersViewHolderListener() {
+users.seItemView(object : UsersViewHolderListener() {
             override fun createView(
                 context: Context?,
                 listItem: CometchatListBaseItemsBinding?
@@ -1287,19 +1291,19 @@ users.setOverflowMenu(v)
 | Empty state visibility | Activity/Fragment | `setEmptyStateVisibility(int)` | `.setEmptyStateVisibility(View.GONE);` |
 | Loading state visibility | Activity/Fragment | `setLoadingStateVisibility(int)` | `.setLoadingStateVisibility(View.GONE);` |
 | Separator visibility | Activity/Fragment | `setSeparatorVisibility(int)` | `.setSeparatorVisibility(View.GONE);` |
-| User online status visibility | Activity/Fragment | `setUsersStatusVisibility(int)` | `.setUsersStatusVisibility(View.GONE);` |
+| User online status visibility | Activity/Fragment | `setUserStatusVisibility(int)` | `.setUserStatusVisibility(View.GONE);` |
 | Selection mode (single/multiple) | Activity/Fragment | `setSelectionMode(SelectionMode)` | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
-| Search keyword | Activity/Fragment | `setSearchkeyword(String)` | `.setSearchkeyword("anything");` |
+| Search keyword | Activity/Fragment | `setSearchKeyword(String)` | `.setSearchKeyword("anything");` |
 | Search box visibility | Activity/Fragment | `setSearchBoxVisibility(int)` | `.setSearchBoxVisibility(View.GONE);` |
 | Long-press options (replace) | Activity/Fragment | `setOptions(Function2)` | See `setOptions` code above |
 | Long-press options (append) | Activity/Fragment | `addOptions(Function2)` | See `addOptions` code above |
 | Loading view | Activity/Fragment | `setLoadingView(int)` | `cometchatUsers.setLoadingView(R.layout.your_loading_view);` |
 | Empty view | Activity/Fragment | `setEmptyView(int)` | `cometchatUsers.setEmptyView(R.layout.your_empty_view);` |
-| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatUsers.setErrorView(R.layout.your_empty_view);` |
+| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatUsers.setErrorView(R.layout.your_error_view);` |
 | Leading view (avatar area) | Activity/Fragment | `setLeadingView(UsersViewHolderListener)` | See `setLeadingView` code above |
 | Title view | Activity/Fragment | `setTitleView(UsersViewHolderListener)` | See `setTitleView` code above |
 | Trailing view | Activity/Fragment | `setTrailingView(UsersViewHolderListener)` | See `setTrailingView` code above |
-| Entire list item | Activity/Fragment | `setItemView(UsersViewHolderListener)` / `setListItemView(UsersViewHolderListener)` | See `setItemView` code above |
+| Entire list item | Activity/Fragment | `seItemView(UsersViewHolderListener)` | See `setItemView` code above |
 | Subtitle view | Activity/Fragment | `setSubtitleView(UsersViewHolderListener)` | See `setSubtitleView` code above |
 | Overflow menu | Activity/Fragment | `setOverflowMenu(View)` | `users.setOverflowMenu(imageView);` |
 | Filter users | Activity/Fragment | `setUsersRequestBuilder(UsersRequestBuilder)` | See Filters code above |
@@ -1318,7 +1322,7 @@ users.setOverflowMenu(v)
 | Search not working with custom filter | If you set a `UsersRequestBuilder` via `setUsersRequestBuilder`, the search may use different parameters. Use `setSearchRequestBuilder` to control search behavior separately. |
 | Custom view returns null in `createView` | If `createView` returns `null`, the default view is used. Return a valid inflated `View` to replace the default. |
 | Sticky header not showing | Ensure `setStickyHeaderVisibility` is set to `View.VISIBLE`. If set to `View.GONE`, the alphabetical sticky headers will not appear. |
-| Online status indicator not visible | Ensure `setUsersStatusVisibility` is set to `View.VISIBLE`. If set to `View.GONE`, the online/offline status indicator will not appear next to user avatars. |
+| Online status indicator not visible | Ensure `setUserStatusVisibility` is set to `View.VISIBLE`. If set to `View.GONE`, the online/offline status indicator will not appear next to user avatars. |
 
 ## FAQ
 

@@ -102,6 +102,7 @@ CometChatUIKit.init(context, uiKitSettings, new CometChat.CallbackListener<Strin
     @Override
     public void onSuccess(String response) {
         Log.i(TAG, "CometChat init onSuccess: "+response);
+    }
 
     @Override
     public void onError(CometChatException e) {
@@ -689,7 +690,7 @@ customData.put("key2","value2");
 customData.put("key3","value3");
 customData.put("key4","value4");
 
-CustomMessage customMessage = new CustomMessage("receiver_uid", CometChatConstantsRECEIVER_TYPE_USER,customType, customData);
+CustomMessage customMessage = new CustomMessage("receiver_uid", CometChatConstants.RECEIVER_TYPE_USER,customType, customData);
 
 CometChatUIKit.sendCustomMessage(customMessage, new CometChat.CallbackListener<CustomMessage>() {
     @Override
@@ -1133,7 +1134,7 @@ Use `CometChatUIKit.login()` with Auth Key during development and proof-of-conce
 
 **How do I customize date and time formatting across all UI Kit components?**
 
-Implement the `DateTimeFormatterCallback` interface and pass it to `UIKitSettings.UIKitSettingsBuilder` via `setDateTimeFormatterCallback()` before calling `CometChatUIKit.init()`. Each method in the interface (`time`, `today`, `yesterday`, `lastWeek`, `otherDays`, `minutes`, `hours`) controls a specific timestamp display case.
+Implement the `DateTimeFormatterCallback` interface and pass it to `UIKitSettings.UIKitSettingsBuilder` via `setDateTimeFormatterCallback()` before calling `CometChatUIKit.init()`. Each method in the interface (`time`, `today`, `yesterday`, `lastWeek`, `otherDays`, `minutes`, `hours`) controls a specific timestamp display case. You can also override formatting per component using `setDateTimeFormatter()` on individual components like `CometChatConversations`, `CometChatMessageList`, etc.
 
 **Do I need to call `init()` every time the app launches?**
 

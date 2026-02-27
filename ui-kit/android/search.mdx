@@ -627,7 +627,7 @@ cometChatSearch.setDateTimeFormatter(new DateTimeFormatterCallback() {
 import java.text.SimpleDateFormat
 import java.util.*
 
-cometChatSearch.setDateTimeFormatterCallback(object : DateTimeFormatterCallback {
+cometChatSearch.setDateTimeFormatter(object : DateTimeFormatterCallback {
 
         private val fullTimeFormatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
         private val dateFormatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
@@ -735,7 +735,7 @@ For implementation details, refer to the [MentionsFormatter Guide](/ui-kit/andro
 | `setOnMessageClicked` not firing | Ensure you set the listener before the component loads data. If the listener is set after results are displayed, it may not attach to existing items. |
 | Filters not applied to search results | Ensure you call `setConversationsRequestBuilder()` or `setMessagesRequestBuilder()` on the `CometChatSearch` instance after creating and configuring the builder. |
 | Custom message item view not rendering | Ensure `createView` in your `MessagesSearchViewHolderListener` returns a valid inflated `View`, not `null`. If `createView` returns `null`, the default view is used. |
-| Date/time format not changing | In Java, use `setDateTimeFormatter()`. In Kotlin, use `setDateTimeFormatterCallback()`. Verify you are calling the correct method for your language variant. |
+| Date/time format not changing | Use `setDateTimeFormatter()` to provide a custom `DateTimeFormatterCallback`. Verify you are calling the method on the correct component instance. |
 | Initial view not showing | Ensure you pass a valid `@LayoutRes` resource ID to `setInitialView()`. The view displays only when no search has been performed. |
 
 ## FAQ

@@ -398,7 +398,7 @@ This event is emitted when the user deletes a conversation.
 
 <Tabs>
 <Tab title="Java">
-```ruby Add Listener lines
+```java Add Listener lines
 CometChatConversationEvents.addListener("YOUR_LISTENER_TAG", new CometChatConversationEvents() {
     @Override
     public void ccConversationDeleted(Conversation conversation) {
@@ -416,7 +416,7 @@ CometChatConversationEvents.removeListener("YOUR_LISTENER_TAG");
 </Tab>
 
 <Tab title="Kotlin">
-```ruby Add Listener lines
+```kotlin Add Listener lines
 CometChatConversationEvents.addListener("LISTENER_TAG", object : CometChatConversationEvents() {
     override fun ccConversationDeleted(conversation: Conversation) {
         super.ccConversationDeleted(conversation)
@@ -514,7 +514,7 @@ What you're changing: Small functional customizations such as toggling visibilit
 | `setErrorStateVisibility` | Hides the error state on fetching conversations | `.setErrorStateVisibility(View.GONE);` |
 | `setEmptyStateVisibility` | Hides the empty state on fetching conversations | `.setEmptyStateVisibility(View.GONE);` |
 | `setSeparatorVisibility` | Controls visibility of separators in the list view | `.setSeparatorVisibility(View.GONE);` |
-| `setUsersStatusVisibility` | Controls visibility of the online status indicator | `.setUsersStatusVisibility(View.GONE);` |
+| `setUserStatusVisibility` | Controls visibility of the online status indicator | `.setUserStatusVisibility(View.GONE);` |
 | `setGroupTypeVisibility` | Controls visibility of the group type indicator | `.setGroupTypeVisibility(View.GONE);` |
 | `setReceiptsVisibility` | Hides receipts shown in the subtitle without disabling read/delivered marking | `.setReceiptsVisibility(View.GONE);` |
 | `disableSoundForMessages` | Disables sound notifications for incoming messages | `.disableSoundForMessages(true);` |
@@ -602,7 +602,7 @@ cometchatConversations.setDateTimeFormatter(new DateTimeFormatterCallback() {
 import java.text.SimpleDateFormat
 import java.util.*
 
-cometchatConversations.setDateTimeFormatterCallback(object : DateTimeFormatterCallback {
+cometchatConversations.setDateTimeFormatter(object : DateTimeFormatterCallback {
 
         private val fullTimeFormatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
         private val dateFormatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
@@ -761,7 +761,7 @@ cometchatConversations.addOptions((context, conversation) -> {
                                                                  0,
                                                                  CometChatTheme.getTextColorPrimary(context),
                                                                  CometChatTheme.getTextAppearanceBodyRegular(context),
-                                                                 () -> Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show()));
+                                                                 () -> Toast.makeText(context, "Archive", Toast.LENGTH_SHORT).show()));
             optionsArrayList.add(new CometChatPopupMenu.MenuItem("PIN",
                                                                  "Pin",
                                                                  getResources().getDrawable(R.drawable.pin),
@@ -770,7 +770,7 @@ cometchatConversations.addOptions((context, conversation) -> {
                                                                  0,
                                                                  CometChatTheme.getTextColorPrimary(context),
                                                                  CometChatTheme.getTextAppearanceBodyRegular(context),
-                                                                 () -> Toast.makeText(context, "Archive", Toast.LENGTH_SHORT).show()));
+                                                                 () -> Toast.makeText(context, "Pin", Toast.LENGTH_SHORT).show()));
             optionsArrayList.add(new CometChatPopupMenu.MenuItem("MARKASREAD",
                                                                  "Mark as read",
                                                                  getResources().getDrawable(R.drawable.mark_as_read),
@@ -802,7 +802,7 @@ cometchatConversations.addOptions { context, conversation ->
                     CometChatTheme.getTextAppearanceBodyRegular(context)
                 ) {
                     Toast
-                        .makeText(context, "Delete", Toast.LENGTH_SHORT)
+                        .makeText(context, "Archive", Toast.LENGTH_SHORT)
                         .show()
                 }
             )
@@ -818,7 +818,7 @@ cometchatConversations.addOptions { context, conversation ->
                     CometChatTheme.getTextAppearanceBodyRegular(context)
                 ) {
                     Toast
-                        .makeText(context, "Archive", Toast.LENGTH_SHORT)
+                        .makeText(context, "Pin", Toast.LENGTH_SHORT)
                         .show()
                 }
             )
@@ -901,7 +901,7 @@ Defines a custom error state view that appears when an issue occurs while loadin
 <Tabs>
 <Tab title="Java">
 ```java lines
-cometchatConversations.setErrorView(R.layout.your_empty_view);
+cometchatConversations.setErrorView(R.layout.your_error_view);
 ```
 
 </Tab>
@@ -2186,14 +2186,14 @@ cometChatConversations.setDateFormat(SimpleDateFormat)
 <Tabs>
 <Tab title="Java">
 ```java lines
-cometchatConversations.setDatePattern(new SimpleDateFormat("dd Mmm, hh:mm a",Locale.getDefault()));
+cometchatConversations.setDateFormat(new SimpleDateFormat("dd MMM, hh:mm a",Locale.getDefault()));
 ```
 
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin lines
-cometchatConversations.setDatePattern(SimpleDateFormat("dd MMM, hh:mm a",Locale.getDefault()))
+cometchatConversations.setDateFormat(SimpleDateFormat("dd MMM, hh:mm a",Locale.getDefault()))
 ```
 
 </Tab>
@@ -2209,14 +2209,32 @@ Customizes the subtitle view of each conversation item. The subtitle displays ad
 <Tabs>
 <Tab title="Java">
 ```java lines
-cometChatConversations.setSubtitleView()
+cometChatConversations.setSubtitleView(new ConversationsViewHolderListener() {
+            @Override
+            public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
+                return null;
+            }
+
+            @Override
+            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
+
+            }
+        });
 ```
 
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin lines
-cometChatConversations.setSubtitleView()
+cometChatConversations.setSubtitleView(object : ConversationsViewHolderListener() {
+            override fun createView(context: Context?, listItem: CometchatConversationsListItemsBinding?): View? {
+                return null
+            }
+
+            override fun bindView(context: Context, createdView: View, conversation: Conversation, holder: RecyclerView.ViewHolder, conversationList: List<Conversation>, position: Int) {
+
+            }
+        })
 ```
 
 </Tab>
@@ -2241,7 +2259,7 @@ cometChatConversations.setSubtitleView()
             @Override
             public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
                 TextView tvSubtitle = (TextView) createdView;
-                tvSubtitle.setText("Last Active at: "+new SimpleDateFormat("dd/mm/yyyy, HH:MM:SS").format(conversation.getUpdatedAt() * 1000));
+                tvSubtitle.setText("Last Active at: "+new SimpleDateFormat("dd/MM/yyyy, HH:mm:ss").format(conversation.getUpdatedAt() * 1000));
                 tvSubtitle.setTextColor(Color.BLACK);
             }
         });
@@ -2270,7 +2288,7 @@ cometChatConversations.setSubtitleView()
             ) {
                 val tvSubtitle = createdView as TextView
                 tvSubtitle.text =
-                    "Last Active at: " + SimpleDateFormat("dd/mm/yyyy, HH:MM:SS").format(
+                    "Last Active at: " + SimpleDateFormat("dd/MM/yyyy, HH:mm:ss").format(
                         conversation.updatedAt * 1000
                     )
                 tvSubtitle.setTextColor(Color.BLACK)
@@ -2282,7 +2300,7 @@ cometChatConversations.setSubtitleView()
 
 </Tabs>
 
-> **What this does:** Replaces the default subtitle with a custom `TextView` that shows "Last Active at:" followed by the conversation's last update timestamp formatted as "dd/mm/yyyy, HH:MM:SS" in black text.
+> **What this does:** Replaces the default subtitle with a custom `TextView` that shows "Last Active at:" followed by the conversation's last update timestamp formatted as "dd/MM/yyyy, HH:mm:ss" in black text.
 
 - **Verify**: After setting any advanced view, confirm the custom view renders in the correct position within the conversation list item, and the data binding populates correctly for each conversation.
 
@@ -2300,19 +2318,19 @@ cometChatConversations.setSubtitleView()
 | Error state visibility | Activity/Fragment | `setErrorStateVisibility(int)` | `.setErrorStateVisibility(View.GONE);` |
 | Empty state visibility | Activity/Fragment | `setEmptyStateVisibility(int)` | `.setEmptyStateVisibility(View.GONE);` |
 | Separator visibility | Activity/Fragment | `setSeparatorVisibility(int)` | `.setSeparatorVisibility(View.GONE);` |
-| User online status visibility | Activity/Fragment | `setUsersStatusVisibility(int)` | `.setUsersStatusVisibility(View.GONE);` |
+| User online status visibility | Activity/Fragment | `setUserStatusVisibility(int)` | `.setUserStatusVisibility(View.GONE);` |
 | Group type indicator visibility | Activity/Fragment | `setGroupTypeVisibility(int)` | `.setGroupTypeVisibility(View.GONE);` |
 | Read/delivered receipts visibility | Activity/Fragment | `setReceiptsVisibility(int)` | `.setReceiptsVisibility(View.GONE);` |
 | Incoming message sound | Activity/Fragment | `disableSoundForMessages(boolean)` | `.disableSoundForMessages(true);` |
 | Custom message sound | Activity/Fragment | `setCustomSoundForMessages(int)` | `.setCustomSoundForMessages(com.cometchat.chatuikit.R.raw.cometchat_beep2);` |
 | Selection mode (single/multiple) | Activity/Fragment | `setSelectionMode(SelectionMode)` | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
 | Date/time formatting | Activity/Fragment | `setDateTimeFormatter(DateTimeFormatterCallback)` | See `setDateTimeFormatter` code above |
-| Date pattern | Activity/Fragment | `setDatePattern(SimpleDateFormat)` | `cometchatConversations.setDatePattern(new SimpleDateFormat("dd MMM, hh:mm a", Locale.getDefault()));` |
+| Date format | Activity/Fragment | `setDateFormat(SimpleDateFormat)` | `cometchatConversations.setDateFormat(new SimpleDateFormat("dd MMM, hh:mm a", Locale.getDefault()));` |
 | Long-press options (replace) | Activity/Fragment | `setOptions(Function2)` | See `setOptions` code above |
 | Long-press options (append) | Activity/Fragment | `addOptions(Function2)` | See `addOptions` code above |
 | Loading view | Activity/Fragment | `setLoadingView(int)` | `cometchatConversations.setLoadingView(R.layout.your_loading_view);` |
 | Empty view | Activity/Fragment | `setEmptyView(int)` | `cometchatConversations.setEmptyView(R.layout.your_empty_view);` |
-| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatConversations.setErrorView(R.layout.your_empty_view);` |
+| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatConversations.setErrorView(R.layout.your_error_view);` |
 | Leading view (avatar area) | Activity/Fragment | `setLeadingView(ConversationsViewHolderListener)` | See `setLeadingView` code above |
 | Title view | Activity/Fragment | `setTitleView(ConversationsViewHolderListener)` | See `setTitleView` code above |
 | Trailing view | Activity/Fragment | `setTrailingView(ConversationsViewHolderListener)` | See `setTrailingView` code above |

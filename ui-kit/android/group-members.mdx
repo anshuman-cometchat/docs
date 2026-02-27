@@ -545,9 +545,9 @@ What you're changing: Small functional customizations such as toggling visibilit
 | `setEmptyStateVisibility` | Hides the empty state on fetching members | `.setEmptyStateVisibility(View.GONE);` |
 | `setLoadingStateVisibility` | Hides the loading state while fetching members | `.setLoadingStateVisibility(View.GONE);` |
 | `setSeparatorVisibility` | Controls visibility of separators in the list view | `.setSeparatorVisibility(View.GONE);` |
-| `setUsersStatusVisibility` | Controls visibility of the status indicator shown if a user is online | `.setUsersStatusVisibility(View.GONE);` |
+| `setUserStatusVisibility` | Controls visibility of the status indicator shown if a user is online | `.setUserStatusVisibility(View.GONE);` |
 | `setSelectionMode` | Determines the selection mode for members, enabling users to select either a single or multiple members at once. | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
-| `setSearchkeyword` | Used for fetching members matching the passed keywords | `.setSearchkeyword("anything");` |
+| `setSearchKeyword` | Used for fetching members matching the passed keywords | `.setSearchKeyword("anything");` |
 | `setSearchBoxVisibility` | Hides the search box shown in the toolbar | `.setSearchBoxVisibility(View.GONE);` |
 
 - **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE)`, confirm that multiple members can be selected.
@@ -1458,9 +1458,9 @@ cometchatGroupMembers.setOverflowMenu(addMemberIv)
 | Empty state visibility | Activity/Fragment | `setEmptyStateVisibility(int)` | `.setEmptyStateVisibility(View.GONE);` |
 | Loading state visibility | Activity/Fragment | `setLoadingStateVisibility(int)` | `.setLoadingStateVisibility(View.GONE);` |
 | Separator visibility | Activity/Fragment | `setSeparatorVisibility(int)` | `.setSeparatorVisibility(View.GONE);` |
-| User online status visibility | Activity/Fragment | `setUsersStatusVisibility(int)` | `.setUsersStatusVisibility(View.GONE);` |
+| User online status visibility | Activity/Fragment | `setUserStatusVisibility(int)` | `.setUserStatusVisibility(View.GONE);` |
 | Selection mode (single/multiple) | Activity/Fragment | `setSelectionMode(SelectionMode)` | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
-| Search keyword | Activity/Fragment | `setSearchkeyword(String)` | `.setSearchkeyword("anything");` |
+| Search keyword | Activity/Fragment | `setSearchKeyword(String)` | `.setSearchKeyword("anything");` |
 | Search box visibility | Activity/Fragment | `setSearchBoxVisibility(int)` | `.setSearchBoxVisibility(View.GONE);` |
 | Filter group members | Activity/Fragment | `setGroupMembersRequestBuilder(GroupMembersRequestBuilder)` | See Filters code above |
 | Search request builder | Activity/Fragment | `setSearchRequestBuilder(GroupMembersRequestBuilder)` | See SearchRequestBuilder code above |
