@@ -549,6 +549,10 @@ What you're changing: Small functional customizations such as toggling visibilit
 | `setSelectionMode` | Determines the selection mode for members, enabling users to select either a single or multiple members at once. | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
 | `setSearchKeyword` | Used for fetching members matching the passed keywords | `.setSearchKeyword("anything");` |
 | `setSearchBoxVisibility` | Hides the search box shown in the toolbar | `.setSearchBoxVisibility(View.GONE);` |
+| `setKickMemberOptionVisibility` | Toggles visibility for the kick member option in the long-press menu | `.setKickMemberOptionVisibility(View.GONE);` |
+| `setBanMemberOptionVisibility` | Toggles visibility for the ban member option in the long-press menu | `.setBanMemberOptionVisibility(View.GONE);` |
+| `setScopeChangeOptionVisibility` | Toggles visibility for the scope change option in the long-press menu | `.setScopeChangeOptionVisibility(View.GONE);` |
+| `excludeOwner` | When true, excludes the group owner from the member list | `.excludeOwner(true);` |
 
 - **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE)`, confirm that multiple members can be selected.
 
@@ -660,7 +664,7 @@ Defines a custom error state view when there is an issue loading group members.
 <Tabs>
 <Tab title="Java">
 ```java lines
-cometchatUsers.setErrorView(R.layout.your_empty_view);
+cometchatUsers.setErrorView(R.layout.your_error_view);
 ```
 
 </Tab>
@@ -1468,13 +1472,17 @@ cometchatGroupMembers.setOverflowMenu(addMemberIv)
 | Interaction options (append) | Activity/Fragment | `addOptions(Function2)` | See `addOptions` code above |
 | Loading view | Activity/Fragment | `setLoadingView(int)` | `cometchatUsers.setLoadingView(R.layout.your_loading_view);` |
 | Empty view | Activity/Fragment | `setEmptyView(int)` | `cometchatUsers.setEmptyView(R.layout.your_empty_view);` |
-| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatUsers.setErrorView(R.layout.your_empty_view);` |
+| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatUsers.setErrorView(R.layout.your_error_view);` |
 | Leading view (avatar area) | Activity/Fragment | `setLeadingView(GroupMembersViewHolderListeners)` | See `setLeadingView` code above |
 | Title view | Activity/Fragment | `setTitleView(GroupMembersViewHolderListeners)` | See `setTitleView` code above |
 | Subtitle view | Activity/Fragment | `setSubtitleView(GroupMembersViewHolderListeners)` | See `setSubTitleView` code above |
 | Trailing view | Activity/Fragment | `setTrailingView(GroupMembersViewHolderListeners)` | See `setTrailingView` code above |
 | Entire list item | Activity/Fragment | `setItemView(GroupMembersViewHolderListeners)` | See `setItemView` code above |
 | Overflow menu | Activity/Fragment | `setOverflowMenu(View)` | `cometchatGroupMembers.setOverflowMenu(v);` |
+| Kick member option visibility | Activity/Fragment | `setKickMemberOptionVisibility(int)` | `.setKickMemberOptionVisibility(View.GONE);` |
+| Ban member option visibility | Activity/Fragment | `setBanMemberOptionVisibility(int)` | `.setBanMemberOptionVisibility(View.GONE);` |
+| Scope change option visibility | Activity/Fragment | `setScopeChangeOptionVisibility(int)` | `.setScopeChangeOptionVisibility(View.GONE);` |
+| Exclude group owner | Activity/Fragment | `excludeOwner(boolean)` | `.excludeOwner(true);` |
 
 ## Common pitfalls & fixes
 

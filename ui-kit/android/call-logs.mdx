@@ -322,6 +322,33 @@ cometchatCallLogs.setOnEmpty{
 
 > **What this does:** Registers a callback that fires when the call log list has no items. Use this to show a custom empty-state message or trigger other logic.
 
+#### `setOnCallIconClickListener`
+
+Triggered when the user taps the audio or video call icon on a call log item. Use this to initiate a call or navigate to a call screen.
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatCallLogs.setOnCallIconClickListener((view, holder, position, callLog) -> {
+    // Handle call icon click
+});
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatCallLogs.setOnCallIconClickListener { view, holder, position, callLog ->
+    // Handle call icon click
+}
+```
+
+</Tab>
+
+</Tabs>
+
+> **What this does:** Registers a callback that fires when the user taps the call icon on a call log entry. The callback receives the view, view holder, position, and `CallLog` object.
+
 - **Verify**: After setting an action callback, trigger the corresponding user interaction (tap, long-press, back) and confirm your custom logic executes instead of the default behavior.
 
 ### Filters
@@ -452,6 +479,7 @@ What you're changing: Small functional customizations such as toggling visibilit
 | `setErrorStateVisibility` | Hides the error state on fetching call logs | `.setErrorStateVisibility(View.GONE);` |
 | `setEmptyStateVisibility` | Hides the empty state on fetching call logs | `.setEmptyStateVisibility(View.GONE);` |
 | `setSeparatorVisibility` | Controls visibility of separators in the list view | `.setSeparatorVisibility(View.GONE);` |
+| `refreshCallLogs` | Forces a refresh of the call log list, re-fetching data from the server | `.refreshCallLogs();` |
 
 - **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden.
 
@@ -674,7 +702,7 @@ Defines a custom error state view that appears when an issue occurs while loadin
 <Tabs>
 <Tab title="Java">
 ```java lines
-cometchatConversations.setErrorView(R.layout.your_empty_view);
+cometchatConversations.setErrorView(R.layout.your_error_view);
 ```
 
 </Tab>
@@ -1454,13 +1482,15 @@ Customizes the trailing (end) view of a call log item, used for call duration, t
 | Long-press options (append) | Activity/Fragment | `addOptions(Function2)` | See `addOptions` code above |
 | Loading view | Activity/Fragment | `setLoadingView(int)` | `cometchatConversations.setLoadingView(R.layout.your_loading_view);` |
 | Empty view | Activity/Fragment | `setEmptyView(int)` | `cometchatConversations.setEmptyView(R.layout.your_empty_view);` |
-| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatConversations.setErrorView(R.layout.your_empty_view);` |
+| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatConversations.setErrorView(R.layout.your_error_view);` |
 | Leading view (avatar area) | Activity/Fragment | `setLeadingView(CallLogsViewHolderListener)` | See `setLeadingView` code above |
 | Title view | Activity/Fragment | `setTitleView(CallLogsViewHolderListener)` | See `setTitleView` code above |
 | Subtitle view | Activity/Fragment | `setSubtitleView(CallLogsViewHolderListener)` | See `setSubtitleView` code above |
 | Trailing view | Activity/Fragment | `setTrailingView(CallLogsViewHolderListener)` | See `setTrailingView` code above |
 | Entire list item | Activity/Fragment | `setItemView(CallLogsViewHolderListener)` | See `setItemView` code above |
 | Filter call logs | Activity/Fragment | `setCallLogRequestBuilder(CallLogRequestBuilder)` | See Filters code above |
+| Call icon click listener | Activity/Fragment | `setOnCallIconClickListener(OnCallIconClick)` | See `setOnCallIconClickListener` code above |
+| Refresh call logs | Activity/Fragment | `refreshCallLogs()` | `.refreshCallLogs();` |
 
 ## Common pitfalls & fixes
 

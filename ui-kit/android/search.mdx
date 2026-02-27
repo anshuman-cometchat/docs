@@ -92,11 +92,11 @@ class SearchActivity : AppCompatActivity() {
 ## Core concepts
 
 - **`CometChatSearch`**: The main composite component class that renders the search interface. It searches across conversations and messages in real time.
-- **Actions**: Callbacks such as `setOnConversationClicked`, `setOnMessageClicked`, `setOnBackPressListener`, `setOnError`, and `setOnEmpty` that let you respond to user interactions and component states.
+- **Actions**: Callbacks such as `setOnConversationClicked`, `setOnMessageClicked`, `setOnBackPressListener`, `setOnError`, `setOnEmpty`, `setOnLoadMessages`, and `setOnLoadConversations` that let you respond to user interactions and component states.
 - **Filters**: Use `ConversationsRequest.ConversationsRequestBuilder` and `MessagesRequest.MessagesRequestBuilder` to filter search results by conversation or message criteria.
 - **Events**: The `CometChatSearch` component does not produce any events.
 - **Style**: XML theme styles (parent `CometChatSearchStyle`) applied via `setStyle()` to customize colors, fonts, and sub-component styles.
-- **Advanced views**: Methods like `setTextMessageItemView`, `setImageMessageItemView`, and conversation view setters that let you replace default UI elements with custom layouts.
+- **Advanced views**: Methods like `setConversationItemView`, `setTextMessageItemView`, `setImageMessageItemView`, and conversation view setters that let you replace default UI elements with custom layouts.
 - **Functionality**: Methods like `setUid`, `setGuid`, `setSearchFilters`, `setInitialSearchFilter`, and `setSearchIn` that control search scope and behavior.
 
 ## Implementation
@@ -245,6 +245,60 @@ Listens for the empty state of the `CometChatSearch` component. This does not ch
 </Tabs>
 
 > **What this does:** Registers a callback that fires when the search returns no results. Use this to trigger custom empty-state logic.
+
+#### `setOnLoadMessages`
+
+Invoked when the message list is successfully fetched and loaded, helping track when message search results are ready.
+
+<Tabs>
+<Tab title="Java">
+```java SearchActivity.java lines
+        binding.cometchatSearch.setOnLoadMessages(list -> {
+            Log.d(TAG, "Messages loaded: " + list.size());
+        });
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin SearchActivity.kt lines
+        binding.cometchatSearch.setOnLoadMessages(OnLoad<BaseMessage> { list ->
+            Log.i(TAG, "Messages loaded: ${list.size}")
+        })
+```
+
+</Tab>
+
+</Tabs>
+
+> **What this does:** Registers a callback that fires when message search results are loaded. The callback receives the list of `BaseMessage` objects that were fetched.
+
+#### `setOnLoadConversations`
+
+Invoked when the conversation list is successfully fetched and loaded, helping track when conversation search results are ready.
+
+<Tabs>
+<Tab title="Java">
+```java SearchActivity.java lines
+        binding.cometchatSearch.setOnLoadConversations(list -> {
+            Log.d(TAG, "Conversations loaded: " + list.size());
+        });
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin SearchActivity.kt lines
+        binding.cometchatSearch.setOnLoadConversations(OnLoad<Conversation> { list ->
+            Log.i(TAG, "Conversations loaded: ${list.size}")
+        })
+```
+
+</Tab>
+
+</Tabs>
+
+> **What this does:** Registers a callback that fires when conversation search results are loaded. The callback receives the list of `Conversation` objects that were fetched.
 
 - **Verify**: After setting any action callback, trigger the corresponding interaction (tap a conversation result, tap a message result, press back, cause an error, or search for a term with no results) and confirm your callback executes with the correct parameters.
 
@@ -430,6 +484,69 @@ The following methods let you customize conversation items in the search results
 - **ConversationTitleView**: Assign a custom title view to a conversation in the search result. For details, refer to the [titleView](/ui-kit/android/conversations#titleview) prop of the `CometChatConversations` component.
 - **ConversationSubtitleView**: Assign a custom subtitle view to a conversation in the search result. For details, refer to the [subtitleView](/ui-kit/android/conversations#subtitleview) prop of the `CometChatConversations` component.
 - **ConversationTrailingView**: Assign a custom trailing view to a conversation in the search result. For details, refer to the [trailingView](/ui-kit/android/conversations#trailingview) prop of the `CometChatConversations` component.
+
+##### `setConversationItemView`
+
+Assigns a completely custom list item design to conversation results in the search component, replacing the default conversation item layout entirely.
+
+<Tabs>
+<Tab title="Java">
+```java SearchActivity.java lines
+        binding.cometchatSearch.setConversationItemView(new ConversationsSearchViewHolderListener() {
+            @Override
+            public View createView(Context context, View listItem) {
+                LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                return layoutInflater.inflate(R.layout.custom_conversation_search_item, null);
+            }
+
+            @Override
+            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
+                android.widget.TextView titleTv = createdView.findViewById(R.id.tv_title);
+                if (conversation != null) {
+                    if (conversation.getConversationType().equals(CometChatConstants.CONVERSATION_TYPE_USER)) {
+                        titleTv.setText(((User) conversation.getConversationWith()).getName());
+                    } else {
+                        titleTv.setText(((Group) conversation.getConversationWith()).getName());
+                    }
+                }
+            }
+        });
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin SearchActivity.kt lines
+        binding.cometchatSearch.setConversationItemView(object : ConversationsSearchViewHolderListener() {
+            override fun createView(context: Context?, listItem: View?): View? {
+                return layoutInflater.inflate(R.layout.custom_conversation_search_item, null)
+            }
+
+            override fun bindView(
+                context: Context?,
+                createdView: View?,
+                conversation: Conversation?,
+                holder: RecyclerView.ViewHolder?,
+                conversationList: List<Conversation?>?,
+                position: Int
+            ) {
+                val titleTv = createdView?.findViewById<android.widget.TextView>(R.id.tv_title)
+                conversation?.let {
+                    if (it.conversationType == CometChatConstants.CONVERSATION_TYPE_USER) {
+                        titleTv?.text = (it.conversationWith as User).name
+                    } else {
+                        titleTv?.text = (it.conversationWith as Group).name
+                    }
+                }
+            }
+        })
+```
+
+</Tab>
+
+</Tabs>
+
+> **What this does:** Registers a `ConversationsSearchViewHolderListener` for conversation items in search results. The `createView` method inflates a custom layout, and `bindView` populates it with the conversation name based on whether it's a user or group conversation.
 
 #### Message item views
 
@@ -722,6 +839,9 @@ For implementation details, refer to the [MentionsFormatter Guide](/ui-kit/andro
 | Custom document message item view | Activity/Fragment | `setDocumentMessageItemView(MessagesSearchViewHolderListener)` | See `setTextMessageItemView` pattern |
 | Custom link message item view | Activity/Fragment | `setLinkMessageItemView(MessagesSearchViewHolderListener)` | See `setTextMessageItemView` pattern |
 | Date/time formatting | Activity/Fragment | `setDateTimeFormatter(DateTimeFormatterCallback)` | See `setDateTimeFormatter` code above |
+| Callback on messages loaded | Activity/Fragment | `setOnLoadMessages(OnLoad<BaseMessage>)` | `binding.cometchatSearch.setOnLoadMessages(list -> { })` |
+| Callback on conversations loaded | Activity/Fragment | `setOnLoadConversations(OnLoad<Conversation>)` | `binding.cometchatSearch.setOnLoadConversations(list -> { })` |
+| Custom conversation item view | Activity/Fragment | `setConversationItemView(ConversationsSearchViewHolderListener)` | See `setConversationItemView` code above |
 
 ## Common pitfalls & fixes
 

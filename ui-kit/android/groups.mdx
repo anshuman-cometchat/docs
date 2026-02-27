@@ -591,7 +591,8 @@ What you're changing: Small functional customizations such as toggling visibilit
 | `setGroupTypeVisibility` | Controls visibility of the status indicator shown for the group type | `.setGroupTypeVisibility(View.GONE);` |
 | `setSearchBoxVisibility` | Hides the search box shown in the toolbar | `.setSearchBoxVisibility(View.GONE);` |
 | `setSelectionMode` | Determines the selection mode for groups, enabling the user to select either a single group or multiple groups at once. | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
-| `setSearchkeyword` | Fetches groups matching the passed keywords | `.setSearchkeyword("anything");` |
+| `setSearchKeyword` | Fetches groups matching the passed keywords | `.setSearchKeyword("anything");` |
+| `setTitleVisibility` | Toggles visibility for the title text in the toolbar | `.setTitleVisibility(View.GONE);` |
 
 - **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `setSelectionMode`, confirm the selection behavior matches the mode.
 
@@ -704,7 +705,7 @@ Configures the UI when an error occurs while fetching groups.
 <Tabs>
 <Tab title="Java">
 ```java lines
-cometchatGroups.setErrorView(R.layout.your_empty_view);
+cometchatGroups.setErrorView(R.layout.your_error_view);
 ```
 
 </Tab>
@@ -1533,14 +1534,15 @@ cometchatGroups.setOverflowMenu(view)
 | Group type indicator visibility | Activity/Fragment | `setGroupTypeVisibility(int)` | `.setGroupTypeVisibility(View.GONE);` |
 | Search box visibility | Activity/Fragment | `setSearchBoxVisibility(int)` | `.setSearchBoxVisibility(View.GONE);` |
 | Selection mode (single/multiple) | Activity/Fragment | `setSelectionMode(SelectionMode)` | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
-| Search keyword filter | Activity/Fragment | `setSearchkeyword(String)` | `.setSearchkeyword("anything");` |
+| Search keyword filter | Activity/Fragment | `setSearchKeyword(String)` | `.setSearchKeyword("anything");` |
+| Title visibility | Activity/Fragment | `setTitleVisibility(int)` | `.setTitleVisibility(View.GONE);` |
 | Filter groups (joined only, limit, tags) | Activity/Fragment | `setGroupsRequestBuilder(GroupsRequestBuilder)` | See Filters code above |
 | Search request builder | Activity/Fragment | `setSearchRequestBuilder(GroupsRequestBuilder)` | See SearchRequestBuilder code above |
 | Long-press options (replace) | Activity/Fragment | `setOptions(Function2)` | See `setOptions` code above |
 | Long-press options (append) | Activity/Fragment | `addOptions(Function2)` | See `addOptions` code above |
 | Loading view | Activity/Fragment | `setLoadingView(int)` | `cometchatGroups.setLoadingView(R.layout.your_loading_view);` |
 | Empty view | Activity/Fragment | `setEmptyView(int)` | `cometchatGroups.setEmptyView(R.layout.your_empty_view);` |
-| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatGroups.setErrorView(R.layout.your_empty_view);` |
+| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatGroups.setErrorView(R.layout.your_error_view);` |
 | Leading view (avatar area) | Activity/Fragment | `setLeadingView(GroupsViewHolderListener)` | See `setLeadingView` code above |
 | Title view | Activity/Fragment | `setTitleView(GroupsViewHolderListener)` | See `setTitleView` code above |
 | Trailing view | Activity/Fragment | `setTrailingView(GroupsViewHolderListener)` | See `setTrailingView` code above |

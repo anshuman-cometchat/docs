@@ -319,6 +319,9 @@ What you're changing: Small functional customizations such as toggling visibilit
 | `setPollAttachmentOptionVisibility` | Controls whether polls can be shared | `.setPollAttachmentOptionVisibility(View.VISIBLE)` |
 | `setCollaborativeDocumentOptionVisibility` | Controls whether collaborative documents can be shared | `.setCollaborativeDocumentOptionVisibility(View.VISIBLE)` |
 | `setCollaborativeWhiteboardOptionVisibility` | Controls whether collaborative whiteboards can be shared | `.setCollaborativeWhiteboardOptionVisibility(View.VISIBLE)` |
+| `setVoiceNoteButtonVisibility` | Toggles visibility for the voice note recording button | `.setVoiceNoteButtonVisibility(View.GONE)` |
+| `setAuxiliaryButtonVisibility` | Toggles visibility for the auxiliary button area (AI, stickers) | `.setAuxiliaryButtonVisibility(View.GONE)` |
+| `setPlaceHolderText` | Sets the placeholder text displayed in the message input field | `.setPlaceHolderText("Type a message...")` |
 
 - **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `disableTypingEvents(true)`, confirm no typing indicators are sent. After calling `setInitialComposerText("Your_Text")`, confirm the text input field shows the predefined text.
 
@@ -786,6 +789,29 @@ cometChatMessageComposer.setHeaderView(view)
 
 - **Verify**: After setting any advanced view, confirm the custom view renders in the correct position within the composer, and the data binding populates correctly.
 
+#### `setFooterView`
+
+Sets a custom footer view below the message input area.
+
+<Tabs>
+<Tab title="Java">
+```java lines
+cometChatMessageComposer.setFooterView(view);
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin lines
+cometChatMessageComposer.setFooterView(view)
+```
+
+</Tab>
+
+</Tabs>
+
+> **What this does:** Sets a custom `View` as the footer of the composer. The footer view renders below the text input area.
+
 ## Customization matrix
 
 | What you want to change | Where | Property/API | Example |
@@ -823,6 +849,10 @@ cometChatMessageComposer.setHeaderView(view)
 | Auxiliary button view | Activity/Fragment | `setAuxiliaryButtonView(View)` | See `setAuxiliaryButtonView` code above |
 | Send button view | Activity/Fragment | `setSendButtonView(View)` | See `setSendButtonView` code above |
 | Header view | Activity/Fragment | `setHeaderView(View)` | See `setHeaderView` code above |
+| Footer view | Activity/Fragment | `setFooterView(View)` | See `setFooterView` code above |
+| Voice note button visibility | Activity/Fragment | `setVoiceNoteButtonVisibility(int)` | `.setVoiceNoteButtonVisibility(View.GONE)` |
+| Auxiliary button visibility | Activity/Fragment | `setAuxiliaryButtonVisibility(int)` | `.setAuxiliaryButtonVisibility(View.GONE)` |
+| Placeholder text | Activity/Fragment | `setPlaceHolderText(String)` | `.setPlaceHolderText("Type a message...")` |
 
 ## Common pitfalls & fixes
 

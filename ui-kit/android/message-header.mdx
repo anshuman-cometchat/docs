@@ -194,6 +194,10 @@ What you're changing: Small functional customizations such as toggling visibilit
 | `setUserStatusVisibility` | Toggles visibility for the user's online/offline status | `.setUserStatusVisibility(View.VISIBLE)` |
 | `setVideoCallButtonVisibility` | Toggles visibility for the video call button | `.setVideoCallButtonVisibility(View.VISIBLE)` |
 | `setVoiceCallButtonVisibility` | Toggles visibility for the voice call button | `.setVoiceCallButtonVisibility(View.VISIBLE)` |
+| `setMenuIconVisibility` | Toggles visibility for the overflow menu icon in the header | `.setMenuIconVisibility(View.GONE)` |
+| `setGroupStatusVisibility` | Toggles visibility for the group member count subtitle | `.setGroupStatusVisibility(View.GONE)` |
+| `setNewChatButtonVisibility` | Toggles visibility for the new chat button | `.setNewChatButtonVisibility(View.GONE)` |
+| `setChatHistoryButtonVisibility` | Toggles visibility for the AI chat history button | `.setChatHistoryButtonVisibility(View.GONE)` |
 
 - **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `setUser(user)`, confirm the header displays that user's name and avatar.
 
@@ -817,6 +821,111 @@ cometChatMessageHeader.setTrailingView { context, user, group ->
 
 > **What this does:** Creates an `ImageView` with a save icon drawable, sizes it to 24dp × 24dp with a 16dp left margin, and returns it as the trailing view in the header.
 
+#### `setTitleView`
+
+Replaces the default title view with a custom layout. The callback receives the current `Context`, `User`, and `Group` objects.
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatMessageHeader.setTitleView((context, user, group) -> {
+    TextView titleView = new TextView(context);
+    if (user != null) {
+        titleView.setText(user.getName());
+    } else if (group != null) {
+        titleView.setText(group.getName());
+    }
+    return titleView;
+});
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatMessageHeader.setTitleView { context, user, group ->
+    val titleView = TextView(context)
+    if (user != null) {
+        titleView.text = user.name
+    } else if (group != null) {
+        titleView.text = group.name
+    }
+    titleView
+}
+```
+
+</Tab>
+
+</Tabs>
+
+> **What this does:** Replaces the default title with a custom `TextView` that displays the user's or group's name.
+
+#### `setLastSeenText`
+
+Provides a custom implementation for the "last seen" text displayed below the user's name. Only applies to user conversations.
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatMessageHeader.setLastSeenText((context, user) -> {
+    if (user.getStatus().equals("online")) {
+        return "Active now";
+    }
+    return "Last seen recently";
+});
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+cometchatMessageHeader.setLastSeenText { context, user ->
+    if (user.status == "online") {
+        "Active now"
+    } else {
+        "Last seen recently"
+    }
+}
+```
+
+</Tab>
+
+</Tabs>
+
+> **What this does:** Replaces the default last seen text with custom logic. Returns "Active now" for online users and "Last seen recently" for offline users.
+
+#### `setOptions`
+
+Sets the list of popup menu items displayed when the overflow menu icon is tapped.
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+List<CometChatPopupMenu.MenuItem> menuItems = new ArrayList<>();
+menuItems.add(new CometChatPopupMenu.MenuItem("SEARCH", "Search", null, null, 0, 0, 0, 0, () -> {
+    Toast.makeText(context, "Search", Toast.LENGTH_SHORT).show();
+}));
+cometchatMessageHeader.setOptions(menuItems);
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+val menuItems = listOf(
+    CometChatPopupMenu.MenuItem("SEARCH", "Search", null, null, 0, 0, 0, 0) {
+        Toast.makeText(context, "Search", Toast.LENGTH_SHORT).show()
+    }
+)
+cometchatMessageHeader.setOptions(menuItems)
+```
+
+</Tab>
+
+</Tabs>
+
+> **What this does:** Sets custom popup menu items for the header's overflow menu. Each item has an ID, label, and click action.
+
 - **Verify**: After setting any advanced view, confirm the custom view renders in the correct position within the message header, and the data binding populates correctly for the user or group.
 
 ## Customization matrix
@@ -839,6 +948,13 @@ cometChatMessageHeader.setTrailingView { context, user, group ->
 | Subtitle view | Activity/Fragment | `setSubtitleView(Function3)` | See `setSubtitleView` code above |
 | Leading view (avatar area) | Activity/Fragment | `setLeadingView(Function3)` | See `setLeadingView` code above |
 | Trailing view | Activity/Fragment | `setTrailingView(Function3)` | See `setTrailingView` code above |
+| Title view | Activity/Fragment | `setTitleView(Function3)` | See `setTitleView` code above |
+| Menu icon visibility | Activity/Fragment | `setMenuIconVisibility(int)` | `.setMenuIconVisibility(View.GONE)` |
+| Group status visibility | Activity/Fragment | `setGroupStatusVisibility(int)` | `.setGroupStatusVisibility(View.GONE)` |
+| New chat button visibility | Activity/Fragment | `setNewChatButtonVisibility(int)` | `.setNewChatButtonVisibility(View.GONE)` |
+| Chat history button visibility | Activity/Fragment | `setChatHistoryButtonVisibility(int)` | `.setChatHistoryButtonVisibility(View.GONE)` |
+| Custom last seen text | Activity/Fragment | `setLastSeenText(Function2<Context, User, String>)` | See `setLastSeenText` code below |
+| Header popup menu options | Activity/Fragment | `setOptions(List<MenuItem>)` | `cometchatMessageHeader.setOptions(menuItems);` |
 
 ## Common pitfalls & fixes
 

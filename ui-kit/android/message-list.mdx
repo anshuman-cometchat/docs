@@ -498,6 +498,13 @@ cometChatMessageList.hideReceipt(true)
 | `smartRepliesDelayDuration` | Sets the delay time before Smart Replies are fetched and displayed after a message is received | `.smartRepliesDelayDuration(5000);` |
 
 | `refreshStyle` | Used to refresh the style of message list | `.refreshStyle();` |
+| `setSwipeToReplyEnabled` | Enables or disables the swipe-to-reply gesture on message bubbles. Default is true | `.setSwipeToReplyEnabled(false);` |
+| `setReplyOptionVisibility` | Toggles visibility for the reply option in the message action sheet | `.setReplyOptionVisibility(View.GONE);` |
+| `setShareMessageOptionVisibility` | Toggles visibility for the share message option in the message action sheet | `.setShareMessageOptionVisibility(View.GONE);` |
+| `setMarkAsUnreadOptionVisibility` | Toggles visibility for the mark-as-unread option in the message action sheet | `.setMarkAsUnreadOptionVisibility(View.GONE);` |
+| `setFlagOptionVisibility` | Toggles visibility for the flag/report option in the message action sheet | `.setFlagOptionVisibility(View.GONE);` |
+| `setStartFromUnreadMessages` | When true, the message list scrolls to the first unread message on load | `.setStartFromUnreadMessages(true);` |
+| `setEnableConversationSummary` | Controls whether AI conversation summary is generated for conversations with many unread messages | `.setEnableConversationSummary(true);` |
 | `generateConversationSummary` | Triggers the generation of a conversation summary by fetching it from the ViewModel | `.generateConversationSummary();` |
 
 
@@ -726,7 +733,7 @@ Custom error state view displayed when fetching messages fails.
 <Tabs>
 <Tab title="Java">
 ```java lines
-cometchatMessageList.setErrorView(R.layout.your_empty_view);
+cometchatMessageList.setErrorView(R.layout.your_error_view);
 ```
 
 </Tab>
@@ -1166,6 +1173,31 @@ cometChatMessageList.setFooterView(View.inflate(context, R.layout.custom_footer_
 
 - **Verify**: After setting any advanced view, confirm the custom view renders in the correct position within the message list, and the data binding populates correctly.
 
+#### `setNewMessageIndicatorView`
+
+Replaces the default "new messages" indicator that appears when new messages arrive while the user has scrolled up.
+
+<Tabs>
+<Tab title="Java">
+```java YourActivity.java lines
+View customIndicator = LayoutInflater.from(this).inflate(R.layout.custom_new_message_indicator, null);
+cometchatMessageList.setNewMessageIndicatorView(customIndicator);
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+val customIndicator = LayoutInflater.from(this).inflate(R.layout.custom_new_message_indicator, null)
+cometchatMessageList.setNewMessageIndicatorView(customIndicator)
+```
+
+</Tab>
+
+</Tabs>
+
+> **What this does:** Replaces the default new message indicator with a custom layout. The indicator appears when new messages arrive while the user is scrolled up in the message list.
+
 ## Customization matrix
 
 | What you want to change | Where | Property/API | Example |
@@ -1202,11 +1234,19 @@ cometChatMessageList.setFooterView(View.inflate(context, R.layout.custom_footer_
 | Message bubble time format | Activity/Fragment | `setTimeFormat(SimpleDateFormat)` | `messageList.setTimeFormat(new SimpleDateFormat("hh:mm a", Locale.getDefault()));` |
 | Loading view | Activity/Fragment | `setLoadingView(int)` | `cometchatMessageList.setLoadingView(R.layout.your_loading_view);` |
 | Empty view | Activity/Fragment | `setEmptyView(int)` | `cometchatMessageList.setEmptyView(R.layout.your_empty_view);` |
-| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatMessageList.setErrorView(R.layout.your_empty_view);` |
+| Error view | Activity/Fragment | `setErrorView(int)` | `cometchatMessageList.setErrorView(R.layout.your_error_view);` |
 | Header view | Activity/Fragment | `setHeaderView(View)` | `cometChatMessageList.setHeaderView(view);` |
 | Footer view | Activity/Fragment | `setFooterView(View)` | `cometChatMessageList.setFooterView(view);` |
 | Text formatters (mentions) | Activity/Fragment | `setTextFormatters(List<CometChatTextFormatter>)` | See `setTextFormatters` code above |
 | Refresh style | Activity/Fragment | `refreshStyle()` | `.refreshStyle();` |
+| Swipe to reply | Activity/Fragment | `setSwipeToReplyEnabled(boolean)` | `.setSwipeToReplyEnabled(false);` |
+| Reply option visibility | Activity/Fragment | `setReplyOptionVisibility(int)` | `.setReplyOptionVisibility(View.GONE);` |
+| Share option visibility | Activity/Fragment | `setShareMessageOptionVisibility(int)` | `.setShareMessageOptionVisibility(View.GONE);` |
+| Mark as unread option | Activity/Fragment | `setMarkAsUnreadOptionVisibility(int)` | `.setMarkAsUnreadOptionVisibility(View.GONE);` |
+| Flag/report option | Activity/Fragment | `setFlagOptionVisibility(int)` | `.setFlagOptionVisibility(View.GONE);` |
+| Start from unread messages | Activity/Fragment | `setStartFromUnreadMessages(boolean)` | `.setStartFromUnreadMessages(true);` |
+| New message indicator view | Activity/Fragment | `setNewMessageIndicatorView(View)` | `cometchatMessageList.setNewMessageIndicatorView(view);` |
+| Enable conversation summary | Activity/Fragment | `setEnableConversationSummary(boolean)` | `.setEnableConversationSummary(true);` |
 | Generate conversation summary | Activity/Fragment | `generateConversationSummary()` | `.generateConversationSummary();` |
 | Filter messages | Activity/Fragment | `setMessagesRequestBuilder(MessagesRequestBuilder)` | See Filters code above |
 
