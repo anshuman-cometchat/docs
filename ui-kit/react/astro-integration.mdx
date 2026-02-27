@@ -19,8 +19,6 @@ The CometChat UI Kit for React provides prebuilt UI components for in-app chat. 
   <img src="https://mintcdn.com/cometchat-22654f5b/HFXOvmhiLRb5ClID/images/94312eb7-intro_web_screens-7ee27b256c54ea069273e198ec2aad4e.png?fit=max&auto=format&n=HFXOvmhiLRb5ClID&q=85&s=21d2b906314a417cb1a0d583c64ef822" alt="CometChat prebuilt chat UI screens overview" />
 </Frame>
 
-***
-
 ## Prerequisites
 
 Create a CometChat application via the [CometChat Dashboard](https://app.cometchat.com/). The dashboard provides user management, group chat, voice/video calling, and real-time notifications.
@@ -31,11 +29,10 @@ Required credentials from the dashboard:
 2. Auth Key
 3. Region
 
-***
-
 ## Getting Started
 
-### Step 1: Create an Astro Project
+<Steps>
+<Step title="Create an Astro Project">
 
 <Tabs>
   <Tab title="npm">
@@ -65,9 +62,9 @@ Required credentials from the dashboard:
 CometChat UI and SDK must run on the client. Use `client:only="react"` for Astro islands.
 </Tip>
 
-***
+</Step>
 
-### Step 2: Install Dependencies
+<Step title="Install Dependencies">
 
 <Tabs>
   <Tab title="Install CometChat UI Kit">
@@ -104,9 +101,9 @@ CometChat UI and SDK must run on the client. Use `client:only="react"` for Astro
   ```
 </Info>
 
-***
+</Step>
 
-### Step 3: Initialize CometChat (UI Kit)
+<Step title="Initialize CometChat (UI Kit)">
 
 Shared initializer that reads from environment variables:
 
@@ -149,9 +146,9 @@ export async function ensureLogin(uid) {
 Replace placeholders with actual CometChat credentials before testing.
 </Info>
 
-***
+</Step>
 
-### Step 4: User Login
+<Step title="User Login">
 
 The example islands handle login automatically using `ensureLogin(uid)` from `src/lib/cometchat-init.js`. Configure `PUBLIC_COMETCHAT_LOGIN_UID` (and `PUBLIC_COMETCHAT_TARGET_UID` for one-to-one) in `.env`.
 
@@ -163,13 +160,11 @@ Auth Key is for development/POC only. Use [Auth Token](/ui-kit/react/methods#log
 Test UIDs: `cometchat-uid-1` through `cometchat-uid-5`.
 </Info>
 
-***
+</Step>
 
-### Step 5: Choose a Chat Experience
+<Step title="Choose a Chat Experience">
 
 Three layout options:
-
----
 
 #### Conversation List + Message View
 
@@ -181,8 +176,6 @@ Two-panel layout: conversation list on the left, active chat on the right. Suppo
 
 [Integrate Conversation List + Message](./astro-conversation)
 
-***
-
 #### One-to-One/Group Chat
 
 Single chat window without a conversation list. Supports both 1:1 and group messaging.
@@ -192,8 +185,6 @@ Single chat window without a conversation list. Supports both 1:1 and group mess
 </Frame>
 
 [Integrate One-to-One/Group Chat](./astro-one-to-one-chat)
-
-***
 
 #### Tab-Based Chat Experience
 
@@ -205,7 +196,8 @@ Tab navigation between Chat, Call Logs, Users, and Settings. Works across deskto
 
 [Integrate Tab-Based Chat](./astro-tab-based-chat)
 
-***
+</Step>
+</Steps>
 
 ## Build Your Own Chat Experience
 
@@ -216,7 +208,6 @@ For full control over the chat interface, use individual components directly:
 - [Components](./components-overview)
 - [Themes](./theme)
 - [Build with SDK](./../../../sdk/javascript/overview)
-***
 
 ## Next Steps
 
@@ -234,5 +225,3 @@ For full control over the chat interface, use individual components directly:
     Customize colors, fonts, and styles.
   </Card>
 </CardGroup>
-
-***
