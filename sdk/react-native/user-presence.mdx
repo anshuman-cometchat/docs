@@ -82,6 +82,40 @@ CometChat.addUserListener(
 
 </Tabs>
 
+<Accordion title="onUserOnline Response">
+**On Event** — `onUserOnline` returns a `User` object when a user comes online:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the user | `"cometchat-uid-7"` |
+| `name` | string | Display name of the user | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar image | `"https://artriva.com/media/k2/galleries/20/d.jpg"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1772174142305` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the current user | `false` |
+| `blockedByMe` | boolean | Whether the current user has blocked this user | `false` |
+| `deactivatedAt` | number | Timestamp when user was deactivated (0 if active) | `0` |
+
+</Accordion>
+
+<Accordion title="onUserOffline Response">
+**On Event** — `onUserOffline` returns a `User` object when a user goes offline:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the user | `"cometchat-uid-7"` |
+| `name` | string | Display name of the user | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar image | `"https://artriva.com/media/k2/galleries/20/d.jpg"` |
+| `status` | string | User's online status | `"offline"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1772174136215` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the current user | `false` |
+| `blockedByMe` | boolean | Whether the current user has blocked this user | `false` |
+| `deactivatedAt` | number | Timestamp when user was deactivated (0 if active) | `0` |
+
+</Accordion>
+
 | Parameter    | Description                                   |
 | ------------ | --------------------------------------------- |
 | `listenerID` | An ID that uniquely identifies that listener. |
