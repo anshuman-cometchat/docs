@@ -151,6 +151,42 @@ title: "Conversations"
 `CometChatConversations` is a list component. It renders recent conversations and emits the selected `Conversation` via `setOnItemClick`. Wire it to `CometChatMessageHeader`, `CometChatMessageList`, and `CometChatMessageComposer` to build a standard chat layout.
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin ChatActivity.kt lines
+class ChatActivity : AppCompatActivity() {
+
+    private lateinit var conversations: CometChatConversations
+    private lateinit var messageHeader: CometChatMessageHeader
+    private lateinit var messageList: CometChatMessageList
+    private lateinit var messageComposer: CometChatMessageComposer
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_chat)
+
+        conversations = findViewById(R.id.conversations)
+        messageHeader = findViewById(R.id.message_header)
+        messageList = findViewById(R.id.message_list)
+        messageComposer = findViewById(R.id.message_composer)
+
+        conversations.setOnItemClick { view, position, conversation ->
+            if (conversation.conversationType == CometChatConstants.CONVERSATION_TYPE_USER) {
+                val user = conversation.conversationWith as User
+                messageHeader.setUser(user)
+                messageList.setUser(user)
+                messageComposer.setUser(user)
+            } else {
+                val group = conversation.conversationWith as Group
+                messageHeader.setGroup(group)
+                messageList.setGroup(group)
+                messageComposer.setGroup(group)
+            }
+        }
+    }
+}
+```
+</Tab>
+
 <Tab title="Java">
 ```java ChatActivity.java lines
 public class ChatActivity extends AppCompatActivity {
@@ -183,42 +219,6 @@ public class ChatActivity extends AppCompatActivity {
                 messageComposer.setGroup(group);
             }
         });
-    }
-}
-```
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin ChatActivity.kt lines
-class ChatActivity : AppCompatActivity() {
-
-    private lateinit var conversations: CometChatConversations
-    private lateinit var messageHeader: CometChatMessageHeader
-    private lateinit var messageList: CometChatMessageList
-    private lateinit var messageComposer: CometChatMessageComposer
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
-
-        conversations = findViewById(R.id.conversations)
-        messageHeader = findViewById(R.id.message_header)
-        messageList = findViewById(R.id.message_list)
-        messageComposer = findViewById(R.id.message_composer)
-
-        conversations.setOnItemClick { view, position, conversation ->
-            if (conversation.conversationType == CometChatConstants.CONVERSATION_TYPE_USER) {
-                val user = conversation.conversationWith as User
-                messageHeader.setUser(user)
-                messageList.setUser(user)
-                messageComposer.setUser(user)
-            } else {
-                val group = conversation.conversationWith as Group
-                messageHeader.setGroup(group)
-                messageList.setGroup(group)
-                messageComposer.setGroup(group)
-            }
-        }
     }
 }
 ```
@@ -290,6 +290,15 @@ Prerequisites: CometChat SDK initialized with `CometChatUIKit.init()`, a user lo
 To add programmatically in an Activity:
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourActivity.kt lines
+ override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(CometChatConversations(this))
+}
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourActivity.java lines
  @Override
@@ -299,20 +308,19 @@ To add programmatically in an Activity:
     }
 ```
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourActivity.kt lines
- override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(CometChatConversations(this))
-}
-```
-</Tab>
 </Tabs>
 
 Or in a Fragment:
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin YourFragment.kt lines
+ override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View {
+    return CometChatConversations(requireContext())
+}
+```
+</Tab>
+
 <Tab title="Java">
 ```java YourFragment.java lines
 @Override
@@ -322,14 +330,6 @@ Or in a Fragment:
     }
 ```
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin YourFragment.kt lines
- override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View {
-    return CometChatConversations(requireContext())
-}
-```
-</Tab>
 </Tabs>
 
 ## Filtering Conversations
@@ -337,16 +337,6 @@ Or in a Fragment:
 Pass a `ConversationsRequest.ConversationsRequestBuilder` to `setConversationsRequestBuilder`. Pass the builder instance — not the result of `.build()`.
 
 <Tabs>
-<Tab title="Java">
-```java lines
-ConversationsRequest.ConversationsRequestBuilder builder = new ConversationsRequest.ConversationsRequestBuilder();
-            builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_USER);
-            builder.setLimit(50);
-
-cometChatConversations.setConversationsRequestBuilder(builder);
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 val builder = ConversationsRequest.ConversationsRequestBuilder()
@@ -354,6 +344,16 @@ val builder = ConversationsRequest.ConversationsRequestBuilder()
     builder.setLimit(50)
 
 cometChatConversations.setConversationsRequestBuilder(builder)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+ConversationsRequest.ConversationsRequestBuilder builder = new ConversationsRequest.ConversationsRequestBuilder();
+            builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_USER);
+            builder.setLimit(50);
+
+cometChatConversations.setConversationsRequestBuilder(builder);
 ```
 </Tab>
 </Tabs>
@@ -380,19 +380,19 @@ cometChatConversations.setConversationsRequestBuilder(builder)
 Fires when a conversation row is tapped. Primary navigation hook — set the active conversation and render the message view.
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnItemClick((view1, position, conversation) -> {
-            
-    });
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 cometchatConversations.onItemClick = OnItemClick { view, position, conversation ->
             
     }
+```
+</Tab>
+
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnItemClick((view1, position, conversation) -> {
+            
+    });
 ```
 </Tab>
 </Tabs>
@@ -404,19 +404,19 @@ cometchatConversations.onItemClick = OnItemClick { view, position, conversation 
 Fires when a conversation row is long-pressed. Use for additional actions like delete or select.
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnItemLongClick((view1, position, conversation) -> {
-
-    });
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 cometchatConversations.onItemLongClick = OnItemLongClick({ view, position, conversation ->
             
     })
+```
+</Tab>
+
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnItemLongClick((view1, position, conversation) -> {
+
+    });
 ```
 </Tab>
 </Tabs>
@@ -428,19 +428,19 @@ cometchatConversations.onItemLongClick = OnItemLongClick({ view, position, conve
 Fires when the user presses the back button in the app bar. Default: navigates to the previous activity.
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnBackPressListener(() -> {
-            
-    });
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 cometchatConversations.onBackPressListener = OnBackPress {
 
     }
+```
+</Tab>
+
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnBackPressListener(() -> {
+            
+    });
 ```
 </Tab>
 </Tabs>
@@ -452,14 +452,6 @@ cometchatConversations.onBackPressListener = OnBackPress {
 Fires when a conversation is checked/unchecked in multi-select mode. Requires `setSelectionMode` to be set.
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnSelect(t -> {
-
-    });
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 cometchatConversations.setOnSelect(object : OnSelection<Conversation?> {
@@ -467,6 +459,14 @@ cometchatConversations.setOnSelect(object : OnSelection<Conversation?> {
                 
         }
     })
+```
+</Tab>
+
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnSelect(t -> {
+
+    });
 ```
 </Tab>
 </Tabs>
@@ -478,19 +478,19 @@ cometchatConversations.setOnSelect(object : OnSelection<Conversation?> {
 Fires on internal errors (network failure, auth issue, SDK exception).
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnError(cometchatException -> {
-
-    });
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 cometchatConversations.setOnError {
 
     }
+```
+</Tab>
+
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnError(cometchatException -> {
+
+    });
 ```
 </Tab>
 </Tabs>
@@ -502,14 +502,6 @@ cometchatConversations.setOnError {
 Fires when the list is successfully fetched and loaded.
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnLoad(list -> {
-
-});
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 cometchatConversations.setOnLoad(object : OnLoad<Conversation?> {
@@ -517,6 +509,14 @@ cometchatConversations.setOnLoad(object : OnLoad<Conversation?> {
 
     }
 })
+```
+</Tab>
+
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnLoad(list -> {
+
+});
 ```
 </Tab>
 </Tabs>
@@ -528,19 +528,19 @@ cometchatConversations.setOnLoad(object : OnLoad<Conversation?> {
 Fires when the list is empty, enabling custom handling such as showing a placeholder.
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnEmpty(() -> {
-            
-    });
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 cometchatConversations.setOnEmpty{
             
     }
+```
+</Tab>
+
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnEmpty(() -> {
+            
+    });
 ```
 </Tab>
 </Tabs>
@@ -552,19 +552,19 @@ cometchatConversations.setOnEmpty{
 Fires when the user taps the search icon in the toolbar.
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-cometchatConversations.setOnSearchClickListener(() -> {
-
-    });
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin YourActivity.kt lines
 cometchatConversations.setOnSearchClickListener {
 
     }
+```
+</Tab>
+
+<Tab title="Java">
+```java YourActivity.java lines
+cometchatConversations.setOnSearchClickListener(() -> {
+
+    });
 ```
 </Tab>
 </Tabs>
@@ -582,6 +582,22 @@ cometchatConversations.setOnSearchClickListener {
 | `ccConversationDeleted` | A conversation is deleted from the list | `Conversation` |
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin Add Listener lines
+CometChatConversationEvents.addListener("LISTENER_TAG", object : CometChatConversationEvents() {
+    override fun ccConversationDeleted(conversation: Conversation) {
+        super.ccConversationDeleted(conversation)
+    }
+})
+```
+
+Remove Listener
+
+```
+ CometChatConversationEvents.removeListener("LISTENER_TAG");
+```
+</Tab>
+
 <Tab title="Java">
 ```java Add Listener lines
 CometChatConversationEvents.addListener("YOUR_LISTENER_TAG", new CometChatConversationEvents() {
@@ -596,22 +612,6 @@ Remove Listener
 
 ```
 CometChatConversationEvents.removeListener("YOUR_LISTENER_TAG");
-```
-</Tab>
-
-<Tab title="Kotlin">
-```kotlin Add Listener lines
-CometChatConversationEvents.addListener("LISTENER_TAG", object : CometChatConversationEvents() {
-    override fun ccConversationDeleted(conversation: Conversation) {
-        super.ccConversationDeleted(conversation)
-    }
-})
-```
-
-Remove Listener
-
-```
- CometChatConversationEvents.removeListener("LISTENER_TAG");
 ```
 </Tab>
 </Tabs>
@@ -648,10 +648,13 @@ Small functional customizations such as toggling visibility of UI elements, sett
 | `setGroupTypeVisibility` | Controls visibility of the group type indicator | `.setGroupTypeVisibility(View.GONE);` |
 | `setReceiptsVisibility` | Hides receipts shown in the subtitle without disabling read/delivered marking | `.setReceiptsVisibility(View.GONE);` |
 | `setSearchBoxVisibility` | Controls visibility of the search box in the toolbar | `.setSearchBoxVisibility(View.GONE);` |
+| `setSearchInputEndIconVisibility` | Controls visibility of the end icon in the search bar | `.setSearchInputEndIconVisibility(View.GONE);` |
 | `hideReceipts` | Hides read receipts in the conversation list (adapter-level) | `.hideReceipts(true);` |
 | `disableSoundForMessages` | Disables sound notifications for incoming messages | `.disableSoundForMessages(true);` |
 | `setCustomSoundForMessages` | Sets a custom sound file for incoming message notifications | `.setCustomSoundForMessages(com.cometchat.chatuikit.R.raw.cometchat_beep2);` |
 | `setSelectionMode` | Determines the selection mode (single or multiple) | `.setSelectionMode(UIKitConstants.SelectionMode.MULTIPLE);` |
+| `setSearchInputText` | Sets the text in the search input field | `.setSearchInputText("Sample Text");` |
+| `setSearchPlaceholderText` | Sets the placeholder text for the search input field | `.setSearchPlaceholderText("Enter search term");` |
 
 - **Verify**: After calling a visibility method, confirm the corresponding UI element is shown or hidden. After calling `disableSoundForMessages(true)`, confirm no sound plays on incoming messages.
 
@@ -678,22 +681,6 @@ Each slot replaces a section of the default UI. Slots that accept a `Conversatio
 Replace the avatar / left section. Typing-aware avatar example.
 
 <Tabs>
-<Tab title="Java">
-```java lines
-        cometchatConversations.setLeadingView(new ConversationsViewHolderListener() {
-            @Override
-            public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
-                return null;
-            }
-
-            @Override
-            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
-
-            }
-        });
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
         cometchatConversations.setLeadingView(object :
@@ -715,6 +702,22 @@ Replace the avatar / left section. Typing-aware avatar example.
             ) {
             }
         })
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+        cometchatConversations.setLeadingView(new ConversationsViewHolderListener() {
+            @Override
+            public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
+                return null;
+            }
+
+            @Override
+            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
+
+            }
+        });
 ```
 </Tab>
 </Tabs>
@@ -801,6 +804,84 @@ Create a `leading_view.xml` custom layout:
 Inflate and bind with typing indicator tracking:
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+        val typingIndicatorHashMap = HashMap<String, Boolean>()
+        CometChat.addMessageListener(System.currentTimeMillis().toString() + "", object : MessageListener() {
+            override fun onTypingStarted(typingIndicator: TypingIndicator) {
+                if (typingIndicator.receiverType == CometChatConstants.RECEIVER_TYPE_USER) {
+                    if (typingIndicatorHashMap.containsKey(typingIndicator.sender.uid)) {
+                        return
+                    }
+                    typingIndicatorHashMap[typingIndicator.sender.uid] = true
+                } else {
+                    if (typingIndicatorHashMap.containsKey(typingIndicator.receiverId)) {
+                        return
+                    }
+                    typingIndicatorHashMap[typingIndicator.receiverId] = true
+                }
+            }
+
+            override fun onTypingEnded(typingIndicator: TypingIndicator) {
+                if (typingIndicator.receiverType == CometChatConstants.RECEIVER_TYPE_USER) {
+                    typingIndicatorHashMap.remove(typingIndicator.sender.uid)
+                } else {
+                    typingIndicatorHashMap.remove(typingIndicator.receiverId)
+                }
+            }
+        })
+
+        binding.cometchatConversations.setLeadingView(object : ConversationsViewHolderListener() {
+            override fun createView(context: Context?, listItem: CometchatConversationsListItemsBinding?): View {
+                return LayoutInflater.from(context).inflate(R.layout.leading_view, null)
+            }
+
+            override fun bindView(
+                context: Context,
+                createdView: View,
+                conversation: Conversation,
+                holder: RecyclerView.ViewHolder,
+                conversationList: List<Conversation>,
+                position: Int
+            ) {
+                val imageView = createdView.findViewById<ImageView>(R.id.leading_iv)
+                val constraintLayout = createdView.findViewById<ConstraintLayout>(R.id.leading_view)
+                val avatar = createdView.findViewById<CometChatAvatar>(R.id.conversations_avatar)
+                val statusIndicator = createdView.findViewById<CometChatStatusIndicator>(R.id.status_and_type_indicator)
+
+                avatar.setAvatar(ConversationsUtils.getConversationTitle(conversation), ConversationsUtils.getConversationAvatar(conversation))
+
+                if (conversation.conversationType == CometChatConstants.RECEIVER_TYPE_USER) {
+                    if ((conversation.conversationWith as User).status.equals(CometChatConstants.USER_STATUS_ONLINE, ignoreCase = true)) {
+                        if (!Utils.isBlocked((conversation.conversationWith as User))) {
+                            statusIndicator.statusIndicator = StatusIndicator.ONLINE
+                        } else {
+                            statusIndicator.statusIndicator = StatusIndicator.OFFLINE
+                        }
+                    } else {
+                        statusIndicator.statusIndicator = StatusIndicator.OFFLINE
+                    }
+                    if (typingIndicatorHashMap.containsKey((conversation.conversationWith as User).uid)) {
+                        imageView.visibility = View.VISIBLE
+                        constraintLayout.visibility = View.GONE
+                    } else {
+                        imageView.visibility = View.GONE
+                        constraintLayout.visibility = View.VISIBLE
+                    }
+                } else {
+                    if (typingIndicatorHashMap.containsKey((conversation.conversationWith as Group).guid)) {
+                        imageView.visibility = View.VISIBLE
+                        constraintLayout.visibility = View.GONE
+                    } else {
+                        imageView.visibility = View.GONE
+                        constraintLayout.visibility = View.VISIBLE
+                    }
+                }
+            }
+        })
+```
+</Tab>
+
 <Tab title="Java">
 ```java lines
 HashMap<String, Boolean> typingIndicatorHashMap = new HashMap<>();
@@ -881,89 +962,55 @@ cometchatConversations.setLeadingView(new ConversationsViewHolderListener() {
         });
 ```
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-        val typingIndicatorHashMap = HashMap<String, Boolean>()
-        CometChat.addMessageListener(System.currentTimeMillis().toString() + "", object : MessageListener() {
-            override fun onTypingStarted(typingIndicator: TypingIndicator) {
-                if (typingIndicator.receiverType == CometChatConstants.RECEIVER_TYPE_USER) {
-                    if (typingIndicatorHashMap.containsKey(typingIndicator.sender.uid)) {
-                        return
-                    }
-                    typingIndicatorHashMap[typingIndicator.sender.uid] = true
-                } else {
-                    if (typingIndicatorHashMap.containsKey(typingIndicator.receiverId)) {
-                        return
-                    }
-                    typingIndicatorHashMap[typingIndicator.receiverId] = true
-                }
-            }
-
-            override fun onTypingEnded(typingIndicator: TypingIndicator) {
-                if (typingIndicator.receiverType == CometChatConstants.RECEIVER_TYPE_USER) {
-                    typingIndicatorHashMap.remove(typingIndicator.sender.uid)
-                } else {
-                    typingIndicatorHashMap.remove(typingIndicator.receiverId)
-                }
-            }
-        })
-
-        binding.cometchatConversations.setLeadingView(object : ConversationsViewHolderListener() {
-            override fun createView(context: Context?, listItem: CometchatConversationsListItemsBinding?): View {
-                return LayoutInflater.from(context).inflate(R.layout.leading_view, null)
-            }
-
-            override fun bindView(
-                context: Context,
-                createdView: View,
-                conversation: Conversation,
-                holder: RecyclerView.ViewHolder,
-                conversationList: List<Conversation>,
-                position: Int
-            ) {
-                val imageView = createdView.findViewById<ImageView>(R.id.leading_iv)
-                val constraintLayout = createdView.findViewById<ConstraintLayout>(R.id.leading_view)
-                val avatar = createdView.findViewById<CometChatAvatar>(R.id.conversations_avatar)
-                val statusIndicator = createdView.findViewById<CometChatStatusIndicator>(R.id.status_and_type_indicator)
-
-                avatar.setAvatar(ConversationsUtils.getConversationTitle(conversation), ConversationsUtils.getConversationAvatar(conversation))
-
-                if (conversation.conversationType == CometChatConstants.RECEIVER_TYPE_USER) {
-                    if ((conversation.conversationWith as User).status.equals(CometChatConstants.USER_STATUS_ONLINE, ignoreCase = true)) {
-                        if (!Utils.isBlocked((conversation.conversationWith as User))) {
-                            statusIndicator.statusIndicator = StatusIndicator.ONLINE
-                        } else {
-                            statusIndicator.statusIndicator = StatusIndicator.OFFLINE
-                        }
-                    } else {
-                        statusIndicator.statusIndicator = StatusIndicator.OFFLINE
-                    }
-                    if (typingIndicatorHashMap.containsKey((conversation.conversationWith as User).uid)) {
-                        imageView.visibility = View.VISIBLE
-                        constraintLayout.visibility = View.GONE
-                    } else {
-                        imageView.visibility = View.GONE
-                        constraintLayout.visibility = View.VISIBLE
-                    }
-                } else {
-                    if (typingIndicatorHashMap.containsKey((conversation.conversationWith as Group).guid)) {
-                        imageView.visibility = View.VISIBLE
-                        constraintLayout.visibility = View.GONE
-                    } else {
-                        imageView.visibility = View.GONE
-                        constraintLayout.visibility = View.VISIBLE
-                    }
-                }
-            }
-        })
-```
-</Tab>
 </Tabs>
 
 ### `setTrailingView`
 
-Replace the timestamp / badge / right section. Relative time badge example.
+Replace the timestamp / badge / right section.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.setTrailingView(object :
+    ConversationsViewHolderListener() {
+    override fun createView(
+        context: Context?,
+        listItem: CometchatConversationsListItemsBinding?
+    ): View? {
+        return null
+    }
+
+    override fun bindView(
+        context: Context,
+        createdView: View,
+        conversation: Conversation,
+        holder: RecyclerView.ViewHolder,
+        conversationList: List<Conversation>,
+        position: Int
+    ) {
+    }
+})
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatConversations.setTrailingView(new ConversationsViewHolderListener() {
+    @Override
+    public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
+        return null;
+    }
+
+    @Override
+    public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
+
+    }
+});
+```
+</Tab>
+</Tabs>
+
+Relative time badge example:
 
 Create a `custom_tail_view.xml` custom layout file:
 
@@ -1013,6 +1060,69 @@ Create a `custom_tail_view.xml` custom layout file:
 Inflate and bind with color-coded time badges:
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.setTrailingView(object : ConversationsViewHolderListener() {
+            override fun createView(context: Context?, listItem: CometchatConversationsListItemsBinding?): View {
+                return LayoutInflater.from(context).inflate(R.layout.custom_tail_view, null)
+            }
+
+            override fun bindView(
+                context: Context,
+                createdView: View,
+                conversation: Conversation,
+                holder: RecyclerView.ViewHolder,
+                conversationList: List<Conversation>,
+                position: Int
+            ) {
+                val card = createdView.findViewById<MaterialCardView>(R.id.card)
+                val tvHours = createdView.findViewById<TextView>(R.id.hours)
+                val tvMessage = createdView.findViewById<TextView>(R.id.time_title)
+
+                var timestamp = conversation.updatedAt * 1000
+
+                if (timestamp.toString().length == 10) {
+                    timestamp *= 1000
+                }
+
+                val now = Calendar.getInstance()
+                val lastSeen = Calendar.getInstance()
+                lastSeen.timeInMillis = timestamp
+
+                val diffInMillis = now.timeInMillis - lastSeen.timeInMillis
+                val diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillis)
+                val diffInHours = TimeUnit.MILLISECONDS.toHours(diffInMillis)
+
+                if (diffInMinutes == 0L) {
+                    tvHours.text = "1"
+                    tvMessage.text = "Min ago"
+                    card.setCardBackgroundColor(Utils.applyColorWithAlphaValue(Color.parseColor("#6852D6"), 40))
+                    tvMessage.setTextColor(Color.parseColor("#6852D6"))
+                    tvHours.setTextColor(Color.parseColor("#6852D6"))
+                } else if (diffInMinutes < 60) {
+                    tvHours.text = diffInMinutes.toString()
+                    tvMessage.text = "Min ago"
+                    card.setCardBackgroundColor(Utils.multiplyColorAlpha(Color.parseColor("#6852D6"), 40))
+                    tvMessage.setTextColor(Color.parseColor("#6852D6"))
+                    tvHours.setTextColor(Color.parseColor("#6852D6"))
+                } else if (diffInHours < 10) {
+                    tvHours.text = diffInHours.toString()
+                    tvMessage.text = "Hr ago"
+                    tvMessage.setTextColor(Color.parseColor("#FFAB00"))
+                    tvHours.setTextColor(Color.parseColor("#FFAB00"))
+                    card.setCardBackgroundColor(Utils.multiplyColorAlpha(Color.parseColor("#FFAB00"), 40))
+                } else if (diffInHours < 1000) {
+                    tvHours.text = diffInHours.toString()
+                    tvMessage.text = "Hr ago"
+                    tvMessage.setTextColor(Color.parseColor("#F44649"))
+                    tvHours.setTextColor(Color.parseColor("#F44649"))
+                    card.setCardBackgroundColor(Utils.multiplyColorAlpha(Color.parseColor("#F44649"), 40))
+                }
+            }
+        })
+```
+</Tab>
+
 <Tab title="Java">
 ```java lines
 cometchatConversations.setTrailingView(new ConversationsViewHolderListener() {
@@ -1076,69 +1186,6 @@ cometchatConversations.setTrailingView(new ConversationsViewHolderListener() {
         });
 ```
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatConversations.setTrailingView(object : ConversationsViewHolderListener() {
-            override fun createView(context: Context?, listItem: CometchatConversationsListItemsBinding?): View {
-                return LayoutInflater.from(context).inflate(R.layout.custom_tail_view, null)
-            }
-
-            override fun bindView(
-                context: Context,
-                createdView: View,
-                conversation: Conversation,
-                holder: RecyclerView.ViewHolder,
-                conversationList: List<Conversation>,
-                position: Int
-            ) {
-                val card = createdView.findViewById<MaterialCardView>(R.id.card)
-                val tvHours = createdView.findViewById<TextView>(R.id.hours)
-                val tvMessage = createdView.findViewById<TextView>(R.id.time_title)
-
-                var timestamp = conversation.updatedAt * 1000
-
-                if (timestamp.toString().length == 10) {
-                    timestamp *= 1000
-                }
-
-                val now = Calendar.getInstance()
-                val lastSeen = Calendar.getInstance()
-                lastSeen.timeInMillis = timestamp
-
-                val diffInMillis = now.timeInMillis - lastSeen.timeInMillis
-                val diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diffInMillis)
-                val diffInHours = TimeUnit.MILLISECONDS.toHours(diffInMillis)
-
-                if (diffInMinutes == 0L) {
-                    tvHours.text = "1"
-                    tvMessage.text = "Min ago"
-                    card.setCardBackgroundColor(Utils.applyColorWithAlphaValue(Color.parseColor("#6852D6"), 40))
-                    tvMessage.setTextColor(Color.parseColor("#6852D6"))
-                    tvHours.setTextColor(Color.parseColor("#6852D6"))
-                } else if (diffInMinutes < 60) {
-                    tvHours.text = diffInMinutes.toString()
-                    tvMessage.text = "Min ago"
-                    card.setCardBackgroundColor(Utils.multiplyColorAlpha(Color.parseColor("#6852D6"), 40))
-                    tvMessage.setTextColor(Color.parseColor("#6852D6"))
-                    tvHours.setTextColor(Color.parseColor("#6852D6"))
-                } else if (diffInHours < 10) {
-                    tvHours.text = diffInHours.toString()
-                    tvMessage.text = "Hr ago"
-                    tvMessage.setTextColor(Color.parseColor("#FFAB00"))
-                    tvHours.setTextColor(Color.parseColor("#FFAB00"))
-                    card.setCardBackgroundColor(Utils.multiplyColorAlpha(Color.parseColor("#FFAB00"), 40))
-                } else if (diffInHours < 1000) {
-                    tvHours.text = diffInHours.toString()
-                    tvMessage.text = "Hr ago"
-                    tvMessage.setTextColor(Color.parseColor("#F44649"))
-                    tvHours.setTextColor(Color.parseColor("#F44649"))
-                    card.setCardBackgroundColor(Utils.multiplyColorAlpha(Color.parseColor("#F44649"), 40))
-                }
-            }
-        })
-```
-</Tab>
 </Tabs>
 
 <Frame>
@@ -1147,7 +1194,51 @@ cometchatConversations.setTrailingView(object : ConversationsViewHolderListener(
 
 ### `setTitleView`
 
-Replace the name / title text. Inline user status example.
+Replace the name / title text.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.setTitleView(object :
+    ConversationsViewHolderListener() {
+    override fun createView(
+        context: Context?,
+        listItem: CometchatConversationsListItemsBinding?
+    ): View? {
+        return null
+    }
+
+    override fun bindView(
+        context: Context,
+        createdView: View,
+        conversation: Conversation,
+        holder: RecyclerView.ViewHolder,
+        conversationList: List<Conversation>,
+        position: Int
+    ) {
+    }
+})
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatConversations.setTitleView(new ConversationsViewHolderListener() {
+    @Override
+    public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
+        return null;
+    }
+
+    @Override
+    public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
+
+    }
+});
+```
+</Tab>
+</Tabs>
+
+Inline user status example:
 
 Create a `custom_title_view.xml` layout:
 
@@ -1184,6 +1275,36 @@ Create a `custom_title_view.xml` layout:
 > **What this does:** Defines a custom title layout with the conversation name and an inline user status message.
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.setTitleView(object : ConversationsViewHolderListener() {
+            override fun createView(context: Context?, listItem: CometchatConversationsListItemsBinding?): View {
+                return LayoutInflater.from(context).inflate(R.layout.custom_title_view, null)
+            }
+
+            override fun bindView(
+                context: Context,
+                createdView: View,
+                conversation: Conversation,
+                holder: RecyclerView.ViewHolder,
+                conversationList: List<Conversation>,
+                position: Int
+            ) {
+                val name = createdView.findViewById<TextView>(R.id.name)
+                val status = createdView.findViewById<TextView>(R.id.status)
+
+                name.text = ConversationsUtils.getConversationTitle(conversation)
+                if (conversation.conversationType == CometChatConstants.RECEIVER_TYPE_USER) {
+                    status.visibility = View.VISIBLE
+                    status.text = "• " + (conversation.conversationWith as User).statusMessage
+                } else {
+                    status.visibility = View.GONE
+                }
+            }
+        })
+```
+</Tab>
+
 <Tab title="Java">
 ```java lines
 cometchatConversations.setTitleView(new ConversationsViewHolderListener() {
@@ -1214,36 +1335,6 @@ cometchatConversations.setTitleView(new ConversationsViewHolderListener() {
         });
 ```
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatConversations.setTitleView(object : ConversationsViewHolderListener() {
-            override fun createView(context: Context?, listItem: CometchatConversationsListItemsBinding?): View {
-                return LayoutInflater.from(context).inflate(R.layout.custom_title_view, null)
-            }
-
-            override fun bindView(
-                context: Context,
-                createdView: View,
-                conversation: Conversation,
-                holder: RecyclerView.ViewHolder,
-                conversationList: List<Conversation>,
-                position: Int
-            ) {
-                val name = createdView.findViewById<TextView>(R.id.name)
-                val status = createdView.findViewById<TextView>(R.id.status)
-
-                name.text = ConversationsUtils.getConversationTitle(conversation)
-                if (conversation.conversationType == CometChatConstants.RECEIVER_TYPE_USER) {
-                    status.visibility = View.VISIBLE
-                    status.text = "• " + (conversation.conversationWith as User).statusMessage
-                } else {
-                    status.visibility = View.GONE
-                }
-            }
-        })
-```
-</Tab>
 </Tabs>
 
 > **What this does:** Registers a `ConversationsViewHolderListener` that provides a custom title view for each conversation item. The example inflates a layout with the conversation name and an inline user status message. For group conversations, the status is hidden.
@@ -1252,29 +1343,55 @@ cometchatConversations.setTitleView(object : ConversationsViewHolderListener() {
 
 Replace the last message preview text.
 
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.setSubtitleView(object :
+    ConversationsViewHolderListener() {
+    override fun createView(
+        context: Context?,
+        listItem: CometchatConversationsListItemsBinding?
+    ): View? {
+        return null
+    }
+
+    override fun bindView(
+        context: Context,
+        createdView: View,
+        conversation: Conversation,
+        holder: RecyclerView.ViewHolder,
+        conversationList: List<Conversation>,
+        position: Int
+    ) {
+    }
+})
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatConversations.setSubtitleView(new ConversationsViewHolderListener() {
+    @Override
+    public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
+        return null;
+    }
+
+    @Override
+    public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
+
+    }
+});
+```
+</Tab>
+</Tabs>
+
+Example with last-active timestamp:
+
 <Frame>
   <img src="/images/48bf8e47-Conversation_Subtitle_View-a52dabb66ff516b5afb85540c95ed92d.png" />
 </Frame>
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-    cometchatConversations.setSubtitleView(new ConversationsViewHolderListener() {
-            @Override
-            public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
-                return new TextView(context);
-            }
-
-            @Override
-            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
-                TextView tvSubtitle = (TextView) createdView;
-                tvSubtitle.setText("Last Active at: "+new SimpleDateFormat("dd/MM/yyyy, HH:mm:ss").format(conversation.getUpdatedAt() * 1000));
-                tvSubtitle.setTextColor(Color.BLACK);
-            }
-        });
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
     cometchatConversations.setSubtitleView(object :
@@ -1304,6 +1421,24 @@ Replace the last message preview text.
         })
 ```
 </Tab>
+
+<Tab title="Java">
+```java YourActivity.java lines
+    cometchatConversations.setSubtitleView(new ConversationsViewHolderListener() {
+            @Override
+            public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
+                return new TextView(context);
+            }
+
+            @Override
+            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
+                TextView tvSubtitle = (TextView) createdView;
+                tvSubtitle.setText("Last Active at: "+new SimpleDateFormat("dd/MM/yyyy, HH:mm:ss").format(conversation.getUpdatedAt() * 1000));
+                tvSubtitle.setTextColor(Color.BLACK);
+            }
+        });
+```
+</Tab>
 </Tabs>
 
 > **What this does:** Registers a `ConversationsViewHolderListener` that provides a custom subtitle view for each conversation item. The example creates a `TextView` showing the last active timestamp formatted as "dd/MM/yyyy, HH:mm:ss".
@@ -1311,6 +1446,50 @@ Replace the last message preview text.
 ### `setItemView`
 
 Replace the entire list item row.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.setItemView(object :
+    ConversationsViewHolderListener() {
+    override fun createView(
+        context: Context?,
+        listItem: CometchatConversationsListItemsBinding?
+    ): View? {
+        return null
+    }
+
+    override fun bindView(
+        context: Context,
+        createdView: View,
+        conversation: Conversation,
+        holder: RecyclerView.ViewHolder,
+        conversationList: List<Conversation>,
+        position: Int
+    ) {
+    }
+})
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatConversations.setItemView(new ConversationsViewHolderListener() {
+    @Override
+    public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
+        return null;
+    }
+
+    @Override
+    public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
+
+    }
+});
+```
+</Tab>
+</Tabs>
+
+Example with compact layout:
 
 <Frame>
   <img src="/images/c6aa2b6b-Conversation_List_Item_View-60ff280389ca87aea84133ea03a6a620.png" />
@@ -1385,33 +1564,6 @@ Create an `item_converation_list.xml` custom layout file:
 Inflate the XML and bind:
 
 <Tabs>
-<Tab title="Java">
-```java YourActivity.java lines
-        cometchatConversations.setItemView(new ConversationsViewHolderListener() {
-            @Override
-            public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
-                return LayoutInflater.from(context).inflate(R.layout.custom_list_item_view, null, false);
-            }
-
-            @Override
-            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
-                CometChatAvatar avatar = createdView.findViewById(R.id.custom_avatar);
-                TextView title = createdView.findViewById(R.id.tvName);
-                TextView tvDate = createdView.findViewById(R.id.tvDate);
-
-                String name = ConversationsUtils.getConversationTitle(conversation);
-                title.setText(name);
-                avatar.setStyle(com.cometchat.chatuikit.R.style.CometChatAvatarStyle);
-                avatar.setAvatarPlaceHolderTextAppearance(com.cometchat.chatuikit.R.style.CometChatTextAppearanceHeading4_Bold);
-                avatar.setAvatar(name, ConversationsUtils.getConversationAvatar(conversation));
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
-                String date = simpleDateFormat.format(conversation.getUpdatedAt() * 1000);
-                tvDate.setText(date);
-            }
-        });
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
         cometchatConversations.setItemView(object :
@@ -1449,6 +1601,33 @@ Inflate the XML and bind:
         })
 ```
 </Tab>
+
+<Tab title="Java">
+```java YourActivity.java lines
+        cometchatConversations.setItemView(new ConversationsViewHolderListener() {
+            @Override
+            public View createView(Context context, CometchatConversationsListItemsBinding listItem) {
+                return LayoutInflater.from(context).inflate(R.layout.custom_list_item_view, null, false);
+            }
+
+            @Override
+            public void bindView(Context context, View createdView, Conversation conversation, RecyclerView.ViewHolder holder, List<Conversation> conversationList, int position) {
+                CometChatAvatar avatar = createdView.findViewById(R.id.custom_avatar);
+                TextView title = createdView.findViewById(R.id.tvName);
+                TextView tvDate = createdView.findViewById(R.id.tvDate);
+
+                String name = ConversationsUtils.getConversationTitle(conversation);
+                title.setText(name);
+                avatar.setStyle(com.cometchat.chatuikit.R.style.CometChatAvatarStyle);
+                avatar.setAvatarPlaceHolderTextAppearance(com.cometchat.chatuikit.R.style.CometChatTextAppearanceHeading4_Bold);
+                avatar.setAvatar(name, ConversationsUtils.getConversationAvatar(conversation));
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
+                String date = simpleDateFormat.format(conversation.getUpdatedAt() * 1000);
+                tvDate.setText(date);
+            }
+        });
+```
+</Tab>
 </Tabs>
 
 > **What this does:** Registers a `ConversationsViewHolderListener` that replaces the entire list item row. The example inflates a compact layout with an avatar, name, and date — replacing the default multi-line conversation item.
@@ -1458,6 +1637,44 @@ Inflate the XML and bind:
 Custom date/time formatting for conversation timestamps.
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.setDateTimeFormatter(object : DateTimeFormatterCallback {
+
+        private val fullTimeFormatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        private val dateFormatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+
+        override fun time(timestamp: Long): String {
+            return fullTimeFormatter.format(Date(timestamp))
+        }
+
+        override fun today(timestamp: Long): String {
+            return "Today"
+        }
+
+        override fun yesterday(timestamp: Long): String {
+            return "Yesterday"
+        }
+
+        override fun lastWeek(timestamp: Long): String {
+            return "Last Week"
+        }
+
+        override fun otherDays(timestamp: Long): String {
+            return dateFormatter.format(Date(timestamp))
+        }
+
+        override fun minutes(diffInMinutesFromNow: Long, timestamp: Long): String {
+            return "$diffInMinutesFromNow mins ago"
+        }
+
+        override fun hours(diffInHourFromNow: Long, timestamp: Long): String {
+            return "$diffInHourFromNow hrs ago"
+        }
+    });
+```
+</Tab>
+
 <Tab title="Java">
 ```java lines
 cometchatConversations.setDateTimeFormatter(new DateTimeFormatterCallback() {
@@ -1502,75 +1719,35 @@ cometchatConversations.setDateTimeFormatter(new DateTimeFormatterCallback() {
     });
 ```
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin lines
-cometchatConversations.setDateTimeFormatter(object : DateTimeFormatterCallback {
-
-        private val fullTimeFormatter = SimpleDateFormat("hh:mm a", Locale.getDefault())
-        private val dateFormatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-
-        override fun time(timestamp: Long): String {
-            return fullTimeFormatter.format(Date(timestamp))
-        }
-
-        override fun today(timestamp: Long): String {
-            return "Today"
-        }
-
-        override fun yesterday(timestamp: Long): String {
-            return "Yesterday"
-        }
-
-        override fun lastWeek(timestamp: Long): String {
-            return "Last Week"
-        }
-
-        override fun otherDays(timestamp: Long): String {
-            return dateFormatter.format(Date(timestamp))
-        }
-
-        override fun minutes(diffInMinutesFromNow: Long, timestamp: Long): String {
-            return "$diffInMinutesFromNow mins ago"
-        }
-
-        override fun hours(diffInHourFromNow: Long, timestamp: Long): String {
-            return "$diffInHourFromNow hrs ago"
-        }
-    });
-```
-</Tab>
 </Tabs>
 
 ### `setOptions`
 
 Replace the long-press context menu entirely.
 
+Generic signature:
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.setOptions { context, conversation -> emptyList<CometChatPopupMenu.MenuItem?>() }
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatConversations.setOptions((context, conversation) -> Collections.emptyList());
+```
+</Tab>
+</Tabs>
+
+Example with a custom delete option:
+
 <Frame>
   <img src="/images/9415d47d-conversation_set_option-42a75eb50360de67a9bfab69beefbda3.png" />
 </Frame>
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.setOptions((context, conversation) -> {
-List<CometChatPopupMenu.MenuItem> optionsArrayList = new ArrayList<>();
-optionsArrayList.add(new CometChatPopupMenu.MenuItem(UIKitConstants.ConversationOption.DELETE,
-                                                                 "Delete",
-                                                                 getResources().getDrawable(com.cometchat.chatuikit.R.drawable.cometchat_ic_delete),
-                                                                 null,
-                                                                 CometChatTheme.getErrorColor(context),
-                                                                 0,
-                                                                 CometChatTheme.getErrorColor(context),
-                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
-                                                                 () -> {
-                                                                     Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
-                                                                 }));
-            return optionsArrayList;
-        });
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 cometchatConversations.setOptions { context, conversation ->
@@ -1594,53 +1771,55 @@ cometchatConversations.setOptions { context, conversation ->
         }
 ```
 </Tab>
+
+<Tab title="Java">
+```java lines
+cometchatConversations.setOptions((context, conversation) -> {
+List<CometChatPopupMenu.MenuItem> optionsArrayList = new ArrayList<>();
+optionsArrayList.add(new CometChatPopupMenu.MenuItem(UIKitConstants.ConversationOption.DELETE,
+                                                                 "Delete",
+                                                                 getResources().getDrawable(com.cometchat.chatuikit.R.drawable.cometchat_ic_delete),
+                                                                 null,
+                                                                 CometChatTheme.getErrorColor(context),
+                                                                 0,
+                                                                 CometChatTheme.getErrorColor(context),
+                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
+                                                                 () -> {
+                                                                     Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
+                                                                 }));
+            return optionsArrayList;
+        });
+```
+</Tab>
 </Tabs>
 
 ### `addOptions`
 
 Append to the long-press context menu without removing defaults.
 
+Generic signature:
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometchatConversations.addOptions { context, conversation -> emptyList<CometChatPopupMenu.MenuItem?>() }
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatConversations.addOptions((context, conversation) -> Collections.emptyList());
+```
+</Tab>
+</Tabs>
+
+Example with archive, pin, and mark-as-read options:
+
 <Frame>
   <img src="/images/88283fe5-conversation_add_options-c0f407ccc43b5f040d9ab9147e17def0.png" />
 </Frame>
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.addOptions((context, conversation) -> {
-            List<CometChatPopupMenu.MenuItem> optionsArrayList = new ArrayList<>();
-            optionsArrayList.add(new CometChatPopupMenu.MenuItem("ARCHIVE",
-                                                                 "Archive",
-                                                                 getResources().getDrawable(R.drawable.archive),
-                                                                 null,
-                                                                 CometChatTheme.getTextColorPrimary(context),
-                                                                 0,
-                                                                 CometChatTheme.getTextColorPrimary(context),
-                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
-                                                                 () -> Toast.makeText(context, "Archive", Toast.LENGTH_SHORT).show()));
-            optionsArrayList.add(new CometChatPopupMenu.MenuItem("PIN",
-                                                                 "Pin",
-                                                                 getResources().getDrawable(R.drawable.pin),
-                                                                 null,
-                                                                 CometChatTheme.getTextColorPrimary(context),
-                                                                 0,
-                                                                 CometChatTheme.getTextColorPrimary(context),
-                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
-                                                                 () -> Toast.makeText(context, "Pin", Toast.LENGTH_SHORT).show()));
-            optionsArrayList.add(new CometChatPopupMenu.MenuItem("MARKASREAD",
-                                                                 "Mark as read",
-                                                                 getResources().getDrawable(R.drawable.mark_as_read),
-                                                                 null,
-                                                                 CometChatTheme.getTextColorPrimary(context),
-                                                                 0,
-                                                                 CometChatTheme.getTextColorPrimary(context),
-                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
-                                                                 () -> Toast.makeText(context, "Mark as read", Toast.LENGTH_SHORT).show()));
-            return optionsArrayList;
-        });
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 cometchatConversations.addOptions { context, conversation ->
@@ -1676,6 +1855,42 @@ cometchatConversations.addOptions { context, conversation ->
         }
 ```
 </Tab>
+
+<Tab title="Java">
+```java lines
+cometchatConversations.addOptions((context, conversation) -> {
+            List<CometChatPopupMenu.MenuItem> optionsArrayList = new ArrayList<>();
+            optionsArrayList.add(new CometChatPopupMenu.MenuItem("ARCHIVE",
+                                                                 "Archive",
+                                                                 getResources().getDrawable(R.drawable.archive),
+                                                                 null,
+                                                                 CometChatTheme.getTextColorPrimary(context),
+                                                                 0,
+                                                                 CometChatTheme.getTextColorPrimary(context),
+                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
+                                                                 () -> Toast.makeText(context, "Archive", Toast.LENGTH_SHORT).show()));
+            optionsArrayList.add(new CometChatPopupMenu.MenuItem("PIN",
+                                                                 "Pin",
+                                                                 getResources().getDrawable(R.drawable.pin),
+                                                                 null,
+                                                                 CometChatTheme.getTextColorPrimary(context),
+                                                                 0,
+                                                                 CometChatTheme.getTextColorPrimary(context),
+                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
+                                                                 () -> Toast.makeText(context, "Pin", Toast.LENGTH_SHORT).show()));
+            optionsArrayList.add(new CometChatPopupMenu.MenuItem("MARKASREAD",
+                                                                 "Mark as read",
+                                                                 getResources().getDrawable(R.drawable.mark_as_read),
+                                                                 null,
+                                                                 CometChatTheme.getTextColorPrimary(context),
+                                                                 0,
+                                                                 CometChatTheme.getTextColorPrimary(context),
+                                                                 CometChatTheme.getTextAppearanceBodyRegular(context),
+                                                                 () -> Toast.makeText(context, "Mark as read", Toast.LENGTH_SHORT).show()));
+            return optionsArrayList;
+        });
+```
+</Tab>
 </Tabs>
 
 ### `setTextFormatters`
@@ -1698,17 +1913,6 @@ Custom text formatters for the conversation subtitle. See the [MentionsFormatter
 ```
 
 <Tabs>
-<Tab title="Java">
-```java lines
-CometChatMentionsFormatter mentionFormatter = new CometChatMentionsFormatter(context);
-mentionFormatter.setConversationsMentionTextStyle(context, R.style.CustomConversationsMentionsStyle);
-
-List<CometChatTextFormatter> textFormatters = new ArrayList<>();
-textFormatters.add(mentionFormatter);
-cometChatConversations.setTextFormatters(textFormatters);
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 val mentionFormatter = CometChatMentionsFormatter(context)
@@ -1719,6 +1923,17 @@ textFormatters.add(mentionFormatter)
 cometChatConversations.setTextFormatters(textFormatters)
 ```
 </Tab>
+
+<Tab title="Java">
+```java lines
+CometChatMentionsFormatter mentionFormatter = new CometChatMentionsFormatter(context);
+mentionFormatter.setConversationsMentionTextStyle(context, R.style.CustomConversationsMentionsStyle);
+
+List<CometChatTextFormatter> textFormatters = new ArrayList<>();
+textFormatters.add(mentionFormatter);
+cometChatConversations.setTextFormatters(textFormatters);
+```
+</Tab>
 </Tabs>
 
 ### `setLoadingView`
@@ -1726,15 +1941,15 @@ cometChatConversations.setTextFormatters(textFormatters)
 Sets a custom loading view displayed when data is being fetched.
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.setLoadingView(R.layout.your_loading_view);
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 cometchatConversations.loadingView = R.layout.your_loading_view
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatConversations.setLoadingView(R.layout.your_loading_view);
 ```
 </Tab>
 </Tabs>
@@ -1746,15 +1961,15 @@ cometchatConversations.loadingView = R.layout.your_loading_view
 Configures a custom view displayed when there are no conversations in the list.
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.setEmptyView(R.layout.your_empty_view);
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 cometchatConversations.emptyView = R.layout.your_empty_view
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatConversations.setEmptyView(R.layout.your_empty_view);
 ```
 </Tab>
 </Tabs>
@@ -1766,15 +1981,15 @@ cometchatConversations.emptyView = R.layout.your_empty_view
 Defines a custom error state view that appears when an issue occurs while loading conversations.
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.setErrorView(R.layout.your_error_view);
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 cometchatConversations.errorView = R.layout.your_error_view
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatConversations.setErrorView(R.layout.your_error_view);
 ```
 </Tab>
 </Tabs>
@@ -1785,20 +2000,38 @@ cometchatConversations.errorView = R.layout.your_error_view
 
 Customizes the date format used for displaying timestamps in conversations.
 
+Generic signature:
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatConversations.setDateFormat(SimpleDateFormat)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatConversations.setDateFormat(SimpleDateFormat);
+```
+</Tab>
+</Tabs>
+
+Example:
+
 <Frame>
   <img src="/images/def1212b-Conversation_Date_Pattern-62d23e137a26c9a0ee22e2c2cac64d80.png" />
 </Frame>
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometchatConversations.setDateFormat(new SimpleDateFormat("dd MMM, hh:mm a",Locale.getDefault()));
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 cometchatConversations.setDateFormat(SimpleDateFormat("dd MMM, hh:mm a",Locale.getDefault()))
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometchatConversations.setDateFormat(new SimpleDateFormat("dd MMM, hh:mm a",Locale.getDefault()));
 ```
 </Tab>
 </Tabs>
@@ -1808,6 +2041,24 @@ cometchatConversations.setDateFormat(SimpleDateFormat("dd MMM, hh:mm a",Locale.g
 ### `setOverflowMenu`
 
 Replace the toolbar overflow menu.
+
+Generic signature:
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+cometChatConversations.setOverflowMenu(view)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatConversations.setOverflowMenu(View v);
+```
+</Tab>
+</Tabs>
+
+Example with a user profile popup menu:
 
 <Frame>
   <img src="/images/6ca194c9-Conversation_Menu-f8faec49b81b7391b9b0291c77fe34e3.png" />
@@ -1909,60 +2160,6 @@ Create a `user_profile_popup_menu_layout.xml` custom view file:
 Inflate the view and pass it to `setOverflowMenu`:
 
 <Tabs>
-<Tab title="Java">
-```java lines
-public class YourActivity extends AppCompatActivity {
-    private CometChatConversations cometChatConversations;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        cometChatConversations = findViewById(R.id.conversations);
-        cometChatConversations.setOverflowMenu(getLogoutView());
-    }
-
-    private View getLogoutView() {
-        User user = CometChatUIKit.getLoggedInUser();
-        if (user != null) {
-            CometChatAvatar cometchatAvatar = new CometChatAvatar(this);
-            cometchatAvatar.setAvatar(user.getName(), user.getAvatar());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_40dp),
-                getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_40dp));
-            layoutParams.setLayoutDirection(Gravity.CENTER_VERTICAL);
-            cometchatAvatar.setLayoutParams(layoutParams);
-            cometchatAvatar.setOnClickListener(v -> {
-                showCustomMenu(cometChatConversations.getBinding().toolbarLayout);
-            });
-            return cometchatAvatar;
-        }
-        return null;
-    }
-
-    private void showCustomMenu(View anchorView) {
-        UserProfilePopupMenuLayoutBinding popupMenuBinding = UserProfilePopupMenuLayoutBinding.inflate(LayoutInflater.from(this));
-        final PopupWindow popupWindow = new PopupWindow(popupMenuBinding.getRoot(),
-            getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_250dp),
-            LinearLayout.LayoutParams.WRAP_CONTENT, true);
-
-        popupMenuBinding.tvUserName.setText(CometChatUIKit.getLoggedInUser().getName());
-        String version = "V" + BuildConfig.VERSION_NAME + "(" + BuildConfig.VERSION_CODE + ")";
-        popupMenuBinding.tvVersion.setText(version);
-
-        popupMenuBinding.tvCreateConversation.setOnClickListener(view -> popupWindow.dismiss());
-        popupMenuBinding.tvUserName.setOnClickListener(view -> popupWindow.dismiss());
-        popupMenuBinding.tvLogout.setOnClickListener(view -> popupWindow.dismiss());
-
-        popupWindow.setElevation(5);
-        int endMargin = getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_margin_2);
-        int anchorWidth = anchorView.getWidth();
-        int offsetX = anchorWidth - popupWindow.getWidth() - endMargin;
-        popupWindow.showAsDropDown(anchorView, offsetX, 0);
-    }
-}
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 class YourActivity : AppCompatActivity() {
@@ -2017,6 +2214,60 @@ class YourActivity : AppCompatActivity() {
 }
 ```
 </Tab>
+
+<Tab title="Java">
+```java lines
+public class YourActivity extends AppCompatActivity {
+    private CometChatConversations cometChatConversations;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        cometChatConversations = findViewById(R.id.conversations);
+        cometChatConversations.setOverflowMenu(getLogoutView());
+    }
+
+    private View getLogoutView() {
+        User user = CometChatUIKit.getLoggedInUser();
+        if (user != null) {
+            CometChatAvatar cometchatAvatar = new CometChatAvatar(this);
+            cometchatAvatar.setAvatar(user.getName(), user.getAvatar());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_40dp),
+                getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_40dp));
+            layoutParams.setLayoutDirection(Gravity.CENTER_VERTICAL);
+            cometchatAvatar.setLayoutParams(layoutParams);
+            cometchatAvatar.setOnClickListener(v -> {
+                showCustomMenu(cometChatConversations.getBinding().toolbarLayout);
+            });
+            return cometchatAvatar;
+        }
+        return null;
+    }
+
+    private void showCustomMenu(View anchorView) {
+        UserProfilePopupMenuLayoutBinding popupMenuBinding = UserProfilePopupMenuLayoutBinding.inflate(LayoutInflater.from(this));
+        final PopupWindow popupWindow = new PopupWindow(popupMenuBinding.getRoot(),
+            getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_250dp),
+            LinearLayout.LayoutParams.WRAP_CONTENT, true);
+
+        popupMenuBinding.tvUserName.setText(CometChatUIKit.getLoggedInUser().getName());
+        String version = "V" + BuildConfig.VERSION_NAME + "(" + BuildConfig.VERSION_CODE + ")";
+        popupMenuBinding.tvVersion.setText(version);
+
+        popupMenuBinding.tvCreateConversation.setOnClickListener(view -> popupWindow.dismiss());
+        popupMenuBinding.tvUserName.setOnClickListener(view -> popupWindow.dismiss());
+        popupMenuBinding.tvLogout.setOnClickListener(view -> popupWindow.dismiss());
+
+        popupWindow.setElevation(5);
+        int endMargin = getResources().getDimensionPixelSize(com.cometchat.chatuikit.R.dimen.cometchat_margin_2);
+        int anchorWidth = anchorView.getWidth();
+        int offsetX = anchorWidth - popupWindow.getWidth() - endMargin;
+        popupWindow.showAsDropDown(anchorView, offsetX, 0);
+    }
+}
+```
+</Tab>
 </Tabs>
 
 > **What this does:** Creates a complete overflow menu implementation. An avatar of the logged-in user is set as the overflow menu view. When tapped, it shows a popup window with options for creating a conversation, viewing the user profile, logging out, and displaying the app version.
@@ -2053,15 +2304,15 @@ class YourActivity : AppCompatActivity() {
 ```
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometChatConversations.setEmptyView(R.layout.empty_conversations);
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 cometChatConversations.emptyView = R.layout.empty_conversations
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatConversations.setEmptyView(R.layout.empty_conversations);
 ```
 </Tab>
 </Tabs>
@@ -2069,16 +2320,6 @@ cometChatConversations.emptyView = R.layout.empty_conversations
 ### Hide all chrome — minimal list
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometChatConversations.setReceiptsVisibility(View.GONE);
-cometChatConversations.setUserStatusVisibility(View.GONE);
-cometChatConversations.setGroupTypeVisibility(View.GONE);
-cometChatConversations.setDeleteConversationOptionVisibility(View.GONE);
-cometChatConversations.setToolbarVisibility(View.GONE);
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 cometChatConversations.setReceiptsVisibility(View.GONE)
@@ -2088,24 +2329,34 @@ cometChatConversations.setDeleteConversationOptionVisibility(View.GONE)
 cometChatConversations.setToolbarVisibility(View.GONE)
 ```
 </Tab>
+
+<Tab title="Java">
+```java lines
+cometChatConversations.setReceiptsVisibility(View.GONE);
+cometChatConversations.setUserStatusVisibility(View.GONE);
+cometChatConversations.setGroupTypeVisibility(View.GONE);
+cometChatConversations.setDeleteConversationOptionVisibility(View.GONE);
+cometChatConversations.setToolbarVisibility(View.GONE);
+```
+</Tab>
 </Tabs>
 
 ### Filter to user conversations only
 
 <Tabs>
-<Tab title="Java">
-```java lines
-ConversationsRequest.ConversationsRequestBuilder builder = new ConversationsRequest.ConversationsRequestBuilder();
-builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_USER);
-cometChatConversations.setConversationsRequestBuilder(builder);
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 val builder = ConversationsRequest.ConversationsRequestBuilder()
     .setConversationType(CometChatConstants.CONVERSATION_TYPE_USER)
 cometChatConversations.setConversationsRequestBuilder(builder)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+ConversationsRequest.ConversationsRequestBuilder builder = new ConversationsRequest.ConversationsRequestBuilder();
+builder.setConversationType(CometChatConstants.CONVERSATION_TYPE_USER);
+cometChatConversations.setConversationsRequestBuilder(builder);
 ```
 </Tab>
 </Tabs>
@@ -2119,16 +2370,6 @@ cometChatConversations.setConversationsRequestBuilder(builder)
 Programmatically selects or deselects a conversation. Works with both `SINGLE` and `MULTIPLE` selection modes.
 
 <Tabs>
-<Tab title="Java">
-```java lines
-// Select a conversation in single-select mode
-cometChatConversations.selectConversation(conversation, UIKitConstants.SelectionMode.SINGLE);
-
-// Select a conversation in multi-select mode
-cometChatConversations.selectConversation(conversation, UIKitConstants.SelectionMode.MULTIPLE);
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 // Select a conversation in single-select mode
@@ -2136,6 +2377,16 @@ cometChatConversations.selectConversation(conversation, UIKitConstants.Selection
 
 // Select a conversation in multi-select mode
 cometChatConversations.selectConversation(conversation, UIKitConstants.SelectionMode.MULTIPLE)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+// Select a conversation in single-select mode
+cometChatConversations.selectConversation(conversation, UIKitConstants.SelectionMode.SINGLE);
+
+// Select a conversation in multi-select mode
+cometChatConversations.selectConversation(conversation, UIKitConstants.SelectionMode.MULTIPLE);
 ```
 </Tab>
 </Tabs>
@@ -2147,15 +2398,15 @@ cometChatConversations.selectConversation(conversation, UIKitConstants.Selection
 Clears all selected conversations and resets the selection UI.
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometChatConversations.clearSelection();
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 cometChatConversations.clearSelection()
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatConversations.clearSelection();
 ```
 </Tab>
 </Tabs>
@@ -2165,15 +2416,15 @@ cometChatConversations.clearSelection()
 Returns the list of currently selected `Conversation` objects.
 
 <Tabs>
-<Tab title="Java">
-```java lines
-List<Conversation> selected = cometChatConversations.getSelectedConversations();
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 val selected = cometChatConversations.selectedConversations
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+List<Conversation> selected = cometChatConversations.getSelectedConversations();
 ```
 </Tab>
 </Tabs>
@@ -2261,15 +2512,15 @@ The component uses XML theme styles. Define a custom style with parent `CometCha
 ```
 
 <Tabs>
-<Tab title="Java">
-```java lines
-cometChatConversations.setStyle(R.style.CustomConversationsStyle);
-```
-</Tab>
-
 <Tab title="Kotlin">
 ```kotlin lines
 cometChatConversations.setStyle(R.style.CustomConversationsStyle)
+```
+</Tab>
+
+<Tab title="Java">
+```java lines
+cometChatConversations.setStyle(R.style.CustomConversationsStyle);
 ```
 </Tab>
 </Tabs>
@@ -2429,3 +2680,9 @@ Group type indicators and online/offline status dots are visual-only by default.
 
 **Q: How do I add custom long-press options without removing the defaults?**
 **A:** Use `addOptions` instead of `setOptions`. `addOptions` appends your custom `MenuItem` objects to the existing default options.
+
+## Next Steps
+
+- [Users component](/ui-kit/android/users)
+- [Message list component](/ui-kit/android/message-list)
+- [Groups component](/ui-kit/android/groups)
