@@ -95,7 +95,7 @@ description: "Voice and video call initiation buttons for user or group conversa
 
 `CometChatCallButtons` renders voice and video call buttons. Pass a `user` for 1-on-1 calls or a `group` for group calls. Typically embedded in `CometChatMessageHeader`'s auxiliary view or used standalone. The component handles call initiation, renders `CometChatOutgoingCall` internally, and manages the full call lifecycle.
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
@@ -122,7 +122,7 @@ export default CallButtonsDemo;
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
 import "@cometchat/chat-uikit-react/css-variables.css";
 
@@ -143,7 +143,7 @@ Root CSS class: `.cometchat-call-button`
 
 Overrides the default voice call initiation behavior. When set, clicking the voice button invokes this callback instead of initiating a call via the SDK.
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
@@ -170,7 +170,7 @@ function CallButtonsVoiceOverride() {
 
 Overrides the default video call initiation behavior.
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
@@ -197,7 +197,7 @@ function CallButtonsVideoOverride() {
 
 Fires on internal errors during call initiation.
 
-```tsx
+```tsx lines
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -223,7 +223,7 @@ function CallButtonsWithError() {
 | `ccCallRejected` | Initiated call is rejected/cancelled | `CometChat.Call` |
 | `ccCallEnded` | Call session ends | `CometChat.Call` |
 
-```tsx
+```tsx lines
 import { useEffect } from "react";
 import { CometChatCallEvents } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -272,7 +272,7 @@ The component attaches SDK call listeners internally:
 
 `CometChatCallButtons` renders `CometChatOutgoingCall` internally. Customize it via `outgoingCallConfiguration`.
 
-```tsx
+```tsx lines
 import { CometChatCallButtons, OutgoingCallConfiguration } from "@cometchat/chat-uikit-react";
 
 function CallButtonsCustomOutgoing() {
@@ -311,7 +311,7 @@ Refer to [CometChatOutgoingCall](/ui-kit/react/outgoing-call) for details on eac
 
 Customize the calling experience via `callSettingsBuilder`.
 
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons, CometChatUIKitCalls } from "@cometchat/chat-uikit-react";
 
@@ -335,7 +335,7 @@ function CallButtonsCustomSettings() {
 
 ### Voice-only call button
 
-```tsx
+```tsx lines
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
 
 function VoiceOnlyCallButtons() {
@@ -345,7 +345,7 @@ function VoiceOnlyCallButtons() {
 
 ### Group call buttons
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react";
@@ -388,7 +388,7 @@ The component uses CSS custom properties (design tokens) defined in `@cometchat/
   <img src="/images/3b154ea9-wPyMSRehgR7CgAAAAAElFTkSuQmCC.png" />
 </Frame>
 
-```css
+```css lines
 .cometchat-call-button {
   display: flex;
   padding: 8px 16px;

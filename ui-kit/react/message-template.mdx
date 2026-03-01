@@ -34,7 +34,7 @@ description: "Data structure defining how message bubbles render in CometChatMes
 
 `CometChatMessageTemplate` is a model class, not a rendered component. Each instance maps a message `type` + `category` pair to a set of view functions that control how that message renders inside `CometChatMessageList`. Pass an array of templates to the `templates` prop on `CometChatMessageList`.
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import {
   CometChatMessageList,
@@ -95,7 +95,7 @@ A message bubble is composed of these view slots, each overridable per template:
 
 Retrieve the built-in templates and modify specific ones:
 
-```tsx
+```tsx lines
 import {
   CometChatUIKit,
   CometChatUIKitConstants,
@@ -122,7 +122,7 @@ for (let i = 0; i < allTemplates.length; i++) {
   <img src="/images/99068f5d-message_template_header_view_custom_web_screens-93fe3690136f32d0e0de4ac84189b13e.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import {
   CometChatMessageList,
@@ -168,7 +168,7 @@ function HeaderViewDemo() {
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import {
   CometChatMessageList,
@@ -235,7 +235,7 @@ function ContentViewDemo() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .content-view__body {
   height: 105px;
   display: flex;
@@ -288,7 +288,7 @@ function ContentViewDemo() {
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import {
   CometChatMessageList,
@@ -329,7 +329,7 @@ function BottomViewDemo() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat .cometchat-message-bubble__body {
   border-radius: 12px 12px 0px 0px;
 }
@@ -362,7 +362,7 @@ function BottomViewDemo() {
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import {
   CometChatMessageList,
@@ -423,7 +423,7 @@ function BubbleViewDemo() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .bubble-view {
   display: flex;
   flex-direction: column;
@@ -469,7 +469,7 @@ function BubbleViewDemo() {
   <img src="/images/83fea471-message_template_options_web_screens-d29342818123fb8738cec024208016fe.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import {
   CometChatMessageList,
@@ -527,7 +527,7 @@ function OptionsDemo() {
   <img src="/images/92e8ec15-message_template_new_template_web_screens-d68718c22425cd73f6330942deea8cc0.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import {
   CometChatMessageList,
@@ -588,7 +588,7 @@ function NewTemplateDemo() {
 
 `CometChatMessageTemplate` renders inside `.cometchat-message-bubble`. Style individual bubble sections using CSS:
 
-```css
+```css lines
 .cometchat .cometchat-message-bubble__body {
   /* content area overrides */
 }

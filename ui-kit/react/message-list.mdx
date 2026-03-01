@@ -114,7 +114,7 @@ description: "Scrollable list of sent and received messages with text, media, re
 
 `CometChatMessageList` renders a scrollable, real-time message feed for a user or group conversation. Wire it alongside `CometChatMessageHeader` and `CometChatMessageComposer` to build a standard chat view.
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -149,7 +149,7 @@ function ChatView() {
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
@@ -176,7 +176,7 @@ Root CSS class: `.cometchat-message-list`
 
 Pass a `CometChat.MessagesRequestBuilder` to `messagesRequestBuilder`. The `UID`/`GUID` parameters are always overridden internally based on the `user`/`group` prop.
 
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
 
@@ -194,7 +194,7 @@ function FilteredMessageList() {
 
 ### Reactions Request Builder
 
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
 
@@ -222,7 +222,7 @@ Refer to [MessagesRequestBuilder](/sdk/javascript/additional-message-filtering) 
 
 Fires when a threaded message reply count is clicked.
 
-```tsx
+```tsx lines
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -242,7 +242,7 @@ function MessageListWithThreads() {
 
 Fires when a reaction on a message bubble is clicked.
 
-```tsx
+```tsx lines
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -262,7 +262,7 @@ function MessageListWithReactions() {
 
 Fires when a specific reaction in the reaction detail view is clicked.
 
-```tsx
+```tsx lines
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -282,7 +282,7 @@ function MessageListWithReactionDetail() {
 
 Fires on internal errors.
 
-```tsx
+```tsx lines
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -309,7 +309,7 @@ function MessageListWithError() {
 | `CometChatUIEvents.ccOpenChat` | User opens a chat | `IOpenChat` |
 | `CometChatUIEvents.ccActiveChatChanged` | Active chat changes | `IActiveChatChanged` |
 
-```tsx
+```tsx lines
 import { useEffect } from "react";
 import { CometChatMessageEvents, CometChatUIEvents } from "@cometchat/chat-uikit-react";
 
@@ -366,7 +366,7 @@ Custom view above the message list.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageList, CometChatButton } from "@cometchat/chat-uikit-react";
@@ -394,7 +394,7 @@ function MessageListWithHeader() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .header-view {
   display: flex;
   width: 100%;
@@ -430,7 +430,7 @@ Custom view below the message list.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatMessageList, CometChatButton } from "@cometchat/chat-uikit-react";
 
 function MessageListWithFooter() {
@@ -449,7 +449,7 @@ function MessageListWithFooter() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .footer-view {
   display: flex;
   width: 100%;
@@ -479,7 +479,7 @@ function MessageListWithFooter() {
 
 Custom message bubble templates via [CometChatMessageTemplate](/ui-kit/react/message-template).
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -525,7 +525,7 @@ function MessageListCustomTemplates() {
 
 Customize timestamps using `CalendarObject`:
 
-```tsx
+```tsx lines
 import { CometChatMessageList, CalendarObject } from "@cometchat/chat-uikit-react";
 
 function MessageListCustomDates() {
@@ -553,7 +553,7 @@ function MessageListCustomDates() {
 
 ### Threaded message list
 
-```tsx
+```tsx lines
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
 
 function ThreadedMessageList() {
@@ -568,7 +568,7 @@ function ThreadedMessageList() {
 
 ### Hide all chrome — minimal list
 
-```tsx
+```tsx lines
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
 
 function MinimalMessageList() {
@@ -587,7 +587,7 @@ function MinimalMessageList() {
 
 ### Left-aligned messages
 
-```tsx
+```tsx lines
 import { CometChatMessageList, MessageListAlignment } from "@cometchat/chat-uikit-react";
 
 function LeftAlignedList() {
@@ -602,7 +602,7 @@ function LeftAlignedList() {
 
 ### AI conversation starters and smart replies
 
-```tsx
+```tsx lines
 import { CometChatMessageList } from "@cometchat/chat-uikit-react";
 
 function AIMessageList() {
@@ -996,7 +996,7 @@ Controls message alignment.
 | Type | `MessageListAlignment` |
 | Default | `MessageListAlignment.standard` |
 
-```ts
+```ts lines
 enum MessageListAlignment {
   left,     // 0
   standard, // 1

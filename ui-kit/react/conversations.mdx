@@ -156,7 +156,7 @@ description: "Scrollable list of recent one-on-one and group conversations for t
 
 `CometChatConversations` is a sidebar list component. It renders recent conversations and emits the selected `CometChat.Conversation` via `onItemClick`. Wire it to `CometChatMessageHeader`, `CometChatMessageList`, and `CometChatMessageComposer` to build a standard two-panel chat layout.
 
-```tsx
+```tsx lines
 import { useState } from "react";
 import {
   CometChatConversations,
@@ -213,7 +213,7 @@ function ChatApp() {
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 import "@cometchat/chat-uikit-react/css-variables.css";
 
@@ -240,7 +240,7 @@ Root CSS class: `.cometchat-conversations`
 
 Pass a `CometChat.ConversationsRequestBuilder` to `conversationsRequestBuilder`. Pass the builder instance — not the result of `.build()`.
 
-```tsx
+```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -282,7 +282,7 @@ Refer to [ConversationRequestBuilder](/sdk/javascript/retrieve-conversations) fo
 
 Fires when a conversation row is tapped. Primary navigation hook — set the active conversation and render the message view.
 
-```tsx
+```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -299,7 +299,7 @@ function ConversationsWithClick() {
 
 Fires when a conversation is checked/unchecked in multi-select mode. Requires `selectionMode` to be set.
 
-```tsx
+```tsx lines
 import { useState } from "react";
 import {
   CometChatConversations,
@@ -332,7 +332,7 @@ function BatchSelectDemo() {
 
 Fires on internal errors (network failure, auth issue, SDK exception).
 
-```tsx
+```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -351,7 +351,7 @@ function ConversationsWithErrorHandler() {
 
 Fires when the search bar is clicked. Requires `showSearchBar={true}`.
 
-```tsx
+```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 
 function ConversationsWithSearch() {
@@ -378,7 +378,7 @@ function ConversationsWithSearch() {
 
 When to use: sync external UI with conversation state changes. For example, update an unread count badge in a tab bar when `ccMarkConversationAsRead` fires, or remove a conversation from a custom sidebar when `ccConversationDeleted` fires.
 
-```tsx
+```tsx lines
 import { useEffect } from "react";
 import { CometChatConversationEvents } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -468,7 +468,7 @@ Customized:
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
   CometChatListItem,
@@ -499,7 +499,7 @@ function CustomItemViewConversations() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-conversations .cometchat-avatar {
   border-radius: 8px;
   width: 32px;
@@ -521,7 +521,7 @@ Replace the avatar / left section. Typing-aware avatar example.
   <img src="/images/5f55a4a0-conversations_leadingview-3b297f3151794854485fc087d0c0aeec.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import { useEffect, useRef, useState } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -602,7 +602,7 @@ Replace the timestamp / badge / right section. Relative time badge example.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 
@@ -643,7 +643,7 @@ function RelativeTimeConversations() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .conversations__trailing-view {
   display: flex;
   flex-direction: column;
@@ -687,7 +687,7 @@ Replace the name / title text. Inline user status example.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 
@@ -719,7 +719,7 @@ function StatusTitleConversations() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-conversations .conversations__title-view {
   display: flex;
   gap: 4px;
@@ -757,7 +757,7 @@ Customized:
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 
@@ -792,7 +792,7 @@ function SubtitleConversations() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-conversations .cometchat-list-item__body-subtitle {
   overflow: hidden;
   color: var(--cometchat-text-color-secondary, #727272);
@@ -814,7 +814,7 @@ Replace the entire header bar.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import {
   CometChatButton,
   CometChatConversations,
@@ -838,7 +838,7 @@ function CustomHeaderConversations() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .conversations__header {
   display: flex;
   width: 100%;
@@ -890,7 +890,7 @@ Customized:
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
   CometChatOption,
@@ -926,7 +926,7 @@ function CustomOptionsConversations() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-conversations .cometchat-menu-list__main-menu-item-icon-delete {
   background: red;
 }
@@ -939,7 +939,7 @@ function CustomOptionsConversations() {
 </Tab>
 </Tabs>
 
-```ts
+```ts lines
 // CometChatOption interface
 interface CometChatOption {
   id?: string;       // Unique identifier
@@ -953,7 +953,7 @@ interface CometChatOption {
 
 Custom text formatters for the conversation subtitle. Array of `CometChatTextFormatter` instances. If not provided, default formatters from the data source are used.
 
-```tsx
+```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 import ShortcutFormatter from "./ShortCutFormatter";
 
@@ -970,7 +970,7 @@ See [CometChatMentionsFormatter](/ui-kit/react/mentions-formatter-guide) for men
 
 Customize the last message timestamp format using a `CalendarObject`.
 
-```ts
+```ts lines
 // CalendarObject interface (from source)
 class CalendarObject {
   today?: string;
@@ -986,7 +986,7 @@ class CalendarObject {
 }
 ```
 
-```tsx
+```tsx lines
 import {
   CometChatConversations,
   CalendarObject,
@@ -1013,7 +1013,7 @@ If no property is passed in the [CalendarObject](/ui-kit/react/localize#calendar
 
 ### Custom empty state with CTA
 
-```tsx
+```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 
 function EmptyStateConversations() {
@@ -1034,7 +1034,7 @@ function EmptyStateConversations() {
 
 ### Hide all chrome — minimal list
 
-```tsx
+```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 
 function MinimalConversations() {
@@ -1051,7 +1051,7 @@ function MinimalConversations() {
 
 ### Conversations with search
 
-```tsx
+```tsx lines
 import { CometChatConversations } from "@cometchat/chat-uikit-react";
 
 function SearchableConversations() {
@@ -1076,7 +1076,7 @@ The component uses CSS custom properties (design tokens) defined in `@cometchat/
 
 To scope overrides to a single instance when multiple `CometChatConversations` exist on the same page, wrap the component in a container and scope selectors:
 
-```css
+```css lines
 .sidebar-left .cometchat-conversations .cometchat-badge {
   background: #e5484d;
 }
@@ -1108,7 +1108,7 @@ Overrides survive component updates because the component never sets inline styl
   <img src="/images/46655ced-style_custom_web_screens-967e2c7c42b5c97c59c10a9212aef0c4.png" />
 </Frame>
 
-```css
+```css lines
 .cometchat-conversations .cometchat-list-item__body-title,
 .cometchat-conversations .cometchat-list__header-title,
 .cometchat-conversations .cometchat-avatar__text,
@@ -1328,7 +1328,7 @@ Format for displaying the timestamp of the last message.
 | Type | `CalendarObject` |
 | Default | Component default (`hh:mm A` today, `[yesterday]`, `DD/MM/YYYY` other days) |
 
-```ts
+```ts lines
 class CalendarObject {
   today?: string;
   yesterday?: string;
@@ -1422,7 +1422,7 @@ Custom context menu / hover actions for each conversation item.
 | Type | `((conversation: CometChat.Conversation) => CometChatOption[]) \| null` |
 | Default | Built-in delete option |
 
-```ts
+```ts lines
 class CometChatOption {
   id?: string;
   title?: string;
@@ -1453,7 +1453,7 @@ Enables single or multi-select checkboxes on list items.
 | Type | `SelectionMode` |
 | Default | `SelectionMode.none` |
 
-```ts
+```ts lines
 enum SelectionMode {
   single,    // 0
   multiple,  // 1

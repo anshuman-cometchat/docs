@@ -54,7 +54,7 @@ description: "Composite AI agent chat with streaming responses, quick suggestion
 
 `CometChatAIAssistantChat` is a standalone AI chat panel. It composes an internal message header, message list, and message composer into a self-contained AI conversation experience. It requires a `CometChat.User` representing the AI agent.
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";
@@ -84,7 +84,7 @@ function AIAssistantPanel() {
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";
@@ -119,7 +119,7 @@ Fires when the header back button is clicked. Requires `showBackButton={true}`.
 | When it fires | User clicks the back button |
 | Payload type | `() => void` |
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";
@@ -152,7 +152,7 @@ Fires when the header close button is clicked. Requires `showCloseButton={true}`
 | When it fires | User clicks the close button |
 | Payload type | `() => void` |
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";
@@ -185,7 +185,7 @@ Fires when the composer send button is clicked.
 | When it fires | User clicks the send button |
 | Payload type | `(message: CometChat.BaseMessage, previewMessageMode?: PreviewMessageMode) => void` |
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";
@@ -217,7 +217,7 @@ Fires when the component encounters an internal error.
 | When it fires | Any internal error during rendering or data fetching |
 | Payload type | `(error: CometChat.CometChatException) => void` |
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";
@@ -275,7 +275,7 @@ The component internally manages SDK communication for AI streaming. No manual l
   <img src="/images/react-uikit_ai-assistant-chat-empty_chat_image_view.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";
@@ -306,7 +306,7 @@ function AIAssistantCustomImage() {
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";
@@ -335,7 +335,7 @@ function AIAssistantCustomGreeting() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-ai-assistant-chat__empty-chat-greeting {
   display: flex;
   padding: 8px 20px;
@@ -364,7 +364,7 @@ function AIAssistantCustomGreeting() {
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";
@@ -392,7 +392,7 @@ function AIAssistantCustomIntro() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-ai-assistant-chat__empty-chat-intro {
   display: flex;
   padding: 12px;
@@ -417,7 +417,7 @@ function AIAssistantCustomIntro() {
 
 Pass a `CometChatAIAssistantTools` instance to enable tool/function calls during assistant replies.
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -451,7 +451,7 @@ function AIAssistantWithTools() {
 
 Custom message templates to control message bubble rendering. See [CometChatMessageTemplate](/ui-kit/react/message-template).
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -486,7 +486,7 @@ function AIAssistantWithTemplates() {
 
 ### AI assistant with suggestions and history
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";
@@ -514,7 +514,7 @@ function FullFeaturedAssistant() {
 
 ### Minimal assistant — no chrome
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAIAssistantChat } from "@cometchat/chat-uikit-react";
@@ -581,7 +581,7 @@ The component uses CSS custom properties (design tokens) defined in `@cometchat/
   <img src="/images/react-uikit_ai-assistant-chat-style.png" />
 </Frame>
 
-```css
+```css lines
 .cometchat-ai-assistant-chat
   .cometchat-ai-assistant-chat__suggested-message-pill {
   background: #30a46c;

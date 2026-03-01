@@ -148,7 +148,7 @@ description: "Searchable, scrollable list of all available groups with icon, nam
 
 `CometChatGroups` is a directory list component. It renders available groups and emits the selected `CometChat.Group` via `onItemClick`. Wire it to `CometChatMessageHeader`, `CometChatMessageList`, and `CometChatMessageComposer` to build a group chat layout.
 
-```tsx
+```tsx lines
 import { useState } from "react";
 import {
   CometChatGroups,
@@ -193,7 +193,7 @@ function GroupChatApp() {
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import "@cometchat/chat-uikit-react/css-variables.css";
 
@@ -216,7 +216,7 @@ Root CSS class: `.cometchat-groups`
 
 Pass a `CometChat.GroupsRequestBuilder` to `groupsRequestBuilder`. Pass the builder instance — not the result of `.build()`.
 
-```tsx
+```tsx lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -247,7 +247,7 @@ Default page size is 30. The component uses infinite scroll — the next page lo
 
 The `searchRequestBuilder` prop accepts a separate `GroupsRequestBuilder` for filtering when the search bar is active.
 
-```tsx
+```tsx lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -276,7 +276,7 @@ Refer to [GroupsRequestBuilder](/sdk/javascript/retrieve-groups) for the full bu
 
 Fires when a group row is tapped. Primary navigation hook — set the active group and render the message view.
 
-```tsx
+```tsx lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -293,7 +293,7 @@ function GroupsWithClick() {
 
 Fires when a group is checked/unchecked in multi-select mode. Requires `selectionMode` to be set.
 
-```tsx
+```tsx lines
 import { useState } from "react";
 import {
   CometChatGroups,
@@ -326,7 +326,7 @@ function BatchSelectGroups() {
 
 Fires on internal errors (network failure, auth issue, SDK exception).
 
-```tsx
+```tsx lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -358,7 +358,7 @@ function GroupsWithErrorHandler() {
 | `ccGroupMemberUnbanned` | A member is unbanned | `IGroupMemberUnBanned` |
 | `ccOwnershipChanged` | Group ownership is transferred | `IOwnershipChanged` |
 
-```tsx
+```tsx lines
 import { useEffect } from "react";
 import { CometChatGroupEvents } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -450,7 +450,7 @@ Customized:
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 
@@ -474,7 +474,7 @@ function CustomItemViewGroups() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .group-list-item {
   display: flex;
   flex-direction: column;
@@ -539,7 +539,7 @@ Replace the name / title text. Group type badge inline example.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 
@@ -558,7 +558,7 @@ function GroupTypeTitleGroups() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .groups__title-view {
   display: flex;
   align-items: center;
@@ -611,7 +611,7 @@ Customized:
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 
@@ -629,7 +629,7 @@ function SubtitleGroups() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat .cometchat-groups .group-subtitle {
   overflow: hidden;
   color: #727272;
@@ -651,7 +651,7 @@ Replace the avatar / left section. Joined status badge example.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups, CometChatAvatar } from "@cometchat/chat-uikit-react";
 
@@ -679,7 +679,7 @@ function LeadingViewGroups() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-groups .cometchat-list-item .groups__leading-view .cometchat-avatar__image,
 .cometchat-groups .cometchat-list-item .groups__leading-view .cometchat-avatar {
   border-radius: 8px;
@@ -722,7 +722,7 @@ Replace the right section. Join status button example.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 
@@ -740,7 +740,7 @@ function TrailingViewGroups() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .groups__trailing-view {
   display: flex;
   padding: 4px 12px;
@@ -772,7 +772,7 @@ Replace the entire header bar.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import {
   CometChatButton,
   CometChatGroups,
@@ -796,7 +796,7 @@ function CustomHeaderGroups() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .groups__header {
   display: flex;
   width: 100%;
@@ -840,7 +840,7 @@ Replace the context menu / hover actions on each group item.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
   CometChatOption,
@@ -861,7 +861,7 @@ function CustomOptionsGroups() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat .cometchat-groups .cometchat-menu-list__menu {
   background: none;
 }
@@ -873,7 +873,7 @@ function CustomOptionsGroups() {
 </Tab>
 </Tabs>
 
-```ts
+```ts lines
 // CometChatOption interface
 interface CometChatOption {
   id?: string;       // Unique identifier
@@ -889,7 +889,7 @@ interface CometChatOption {
 
 ### Custom empty state with CTA
 
-```tsx
+```tsx lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 
 function EmptyStateGroups() {
@@ -910,7 +910,7 @@ function EmptyStateGroups() {
 
 ### Hide all chrome — minimal list
 
-```tsx
+```tsx lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 
 function MinimalGroups() {
@@ -925,7 +925,7 @@ function MinimalGroups() {
 
 ### Joined groups only
 
-```tsx
+```tsx lines
 import { CometChatGroups } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -952,7 +952,7 @@ The component uses CSS custom properties (design tokens) defined in `@cometchat/
 
 To scope overrides to a single instance when multiple `CometChatGroups` exist on the same page, wrap the component in a container and scope selectors:
 
-```css
+```css lines
 .sidebar-left .cometchat-groups .cometchat-avatar {
   border-radius: 8px;
 }
@@ -982,7 +982,7 @@ To scope overrides to a single instance when multiple `CometChatGroups` exist on
   <img src="/images/88288ec7-groups_style-8e467325ba53688633816b7190aa3f95.png" />
 </Frame>
 
-```css
+```css lines
 .cometchat-groups .cometchat-list__header-title {
   background-color: #edeafa;
   color: #6852d6;
@@ -1209,7 +1209,7 @@ Custom context menu / hover actions for each group item.
 | Type | `(group: CometChat.Group) => CometChatOption[]` |
 | Default | `undefined` |
 
-```ts
+```ts lines
 class CometChatOption {
   id?: string;
   title?: string;
@@ -1240,7 +1240,7 @@ Enables single or multi-select checkboxes on list items.
 | Type | `SelectionMode` |
 | Default | `SelectionMode.none` |
 
-```ts
+```ts lines
 enum SelectionMode {
   single,    // 0
   multiple,  // 1

@@ -124,7 +124,7 @@ description: "Searchable, scrollable list of all available users with avatar, na
 
 `CometChatUsers` is a contact list component. It renders all available users and emits the selected `CometChat.User` via `onItemClick`. Wire it to `CometChatMessageHeader`, `CometChatMessageList`, and `CometChatMessageComposer` to build a standard two-panel chat layout.
 
-```tsx
+```tsx lines
 import { useState } from "react";
 import {
   CometChatUsers,
@@ -167,7 +167,7 @@ function ChatApp() {
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 import "@cometchat/chat-uikit-react/css-variables.css";
 
@@ -190,7 +190,7 @@ Root CSS class: `.cometchat-users`
 
 Pass a `CometChat.UsersRequestBuilder` to `usersRequestBuilder`. Pass the builder instance — not the result of `.build()`.
 
-```tsx
+```tsx lines
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -234,7 +234,7 @@ Refer to [UsersRequestBuilder](/sdk/javascript/retrieve-users) for the full buil
 
 Fires when a user row is tapped. Primary navigation hook — set the active user and render the message view.
 
-```tsx
+```tsx lines
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -251,7 +251,7 @@ function UsersWithClick() {
 
 Fires when a user is checked/unchecked in selection mode. Requires `selectionMode` to be set.
 
-```tsx
+```tsx lines
 import { useState } from "react";
 import {
   CometChatUsers,
@@ -284,7 +284,7 @@ function BatchSelectDemo() {
 
 Fires when the user list fetch returns zero results.
 
-```tsx
+```tsx lines
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 
 function UsersWithEmptyHandler() {
@@ -298,7 +298,7 @@ function UsersWithEmptyHandler() {
 
 Fires on internal errors (network failure, auth issue, SDK exception).
 
-```tsx
+```tsx lines
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -377,7 +377,7 @@ Customized:
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatUsers, CometChatListItem } from "@cometchat/chat-uikit-react";
 
@@ -406,7 +406,7 @@ function UsersDemo() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat .cometchat-users .cometchat-list-item__body-subtitle {
   overflow: hidden;
   color: #727272;
@@ -432,7 +432,7 @@ Replace the avatar / left section.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatUsers, CometChatAvatar } from "@cometchat/chat-uikit-react";
 
@@ -453,7 +453,7 @@ function LeadingViewUsers() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-users .cometchat-list-item .users__leading-view .cometchat-avatar__image,
 .cometchat-users .cometchat-list-item .users__leading-view .cometchat-avatar {
   border-radius: 8px;
@@ -478,7 +478,7 @@ Replace the right section.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 
@@ -497,7 +497,7 @@ function TrailingViewUsers() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .users__trailing-view {
   display: flex;
   width: 33px;
@@ -528,7 +528,7 @@ Replace the name / title text. Role badge inline example.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 
@@ -547,7 +547,7 @@ function TitleViewUsers() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .users__title-view {
   display: flex;
   align-items: center;
@@ -595,7 +595,7 @@ Customized:
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 
@@ -613,7 +613,7 @@ function SubtitleViewUsers() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .users-subtitle {
   overflow: hidden;
   color: #727272;
@@ -635,7 +635,7 @@ Replace the entire header bar.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import {
   CometChatUsers,
   CometChatButton,
@@ -659,7 +659,7 @@ function CustomHeaderUsers() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .users__header {
   display: flex;
   width: 100%;
@@ -711,7 +711,7 @@ Customized:
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
   CometChatOption,
@@ -737,7 +737,7 @@ function CustomOptionsUsers() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat .cometchat-users .cometchat-menu-list__menu {
   background: none;
 }
@@ -745,7 +745,7 @@ function CustomOptionsUsers() {
 </Tab>
 </Tabs>
 
-```ts
+```ts lines
 // CometChatOption interface
 interface CometChatOption {
   id?: string;       // Unique identifier
@@ -761,7 +761,7 @@ interface CometChatOption {
 
 ### Custom empty state with CTA
 
-```tsx
+```tsx lines
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 
 function EmptyStateUsers() {
@@ -782,7 +782,7 @@ function EmptyStateUsers() {
 
 ### Friends-only list with search
 
-```tsx
+```tsx lines
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -799,7 +799,7 @@ function FriendsOnlyUsers() {
 
 ### Multi-select with preview strip
 
-```tsx
+```tsx lines
 import { CometChatUsers, SelectionMode } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -818,7 +818,7 @@ function MultiSelectUsers() {
 
 ### Hide all chrome — minimal list
 
-```tsx
+```tsx lines
 import { CometChatUsers } from "@cometchat/chat-uikit-react";
 
 function MinimalUsers() {
@@ -845,7 +845,7 @@ The component uses CSS custom properties (design tokens) defined in `@cometchat/
 
 To scope overrides to a single instance when multiple `CometChatUsers` exist on the same page, wrap the component in a container and scope selectors:
 
-```css
+```css lines
 .sidebar-left .cometchat-users .cometchat-avatar {
   border-radius: 8px;
 }
@@ -881,7 +881,7 @@ Overrides survive component updates because the component never sets inline styl
   <img src="/images/448b5518-users_style-269bf9feb319c99c79d270a1117f35b7.png" />
 </Frame>
 
-```css
+```css lines
 .cometchat .cometchat-users .cometchat-list__header-title {
   background-color: #fce9ea;
   color: #e5484d;
@@ -1109,7 +1109,7 @@ Custom context menu / hover actions for each user item.
 | Type | `(user: CometChat.User) => CometChatOption[]` |
 | Default | `undefined` |
 
-```ts
+```ts lines
 class CometChatOption {
   id?: string;
   title?: string;
@@ -1166,7 +1166,7 @@ Enables single or multi-select checkboxes on list items.
 | Type | `SelectionMode` |
 | Default | `SelectionMode.none` |
 
-```ts
+```ts lines
 enum SelectionMode {
   single,    // 0
   multiple,  // 1

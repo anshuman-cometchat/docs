@@ -4,12 +4,16 @@ description: "Detect and style plain URLs as clickable links with optional track
 ---
 
 <Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Key class:** `CometChatUrlsFormatter` (extends `CometChatTextFormatter`)
-- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")`
-- **Purpose:** Auto-detects URLs in text messages and converts them to clickable links
-- **Sample app:** [GitHub](https://github.com/cometchat/cometchat-uikit-react/tree/v6/sample-app)
-- **Related:** [Custom Text Formatter](/ui-kit/react/custom-text-formatter-guide) | [All Guides](/ui-kit/react/guide-overview)
+
+| Field | Value |
+| --- | --- |
+| Package | `@cometchat/chat-uikit-react` |
+| Key class | `CometChatUrlsFormatter` (extends `CometChatTextFormatter`) |
+| Required setup | `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")` |
+| Purpose | Auto-detects URLs in text messages and converts them to clickable links |
+| Sample app | [GitHub](https://github.com/cometchat/cometchat-uikit-react/tree/v6/sample-app) |
+| Related | [Custom Text Formatter](/ui-kit/react/custom-text-formatter-guide) \| [All Guides](/ui-kit/react/guide-overview) |
+
 </Accordion>
 
 
@@ -76,7 +80,7 @@ When implementing the CometChatUrlsFormatter, you can customize the appearance o
 
 Apply CSS to style your clickable links, for example:
 
-```python
+```css lines
 .clickable-url {
   color: #1a0dab;
   text-decoration: underline;
@@ -88,7 +92,7 @@ Apply CSS to style your clickable links, for example:
 
 Implement the onUrlClick method within your formatter class to define custom logic for when a link is clicked:
 
-```javascript
+```javascript lines
 onUrlClick(event) {
   const url = event.target.dataset.url;
   window.open(url, '_blank');

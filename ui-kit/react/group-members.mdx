@@ -125,7 +125,7 @@ description: "Scrollable, searchable list of members in a specific group with ro
 
 `CometChatGroupMembers` is a panel component that renders the member list for a specific group. It requires a `group` prop and provides built-in member management actions (kick, ban, scope change) based on the logged-in user's role. Typically rendered alongside the message view in a group chat layout.
 
-```tsx
+```tsx lines
 import { useEffect, useState } from "react";
 import {
   CometChatGroupMembers,
@@ -168,7 +168,7 @@ function GroupChatWithMembers() {
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { useEffect, useState } from "react";
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -199,7 +199,7 @@ Root CSS class: `.cometchat-group-members`
 
 Pass a `CometChat.GroupMembersRequestBuilder` to `groupMemberRequestBuilder`. Pass the builder instance — not the result of `.build()`.
 
-```tsx
+```tsx lines
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -241,7 +241,7 @@ Refer to [GroupMembersRequestBuilder](/sdk/javascript/retrieve-group-members) fo
 
 Fires when a member row is tapped.
 
-```tsx
+```tsx lines
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -261,7 +261,7 @@ function GroupMembersWithClick({ group }: { group: CometChat.Group }) {
 
 Fires when a member is checked/unchecked in multi-select mode. Requires `selectionMode` to be set.
 
-```tsx
+```tsx lines
 import { useState } from "react";
 import {
   CometChatGroupMembers,
@@ -293,7 +293,7 @@ function BatchSelectMembers({ group }: { group: CometChat.Group }) {
 
 Fires when the member list has no data to display.
 
-```tsx
+```tsx lines
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -311,7 +311,7 @@ function GroupMembersWithEmpty({ group }: { group: CometChat.Group }) {
 
 Fires on internal errors (network failure, auth issue, SDK exception).
 
-```tsx
+```tsx lines
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -348,7 +348,7 @@ Events subscribed internally:
 | `ccGroupMemberScopeChanged` | Updates the member's scope in the list |
 | `ccGroupMemberAdded` | Appends newly added members to the list |
 
-```tsx
+```tsx lines
 import { useEffect } from "react";
 import { CometChatGroupEvents } from "@cometchat/chat-uikit-react";
 
@@ -428,7 +428,7 @@ Customized:
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
   CometChatAvatar,
@@ -458,7 +458,7 @@ function CustomItemViewMembers({ group }: { group: CometChat.Group }) {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .group-member-list-item {
   display: flex;
   min-width: 240px;
@@ -530,7 +530,7 @@ Customized:
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
 
@@ -545,7 +545,7 @@ function SubtitleMembers({ group }: { group: CometChat.Group }) {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .group-member-subtitle {
   overflow: hidden;
   color: #727272;
@@ -575,7 +575,7 @@ Customized:
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
 
@@ -593,7 +593,7 @@ function TrailingViewMembers({ group }: { group: CometChat.Group }) {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .group-member-scope-tag {
   display: flex;
   padding: 4px 12px;
@@ -616,7 +616,7 @@ Replace the entire header bar.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import {
   CometChatGroupMembers,
   CometChatButton,
@@ -642,7 +642,7 @@ function CustomHeaderMembers({ group }: { group: CometChat.Group }) {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .group-members__header {
   display: flex;
   width: 100%;
@@ -675,7 +675,7 @@ Replace the context menu / hover actions on each member item. The `options` call
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
   CometChatGroupMembers,
@@ -699,7 +699,7 @@ function CustomOptionsMembers({ group }: { group: CometChat.Group }) {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-group-members .cometchat-menu-list__main-menu-item-icon {
   background: #f44649;
 }
@@ -718,7 +718,7 @@ function CustomOptionsMembers({ group }: { group: CometChat.Group }) {
 
 ### Hide member management actions
 
-```tsx
+```tsx lines
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -736,7 +736,7 @@ function ReadOnlyMembers({ group }: { group: CometChat.Group }) {
 
 ### Admins and moderators only
 
-```tsx
+```tsx lines
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -755,7 +755,7 @@ function AdminMembers({ group }: { group: CometChat.Group }) {
 
 ### Minimal chrome
 
-```tsx
+```tsx lines
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -809,7 +809,7 @@ The component uses CSS custom properties (design tokens) defined in `@cometchat/
   <img src="/images/0651a0d7-group_members_style_web_screens-23265ad899155117d9bb15ee54742665.png" />
 </Frame>
 
-```css
+```css lines
 .cometchat-group-members .cometchat-list__header-title {
   background: #feede1;
   color: #f76808;
@@ -1106,7 +1106,7 @@ Enables single or multi-select checkboxes on list items.
 | Type | `SelectionMode` |
 | Default | `SelectionMode.none` |
 
-```ts
+```ts lines
 enum SelectionMode {
   single,    // 0
   multiple,  // 1

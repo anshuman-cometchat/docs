@@ -117,7 +117,7 @@ description: "Dual-scope search across conversations and messages with filtering
 
 `CometChatSearch` is a standalone search panel that searches across conversations and messages simultaneously. It renders filter chips, conversation results, and message results in a unified interface. Wire `onConversationClicked` and `onMessageClicked` to navigate to the selected result.
 
-```tsx
+```tsx lines
 import { useState } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
@@ -159,7 +159,7 @@ export default SearchDemo;
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 import "@cometchat/chat-uikit-react/css-variables.css";
 
@@ -182,7 +182,7 @@ Root CSS class: `.cometchat-search`
 
 Control which entities are searched using `searchIn` with `CometChatSearchScope`.
 
-```tsx
+```tsx lines
 import {
   CometChatSearch,
   CometChatSearchScope,
@@ -197,7 +197,7 @@ function MessagesOnlySearch() {
 }
 ```
 
-```ts
+```ts lines
 enum CometChatSearchScope {
   Conversations = "conversations",
   Messages = "messages",
@@ -208,7 +208,7 @@ enum CometChatSearchScope {
 
 Control which filter chips appear using `searchFilters` with `CometChatSearchFilter`.
 
-```tsx
+```tsx lines
 import {
   CometChatSearch,
   CometChatSearchFilter,
@@ -228,7 +228,7 @@ function FilteredSearch() {
 }
 ```
 
-```ts
+```ts lines
 enum CometChatSearchFilter {
   Messages = "messages",
   Conversations = "conversations",
@@ -246,7 +246,7 @@ enum CometChatSearchFilter {
 
 Pass `ConversationsRequestBuilder` and `MessagesRequestBuilder` to customize the underlying SDK queries.
 
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -268,7 +268,7 @@ function CustomBuilderSearch() {
 
 Limit search to a specific user or group conversation using `uid` or `guid`.
 
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 function UserScopedSearch() {
@@ -286,7 +286,7 @@ function UserScopedSearch() {
 
 Fires when a conversation is clicked in search results.
 
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -305,7 +305,7 @@ function SearchWithConversationClick() {
 
 Fires when a message is clicked in search results.
 
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -324,7 +324,7 @@ function SearchWithMessageClick() {
 
 Fires when the back button is clicked.
 
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 function SearchWithBack() {
@@ -336,7 +336,7 @@ function SearchWithBack() {
 
 Fires on internal errors during search.
 
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -395,7 +395,7 @@ Replace the entire message list item in search results.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -418,7 +418,7 @@ function SearchCustomMessageItem() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-search__message-list-item {
   background: var(--cometchat-extended-primary-color-100);
   border-bottom: 1px solid var(--cometchat-border-color-highlight);
@@ -451,7 +451,7 @@ Replace the message avatar / left section.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -467,7 +467,7 @@ function SearchCustomMessageLeading() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-search__message-list-item-leading-view {
   height: 48px;
   width: 48px;
@@ -496,7 +496,7 @@ Replace the message title text.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -518,7 +518,7 @@ function SearchCustomMessageTitle() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-search__message-list-item-title {
   display: flex;
   align-items: center;
@@ -549,7 +549,7 @@ Replace the message subtitle text.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -572,7 +572,7 @@ function SearchCustomMessageSubtitle() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-search__message-list-item-subtitle {
   background: var(--cometchat-extended-primary-color-100);
   padding: var(--cometchat-padding-1);
@@ -605,7 +605,7 @@ Replace the message right section.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
@@ -651,7 +651,7 @@ function SearchCustomMessageTrailing() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-search__message-trailing-view {
   display: flex;
   flex-direction: column;
@@ -685,7 +685,7 @@ function SearchCustomMessageTrailing() {
 
 Customize the message timestamp format using a `CalendarObject`.
 
-```tsx
+```tsx lines
 import {
   CometChatSearch,
   CalendarObject,
@@ -708,7 +708,7 @@ function SearchCustomDate() {
 
 ### Messages-only search
 
-```tsx
+```tsx lines
 import {
   CometChatSearch,
   CometChatSearchScope,
@@ -723,7 +723,7 @@ function MessagesOnlySearch() {
 
 ### Photos and videos filter only
 
-```tsx
+```tsx lines
 import {
   CometChatSearch,
   CometChatSearchFilter,
@@ -743,7 +743,7 @@ function MediaSearch() {
 
 ### Search within a specific group
 
-```tsx
+```tsx lines
 import { CometChatSearch } from "@cometchat/chat-uikit-react";
 
 function GroupScopedSearch() {
@@ -787,7 +787,7 @@ The component uses CSS custom properties (design tokens) defined in `@cometchat/
 
 ### Example: Themed search
 
-```css
+```css lines
 .cometchat-search * {
   font-family: "Times New Roman", Times;
 }
@@ -1164,7 +1164,7 @@ Filters rendered in the search filter bar.
 | Type | `CometChatSearchFilter[]` |
 | Default | All available filters |
 
-```ts
+```ts lines
 enum CometChatSearchFilter {
   Messages = "messages",
   Conversations = "conversations",
@@ -1189,7 +1189,7 @@ Scopes to search in.
 | Type | `CometChatSearchScope[]` |
 | Default | `[CometChatSearchScope.All]` |
 
-```ts
+```ts lines
 enum CometChatSearchScope {
   Conversations = "conversations",
   Messages = "messages",

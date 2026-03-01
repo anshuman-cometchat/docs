@@ -84,7 +84,7 @@ description: "Rich text input for composing and sending text, media, attachments
 
 `CometChatMessageComposer` provides a rich text input with attachment, emoji, voice recording, sticker, and send controls. Wire it alongside `CometChatMessageHeader` and `CometChatMessageList` to build a standard chat view.
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -119,7 +119,7 @@ function ChatView() {
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
@@ -150,7 +150,7 @@ Root CSS class: `.cometchat-message-composer`
 
 Fires when the send button is clicked. Overrides the default send behavior.
 
-```tsx
+```tsx lines
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -170,7 +170,7 @@ function ComposerWithCustomSend() {
 
 Fires as the user types in the composer input.
 
-```tsx
+```tsx lines
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
 
 function ComposerWithTextTracking() {
@@ -189,7 +189,7 @@ function ComposerWithTextTracking() {
 
 Fires on internal errors.
 
-```tsx
+```tsx lines
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -213,7 +213,7 @@ function ComposerWithError() {
 | `CometChatMessageEvents.ccMessageEdited` | A message is edited | `IMessages` |
 | `CometChatMessageEvents.ccReplyToMessage` | User replies to a message | `IMessages` |
 
-```tsx
+```tsx lines
 import { useEffect } from "react";
 import { CometChatMessageEvents } from "@cometchat/chat-uikit-react";
 
@@ -257,7 +257,7 @@ Override the default attachment options.
   <img src="/images/abb9806d-message_composer_custom_attachment_options_web_screens-104035717491a170e498d72a5a5591a2.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import {
   CometChatMessageComposer,
   CometChatMessageComposerAction,
@@ -292,7 +292,7 @@ Replace the sticker and AI button area.
   <img src="/images/b504b88f-AAAAAElFTkSuQmCC.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import {
   CometChatMessageComposer,
   CometChatButton,
@@ -320,7 +320,7 @@ Replace the send button.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import {
   CometChatMessageComposer,
   CometChatButton,
@@ -339,7 +339,7 @@ function ComposerCustomSend() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-message-composer div:not([class]) .message-composer__send-button .cometchat-button {
   background: #edeafa;
 }
@@ -361,7 +361,7 @@ Custom view above the composer input.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
 
 function ComposerWithHeader() {
@@ -382,7 +382,7 @@ function ComposerWithHeader() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-message-composer .message-composer__header-view {
   display: flex;
   align-items: center;
@@ -410,7 +410,7 @@ function ComposerWithHeader() {
 
 ### Thread composer
 
-```tsx
+```tsx lines
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
 
 function ThreadComposer() {
@@ -425,7 +425,7 @@ function ThreadComposer() {
 
 ### Minimal composer — text only
 
-```tsx
+```tsx lines
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
 
 function MinimalComposer() {
@@ -443,7 +443,7 @@ function MinimalComposer() {
 
 ### Enter key adds new line
 
-```tsx
+```tsx lines
 import { CometChatMessageComposer, EnterKeyBehavior } from "@cometchat/chat-uikit-react";
 
 function NewLineComposer() {
@@ -458,7 +458,7 @@ function NewLineComposer() {
 
 ### Pre-filled text
 
-```tsx
+```tsx lines
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react";
 
 function PrefilledComposer() {
@@ -607,7 +607,7 @@ Determines Enter key behavior.
 | Type | `EnterKeyBehavior` |
 | Default | `EnterKeyBehavior.SendMessage` |
 
-```ts
+```ts lines
 enum EnterKeyBehavior {
   SendMessage = "sendMessage",
   NewLine = "newLine",

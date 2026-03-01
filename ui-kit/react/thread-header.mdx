@@ -51,7 +51,7 @@ description: "Displays the parent message and reply count at the top of a thread
 
 `CometChatThreadHeader` renders the parent message bubble and reply count at the top of a thread panel. Wire it above a `CometChatMessageList` (with `parentMessageId`) and `CometChatMessageComposer` (with `parentMessageId`) to build a complete thread view.
 
-```tsx
+```tsx lines
 import { useEffect, useState } from "react";
 import {
   CometChatThreadHeader,
@@ -91,7 +91,7 @@ function ThreadView({ parentMessageId, user }: { parentMessageId: number; user: 
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { useEffect, useState } from "react";
 import { CometChatThreadHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -124,7 +124,7 @@ Root CSS class: `.cometchat-thread-header`
 
 Fires when the close button is clicked.
 
-```tsx
+```tsx lines
 import { CometChatThreadHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -142,7 +142,7 @@ function ThreadHeaderWithClose({ parentMessage }: { parentMessage: CometChat.Bas
 
 Fires when the subtitle area is clicked.
 
-```tsx
+```tsx lines
 import { CometChatThreadHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -160,7 +160,7 @@ function ThreadHeaderWithSubtitleClick({ parentMessage }: { parentMessage: Comet
 
 Fires on internal errors.
 
-```tsx
+```tsx lines
 import { CometChatThreadHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -193,7 +193,7 @@ The component listens to SDK events internally for real-time reply count updates
 
 Replace the parent message bubble with a custom view.
 
-```tsx
+```tsx lines
 import { CometChatThreadHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -211,7 +211,7 @@ function CustomBubbleThread({ parentMessage }: { parentMessage: CometChat.BaseMe
 
 #### separatorDateTimeFormat
 
-```tsx
+```tsx lines
 import {
   CometChatThreadHeader,
   CalendarObject,
@@ -242,7 +242,7 @@ If no property is passed in the [CalendarObject](/ui-kit/react/localize#calendar
 
 ### Thread header with hidden chrome
 
-```tsx
+```tsx lines
 import { CometChatThreadHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -288,7 +288,7 @@ The component uses CSS custom properties (design tokens) defined in `@cometchat/
   <img src="/images/43bea373-threaded_message_preview_style_web_screens-054bad3659d73ab2a927d3ba7dd9160a.png" />
 </Frame>
 
-```css
+```css lines
 .cometchat-thread-header {
   background-color: #edeafa;
 }

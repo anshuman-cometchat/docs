@@ -46,7 +46,7 @@ description: "Visual notification for incoming voice/video calls with accept and
 
 `CometChatIncomingCall` is an overlay component that auto-detects incoming calls and renders a notification with accept/decline buttons. Place it at the app root level so it appears above all other content.
 
-```tsx
+```tsx lines
 import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";
 import "@cometchat/chat-uikit-react/css-variables.css";
 
@@ -68,7 +68,7 @@ function App() {
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";
 import "@cometchat/chat-uikit-react/css-variables.css";
 
@@ -91,7 +91,7 @@ Root CSS class: `.cometchat-incoming-call`
 
 Fires when the accept button is clicked.
 
-```tsx
+```tsx lines
 import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -110,7 +110,7 @@ function IncomingCallWithAccept() {
 
 Fires when the decline button is clicked.
 
-```tsx
+```tsx lines
 import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -129,7 +129,7 @@ function IncomingCallWithDecline() {
 
 Fires on internal errors.
 
-```tsx
+```tsx lines
 import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -154,7 +154,7 @@ function IncomingCallWithError() {
 | `ccCallAccepted` | Incoming call is accepted | `CometChat.Call` |
 | `ccCallEnded` | Call ends | `CometChat.Call` |
 
-```tsx
+```tsx lines
 import { useEffect } from "react";
 import { CometChatCallEvents } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -200,7 +200,7 @@ View slots for `CometChatIncomingCall` are functions that receive the `CometChat
   <img src="/images/c3e4060d-incoming_call_leading_view_custom_web_screens-75333fe402b7588c590288cd6f825a99.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAvatar, CometChatIncomingCall } from "@cometchat/chat-uikit-react";
 
@@ -224,7 +224,7 @@ function CustomLeadingIncoming() {
   <img src="/images/8d3bfa9b-incoming_call_title_view_custom_web_screens-67b55f5b6fc1ede3f9f55d840ebaa290.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";
 
@@ -245,7 +245,7 @@ function CustomTitleIncoming() {
   <img src="/images/40f39b71-incoming_call_item_view_custom_web_screens-f8cd3984730f17f99313f1d988439d41.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatAvatar, CometChatIncomingCall } from "@cometchat/chat-uikit-react";
 
@@ -273,7 +273,7 @@ function CustomItemViewIncoming() {
 
 ### Disable ringtone
 
-```tsx
+```tsx lines
 import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";
 
 function SilentIncoming() {
@@ -283,7 +283,7 @@ function SilentIncoming() {
 
 ### Custom ringtone
 
-```tsx
+```tsx lines
 import { CometChatIncomingCall } from "@cometchat/chat-uikit-react";
 
 function CustomSoundIncoming() {
@@ -312,7 +312,7 @@ function CustomSoundIncoming() {
   <img src="/images/0256ea4e-incoming_calls_style_web_screens-9d869ffb8755959f5607e9e63d255cdd.png" />
 </Frame>
 
-```css
+```css lines
 .cometchat-incoming-call {
   border-radius: 18.5px;
   border: 1.542px solid #aa9ee8;

@@ -72,7 +72,7 @@ description: "Scrollable list of call history entries with filtering, call-back 
 
 `CometChatCallLogs` is a standalone list component that renders call history entries. Each entry shows the caller/callee, call type (audio/video), direction (incoming/outgoing/missed), and timestamp. The `onItemClick` callback emits the selected call log, and `onCallButtonClicked` fires when the call-back button is tapped.
 
-```tsx
+```tsx lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 import "@cometchat/chat-uikit-react/css-variables.css";
 
@@ -100,7 +100,7 @@ function CallLogPanel() {
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 import "@cometchat/chat-uikit-react/css-variables.css";
 
@@ -123,7 +123,7 @@ Root CSS class: `.cometchat-call-logs`
 
 Pass a `CallLogRequestBuilder` from `@cometchat/calls-sdk-javascript` to `callLogRequestBuilder`.
 
-```tsx
+```tsx lines
 import { CallLogRequestBuilder } from "@cometchat/calls-sdk-javascript";
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 
@@ -164,7 +164,7 @@ Refer to [CallLogRequestBuilder](/sdk/javascript/call-logs) for the full builder
 
 Fires when a call log entry is tapped.
 
-```tsx
+```tsx lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 
 function CallLogsWithClick() {
@@ -182,7 +182,7 @@ function CallLogsWithClick() {
 
 Fires when the call-back button in the trailing view is tapped.
 
-```tsx
+```tsx lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 
 function CallLogsWithCallback() {
@@ -200,7 +200,7 @@ function CallLogsWithCallback() {
 
 Fires on internal errors (network failure, auth issue, SDK exception).
 
-```tsx
+```tsx lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -250,7 +250,7 @@ Replace the entire call log list item.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 
 function CustomItemViewCallLogs() {
@@ -272,7 +272,7 @@ function CustomItemViewCallLogs() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .custom-call-log-item {
   display: flex;
   align-items: center;
@@ -300,7 +300,7 @@ Replace the subtitle text (call type, duration).
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 
 function SubtitleCallLogs() {
@@ -317,7 +317,7 @@ function SubtitleCallLogs() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .custom-call-log-subtitle {
   font: var(--cometchat-font-body-regular);
   color: var(--cometchat-text-color-secondary);
@@ -332,7 +332,7 @@ Replace the right section (call-back button area).
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 
 function TrailingViewCallLogs() {
@@ -351,7 +351,7 @@ function TrailingViewCallLogs() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .custom-call-log-trailing button {
   background: var(--cometchat-primary-color);
   color: var(--cometchat-static-white);
@@ -368,7 +368,7 @@ function TrailingViewCallLogs() {
 
 Customize the call initiated timestamp format using a `CalendarObject`.
 
-```tsx
+```tsx lines
 import {
   CometChatCallLogs,
   CalendarObject,
@@ -395,7 +395,7 @@ If no property is passed in the [CalendarObject](/ui-kit/react/localize#calendar
 
 ### Custom empty state
 
-```tsx
+```tsx lines
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 
 function EmptyStateCallLogs() {
@@ -413,7 +413,7 @@ function EmptyStateCallLogs() {
 
 ### Filtered to video calls only
 
-```tsx
+```tsx lines
 import { CallLogRequestBuilder } from "@cometchat/calls-sdk-javascript";
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react";
 

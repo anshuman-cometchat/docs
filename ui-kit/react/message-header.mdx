@@ -76,7 +76,7 @@ description: "Toolbar displaying user/group avatar, name, status, typing indicat
 
 `CometChatMessageHeader` is a toolbar component that sits above `CometChatMessageList` and `CometChatMessageComposer`. It receives a `user` or `group` prop and displays the conversation's avatar, name, online status, and typing indicator. Call buttons are rendered automatically when the calling extension is enabled.
 
-```tsx
+```tsx lines
 import { useEffect, useState } from "react";
 import {
   CometChatMessageHeader,
@@ -113,7 +113,7 @@ function ChatView() {
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { useEffect, useState } from "react";
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -144,7 +144,7 @@ Root CSS class: `.cometchat-message-header`
 
 Fires when the back button is clicked. Requires `showBackButton={true}`.
 
-```tsx
+```tsx lines
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -163,7 +163,7 @@ function HeaderWithBack({ user }: { user: CometChat.User }) {
 
 Fires when the header list item area (avatar + name) is clicked.
 
-```tsx
+```tsx lines
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -181,7 +181,7 @@ function HeaderWithItemClick({ user }: { user: CometChat.User }) {
 
 Fires when the search option is clicked. Requires `showSearchOption={true}`.
 
-```tsx
+```tsx lines
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -200,7 +200,7 @@ function HeaderWithSearch({ user }: { user: CometChat.User }) {
 
 Fires on internal errors.
 
-```tsx
+```tsx lines
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -255,7 +255,7 @@ Replace the entire list item (avatar + name + subtitle).
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import {
   CometChatMessageHeader,
   CometChatListItem,
@@ -281,7 +281,7 @@ function CustomItemViewHeader({ user }: { user: CometChat.User }) {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-message-header .cometchat-list-item .cometchat-avatar {
   border-radius: 8px;
 }
@@ -299,7 +299,7 @@ Replace the name / title text.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -323,7 +323,7 @@ function CustomTitleHeader({ user }: { user: CometChat.User }) {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-message-header .message-header__title-view {
   display: flex;
   gap: 4px;
@@ -351,7 +351,7 @@ Replace the subtitle text (status / typing indicator area).
   <img src="/images/7f5924bc-messages_header_subtitle_view_web_screens-2b9e776b10d555785c6cdcc224433167.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -377,7 +377,7 @@ Replace the avatar / left section.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import {
   CometChatMessageHeader,
   CometChatAvatar,
@@ -402,7 +402,7 @@ function CustomLeadingHeader({ user }: { user: CometChat.User }) {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .cometchat-message-header .message-header__leading-view .cometchat-avatar {
   border-radius: 8px;
   height: 48px;
@@ -438,7 +438,7 @@ Replace the right section (call buttons area).
   <img src="/images/b640e72a-message_header_custom_trailing_web_screens-4961a5bdae2839b245b87f641a6c9c2f.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import {
   CometChatMessageHeader,
   CometChatButton,
@@ -465,7 +465,7 @@ Replace the auxiliary button area (next to call buttons).
   <img src="/images/1ab8252d-messages_header_menu_web_screens-5d6e2d212881585e5761e1f53e328ea4.png" />
 </Frame>
 
-```tsx
+```tsx lines
 import {
   CometChatMessageHeader,
   CometChatButton,
@@ -488,7 +488,7 @@ function AuxiliaryButtonHeader({ group }: { group: CometChat.Group }) {
 
 Customize the "last seen" timestamp format using a `CalendarObject`.
 
-```tsx
+```tsx lines
 import {
   CometChatMessageHeader,
   CalendarObject,
@@ -521,7 +521,7 @@ If no property is passed in the [CalendarObject](/ui-kit/react/localize#calendar
 
 ### Header with back button and search
 
-```tsx
+```tsx lines
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -540,7 +540,7 @@ function FullFeaturedHeader({ user }: { user: CometChat.User }) {
 
 ### Hide call buttons
 
-```tsx
+```tsx lines
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -557,7 +557,7 @@ function NoCalls({ user }: { user: CometChat.User }) {
 
 ### Group header with AI summary
 
-```tsx
+```tsx lines
 import { CometChatMessageHeader } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -606,7 +606,7 @@ The component uses CSS custom properties (design tokens) defined in `@cometchat/
   <img src="/images/2a21baeb-messages_header_style_web_screens-f4b1c171012576f4fb7fc25cf02f92d5.png" />
 </Frame>
 
-```css
+```css lines
 .cometchat-message-header .cometchat-list-item .cometchat-avatar {
   background: #f0999b;
   border-radius: 8px;

@@ -74,7 +74,7 @@ description: "Overlay component displaying an outgoing voice/video call with rec
 
 `CometChatOutgoingCall` is an overlay component that displays the outgoing call screen with the recipient's name, avatar, and a cancel button. It plays a ringtone while the call is pending. Typically rendered at the app root level after initiating a call via `CometChat.initiateCall()`.
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -112,7 +112,7 @@ export default OutgoingCallDemo;
 
 ## Minimal Render
 
-```tsx
+```tsx lines
 import { CometChatOutgoingCall } from "@cometchat/chat-uikit-react";
 import "@cometchat/chat-uikit-react/css-variables.css";
 
@@ -134,7 +134,7 @@ Root CSS class: `.cometchat-outgoing-call`
 
 Fires when the cancel button is clicked. Pauses the ringtone internally before invoking the callback.
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -171,7 +171,7 @@ function OutgoingCallWithCancel() {
 
 Fires on internal errors.
 
-```tsx
+```tsx lines
 import { CometChatOutgoingCall } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 
@@ -198,7 +198,7 @@ function OutgoingCallWithError() {
 | `ccCallRejected` | The recipient rejects the call | `CometChat.Call` |
 | `ccCallEnded` | The call session ends | `CometChat.Call` |
 
-```tsx
+```tsx lines
 import { useEffect } from "react";
 import { CometChatCallEvents } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
@@ -257,7 +257,7 @@ Replace the recipient name.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
   CometChatOutgoingCall,
@@ -280,7 +280,7 @@ function OutgoingCallCustomTitle() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .outgoing-call__title {
   color: #141414;
   text-align: center;
@@ -300,7 +300,7 @@ Replace the "Calling..." text.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 const getSubtitleView = (call: CometChat.Call) => (
   <div className="outgoing-call__subtitle">
     <div className="outgoing-call__subtitle-icon" />
@@ -312,7 +312,7 @@ const getSubtitleView = (call: CometChat.Call) => (
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .outgoing-call__subtitle {
   display: flex;
   justify-content: center;
@@ -343,7 +343,7 @@ Replace the recipient avatar.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 import {
   CometChatAvatar,
   CometChatOutgoingCall,
@@ -368,7 +368,7 @@ function OutgoingCallCustomAvatar() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .outgoing-call__avatar .cometchat-avatar,
 .outgoing-call__avatar .cometchat-avatar__image {
   width: 160px;
@@ -399,7 +399,7 @@ Replace the cancel call button.
 
 <Tabs>
 <Tab title="TypeScript">
-```tsx
+```tsx lines
 function OutgoingCallCustomCancel() {
   const getCancelButtonView = (call: CometChat.Call) => (
     <div className="outgoing-call__cancel-button-wrapper">
@@ -420,7 +420,7 @@ function OutgoingCallCustomCancel() {
 ```
 </Tab>
 <Tab title="CSS">
-```css
+```css lines
 .outgoing-call__cancel-button-wrapper {
   height: 64px;
   display: flex;
@@ -457,7 +457,7 @@ function OutgoingCallCustomCancel() {
 
 ### Cancel and end the call session
 
-```tsx
+```tsx lines
 import { useState, useEffect } from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
@@ -494,7 +494,7 @@ function OutgoingCallWithEndSession() {
 
 ### Custom ringtone
 
-```tsx
+```tsx lines
 import { CometChatOutgoingCall } from "@cometchat/chat-uikit-react";
 
 function OutgoingCallCustomSound() {
@@ -509,7 +509,7 @@ function OutgoingCallCustomSound() {
 
 ### Silent outgoing call (no ringtone)
 
-```tsx
+```tsx lines
 import { CometChatOutgoingCall } from "@cometchat/chat-uikit-react";
 
 function SilentOutgoingCall() {
@@ -550,7 +550,7 @@ The component uses CSS custom properties (design tokens) defined in `@cometchat/
   <img src="/images/9ad3f928-outgoing_calls_style_web_screens-ed46fc9b93c86be7a2f4d300db54631f.png" />
 </Frame>
 
-```css
+```css lines
 .cometchat-outgoing-call__avatar .cometchat-avatar {
   border-radius: 16px;
   background: #fbaa75;
