@@ -1,79 +1,92 @@
 ---
-title: "Building A Messaging UI With Tabs, Sidebar, And Message View"
-sidebarTitle: "Tab Based Chat Experience"
+title: "Tab-Based Chat"
+sidebarTitle: "Tab-Based Chat"
 description: "Build a tab-based messaging UI with chats, calls, users, and groups in Next.js with CometChat UI Kit."
 ---
 
 <Accordion title="AI Agent Component Spec">
-- **Package:** `@cometchat/chat-uikit-react`
-- **Framework:** Next.js
-- **Key components:** `CometChatConversations` + `CometChatCallLogs` + `CometChatUsers` + `CometChatGroups`
-- **Required setup:** `CometChatUIKit.init(UIKitSettings)` then `CometChatUIKit.login("UID")`
-- **Parent guide:** [Next.js Integration](/ui-kit/react/next-js-integration)
+
+| Field | Value |
+| --- | --- |
+| Package | `@cometchat/chat-uikit-react` |
+| Framework | Next.js |
+| Components | `CometChatConversations`, `CometChatCallLogs`, `CometChatUsers`, `CometChatGroups`, `CometChatMessageHeader`, `CometChatMessageList`, `CometChatMessageComposer` |
+| Layout | Tabbed sidebar (Chats, Calls, Users, Groups) + message view |
+| Prerequisite | Complete [Next.js Integration](/ui-kit/react/next-js-integration) Steps 1–5 first |
+| SSR | Dynamic import with `ssr: false` — CometChat requires browser APIs |
+| Pattern | Full-featured messaging app with multiple sections |
+
 </Accordion>
 
-Tab-based messaging UI with sections for Chats, Calls, Users, and Groups.
+This guide builds a tabbed messaging UI — Chats, Calls, Users, and Groups tabs in the sidebar, with a message view on the right. Good for full-featured apps that need more than just conversations.
 
-[<img src="/images/30d34521-play-codesandbox.svg" />](https://link.cometchat.com/next-tabs-sidebar-message)
-
-## User Interface Preview
+This assumes you've already completed [Next.js Integration](/ui-kit/react/next-js-integration) (project created, UI Kit installed, CSS imported).
 
 <Frame>
   <img src="/images/010808a2-multi_tab_ui_web_screens-4c6055da929b73c11d7d45b0112fd5fc.png" />
 </Frame>
 
-Three sections:
+[<img src="/images/30d34521-play-codesandbox.svg" />](https://link.cometchat.com/next-tabs-sidebar-message)
 
-1. Sidebar (Conversation List) — recent conversations with users and groups
-2. Message View — messages for the selected chat
-3. Message Composer — text input with media, emoji, and reaction support
+> Fork the sandbox, insert your CometChat credentials (App ID, Region, Auth Key), and preview the UI in real time.
 
-## Step-by-Step Guide
+---
 
-<Steps>
-<Step title="Create a Tab Component">
+## What You're Building
 
-Create a `CometChatTabs` folder inside `src`:
+Three sections working together:
 
-```php
-public/
-├── assets # These are the images you need to save
-│   ├── chats.svg 
-│   ├── calls.svg 
-│   ├── users.svg 
-│   ├── groups.svg
-src/
-│── CometChatTabs/
-│   ├── CometChatTabs.tsx
-│   ├── CometChatTabs.css 
-```
+1. **Tab bar** — switches between Chats, Calls, Users, and Groups
+2. **Sidebar** — renders the list for the active tab
+3. **Message view** — header + messages + composer for the selected item
 
-#### Download the Icons
+---
 
-These icons are available in the **CometChat UI Kit assets folder**. You can find them at:\
-🔗 [GitHub Assets Folder](https://github.com/cometchat/cometchat-uikit-react/tree/v6/sample-app/src/assets)
+## Step 1 — Create the Tab Component
 
-#### Implementation
+<Tree>
+  <Tree.Folder name="src" defaultOpen>
+    <Tree.Folder name="app" defaultOpen>
+      <Tree.Folder name="CometChatTabs" defaultOpen>
+        <Tree.File name="CometChatTabs.tsx" />
+        <Tree.File name="CometChatTabs.css" />
+      </Tree.Folder>
+    </Tree.Folder>
+  </Tree.Folder>
+</Tree>
+
+Tab icons need to be placed in `public/assets/`. Download them from the [CometChat UI Kit assets folder on GitHub](https://github.com/cometchat/cometchat-uikit-react/tree/v6/sample-app/src/assets).
+
+<Tree>
+  <Tree.Folder name="public" defaultOpen>
+    <Tree.Folder name="assets" defaultOpen>
+      <Tree.File name="chats.svg" />
+      <Tree.File name="calls.svg" />
+      <Tree.File name="users.svg" />
+      <Tree.File name="groups.svg" />
+    </Tree.Folder>
+  </Tree.Folder>
+</Tree>
 
 <Tabs>
 <Tab title="TypeScript">
 
-```tsx CometChatTabs.tsx lines
+```tsx title="CometChatTabs.tsx" lines
 import { useState } from "react";
 import "./CometChatTabs.css";
+
 const chatsIcon = "/assets/chats.svg";
 const callsIcon = "/assets/calls.svg";
 const usersIcon = "/assets/users.svg";
 const groupsIcon = "/assets/groups.svg";
+
 export const CometChatTabs = (props: {
   onTabClicked?: (tabItem: { name: string; icon?: string }) => void;
   activeTab?: string;
 }) => {
-  const {
-    onTabClicked = () => {},
-    activeTab,
-  } = props;
+  const { onTabClicked = () => {}, activeTab } = props;
   const [hoverTab, setHoverTab] = useState("");
+
   const tabItems = [
     { name: "CHATS", icon: chatsIcon },
     { name: "CALLS", icon: callsIcon },
@@ -82,7 +95,8 @@ export const CometChatTabs = (props: {
   ];
 
   return (
-    <div className="cometchat-tab-component">      {tabItems.map((tabItem) => {
+    <div className="cometchat-tab-component">
+      {tabItems.map((tabItem) => {
         const isActive =
           activeTab === tabItem.name.toLowerCase() ||
           hoverTab === tabItem.name.toLowerCase();
@@ -92,7 +106,8 @@ export const CometChatTabs = (props: {
             key={tabItem.name}
             className="cometchat-tab-component__tab"
             onClick={() => onTabClicked(tabItem)}
-          >            <div
+          >
+            <div
               className={
                 isActive
                   ? "cometchat-tab-component__tab-icon cometchat-tab-component__tab-icon-active"
@@ -104,7 +119,8 @@ export const CometChatTabs = (props: {
               }}
               onMouseEnter={() => setHoverTab(tabItem.name.toLowerCase())}
               onMouseLeave={() => setHoverTab("")}
-            />            <div
+            />
+            <div
               className={
                 isActive
                   ? "cometchat-tab-component__tab-text cometchat-tab-component__tab-text-active"
@@ -124,10 +140,9 @@ export const CometChatTabs = (props: {
 ```
 
 </Tab>
-
 <Tab title="CSS">
 
-```css CometChatTabs.css lines
+```css title="CometChatTabs.css" lines
 .cometchat-tab-component {
   display: flex;
   width: 100%;
@@ -141,10 +156,10 @@ export const CometChatTabs = (props: {
 
 .cometchat-tab-component__tab {
   display: flex;
+  padding: 12px 0px 10px 0px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 12px 0px 10px 0px;
   gap: 4px;
   flex: 1 0 0;
   min-height: 48px;
@@ -183,81 +198,75 @@ export const CometChatTabs = (props: {
 ```
 
 </Tab>
-
 </Tabs>
 
-</Step>
-<Step title="Create Sidebar">
+---
 
-Let's create the `Sidebar` component which will render different conversations.
+## Step 2 — Create the Sidebar Component
 
-#### Folder Structure
+The sidebar renders the list for whichever tab is active, plus the tab bar at the bottom.
 
-Create a `CometChatSelector` folder inside your `src/app` directory and add the following files:
-
-```
-src/
-│── CometChatSelector/ 
-│   ├── CometChatSelector.tsx
-│   ├── CometChatSelector.css
-```
+<Tree>
+  <Tree.Folder name="src" defaultOpen>
+    <Tree.Folder name="app" defaultOpen>
+      <Tree.Folder name="CometChatSelector" defaultOpen>
+        <Tree.File name="CometChatSelector.tsx" />
+        <Tree.File name="CometChatSelector.css" />
+      </Tree.Folder>
+    </Tree.Folder>
+  </Tree.Folder>
+</Tree>
 
 <Tabs>
 <Tab title="TypeScript">
 
-```tsx CometChatSelector.tsx lines
+```tsx title="CometChatSelector.tsx" lines
 import { useEffect, useState } from "react";
 import {
   Call,
   Conversation,
   Group,
   User,
-  CometChat
+  CometChat,
 } from "@cometchat/chat-sdk-javascript";
-
 import {
   CometChatCallLogs,
   CometChatConversations,
   CometChatGroups,
-  CometChatUIKit,
   CometChatUIKitLoginListener,
-  CometChatUsers
+  CometChatUsers,
 } from "@cometchat/chat-uikit-react";
-
 import { CometChatTabs } from "../CometChatTabs/CometChatTabs";
+
 interface SelectorProps {
-  onSelectorItemClicked?: (input: User | Group | Conversation | Call, type: string) => void;
+  onSelectorItemClicked?: (
+    input: User | Group | Conversation | Call,
+    type: string
+  ) => void;
 }
 
 export const CometChatSelector = (props: SelectorProps) => {
-  const {
-    onSelectorItemClicked = () => {},
-  } = props;
+  const { onSelectorItemClicked = () => {} } = props;
   const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>();
   const [activeItem, setActiveItem] = useState<
     Conversation | User | Group | Call | undefined
   >();
   const [activeTab, setActiveTab] = useState<string>("chats");
+
   useEffect(() => {
     const user = CometChatUIKitLoginListener.getLoggedInUser();
     setLoggedInUser(user);
-  }, [CometChatUIKitLoginListener?.getLoggedInUser()]);
-  const logOut = () => {
-    CometChatUIKit.logout()
-      .then(() => {
-        setLoggedInUser(null);
-      })
-      .catch((error) => {
-        console.log("Logout error:", error);
-      });
-  };
+  }, []);
 
   return (
-    <>      {loggedInUser && (
+    <>
+      {loggedInUser && (
         <>
           {activeTab === "chats" && (
             <CometChatConversations
-              activeConversation={activeItem instanceof CometChat.Conversation ? activeItem : undefined}
+              activeConversation={
+                activeItem instanceof CometChat.Conversation ? activeItem : undefined
+              }
               onItemClick={(item) => {
                 setActiveItem(item);
                 onSelectorItemClicked(item, "updateSelectedItem");
@@ -295,11 +304,11 @@ export const CometChatSelector = (props: SelectorProps) => {
             />
           )}
         </>
-      )}      <CometChatTabs
+      )}
+
+      <CometChatTabs
         activeTab={activeTab}
-        onTabClicked={(item) => {
-          setActiveTab(item.name.toLowerCase());
-        }}
+        onTabClicked={(item) => setActiveTab(item.name.toLowerCase())}
       />
     </>
   );
@@ -307,10 +316,9 @@ export const CometChatSelector = (props: SelectorProps) => {
 ```
 
 </Tab>
-
 <Tab title="CSS">
 
-```css CometChatSelector.css lines
+```css title="CometChatSelector.css" lines
 .selector-wrapper .cometchat-conversations .cometchat-list__header-menu .cometchat-button__icon {
   background: var(--cometchat-icon-color-primary);
 }
@@ -366,34 +374,50 @@ export const CometChatSelector = (props: SelectorProps) => {
 ```
 
 </Tab>
-
 </Tabs>
 
-</Step>
-<Step title="Render Experience">
+---
 
-Now we will update the `CometChatNoSSR.tsx` & `CometChatNoSSR.css` files to import these new components as below,
+## Step 3 — Create the CometChatNoSSR Component
+
+This component handles init, login, and renders the full tabbed chat experience. It runs client-side only.
+
+<Tree>
+  <Tree.Folder name="src" defaultOpen>
+    <Tree.Folder name="app" defaultOpen>
+      <Tree.Folder name="CometChatNoSSR" defaultOpen>
+        <Tree.File name="CometChatNoSSR.tsx" />
+        <Tree.File name="CometChatNoSSR.css" />
+      </Tree.Folder>
+    </Tree.Folder>
+  </Tree.Folder>
+</Tree>
 
 <Tabs>
 <Tab title="TypeScript">
 
-```tsx CometChatNoSSR.tsx lines highlight={15-17, 45}
+```tsx title="CometChatNoSSR.tsx" highlight={15-17, 20} lines
 import React, { useEffect, useState } from "react";
-import { 
-    CometChatMessageComposer, 
-    CometChatMessageHeader, 
-    CometChatMessageList, 
-    CometChatUIKit, 
-    UIKitSettingsBuilder 
+import {
+  CometChatMessageComposer,
+  CometChatMessageHeader,
+  CometChatMessageList,
+  CometChatUIKit,
+  UIKitSettingsBuilder,
 } from "@cometchat/chat-uikit-react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatSelector } from "../CometChatSelector/CometChatSelector";
 import "./CometChatNoSSR.css";
+
+// Replace with your actual credentials
 const COMETCHAT_CONSTANTS = {
-  APP_ID: "",
-  REGION: "",
-  AUTH_KEY: "",
+  APP_ID: "",    // Replace with your App ID
+  REGION: "",    // Replace with your Region
+  AUTH_KEY: "",  // Replace with your Auth Key (dev only)
 };
+
+const UID = "cometchat-uid-4"; // Replace with your actual UID
+
 const CometChatNoSSR: React.FC = () => {
   const [user, setUser] = useState<CometChat.User | undefined>(undefined);
   const [selectedUser, setSelectedUser] = useState<CometChat.User | undefined>(undefined);
@@ -406,12 +430,13 @@ const CometChatNoSSR: React.FC = () => {
       .setAuthKey(COMETCHAT_CONSTANTS.AUTH_KEY)
       .subscribePresenceForAllUsers()
       .build();
+
     CometChatUIKit.init(UIKitSettings)
       ?.then(() => {
         console.log("Initialization completed successfully");
         CometChatUIKit.getLoggedinUser().then((loggedInUser) => {
           if (!loggedInUser) {
-            CometChatUIKit.login("cometchat-uid-4") //TODO: Replace with dynamic UID as needed
+            CometChatUIKit.login(UID)
               .then((user) => {
                 console.log("Login Successful", { user });
                 setUser(user);
@@ -427,13 +452,14 @@ const CometChatNoSSR: React.FC = () => {
   }, []);
 
   return user ? (
-    <div className="conversations-with-messages">      <div className="conversations-wrapper">
-        <CometChatSelector 
+    <div className="conversations-with-messages">
+      <div className="conversations-wrapper">
+        <CometChatSelector
           onSelectorItemClicked={(activeItem) => {
             let item = activeItem;
             if (activeItem instanceof CometChat.Conversation) {
               item = activeItem.getConversationWith();
-            } 
+            }
             if (item instanceof CometChat.User) {
               setSelectedUser(item as CometChat.User);
               setSelectedGroup(undefined);
@@ -444,16 +470,18 @@ const CometChatNoSSR: React.FC = () => {
               setSelectedUser(undefined);
               setSelectedGroup(undefined);
             }
-          }} 
+          }}
         />
-      </div>      {selectedUser || selectedGroup ? (
+      </div>
+
+      {selectedUser || selectedGroup ? (
         <div className="messages-wrapper">
           <CometChatMessageHeader user={selectedUser} group={selectedGroup} />
           <CometChatMessageList user={selectedUser} group={selectedGroup} />
           <CometChatMessageComposer user={selectedUser} group={selectedGroup} />
         </div>
       ) : (
-        <div className="empty-conversation">Select Conversation to start</div>
+        <div className="empty-conversation">Select a conversation to start chatting</div>
       )}
     </div>
   ) : undefined;
@@ -463,153 +491,82 @@ export default CometChatNoSSR;
 ```
 
 </Tab>
-
 <Tab title="CSS">
 
-```css CometChatNoSSR.css lines
+```css title="CometChatNoSSR.css" lines
 .conversations-with-messages {
-    display: flex;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  height: 100%;
+  width: 100%;
 }
 
 .conversations-wrapper {
-    height: 100%;
-    width: 480px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    height: inherit;
+  height: 100%;
+  width: 480px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: inherit;
 }
 
 .conversations-wrapper > .cometchat {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .messages-wrapper {
-    width: calc(100% - 480px);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  width: calc(100% - 480px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .empty-conversation {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: white;
-    color: var(--cometchat-text-color-secondary, #727272);
-    font: var(--cometchat-font-body-regular, 400 14px Roboto);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  color: var(--cometchat-text-color-secondary, #727272);
+  font: var(--cometchat-font-body-regular, 400 14px Roboto);
 }
 
 .cometchat .cometchat-message-composer {
-    border-radius: 0px;
+  border-radius: 0px;
 }
 ```
 
 </Tab>
-
 </Tabs>
 
-</Step>
-<Step title="Disabling SSR for CometChatNoSSR.tsx in Next.js">
+How it works:
+- Selections from any tab (Chats, Calls, Users, Groups) flow through the same `onSelectorItemClicked` callback.
+- Conversation items are unwrapped via `getConversationWith()` to extract the underlying `User` or `Group`.
+- Only one of `selectedUser` / `selectedGroup` is set at a time — the other is cleared.
 
-In this update, we will **disable Server-Side Rendering (SSR) for `CometChatNoSSR.tsx`** while keeping the rest of the application’s SSR functionality intact. This ensures that the **CometChat UI Kit components load only on the client-side**, preventing SSR-related issues.
+---
 
-#### Disabling SSR in `index.tsx`
+## Step 4 — Disable SSR in Your Page
 
-Modify your `index.tsx` file to dynamically import the `CometChatNoSSR.tsx` component with `{ ssr: false }`.
+Dynamically import `CometChatNoSSR` with `ssr: false` so it only loads client-side.
 
-```tsx index.tsx lines
-import { Inter } from "next/font/google";
+```tsx title="index.tsx" lines
 import dynamic from "next/dynamic";
+import "@cometchat/chat-uikit-react/css-variables.css";
 
-import '@cometchat/chat-uikit-react/css-variables.css';
-
-const inter = Inter({ subsets: ["latin"] });
-const CometChatComponent = dynamic(() => import("../CometChatNoSSR/CometChatNoSSR"), {
-  ssr: false,
-});
+const CometChatComponent = dynamic(
+  () => import("../CometChatNoSSR/CometChatNoSSR"),
+  { ssr: false }
+);
 
 export default function Home() {
   return <CometChatComponent />;
 }
 ```
 
-#### Why disable SSR?
+---
 
-* The CometChat UI Kit depends on browser APIs (window, document, WebSockets).
-* Next.js pre-renders components on the server, which can cause errors with browser-specific features.
-* By setting `{ ssr: false }`, we ensure that CometChatNoSSR.tsx only loads on the client.
-
-</Step>
-<Step title="Update Global CSS">
-
-Next, add the following styles to global.css to ensure CometChat UI Kit is properly styled.
-
-```css global.css lines
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-/** Give your App a height of `100%`. Keep other CSS properties in the below selector as it is. */
-.root {
-  height: 100%;
-}
-
-#__next {
-  height: 100%;
-}
-
-html,
-body {
-  height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-```
-
-</Step>
-<Step title="Run the project">
+## Step 5 — Run the Project
 
 <Tabs>
 <Tab title="npm">
@@ -617,13 +574,11 @@ a {
 npm run dev
 ```
 </Tab>
-
 <Tab title="pnpm">
 ```bash lines
 pnpm dev
 ```
 </Tab>
-
 <Tab title="yarn">
 ```bash lines
 yarn dev
@@ -631,24 +586,23 @@ yarn dev
 </Tab>
 </Tabs>
 
-</Step>
-</Steps>
+You should see the tab bar at the bottom of the sidebar. Switch between Chats, Calls, Users, and Groups — tapping any item loads the message view on the right.
 
-For prop details and customization options, see the component reference pages: [CometChatConversations](/ui-kit/react/conversations), [CometChatMessageList](/ui-kit/react/message-list), [CometChatMessageComposer](/ui-kit/react/message-composer), [CometChatMessageHeader](/ui-kit/react/message-header).
+---
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Advanced Customizations" href="/ui-kit/react/theme">
-    Customize colors, fonts, and styles.
+  <Card title="Theming" icon="paintbrush" href="/ui-kit/react/theme">
+    Customize colors, fonts, and styles to match your brand
   </Card>
-  <Card title="Components Overview" href="/ui-kit/react/components-overview">
-    Browse all available UI components.
+  <Card title="Components Overview" icon="grid-2" href="/ui-kit/react/components-overview">
+    Browse all prebuilt UI components
   </Card>
-  <Card title="Next.js Integration" href="/ui-kit/react/next-js-integration">
-    Next.js setup guide.
+  <Card title="Next.js Integration" icon={<img src="/docs/images/icons/nextjs.svg" alt="Next.js" />} href="/ui-kit/react/next-js-integration">
+    Back to the main setup guide
   </Card>
-  <Card title="Core Features" href="/ui-kit/react/core-features">
-    Core chat features.
+  <Card title="Core Features" icon="comments" href="/ui-kit/react/core-features">
+    Chat features included out of the box
   </Card>
 </CardGroup>
