@@ -1867,44 +1867,6 @@ For custom views provided via `setLeadingView`, `setTitleView`, `setTrailingView
 
 Group type status dots are visual-only by default. If screen reader descriptions are needed, provide them via a custom view with appropriate `contentDescription` attributes.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
-| Group list is empty despite having groups | Verify that a user is logged in with `CometChatUIKit.login()` before displaying the component. The component fetches groups for the logged-in user only. |
-| Only joined groups appear | If you set `joinedOnly(true)` on the `GroupsRequestBuilder`, only groups the user has joined are shown. Remove `joinedOnly(true)` to show all groups. |
-| Filters not applied | Ensure you call `setGroupsRequestBuilder(builder)` on the `CometChatGroups` instance after creating and configuring the builder. |
-| Custom style not visible | Verify the style parent is `CometChatGroupsStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| `setOnItemClick` not firing | If you set `setSelectionMode` to `MULTIPLE`, item clicks may be consumed by the selection logic. Set the selection mode to `NONE` if you need standard click behavior. |
-| Event listener not receiving events | Ensure you call `CometChatGroupEvents.addGroupListener` with a unique tag. If you use the same tag as another listener, the previous one is replaced. |
-| Group type indicator not showing | If you called `setGroupTypeVisibility(View.GONE)`, the group type indicator is hidden. Call `setGroupTypeVisibility(View.VISIBLE)` to restore it. |
-| Custom view returns null in `createView` | If `createView` returns `null`, the default view is used. Return a valid inflated `View` to replace the default. |
-| Search not working | If you set a `SearchRequestBuilder` with `setSearchRequestBuilder`, ensure the builder is configured with `setSearchKeyWord`. If the search keyword is empty, all groups are returned. |
-
-## FAQ
-
-**Q: How do I show only joined groups?**
-**A:** Create a `GroupsRequest.GroupsRequestBuilder`, call `joinedOnly(true)`, and pass it to `setGroupsRequestBuilder`.
-
-**Q: How do I filter groups by tags?**
-**A:** Create a `GroupsRequest.GroupsRequestBuilder`, call `setTags(List<String>)` with the desired tag names, and pass it to `setGroupsRequestBuilder`.
-
-**Q: How do I listen for group creation or deletion events outside the component?**
-**A:** Use `CometChatGroupEvents.addGroupListener("YOUR_TAG", ...)` and override `ccGroupCreated` or `ccGroupDeleted`. Call `CometChatGroupEvents.removeListeners()` to unsubscribe.
-
-**Q: How do I customize the avatar and separator styles?**
-**A:** Define custom styles with parents `CometChatAvatarStyle` and `CometChatGroupsStyle` in `themes.xml`, reference the avatar style in `cometchatGroupsAvatar`, and apply with `setStyle()`.
-
-**Q: How do I add custom long-press options without removing the defaults?**
-**A:** Use `addOptions` instead of `setOptions`. `addOptions` appends your custom `MenuItem` objects to the existing default options.
-
-**Q: How do I replace the entire group list item layout?**
-**A:** Use `setItemView` with a `GroupsViewHolderListener`. Inflate your custom layout in `createView` and populate it with group data in `bindView`.
-
-**Q: Can I use `CometChatGroups` in both an Activity and a Fragment?**
-**A:** Yes. In an Activity, call `setContentView(new CometChatGroups(this))`. In a Fragment, return `new CometChatGroups(getContext())` from `onCreateView`.
-
 ## Next Steps
 
 <CardGroup cols={2}>

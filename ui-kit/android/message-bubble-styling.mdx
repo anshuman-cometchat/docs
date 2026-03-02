@@ -647,27 +647,3 @@ Styles the preview block when a user replies to a specific message.
 | Quoted reply preview background | `res/values/themes.xml` | `cometChatMessagePreviewBackgroundColor` | `<item name="cometChatMessagePreviewBackgroundColor">#ea6d71</item>` |
 | Bubble corner radius | `res/values/themes.xml` | `cometchatMessageBubbleCornerRadius` | `<item name="cometchatMessageBubbleCornerRadius">@dimen/cometchat_radius_3</item>` |
 
-## Common pitfalls and fixes
-- Bubble style not applying: Confirm the custom style is linked inside the correct hub (`CustomIncomingMessageBubbleStyle` or `CustomOutgoingMessageBubbleStyle`), and the hub is connected to `AppTheme`.
-- Only incoming or outgoing changes: You must define separate styles for incoming and outgoing bubbles. Changing one does not affect the other.
-- Specific bubble type unchanged: Ensure you link the specific bubble style (e.g., `cometchatTextBubbleStyle`) inside the hub, not directly in `AppTheme`.
-- Call action or action bubble unchanged: These are linked to `CometChatMessageListStyle`, not the incoming/outgoing hubs. Use `cometchatMessageListCallActionBubbleStyle` or `cometchatMessageListActionBubbleStyle`.
-- AI assistant bubble unchanged: This is linked to `CometChatIncomingMessageBubbleStyle` via `cometchatAIAssistantBubbleStyle`.
-- Changes not visible: Rebuild the app after editing `themes.xml`.
-- Dark mode not matching: Update both `values/themes.xml` and `values-night/themes.xml`.
-
-## FAQ
-**Q**: Do I need to define both incoming and outgoing styles?
-**A**: Only if you want different styles for each direction. If you only customize one, the other uses the default.
-
-**Q**: Can I style a specific bubble type without changing the base bubble?
-**A**: Yes. Define a custom style for the specific type (e.g., `CustomIncomingTextBubbleStyle`) and link it inside the hub. The base bubble background remains unchanged.
-
-**Q**: Where do I find all available attributes for a bubble type?
-**A**: Use the Attribute reference links under each bubble section above.
-
-**Q**: How do I style call action bubbles differently from message bubbles?
-**A**: Call action and action bubbles are linked to `CometChatMessageListStyle`, not the incoming/outgoing hubs. See the Call Action Bubble and Action Bubble sections.
-
-**Q**: Can I change the bubble corner radius?
-**A**: Yes. Set `cometchatMessageBubbleCornerRadius` in your incoming or outgoing hub style.

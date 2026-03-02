@@ -1522,40 +1522,6 @@ What you are changing: Adding an entirely new message template for a custom mess
 | Entire bubble layout | `CometChatMessageTemplate` | `setBubbleView()` | Pass a `MessagesViewHolderListener` that inflates a fully custom bubble layout |
 | Long-press action options | `CometChatMessageTemplate` | `setOptions()` | Pass a lambda returning a list of `CometChatMessageOption` objects |
 
-## Common Pitfalls and Fixes
-
-| Pitfall | Fix |
-| ------- | --- |
-| Modified templates but message bubbles do not change | Call `messageList.setTemplates(messageTemplates)` after modifying the templates. If you do not apply the templates to the `MessageList`, your changes have no effect. |
-| Returning `null` from `createView()` causes blank bubbles | Do return a valid `View` from `createView()`. If you return `null`, the message bubble renders as empty with no visible content. |
-| Custom view data not updating when scrolling | Bind all dynamic data in `bindView()`, not in `createView()`. The `bindView()` method is called every time a ViewHolder is bound, while `createView()` is called only once per ViewHolder creation. |
-| Template customization applies to wrong message type | Verify the `template.getType()` (Java) or `template.type` (Kotlin) matches the intended `UIKitConstants.MessageType` before applying customizations. |
-| New custom template messages do not appear in the `MessageList` | Add the new `CometChatMessageTemplate` to the templates list using `messageTemplates.add(contactTemplate)` before calling `messageList.setTemplates(messageTemplates)`. |
-| Receipt icon appears on received messages | In `bindView()`, check the alignment: if `messageBubbleAlignment` equals `UIKitConstants.MessageBubbleAlignment.RIGHT`, show the receipt; if `LEFT`, hide it with `receipt.setVisibility(View.GONE)`. |
-| Custom message type not matched by template | Set both `setType()` and `setCategory()` on the new template to match the custom message's type and category (e.g., `"card"` and `UIKitConstants.MessageCategory.CUSTOM`). |
-
-## FAQ
-
-**Q: Do I need to call `setTemplates()` every time I modify a template?**
-
-A: Yes. After modifying any template in the templates list, call `messageList.setTemplates(messageTemplates)` to apply the changes to the `MessageList`. Without this call, the `MessageList` continues using the original templates.
-
-**Q: What is the difference between `setBubbleView()` and `setContentView()`?**
-
-A: `setContentView()` replaces only the content area of the message bubble while keeping the default header and footer views. `setBubbleView()` replaces the entire bubble — header, content, and footer — with a single custom layout. Use `setBubbleView()` when you need full control over the bubble appearance.
-
-**Q: How do I create a template for a custom message type?**
-
-A: Create a new `CometChatMessageTemplate` instance, call `setType()` with your custom type string (e.g., `"card"`), call `setCategory()` with `UIKitConstants.MessageCategory.CUSTOM`, define the bubble view using `setBubbleView()`, add the template to the templates list, and call `messageList.setTemplates()`.
-
-**Q: Can I customize templates for built-in message types like text or image?**
-
-A: Yes. Fetch the existing templates using `CometChatUIKit.getDataSource().getAllMessageTemplates()`, iterate through them to find the template matching the desired `UIKitConstants.MessageType` (e.g., `TEXT` or `IMAGE`), apply your customizations, and call `messageList.setTemplates()`.
-
-**Q: What happens if `createView()` returns a view but `bindView()` does not set any data?**
-
-A: The custom layout inflated in `createView()` is displayed with its default XML values (e.g., placeholder text, default visibility). Dynamic data such as the message text, sender name, or timestamp will not appear unless you set them in `bindView()`.
-
 ## Next steps
 
 <CardGroup cols={2}>

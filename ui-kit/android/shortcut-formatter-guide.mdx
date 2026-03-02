@@ -403,34 +403,6 @@ cometChatMessageComposer.setTextFormatters(cometChatTextFormatters);
 
 - **Verify**: After running the app, typing `!` followed by a valid shortcut key in the message composer displays a suggestion item showing the shortcut and its expanded text. Selecting the suggestion inserts the expanded text into the composer.
 
-## Common Pitfalls and Fixes
-
-| Pitfall | Fix |
-| ------- | --- |
-| Shortcut suggestions do not appear when typing `!` | Confirm that the `ShortCutFormatter` instance is added to the formatters list and that `setTextFormatters()` is called on the `CometChatMessageComposer` instance. |
-| Formatter created but not added to the formatters list | Call `cometChatTextFormatters.add(new ShortCutFormatter())` (Java) or `cometChatTextFormatters.add(ShortCutFormatter())` (Kotlin) before calling `setTextFormatters()`. If the formatter is not in the list, `setTextFormatters()` has no effect on shortcut handling. |
-| Called `setTextFormatters()` with an empty list | Add at least one formatter to the list before calling `setTextFormatters()`. Retrieve the default formatters via `CometChatUIKit.getDataSource().getTextFormatters(this)` and add the `ShortCutFormatter` to that list. |
-| `prepareShortCuts()` does not populate the shortcuts map | Confirm that the `message-shortcuts` CometChat extension is enabled on your CometChat dashboard. The `CometChat.callExtension("message-shortcuts", "GET", "/v1/fetch", ...)` call returns an empty or error response if the extension is not enabled. |
-| Shortcuts fetched but `search()` does not find matches | The `search()` method combines the tracking character `'!'` with the query string to form the lookup key. Confirm that the keys stored in `messageShortcuts` include the `'!'` prefix (e.g., `"!hi"`, not `"hi"`). |
-| `CometChatMessageComposer` not found in layout | Confirm that your XML layout includes `<com.cometchat.chatuikit.messagecomposer.CometChatMessageComposer>` with the correct `android:id` matching the `findViewById()` call. |
-
-## FAQ
-
-**Q: What tracking character does `ShortCutFormatter` use?**
-A: `ShortCutFormatter` uses `'!'` as the tracking character, passed to the `CometChatTextFormatter` superclass constructor. When the user types `!` in the message composer, the formatter activates and begins matching input against stored shortcuts.
-
-**Q: Where does `ShortCutFormatter` fetch shortcuts from?**
-A: Shortcuts are fetched from the CometChat `message-shortcuts` extension via `CometChat.callExtension("message-shortcuts", "GET", "/v1/fetch", null, ...)`. The response JSON contains a `data.shortcuts` object with key-value pairs.
-
-**Q: Can I use `ShortCutFormatter` alongside other text formatters like `CometChatMentionsFormatter`?**
-A: Yes. Retrieve the default formatters list via `CometChatUIKit.getDataSource().getTextFormatters(this)`, add the `ShortCutFormatter` to the list, and pass the combined list to `CometChatMessageComposer` via `setTextFormatters()`. All formatters in the list are active simultaneously.
-
-**Q: Do I need to implement `onScrollToBottom()` with actual logic?**
-A: The `CometChatTextFormatter` base class requires the `onScrollToBottom()` override. For `ShortCutFormatter`, the method body can be left as a placeholder because shortcut suggestions do not require scroll-to-bottom handling.
-
-**Q: What happens if the `message-shortcuts` extension is not enabled?**
-A: If the extension is not enabled, the `CometChat.callExtension()` call triggers the `onError` callback, and the `messageShortcuts` map remains empty. The `search()` method finds no matches, so no suggestions are displayed.
-
 ## Next steps
 
 <CardGroup cols={2}>

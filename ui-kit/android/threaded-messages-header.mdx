@@ -574,36 +574,6 @@ For custom message templates provided via `setTemplates` or `addTemplate`, ensur
 
 Reaction indicators and read receipts are visual-only by default. If screen reader descriptions are needed, provide them via custom templates with appropriate `contentDescription` attributes.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
-| Thread header shows no message | Ensure you call `setParentMessage(baseMessage)` with a valid `BaseMessage` object. If no parent message is set, the thread header has no message to display. |
-| Custom style not visible | Verify the style parent is `CometChatThreadHeaderStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| Reply count not showing | Ensure `setReplyCountVisibility` is not set to `View.GONE`. If the parent message has no replies, the reply count may not appear. |
-| Bubble alignment not changing | Ensure you pass a valid `UIKitConstants.MessageListAlignment` value to `setAlignment`. If set to STANDARD, the bubble position depends on whether the message is incoming or outgoing. |
-| Message bubble style not applied | If you set `setIncomingMessageBubbleStyle` or `setOutgoingMessageBubbleStyle` programmatically, ensure the style resource ID points to a valid style with parent `CometChatIncomingMessageBubbleStyle` or `CometChatOutgoingMessageBubbleStyle`. |
-| Date or time format not changing | Ensure you pass a valid `SimpleDateFormat` object to `setTimeFormat`. If the format pattern is invalid, the default format is used. |
-| Custom templates not rendering | If you call `setTemplates` with an empty list, no message bubble renders. Ensure the list contains at least one valid `CometChatMessageTemplate`. |
-
-## FAQ
-
-**Q: How do I set the parent message for the thread header?**
-**A:** Call `setParentMessage(baseMessage)` on the `CometChatThreadHeader` instance, passing a valid `BaseMessage` object that represents the parent message of the thread.
-
-**Q: How do I hide the reply count and reply count bar?**
-**A:** Call `setReplyCountVisibility(View.GONE)` to hide the reply count text, and call `setReplyCountBarVisibility(View.GONE)` to hide the reply count bar.
-
-**Q: How do I customize the message bubble colors in the thread header?**
-**A:** Define custom styles with parents `CometChatOutgoingMessageBubbleStyle` and `CometChatIncomingMessageBubbleStyle` in `themes.xml`, reference them in a `CometChatThreadHeaderStyle`, and apply with `setStyle()`.
-
-**Q: How do I change the bubble alignment so all bubbles appear on the left?**
-**A:** Call `setAlignment` with `UIKitConstants.MessageListAlignment.LEFT_ALIGNED`. If set to STANDARD, the bubble position depends on whether the message is incoming or outgoing.
-
-**Q: Can I add custom message templates to the thread header?**
-**A:** Yes. Use `addTemplate(CometChatMessageTemplate template)` to add a single template to the existing list, or use `setTemplates(List<CometChatMessageTemplate>)` to replace the entire template list.
-
 ## Next Steps
 
 <CardGroup cols={2}>

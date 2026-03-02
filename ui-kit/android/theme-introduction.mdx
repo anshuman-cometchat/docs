@@ -274,20 +274,3 @@ For a complete list of theme attributes, visit the [theme attributes file](https
 | Dark mode background color | `app/src/main/res/values-night/themes.xml` | `cometchatBackgroundColor1` | `<item name="cometchatBackgroundColor1">#1A1A1A</item>` |
 | Dark mode primary text color | `app/src/main/res/values-night/themes.xml` | `cometchatTextColorPrimary` | `<item name="cometchatTextColorPrimary">#FFFFFF</item>` |
 
-## Common pitfalls and fixes
-- Theme not applied: Confirm `android:theme` is set on the `<application>` element.
-- Activity theme not changing: Ensure the activity has its own `android:theme` attribute.
-- Colors not updating: Make sure the attributes are defined under your theme that extends `CometChatTheme.DayNight`.
-- Dark mode not working: Add `values-night/themes.xml` and place overrides there.
-- Unexpected colors in dark mode: Check for conflicting values in `values` and `values-night` resources.
-- UI Kit still shows defaults: Rebuild and relaunch the app after theme changes.
-
-## FAQ
-**Q**: Do I have to use `CometChatTheme.DayNight`?    
-**A**: Yes. It is the base UI Kit theme and must be the parent of your app theme.
-
-**Q**: Can I have a different theme for chat screens only?    
-**A**: Yes. Set `android:theme` on the specific activity in `AndroidManifest.xml`.
-
-**Q**: Where can I find all available theme attributes?    
-**A**: Use the [theme attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/attr_cometchat_theme.xml).

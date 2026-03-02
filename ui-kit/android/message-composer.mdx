@@ -1211,41 +1211,6 @@ For custom views provided via `setHeaderView`, `setFooterView`, `setSendButtonVi
 
 Voice recording and attachment buttons include built-in content descriptions. If you replace them with custom views, provide appropriate `contentDescription` attributes.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load. |
-| Messages not sending to the correct conversation | Ensure you call `.setUser(user)` or `.setGroup(group)` on the `CometChatMessageComposer` instance to associate it with the correct conversation. |
-| `ActivityResultLauncher` not initialized | The `CometChatMessageComposer` manages runtime permissions. Ensure its object is created in the `onCreate` state of an Activity. If using a Fragment, ensure the Fragment is loaded in the `onCreate` state of the Activity. |
-| Custom style not visible | Verify the style parent is `CometChatMessageComposerStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| Sticker button disappears after setting auxiliary view | The MessageComposer uses the AuxiliaryButton for sticker functionality. If you override it with `setAuxiliaryButtonView()`, retrieve the default auxiliary buttons via `CometChatUIKit.getDataSource().getAuxiliaryOption()` and include them in your custom layout. |
-| Attachment options not showing custom actions | Ensure you pass the list of `CometChatMessageComposerAction` objects to `setAttachmentOptions(actionList)`. Calling `setAttachmentOptions()` without a list does not add custom actions. |
-| Typing indicators still sent after disabling | Ensure you call `disableTypingEvents(true)` before the component starts loading. If called after the component is already active, it may not take effect immediately. |
-| `setOnSendButtonClick` not firing | If you set a custom send button view with `setSendButtonView()`, the `setOnSendButtonClick` callback may not fire because the custom view replaces the default send button entirely. Attach your click listener directly to the custom view instead. |
-| Mentions not rendering with custom style | Ensure you create a `CometChatMentionsFormatter`, call `setMessageComposerMentionTextStyle()` with your custom style resource, and pass the formatter in a list to `setTextFormatters()`. |
-| Predefined text not appearing | Ensure you call `setInitialComposerText("Your_Text")` after the component is initialized and attached to the view hierarchy. |
-
-## FAQ
-
-**Q: Does the MessageComposer support filters or events?**
-**A:** No. The MessageComposer component does not have any available filters and does not emit any events of its own.
-
-**Q: How do I set the target user or group for the composer?**
-**A:** Call `.setUser(user)` for a one-on-one conversation or `.setGroup(group)` for a group conversation on the `CometChatMessageComposer` instance.
-
-**Q: How do I keep the default sticker button when adding a custom auxiliary view?**
-**A:** Retrieve the default auxiliary buttons using `CometChatUIKit.getDataSource().getAuxiliaryOption()`, add them to a `LinearLayout` along with your custom view, and pass the combined layout to `setAuxiliaryButtonView()`.
-
-**Q: How do I customize the attachment options?**
-**A:** Create a list of `CometChatMessageComposerAction` objects, each with a title, icon, and click handler, and pass the list to `setAttachmentOptions(actionList)`. This replaces the default attachment options entirely.
-
-**Q: How do I customize the mentions appearance in the composer?**
-**A:** Define a custom style with parent `CometChatMessageComposerMentionsStyle` in `themes.xml`, create a `CometChatMentionsFormatter`, call `setMessageComposerMentionTextStyle()` with your style, and pass the formatter to `setTextFormatters()`.
-
-**Q: Can I use `CometChatMessageComposer` in both an Activity and a Fragment?**
-**A:** Yes. In an Activity, create the composer in `onCreate`. In a Fragment, create it in `onCreateView`. The key requirement is that the composer must be created during the `onCreate` lifecycle state to properly initialize the `ActivityResultLauncher`.
-
 ## Next Steps
 
 <CardGroup cols={2}>

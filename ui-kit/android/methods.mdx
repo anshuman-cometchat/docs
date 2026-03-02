@@ -1111,40 +1111,6 @@ CometChatUIKit.sendCustomInteractiveMessage(customInteractiveMessage, false, new
 
 ---
 
-## Common pitfalls and fixes
-
-| Pitfall | Fix |
-| ------- | --- |
-| Calling UI Kit methods before `CometChatUIKit.init()` completes | Call `init()` first and wait for the `onSuccess` callback before calling `login()`, `sendTextMessage()`, or any other UI Kit method. |
-| Using Auth Key in production | Auth Key is for development and POC only. For production apps, use `CometChatUIKit.loginWithAuthToken()` with a server-generated Auth Token so the Auth Key never appears in client code. |
-| Not handling `onError` callbacks | Every UI Kit method accepts a `CallbackListener` with `onError`. If you leave `onError` empty, failures are silently ignored. Log the `CometChatException` or display an error message to the user. |
-| Calling `CometChat.sendTextMessage()` instead of `CometChatUIKit.sendTextMessage()` | If you use the SDK method directly (`CometChat.sendTextMessage()`), the Message List and Conversations components do not update automatically. Use the `CometChatUIKit` wrapper methods to keep UI components in sync. |
-| Not logging out before switching users | If you log in a new user without calling `CometChatUIKit.logout()` first, session data from the previous user may cause conflicts. Call `logout()` and wait for `onSuccess` before logging in a different user. |
-| Sending a custom message without a registered `MessageTemplate` | Custom messages and custom interactive messages do not appear in the Message List unless you create and register a [MessageTemplate](/ui-kit/android/message-template) that defines how to render them. |
-| Missing `receiver` or `sender` on interactive messages | For `FormMessage`, `CardMessage`, `SchedulerMessage`, and `CustomInteractiveMessage`, set both `sender` (via `CometChatUIKit.getLoggedInUser()`) and `receiver` (the target `User` or `Group` object) before sending. |
-
-## FAQ
-
-**What is the difference between `CometChatUIKit.sendTextMessage()` and `CometChat.sendTextMessage()`?**
-
-`CometChatUIKit.sendTextMessage()` is a wrapper around the SDK method that automatically updates the Message List and Conversations components via internal events. `CometChat.sendTextMessage()` only sends the message over the network and does not trigger UI Kit component updates. The same pattern applies to `sendMediaMessage()`, `sendCustomMessage()`, and all interactive message methods.
-
-**When should I use Auth Key vs Auth Token for login?**
-
-Use `CometChatUIKit.login()` with Auth Key during development and proof-of-concept work. For production apps, use `CometChatUIKit.loginWithAuthToken()` with a server-generated Auth Token. This keeps the Auth Key on your server and out of client code.
-
-**How do I customize date and time formatting across all UI Kit components?**
-
-Implement the `DateTimeFormatterCallback` interface and pass it to `UIKitSettings.UIKitSettingsBuilder` via `setDateTimeFormatterCallback()` before calling `CometChatUIKit.init()`. Each method in the interface (`time`, `today`, `yesterday`, `lastWeek`, `otherDays`, `minute`, `minutes`, `hour`, `hours`) controls a specific timestamp display case. You can also override formatting per component using `setDateTimeFormatter()` on individual components like `CometChatConversations`, `CometChatMessageList`, etc.
-
-**Do I need to call `init()` every time the app launches?**
-
-Yes. Call `CometChatUIKit.init()` once during your application's startup lifecycle (for example, in your `Application` class or main Activity's `onCreate`). The UI Kit and SDK require initialization before any other method call.
-
-**How do I send a message to a group instead of a user?**
-
-Use `CometChatConstants.RECEIVER_TYPE_GROUP` instead of `CometChatConstants.RECEIVER_TYPE_USER` when creating the message object, and pass the group ID as the receiver ID.
-
 ## Next steps
 
 <CardGroup cols={2}>

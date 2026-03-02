@@ -427,35 +427,6 @@ cometChatConversations.setTextFormatters(textFormatters);
 | Mention text style in incoming message bubbles | `CometChatMentionsFormatter` | `setIncomingBubbleMentionTextStyle(context, styleRes)` | `mentionFormatter.setIncomingBubbleMentionTextStyle(context, R.style.CustomIncomingMessageBubbleMentionStyle)` |
 | Mention text style in conversations list | `CometChatMentionsFormatter` | `setConversationsMentionTextStyle(context, styleRes)` | `mentionFormatter.setConversationsMentionTextStyle(context, R.style.CustomConversationsMentionsStyle)` |
 
-## Common Pitfalls and Fixes
-
-| Pitfall | Fix |
-| ------- | --- |
-| Mentions render as plain text with no styling | Create a `CometChatMentionsFormatter` instance, add it to a `List<CometChatTextFormatter>`, and pass the list to the component via `setTextFormatters()`. |
-| Formatter created but not added to the formatters list | Call `textFormatters.add(mentionFormatter)` before passing the list to the component. If the formatter is not in the list, `setTextFormatters()` has no effect on mention rendering. |
-| Called `setTextFormatters()` with an empty list | Add at least one `CometChatMentionsFormatter` to the list before calling `setTextFormatters()`. |
-| Custom mention style not applied in the composer | Call `mentionFormatter.setMessageComposerMentionTextStyle(context, R.style.YourStyle)` before passing the formatter to `CometChatMessageComposer` via `setTextFormatters()`. |
-| Custom mention style not applied in message bubbles | Call both `mentionFormatter.setOutgoingBubbleMentionTextStyle()` and `mentionFormatter.setIncomingBubbleMentionTextStyle()` before passing the formatter to `CometChatMessageList` via `setTextFormatters()`. If you set only one, the other bubble type uses the default style. |
-| `setOnMentionClick` callback not firing | Ensure the formatter is passed to the component via `setTextFormatters()` after calling `setOnMentionClick()`. The callback fires only for mentions in message bubbles. |
-| Mention suggestions not showing group members | If `setMentionsType` is set to `UIKitConstants.MentionsType.USERS`, only users appear in suggestions. Set it to `UIKitConstants.MentionsType.USERS_AND_GROUP_MEMBERS` to include group members in group chats. |
-
-## FAQ
-
-**Q: Can I use `CometChatMentionsFormatter` with `CometChatConversations`, `CometChatMessageList`, and `CometChatMessageComposer` at the same time?**
-A: Yes. Create a `CometChatMentionsFormatter` instance, add it to a `List<CometChatTextFormatter>`, and pass the list to each component separately via their `setTextFormatters()` method. You can configure different styles for each component on the same formatter instance.
-
-**Q: What is the difference between `setMentionsType` with `USERS` vs. `USERS_AND_GROUP_MEMBERS`?**
-A: If set to `USERS`, only users can be mentioned in both one-on-one and group conversations. If set to `USERS_AND_GROUP_MEMBERS`, members of a specific group can be mentioned in group chats, while all users can be mentioned in one-on-one chats.
-
-**Q: What does `setMentionsVisibility` control?**
-A: `setMentionsVisibility` controls the scope of where mentions are visible. Set it to `UIKitConstants.MentionsVisibility.USERS_CONVERSATION_ONLY` for one-on-one conversations only, `UIKitConstants.MentionsVisibility.GROUP_CONVERSATION_ONLY` for group conversations only, or `UIKitConstants.MentionsVisibility.BOTH` for both.
-
-**Q: How do I customize which users appear in the mention suggestions list?**
-A: Use `setUsersRequestBuilder()` to provide a custom `UsersRequest.UsersRequestBuilder`. For example, `.setUsersRequestBuilder(new UsersRequest.UsersRequestBuilder().friendsOnly(true))` limits suggestions to friends only. Use `setGroupMembersRequestBuilder()` to customize group member suggestions.
-
-**Q: Do I need to define separate XML styles for incoming and outgoing bubble mentions?**
-A: Yes. Incoming and outgoing bubbles use separate style parents (`CometChatIncomingBubbleMentionsStyle` and `CometChatOutgoingBubbleMentionsStyle`). Define a custom style for each and apply them with `setIncomingBubbleMentionTextStyle()` and `setOutgoingBubbleMentionTextStyle()`.
-
 ## Next steps
 
 <CardGroup cols={2}>

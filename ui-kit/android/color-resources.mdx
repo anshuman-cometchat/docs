@@ -164,19 +164,3 @@ What you're changing: The theme applied to your app.
 | Primary color override | `app/src/main/res/values/themes.xml` | `cometchatPrimaryColor` | `<item name="cometchatPrimaryColor">#F76808</item>` |
 | Apply theme | `AndroidManifest.xml` | `android:theme` | `android:theme="@style/AppTheme"` |
 
-## Common pitfalls and fixes
-- Colors do not change: Confirm your app theme extends `CometChatTheme.DayNight`.
-- Dark mode colors not applied: Ensure `res/values-night/color.xml` exists.
-- Custom primary color not showing: Verify `cometchatPrimaryColor` is set in your theme.
-- UI Kit still uses defaults: Rebuild the app after resource changes.
-- Theme not applied: Check `android:theme` in `AndroidManifest.xml`.
-
-## FAQ
-**Q**: Can I edit the UI Kit color XML directly?  
-**A**: You can reference or override colors in your app resources; UI Kit will read them at runtime.
-
-**Q**: Do I need separate colors for dark mode?  
-**A**: Yes. Use `res/values-night/color.xml` for dark mode overrides.
-
-**Q**: Where can I see all default colors?  
-**A**: Use the [Light mode colors](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/color.xml) and [Dark mode colors](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values-night/color.xml).

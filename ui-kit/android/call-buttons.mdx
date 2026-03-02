@@ -642,39 +642,6 @@ For custom icons set via `setVoiceCallIcon` or `setVideoCallIcon`, ensure you se
 
 Button text labels (when visible) provide additional context for assistive technologies. If you hide text with `setButtonTextVisibility(View.GONE)`, consider adding explicit content descriptions to the buttons via `getVoiceCallButton().setContentDescription(...)`.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Buttons do not initiate a call | Ensure `setUser(User)` or `setGroup(Group)` is called before the user taps a button. Without a target, the component has no recipient to call. |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load. |
-| Custom click callback not firing | Verify you are setting `setOnVoiceCallClick` or `setOnVideoCallClick` with a non-null `OnClick` instance. Null callbacks are ignored. |
-| Outgoing call screen not appearing | If you set a custom `OnClick` callback, the default call initiation is bypassed. Remove the callback or manually launch the outgoing call screen from within it. |
-| `setCallSettingsBuilder` has no effect | The callback is only invoked when the default click behavior runs. If you set a custom `OnClick`, the callback is never called. |
-| Style not applying | Verify the style parent is `CometChatCallButtonsStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| Buttons visible but disabled after a call | The component observes call lifecycle internally. If a call is active, buttons may be disabled. Wait for the call to end or check `onAttachedToWindow` behavior. |
-| Group call not working | Ensure you call `setGroup(Group)` with a valid `Group` object. Passing `null` is silently ignored. |
-
-## FAQ
-
-**Q: How do I show only the video call button?**
-**A:** Call `setVoiceCallButtonVisibility(View.GONE)` to hide the voice call button. The video call button remains visible by default.
-
-**Q: How do I customize the call settings for audio vs. video calls?**
-**A:** Use `setCallSettingsBuilder` with a `Function3<User, Group, Boolean, CometChatCalls.CallSettingsBuilder>`. The `Boolean` parameter is `true` for audio calls and `false` for video calls.
-
-**Q: Can I use `CometChatCallButtons` without embedding it in a `MessageHeader`?**
-**A:** Yes. `CometChatCallButtons` is a standalone component. Place it in any layout and call `setUser(User)` or `setGroup(Group)` to bind it.
-
-**Q: How do I listen for call events outside the component?**
-**A:** Use `CometChatCallEvents.addListener("YOUR_TAG", ...)` and override `ccOutgoingCall`, `ccCallAccepted`, `ccCallRejected`, or `ccCallEnded`. Call `CometChatCallEvents.removeListener("YOUR_TAG")` to unsubscribe.
-
-**Q: How do I change the spacing between the two buttons?**
-**A:** Call `setMarginBetweenButtons(int)` with the desired spacing in pixels. The default is `16dp`.
-
-**Q: Can I access the underlying button views for advanced customization?**
-**A:** Yes. Call `getVoiceCallButton()` or `getVideoCallButton()` to get the `CometChatButton` instances. You can then call any `CometChatButton` method on them directly.
-
 ## Next Steps
 
 <CardGroup cols={2}>

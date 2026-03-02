@@ -1480,30 +1480,3 @@ Attribute references:
 | AI smart replies chip style | `res/values/themes.xml` | `cometchatAISmartRepliesStyle` | `cometchatAISmartRepliesItemStrokeColor` |
 | Mentions highlight colors | `res/values/themes.xml` | `cometchatMessageBubbleMentionsStyle` | `cometchatMentionTextColor` |
 
-## Common pitfalls and fixes
-
-- Issue: styles do not apply. Fix: confirm your activity theme is `AppTheme` and extends `CometChatTheme.DayNight`.
-- Issue: only some screens update. Fix: the screen might use a different theme; verify the theme in your activity or fragment.
-- Issue: drawable changes not visible. Fix: rebuild the app after adding a new drawable file.
-- Issue: changes apply in light mode but not dark mode. Fix: update both `values/themes.xml` and `values-night/themes.xml` if you use night resources.
-- Issue: attribute name not recognized. Fix: confirm the exact attribute name in the linked attribute reference file.
-- Issue: style overridden unexpectedly. Fix: check for duplicate style names in other modules or flavors.
-- Issue: colors look wrong on some devices. Fix: verify color hex values include alpha when needed.
-- Issue: list items still show default fonts. Fix: set UI Kit fonts in `AppTheme` once as shown in Core concepts.
-
-## FAQ
-
-**Q**: Do I need to repeat font settings in every component style?  
-**A**: No. Set fonts once in `AppTheme` using `cometchatFontBold`, `cometchatFontMedium`, and `cometchatFontRegular`.
-
-**Q**: Where do I find all available attributes for a component?  
-**A**: Use the Attribute references links under each component section.
-
-**Q**: Why do my changes not appear in a specific screen?  
-**A**: Confirm the screen is using the same `AppTheme` and not overriding the theme locally.
-
-**Q**: Can I change icons without changing the component layout?  
-**A**: Yes. Provide a custom vector in `res/drawable/` and reference it from the component style.
-
-**Q**: Do I need to enable anything in the CometChat Dashboard for styling?  
-**A**: No. Styling is local to your Android project and does not require dashboard changes.

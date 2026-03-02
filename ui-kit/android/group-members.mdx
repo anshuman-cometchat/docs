@@ -1831,48 +1831,6 @@ For custom views provided via `setLeadingView`, `setTitleView`, `setTrailingView
 
 Online/offline status dots are visual-only by default. If screen reader descriptions are needed, provide them via a custom view with appropriate `contentDescription` attributes. Scope badges (admin, moderator, participant) should also include content descriptions when using custom trailing views.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
-| Group member list is empty despite having members | Verify that `setGroup(group)` is called with a valid `Group` object that has a correct `GUID`. The component requires a group to fetch members. |
-| `setGroup` not called | `setGroup` is a required property. If you define `CometChatGroupMembers` in XML, you must still call `setGroup()` programmatically in your Activity or Fragment. |
-| Filters not applied | Ensure you call `setGroupMembersRequestBuilder(builder)` on the `CometChatGroupMembers` instance after creating and configuring the builder. |
-| Custom style not visible | Verify the style parent is `CometChatGroupMembersStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| `setOnItemClick` not firing | If you set `setSelectionMode` to `MULTIPLE`, item clicks may be consumed by the selection logic. Set the selection mode to `NONE` if you need standard click behavior. |
-| Event listener not receiving events | Ensure you call `CometChatGroupEvents.addGroupListener` with a unique tag. If you use the same tag as another listener, the previous one is replaced. |
-| Custom view returns null in `createView` | If `createView` returns `null`, the default view is used. Return a valid inflated `View` to replace the default. |
-| Scope badge not showing for participants | In the trailing view example, the badge is only visible when `groupMember.getScope()` equals `UIKitConstants.GroupMemberScope.PARTICIPANTS`. If you want it visible for all scopes, remove the visibility condition. |
-| Search not working with custom filter | If you set a `GroupMembersRequestBuilder` via `setGroupMembersRequestBuilder`, the search may use different parameters. Use `setSearchRequestBuilder` to control search behavior separately. |
-| Online status indicator not visible | Ensure `setUserStatusVisibility` is set to `View.VISIBLE`. If set to `View.GONE`, the online/offline status indicator will not appear next to member avatars. |
-
-## FAQ
-
-**Q: How do I filter group members by scope (admin, moderator, participant)?**
-**A:** Create a `GroupMembersRequest.GroupMembersRequestBuilder`, call `setScopes(List<String>)` with the desired scopes, and pass it to `setGroupMembersRequestBuilder`.
-
-**Q: How do I listen for member kick, ban, or scope change events outside the component?**
-**A:** Use `CometChatGroupEvents.addGroupListener("YOUR_TAG", ...)` and override `ccGroupMemberKicked`, `ccGroupMemberBanned`, or `ccGroupMemberScopeChanged`. Call `CometChatGroupEvents.removeListener("YOUR_TAG")` to unsubscribe.
-
-**Q: Can I show a custom badge for each member's role?**
-**A:** Yes. Use `setLeadingView` or `setTitleView` with a `GroupMembersViewHolderListeners` implementation. In `bindView`, check `groupMember.getScope()` against `UIKitConstants.GroupMemberScope.ADMIN`, `UIKitConstants.GroupMemberScope.MODERATOR`, and `UIKitConstants.GroupMemberScope.PARTICIPANTS` to set the appropriate badge drawable.
-
-**Q: How do I customize the avatar style in the group members list?**
-**A:** Define a custom style with parent `CometChatAvatarStyle` in `themes.xml`, reference it in a `CometChatGroupMembersStyle` using `cometchatGroupMembersAvatarStyle`, and apply with `setStyle()`.
-
-**Q: How do I add custom long-press options without removing the defaults?**
-**A:** Use `addOptions` instead of `setOptions`. `addOptions` appends your custom `MenuItem` objects to the existing default options.
-
-**Q: Can I use `CometChatGroupMembers` in both an Activity and a Fragment?**
-**A:** Yes. In an Activity, create the component and call `setContentView()`. In a Fragment, return the component from `onCreateView`. In both cases, you must call `setGroup()` with a valid `Group` object.
-
-**Q: How do I hide the kick, ban, and scope change options from the long-press menu?**
-**A:** Call `setKickMemberOptionVisibility(View.GONE)`, `setBanMemberOptionVisibility(View.GONE)`, and `setScopeChangeOptionVisibility(View.GONE)` on the component instance.
-
-**Q: How do I exclude the group owner from the member list?**
-**A:** Call `excludeOwner(true)` on the `CometChatGroupMembers` instance.
-
 ## Next Steps
 
 <CardGroup cols={2}>

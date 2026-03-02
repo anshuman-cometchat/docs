@@ -352,23 +352,3 @@ For the full callback reference, see [CometChatUIKit methods: DateFormatter](/ui
 | UI Kit label text (strings.xml) | `app/src/main/res/values/strings.xml` | `cometchat_chats` | `<string name="cometchat_chats" translatable="true">Conversations</string>` |
 | Global date and time labels | `app/src/main/java/<your_package>/AppInit.java` | `setDateTimeFormatterCallback(...)` | `.setDateTimeFormatterCallback(new DateTimeFormatterCallback() {` |
 
-## Common pitfalls and fixes
-- Locale applied after UI Kit screens render: Call `CometChatLocalize.setLocale(...)` before you launch any UI Kit screen.
-- Wrong language code: Use a `Language.Code` constant from Supported languages.
-- Strings not updating: Verify the key name matches exactly in `res/values/strings.xml`.
-- Changes not visible: Clean and rebuild the project after editing `strings.xml`.
-- Partial localization: Override all relevant keys used by the UI Kit component you are targeting.
-- Date labels unchanged: Ensure `setDateTimeFormatterCallback(...)` is added to the same `UIKitSettings` instance you pass to `CometChatUIKit.init`.
-
-## FAQ
-**Q**: Does `setLocale` affect only UI Kit screens or my entire app?  
-**A**: It sets the locale configuration for the provided `Context`, which affects UI Kit screens that use that context.
-
-**Q**: Can I change the UI Kit language at runtime?  
-**A**: Yes. Call `CometChatLocalize.setLocale(...)` again and recreate the affected screens.
-
-**Q**: Do I need to edit the UI Kit source to change labels?  
-**A**: No. Override the same keys in your app's `res/values/strings.xml`.
-
-**Q**: Where can I find all available string keys?  
-**A**: Use the [String attributes file](https://github.com/cometchat/cometchat-uikit-android/blob/v5/chatuikit/src/main/res/values/strings.xml).

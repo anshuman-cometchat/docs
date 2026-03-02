@@ -1528,39 +1528,6 @@ For custom views provided via `setLeadingView`, `setTitleView`, `setTrailingView
 
 Call direction icons and status indicators are visual-only by default. If screen reader descriptions are needed, provide them via a custom view with appropriate `contentDescription` attributes.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
-| Call log list is empty despite having call history | Verify that a user is logged in with `CometChatUIKit.login()` before displaying the component. The component fetches call logs for the logged-in user only. |
-| Filters not applied | Ensure you call `setCallLogRequestBuilder(callLogRequestBuilder)` on the `CometChatCallLogs` instance after creating and configuring the builder. |
-| Custom style not visible | Verify the style parent is `CometChatCallLogsStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| `setOnItemClick` not firing | If the component is inside a parent view that intercepts touch events, ensure the parent does not consume the click. Verify the callback is set before the component loads data. |
-| Custom view returns null in `createView` | If `createView` returns `null`, the default view is used. Return a valid inflated `View` to replace the default. |
-| Call status icons not showing in custom leading view | Ensure you check `callLog.getStatus()` against `CometChatCallsConstants.CALL_STATUS_UNANSWERED` and `CometChatCallsConstants.CALL_STATUS_MISSED` to determine the correct icon. |
-| View binding reference is null | If using view binding, initialize it with `binding = YourXmlFileNameBinding.inflate(getLayoutInflater())` before accessing `binding.callLog`. |
-
-## FAQ
-
-**Q: How do I filter call logs to show only calls with recordings?**
-**A:** Create a `CallLogRequest.CallLogRequestBuilder`, call `setHasRecording(true)`, and pass it to `setCallLogRequestBuilder`.
-
-**Q: Can I use `CometChatCallLogs` in both an Activity and a Fragment?**
-**A:** Yes. In an Activity, call `setContentView(new CometChatCallLogs(this))`. In a Fragment, return `new CometChatCallLogs(getContext())` from `onCreateView`.
-
-**Q: Does `CometChatCallLogs` emit any events?**
-**A:** No. The `CometChatCallLogs` component does not have any exposed events.
-
-**Q: How do I customize the call log item to show call direction icons?**
-**A:** Use `setLeadingView` with a `CallLogsViewHolderListener`. In `bindView`, check `CallUtils.isLoggedInUser(initiator)` and `callLog.getStatus()` to determine whether to show an outgoing, incoming, or missed call icon.
-
-**Q: How do I show call duration in the title?**
-**A:** Use `setTitleView` with a `CallLogsViewHolderListener`. In `bindView`, check `callLog.getTotalDurationInMinutes()` and append the duration to the caller name from `CallUtils.getCallLogUserName(callLog)`.
-
-**Q: How do I add custom long-press options without removing the defaults?**
-**A:** Use `setAddOptions` instead of `setOptions`. `setAddOptions` appends your custom `MenuItem` objects to the existing default options.
-
 ## Next Steps
 
 <CardGroup cols={2}>

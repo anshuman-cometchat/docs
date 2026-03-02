@@ -1663,43 +1663,6 @@ For custom views provided via `setHeaderView`, `setFooterView`, or `setNewMessag
 
 Read receipt indicators and reaction pills are visual-only by default. If screen reader descriptions are needed, provide them via custom views with appropriate `contentDescription` attributes.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
-| Message list shows only loading indicator | You must call `.setUser(user)` or `.setGroup(group)` on the `CometChatMessageList` instance. Without a `User` or `Group` object, the component cannot fetch messages. |
-| Messages not appearing for the correct conversation | Verify that the `User` or `Group` object passed to `setUser()` or `setGroup()` has the correct UID or GUID. The component fetches messages for the specified entity only. |
-| Custom style not visible | Verify the style parent is `CometChatMessageListStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| Filters not applied | Ensure you call `setMessagesRequestBuilder(builder)` on the `CometChatMessageList` instance after creating and configuring the builder. Note that UID, GUID, types, and categories are always altered inside the message list. |
-| `setOnThreadRepliesClick` not firing | Verify that threaded messages exist in the conversation. The callback only fires when a user taps a message bubble that has thread replies. |
-| Reactions not responding to custom click handlers | Ensure you set the reaction callbacks (`setOnReactionClick`, `setOnReactionLongClick`, `setOnAddMoreReactionsClick`) before the component loads messages. |
-| Smart replies not appearing | Ensure `setEnableSmartReplies(true)` is called. If you set `setAISmartRepliesKeywords`, verify that incoming messages contain at least one of the specified keywords. |
-| Sound still plays after `disableSoundForMessages(true)` | Ensure you call `disableSoundForMessages(true)` before the component starts loading. If called after data is already loaded, it may not take effect for existing notifications. |
-
-## FAQ
-
-**Q: How do I display messages for a group instead of a user?**
-**A:** Call `.setGroup(group)` with a `Group` object instead of `.setUser(user)`. The component fetches and displays messages for the specified group conversation.
-
-**Q: How do I filter messages by a search keyword?**
-**A:** Create a `MessagesRequest.MessagesRequestBuilder`, call `.setSearchKeyword("your keyword")`, and pass it to `setMessagesRequestBuilder`. Note that UID, GUID, types, and categories are always overridden internally by the message list.
-
-**Q: How do I customize the date format for sticky date separators?**
-**A:** Call `messageList.setDateFormat(new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()))` to set a custom date format for the sticky date headers.
-
-**Q: Does the MessageList component emit any events?**
-**A:** No. The MessageList component does not emit any events of its own. If you need to listen for message-level events, use the CometChat SDK's message listeners directly.
-
-**Q: How do I add a custom header or footer to the message list?**
-**A:** Call `cometChatMessageList.setHeaderView(view)` to add a custom view above the messages, or `cometChatMessageList.setFooterView(view)` to add one below the messages. Pass any inflated `View` object.
-
-**Q: How do I enable AI-powered features like smart replies and conversation starters?**
-**A:** Call `setEnableSmartReplies(true)` for smart replies, `setEnableConversationStarter(true)` for conversation starters, and `setEnableConversationSummary(true)` for conversation summaries. You can also configure keywords with `setAISmartRepliesKeywords` and delay with `setSmartRepliesDelayDuration`.
-
-**Q: How do I scroll to a specific message programmatically?**
-**A:** Use `cometChatMessageList.scrollToMessageId(messageId)` to scroll to and highlight a specific message, or `cometChatMessageList.scrollToBottom()` to scroll to the latest message.
-
 ## Next Steps
 
 <CardGroup cols={2}>

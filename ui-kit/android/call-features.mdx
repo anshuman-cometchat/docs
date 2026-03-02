@@ -196,21 +196,3 @@ The [Call Logs](/ui-kit/android/call-logs) component displays a history of all c
 
 For detailed information about individual calls, including participants, join/leave history, and recordings, see the [Call Log Details](/ui-kit/android/guide-call-log-details) guide.
 
-## Troubleshooting
-
-### Call Buttons Not Appearing
-
-If the call buttons don't appear in the MessageHeader:
-
-1. **Verify Calls SDK is added** - Check that `com.cometchat:calls-sdk-android:4.+.+` is in your `build.gradle`
-2. **Sync Gradle** - Make sure you've synced your project after adding the dependency
-3. **Check UI Kit version** - Ensure you're using CometChat UI Kit v5 or later
-4. **Verify initialization** - Confirm CometChat is properly initialized before loading the UI
-
-### Incoming Calls Not Showing
-
-If incoming calls aren't displaying:
-
-1. **Check CallListener registration** - Ensure `CometChat.addCallListener()` is called in your Application class
-2. **Verify Application class** - Confirm your custom Application class is registered in `AndroidManifest.xml`
-3. **Test listener ID** - Make sure the listener ID is unique and not being removed elsewhere

@@ -1287,40 +1287,6 @@ For custom views provided via `setLeadingView`, `setTitleView`, `setSubtitleView
 
 Online/offline status dots are visual-only by default. If screen reader descriptions are needed, provide them via a custom view with appropriate `contentDescription` attributes.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
-| Header shows no user or group details | Ensure you call `setUser(user)` or `setGroup(group)` on the `CometChatMessageHeader` instance. The component requires one of these to display header details. |
-| Back button not visible | Call `setBackIconVisibility(View.VISIBLE)` on the component instance. The back button defaults to `View.GONE`. |
-| Custom style not applied | Verify the style parent is `CometChatMessageHeaderStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| Call buttons not visible | Ensure `setVideoCallButtonVisibility(View.VISIBLE)` and `setVoiceCallButtonVisibility(View.VISIBLE)` are called. If the calling feature is not enabled, the buttons may not appear. |
-| `setOnBackButtonPressed` not firing | Ensure the back button is visible by calling `setBackIconVisibility(View.VISIBLE)`. If the back button is hidden, the listener will not trigger. |
-| Custom subtitle view not rendering | Ensure your `setSubtitleView` callback returns a valid `View` object. If the callback returns `null`, the default subtitle is used. |
-| Typing indicator not showing | The typing indicator only appears when `setSubtitleView` is not set (i.e., using the default subtitle). Custom subtitle views override the typing indicator. |
-| Menu icon visible but no popup items | Call `setOptions(menuItems)` with a non-empty list. Setting options automatically makes the menu icon visible; setting `null` hides it. |
-
-## FAQ
-
-**Q: Do I need to pass both a User and a Group object?**
-**A:** No. Pass either a `User` object using `setUser(user)` or a `Group` object using `setGroup(group)`. The component displays details for whichever object is set. Setting one clears the other.
-
-**Q: How do I customize the call button icons in the header?**
-**A:** Define a custom style with parent `CometChatCallButtonsStyle` in `themes.xml`, set `cometchatCallButtonsVideoCallIconTint` and `cometchatCallButtonsVoiceCallIconTint`, then reference it in your `CometChatMessageHeaderStyle` using `cometchatMessageHeaderCallButtonsStyle`.
-
-**Q: Can I replace the entire header layout?**
-**A:** Yes. Use `setItemView` to provide a `Function3<Context, User, Group, View>` callback that returns your custom layout. This replaces the entire default header.
-
-**Q: Does the MessageHeader component emit any global UI events?**
-**A:** No. The `MessageHeader` component does not produce any global UI events. Use action callbacks (`setOnBackButtonPressed`, `setOnError`) to respond to user interactions.
-
-**Q: Why does the typing indicator not appear when I set a custom subtitle view?**
-**A:** The typing indicator is rendered in the default subtitle area. When you provide a custom `setSubtitleView`, it replaces the entire subtitle layout including the typing indicator. To show typing status in a custom subtitle, listen to the ViewModel's typing LiveData.
-
-**Q: How do I show the back button?**
-**A:** Call `setBackIconVisibility(View.VISIBLE)`. The back button defaults to `View.GONE`.
-
 ## Next Steps
 
 <CardGroup cols={2}>

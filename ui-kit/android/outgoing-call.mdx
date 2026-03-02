@@ -1051,36 +1051,6 @@ The component renders a full-screen outgoing call view. The end-call button resp
 
 For custom views provided via `setTitleView`, `setSubtitleView`, `setAvatarView`, or `setEndCallView`, ensure you set `android:contentDescription` on visual-only elements so TalkBack can announce them. The default views handle this automatically.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load. |
-| Outgoing call screen is blank | Verify that you set a `User` object with `setUser(user)` or a `Call` object with `setCall(call)` on the `CometChatOutgoingCall` instance. The `uid`, `name`, and `avatar` fields are required on the `User` object. |
-| End-call button does not respond | If you set `setOnEndCallClick` with a custom `OnClick`, ensure your callback contains the call cancellation logic. The default behavior is replaced when you override this action. |
-| Call events not received | Ensure you call `CometChatCallEvents.addListener` with a unique string ID. If you reuse the same ID as another listener, the previous one is replaced. |
-| Call events still firing after screen is closed | Call `CometChatCallEvents.removeListener("YOUR_LISTENER_ID")` in your Activity's `onDestroy` or Fragment's `onDestroyView` to unsubscribe from events. |
-| Custom style not visible | Verify the style parent is `CometChatOutgoingCallStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| Sound still plays after disabling | Ensure you call `disableSoundForCall` before the component starts the outgoing call. If called after the call is initiated, it may not take effect. |
-| Custom avatar view not centered | Set `LinearLayout.LayoutParams` with `Gravity.CENTER_VERTICAL` on your custom view, as shown in the `setAvatarView` example. |
-
-## FAQ
-
-**Q: Do I need a `User` object or a `Call` object to use `CometChatOutgoingCall`?**
-**A:** You need one or the other. Use `setUser(user)` if you have a `User` object with `uid`, `name`, and `avatar` set. Use `setCall(call)` if you have a `Call` object from the CometChat SDK.
-
-**Q: Can I use `CometChatOutgoingCall` in both an Activity and a Fragment?**
-**A:** Yes. In an Activity, create the instance and call `setContentView(cometchatOutgoingCall)`. In a Fragment, create the instance and return it from `onCreateView`.
-
-**Q: How do I listen for when the outgoing call is accepted or rejected?**
-**A:** Use `CometChatCallEvents.addListener("YOUR_ID", ...)` and override `ccCallAccepted` and `ccCallRejected`. Call `CometChatCallEvents.removeListener("YOUR_ID")` to unsubscribe.
-
-**Q: How do I customize the end-call button appearance?**
-**A:** Use `setEndCallView` to provide a custom layout. Inflate your XML layout, attach a click listener, and return the view from the callback.
-
-**Q: Does the outgoing call component support filters?**
-**A:** No. The `CometChatOutgoingCall` component does not have any exposed filters.
-
 ## Next Steps
 
 <CardGroup cols={2}>

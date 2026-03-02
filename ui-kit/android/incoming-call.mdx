@@ -923,36 +923,6 @@ For custom views provided via `setLeadingView`, `setTitleView`, `setSubtitleView
 
 The call type icon (voice/video) is visual-only by default. If screen reader descriptions are needed, provide them via a custom view with appropriate `contentDescription` attributes.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
-| Incoming call screen is blank | Verify that you call `setCall(call)` with a valid `Call` object. The component extracts the caller's name, avatar, and call type from the `Call` object. |
-| Accept or reject button does nothing | Ensure you call `setCall(call)` with a valid `Call` object. If no `Call` object is set, the accept and reject buttons cannot trigger call actions. |
-| Custom style not visible | Verify the style parent is `CometChatIncomingCallStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| Sound still plays after disabling | Ensure you call `disableSoundForCalls(true)` before the component starts loading. If called after the incoming call is already ringing, it may not take effect. |
-| Custom sound not playing | Verify the sound file exists in your `res/raw` directory and that you pass the correct `@RawRes int` resource ID to `setCustomSoundForCalls`. |
-| `setOnAcceptClick` not firing | Verify you are calling `setOnAcceptClick` on the correct `CometChatIncomingCall` instance. If you have multiple instances, the callback may be set on the wrong one. |
-| Custom leading view not showing | If you set a custom leading view but it does not appear, verify that the view is inflated correctly and has valid layout parameters. A view with zero width or height will not be visible. |
-
-## FAQ
-
-**Q: How do I display the incoming call screen when a call is received?**
-**A:** Add `CometChatIncomingCall` to your layout via XML or programmatically in an Activity/Fragment. Set the `Call` object with `setCall(call)` to display the caller's information and enable accept/reject actions.
-
-**Q: Can I use `CometChatIncomingCall` in both an Activity and a Fragment?**
-**A:** Yes. In an Activity, create the instance with `CometChatIncomingCall(this)` and call `setContentView`. In a Fragment, create it with `CometChatIncomingCall(requireContext())` and return it from `onCreateView`.
-
-**Q: How do I customize the accept and reject button colors?**
-**A:** Define a custom style with parent `CometChatIncomingCallStyle` in `themes.xml`. Set `cometchatIncomingCallAcceptButtonBackgroundColor` and `cometchatIncomingCallRejectButtonBackgroundColor` to your desired colors, then apply the style with `setStyle()`.
-
-**Q: Does `CometChatIncomingCall` emit any global events?**
-**A:** The component itself does not emit events, but you can listen for call-related events via `CometChatCallEvents.addListener()` to handle `ccCallAccepted`, `ccCallRejected`, and `ccCallEnded`.
-
-**Q: What is the difference between `setCall` and the old `setUser` method?**
-**A:** `setCall(Call)` is the correct method. It accepts a `Call` object from the CometChat SDK, which contains the caller's user information, call type, and session ID needed for accept/reject actions.
-
 ## Next Steps
 
 <CardGroup cols={2}>

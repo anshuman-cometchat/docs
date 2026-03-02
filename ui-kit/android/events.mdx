@@ -475,31 +475,6 @@ Each event listener class provides methods to add and remove listeners. If you r
 
 ---
 
-## Common pitfalls and fixes
-
-| Pitfall | Fix |
-| ------- | --- |
-| Forgetting to remove event listeners when an activity or fragment is destroyed, causing memory leaks and duplicate callbacks. | Remove your event listeners in your `onDestroy()` or `onDestroyView()` lifecycle callback, using the same tag you passed during registration. |
-| Using a non-unique or hardcoded listener tag, causing one listener to overwrite another. | Use a unique string for each listener registration (for example, the class name or a UUID). If two registrations share the same tag, only the last one receives callbacks. |
-| Registering a listener after the event has already fired, so the callback is never triggered. | Register your event listeners early in the component lifecycle (for example, in `onCreate()` or `onViewCreated()`), before any user interaction that could trigger the event. |
-| Expecting Kotlin-style nullable parameters in Java callbacks (or vice versa). | Match the parameter types to the language you are using. In Kotlin, message event callbacks use nullable types (for example, `BaseMessage?`), while Java callbacks use non-nullable types (for example, `BaseMessage`). |
-| Not handling all relevant callbacks in a listener, causing missed events. | Override every callback method you need. If you register a `CometChatGroupEvents` listener but only override `ccGroupCreated`, you will not receive `ccGroupMemberJoined` or other group events. |
-| Assuming events fire on the main thread and updating UI directly without checking. | Wrap UI updates inside `runOnUiThread {}` (Kotlin) or `runOnUiThread(() -> { })` (Java) to ensure thread safety when handling event callbacks. |
-
-## FAQ
-
-**How do I listen for multiple event types at the same time?**
-Register separate listeners for each event class. For example, register a `CometChatUserEvents` listener and a `CometChatMessageEvents` listener independently, each with its own unique tag or ID. There is no single listener that covers all event categories.
-
-**What is the difference between UI Kit events and SDK-level listeners?**
-UI Kit events (for example, `CometChatMessageEvents`, `CometChatUserEvents`) are emitted by UI Kit components when the logged-in user performs actions through the UI. SDK-level listeners (from the core CometChat SDK) handle real-time events from the server, such as incoming messages from other users. Use UI Kit events to keep your UI in sync with user-initiated actions, and SDK-level listeners for server-pushed updates.
-
-**Do I need to remove listeners if my activity is finishing?**
-Yes. If you do not remove listeners in `onDestroy()` or `onDestroyView()`, the listener reference persists and can cause memory leaks or duplicate callback invocations when the activity or fragment is recreated.
-
-**Can I register the same listener tag twice?**
-If you call `addListener` or `addUserListener`/`addGroupListener` with the same tag, the second registration replaces the first. Only the most recently registered listener for that tag receives callbacks.
-
 ## Next steps
 
 <CardGroup cols={2}>

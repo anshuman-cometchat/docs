@@ -1157,38 +1157,6 @@ The component renders a search bar with filter chips and scrollable result lists
 
 For custom views provided via `setConversationItemView` or message item view setters, ensure you set `android:contentDescription` on visual-only elements so TalkBack can announce them. The default views handle this automatically.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
-| Search returns no results despite existing data | Verify that a user is logged in with `CometChatUIKit.login()` before displaying the component. The component fetches data for the logged-in user only. |
-| Search scoped to wrong conversation | If you called `setUid()` or `setGuid()`, verify the UID or GUID matches an existing user or group. If both are set, the last one called takes precedence. |
-| Custom style not visible | Verify the style parent is `CometChatSearchStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| `setOnConversationClicked` not firing | Ensure you set the listener before the component loads data. If the listener is set after results are displayed, it may not attach to existing items. |
-| `setOnMessageClicked` not firing | Ensure you set the listener before the component loads data. If the listener is set after results are displayed, it may not attach to existing items. |
-| Filters not applied to search results | Ensure you call `setConversationsRequestBuilder()` or `setMessagesRequestBuilder()` on the `CometChatSearch` instance after creating and configuring the builder. |
-| Custom message item view not rendering | Ensure `createView` in your `MessagesSearchViewHolderListener` returns a valid inflated `View`, not `null`. If `createView` returns `null`, the default view is used. |
-| Date/time format not changing | Use `setDateTimeFormatter()` to provide a custom `DateTimeFormatterCallback`. Verify you are calling the method on the correct component instance. |
-| Initial view not showing | Ensure you pass a valid `@LayoutRes` resource ID to `setInitialView()`. The view displays only when no search has been performed. |
-
-## FAQ
-
-**Q: Can I scope the search to a specific user or group conversation?**
-**A:** Yes. Call `setUid(String uid)` to scope search to a specific user's conversation, or `setGuid(String guid)` to scope search to a specific group's conversation.
-
-**Q: Does `CometChatSearch` emit any events?**
-**A:** No. The `CometChatSearch` component does not produce any events. Use the action callbacks (`setOnConversationClicked`, `setOnMessageClicked`, etc.) to respond to user interactions.
-
-**Q: How do I customize the view for a specific message type in search results?**
-**A:** Use the corresponding message item view setter (e.g., `setTextMessageItemView`, `setImageMessageItemView`) with a `MessagesSearchViewHolderListener` that implements `createView` and `bindView`.
-
-**Q: How do I filter which conversations or messages appear in search results?**
-**A:** Use `setConversationsRequestBuilder()` with a configured `ConversationsRequest.ConversationsRequestBuilder` for conversation results, and `setMessagesRequestBuilder()` with a configured `MessagesRequest.MessagesRequestBuilder` for message results.
-
-**Q: How do I customize conversation items in the search results?**
-**A:** Use `setConversationItemView` with a `ConversationsSearchViewHolderListener` that implements `createView` and `bindView` to replace the entire conversation item row.
-
 ## Next Steps
 
 <CardGroup cols={2}>

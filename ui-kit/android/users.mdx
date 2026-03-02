@@ -1605,41 +1605,6 @@ For custom views provided via `setLeadingView`, `setTitleView`, `setTrailingView
 
 Online/offline status dots are visual-only by default. If screen reader descriptions are needed, provide them via a custom view with appropriate `contentDescription` attributes.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
-| User list is empty despite having users | Verify that a user is logged in with `CometChatUIKit.login()` before displaying the component. The component fetches users for the logged-in user only. |
-| Filters not applied | Ensure you call `setUsersRequestBuilder(builder)` on the `CometChatUsers` instance after creating and configuring the builder. |
-| Custom style not visible | Verify the style parent is `CometChatUsersStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| `setOnItemClick` not firing | If you set `setSelectionMode` to `MULTIPLE`, item clicks may be consumed by the selection logic. Set the selection mode to `NONE` if you need standard click behavior. |
-| Event listener not receiving events | Ensure you call `CometChatUserEvents.addUserListener` with a unique tag. If you use the same tag as another listener, the previous one is replaced. |
-| Search not working with custom filter | If you set a `UsersRequestBuilder` via `setUsersRequestBuilder`, the search may use different parameters. Use `setSearchRequestBuilder` to control search behavior separately. |
-| Custom view returns null in `createView` | If `createView` returns `null`, the default view is used. Return a valid inflated `View` to replace the default. |
-| Sticky header not showing | Ensure `setStickyHeaderVisibility` is set to `View.VISIBLE`. If set to `View.GONE`, the alphabetical sticky headers will not appear. |
-| Online status indicator not visible | Ensure `setUserStatusVisibility` is set to `View.VISIBLE`. If set to `View.GONE`, the online/offline status indicator will not appear next to user avatars. |
-
-## FAQ
-
-**Q: How do I show only friends in the user list?**
-**A:** Create a `UsersRequest.UsersRequestBuilder`, call `friendsOnly(true)`, and pass it to `setUsersRequestBuilder`.
-
-**Q: How do I filter users by role?**
-**A:** Create a `UsersRequest.UsersRequestBuilder`, call `setRoles(List<String>)` with the desired role names, and pass it to `setUsersRequestBuilder`.
-
-**Q: How do I listen for user blocked/unblocked events outside the component?**
-**A:** Use `CometChatUserEvents.addUserListener("YOUR_TAG", ...)` and override `ccUserBlocked` and `ccUserUnblocked`. Call `CometChatUserEvents.removeListener("YOUR_TAG")` to unsubscribe.
-
-**Q: How do I customize the avatar style in the user list?**
-**A:** Define a custom style with parent `CometChatAvatarStyle` in `themes.xml`, reference it in a `CometChatUsersStyle` using `cometchatUsersAvatarStyle`, and apply with `setStyle()`.
-
-**Q: How do I add custom long-press options without removing the defaults?**
-**A:** Use `addOptions` instead of `setOptions`. `addOptions` appends your custom `MenuItem` objects to the existing default options.
-
-**Q: Can I use `CometChatUsers` in both an Activity and a Fragment?**
-**A:** Yes. In an Activity, call `setContentView(new CometChatUsers(this))`. In a Fragment, return `new CometChatUsers(getContext())` from `onCreateView`.
-
 ## Next Steps
 
 <CardGroup cols={2}>

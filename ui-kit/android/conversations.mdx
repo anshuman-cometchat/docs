@@ -2657,39 +2657,6 @@ For custom views provided via `setLeadingView`, `setTitleView`, `setTrailingView
 
 Group type indicators and online/offline status dots are visual-only by default. If screen reader descriptions are needed for these, provide them via a custom view with appropriate `contentDescription` attributes.
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
-| Conversation list is empty despite having conversations | Verify that a user is logged in with `CometChatUIKit.login()` before displaying the component. The component fetches conversations for the logged-in user only. |
-| Filters not applied | Ensure you call `setConversationsRequestBuilder(builder)` on the `CometChatConversations` instance after creating and configuring the builder. |
-| Custom style not visible | Verify the style parent is `CometChatConversationsStyle` and that you call `setStyle(R.style.YourStyle)` on the component instance. |
-| `setOnItemClick` not firing | If you set `setSelectionMode` to `MULTIPLE`, item clicks may be consumed by the selection logic. Set the selection mode to `NONE` if you need standard click behavior. |
-| Event listener not receiving events | Ensure you call `CometChatConversationEvents.addListener` with a unique tag. If you use the same tag as another listener, the previous one is replaced. |
-| Typing indicator not showing in custom leading view | Ensure you add a `CometChat.MessageListener` to track typing events and update the `typingIndicatorHashMap` before calling `setLeadingView`. |
-| Custom view returns null in `createView` | If `createView` returns `null`, the default view is used. Return a valid inflated `View` to replace the default. |
-| Sound still plays after `disableSoundForMessages(true)` | Ensure you call `disableSoundForMessages(true)` before the component starts loading. If called after data is already loaded, it may not take effect for existing notifications. |
-| Delete option still visible after hiding | Ensure you call `setDeleteConversationOptionVisibility(View.GONE)` on the correct `CometChatConversations` instance. |
-
-## FAQ
-
-**Q: How do I show only user conversations (no groups)?**
-**A:** Create a `ConversationsRequest.ConversationsRequestBuilder`, call `setConversationType(CometChatConstants.CONVERSATION_TYPE_USER)`, and pass it to `setConversationsRequestBuilder`.
-
-**Q: Can I use `CometChatConversations` in both an Activity and a Fragment?**
-**A:** Yes. In an Activity, call `setContentView(new CometChatConversations(this))`. In a Fragment, return `new CometChatConversations(getContext())` from `onCreateView`.
-
-**Q: How do I listen for conversation deletion events outside the component?**
-**A:** Use `CometChatConversationEvents.addListener("YOUR_TAG", ...)` and override `ccConversationDeleted`. Call `CometChatConversationEvents.removeListener("YOUR_TAG")` to unsubscribe.
-
-**Q: How do I customize the avatar and badge styles?**
-**A:** Define custom styles with parents `CometChatAvatarStyle` and `CometChatBadgeStyle` in `themes.xml`, reference them in a `CometChatConversationsStyle`, and apply with `setStyle()`.
-
-**Q: How do I add custom long-press options without removing the defaults?**
-**A:** Use `addOptions` instead of `setOptions`. `addOptions` appends your custom `MenuItem` objects to the existing default options.
-
-
 ## Next Steps
 
 <CardGroup cols={2}>

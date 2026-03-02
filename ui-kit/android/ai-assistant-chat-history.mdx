@@ -327,31 +327,6 @@ What you're changing: Small functional customizations such as setting the user a
 | Error state visibility | Activity/Fragment | `setErrorStateVisibility(int)` | `.setErrorStateVisibility(View.GONE);` |
 | Empty state visibility | Activity/Fragment | `setEmptyStateVisibility(int)` | `.setEmptyStateVisibility(View.GONE);` |
 
-## Common Pitfalls & Fixes
-
-| Pitfall | Fix |
-| --- | --- |
-| Component does not render | Ensure `CometChatUIKit.init()` is called and awaited before using any UI Kit component. If `init()` has not completed, the component will not load data. |
-| Chat history list is empty | Verify that `setUser(user)` is called with a valid `User` object before the component attempts to fetch data. The user is a required property. |
-| AI Assistant features not working | Ensure the user's role is set to `@agentic` using `user.setRole("@agentic")` (Java) or `user.role = "@agentic"` (Kotlin). If the role is not `@agentic`, AI Assistant features will not be available. |
-| Custom style not visible | Verify that you call `setStyle(R.style.YourStyle)` on the component instance and that the style attributes use the correct `cometChatAIAssistantChatHistory*` prefix. |
-| `setOnItemClickListener` not firing | Ensure you are calling `setOnItemClickListener` on the correct `CometChatAIAssistantChatHistory` instance referenced by your binding or `findViewById`. |
-| Error state or empty state still visible after hiding | Ensure you call `setErrorStateVisibility(View.GONE)` or `setEmptyStateVisibility(View.GONE)` on the correct component instance before the component loads data. |
-
-## FAQ
-
-**Q: What is the `@agentic` role and why is it required?**
-**A:** The `@agentic` role is set on the `User` object via `user.setRole("@agentic")`. It must be set to use AI Assistant features. If the role is not `@agentic`, the component will not function for AI assistant chat history.
-
-**Q: How do I start a new AI assistant conversation from the chat history?**
-**A:** Use `setOnNewChatClickListener` to define custom logic that runs when the user taps the new chat button. Implement your navigation or conversation creation logic inside the callback.
-
-**Q: Can I customize the fonts and colors of the chat history?**
-**A:** Yes. Define a custom style in `themes.xml` using the `cometChatAIAssistantChatHistory*` attributes (e.g., `cometChatAIAssistantChatHistoryHeaderTextAppearance`, `cometChatAIAssistantChatHistoryItemTextColor`) and apply it with `setStyle()`.
-
-**Q: How do I handle the close button action?**
-**A:** Use `setOnCloseClickListener` to provide custom logic that runs when the user taps the close button. Implement your navigation or dismissal logic inside the callback.
-
 ## Next Steps
 
 <CardGroup cols={2}>

@@ -182,19 +182,3 @@ public class SoundManagerUsage {
 | Play custom sounds | `app/src/main/java/<your_package>/SoundManagerUsage.kt` | `play(Sound, int)` | `soundManager.play(Sound.incomingCall, R.raw.incoming_call)` |
 | Pause playback | `app/src/main/java/<your_package>/SoundManagerUsage.kt` | `pause()` | `soundManager.pause()` |
 
-## Common pitfalls and fixes
-- No sound plays: Ensure `CometChatSoundManager` is created with a valid `Context`.
-- Custom sounds not found: Place audio files in `app/src/main/res/raw` and reference them as `R.raw.<file>`.
-- Sound plays once only: Reuse the same `CometChatSoundManager` instance instead of creating one per event.
-- Silent device: Check device volume and ringer mode.
-- No sound on specific devices: Verify the audio file format is supported by Android.
-
-## FAQ
-**Q**: Do I need to initialize SoundManager before each play call?  
-**A**: No. Create one instance and reuse it while the screen is active.
-
-**Q**: Can I use my own audio files?  
-**A**: Yes. Place them in `res/raw` and call `play(Sound, int)` with your `R.raw` resource ID.
-
-**Q**: How do I stop a sound that is playing?  
-**A**: Call `pause()` on the sound manager instance.

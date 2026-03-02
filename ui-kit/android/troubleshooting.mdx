@@ -8,7 +8,7 @@ description: "Common failure modes and fixes for the CometChat Android V5 UI Kit
 | Field | Value |
 | --- | --- |
 | Page type | Troubleshooting reference |
-| Scope | All CometChat Android UI Kit v5 issues — initialization, theming, components, calling, extensions |
+| Scope | All CometChat Android UI Kit v5 issues — initialization, theming, components, calling, extensions, AI features, localization, sound, events |
 | When to reference | When a component fails to render, data is missing, styling doesn't apply, or a feature doesn't appear |
 
 </Accordion>
@@ -73,3 +73,48 @@ description: "Common failure modes and fixes for the CometChat Android V5 UI Kit
 | Stickers not showing in composer | Sticker extension not enabled | Activate [Sticker Extension](/fundamentals/stickers) in Dashboard |
 | Polls option missing from action sheet | Polls extension not enabled | Activate [Polls Extension](/fundamentals/polls) in Dashboard |
 | Link preview not rendering in messages | Link Preview extension not enabled | Activate [Link Preview Extension](/fundamentals/link-preview) in Dashboard |
+
+---
+
+## AI Features
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| AI features not appearing | Feature not activated in CometChat Dashboard | Enable the specific AI feature from your [Dashboard](/fundamentals/ai-user-copilot/overview) |
+| Conversation Starter not showing | Feature not enabled or no conversation context | Ensure [Conversation Starter](/fundamentals/ai-user-copilot/conversation-starter) is activated in Dashboard |
+| Smart Replies not appearing in composer | Feature not enabled in Dashboard | Ensure [Smart Replies](/fundamentals/ai-user-copilot/smart-replies) is activated in Dashboard |
+
+---
+
+## Localization
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| UI text not translated | Wrong language code | Use a `Language.Code` constant from the supported languages list in [Localize](/ui-kit/android/localize) |
+| `setLocale` called after UI Kit screens render | Locale applied too late | Call `CometChatLocalize.setLocale(...)` before launching any UI Kit screen |
+| String overrides not appearing | Key name mismatch in `strings.xml` | Verify the key name matches exactly (e.g., `cometchat_chats`). See [Localize](/ui-kit/android/localize) |
+| Changes not visible after editing `strings.xml` | Stale build cache | Clean and rebuild the project after editing string resources |
+| Date/time labels unchanged | `DateTimeFormatterCallback` not set | Add `setDateTimeFormatterCallback(...)` to the same `UIKitSettings` instance passed to `CometChatUIKit.init()`. See [Methods](/ui-kit/android/methods#dateformatter) |
+
+---
+
+## Sound
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| No sound plays | `CometChatSoundManager` created with invalid `Context` | Ensure you pass a valid `Context` when instantiating `CometChatSoundManager`. See [Sound Manager](/ui-kit/android/sound-manager) |
+| Custom sound not playing | Audio file missing or wrong format | Place audio files in `res/raw` and reference them as `R.raw.<file>`. Ensure the format is supported by Android (WAV/MP3/OGG) |
+| Sound plays only once | Creating a new `CometChatSoundManager` per event | Reuse the same `CometChatSoundManager` instance instead of creating one per event |
+| Silent on device | Device volume or ringer mode | Check device volume and ringer mode settings |
+
+---
+
+## Events
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Event listener not firing | Subscribed to wrong event class or method | Check the [Events](/ui-kit/android/events) page for exact event class names and callback methods |
+| Duplicate event triggers | Multiple registrations without cleanup | Remove listeners in `onDestroy()` or `onDestroyView()` using the same tag passed during registration |
+| Listener overwritten by another | Non-unique or hardcoded listener tag | Use a unique string for each listener registration (e.g., class name or UUID) |
+| Event fires but UI doesn't update | Callback not running on main thread | Wrap UI updates in `runOnUiThread {}` (Kotlin) or `runOnUiThread(() -> { })` (Java) |
+| Missed events after rotation | Listener not re-registered after Activity recreation | Register listeners in `onCreate()` or `onViewCreated()` and remove in the corresponding destroy callback |
