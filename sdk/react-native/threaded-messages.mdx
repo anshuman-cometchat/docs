@@ -95,101 +95,231 @@ The above snippet shows how a message with the text "Hello" can be sent in the t
 
 Similarly, using the `setParentMessageId()` method, Media and Custom Messages can be sent in threads too.
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `sendMessage()` returns the sent threaded message with `parentMessageId`:
-```json
-{
-  "reactions": [],
-  "mentionedUsers": [],
-  "mentionedMe": false,
-  "receiverId": "cometchat-uid-7",
-  "type": "text",
-  "receiverType": "user",
-  "category": "message",
-  "data": {
-    "text": "Hello thread!",
-    "resource": "REACT_NATIVE-4_0_14-f8c2a36f-89cc-4a1a-8ef9-880f311c0d1d-1771838824248",
-    "entities": {
-      "sender": {
-        "entity": {
-          "uid": "cometchat-uid-6",
-          "name": "Ronald Jerry",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-          "status": "online",
-          "role": "default",
-          "lastActiveAt": 1771839550,
-          "tags": []
-        },
-        "entityType": "user"
-      },
-      "receiver": {
-        "entity": {
-          "uid": "cometchat-uid-7",
-          "name": "Henry Marino",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-          "status": "online",
-          "role": "default",
-          "lastActiveAt": 1771839549,
-          "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-          "tags": []
-        },
-        "entityType": "user"
-      }
-    },
-    "metadata": {
-      "@injected": {
-        "extensions": {
-          "link-preview": {
-            "links": []
-          }
-        }
-      }
-    },
-    "moderation": {
-      "status": "pending"
-    }
-  },
-  "text": "Hello thread!",
-  "id": "25293",
-  "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-  "sender": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-6",
-    "name": "Ronald Jerry",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-    "lastActiveAt": 1771839550,
-    "role": "default",
-    "status": "online",
-    "tags": []
-  },
-  "receiver": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-7",
-    "name": "Henry Marino",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-    "lastActiveAt": 1771839549,
-    "role": "default",
-    "status": "online",
-    "tags": []
-  },
-  "sentAt": 1771839799,
-  "updatedAt": 1771839799,
-  "parentMessageId": "25291", // This is the ID of the parent message - will vary based on your actual parent message
-  "metadata": {
-    "@injected": {
-      "extensions": {
-        "link-preview": {
-          "links": []
-        }
-      }
-    }
-  }
-}
-```
+
+<span id="send-thread-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message identifier | `"25293"` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `receiverId` | string | Receiver's UID | `"cometchat-uid-7"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `type` | string | Message type | `"text"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | Message text content | `"Hello thread!"` |
+| `sentAt` | number | Unix timestamp when sent | `1771839799` |
+| `updatedAt` | number | Unix timestamp when updated | `1771839799` |
+| `parentMessageId` | string | ID of the parent message this reply belongs to | `"25291"` |
+| `sender` | object | Sender user details | [See below ↓](#send-thread-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#send-thread-receiver-object) |
+| `data` | object | Additional message data | [See below ↓](#send-thread-data-object) |
+| `metadata` | object | Message metadata | [See below ↓](#send-thread-metadata-object) |
+| `reactions` | array | Message reactions | `[]` |
+| `mentionedUsers` | array | Users mentioned in message | `[]` |
+| `mentionedMe` | boolean | Whether current user is mentioned | `false` |
+
+---
+
+<span id="send-thread-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1771839550` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-thread-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1771839549` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-thread-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | Message text | `"Hello thread!"` |
+| `resource` | string | SDK resource identifier | `"REACT_NATIVE-4_0_14-..."` |
+| `entities` | object | Sender and receiver entities | [See below ↓](#send-thread-data-entities-object) |
+| `metadata` | object | Injected metadata | [See below ↓](#send-thread-data-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "pending"}` |
+
+---
+
+<span id="send-thread-data-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper | [See below ↓](#send-thread-data-entities-sender-object) |
+| `receiver` | object | Receiver entity wrapper | [See below ↓](#send-thread-data-entities-receiver-object) |
+
+---
+
+<span id="send-thread-data-entities-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | User entity details | [See below ↓](#send-thread-data-entities-sender-entity-object) |
+
+---
+
+<span id="send-thread-data-entities-sender-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | User's avatar URL | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `role` | string | User's role | `"default"` |
+| `status` | string | User's online status | `"online"` |
+| `lastActiveAt` | number | Last active timestamp | `1771839550` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-thread-data-entities-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | User entity details | [See below ↓](#send-thread-data-entities-receiver-entity-object) |
+
+---
+
+<span id="send-thread-data-entities-receiver-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | User's avatar URL | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `role` | string | User's role | `"default"` |
+| `status` | string | User's online status | `"online"` |
+| `lastActiveAt` | number | Last active timestamp | `1771839549` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-thread-data-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Injected extensions data | [See below ↓](#send-thread-data-metadata-injected-object) |
+
+---
+
+<span id="send-thread-data-metadata-injected-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata.@injected` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `extensions` | object | Extensions data | [See below ↓](#send-thread-data-metadata-extensions-object) |
+
+---
+
+<span id="send-thread-data-metadata-extensions-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `link-preview` | object | Link preview extension | [See below ↓](#send-thread-data-metadata-linkpreview-object) |
+
+---
+
+<span id="send-thread-data-metadata-linkpreview-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata.@injected.extensions.link-preview` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `links` | array | Extracted links | `[]` |
+
+---
+
+<span id="send-thread-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Injected extensions data | [See below ↓](#send-thread-metadata-injected-object) |
+
+---
+
+<span id="send-thread-metadata-injected-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata.@injected` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `extensions` | object | Extensions data | [See below ↓](#send-thread-metadata-extensions-object) |
+
+---
+
+<span id="send-thread-metadata-extensions-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `link-preview` | object | Link preview extension | [See below ↓](#send-thread-metadata-linkpreview-object) |
+
+---
+
+<span id="send-thread-metadata-linkpreview-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata.@injected.extensions.link-preview` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `links` | array | Extracted links | `[]` |
+
 </Accordion>
 
 
@@ -314,104 +444,231 @@ messagesRequest.fetchPrevious().then(
 
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `fetchPrevious()` returns an array of messages belonging to the thread:
-```json
-[
-  {
-    "reactions": [],
-    "mentionedUsers": [],
-    "mentionedMe": false,
-    "receiverId": "cometchat-uid-7",
-    "type": "text",
-    "receiverType": "user",
-    "category": "message",
-    "data": {
-      "entities": {
-        "receiver": {
-          "entity": {
-            "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-            "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-            "lastActiveAt": 1771839549,
-            "name": "Henry Marino",
-            "role": "default",
-            "status": "online",
-            "tags": [],
-            "uid": "cometchat-uid-7"
-          },
-          "entityType": "user"
-        },
-        "sender": {
-          "entity": {
-            "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-            "lastActiveAt": 1771839550,
-            "name": "Ronald Jerry",
-            "role": "default",
-            "status": "online",
-            "tags": [],
-            "uid": "cometchat-uid-6"
-          },
-          "entityType": "user"
-        }
-      },
-      "metadata": {
-        "@injected": {
-          "extensions": {
-            "link-preview": {
-              "links": []
-            }
-          }
-        }
-      },
-      "moderation": {
-        "status": "approved"
-      },
-      "resource": "REACT_NATIVE-4_0_14-f8c2a36f-89cc-4a1a-8ef9-880f311c0d1d-1771838824248",
-      "text": "Hello thread!"
-    },
-    "text": "Hello thread!",
-    "id": "25293",
-    "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-    "sender": {
-      "hasBlockedMe": false,
-      "blockedByMe": false,
-      "deactivatedAt": 0,
-      "uid": "cometchat-uid-6",
-      "name": "Ronald Jerry",
-      "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-      "lastActiveAt": 1771839550,
-      "role": "default",
-      "status": "online",
-      "tags": []
-    },
-    "receiver": {
-      "hasBlockedMe": false,
-      "blockedByMe": false,
-      "deactivatedAt": 0,
-      "uid": "cometchat-uid-7",
-      "name": "Henry Marino",
-      "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-      "lastActiveAt": 1771839549,
-      "role": "default",
-      "status": "online",
-      "tags": []
-    },
-    "sentAt": 1771839799,
-    "updatedAt": 1771839799,
-    "parentMessageId": "25291", // Dynamic - matches the parent message's ID you're fetching replies for
-    "metadata": {
-      "@injected": {
-        "extensions": {
-          "link-preview": {
-            "links": []
-          }
-        }
-      }
-    }
-  },
-  // ... more thread messages up to the specified limit
-]
-```
+
+<span id="fetch-thread-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message identifier | `"25293"` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `receiverId` | string | Receiver's UID | `"cometchat-uid-7"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `type` | string | Message type | `"text"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | Message text content | `"Hello thread!"` |
+| `sentAt` | number | Unix timestamp when sent | `1771839799` |
+| `updatedAt` | number | Unix timestamp when updated | `1771839799` |
+| `parentMessageId` | string | ID of the parent message this reply belongs to | `"25291"` |
+| `sender` | object | Sender user details | [See below ↓](#fetch-thread-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#fetch-thread-receiver-object) |
+| `data` | object | Additional message data | [See below ↓](#fetch-thread-data-object) |
+| `metadata` | object | Message metadata | [See below ↓](#fetch-thread-metadata-object) |
+| `reactions` | array | Message reactions | `[]` |
+| `mentionedUsers` | array | Users mentioned in message | `[]` |
+| `mentionedMe` | boolean | Whether current user is mentioned | `false` |
+
+---
+
+<span id="fetch-thread-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1771839550` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="fetch-thread-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1771839549` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="fetch-thread-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | Message text | `"Hello thread!"` |
+| `resource` | string | SDK resource identifier | `"REACT_NATIVE-4_0_14-..."` |
+| `entities` | object | Sender and receiver entities | [See below ↓](#fetch-thread-data-entities-object) |
+| `metadata` | object | Injected metadata | [See below ↓](#fetch-thread-data-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+
+---
+
+<span id="fetch-thread-data-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper | [See below ↓](#fetch-thread-data-entities-sender-object) |
+| `receiver` | object | Receiver entity wrapper | [See below ↓](#fetch-thread-data-entities-receiver-object) |
+
+---
+
+<span id="fetch-thread-data-entities-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | User entity details | [See below ↓](#fetch-thread-data-entities-sender-entity-object) |
+
+---
+
+<span id="fetch-thread-data-entities-sender-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | User's avatar URL | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `role` | string | User's role | `"default"` |
+| `status` | string | User's online status | `"online"` |
+| `lastActiveAt` | number | Last active timestamp | `1771839550` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="fetch-thread-data-entities-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | User entity details | [See below ↓](#fetch-thread-data-entities-receiver-entity-object) |
+
+---
+
+<span id="fetch-thread-data-entities-receiver-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | User's avatar URL | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `role` | string | User's role | `"default"` |
+| `status` | string | User's online status | `"online"` |
+| `lastActiveAt` | number | Last active timestamp | `1771839549` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="fetch-thread-data-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Injected extensions data | [See below ↓](#fetch-thread-data-metadata-injected-object) |
+
+---
+
+<span id="fetch-thread-data-metadata-injected-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata.@injected` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `extensions` | object | Extensions data | [See below ↓](#fetch-thread-data-metadata-extensions-object) |
+
+---
+
+<span id="fetch-thread-data-metadata-extensions-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `link-preview` | object | Link preview extension | [See below ↓](#fetch-thread-data-metadata-linkpreview-object) |
+
+---
+
+<span id="fetch-thread-data-metadata-linkpreview-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata.@injected.extensions.link-preview` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `links` | array | Extracted links | `[]` |
+
+---
+
+<span id="fetch-thread-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Injected extensions data | [See below ↓](#fetch-thread-metadata-injected-object) |
+
+---
+
+<span id="fetch-thread-metadata-injected-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata.@injected` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `extensions` | object | Extensions data | [See below ↓](#fetch-thread-metadata-extensions-object) |
+
+---
+
+<span id="fetch-thread-metadata-extensions-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `link-preview` | object | Link preview extension | [See below ↓](#fetch-thread-metadata-linkpreview-object) |
+
+---
+
+<span id="fetch-thread-metadata-linkpreview-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata.@injected.extensions.link-preview` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `links` | array | Extracted links | `[]` |
+
 </Accordion>
 
 ## Avoid Threaded Messages in User/Group Conversations
@@ -420,191 +677,232 @@ While fetching messages for normal user/group conversations using the `MessagesR
 
 <Accordion title="Default Behavior (without hideReplies) - Thread replies included">
 **Without `hideReplies(true)`** — `fetchPrevious()` returns all messages including thread replies (note the second message has `parentMessageId`):
-```json
-[
-  {
-    "reactions": [],
-    "mentionedUsers": [],
-    "mentionedMe": false,
-    "receiverId": "cometchat-uid-6",
-    "type": "text",
-    "receiverType": "user",
-    "category": "message",
-    "data": {
-      "entities": {
-        "receiver": {
-          "entity": {
-            "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-            "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-            "lastActiveAt": 1771829859,
-            "name": "Ronald Jerry",
-            "role": "default",
-            "status": "online",
-            "tags": [],
-            "uid": "cometchat-uid-6"
-          },
-          "entityType": "user"
-        },
-        "sender": {
-          "entity": {
-            "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-            "lastActiveAt": 1771829868,
-            "name": "Henry Marino",
-            "role": "default",
-            "status": "online",
-            "tags": [],
-            "uid": "cometchat-uid-7"
-          },
-          "entityType": "user"
-        }
-      },
-      "metadata": {
-        "@injected": {
-          "extensions": {
-            "link-preview": {
-              "links": []
-            }
-          }
-        }
-      },
-      "resource": "REACT_NATIVE-4_0_14-b495efdd-5a54-4a47-a8ad-237bf8dff679-1771829544163",
-      "text": "Hello"
-    },
-    "text": "Hello",
-    "id": "25291",
-    "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-    "sender": {
-      "hasBlockedMe": false,
-      "blockedByMe": false,
-      "deactivatedAt": 0,
-      "uid": "cometchat-uid-7",
-      "name": "Henry Marino",
-      "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-      "lastActiveAt": 1771829868,
-      "role": "default",
-      "status": "online",
-      "tags": []
-    },
-    "receiver": {
-      "hasBlockedMe": false,
-      "blockedByMe": false,
-      "deactivatedAt": 0,
-      "uid": "cometchat-uid-6",
-      "name": "Ronald Jerry",
-      "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-      "lastActiveAt": 1771829859,
-      "role": "default",
-      "status": "online",
-      "tags": []
-    },
-    "sentAt": 1771831336,
-    "deliveredAt": 1771832977,
-    "readAt": 1771832977,
-    "updatedAt": 1771832977,
-    "replyCount": 1,
-    "metadata": {
-      "@injected": {
-        "extensions": {
-          "link-preview": {
-            "links": []
-          }
-        }
-      }
-    }
-  },
-  {
-    "reactions": [],
-    "mentionedUsers": [],
-    "mentionedMe": false,
-    "receiverId": "cometchat-uid-7",
-    "type": "text",
-    "receiverType": "user",
-    "category": "message",
-    "data": {
-      "entities": {
-        "receiver": {
-          "entity": {
-            "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-            "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-            "lastActiveAt": 1771839549,
-            "name": "Henry Marino",
-            "role": "default",
-            "status": "online",
-            "tags": [],
-            "uid": "cometchat-uid-7"
-          },
-          "entityType": "user"
-        },
-        "sender": {
-          "entity": {
-            "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-            "lastActiveAt": 1771839550,
-            "name": "Ronald Jerry",
-            "role": "default",
-            "status": "online",
-            "tags": [],
-            "uid": "cometchat-uid-6"
-          },
-          "entityType": "user"
-        }
-      },
-      "metadata": {
-        "@injected": {
-          "extensions": {
-            "link-preview": {
-              "links": []
-            }
-          }
-        }
-      },
-      "moderation": {
-        "status": "approved"
-      },
-      "resource": "REACT_NATIVE-4_0_14-f8c2a36f-89cc-4a1a-8ef9-880f311c0d1d-1771838824248",
-      "text": "Hello thread!"
-    },
-    "text": "Hello thread!",
-    "id": "25293",
-    "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-    "sender": {
-      "hasBlockedMe": false,
-      "blockedByMe": false,
-      "deactivatedAt": 0,
-      "uid": "cometchat-uid-6",
-      "name": "Ronald Jerry",
-      "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-      "lastActiveAt": 1771839550,
-      "role": "default",
-      "status": "online",
-      "tags": []
-    },
-    "receiver": {
-      "hasBlockedMe": false,
-      "blockedByMe": false,
-      "deactivatedAt": 0,
-      "uid": "cometchat-uid-7",
-      "name": "Henry Marino",
-      "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-      "lastActiveAt": 1771839549,
-      "role": "default",
-      "status": "online",
-      "tags": []
-    },
-    "sentAt": 1771839799,
-    "updatedAt": 1771839799,
-    "parentMessageId": "25291", // Dynamic - this links the reply to its parent message (id: 25291)
-    "metadata": {
-      "@injected": {
-        "extensions": {
-          "link-preview": {
-            "links": []
-          }
-        }
-      }
-    }
-  }
-]
-```
+
+<span id="default-behavior-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message identifier | `"25291"` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `receiverId` | string | Receiver's UID | `"cometchat-uid-6"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `type` | string | Message type | `"text"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | Message text content | `"Hello"` |
+| `sentAt` | number | Unix timestamp when sent | `1771831336` |
+| `deliveredAt` | number | Unix timestamp when delivered | `1771832977` |
+| `readAt` | number | Unix timestamp when read | `1771832977` |
+| `updatedAt` | number | Unix timestamp when updated | `1771832977` |
+| `replyCount` | number | Number of replies to this message | `1` |
+| `sender` | object | Sender user details | [See below ↓](#default-behavior-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#default-behavior-receiver-object) |
+| `data` | object | Additional message data | [See below ↓](#default-behavior-data-object) |
+| `metadata` | object | Message metadata | [See below ↓](#default-behavior-metadata-object) |
+| `reactions` | array | Message reactions | `[]` |
+| `mentionedUsers` | array | Users mentioned in message | `[]` |
+| `mentionedMe` | boolean | Whether current user is mentioned | `false` |
+
+Thread replies in the same response will have a `parentMessageId` field linking them to their parent message.
+
+---
+
+<span id="default-behavior-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1771829868` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="default-behavior-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1771829859` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="default-behavior-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | Message text | `"Hello"` |
+| `resource` | string | SDK resource identifier | `"REACT_NATIVE-4_0_14-..."` |
+| `entities` | object | Sender and receiver entities | [See below ↓](#default-behavior-data-entities-object) |
+| `metadata` | object | Injected metadata | [See below ↓](#default-behavior-data-metadata-object) |
+
+---
+
+<span id="default-behavior-data-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper | [See below ↓](#default-behavior-data-entities-sender-object) |
+| `receiver` | object | Receiver entity wrapper | [See below ↓](#default-behavior-data-entities-receiver-object) |
+
+---
+
+<span id="default-behavior-data-entities-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | User entity details | [See below ↓](#default-behavior-data-entities-sender-entity-object) |
+
+---
+
+<span id="default-behavior-data-entities-sender-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | User's avatar URL | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `role` | string | User's role | `"default"` |
+| `status` | string | User's online status | `"online"` |
+| `lastActiveAt` | number | Last active timestamp | `1771829868` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="default-behavior-data-entities-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | User entity details | [See below ↓](#default-behavior-data-entities-receiver-entity-object) |
+
+---
+
+<span id="default-behavior-data-entities-receiver-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | User's avatar URL | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `role` | string | User's role | `"default"` |
+| `status` | string | User's online status | `"online"` |
+| `lastActiveAt` | number | Last active timestamp | `1771829859` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="default-behavior-data-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Injected extensions data | [See below ↓](#default-behavior-data-metadata-injected-object) |
+
+---
+
+<span id="default-behavior-data-metadata-injected-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata.@injected` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `extensions` | object | Extensions data | [See below ↓](#default-behavior-data-metadata-extensions-object) |
+
+---
+
+<span id="default-behavior-data-metadata-extensions-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `link-preview` | object | Link preview extension | [See below ↓](#default-behavior-data-metadata-linkpreview-object) |
+
+---
+
+<span id="default-behavior-data-metadata-linkpreview-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata.@injected.extensions.link-preview` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `links` | array | Extracted links | `[]` |
+
+---
+
+<span id="default-behavior-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Injected extensions data | [See below ↓](#default-behavior-metadata-injected-object) |
+
+---
+
+<span id="default-behavior-metadata-injected-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata.@injected` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `extensions` | object | Extensions data | [See below ↓](#default-behavior-metadata-extensions-object) |
+
+---
+
+<span id="default-behavior-metadata-extensions-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `link-preview` | object | Link preview extension | [See below ↓](#default-behavior-metadata-linkpreview-object) |
+
+---
+
+<span id="default-behavior-metadata-linkpreview-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata.@injected.extensions.link-preview` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `links` | array | Extracted links | `[]` |
+
 </Accordion>
 
 <Tabs>
@@ -694,103 +992,232 @@ messagesRequest.fetchPrevious().then(
 
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `fetchPrevious()` returns messages excluding thread replies (note: parent messages with `replyCount` are included, but their replies are not):
-```json
-[
-  {
-    "reactions": [],
-    "mentionedUsers": [],
-    "mentionedMe": false,
-    "receiverId": "cometchat-uid-6",
-    "type": "text",
-    "receiverType": "user",
-    "category": "message",
-    "data": {
-      "entities": {
-        "receiver": {
-          "entity": {
-            "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-            "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-            "lastActiveAt": 1771829859,
-            "name": "Ronald Jerry",
-            "role": "default",
-            "status": "online",
-            "tags": [],
-            "uid": "cometchat-uid-6"
-          },
-          "entityType": "user"
-        },
-        "sender": {
-          "entity": {
-            "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-            "lastActiveAt": 1771829868,
-            "name": "Henry Marino",
-            "role": "default",
-            "status": "online",
-            "tags": [],
-            "uid": "cometchat-uid-7"
-          },
-          "entityType": "user"
-        }
-      },
-      "metadata": {
-        "@injected": {
-          "extensions": {
-            "link-preview": {
-              "links": []
-            }
-          }
-        }
-      },
-      "resource": "REACT_NATIVE-4_0_14-b495efdd-5a54-4a47-a8ad-237bf8dff679-1771829544163",
-      "text": "Hello"
-    },
-    "text": "Hello",
-    "id": "25291",
-    "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-    "sender": {
-      "hasBlockedMe": false,
-      "blockedByMe": false,
-      "deactivatedAt": 0,
-      "uid": "cometchat-uid-7",
-      "name": "Henry Marino",
-      "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-      "lastActiveAt": 1771829868,
-      "role": "default",
-      "status": "online",
-      "tags": []
-    },
-    "receiver": {
-      "hasBlockedMe": false,
-      "blockedByMe": false,
-      "deactivatedAt": 0,
-      "uid": "cometchat-uid-6",
-      "name": "Ronald Jerry",
-      "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-      "lastActiveAt": 1771829859,
-      "role": "default",
-      "status": "online",
-      "tags": []
-    },
-    "sentAt": 1771831336,
-    "deliveredAt": 1771832977,
-    "readAt": 1771832977,
-    "updatedAt": 1771832977,
-    "replyCount": 1,
-    "metadata": {
-      "@injected": {
-        "extensions": {
-          "link-preview": {
-            "links": []
-          }
-        }
-      }
-    }
-  },
-  // ... more messages up to the specified limit (thread replies excluded)
-]
-```
+
+<span id="hide-replies-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message identifier | `"25291"` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `receiverId` | string | Receiver's UID | `"cometchat-uid-6"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `type` | string | Message type | `"text"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | Message text content | `"Hello"` |
+| `sentAt` | number | Unix timestamp when sent | `1771831336` |
+| `deliveredAt` | number | Unix timestamp when delivered | `1771832977` |
+| `readAt` | number | Unix timestamp when read | `1771832977` |
+| `updatedAt` | number | Unix timestamp when updated | `1771832977` |
+| `replyCount` | number | Number of replies to this message | `1` |
+| `sender` | object | Sender user details | [See below ↓](#hide-replies-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#hide-replies-receiver-object) |
+| `data` | object | Additional message data | [See below ↓](#hide-replies-data-object) |
+| `metadata` | object | Message metadata | [See below ↓](#hide-replies-metadata-object) |
+| `reactions` | array | Message reactions | `[]` |
+| `mentionedUsers` | array | Users mentioned in message | `[]` |
+| `mentionedMe` | boolean | Whether current user is mentioned | `false` |
+
+---
+
+<span id="hide-replies-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1771829868` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="hide-replies-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1771829859` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="hide-replies-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | Message text | `"Hello"` |
+| `resource` | string | SDK resource identifier | `"REACT_NATIVE-4_0_14-..."` |
+| `entities` | object | Sender and receiver entities | [See below ↓](#hide-replies-data-entities-object) |
+| `metadata` | object | Injected metadata | [See below ↓](#hide-replies-data-metadata-object) |
+
+---
+
+<span id="hide-replies-data-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper | [See below ↓](#hide-replies-data-entities-sender-object) |
+| `receiver` | object | Receiver entity wrapper | [See below ↓](#hide-replies-data-entities-receiver-object) |
+
+---
+
+<span id="hide-replies-data-entities-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | User entity details | [See below ↓](#hide-replies-data-entities-sender-entity-object) |
+
+---
+
+<span id="hide-replies-data-entities-sender-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | User's avatar URL | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `role` | string | User's role | `"default"` |
+| `status` | string | User's online status | `"online"` |
+| `lastActiveAt` | number | Last active timestamp | `1771829868` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="hide-replies-data-entities-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | User entity details | [See below ↓](#hide-replies-data-entities-receiver-entity-object) |
+
+---
+
+<span id="hide-replies-data-entities-receiver-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | User's avatar URL | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `role` | string | User's role | `"default"` |
+| `status` | string | User's online status | `"online"` |
+| `lastActiveAt` | number | Last active timestamp | `1771829859` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="hide-replies-data-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Injected extensions data | [See below ↓](#hide-replies-data-metadata-injected-object) |
+
+---
+
+<span id="hide-replies-data-metadata-injected-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata.@injected` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `extensions` | object | Extensions data | [See below ↓](#hide-replies-data-metadata-extensions-object) |
+
+---
+
+<span id="hide-replies-data-metadata-extensions-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `link-preview` | object | Link preview extension | [See below ↓](#hide-replies-data-metadata-linkpreview-object) |
+
+---
+
+<span id="hide-replies-data-metadata-linkpreview-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.metadata.@injected.extensions.link-preview` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `links` | array | Extracted links | `[]` |
+
+---
+
+<span id="hide-replies-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Injected extensions data | [See below ↓](#hide-replies-metadata-injected-object) |
+
+---
+
+<span id="hide-replies-metadata-injected-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata.@injected` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `extensions` | object | Extensions data | [See below ↓](#hide-replies-metadata-extensions-object) |
+
+---
+
+<span id="hide-replies-metadata-extensions-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `link-preview` | object | Link preview extension | [See below ↓](#hide-replies-metadata-linkpreview-object) |
+
+---
+
+<span id="hide-replies-metadata-linkpreview-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata.@injected.extensions.link-preview` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `links` | array | Extracted links | `[]` |
+
 </Accordion>
 
 The above snippet will return messages between the logged-in user and `cometchat-uid-1` excluding all the threaded messages belonging to the same conversation.

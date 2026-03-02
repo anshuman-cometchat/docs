@@ -249,14 +249,14 @@ CometChat.markAsDelivered(message).then(
 
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `markAsDelivered()` returns a confirmation object:
-```json
-{
-  "messageId": "25323",
-  "type": "text"
-}
-```
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `messageId` | string | ID of the message marked as delivered | `"25323"` |
+| `type` | string | Message type | `"text"` |
+
 </Accordion>
 
 ## Mark Messages as Read
@@ -465,14 +465,14 @@ CometChat.markAsRead(message).then(
 
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `markAsRead()` returns a confirmation object:
-```json
-{
-  "messageId": "25323",
-  "type": "text"
-}
-```
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `messageId` | string | ID of the message marked as read | `"25323"` |
+| `type` | string | Message type | `"text"` |
+
 </Accordion>
 
 ## Mark Messages as Unread
@@ -550,83 +550,125 @@ CometChat.markMessageAsUnread(message).then(
 
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `markMessageAsUnread()` returns the updated `Conversation` object with the new unread count:
-```json
-{
-  "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-  "conversationType": "user",
-  "unreadMentionsCount": 0,
-  "lastReadMessageId": "25323",
-  "unreadMessageCount": 1,
-  "lastMessage": {
-    "reactions": [],
-    "mentionedUsers": [
-      {
-        "hasBlockedMe": false,
-        "blockedByMe": false,
-        "deactivatedAt": 0,
-        "uid": "cometchat-uid-7",
-        "name": "Henry Marino",
-        "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-        "lastActiveAt": 1772005334,
-        "role": "default",
-        "status": "online"
-      }
-    ],
-    "mentionedMe": true,
-    "receiverId": "cometchat-uid-7",
-    "type": "text",
-    "receiverType": "user",
-    "category": "message",
-    "text": "Hello <@uid:cometchat-uid-7>, this is a test mention!",
-    "id": "25326",
-    "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-    "sender": {
-      "hasBlockedMe": false,
-      "blockedByMe": false,
-      "deactivatedAt": 0,
-      "uid": "cometchat-uid-6",
-      "name": "Ronald Jerry",
-      "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-      "lastActiveAt": 1772004288,
-      "role": "default",
-      "status": "offline",
-      "tags": []
-    },
-    "receiver": {
-      "hasBlockedMe": false,
-      "blockedByMe": false,
-      "deactivatedAt": 0,
-      "uid": "cometchat-uid-7",
-      "name": "Henry Marino",
-      "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-      "lastActiveAt": 1772005334,
-      "role": "default",
-      "status": "online",
-      "tags": []
-    },
-    "sentAt": 1772006074,
-    "deliveredAt": 1772006158,
-    "readAt": 1772006158,
-    "updatedAt": 1772006158
-  },
-  "latestMessageId": "",
-  "conversationWith": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-6",
-    "name": "Ronald Jerry",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-    "lastActiveAt": 1772004288,
-    "role": "default",
-    "status": "offline",
-    "tags": [],
-    "conversationId": "cometchat-uid-6_user_cometchat-uid-7"
-  }
-}
-```
+
+<span id="mark-unread-conversation-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Conversation Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `conversationId` | string | Unique conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `conversationType` | string | Type of conversation | `"user"` |
+| `unreadMessageCount` | number | Number of unread messages | `1` |
+| `unreadMentionsCount` | number | Number of unread mentions | `0` |
+| `lastReadMessageId` | string | ID of last read message | `"25323"` |
+| `latestMessageId` | string | ID of latest message | `""` |
+| `lastMessage` | object | Last message in conversation | [See below ↓](#mark-unread-lastmessage-object) |
+| `conversationWith` | object | User or group the conversation is with | [See below ↓](#mark-unread-conversationwith-object) |
+
+---
+
+<span id="mark-unread-lastmessage-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`lastMessage` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message identifier | `"25326"` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `receiverId` | string | Receiver's UID | `"cometchat-uid-7"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `type` | string | Message type | `"text"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | Message text content | `"Hello <@uid:cometchat-uid-7>, this is a test mention!"` |
+| `sentAt` | number | Unix timestamp when sent | `1772006074` |
+| `deliveredAt` | number | Unix timestamp when delivered | `1772006158` |
+| `readAt` | number | Unix timestamp when read | `1772006158` |
+| `updatedAt` | number | Unix timestamp when updated | `1772006158` |
+| `mentionedMe` | boolean | Whether current user is mentioned | `true` |
+| `mentionedUsers` | array | Users mentioned in message | [See below ↓](#mark-unread-mentionedusers-array) |
+| `sender` | object | Sender user details | [See below ↓](#mark-unread-lastmessage-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#mark-unread-lastmessage-receiver-object) |
+| `reactions` | array | Message reactions | `[]` |
+
+---
+
+<span id="mark-unread-mentionedusers-array" style={{scrollMarginTop: '100px'}}></span>
+
+**`lastMessage.mentionedUsers` Array (per item):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1772005334` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="mark-unread-lastmessage-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`lastMessage.sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `status` | string | User's online status | `"offline"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1772004288` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="mark-unread-lastmessage-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`lastMessage.receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1772005334` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="mark-unread-conversationwith-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`conversationWith` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `status` | string | User's online status | `"offline"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1772004288` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+
 </Accordion>
 
 ## Receive Delivery & Read Receipts
@@ -701,96 +743,147 @@ CometChat.addMessageListener(
 
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Event** — `onMessagesDelivered` returns a `MessageReceipt` object for user conversations:
-```json
-{
-  "receiptType": "delivery",
-  "sender": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-7",
-    "name": "Henry Marino",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-    "lastActiveAt": 1771853565,
-    "role": "default",
-    "status": "online",
-    "tags": []
-  },
-  "receiverType": "user",
-  "receiver": "cometchat-uid-6",
-  "deliveredAt": 1772005348,
-  "messageId": "25323",
-  "timestamp": 1772005348
-}
-```
+
+<span id="on-delivered-receipt-object" style={{scrollMarginTop: '100px'}}></span>
+
+**MessageReceipt Object (onMessagesDelivered):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `receiptType` | string | Type of receipt | `"delivery"` |
+| `messageId` | string | ID of the message | `"25323"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `receiver` | string | Receiver's UID | `"cometchat-uid-6"` |
+| `deliveredAt` | number | Unix timestamp when delivered | `1772005348` |
+| `timestamp` | number | Event timestamp | `1772005348` |
+| `sender` | object | User who triggered the receipt | [See below ↓](#on-delivered-sender-object) |
+
+---
+
+<span id="on-delivered-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object (onMessagesDelivered):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1771853565` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
 
 **On Event** — `onMessagesRead` returns a `MessageReceipt` object for user conversations:
-```json
-{
-  "receiptType": "read",
-  "sender": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-7",
-    "name": "Henry Marino",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-    "lastActiveAt": 1771853565,
-    "role": "default",
-    "status": "online",
-    "tags": []
-  },
-  "receiverType": "user",
-  "receiver": "cometchat-uid-6",
-  "readAt": 1772005377,
-  "messageId": "25323",
-  "timestamp": 1772005377
-}
-```
+
+<span id="on-read-receipt-object" style={{scrollMarginTop: '100px'}}></span>
+
+**MessageReceipt Object (onMessagesRead):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `receiptType` | string | Type of receipt | `"read"` |
+| `messageId` | string | ID of the message | `"25323"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `receiver` | string | Receiver's UID | `"cometchat-uid-6"` |
+| `readAt` | number | Unix timestamp when read | `1772005377` |
+| `timestamp` | number | Event timestamp | `1772005377` |
+| `sender` | object | User who triggered the receipt | [See below ↓](#on-read-sender-object) |
+
+---
+
+<span id="on-read-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object (onMessagesRead):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1771853565` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
 
 **On Event** — `onMessagesDeliveredToAll` returns a `MessageReceipt` object for group conversations (sender is System):
-```json
-{
-  "receiptType": "deliveredToAll",
-  "sender": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "app_system",
-    "name": "System",
-    "role": "default",
-    "status": "offline"
-  },
-  "receiverType": "group",
-  "receiver": "tg1",
-  "deliveredAt": 1772005516,
-  "messageId": "25325",
-  "timestamp": 1772005516
-}
-```
+
+<span id="on-delivered-all-receipt-object" style={{scrollMarginTop: '100px'}}></span>
+
+**MessageReceipt Object (onMessagesDeliveredToAll):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `receiptType` | string | Type of receipt | `"deliveredToAll"` |
+| `messageId` | string | ID of the message | `"25325"` |
+| `receiverType` | string | Type of receiver | `"group"` |
+| `receiver` | string | Group GUID | `"tg1"` |
+| `deliveredAt` | number | Unix timestamp when delivered to all | `1772005516` |
+| `timestamp` | number | Event timestamp | `1772005516` |
+| `sender` | object | System user object | [See below ↓](#on-delivered-all-sender-object) |
+
+---
+
+<span id="on-delivered-all-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object (onMessagesDeliveredToAll):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | System user identifier | `"app_system"` |
+| `name` | string | System user name | `"System"` |
+| `role` | string | User's role | `"default"` |
+| `status` | string | User's online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
 
 **On Event** — `onMessagesReadByAll` returns a `MessageReceipt` object for group conversations (sender is System):
-```json
-{
-  "receiptType": "readByAll",
-  "sender": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "app_system",
-    "name": "System",
-    "role": "default",
-    "status": "offline"
-  },
-  "receiverType": "group",
-  "receiver": "tg1",
-  "readAt": 1772005546,
-  "messageId": "25325",
-  "timestamp": 1772005546
-}
-```
+
+<span id="on-read-all-receipt-object" style={{scrollMarginTop: '100px'}}></span>
+
+**MessageReceipt Object (onMessagesReadByAll):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `receiptType` | string | Type of receipt | `"readByAll"` |
+| `messageId` | string | ID of the message | `"25325"` |
+| `receiverType` | string | Type of receiver | `"group"` |
+| `receiver` | string | Group GUID | `"tg1"` |
+| `readAt` | number | Unix timestamp when read by all | `1772005546` |
+| `timestamp` | number | Event timestamp | `1772005546` |
+| `sender` | object | System user object | [See below ↓](#on-read-all-sender-object) |
+
+---
+
+<span id="on-read-all-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object (onMessagesReadByAll):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | System user identifier | `"app_system"` |
+| `name` | string | System user name | `"System"` |
+| `role` | string | User's role | `"default"` |
+| `status` | string | User's online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
 </Accordion>
 
 <Warning>

@@ -104,33 +104,27 @@ The CometChat SDK maintains the session of the logged-in user within the SDK. Th
 
 After the user logs in, their information is returned in the `User` object on `Promise` resolved.
 
-<Accordion title="Sample Console Output">
-**On Success** — `console.log("Login Successful:", user)` returns:
-```json
-Login Successful: {
-  "hasBlockedMe": false,
-  "blockedByMe": false,
-  "deactivatedAt": 0,
-  "uid": "cometchat-uid-2",
-  "name": "George Alan",
-  "authToken": "cometchat-uid-2_17713124898af10df254d51ef6ffc14e79955ac0",
-  "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
-  "lastActiveAt": 1771311515,
-  "role": "default",
-  "status": "online",
-  "tags": []
-}
-```
+<Accordion title="Response">
+**On Success** — Returns a User object:
 
-**On Failure** — `console.log("Login failed with exception:", error)` returns:
-```json
-Login failed with exception: {
-  "code": "ERR_UID_NOT_FOUND",
-  "name": "UID not found",
-  "message": "The UID provided does not exist.",
-  "details": {}
-}
-```
+<span id="login-authkey-user-object" style={{scrollMarginTop: '100px'}}></span>
+
+**User Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the user | `"cometchat-uid-2"` |
+| `name` | string | Display name of the user | `"George Alan"` |
+| `authToken` | string | Authentication token for the session | `"cometchat-uid-2_17713124898af10df254d51ef6ffc14e79955ac0"` |
+| `avatar` | string | URL to user's avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp"` |
+| `status` | string | Current online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771311515` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Unix timestamp if user is deactivated (0 if active) | `0` |
+| `tags` | array | Tags associated with the user | `[]` |
+
 </Accordion>
 
 ## Login using Auth Token
@@ -206,33 +200,27 @@ This advanced authentication procedure does not use the Auth Key directly in you
 
 After the user logs in, their information is returned in the `User` object on the `Promise` resolved.
 
-<Accordion title="Sample Console Output">
-**On Success** — `console.log("Login Successful:", user)` returns:
-```json
-Login Successful: {
-  "hasBlockedMe": false,
-  "blockedByMe": false,
-  "deactivatedAt": 0,
-  "uid": "cometchat-uid-2",
-  "name": "George Alan",
-  "authToken": "cometchat-uid-2_17713124898af10df254d51ef6ffc14e79955ac0",
-  "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
-  "lastActiveAt": 1771311515,
-  "role": "default",
-  "status": "online",
-  "tags": []
-}
-```
+<Accordion title="Response">
+**On Success** — Returns a User object:
 
-**On Failure** — `console.log("Login failed with exception:", error)` returns:
-```json
-Login failed with exception: {
-  "code": "ERR_AUTH_TOKEN_NOT_FOUND",
-  "name": "Auth token not found",
-  "message": "The Auth Token provided is invalid or expired.",
-  "details": {}
-}
-```
+<span id="login-authtoken-user-object" style={{scrollMarginTop: '100px'}}></span>
+
+**User Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the user | `"cometchat-uid-2"` |
+| `name` | string | Display name of the user | `"George Alan"` |
+| `authToken` | string | Authentication token for the session | `"cometchat-uid-2_17713124898af10df254d51ef6ffc14e79955ac0"` |
+| `avatar` | string | URL to user's avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp"` |
+| `status` | string | Current online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771311515` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Unix timestamp if user is deactivated (0 if active) | `0` |
+| `tags` | array | Tags associated with the user | `[]` |
+
 </Accordion>
 
 ## Logout
@@ -266,21 +254,13 @@ You can use the `logout()` method to log out the user from CometChat. We suggest
   </Tab>
 </Tabs>
 
-<Accordion title="Sample Console Output">
-**On Success** — `console.log("Logout completed successfully")` returns:
-```
-Logout completed successfully
-```
+<Accordion title="Response">
+**On Success** — Returns a success message:
 
-**On Failure** — `console.log("Logout failed with exception:", error)` returns:
-```json
-Logout failed with exception: {
-  "code": "ERR_NOT_LOGGED_IN",
-  "name": "Not logged in",
-  "message": "No user is currently logged in.",
-  "details": {}
-}
-```
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `message` | string | Logout confirmation | `"Logout completed successfully"` |
+
 </Accordion>
 
 <AccordionGroup>

@@ -95,36 +95,22 @@ Before flagging a message, retrieve the list of available flag reasons configure
   </Tab>
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `getFlagReasons()` returns an array of flag reason objects:
-```json
-[
-  {
-    "id": "spam",
-    "name": "Spam",
-    "description": "Repeated, promotional, or irrelevant content",
-    "createdAt": 1761627675,
-    "updatedAt": 1761627675,
-    "default": false
-  },
-  {
-    "id": "sexual",
-    "name": "Sexual Content",
-    "description": "Explicit or inappropriate content",
-    "createdAt": 1761627675,
-    "updatedAt": 1761627675,
-    "default": false
-  },
-  {
-    "id": "harassment",
-    "name": "Harassment / Bullying",
-    "description": "Insulting or threatening behavior",
-    "createdAt": 1761627675,
-    "updatedAt": 1761627675,
-    "default": false
-  }
-]
-```
+
+<span id="get-flag-reasons-array" style={{scrollMarginTop: '100px'}}></span>
+
+**Flag Reason Array (per item):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique identifier for the flag reason | `"spam"` |
+| `name` | string | Display name of the flag reason | `"Spam"` |
+| `description` | string | Detailed description of the reason | `"Repeated, promotional, or irrelevant content"` |
+| `createdAt` | number | Unix timestamp when reason was created | `1761627675` |
+| `updatedAt` | number | Unix timestamp when reason was last updated | `1761627675` |
+| `default` | boolean | Whether this is a default reason | `false` |
+
 </Accordion>
 
 ## Flag a Message
@@ -170,14 +156,18 @@ To flag a message, use the `flagMessage()` method with the message ID and a payl
   </Tab>
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `flagMessage()` returns a success response:
-```json
-{
-  "success": true,
-  "message": "Message 25300 has been flagged successfully."
-}
-```
+
+<span id="flag-message-response-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Response Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `success` | boolean | Indicates if the flag operation succeeded | `true` |
+| `message` | string | Confirmation message with flagged message ID | `"Message 25300 has been flagged successfully."` |
+
 </Accordion>
 
 ### Parameters

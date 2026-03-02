@@ -131,7 +131,7 @@ CometChat.initiateCall(call).then(
 
 On success, a `Call` object is returned containing the call details including a unique `sessionId` required for starting the call session.
 
-<Accordion title="Sample Response">
+<Accordion title="Response">
 **On Success** — `initiateCall()` returns a `Call` object with session details:
 
 | Parameter | Type | Description | Sample Value |
@@ -257,7 +257,7 @@ Always remove call listeners when the component unmounts using `CometChat.remove
 | `onIncomingCallCancelled(call)` | Invoked on the receiver's device when the caller cancels before answering. Dismiss incoming call UI here. |
 | `onCallEndedMessageReceived(call)` | Invoked when a call ends. The `call` contains final status and duration. Update call history here. |
 
-<Accordion title="Sample Response">
+<Accordion title="Response">
 **On Event** — `onIncomingCallReceived` returns a `Call` object (same structure as `initiateCall` response):
 
 | Parameter | Type | Description | Sample Value |
@@ -400,7 +400,7 @@ CometChat.acceptCall(sessionId).then(
 </Tab>
 </Tabs>
 
-<Accordion title="Sample Response">
+<Accordion title="Response">
 **On Success** — `acceptCall()` returns a `Call` object with `status: "ongoing"`:
 
 | Parameter | Type | Description | Sample Value |
@@ -472,7 +472,7 @@ CometChat.rejectCall(sessionId, status).then(
 </Tab>
 </Tabs>
 
-<Accordion title="Sample Response">
+<Accordion title="Response">
 **On Success** — `rejectCall()` with `REJECTED` status returns a `Call` object:
 
 | Parameter | Type | Description | Sample Value |
@@ -543,7 +543,7 @@ CometChat.rejectCall(sessionId, status).then(
 </Tab>
 </Tabs>
 
-<Accordion title="Sample Response">
+<Accordion title="Response">
 **On Success** — `rejectCall()` with `CANCELLED` status returns a `Call` object:
 
 | Parameter | Type | Description | Sample Value |
@@ -680,7 +680,7 @@ CometChatCalls.generateToken(sessionId, userAuthToken).then(
 </Tab>
 </Tabs>
 
-<Accordion title="Sample Response">
+<Accordion title="Response">
 **On Success** — `generateToken()` returns an object with session and token:
 
 | Parameter | Type | Description | Sample Value |
@@ -805,7 +805,7 @@ onCallEnded: () => {
 </Tab>
 </Tabs>
 
-<Accordion title="Sample Response">
+<Accordion title="Response">
 **On Success** — `endCall()` returns a `Call` object with `status: "ended"`:
 
 | Parameter | Type | Description | Sample Value |
@@ -878,7 +878,7 @@ CometChat.rejectCall(sessionId, status).then(
 </Tab>
 </Tabs>
 
-<Accordion title="Sample Response">
+<Accordion title="Response">
 **On Success** — `rejectCall()` with `BUSY` status returns a `Call` object:
 
 | Parameter | Type | Description | Sample Value |

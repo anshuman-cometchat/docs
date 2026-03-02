@@ -76,17 +76,29 @@ CometChat.sendTransientMessage(transientMessage);
 
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `sendTransientMessage()` does not return a value, but the transient message object sent looks like:
-```json
-{
-  "receiverId": "cometchat-uid-7",
-  "receiverType": "user",
-  "data": {
-    "LIVE_REACTION": "heart"
-  }
-}
-```
+
+<span id="send-transient-object" style={{scrollMarginTop: '100px'}}></span>
+
+**TransientMessage Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `receiverId` | string | Receiver's unique identifier | `"cometchat-uid-7"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `data` | object | Custom data payload | [See below ↓](#send-transient-data-object) |
+
+---
+
+<span id="send-transient-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `LIVE_REACTION` | string | Live reaction type | `"heart"` |
+
 </Accordion>
 
 ## Real-time Transient Messages
@@ -130,28 +142,48 @@ CometChat.addMessageListener(
 
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Event** — `onTransientMessageReceived` returns the transient message object with sender info:
-```json
-{
-  "receiverId": "cometchat-uid-7",
-  "receiverType": "user",
-  "data": {
-    "LIVE_REACTION": "heart"
-  },
-  "sender": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-6",
-    "name": "Ronald Jerry",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-    "role": "default",
-    "status": "online",
-    "tags": []
-  }
-}
-```
+
+<span id="receive-transient-object" style={{scrollMarginTop: '100px'}}></span>
+
+**TransientMessage Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `receiverId` | string | Receiver's unique identifier | `"cometchat-uid-7"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `data` | object | Custom data payload | [See below ↓](#receive-transient-data-object) |
+| `sender` | object | User who sent the transient message | [See below ↓](#receive-transient-sender-object) |
+
+---
+
+<span id="receive-transient-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `LIVE_REACTION` | string | Live reaction type | `"heart"` |
+
+---
+
+<span id="receive-transient-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
 </Accordion>
 
 <Warning>

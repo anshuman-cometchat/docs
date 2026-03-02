@@ -227,21 +227,21 @@ You need to call `init()` before calling any other method from CometChat. We sug
 Make sure you replace the `APP_ID` with your CometChat **App ID** and `REGION` with your **App Region** in the above code.
 </Warning>
 
-<Accordion title="Sample Console Output">
-**On Success** — `console.log("Initialization completed successfully")` returns:
+<Accordion title="Response">
+**On Success** — `init()` returns `true` and logs:
 ```
 Initialization completed successfully
 ```
 
-**On Failure** — `console.log("Initialization failed with error:", error)` returns:
-```json
-{
-  "code": "ERR_INVALID_APP_ID",
-  "name": "Invalid App ID",
-  "message": "The App ID provided is incorrect. Please verify your App ID from the CometChat Dashboard.",
-  "details": {}
-}
-```
+**On Failure** — Returns a CometChatException object:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `code` | string | Error code | `"ERR_INVALID_APP_ID"` |
+| `name` | string | Error name | `"Invalid App ID"` |
+| `message` | string | Error description | `"The App ID provided is incorrect. Please verify your App ID from the CometChat Dashboard."` |
+| `details` | object | Additional error details | `{}` |
+
 </Accordion>
 
 <AccordionGroup>

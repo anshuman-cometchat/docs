@@ -116,101 +116,191 @@ CometChat.sendMessage(textMessage).then(
 
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `sendMessage()` with mentions returns the sent message object with `mentionedUsers` populated:
-```json
-{
-  "reactions": [],
-  "mentionedUsers": [
-    {
-      "hasBlockedMe": false,
-      "blockedByMe": false,
-      "deactivatedAt": 0,
-      "uid": "cometchat-uid-7",
-      "name": "Henry Marino",
-      "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-      "lastActiveAt": 1772005334,
-      "role": "default",
-      "status": "online"
-    }
-  ],
-  "mentionedMe": false,
-  "receiverId": "cometchat-uid-7",
-  "type": "text",
-  "receiverType": "user",
-  "category": "message",
-  "data": {
-    "text": "Hello <@uid:cometchat-uid-7>, this is a test mention!",
-    "entities": {
-      "sender": {
-        "entity": {
-          "uid": "cometchat-uid-6",
-          "name": "Ronald Jerry",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-          "status": "offline",
-          "role": "default",
-          "lastActiveAt": 1772004288,
-          "tags": []
-        },
-        "entityType": "user"
-      },
-      "receiver": {
-        "entity": {
-          "uid": "cometchat-uid-7",
-          "name": "Henry Marino",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-          "status": "online",
-          "role": "default",
-          "lastActiveAt": 1772005334,
-          "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-          "tags": []
-        },
-        "entityType": "user"
-      }
-    },
-    "mentions": {
-      "cometchat-uid-7": {
-        "uid": "cometchat-uid-7",
-        "name": "Henry Marino",
-        "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-        "status": "online",
-        "role": "default",
-        "lastActiveAt": 1772005334,
-        "conversationId": "cometchat-uid-6_user_cometchat-uid-7"
-      }
-    }
-  },
-  "text": "Hello <@uid:cometchat-uid-7>, this is a test mention!",
-  "id": "25326",
-  "conversationId": "cometchat-uid-6_user_cometchat-uid-7",
-  "sender": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-6",
-    "name": "Ronald Jerry",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp",
-    "lastActiveAt": 1772004288,
-    "role": "default",
-    "status": "offline",
-    "tags": []
-  },
-  "receiver": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-7",
-    "name": "Henry Marino",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-    "lastActiveAt": 1772005334,
-    "role": "default",
-    "status": "online",
-    "tags": []
-  },
-  "sentAt": 1772006074,
-  "updatedAt": 1772006074
-}
-```
+
+<span id="send-mention-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message identifier | `"25326"` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `receiverId` | string | Receiver's UID | `"cometchat-uid-7"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `type` | string | Message type | `"text"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | Message text with mention format | `"Hello <@uid:cometchat-uid-7>, this is a test mention!"` |
+| `sentAt` | number | Unix timestamp when sent | `1772006074` |
+| `updatedAt` | number | Unix timestamp when updated | `1772006074` |
+| `mentionedMe` | boolean | Whether current user is mentioned | `false` |
+| `mentionedUsers` | array | Users mentioned in message | [See below ↓](#send-mention-mentionedusers-array) |
+| `sender` | object | Sender user details | [See below ↓](#send-mention-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#send-mention-receiver-object) |
+| `data` | object | Additional message data | [See below ↓](#send-mention-data-object) |
+| `reactions` | array | Message reactions | `[]` |
+
+---
+
+<span id="send-mention-mentionedusers-array" style={{scrollMarginTop: '100px'}}></span>
+
+**`mentionedUsers` Array (per item):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1772005334` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="send-mention-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `status` | string | User's online status | `"offline"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1772004288` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-mention-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1772005334` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-mention-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | Message text | `"Hello <@uid:cometchat-uid-7>, this is a test mention!"` |
+| `entities` | object | Sender and receiver entities | [See below ↓](#send-mention-data-entities-object) |
+| `mentions` | object | Mentioned users map | [See below ↓](#send-mention-data-mentions-object) |
+
+---
+
+<span id="send-mention-data-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper | [See below ↓](#send-mention-data-entities-sender-object) |
+| `receiver` | object | Receiver entity wrapper | [See below ↓](#send-mention-data-entities-receiver-object) |
+
+---
+
+<span id="send-mention-data-entities-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | User entity details | [See below ↓](#send-mention-data-entities-sender-entity-object) |
+
+---
+
+<span id="send-mention-data-entities-sender-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-6"` |
+| `name` | string | User's display name | `"Ronald Jerry"` |
+| `avatar` | string | User's avatar URL | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `status` | string | User's online status | `"offline"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1772004288` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-mention-data-entities-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | User entity details | [See below ↓](#send-mention-data-entities-receiver-entity-object) |
+
+---
+
+<span id="send-mention-data-entities-receiver-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | User's avatar URL | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1772005334` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-mention-data-mentions-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.mentions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `cometchat-uid-7` | object | Mentioned user details keyed by UID | [See below ↓](#send-mention-data-mentions-user-object) |
+
+---
+
+<span id="send-mention-data-mentions-user-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.mentions["cometchat-uid-7"]` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | User's avatar URL | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp | `1772005334` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-6_user_cometchat-uid-7"` |
+
 </Accordion>
 
 <Note>
@@ -352,17 +442,15 @@ messagesRequest.fetchPrevious().then(
 
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `mentionsWithTagInfo(true)` returns mentioned users with their tags:
-```json
-[
-  {
-    "uid": "cometchat-uid-7",
-    "name": "Henry Marino",
-    "tags": ["vip"]
-  }
-]
-```
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `tags` | array | User's tags | `["vip"]` |
+
 </Accordion>
 
 
@@ -488,18 +576,16 @@ messagesRequest.fetchPrevious().then(
 
 </Tabs>
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `mentionsWithBlockedInfo(true)` returns mentioned users with blocked relationship info:
-```json
-[
-  {
-    "uid": "cometchat-uid-7",
-    "name": "Henry Marino",
-    "blockedByMe": false,
-    "hasBlockedMe": false
-  }
-]
-```
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+
 </Accordion>
 
 
@@ -511,20 +597,18 @@ To retrieve the list of users mentioned in the particular message, you can use t
 message.getMentionedUsers();
 ```
 
-<Accordion title="Sample Console Output">
+<Accordion title="Response">
 **On Success** — `getMentionedUsers()` returns an array of mentioned user objects:
-```json
-[
-  {
-    "uid": "cometchat-uid-7",
-    "name": "Henry Marino",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp",
-    "status": "online",
-    "blockedByMe": false,
-    "hasBlockedMe": false
-  }
-]
-```
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | User's unique identifier | `"cometchat-uid-7"` |
+| `name` | string | User's display name | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `blockedByMe` | boolean | Whether current user blocked this user | `false` |
+| `hasBlockedMe` | boolean | Whether user has blocked current user | `false` |
+
 </Accordion>
 
 ## Best Practices

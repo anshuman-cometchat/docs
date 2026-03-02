@@ -183,110 +183,160 @@ The `TextMessage` class constructor takes the following parameters:
 
 When a text message is sent successfully, the response will include a `TextMessage` object which includes all information related to the sent message.
 
-<Accordion title="Sample Console Output">
-**On Success** — `console.log("Message sent successfully:", message)` returns:
-```json
-{
-  "reactions": [],
-  "mentionedUsers": [],
-  "mentionedMe": false,
-  "receiverId": "cometchat-uid-3",
-  "type": "text",
-  "receiverType": "user",
-  "category": "message",
-  "data": {
-    "text": "Hello world!",
-    "resource": "REACT_NATIVE-4_0_13-398e7dd2-3481-44ed-8837-eadf1c9c6f5d-1771320626645",
-    "entities": {
-      "sender": {
-        "entity": {
-          "uid": "cometchat-uid-2",
-          "name": "George Alan",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
-          "status": "online",
-          "role": "default",
-          "lastActiveAt": 1771320632,
-          "tags": []
-        },
-        "entityType": "user"
-      },
-      "receiver": {
-        "entity": {
-          "uid": "cometchat-uid-3",
-          "name": "Nancy Grace",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
-          "status": "online",
-          "role": "default",
-          "lastActiveAt": 1771320647,
-          "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
-          "tags": []
-        },
-        "entityType": "user"
-      }
-    },
-    "metadata": {
-      "@injected": {
-        "extensions": {
-          "link-preview": {
-            "links": []
-          }
-        }
-      }
-    },
-    "moderation": {
-      "status": "pending"
-    }
-  },
-  "text": "Hello world!",
-  "id": "25182",
-  "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
-  "sender": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-2",
-    "name": "George Alan",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
-    "lastActiveAt": 1771320632,
-    "role": "default",
-    "status": "online",
-    "tags": []
-  },
-  "receiver": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-3",
-    "name": "Nancy Grace",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
-    "lastActiveAt": 1771320647,
-    "role": "default",
-    "status": "online",
-    "tags": []
-  },
-  "sentAt": 1771320772,
-  "updatedAt": 1771320772,
-  "metadata": {
-    "@injected": {
-      "extensions": {
-        "link-preview": {
-          "links": []
-        }
-      }
-    }
-  }
-}
-```
+<Accordion title="Response">
+**On Success** — Returns a TextMessage object:
 
-**On Failure** — `console.log("Message sending failed with error:", error)` returns:
-```json
-{
-  "code": "ERR_NOT_LOGGED_IN",
-  "name": "Not logged in",
-  "message": "No user is currently logged in. Please log in before sending a message.",
-  "details": {}
-}
-```
+<span id="send-text-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**TextMessage Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message identifier | `"25182"` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-2_user_cometchat-uid-3"` |
+| `text` | string | Message text content | `"Hello world!"` |
+| `type` | string | Message type | `"text"` |
+| `category` | string | Message category | `"message"` |
+| `receiverId` | string | UID of the receiver | `"cometchat-uid-3"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `sentAt` | number | Unix timestamp when sent | `1771320772` |
+| `updatedAt` | number | Unix timestamp of last update | `1771320772` |
+| `sender` | object | Sender user details | [See below ↓](#send-text-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#send-text-receiver-object) |
+| `data` | object | Additional message data | [See below ↓](#send-text-data-object) |
+| `reactions` | array | Message reactions | `[]` |
+| `mentionedUsers` | array | Users mentioned in message | `[]` |
+| `mentionedMe` | boolean | Whether logged-in user is mentioned | `false` |
+| `metadata` | object | Custom metadata | `{"@injected": {"extensions": {"link-preview": {"links": []}}}}` |
+
+---
+
+<span id="send-text-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the sender | `"cometchat-uid-2"` |
+| `name` | string | Display name | `"George Alan"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771320632` |
+| `hasBlockedMe` | boolean | Whether sender has blocked logged-in user | `false` |
+| `blockedByMe` | boolean | Whether logged-in user has blocked sender | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-text-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the receiver | `"cometchat-uid-3"` |
+| `name` | string | Display name | `"Nancy Grace"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771320647` |
+| `hasBlockedMe` | boolean | Whether receiver has blocked logged-in user | `false` |
+| `blockedByMe` | boolean | Whether logged-in user has blocked receiver | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-text-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | Message text | `"Hello world!"` |
+| `resource` | string | SDK resource identifier | `"REACT_NATIVE-4_0_13-..."` |
+| `entities` | object | Sender and receiver entities | [See below ↓](#send-text-data-entities-object) |
+| `metadata` | object | Injected metadata from extensions | `{"@injected": {"extensions": {"link-preview": {"links": []}}}}` |
+| `moderation` | object | Moderation status | [See below ↓](#send-text-data-moderation-object) |
+
+---
+
+<span id="send-text-data-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper | [See below ↓](#send-text-data-entities-sender-object) |
+| `receiver` | object | Receiver entity wrapper | [See below ↓](#send-text-data-entities-receiver-object) |
+
+---
+
+<span id="send-text-data-entities-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | Sender user details | [See below ↓](#send-text-data-entities-sender-entity-object) |
+
+---
+
+<span id="send-text-data-entities-sender-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier | `"cometchat-uid-2"` |
+| `name` | string | Display name | `"George Alan"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771320632` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-text-data-entities-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | Receiver user details | [See below ↓](#send-text-data-entities-receiver-entity-object) |
+
+---
+
+<span id="send-text-data-entities-receiver-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier | `"cometchat-uid-3"` |
+| `name` | string | Display name | `"Nancy Grace"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771320647` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-2_user_cometchat-uid-3"` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-text-data-moderation-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.moderation` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `status` | string | Moderation status | `"pending"` |
+
 </Accordion>
 
 ### Set Quoted Message Id
@@ -618,102 +668,164 @@ The `MediaMessage` class constructor takes the following parameters:
 | **messageType**  | The type of the message that needs to be sent which in this case can be: <br />1.`CometChat.MESSAGE_TYPE.IMAGE` <br />2.`CometChat.MESSAGE_TYPE.VIDEO` <br />3.`CometChat.MESSAGE_TYPE.AUDIO` <br />4.`CometChat.MESSAGE_TYPE.FILE` | YES      |
 | **receiverType** | The type of the receiver to whom the message is to be sent. <br />`1. CometChat.RECEIVER_TYPE.USER` <br />`2. CometChat.RECEIVER_TYPE.GROUP`                                                                              | YES      |
 
-<Accordion title="Sample Console Output">
-**On Success** — `console.log("Media message sent successfully", message)` returns:
-```json
-{
-  "reactions": [],
-  "mentionedUsers": [],
-  "mentionedMe": false,
-  "receiverId": "cometchat-uid-3",
-  "type": "image",
-  "receiverType": "user",
-  "category": "message",
-  "data": {
-    "category": "message",
-    "type": "image",
-    "resource": "REACT_NATIVE-4_0_14-542c56fc-a1a6-4df4-a5e4-549f3cf17550-1771321970718",
-    "url": "https://data-in.cometchat.io/2748663902141719/media/1771323061_1750099251_c35f9734fc20947b7456bbea68126f99.png",
-    "attachments": [
-      {
-        "name": "1770616246_260562078_3832605b5c8a337ac672b0c60933d208.png",
-        "extension": "png",
-        "size": 2295572,
-        "mimeType": "image/png",
-        "url": "https://data-in.cometchat.io/2748663902141719/media/1771323061_1750099251_c35f9734fc20947b7456bbea68126f99.png"
-      }
-    ],
-    "entities": {
-      "sender": {
-        "entity": {
-          "uid": "cometchat-uid-2",
-          "name": "George Alan",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
-          "status": "online",
-          "role": "default",
-          "lastActiveAt": 1771323060,
-          "tags": []
-        },
-        "entityType": "user"
-      },
-      "receiver": {
-        "entity": {
-          "uid": "cometchat-uid-3",
-          "name": "Nancy Grace",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
-          "status": "offline",
-          "role": "default",
-          "lastActiveAt": 1771322968,
-          "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
-          "tags": []
-        },
-        "entityType": "user"
-      }
-    },
-    "moderation": {
-      "status": "pending"
-    }
-  },
-  "id": "25189",
-  "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
-  "sender": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-2",
-    "name": "George Alan",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
-    "lastActiveAt": 1771323060,
-    "role": "default",
-    "status": "online",
-    "tags": []
-  },
-  "receiver": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-3",
-    "name": "Nancy Grace",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
-    "lastActiveAt": 1771322968,
-    "role": "default",
-    "status": "offline",
-    "tags": []
-  },
-  "sentAt": 1771323061,
-  "updatedAt": 1771323061
-}
-```
+<Accordion title="Response">
+**On Success** — Returns a MediaMessage object:
 
-**On Failure** — `console.log("Media message sending failed with error", error)` returns:
-```json
-{
-  "code": "ERR_NOT_LOGGED_IN",
-  "name": "Not logged in",
-  "message": "No user is currently logged in. Please log in before sending a message.",
-  "details": {}
-}
-```
+<span id="send-media-file-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**MediaMessage Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message identifier | `"25189"` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-2_user_cometchat-uid-3"` |
+| `type` | string | Media type | `"image"` |
+| `category` | string | Message category | `"message"` |
+| `receiverId` | string | UID of the receiver | `"cometchat-uid-3"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `sentAt` | number | Unix timestamp when sent | `1771323061` |
+| `updatedAt` | number | Unix timestamp of last update | `1771323061` |
+| `sender` | object | Sender user details | [See below ↓](#send-media-file-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#send-media-file-receiver-object) |
+| `data` | object | Additional message data | [See below ↓](#send-media-file-data-object) |
+| `reactions` | array | Message reactions | `[]` |
+| `mentionedUsers` | array | Users mentioned in message | `[]` |
+| `mentionedMe` | boolean | Whether logged-in user is mentioned | `false` |
+
+---
+
+<span id="send-media-file-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the sender | `"cometchat-uid-2"` |
+| `name` | string | Display name | `"George Alan"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771323060` |
+| `hasBlockedMe` | boolean | Whether sender has blocked logged-in user | `false` |
+| `blockedByMe` | boolean | Whether logged-in user has blocked sender | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-media-file-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the receiver | `"cometchat-uid-3"` |
+| `name` | string | Display name | `"Nancy Grace"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp"` |
+| `status` | string | Online status | `"offline"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771322968` |
+| `hasBlockedMe` | boolean | Whether receiver has blocked logged-in user | `false` |
+| `blockedByMe` | boolean | Whether logged-in user has blocked receiver | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-media-file-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `type` | string | Media type | `"image"` |
+| `category` | string | Message category | `"message"` |
+| `url` | string | URL to the uploaded media file | `"https://data-in.cometchat.io/.../c35f9734fc20947b7456bbea68126f99.png"` |
+| `resource` | string | SDK resource identifier | `"REACT_NATIVE-4_0_14-..."` |
+| `attachments` | array | Media attachments | [See below ↓](#send-media-file-data-attachments-array) |
+| `entities` | object | Sender and receiver entities | [See below ↓](#send-media-file-data-entities-object) |
+| `moderation` | object | Moderation status | `{"status": "pending"}` |
+
+---
+
+<span id="send-media-file-data-attachments-array" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.attachments` Array (per item):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `url` | string | URL to the attachment | `"https://data-in.cometchat.io/.../c35f9734fc20947b7456bbea68126f99.png"` |
+| `name` | string | File name | `"1770616246_260562078_3832605b5c8a337ac672b0c60933d208.png"` |
+| `mimeType` | string | MIME type | `"image/png"` |
+| `extension` | string | File extension | `"png"` |
+| `size` | number | File size in bytes | `2295572` |
+
+---
+
+<span id="send-media-file-data-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper | [See below ↓](#send-media-file-data-entities-sender-object) |
+| `receiver` | object | Receiver entity wrapper | [See below ↓](#send-media-file-data-entities-receiver-object) |
+
+---
+
+<span id="send-media-file-data-entities-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | Sender user details | [See below ↓](#send-media-file-data-entities-sender-entity-object) |
+
+---
+
+<span id="send-media-file-data-entities-sender-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier | `"cometchat-uid-2"` |
+| `name` | string | Display name | `"George Alan"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771323060` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-media-file-data-entities-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | Receiver user details | [See below ↓](#send-media-file-data-entities-receiver-entity-object) |
+
+---
+
+<span id="send-media-file-data-entities-receiver-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier | `"cometchat-uid-3"` |
+| `name` | string | Display name | `"Nancy Grace"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp"` |
+| `status` | string | Online status | `"offline"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771322968` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-2_user_cometchat-uid-3"` |
+| `tags` | array | User tags | `[]` |
+
 </Accordion>
 
 ### 2. By Providing the URL of the File
@@ -853,101 +965,163 @@ The second way to send media messages using the CometChat SDK is to provide the 
 
 When a media message is sent successfully, the response will include a `MediaMessage` object which includes all information related to the sent message.
 
-<Accordion title="Sample Console Output">
-**On Success** — `console.log("message", mediaMessage)` returns:
-```json
-{
-  "reactions": [],
-  "mentionedUsers": [],
-  "mentionedMe": false,
-  "receiverId": "cometchat-uid-3",
-  "type": "image",
-  "receiverType": "user",
-  "category": "message",
-  "data": {
-    "category": "message",
-    "type": "image",
-    "resource": "REACT_NATIVE-4_0_14-542c56fc-a1a6-4df4-a5e4-549f3cf17550-1771321970718",
-    "url": "https://data-in.cometchat.io/2748663902141719/media/1771323061_1750099251_c35f9734fc20947b7456bbea68126f99.png",
-    "attachments": [
-      {
-        "name": "mario",
-        "extension": "png",
-        "mimeType": "image/png",
-        "url": "https://pngimg.com/uploads/mario/mario_PNG125.png"
-      }
-    ],
-    "entities": {
-      "sender": {
-        "entity": {
-          "uid": "cometchat-uid-2",
-          "name": "George Alan",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
-          "status": "online",
-          "role": "default",
-          "lastActiveAt": 1771323060,
-          "tags": []
-        },
-        "entityType": "user"
-      },
-      "receiver": {
-        "entity": {
-          "uid": "cometchat-uid-3",
-          "name": "Nancy Grace",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
-          "status": "offline",
-          "role": "default",
-          "lastActiveAt": 1771322968,
-          "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
-          "tags": []
-        },
-        "entityType": "user"
-      }
-    },
-    "moderation": {
-      "status": "pending"
-    }
-  },
-  "id": "25189",
-  "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
-  "sender": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-2",
-    "name": "George Alan",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
-    "lastActiveAt": 1771323060,
-    "role": "default",
-    "status": "online",
-    "tags": []
-  },
-  "receiver": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-3",
-    "name": "Nancy Grace",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
-    "lastActiveAt": 1771322968,
-    "role": "default",
-    "status": "offline",
-    "tags": []
-  },
-  "sentAt": 1771323061,
-  "updatedAt": 1771323061
-}
-```
+<Accordion title="Response">
+**On Success** — Returns a MediaMessage object:
 
-**On Failure** — `console.log("error in sending message", error)` returns:
-```json
-{
-  "code": "ERR_NOT_LOGGED_IN",
-  "name": "Not logged in",
-  "message": "No user is currently logged in. Please log in before sending a message.",
-  "details": {}
-}
-```
+<span id="send-media-url-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**MediaMessage Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message identifier | `"25189"` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-2_user_cometchat-uid-3"` |
+| `type` | string | Media type | `"image"` |
+| `category` | string | Message category | `"message"` |
+| `receiverId` | string | UID of the receiver | `"cometchat-uid-3"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `sentAt` | number | Unix timestamp when sent | `1771323061` |
+| `updatedAt` | number | Unix timestamp of last update | `1771323061` |
+| `sender` | object | Sender user details | [See below ↓](#send-media-url-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#send-media-url-receiver-object) |
+| `data` | object | Additional message data | [See below ↓](#send-media-url-data-object) |
+| `reactions` | array | Message reactions | `[]` |
+| `mentionedUsers` | array | Users mentioned in message | `[]` |
+| `mentionedMe` | boolean | Whether logged-in user is mentioned | `false` |
+
+---
+
+<span id="send-media-url-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the sender | `"cometchat-uid-2"` |
+| `name` | string | Display name | `"George Alan"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771323060` |
+| `hasBlockedMe` | boolean | Whether sender has blocked logged-in user | `false` |
+| `blockedByMe` | boolean | Whether logged-in user has blocked sender | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-media-url-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the receiver | `"cometchat-uid-3"` |
+| `name` | string | Display name | `"Nancy Grace"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp"` |
+| `status` | string | Online status | `"offline"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771322968` |
+| `hasBlockedMe` | boolean | Whether receiver has blocked logged-in user | `false` |
+| `blockedByMe` | boolean | Whether logged-in user has blocked receiver | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-media-url-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `type` | string | Media type | `"image"` |
+| `category` | string | Message category | `"message"` |
+| `url` | string | URL to the media file | `"https://data-in.cometchat.io/.../c35f9734fc20947b7456bbea68126f99.png"` |
+| `resource` | string | SDK resource identifier | `"REACT_NATIVE-4_0_14-..."` |
+| `attachments` | array | Media attachments | [See below ↓](#send-media-url-data-attachments-array) |
+| `entities` | object | Sender and receiver entities | [See below ↓](#send-media-url-data-entities-object) |
+| `moderation` | object | Moderation status | `{"status": "pending"}` |
+
+---
+
+<span id="send-media-url-data-attachments-array" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.attachments` Array (per item):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `url` | string | URL to the attachment | `"https://pngimg.com/uploads/mario/mario_PNG125.png"` |
+| `name` | string | File name | `"mario"` |
+| `mimeType` | string | MIME type | `"image/png"` |
+| `extension` | string | File extension | `"png"` |
+
+---
+
+<span id="send-media-url-data-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper | [See below ↓](#send-media-url-data-entities-sender-object) |
+| `receiver` | object | Receiver entity wrapper | [See below ↓](#send-media-url-data-entities-receiver-object) |
+
+---
+
+<span id="send-media-url-data-entities-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | Sender user details | [See below ↓](#send-media-url-data-entities-sender-entity-object) |
+
+---
+
+<span id="send-media-url-data-entities-sender-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier | `"cometchat-uid-2"` |
+| `name` | string | Display name | `"George Alan"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771323060` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-media-url-data-entities-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | Receiver user details | [See below ↓](#send-media-url-data-entities-receiver-entity-object) |
+
+---
+
+<span id="send-media-url-data-entities-receiver-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier | `"cometchat-uid-3"` |
+| `name` | string | Display name | `"Nancy Grace"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp"` |
+| `status` | string | Online status | `"offline"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771322968` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-2_user_cometchat-uid-3"` |
+| `tags` | array | User tags | `[]` |
+
 </Accordion>
 
 ## Multiple Attachments in a Media Message
@@ -1294,107 +1468,167 @@ When a media message is sent successfully, the response will include a `MediaMes
 
 You can use the `setMetadata()`, `setCaption()` & `setTags()` methods to add metadata, caption and tags respectively in exactly the same way as it is done while sending a single file or attachment in a Media Message.
 
-<Accordion title="Sample Console Output">
-**On Success** — `console.log("message", mediaMessage)` returns:
-```json
-{
-  "reactions": [],
-  "mentionedUsers": [],
-  "mentionedMe": false,
-  "receiverId": "cometchat-uid-3",
-  "type": "image",
-  "receiverType": "user",
-  "category": "message",
-  "data": {
-    "category": "message",
-    "type": "image",
-    "resource": "REACT_NATIVE-4_0_14-542c56fc-a1a6-4df4-a5e4-549f3cf17550-1771321970718",
-    "url": "https://data-in.cometchat.io/2748663902141719/media/1771323061_1750099251_c35f9734fc20947b7456bbea68126f99.png",
-    "attachments": [
-      {
-        "name": "mario",
-        "extension": "png",
-        "mimeType": "image/png",
-        "url": "https://pngimg.com/uploads/mario/mario_PNG125.png"
-      },
-      {
-        "name": "jaguar",
-        "extension": "png",
-        "mimeType": "image/png",
-        "url": "https://pngimg.com/uploads/jaguar/jaguar_PNG20759.png"
-      }
-    ],
-    "entities": {
-      "sender": {
-        "entity": {
-          "uid": "cometchat-uid-2",
-          "name": "George Alan",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
-          "status": "online",
-          "role": "default",
-          "lastActiveAt": 1771323060,
-          "tags": []
-        },
-        "entityType": "user"
-      },
-      "receiver": {
-        "entity": {
-          "uid": "cometchat-uid-3",
-          "name": "Nancy Grace",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
-          "status": "offline",
-          "role": "default",
-          "lastActiveAt": 1771322968,
-          "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
-          "tags": []
-        },
-        "entityType": "user"
-      }
-    },
-    "moderation": {
-      "status": "pending"
-    }
-  },
-  "id": "25189",
-  "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
-  "sender": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-2",
-    "name": "George Alan",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
-    "lastActiveAt": 1771323060,
-    "role": "default",
-    "status": "online",
-    "tags": []
-  },
-  "receiver": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-3",
-    "name": "Nancy Grace",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
-    "lastActiveAt": 1771322968,
-    "role": "default",
-    "status": "offline",
-    "tags": []
-  },
-  "sentAt": 1771323061,
-  "updatedAt": 1771323061
-}
-```
+<Accordion title="Response">
+**On Success** — Returns a MediaMessage object with multiple attachments:
 
-**On Failure** — `console.log("error in sending message", error)` returns:
-```json
-{
-  "code": "ERR_NOT_LOGGED_IN",
-  "name": "Not logged in",
-  "message": "No user is currently logged in. Please log in before sending a message.",
-  "details": {}
-}
-```
+<span id="send-multi-attach-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**MediaMessage Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message identifier | `"25189"` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-2_user_cometchat-uid-3"` |
+| `type` | string | Media type | `"image"` |
+| `category` | string | Message category | `"message"` |
+| `receiverId` | string | UID of the receiver | `"cometchat-uid-3"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `sentAt` | number | Unix timestamp when sent | `1771323061` |
+| `updatedAt` | number | Unix timestamp of last update | `1771323061` |
+| `sender` | object | Sender user details | [See below ↓](#send-multi-attach-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#send-multi-attach-receiver-object) |
+| `data` | object | Additional message data | [See below ↓](#send-multi-attach-data-object) |
+| `reactions` | array | Message reactions | `[]` |
+| `mentionedUsers` | array | Users mentioned in message | `[]` |
+| `mentionedMe` | boolean | Whether logged-in user is mentioned | `false` |
+
+---
+
+<span id="send-multi-attach-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the sender | `"cometchat-uid-2"` |
+| `name` | string | Display name | `"George Alan"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771323060` |
+| `hasBlockedMe` | boolean | Whether sender has blocked logged-in user | `false` |
+| `blockedByMe` | boolean | Whether logged-in user has blocked sender | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-multi-attach-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the receiver | `"cometchat-uid-3"` |
+| `name` | string | Display name | `"Nancy Grace"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp"` |
+| `status` | string | Online status | `"offline"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771322968` |
+| `hasBlockedMe` | boolean | Whether receiver has blocked logged-in user | `false` |
+| `blockedByMe` | boolean | Whether logged-in user has blocked receiver | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-multi-attach-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `type` | string | Media type | `"image"` |
+| `category` | string | Message category | `"message"` |
+| `url` | string | URL to the primary media file | `"https://data-in.cometchat.io/.../c35f9734fc20947b7456bbea68126f99.png"` |
+| `resource` | string | SDK resource identifier | `"REACT_NATIVE-4_0_14-..."` |
+| `attachments` | array | Media attachments | [See below ↓](#send-multi-attach-data-attachments-array) |
+| `entities` | object | Sender and receiver entities | [See below ↓](#send-multi-attach-data-entities-object) |
+| `moderation` | object | Moderation status | `{"status": "pending"}` |
+
+---
+
+<span id="send-multi-attach-data-attachments-array" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.attachments` Array (per item):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `url` | string | URL to the attachment | `"https://pngimg.com/uploads/mario/mario_PNG125.png"` |
+| `name` | string | File name | `"mario"` |
+| `mimeType` | string | MIME type | `"image/png"` |
+| `extension` | string | File extension | `"png"` |
+
+Example with multiple attachments:
+- Attachment 1: `{"name": "mario", "extension": "png", "mimeType": "image/png", "url": "https://pngimg.com/uploads/mario/mario_PNG125.png"}`
+- Attachment 2: `{"name": "jaguar", "extension": "png", "mimeType": "image/png", "url": "https://pngimg.com/uploads/jaguar/jaguar_PNG20759.png"}`
+
+---
+
+<span id="send-multi-attach-data-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper | [See below ↓](#send-multi-attach-data-entities-sender-object) |
+| `receiver` | object | Receiver entity wrapper | [See below ↓](#send-multi-attach-data-entities-receiver-object) |
+
+---
+
+<span id="send-multi-attach-data-entities-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | Sender user details | [See below ↓](#send-multi-attach-data-entities-sender-entity-object) |
+
+---
+
+<span id="send-multi-attach-data-entities-sender-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier | `"cometchat-uid-2"` |
+| `name` | string | Display name | `"George Alan"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771323060` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-multi-attach-data-entities-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | Receiver user details | [See below ↓](#send-multi-attach-data-entities-receiver-entity-object) |
+
+---
+
+<span id="send-multi-attach-data-entities-receiver-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier | `"cometchat-uid-3"` |
+| `name` | string | Display name | `"Nancy Grace"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp"` |
+| `status` | string | Online status | `"offline"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771322968` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-2_user_cometchat-uid-3"` |
+| `tags` | array | User tags | `[]` |
+
 </Accordion>
 
 ## Custom Message
@@ -1575,117 +1809,162 @@ The above sample explains how custom messages can be used to share the location 
 
 On success, you will receive an object of the `CustomMessage` class.
 
-<Accordion title="Sample Console Output">
-**On Success** — `console.log("custom message sent successfully", message)` returns:
-```json
-{
-  "reactions": [],
-  "mentionedUsers": [],
-  "mentionedMe": false,
-  "receiverId": "cometchat-uid-3",
-  "type": "location",
-  "receiverType": "user",
-  "category": "custom",
-  "customData": {
-    "latitude": "50.6192171633316",
-    "longitude": "-72.68182268750002"
-  },
-  "data": {
-    "customData": {
-      "latitude": "50.6192171633316",
-      "longitude": "-72.68182268750002"
-    },
-    "text": "Sent a custom message",
-    "resource": "REACT_NATIVE-4_0_14-542c56fc-a1a6-4df4-a5e4-549f3cf17550-1771321970718",
-    "entities": {
-      "sender": {
-        "entity": {
-          "uid": "cometchat-uid-2",
-          "name": "George Alan",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
-          "status": "online",
-          "role": "default",
-          "lastActiveAt": 1771323089,
-          "tags": []
-        },
-        "entityType": "user"
-      },
-      "receiver": {
-        "entity": {
-          "uid": "cometchat-uid-3",
-          "name": "Nancy Grace",
-          "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
-          "status": "offline",
-          "role": "default",
-          "lastActiveAt": 1771322968,
-          "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
-          "tags": []
-        },
-        "entityType": "user"
-      }
-    },
-    "metadata": {
-      "@injected": {
-        "extensions": {
-          "link-preview": {
-            "links": []
-          }
-        }
-      }
-    },
-    "moderation": {
-      "status": "pending"
-    }
-  },
-  "id": "25190",
-  "conversationId": "cometchat-uid-2_user_cometchat-uid-3",
-  "sender": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-2",
-    "name": "George Alan",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp",
-    "lastActiveAt": 1771323089,
-    "role": "default",
-    "status": "online",
-    "tags": []
-  },
-  "receiver": {
-    "hasBlockedMe": false,
-    "blockedByMe": false,
-    "deactivatedAt": 0,
-    "uid": "cometchat-uid-3",
-    "name": "Nancy Grace",
-    "avatar": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp",
-    "lastActiveAt": 1771322968,
-    "role": "default",
-    "status": "offline",
-    "tags": []
-  },
-  "sentAt": 1771323234,
-  "updatedAt": 1771323234,
-  "metadata": {
-    "@injected": {
-      "extensions": {
-        "link-preview": {
-          "links": []
-        }
-      }
-    }
-  }
-}
-```
+<Accordion title="Response">
+**On Success** — Returns a CustomMessage object:
 
-**On Failure** — `console.log("custom message sending failed with error", error)` returns:
-```json
-{
-  "code": "ERR_NOT_LOGGED_IN",
-  "name": "Not logged in",
-  "message": "No user is currently logged in. Please log in before sending a message.",
-  "details": {}
-}
-```
+<span id="send-custom-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**CustomMessage Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message identifier | `"25190"` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-2_user_cometchat-uid-3"` |
+| `type` | string | Custom message type | `"location"` |
+| `category` | string | Message category | `"custom"` |
+| `receiverId` | string | UID of the receiver | `"cometchat-uid-3"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `sentAt` | number | Unix timestamp when sent | `1771323234` |
+| `updatedAt` | number | Unix timestamp of last update | `1771323234` |
+| `customData` | object | Custom payload data | [See below ↓](#send-custom-customdata-object) |
+| `sender` | object | Sender user details | [See below ↓](#send-custom-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#send-custom-receiver-object) |
+| `data` | object | Additional message data | [See below ↓](#send-custom-data-object) |
+| `reactions` | array | Message reactions | `[]` |
+| `mentionedUsers` | array | Users mentioned in message | `[]` |
+| `mentionedMe` | boolean | Whether logged-in user is mentioned | `false` |
+| `metadata` | object | Custom metadata | `{"@injected": {"extensions": {"link-preview": {"links": []}}}}` |
+
+---
+
+<span id="send-custom-customdata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`customData` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `latitude` | string | Latitude coordinate | `"50.6192171633316"` |
+| `longitude` | string | Longitude coordinate | `"-72.68182268750002"` |
+
+---
+
+<span id="send-custom-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the sender | `"cometchat-uid-2"` |
+| `name` | string | Display name | `"George Alan"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771323089` |
+| `hasBlockedMe` | boolean | Whether sender has blocked logged-in user | `false` |
+| `blockedByMe` | boolean | Whether logged-in user has blocked sender | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-custom-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the receiver | `"cometchat-uid-3"` |
+| `name` | string | Display name | `"Nancy Grace"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp"` |
+| `status` | string | Online status | `"offline"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771322968` |
+| `hasBlockedMe` | boolean | Whether receiver has blocked logged-in user | `false` |
+| `blockedByMe` | boolean | Whether logged-in user has blocked receiver | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-custom-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | Fallback text | `"Sent a custom message"` |
+| `resource` | string | SDK resource identifier | `"REACT_NATIVE-4_0_14-..."` |
+| `customData` | object | Custom payload data | `{"latitude": "50.6192171633316", "longitude": "-72.68182268750002"}` |
+| `entities` | object | Sender and receiver entities | [See below ↓](#send-custom-data-entities-object) |
+| `metadata` | object | Injected metadata from extensions | `{"@injected": {"extensions": {"link-preview": {"links": []}}}}` |
+| `moderation` | object | Moderation status | `{"status": "pending"}` |
+
+---
+
+<span id="send-custom-data-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper | [See below ↓](#send-custom-data-entities-sender-object) |
+| `receiver` | object | Receiver entity wrapper | [See below ↓](#send-custom-data-entities-receiver-object) |
+
+---
+
+<span id="send-custom-data-entities-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | Sender user details | [See below ↓](#send-custom-data-entities-sender-entity-object) |
+
+---
+
+<span id="send-custom-data-entities-sender-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.sender.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier | `"cometchat-uid-2"` |
+| `name` | string | Display name | `"George Alan"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-2.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771323089` |
+| `tags` | array | User tags | `[]` |
+
+---
+
+<span id="send-custom-data-entities-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `entityType` | string | Type of entity | `"user"` |
+| `entity` | object | Receiver user details | [See below ↓](#send-custom-data-entities-receiver-entity-object) |
+
+---
+
+<span id="send-custom-data-entities-receiver-entity-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.receiver.entity` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier | `"cometchat-uid-3"` |
+| `name` | string | Display name | `"Nancy Grace"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-3.webp"` |
+| `status` | string | Online status | `"offline"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1771322968` |
+| `conversationId` | string | Conversation identifier | `"cometchat-uid-2_user_cometchat-uid-3"` |
+| `tags` | array | User tags | `[]` |
+
 </Accordion>
 
 ### Update Conversation

@@ -94,7 +94,7 @@ CometChatCalls.generateToken(sessionId, userAuthToken).then(
 <Accordion title="Response">
 **On Success** — `generateToken()` returns a `GenerateToken` object containing the session ID and JWT token:
 
-<span id="generate-token-object"></span>
+<span id="generate-token-object" style={{scrollMarginTop: '100px'}}></span>
 
 **GenerateToken Object:**
 
@@ -382,7 +382,7 @@ Always remove call event listeners when the component unmounts using `CometChatC
 <Accordion title="onUserJoined Response">
 **On Event** — `onUserJoined` returns a user object when a participant joins the call:
 
-<span id="on-user-joined-object"></span>
+<span id="on-user-joined-object" style={{scrollMarginTop: '100px'}}></span>
 
 **User Object:**
 
@@ -402,7 +402,7 @@ Always remove call event listeners when the component unmounts using `CometChatC
 <Accordion title="onUserLeft Response">
 **On Event** — `onUserLeft` returns a user object when a participant leaves the call:
 
-<span id="on-user-left-object"></span>
+<span id="on-user-left-object" style={{scrollMarginTop: '100px'}}></span>
 
 **User Object:**
 
@@ -421,7 +421,7 @@ Always remove call event listeners when the component unmounts using `CometChatC
 <Accordion title="onUserListUpdated Response">
 **On Event** — `onUserListUpdated` returns an array of all current participants in the call:
 
-<span id="on-user-list-updated-array"></span>
+<span id="on-user-list-updated-array" style={{scrollMarginTop: '100px'}}></span>
 
 **User Array:**
 
@@ -429,7 +429,7 @@ Always remove call event listeners when the component unmounts using `CometChatC
 |-----------|------|-------------|--------------|
 | (array) | array | Array of user objects | [See below ↓](#on-user-list-updated-user-object) |
 
-<span id="on-user-list-updated-user-object"></span>
+<span id="on-user-list-updated-user-object" style={{scrollMarginTop: '100px'}}></span>
 
 **User Object (each item in array):**
 
@@ -444,7 +444,7 @@ Always remove call event listeners when the component unmounts using `CometChatC
 <Accordion title="onAudioModesUpdated Response">
 **On Event** — `onAudioModesUpdated` returns an array of available audio output modes:
 
-<span id="on-audio-modes-updated-array"></span>
+<span id="on-audio-modes-updated-array" style={{scrollMarginTop: '100px'}}></span>
 
 **Audio Modes Array:**
 
@@ -452,7 +452,7 @@ Always remove call event listeners when the component unmounts using `CometChatC
 |-----------|------|-------------|--------------|
 | (array) | array | Array of audio mode objects | [See below ↓](#on-audio-modes-updated-mode-object) |
 
-<span id="on-audio-modes-updated-mode-object"></span>
+<span id="on-audio-modes-updated-mode-object" style={{scrollMarginTop: '100px'}}></span>
 
 **Audio Mode Object (each item in array):**
 
@@ -533,7 +533,7 @@ onCallEndButtonPressed: () => {
 <Accordion title="Response">
 **On Success** — `CometChat.endCall()` returns a `Call` object with the final call status:
 
-<span id="end-call-object-root"></span>
+<span id="end-call-object-root" style={{scrollMarginTop: '100px'}}></span>
 
 **Call Object (Root Level):**
 
@@ -563,7 +563,7 @@ onCallEndButtonPressed: () => {
 
 ---
 
-<span id="end-call-sender-object"></span>
+<span id="end-call-sender-object" style={{scrollMarginTop: '100px'}}></span>
 
 **`sender` Object:**
 
@@ -582,7 +582,7 @@ onCallEndButtonPressed: () => {
 
 ---
 
-<span id="end-call-receiver-object"></span>
+<span id="end-call-receiver-object" style={{scrollMarginTop: '100px'}}></span>
 
 **`receiver` Object:**
 
@@ -601,7 +601,7 @@ onCallEndButtonPressed: () => {
 
 ---
 
-<span id="end-call-data-object"></span>
+<span id="end-call-data-object" style={{scrollMarginTop: '100px'}}></span>
 
 **`data` Object:**
 
@@ -611,7 +611,7 @@ onCallEndButtonPressed: () => {
 | `entities` | object | Entity details for the call | [See below ↓](#end-call-data-entities-object) |
 | `resource` | string | SDK resource identifier | `"REACT_NATIVE-4_0_14-3e152d60-8e2b-435b-86cd-0c0fe3bbc6e1-1772094888945"` |
 
-<span id="end-call-data-entities-object"></span>
+<span id="end-call-data-entities-object" style={{scrollMarginTop: '100px'}}></span>
 
 **`data.entities` Object:**
 
@@ -621,7 +621,7 @@ onCallEndButtonPressed: () => {
 | `for` | object | User the action was performed for | [See below ↓](#end-call-data-entities-for-object) |
 | `on` | object | The call entity | [See below ↓](#end-call-data-entities-on-object) |
 
-<span id="end-call-data-entities-by-object"></span>
+<span id="end-call-data-entities-by-object" style={{scrollMarginTop: '100px'}}></span>
 
 **`data.entities.by` Object:**
 
@@ -630,7 +630,7 @@ onCallEndButtonPressed: () => {
 | `entity` | object | User entity details | [See below ↓](#end-call-data-entities-by-entity-object) |
 | `entityType` | string | Type of entity | `"user"` |
 
-<span id="end-call-data-entities-by-entity-object"></span>
+<span id="end-call-data-entities-by-entity-object" style={{scrollMarginTop: '100px'}}></span>
 
 **`data.entities.by.entity` Object:**
 
@@ -644,7 +644,7 @@ onCallEndButtonPressed: () => {
 | `lastActiveAt` | number | Unix timestamp of last activity | `1772094890` |
 | `tags` | array | Tags associated with the user | `[]` |
 
-<span id="end-call-data-entities-for-object"></span>
+<span id="end-call-data-entities-for-object" style={{scrollMarginTop: '100px'}}></span>
 
 **`data.entities.for` Object:**
 
@@ -653,7 +653,7 @@ onCallEndButtonPressed: () => {
 | `entity` | object | User entity details | [See below ↓](#end-call-data-entities-for-entity-object) |
 | `entityType` | string | Type of entity | `"user"` |
 
-<span id="end-call-data-entities-for-entity-object"></span>
+<span id="end-call-data-entities-for-entity-object" style={{scrollMarginTop: '100px'}}></span>
 
 **`data.entities.for.entity` Object:**
 
@@ -668,7 +668,7 @@ onCallEndButtonPressed: () => {
 | `conversationId` | string | Conversation ID for this user | `"cometchat-uid-6_user_cometchat-uid-7"` |
 | `tags` | array | Tags associated with the user | `[]` |
 
-<span id="end-call-data-entities-on-object"></span>
+<span id="end-call-data-entities-on-object" style={{scrollMarginTop: '100px'}}></span>
 
 **`data.entities.on` Object:**
 
@@ -677,7 +677,7 @@ onCallEndButtonPressed: () => {
 | `entity` | object | Call entity details | [See below ↓](#end-call-data-entities-on-entity-object) |
 | `entityType` | string | Type of entity | `"call"` |
 
-<span id="end-call-data-entities-on-entity-object"></span>
+<span id="end-call-data-entities-on-entity-object" style={{scrollMarginTop: '100px'}}></span>
 
 **`data.entities.on.entity` Object:**
 
@@ -698,7 +698,7 @@ onCallEndButtonPressed: () => {
 
 ---
 
-<span id="end-call-initiator-object"></span>
+<span id="end-call-initiator-object" style={{scrollMarginTop: '100px'}}></span>
 
 **`callInitiator` Object:**
 
@@ -717,7 +717,7 @@ onCallEndButtonPressed: () => {
 
 ---
 
-<span id="end-call-call-receiver-object"></span>
+<span id="end-call-call-receiver-object" style={{scrollMarginTop: '100px'}}></span>
 
 **`callReceiver` Object:**
 
@@ -960,7 +960,7 @@ CometChatCalls.getAudioOutputModes().then(
 <Accordion title="Response">
 **On Success** — `getAudioOutputModes()` returns an object containing an array of available audio modes:
 
-<span id="get-audio-modes-object"></span>
+<span id="get-audio-modes-object" style={{scrollMarginTop: '100px'}}></span>
 
 **Response Object:**
 
@@ -968,7 +968,7 @@ CometChatCalls.getAudioOutputModes().then(
 |-----------|------|-------------|--------------|
 | `modes` | array | Array of available audio output modes | [See below ↓](#get-audio-modes-mode-object) |
 
-<span id="get-audio-modes-mode-object"></span>
+<span id="get-audio-modes-mode-object" style={{scrollMarginTop: '100px'}}></span>
 
 **Mode Object (each item in `modes` array):**
 
