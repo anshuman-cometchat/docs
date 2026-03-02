@@ -59,6 +59,27 @@ let groupsRequest: CometChat.GroupsRequest =
 
 </Tabs>
 
+<Accordion title="Response">
+**On Success** — `fetchNext()` with basic limit returns an array of `Group` objects:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `guid` | string | Unique identifier of the group | `"007007"` |
+| `name` | string | Display name of the group | `"Bond"` |
+| `type` | string | Group type (public, private, password) | `"public"` |
+| `owner` | string | UID of the group owner | `"user-b"` |
+| `membersCount` | number | Total number of members in the group | `5` |
+| `hasJoined` | boolean | Whether the logged-in user has joined this group | `false` |
+| `isBanned` | boolean | Whether the logged-in user is banned from this group | `false` |
+| `conversationId` | string | Conversation ID for this group | `"group_007007"` |
+| `createdAt` | number | Unix timestamp when group was created | `1760001806` |
+| `updatedAt` | number | Unix timestamp of last update | `1768398330` |
+| `updatedBy` | string | UID of user who last updated the group (if updated) | `"123456"` |
+| `description` | string | Group description (if set) | `"Testing group for QA users"` |
+| `icon` | string | URL to group icon image (if set) | `"https://images.unsplash.com/..."` |
+
+</Accordion>
+
 ### Set Search Keyword
 
 This method allows you to set the search string based on which the groups are to be fetched.
@@ -91,6 +112,26 @@ let groupsRequest: CometChat.GroupsRequest =
 
 </Tabs>
 
+<Accordion title="Response">
+**On Success** — `fetchNext()` with search filter returns an array of `Group` objects matching the keyword:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `guid` | string | Unique identifier of the group | `"group_1748350143247"` |
+| `name` | string | Display name of the group | `"testmemebrrole"` |
+| `type` | string | Group type (public, private, password) | `"public"` |
+| `owner` | string | UID of the group owner | `"123456"` |
+| `membersCount` | number | Total number of members in the group | `7` |
+| `hasJoined` | boolean | Whether the logged-in user has joined this group | `false` |
+| `isBanned` | boolean | Whether the logged-in user is banned from this group | `false` |
+| `conversationId` | string | Conversation ID for this group | `"group_group_1748350143247"` |
+| `createdAt` | number | Unix timestamp when group was created | `1748350143` |
+| `updatedAt` | number | Unix timestamp of last update | `1768888876` |
+| `description` | string | Group description (if set) | `"Testing group for QA users"` |
+| `icon` | string | URL to group icon image (if set) | `"https://images.unsplash.com/..."` |
+
+</Accordion>
+
 ### Joined Only
 
 This method when used, will ask the SDK to only return the groups that the user has joined or is a part of.
@@ -117,6 +158,28 @@ let groupsRequest: CometChat.GroupsRequest =
 </Tab>
 
 </Tabs>
+
+<Accordion title="Response">
+**On Success** — `fetchNext()` with `joinedOnly(true)` returns groups the user has joined, with additional fields:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `guid` | string | Unique identifier of the group | `"tg1"` |
+| `name` | string | Display name of the group | `"Touring Group"` |
+| `type` | string | Group type (public, private, password) | `"public"` |
+| `owner` | string | UID of the group owner | `"app_system"` |
+| `membersCount` | number | Total number of members in the group | `2` |
+| `hasJoined` | boolean | Whether the logged-in user has joined this group | `true` |
+| `isBanned` | boolean | Whether the logged-in user is banned from this group | `false` |
+| `scope` | string | User's scope/role in the group (participant, admin, moderator) | `"participant"` |
+| `joinedAt` | number | Unix timestamp when user joined the group | `1771829827` |
+| `onlineMembersCount` | number | Number of online members in the group | `2` |
+| `conversationId` | string | Conversation ID for this group | `"group_tg1"` |
+| `createdAt` | number | Unix timestamp when group was created | `1771829812` |
+| `updatedAt` | number | Unix timestamp of last update | `1771829832` |
+| `icon` | string | URL to group icon image (if set) | `"https://static.vecteezy.com/..."` |
+
+</Accordion>
 
 ### Set Tags
 
@@ -147,6 +210,25 @@ let groupsRequest: CometChat.GroupsRequest =
 
 </Tabs>
 
+<Accordion title="Response">
+**On Success** — `fetchNext()` with tags filter returns groups matching the specified tags:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `guid` | string | Unique identifier of the group | `"group_1748264644578"` |
+| `name` | string | Display name of the group | `"Password123NameChangedAgain"` |
+| `type` | string | Group type (public, private, password) | `"password"` |
+| `owner` | string | UID of the group owner | `"123456"` |
+| `membersCount` | number | Total number of members in the group | `2` |
+| `hasJoined` | boolean | Whether the logged-in user has joined this group | `false` |
+| `isBanned` | boolean | Whether the logged-in user is banned from this group | `false` |
+| `conversationId` | string | Conversation ID for this group | `"group_group_1748264644578"` |
+| `createdAt` | number | Unix timestamp when group was created | `1748264644` |
+| `updatedAt` | number | Unix timestamp of last update | `1768888876` |
+| `updatedBy` | string | UID of user who last updated the group | `"123456"` |
+
+</Accordion>
+
 ### With Tags
 
 This property when set to true will fetch tags data along with the list of groups.
@@ -173,6 +255,25 @@ let groupsRequest: CometChat.GroupsRequest =
 </Tab>
 
 </Tabs>
+
+<Accordion title="Response">
+**On Success** — `fetchNext()` with `withTags(true)` returns groups including the `tags` field:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `guid` | string | Unique identifier of the group | `"courses"` |
+| `name` | string | Display name of the group | `"Courses"` |
+| `type` | string | Group type (public, private, password) | `"public"` |
+| `owner` | string | UID of the group owner | `"app_system"` |
+| `membersCount` | number | Total number of members in the group | `4` |
+| `hasJoined` | boolean | Whether the logged-in user has joined this group | `false` |
+| `isBanned` | boolean | Whether the logged-in user is banned from this group | `false` |
+| `tags` | array | Tags associated with the group | `["courses"]` |
+| `conversationId` | string | Conversation ID for this group | `"group_courses"` |
+| `createdAt` | number | Unix timestamp when group was created | `1764919309` |
+| `updatedAt` | number | Unix timestamp of last update | `1764929127` |
+
+</Accordion>
 
 Finally, once all the parameters are set to the builder class, you need to call the build() method to get the object of the `GroupsRequest` class.
 
@@ -220,6 +321,11 @@ groupsRequest.fetchNext().then(
 
 </Tabs>
 
+<Accordion title="Response">
+**On Success** — `fetchNext()` returns an array of `Group` objects. See the filter-specific Response accordions above for field details based on your query configuration.
+
+</Accordion>
+
 ## Retrieve Particular Group Details
 
 *In other words, as a logged-in user, how do I retrieve information for a specific group?*
@@ -263,6 +369,24 @@ CometChat.getGroup(GUID).then(
 | --------- | ------------------------------------------------------------ |
 | `GUID`    | The GUID of the group for whom the details are to be fetched |
 
+<Accordion title="Response">
+**On Success** — `getGroup()` returns a `Group` object:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `guid` | string | Unique identifier of the group | `"007007"` |
+| `name` | string | Display name of the group | `"Bond"` |
+| `type` | string | Group type (public, private, password) | `"public"` |
+| `owner` | string | UID of the group owner | `"user-b"` |
+| `membersCount` | number | Total number of members in the group | `5` |
+| `hasJoined` | boolean | Whether the logged-in user has joined this group | `false` |
+| `isBanned` | boolean | Whether the logged-in user is banned from this group | `false` |
+| `conversationId` | string | Conversation ID for this group | `"group_007007"` |
+| `createdAt` | number | Unix timestamp when group was created | `1760001806` |
+| `updatedAt` | number | Unix timestamp of last update | `1768398330` |
+
+</Accordion>
+
 It returns `Group` object containing the details of the group.
 
 ## Get online group member count
@@ -301,6 +425,17 @@ CometChat.getOnlineGroupMemberCount(guids).then(
 </Tab>
 
 </Tabs>
+
+<Accordion title="Response">
+**On Success** — `getOnlineGroupMemberCount()` returns an object with GUID as key and online count as value:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `[GUID]` | number | Online member count for the specified group | `0` |
+
+Example: `{"tg1": 2}`
+
+</Accordion>
 
 This method returns a JSON Object with the GUID as the key and the online member count for that group as the value.
 

@@ -166,6 +166,32 @@ groupMembersRequest.fetchNext().then(
 
 </Tabs>
 
+<Accordion title="Response">
+**On Success** — `fetchNext()` returns an array of `GroupMember` objects:
+
+<span id="group-member-object"></span>
+
+**GroupMember Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `hasBlockedMe` | boolean | Whether this user has blocked the current user | `false` |
+| `blockedByMe` | boolean | Whether the current user has blocked this user | `false` |
+| `deactivatedAt` | number | Timestamp when user was deactivated (0 if active) | `0` |
+| `uid` | string | Unique identifier of the user | `"cometchat-uid-7"` |
+| `joinedAt` | number | Unix timestamp when the user joined the group | `1772428121` |
+| `name` | string | Display name of the user | `"Henry Marino"` |
+| `avatar` | string | URL to user's avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `statusMessage` | string | User's status message | `"Testing CometChat SDK"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1772427635` |
+| `scope` | string | Member's scope in the group (admin, moderator, participant) | `"participant"` |
+| `conversationId` | string | Conversation ID between this user and logged-in user | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `guid` | string | GUID of the group | `"group_1772427551785"` |
+
+</Accordion>
+
 ## Best Practices
 
 <AccordionGroup>

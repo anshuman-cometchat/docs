@@ -83,6 +83,29 @@ CometChat.createGroup(group).then(
 
 </Tabs>
 
+<Accordion title="Response">
+**On Success** — `createGroup()` returns the created Group object:
+
+<span id="create-group-object"></span>
+
+**Group Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `guid` | string | Unique group identifier | `"group_1772435275327"` |
+| `name` | string | Group name | `"Creation"` |
+| `type` | string | Group type | `"public"` |
+| `owner` | string | UID of the group owner | `"cometchat-uid-7"` |
+| `scope` | string | Logged-in user's scope in the group | `"admin"` |
+| `membersCount` | number | Number of members in the group | `1` |
+| `hasJoined` | boolean | Whether logged-in user has joined | `true` |
+| `isBanned` | boolean | Whether logged-in user is banned | `false` |
+| `joinedAt` | number | Unix timestamp when user joined | `1772435275` |
+| `createdAt` | number | Unix timestamp when group was created | `1772435275` |
+| `conversationId` | string | Conversation identifier for the group | `"group_group_1772435275327"` |
+
+</Accordion>
+
 The createGroup() method takes the following parameters:
 
 | Parameter | Description                  |
@@ -166,6 +189,54 @@ CometChat.createGroupWithMembers(group, members, banMembers).then(
 </Tab>
 
 </Tabs>
+
+<Accordion title="Response">
+**On Success** — `createGroupWithMembers()` returns an object with `group` and `members` keys:
+
+<span id="create-group-with-members-response-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Response Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `group` | object | The created Group object | [See below ↓](#create-group-with-members-group-object) |
+| `members` | object | Per-UID results for member additions | [See below ↓](#create-group-with-members-members-object) |
+
+---
+
+<span id="create-group-with-members-group-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`group` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `guid` | string | Unique group identifier | `"group_with_members_1772435203225"` |
+| `name` | string | Group name | `"Test Group With Members"` |
+| `type` | string | Group type | `"public"` |
+| `owner` | string | UID of the group owner | `"cometchat-uid-7"` |
+| `scope` | string | Logged-in user's scope in the group | `"admin"` |
+| `membersCount` | number | Number of members in the group | `4` |
+| `hasJoined` | boolean | Whether logged-in user has joined | `true` |
+| `isBanned` | boolean | Whether logged-in user is banned | `false` |
+| `joinedAt` | number | Unix timestamp when user joined | `1772435203` |
+| `createdAt` | number | Unix timestamp when group was created | `1772435203` |
+| `conversationId` | string | Conversation identifier for the group | `"group_group_with_members_1772435203225"` |
+
+---
+
+<span id="create-group-with-members-members-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`members` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `cometchat-uid-1` | string | Result for this UID | `"success"` |
+| `cometchat-uid-2` | string | Result for this UID | `"success"` |
+| `cometchat-uid-3` | string | Result for this UID | `"success"` |
+
+Each key is a UID, and the value is either `"success"` or an error message describing why the operation failed.
+
+</Accordion>
 
 This method returns an Object which has two keys: `group` & `members` . The group key has the Group Object which contains all the information of the group which is created. The members key has the `UID` of the users and the value will either be `success` or an `error` message describing why the operation to add/ban the user failed.
 

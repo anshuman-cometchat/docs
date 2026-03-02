@@ -68,6 +68,26 @@ The `joinGroup()` method takes the below parameters
 
 Once you have joined a group successfully, you can send and receive messages in that group.
 
+<Accordion title="Response">
+**On Success** — `joinGroup()` returns a `Group` object:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `hasJoined` | boolean | Whether the logged-in user has joined the group | `true` |
+| `membersCount` | number | Total number of members in the group | `2` |
+| `isBanned` | boolean | Whether the logged-in user is banned from the group | `false` |
+| `guid` | string | Unique identifier of the group | `"group_1772427551785"` |
+| `name` | string | Name of the group | `"Comet Group"` |
+| `type` | string | Type of the group (public, private, password) | `"public"` |
+| `scope` | string | Scope of the logged-in user in the group | `"participant"` |
+| `joinedAt` | number | Unix timestamp when the user joined | `1772427667` |
+| `conversationId` | string | Conversation ID for the group | `"group_group_1772427551785"` |
+| `createdAt` | number | Unix timestamp when the group was created | `1772427556` |
+| `owner` | string | UID of the group owner | `"cometchat-uid-6"` |
+| `onlineMembersCount` | number | Number of online members in the group | `1` |
+
+</Accordion>
+
 CometChat keeps a track of the groups joined and you do not need to join the group every time you want to communicate in the group.
 
 You can identify if a group is joined using the `hasJoined` parameter in the `Group` object.

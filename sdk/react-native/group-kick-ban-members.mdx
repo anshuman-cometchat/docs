@@ -84,6 +84,15 @@ The `kickGroupMember()` takes following parameters
 
 The kicked user will be no longer part of the group and can not perform any actions in the group, but the kicked user can rejoin the group.
 
+<Accordion title="Response">
+**On Success** — `kickGroupMember()` returns a boolean:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `response` | boolean | Indicates whether the member was successfully kicked | `true` |
+
+</Accordion>
+
 ## Ban a Group Member
 
 The Admin or Moderator of the group can ban a member from the group using the `banGroupMember()` method.
@@ -134,6 +143,15 @@ The `banGroupMember()` method takes the following parameters:
 
 The banned user will be no longer part of the group and can not perform any actions in the group. A banned user cannot rejoin the same group without being unbanned.
 
+<Accordion title="Response">
+**On Success** — `banGroupMember()` returns a boolean:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `response` | boolean | Indicates whether the member was successfully banned | `true` |
+
+</Accordion>
+
 ## Unban a Banned Group Member from a Group
 
 Only Admin or Moderators of the group can unban a previously banned member from the group using the `unbanGroupMember()` method.
@@ -183,6 +201,15 @@ The `unbanGroupMember()` method takes the following parameters
 | `GUID`    | The UID of the group from which user is to be banned |
 
 The unbanned user can now rejoin the group.
+
+<Accordion title="Response">
+**On Success** — `unbanGroupMember()` returns a boolean:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `response` | boolean | Indicates whether the member was successfully unbanned | `true` |
+
+</Accordion>
 
 ## Get List of Banned Members for a Group
 
@@ -312,6 +339,33 @@ bannedGroupMembersRequest.fetchNext().then(
 
 </Tabs>
 
+<Accordion title="Response">
+**On Success** — `fetchNext()` returns an array of banned `GroupMember` objects:
+
+<span id="banned-member-object"></span>
+
+**Banned GroupMember Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `hasBlockedMe` | boolean | Whether this user has blocked the current user | `false` |
+| `blockedByMe` | boolean | Whether the current user has blocked this user | `false` |
+| `deactivatedAt` | number | Timestamp when user was deactivated (0 if active) | `0` |
+| `uid` | string | Unique identifier of the user | `"cometchat-uid-6"` |
+| `joinedAt` | number | Unix timestamp when the user originally joined the group | `1772430763` |
+| `name` | string | Display name of the user | `"Ronald Jerry"` |
+| `avatar` | string | URL to user's avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `status` | string | User's online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `statusMessage` | string | User's status message | `"Testing CometChat SDK"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1772430654` |
+| `scope` | string | Member's scope in the group before being banned | `"participant"` |
+| `isBanned` | boolean | Whether the user is banned from the group | `true` |
+| `conversationId` | string | Conversation ID between this user and logged-in user | `"cometchat-uid-6_user_cometchat-uid-7"` |
+| `guid` | string | GUID of the group | `"group_1772430752261"` |
+
+</Accordion>
+
 ## Real-Time Group Member Kicked/Banned Events
 
 *In other words, as a member of a group, how do I know when someone is banned/kicked when my app is running?*
@@ -405,6 +459,96 @@ Always remove group listeners when the component unmounts to prevent memory leak
 CometChat.removeGroupListener("UNIQUE_LISTENER_ID");
 ```
 </Warning>
+
+<Accordion title="Response (onGroupMemberBanned)">
+**On Event** — `onGroupMemberBanned` listener receives the following parameters:
+
+<span id="on-group-member-banned-response"></span>
+
+**Listener Parameters:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `message` | object | Action message object | [See `message` Object ↓](#banned-message-object) |
+| `bannedUser` | object | User who was banned | [See `bannedUser` Object ↓](#banned-user-object) |
+| `bannedBy` | object | User who performed the ban | [See `bannedBy` Object ↓](#banned-by-object) |
+| `bannedFrom` | object | Group from which user was banned | [See `bannedFrom` Object ↓](#banned-from-object) |
+
+---
+
+<span id="banned-message-object"></span>
+
+**`message` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"25545"` |
+| `conversationId` | string | Conversation ID | `"group_group_1772430752261"` |
+| `type` | string | Message type | `"groupMember"` |
+| `receiverType` | string | Receiver type | `"group"` |
+| `category` | string | Message category | `"action"` |
+| `action` | string | Action performed | `"banned"` |
+| `message` | string | Human-readable action message | `"Henry Marino banned Ronald Jerry"` |
+| `sentAt` | number | Unix timestamp when sent | `1772430770` |
+| `updatedAt` | number | Unix timestamp when updated | `1772430770` |
+
+---
+
+<span id="banned-user-object"></span>
+
+**`bannedUser` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the banned user | `"cometchat-uid-6"` |
+| `name` | string | Display name | `"Ronald Jerry"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1772430654` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the current user | `false` |
+| `blockedByMe` | boolean | Whether the current user has blocked this user | `false` |
+| `deactivatedAt` | number | Timestamp when deactivated (0 if active) | `0` |
+
+---
+
+<span id="banned-by-object"></span>
+
+**`bannedBy` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the user who banned | `"cometchat-uid-7"` |
+| `name` | string | Display name | `"Henry Marino"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1772430649` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the current user | `false` |
+| `blockedByMe` | boolean | Whether the current user has blocked this user | `false` |
+| `deactivatedAt` | number | Timestamp when deactivated (0 if active) | `0` |
+
+---
+
+<span id="banned-from-object"></span>
+
+**`bannedFrom` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `guid` | string | Unique identifier of the group | `"group_1772430752261"` |
+| `name` | string | Name of the group | `"Hike"` |
+| `type` | string | Type of the group | `"public"` |
+| `membersCount` | number | Total members in the group | `1` |
+| `hasJoined` | boolean | Whether logged-in user has joined | `false` |
+| `isBanned` | boolean | Whether logged-in user is banned | `false` |
+| `conversationId` | string | Conversation ID for the group | `"group_group_1772430752261"` |
+| `createdAt` | number | Unix timestamp when created | `1772430752` |
+| `owner` | string | UID of the group owner | `"cometchat-uid-7"` |
+| `updatedAt` | number | Unix timestamp when updated | `1772430763` |
+| `onlineMembersCount` | number | Number of online members | `2` |
+
+</Accordion>
 
 ## Missed Group Member Kicked/Banned Events
 

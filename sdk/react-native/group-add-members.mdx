@@ -71,6 +71,21 @@ CometChat.addMembersToGroup(GUID, membersList, []).then(
 
 It will return a Array which will contain the `UID` of the users and the value will either be `success` or an error message describing why the operation to add the user to the group.
 
+<Accordion title="Response">
+**On Success** — `addMembersToGroup()` returns an object with each UID as key and result as value:
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `[UID]` | string | Result for each UID ("success" or error message) | `"success"` |
+
+**Example:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `cometchat-uid-7` | string | Result for the added member | `"success"` |
+
+</Accordion>
+
 ## Real-Time Group Member Added Events
 
 *In other words, as a member of a group, how do I know when someone is added to the group when my app is running?*
@@ -138,6 +153,95 @@ CometChat.addGroupListener(
 <Warning>
 Always remove group listeners when the component unmounts using `CometChat.removeGroupListener(listenerId)`. Failing to remove listeners can cause memory leaks and duplicate event handling.
 </Warning>
+
+<Accordion title="Response (onMemberAddedToGroup)">
+**On Event** — `onMemberAddedToGroup` listener receives the following parameters:
+
+<span id="on-member-added-response"></span>
+
+**Listener Parameters:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `message` | object | Action message object | [See `message` Object ↓](#added-message-object) |
+| `userAdded` | object | User who was added | [See `userAdded` Object ↓](#user-added-object) |
+| `userAddedBy` | object | User who performed the add | [See `userAddedBy` Object ↓](#user-added-by-object) |
+| `userAddedIn` | object | Group to which user was added | [See `userAddedIn` Object ↓](#user-added-in-object) |
+
+---
+
+<span id="added-message-object"></span>
+
+**`message` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"25544"` |
+| `conversationId` | string | Conversation ID | `"group_group_1772430752261"` |
+| `type` | string | Message type | `"groupMember"` |
+| `receiverType` | string | Receiver type | `"group"` |
+| `category` | string | Message category | `"action"` |
+| `action` | string | Action performed | `"added"` |
+| `message` | string | Human-readable action message | `"Henry Marino added Ronald Jerry"` |
+| `sentAt` | number | Unix timestamp when sent | `1772430763` |
+| `updatedAt` | number | Unix timestamp when updated | `1772430763` |
+
+---
+
+<span id="user-added-object"></span>
+
+**`userAdded` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the added user | `"cometchat-uid-6"` |
+| `name` | string | Display name | `"Ronald Jerry"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-6.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1772430654` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the current user | `false` |
+| `blockedByMe` | boolean | Whether the current user has blocked this user | `false` |
+| `deactivatedAt` | number | Timestamp when deactivated (0 if active) | `0` |
+
+---
+
+<span id="user-added-by-object"></span>
+
+**`userAddedBy` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique identifier of the user who added | `"cometchat-uid-7"` |
+| `name` | string | Display name | `"Henry Marino"` |
+| `avatar` | string | URL to avatar image | `"https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-7.webp"` |
+| `status` | string | Online status | `"online"` |
+| `role` | string | User's role | `"default"` |
+| `lastActiveAt` | number | Unix timestamp of last activity | `1772430649` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the current user | `false` |
+| `blockedByMe` | boolean | Whether the current user has blocked this user | `false` |
+| `deactivatedAt` | number | Timestamp when deactivated (0 if active) | `0` |
+
+---
+
+<span id="user-added-in-object"></span>
+
+**`userAddedIn` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `guid` | string | Unique identifier of the group | `"group_1772430752261"` |
+| `name` | string | Name of the group | `"Hike"` |
+| `type` | string | Type of the group | `"public"` |
+| `membersCount` | number | Total members in the group | `2` |
+| `hasJoined` | boolean | Whether logged-in user has joined | `false` |
+| `isBanned` | boolean | Whether logged-in user is banned | `false` |
+| `conversationId` | string | Conversation ID for the group | `"group_group_1772430752261"` |
+| `createdAt` | number | Unix timestamp when created | `1772430752` |
+| `owner` | string | UID of the group owner | `"cometchat-uid-7"` |
+| `onlineMembersCount` | number | Number of online members | `1` |
+
+</Accordion>
 
 ## Member Added to Group event in Message History
 
