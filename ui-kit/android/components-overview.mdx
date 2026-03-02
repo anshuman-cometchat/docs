@@ -1,112 +1,224 @@
 ---
 title: "Overview"
+description: "Browse all prebuilt UI components in the CometChat Android UI Kit — conversations, messages, users, groups, calls, search, and AI."
 ---
- 
-Understand the CometChat UI Kit component model so you can choose the right building blocks for your chat experience.
 
-## When to use this
-- You need to decide between Base Components and Components.
-- You want to understand how actions and events affect component behavior.
-- You want to know how configurations apply within composite UI flows.
-- You are planning a UI Kit implementation and need the conceptual model first.
+<Accordion title="AI Agent Component Spec">
 
-## Prerequisites
-- No additional setup is required for this conceptual overview.
+| Field | Value |
+| --- | --- |
+| Package | `com.cometchat:chat-uikit-android` |
+| Required setup | `CometChatUIKit.init()` + `CometChatUIKit.login()` before rendering any component |
+| Callback actions | `.setOn<Event> { }` or `.setOn<Event>(listener)` |
+| Data filtering | `.set<Entity>RequestBuilder(builder)` |
+| Toggle features | `.set<Feature>Visibility(View.VISIBLE / View.GONE)` |
+| Custom rendering | `.set<Slot>View(ViewHolderListener)` or `.set<Slot>View(@LayoutRes int)` |
+| Style overrides | `.setStyle(@StyleRes int)` targeting `CometChat<Component>Style` |
+| Calling | Requires separate `com.cometchat:calls-sdk-android` package |
 
-## Quick start
-1. Read the definitions of Base Components and Components.
-2. Decide which component type fits your screen requirements.
-3. Review Actions to understand built-in vs custom behavior.
-4. Review Events to understand how components communicate.
-5. Review Configurations to understand per-component customization in composite UIs.
+</Accordion>
 
-## Core concepts
-- **Base Components**: Visual building blocks that render UI without business logic.
-- **Components**: UI elements that include business logic such as data loading and user actions.
-- **Actions**: Behavior hooks that drive how a component responds to events.
-- **Events**: Emitted signals that allow other parts of the app to react.
-- **Configurations**: Per-component settings within composite screens.
+## Architecture
 
-## Implementation
+The UI Kit is a set of independent Android Views that compose into chat layouts. A typical chat layout uses four core components:
 
-### Choose between Base Components and Components
-What you're changing: The type of UI Kit building block you use for a screen.
+- `CometChatConversations` — list of recent conversations (users and groups)
+- `CometChatMessageHeader` — toolbar showing avatar, name, online status, and typing indicator
+- `CometChatMessageList` — scrollable message feed with reactions, receipts, and threads
+- `CometChatMessageComposer` — rich input with attachments, mentions, and voice notes
 
-- **Where to change it**: Your screen design and component selection (no file change on this page).
-- **Applies to**: Any UI Kit screen or flow you build.
-- **Default behavior**: Base Components render UI only; Components include business logic and data handling.
-- **Override**: Select the component type that matches your functional needs.
-- **Code**: Not applicable for this overview.
-- **Verify**: You can describe why a screen uses Base Components or Components.
+Data flow: selecting a conversation in `CometChatConversations` yields a `User` or `Group` object via `setOnItemClick`. That object is passed to `CometChatMessageHeader`, `CometChatMessageList`, and `CometChatMessageComposer` using `.setUser()` or `.setGroup()`. The message components use the SDK internally — `CometChatMessageComposer` sends messages, `CometChatMessageList` receives them via real-time listeners.
 
-### Decide on action handling
-What you're changing: How a component responds to user interaction.
+Components communicate through a publish/subscribe event bus (`CometChatMessageEvents`, `CometChatConversationEvents`, `CometChatGroupEvents`, etc.). A component emits events that other components or application code can subscribe to without direct references. See [Events](/ui-kit/android/events) for the full list.
 
-- **Where to change it**: Component action configuration in your implementation (not specified on this page).
-- **Applies to**: Components and composite screens that expose actions.
-- **Default behavior**: Predefined actions execute automatically in the component.
-- **Override**: Implement user-defined actions when you need custom behavior.
-- **Code**: Not applicable for this overview.
-- **Verify**: You can identify which actions are predefined vs user-defined for your screen.
+Each component accepts callback methods (`.setOn<Event>`), view slot methods (`.set<Slot>View`) for replacing UI sections, `RequestBuilder` methods for data filtering, and `@StyleRes` overrides via `.setStyle()`.
 
-### Use events for decoupled behavior
-What you're changing: How UI Kit components communicate with the rest of your app.
+---
 
-- **Where to change it**: Event handling in your implementation (not specified on this page).
-- **Applies to**: Components and composite components that emit events.
-- **Default behavior**: Events are emitted when user interaction or state changes occur.
-- **Override**: If your app needs to respond to a component event, subscribe to that event and handle it in your listener.
-- **Code**: Not applicable for this overview.
-- **Verify**: You can map an event to the UI change it should trigger.
+## Component Catalog
 
-### Plan component configurations in composite screens
-What you're changing: Per-component configuration inside composite screens.
+All components are from the `com.cometchat:chat-uikit-android` package.
 
-- **Where to change it**: Component configuration in your composite screen setup (not specified on this page).
-- **Applies to**: Composite screens that embed multiple UI Kit components.
-- **Default behavior**: Each embedded component has its own configurable properties.
-- **Override**: Adjust configurations to tailor each component's behavior and appearance.
-- **Code**: Not applicable for this overview.
-- **Verify**: You can list the components in a composite screen and the config each one needs.
+### Conversations and Lists
 
-## Component quick reference
+| Component | Purpose | Key Methods | Page |
+| --- | --- | --- | --- |
+| CometChatConversations | Scrollable list of recent conversations | `setConversationsRequestBuilder`, `setOnItemClick`, `setOnError` | [Conversations](/ui-kit/android/conversations) |
+| CometChatUsers | Scrollable list of users | `setUsersRequestBuilder`, `setOnItemClick`, `setOnError` | [Users](/ui-kit/android/users) |
+| CometChatGroups | Scrollable list of groups | `setGroupsRequestBuilder`, `setOnItemClick`, `setOnError` | [Groups](/ui-kit/android/groups) |
+| CometChatGroupMembers | Scrollable list of group members | `setGroup`, `setGroupMembersRequestBuilder`, `setOnItemClick` | [Group Members](/ui-kit/android/group-members) |
 
-| Component | Purpose | Documentation |
-| --- | --- | --- |
-| [Conversations](/ui-kit/android/conversations) | Renders the conversation list with real-time updates | [Conversations](/ui-kit/android/conversations) |
-| [Users](/ui-kit/android/users) | Displays a searchable list of users | [Users](/ui-kit/android/users) |
-| [Groups](/ui-kit/android/groups) | Displays a searchable list of groups | [Groups](/ui-kit/android/groups) |
-| [Group Members](/ui-kit/android/group-members) | Lists members of a group with moderation actions | [Group Members](/ui-kit/android/group-members) |
-| [Message Header](/ui-kit/android/message-header) | Shows user/group info, typing indicators, and call buttons | [Message Header](/ui-kit/android/message-header) |
-| [Message List](/ui-kit/android/message-list) | Renders messages with bubbles, reactions, and receipts | [Message List](/ui-kit/android/message-list) |
-| [Message Composer](/ui-kit/android/message-composer) | Input field for sending text, media, and attachments | [Message Composer](/ui-kit/android/message-composer) |
-| [Threaded Messages Header](/ui-kit/android/threaded-messages-header) | Displays parent message and reply count in threads | [Threaded Messages Header](/ui-kit/android/threaded-messages-header) |
-| [Incoming Call](/ui-kit/android/incoming-call) | Full-screen UI for receiving calls | [Incoming Call](/ui-kit/android/incoming-call) |
-| [Outgoing Call](/ui-kit/android/outgoing-call) | Full-screen UI for initiating calls | [Outgoing Call](/ui-kit/android/outgoing-call) |
-| [Call Buttons](/ui-kit/android/call-buttons) | Voice and video call buttons | [Call Buttons](/ui-kit/android/call-buttons) |
-| [Call Logs](/ui-kit/android/call-logs) | Displays call history | [Call Logs](/ui-kit/android/call-logs) |
-| [AI Assistant Chat History](/ui-kit/android/ai-assistant-chat-history) | Shows past AI assistant conversations | [AI Assistant Chat History](/ui-kit/android/ai-assistant-chat-history) |
-| [Search](/ui-kit/android/search) | Real-time search across conversations and messages | [Search](/ui-kit/android/search) |
+### Messages
 
-## Common pitfalls & fixes
-- Confusing Base Components with Components: Base Components render UI only; Components include business logic.
-- Expecting Base Components to emit actions: Only Components and composite components expose actions.
-- Ignoring events: Events are how components notify the rest of your app about state changes.
-- Overlooking per-component configs in composites: Each embedded component has its own configuration.
-- Treating configurations as global: Configurations are scoped to the component they belong to.
+| Component | Purpose | Key Methods | Page |
+| --- | --- | --- | --- |
+| CometChatMessageHeader | Toolbar with avatar, name, status, typing indicator | `setUser`, `setGroup`, `setOnBackButtonPressed` | [Message Header](/ui-kit/android/message-header) |
+| CometChatMessageList | Scrollable message list with reactions, receipts, threads | `setUser`, `setGroup`, `setMessagesRequestBuilder` | [Message List](/ui-kit/android/message-list) |
+| CometChatMessageComposer | Rich input with attachments, mentions, voice notes | `setUser`, `setGroup`, `setOnSendButtonClick` | [Message Composer](/ui-kit/android/message-composer) |
+| CometChatThreadHeader | Parent message bubble and reply count for threaded view | `setParentMessage` | [Threaded Messages Header](/ui-kit/android/threaded-messages-header) |
 
-## FAQ
-**Q**: Are Base Components enough for a full chat experience?  
-**A**: No. Base Components are visual building blocks; Components add business logic and data handling.
+### Calling
 
-**Q**: Do all components expose actions?  
-**A**: Components and composite components do. Base Components do not.
+| Component | Purpose | Key Methods | Page |
+| --- | --- | --- | --- |
+| CometChatCallButtons | Voice and video call initiation buttons | `setUser`, `setGroup`, `setOnVoiceCallClick`, `setOnVideoCallClick` | [Call Buttons](/ui-kit/android/call-buttons) |
+| CometChatIncomingCall | Incoming call notification with accept/reject | `setCall`, `setOnAcceptClick`, `setOnRejectClick` | [Incoming Call](/ui-kit/android/incoming-call) |
+| CometChatOutgoingCall | Outgoing call screen with end-call control | `setCall`, `setOnEndCallClick` | [Outgoing Call](/ui-kit/android/outgoing-call) |
+| CometChatCallLogs | Scrollable list of call history | `setCallLogRequestBuilder`, `setOnItemClick` | [Call Logs](/ui-kit/android/call-logs) |
 
-**Q**: How do components communicate with the rest of my app?  
-**A**: They emit events that other parts of the app can listen to and respond to.
+### Search and AI
 
-## Next steps
-- [Conversations](/ui-kit/android/conversations)
-- [Message list](/ui-kit/android/message-list)
-- [Message composer](/ui-kit/android/message-composer)
-- [Component styling](/ui-kit/android/component-styling)
+| Component | Purpose | Key Methods | Page |
+| --- | --- | --- | --- |
+| CometChatSearch | Real-time search across conversations and messages | `setOnConversationClicked`, `setOnMessageClicked`, `setUid`, `setGuid` | [Search](/ui-kit/android/search) |
+| CometChatAIAssistantChatHistory | AI assistant conversation history | `setOnItemClick`, `setNewChatButtonClick` | [AI Assistant Chat History](/ui-kit/android/ai-assistant-chat-history) |
+
+---
+
+## Component API Pattern
+
+All components share a consistent API surface.
+
+### Actions
+
+Actions control component behavior. They split into two categories:
+
+Predefined actions are built into the component and execute automatically on user interaction (e.g., tapping send dispatches the message). No configuration needed.
+
+User-defined actions are callback methods that fire on specific events. Override them to customize behavior:
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+messageList.setOnThreadRepliesClick { message, context, view ->
+    openThreadPanel(message)
+}
+messageList.setOnError { error ->
+    logError(error)
+}
+```
+</Tab>
+<Tab title="Java">
+```java lines
+messageList.setOnThreadRepliesClick((message, context, view) -> {
+    openThreadPanel(message);
+});
+messageList.setOnError(error -> {
+    logError(error);
+});
+```
+</Tab>
+</Tabs>
+
+### Events
+
+Events enable decoupled communication between components. A component emits events that other parts of the application can subscribe to without direct references.
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+CometChatMessageEvents.addListener("LISTENER_ID", object : CometChatMessageEvents() {
+    override fun ccMessageSent(message: BaseMessage, status: Int) {
+        // react to sent message
+    }
+})
+
+// cleanup
+CometChatMessageEvents.removeListener("LISTENER_ID")
+```
+</Tab>
+<Tab title="Java">
+```java lines
+CometChatMessageEvents.addListener("LISTENER_ID", new CometChatMessageEvents() {
+    @Override
+    public void ccMessageSent(BaseMessage message, int status) {
+        // react to sent message
+    }
+});
+
+// cleanup
+CometChatMessageEvents.removeListener("LISTENER_ID");
+```
+</Tab>
+</Tabs>
+
+Each component page documents its emitted events in the Events section.
+
+### Filters
+
+List-based components accept `RequestBuilder` methods to control which data loads:
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+messageList.setMessagesRequestBuilder(
+    MessagesRequest.MessagesRequestBuilder().setLimit(20)
+)
+```
+</Tab>
+<Tab title="Java">
+```java lines
+messageList.setMessagesRequestBuilder(
+    new MessagesRequest.MessagesRequestBuilder().setLimit(20)
+);
+```
+</Tab>
+</Tabs>
+
+### Custom View Slots
+
+Components expose named view slot methods to replace sections of the default UI:
+
+<Tabs>
+<Tab title="Kotlin">
+```kotlin lines
+messageHeader.setTitleView { context, user, group ->
+    // return custom View
+}
+messageHeader.setSubtitleView { context, user, group ->
+    // return custom View
+}
+```
+</Tab>
+<Tab title="Java">
+```java lines
+messageHeader.setTitleView((context, user, group) -> {
+    // return custom View
+});
+messageHeader.setSubtitleView((context, user, group) -> {
+    // return custom View
+});
+```
+</Tab>
+</Tabs>
+
+### Style Overrides
+
+Every component supports a `setStyle(@StyleRes int)` method for style customization:
+
+```xml styles.xml lines
+<style name="CustomConversationsStyle" parent="CometChatConversationsStyle">
+    <item name="cometchatSeparatorColor">@color/your_color</item>
+</style>
+```
+
+See [Component Styling](/ui-kit/android/component-styling) for the full styling guide.
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Core Features" icon="comments" href="/ui-kit/android/core-features">
+    Chat features included out of the box
+  </Card>
+  <Card title="Theming" icon="paintbrush" href="/ui-kit/android/theme-introduction">
+    Customize colors, fonts, and styles
+  </Card>
+  <Card title="Extensions" icon="puzzle-piece" href="/ui-kit/android/extensions">
+    Add-on features like polls, stickers, and translation
+  </Card>
+  <Card title="Guides" icon="book" href="/ui-kit/android/guide-overview">
+    Task-oriented tutorials for common patterns
+  </Card>
+</CardGroup>

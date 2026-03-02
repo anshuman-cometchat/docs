@@ -1,5 +1,6 @@
 ---
 title: "Groups"
+description: "Scrollable list of all available groups with search, avatars, names, and group type indicators."
 ---
 
 `CometChatGroups` displays a searchable list of groups, acting as a container component that encapsulates and formats `CometChatListBase` and `CometChatGroupList`.
@@ -1911,7 +1912,17 @@ Group type status dots are visual-only by default. If screen reader descriptions
 
 ## Next Steps
 
-- [Conversations component](/ui-kit/android/conversations)
-- [Users component](/ui-kit/android/users)
-- [Group Members component](/ui-kit/android/group-members)
-- [Message List component](/ui-kit/android/message-list)
+<CardGroup cols={2}>
+  <Card title="Conversations" icon="comments" href="/ui-kit/android/conversations">
+    Browse recent conversations
+  </Card>
+  <Card title="Users" icon="user" href="/ui-kit/android/users">
+    Browse and search available users
+  </Card>
+  <Card title="Group Members" icon="user-group" href="/ui-kit/android/group-members">
+    View and manage group members
+  </Card>
+  <Card title="Message List" icon="messages" href="/ui-kit/android/message-list">
+    Display messages in a conversation
+  </Card>
+</CardGroup>

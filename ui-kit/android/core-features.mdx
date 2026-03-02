@@ -1,12 +1,21 @@
 ---
 title: "Core"
+description: "Overview of CometChat's core chat features including instant messaging, media sharing, read receipts, typing indicators, user presence, reactions, mentions, threaded conversations, search, and moderation."
 ---
 
-## Overview
+<Accordion title="AI Agent Component Spec">
 
-The UI Kit comprises a variety of components, each designed to work seamlessly with one another to deliver a comprehensive and intuitive chat experience.
+| Field | Value |
+| --- | --- |
+| Package | `com.cometchat:chat-uikit-android` |
+| Required setup | `CometChatUIKit.init()` then `CometChatUIKit.login()` — must complete before rendering any component |
+| Core features | Instant Messaging, Media Sharing, Read Receipts, Mark as Unread, Typing Indicator, User Presence, Reactions, Mentions, Quoted Reply, Search, Threaded Conversations, Moderation, Report Message, Group Chat |
+| Key components | `CometChatConversations` → [Conversations](/ui-kit/android/conversations), `CometChatMessageList` → [Message List](/ui-kit/android/message-list), `CometChatMessageComposer` → [Message Composer](/ui-kit/android/message-composer), `CometChatMessageHeader` → [Message Header](/ui-kit/android/message-header), `CometChatUsers` → [Users](/ui-kit/android/users), `CometChatGroups` → [Groups](/ui-kit/android/groups), `CometChatGroupMembers` → [Group Members](/ui-kit/android/group-members) |
+| Theming | Override theme attributes in `themes.xml`. See [Theming](/ui-kit/android/theme-introduction) |
 
-Here's how different UI Kit components work together to achieve CometChat's Core features:
+</Accordion>
+
+The UI Kit components work together to deliver a complete chat experience. The sections below map each core feature to the components that power it.
 
 ## Instant Messaging
 
@@ -205,3 +214,22 @@ Conversation and Advanced Search is a powerful feature provided by CometChat tha
 | [Message Header](/ui-kit/android/message-header) | [Message Header](/ui-kit/android/message-header) shows the search button in the chat header, allowing users to search within a conversation. |
 | [Message List](/ui-kit/android/message-list) | [Message List](/ui-kit/android/message-list) shows the selected message when clicked from search results and highlights it in the message list.       |
 | [Conversations](/ui-kit/android/conversations) | [Conversations](/ui-kit/android/conversations) displays the search input. |
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Components Overview" icon="grid-2" href="/ui-kit/android/components-overview">
+    Browse all available UI Kit components
+  </Card>
+  <Card title="Theme" icon="palette" href="/ui-kit/android/theme-introduction">
+    Customize the look and feel of your chat UI
+  </Card>
+  <Card title="Call Features" icon="phone" href="/ui-kit/android/call-features">
+    Add audio and video calling
+  </Card>
+  <Card title="AI Features" icon="robot" href="/ui-kit/android/ai-features">
+    Explore AI-powered chat capabilities
+  </Card>
+</CardGroup>

@@ -1,23 +1,22 @@
 ---
 title: "AI Assistant Chat History"
+description: "Displays the conversation history between users and an AI assistant for easy review of past interactions."
 ---
 
 `CometChatAIAssistantChatHistory` displays the conversation history between users and an AI assistant, providing a structured view of past interactions for easy review.
 
-## When to use this
+<Accordion title="AI Agent Component Spec">
 
-- You need to display a list of past conversations between a user and an AI assistant.
-- You want users to review previous messages and context from AI assistant interactions.
-- You need tap and long-press actions on chat history items (open a chat, perform additional actions).
-- You want to provide a "new chat" button to start a new conversation with the AI assistant.
-- You need to customize the appearance of the chat history list with styles.
+| Field | Value |
+| --- | --- |
+| Component | `CometChatAIAssistantChatHistory` |
+| Package | `com.cometchat.chatuikit.aiassistantchathistory` |
+| XML Element | `<com.cometchat.chatuikit.aiassistantchathistory.CometChatAIAssistantChatHistory />` |
+| Required | `setUser(User)` with role `@agentic` |
+| Callbacks | `setOnItemClickListener`, `setOnItemLongClickListener`, `setOnNewChatClickListener`, `setOnCloseClickListener` |
+| Style | `setStyle(@StyleRes int)` with `cometChatAIAssistantChatHistory*` attributes |
 
-## Prerequisites
-
-- CometChat SDK initialized with `CometChatUIKit.init()` and a user logged in.
-- The `cometchat-chat-uikit-android` dependency added to your project.
-- A valid layout XML or Activity/Fragment where you will place the component.
-- The user's role must be set to `@agentic` to use AI Assistant features.
+</Accordion>
 
 ## Quick start
 
@@ -327,6 +326,17 @@ What you're changing: Small functional customizations such as setting the user a
 
 ## Next steps
 
-- [Message List component](/ui-kit/android/message-list)
-- [Conversations component](/ui-kit/android/conversations)
-- [Users component](/ui-kit/android/users)
+<CardGroup cols={2}>
+  <Card title="Message List" icon="messages" href="/ui-kit/android/message-list">
+    Display messages in a conversation
+  </Card>
+  <Card title="Conversations" icon="comments" href="/ui-kit/android/conversations">
+    Browse recent conversations
+  </Card>
+  <Card title="Users" icon="user" href="/ui-kit/android/users">
+    Browse and search available users
+  </Card>
+  <Card title="Search" icon="magnifying-glass" href="/ui-kit/android/search">
+    Search across conversations and messages
+  </Card>
+</CardGroup>
