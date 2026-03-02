@@ -51,7 +51,7 @@ The AI Agent chat interface provides a familiar messaging experience enhanced wi
 
 Create the AI Assistant chat activity with proper theme and layout configuration.
 
-```kotlin
+```kotlin lines
 class AIAssistantChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAiAssistantChatBinding
 
@@ -63,19 +63,24 @@ class AIAssistantChatActivity : AppCompatActivity() {
         val messageJson = intent.getStringExtra(getString(R.string.app_base_message))
         val userJson = intent.getStringExtra(getString(R.string.app_user))
 
-        if (userJson != null && !userJson.isEmpty())
-            val user = User.fromJson(userJson)
-        if (messageJson != null && !messageJson.isEmpty())
-            val parentMessage = BaseMessage.processMessage(JSONObject(messageJson))
+        var user: User? = null
+        var parentMessage: BaseMessage? = null
+
+        if (!userJson.isNullOrEmpty())
+            user = User.fromJson(userJson)
+        if (!messageJson.isNullOrEmpty())
+            parentMessage = BaseMessage.processMessage(JSONObject(messageJson))
 
         initializeComponents(user, parentMessage)
         initClickListeners()
     }
 
-    private fun initializeComponents(user: User, parentMessage: BaseMessage) {
-        binding.messageHeader.user = user // Set user for header
-        binding.messageList.user = user // Set user for message list
-        binding.messageComposer.user = user // Set user for composer
+    private fun initializeComponents(user: User?, parentMessage: BaseMessage?) {
+        user?.let {
+            binding.messageHeader.user = it // Set user for header
+            binding.messageList.user = it // Set user for message list
+            binding.messageComposer.user = it // Set user for composer
+        }
 
         if (parentMessage != null) {
             // Set message id of parent message to fetch messages with parent.
@@ -92,13 +97,13 @@ class AIAssistantChatActivity : AppCompatActivity() {
 ```
 
 **File reference:**
-[`AIAssistantChatActivity.kt`](ai-builder/src/main/java/com/cometchat/ai/builder/ui/activity/AIAssistantChatActivity.kt)
+[`AIAssistantChatActivity.kt`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/ai-sample-app/src/main/java/com/cometchat/ai/sampleapp/ui/activity/AIAssistantChatActivity.kt)
 
 ### Step - 2 AIAssistantChatActivity layout:
 
 Add `CometChatMessageHeader`, `CometChatMessageList`, and `CometChatMessageComposer` to your layout to enable a complete AI chat interface. Use the sample XML below as a reference for correct integration.
 
-```xml
+```xml lines
 <!-- activity_ai_assistant_chat.xml -->
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -126,13 +131,13 @@ Add `CometChatMessageHeader`, `CometChatMessageList`, and `CometChatMessageCompo
 ```
 
 **File reference:**
-[`activity_ai_assistant_chat.xml`](ai-builder/src/main/java/com/cometchat/ai/builder/ui/activity/AIAssistantChatActivity.kt)
+[`activity_ai_assistant_chat.xml`](https://github.com/cometchat/cometchat-uikit-android/blob/v5/ai-sample-app/src/main/res/layout/activity_ai_assistant_chat.xml)
 
 ### Step 3 - Style of Message List & Composer
 
 Define custom styles for the message list and composer to differentiate AI agent chats.
 
-```xml
+```xml lines
 
     <style name="CustomMessageComposerStyle">
         <item name="cometchatMessageComposerBackgroundColor">?attr/cometchatBackgroundColor2</item>
@@ -176,7 +181,7 @@ Define custom styles for the message list and composer to differentiate AI agent
 
 Initialize click listeners of message header to handle new chat creation and chat history access.
 
-```kotlin
+```kotlin lines
 
 private fun initClickListeners() {
 
@@ -203,7 +208,7 @@ private fun initClickListeners() {
 
 Create a new activity to host `CometChatAIAssistantChatHistory` component and handle its interactions.
 
-```kotlin
+```kotlin lines
 class AIAssistantChatHistoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAiAssistantChatHistoryBinding
     private var user: User? = null
@@ -248,7 +253,7 @@ class AIAssistantChatHistoryActivity : AppCompatActivity() {
             }
 
             // New chat creation from history screen
-            binding.cometchatAiAssistantChatHistory.setNewChatButtonClick {
+            binding.cometchatAiAssistantChatHistory.setOnNewChatClickListener {
                 val intent = Intent(this@AIAssistantChatHistoryActivity, AIAssistantChatActivity::class.java)
                 intent.putExtra(getString(R.string.app_user), user!!.toJson().toString()) // Pass user to create new chat
                 startActivity(intent)
@@ -256,7 +261,7 @@ class AIAssistantChatHistoryActivity : AppCompatActivity() {
             }
 
             // Close history screen
-            binding.cometchatAiAssistantChatHistory.setCloseButtonClick {
+            binding.cometchatAiAssistantChatHistory.setOnCloseClickListener {
                 // finish the activity
             }
         }
@@ -267,7 +272,7 @@ class AIAssistantChatHistoryActivity : AppCompatActivity() {
 
 Add `CometChatAIAssistantChatHistory` to your layout to enable access to AI chat history. Use the sample XML below as a reference for correct integration.
 
-```xml
+```xml lines
 <!-- activity_ai_assistant_chat_history.xml -->
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -286,7 +291,7 @@ Add `CometChatAIAssistantChatHistory` to your layout to enable access to AI chat
 
 Create intent and start AI Assistant chat from your main application.
 
-```kotlin
+```kotlin lines
 // In your main activity or chat list
 fun launchAIAssistantChat(aiUser: User, parentMessage: BaseMessage? = null) {
     val intent = Intent(this, AIAssistantChatActivity::class.java)
@@ -323,7 +328,7 @@ fun launchAIAssistantChat(aiUser: User, parentMessage: BaseMessage? = null) {
 <CardGroup>
   <Card title="Android AI Builder Sample">
     Explore this feature in the CometChat AI Builder:
-    [GitHub → AI Builder](https://github.com/cometchat/cometchat-uikit-android/tree/v5/ai-builder)
+    [GitHub → AI Builder](https://github.com/cometchat/cometchat-uikit-android/tree/v5/ai-sample-app)
   </Card>
   <Card title="Android Sample App (Java)">
     Explore this feature in the CometChat SampleApp:

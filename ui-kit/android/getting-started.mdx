@@ -72,7 +72,7 @@ Ensure your system meets the following **prerequisites** before proceeding with 
 **System Requirements:**
 
 * **Android Studio** installed on your machine.
-* An **Android emulator or physical device** running Android 6.0 or higher.
+* An **Android emulator or physical device** running Android 7.0 (API 24) or higher.
 * **Java 8 or higher** installed.
 * **Gradle plugin 4.0.1 or later** installed.
 
@@ -85,7 +85,7 @@ Ensure your system meets the following **prerequisites** before proceeding with 
 1. Open **Android Studio** and start a **new project**.
 2. Choose **Empty Activity** as the project template.
 3. Enter a project name and choose **Java** or **Kotlin** as the language.
-4. Set **minimum API level** to **21 or higher**.
+4. Set **minimum API level** to **24 or higher**.
 
 ***
 
@@ -100,7 +100,7 @@ To integrate CometChat into your Android project, you need to add the CometChat 
 <Tabs>
 <Tab title="Kotlin">
 
-```gradle settings.gradle.kts
+```gradle settings.gradle.kts lines
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -115,7 +115,7 @@ dependencyResolutionManagement {
 
 <Tab title="Groovy">
 
-```gradle settings.gradle
+```gradle settings.gradle lines
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -138,15 +138,15 @@ dependencyResolutionManagement {
 <Tab title="Version Catalog (libs.versions.toml)">
 Inside `libs.versions.toml`, add the CometChat Chat UI Kit version under the `[versions]` section:
 
-```toml libs.versions.toml
+```toml libs.versions.toml lines
 [versions]
-cometchat-ui-kit = "5.2.7"
+cometchat-ui-kit = "5.2.9"
 cometchat-calls-sdk = "4.3.3"
 ```
 
 Under the `[libraries]` section, define the library and reference the version:
 
-```toml libs.versions.toml
+```toml libs.versions.toml lines
 [libraries]
 cometchat-ui-kit = { module = "com.cometchat:chat-uikit-android", version.ref = "cometchat-ui-kit" }
 cometchat-calls-sdk = { module = "com.cometchat:calls-sdk-android", version.ref = "cometchat-calls-sdk" }
@@ -154,7 +154,7 @@ cometchat-calls-sdk = { module = "com.cometchat:calls-sdk-android", version.ref 
 
 Now, in your app-level `build.gradle.kts` file, add the dependency using libs from Version Catalogs:
 
-```gradle build.gradle.kts
+```gradle build.gradle.kts lines
 dependencies {
     implementation(libs.cometchat.ui.kit)
 
@@ -168,10 +168,10 @@ dependencies {
 <Tab title="Gradle (build.gradle)">
 Open the **app level** `build.gradle` file and add the following dependency to fetch the chat UI kit into your project.
 
-```gradle build.gradle
+```gradle build.gradle lines
 dependencies {
     // CometChat UIKit
-    implementation 'com.cometchat:chat-uikit-android:5.2.7'
+    implementation 'com.cometchat:chat-uikit-android:5.2.9'
 
     // (Optional) Include this if your app uses voice/video calling features
     implementation 'com.cometchat:calls-sdk-android:4.3.3'
@@ -188,7 +188,7 @@ The Jetifier tool helps migrate legacy support libraries to AndroidX.
 
 Open the gradle.properties file and verify if the specified line is present. If not, add it accordingly.
 
-```gradle gradle.properties
+```gradle gradle.properties lines
 android.enableJetifier=true
 ```
 
@@ -234,7 +234,7 @@ For secure authentication, use the [`Auth Token`](/ui-kit/android/methods#login-
 
 <Tabs>
 <Tab title="Kotlin">
-```kotlin MainActivity.kt
+```kotlin MainActivity.kt highlight={15-17, 46-55} lines
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -304,7 +304,7 @@ class MainActivity : ComponentActivity() {
 </Tab>
 
 <Tab title="Java">
-```java MainActivity.java
+```java MainActivity.java highlight={15-17, 51-60} lines
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -404,11 +404,11 @@ Use the `CometChatTheme.DayNight` style, which is built on `Theme.MaterialCompon
 
 Set `CometChatTheme.DayNight` as the parent theme for your application in the `themes.xml` file.
 
-```xml themes.xml
+```xml themes.xml lines
 <style name="YourAppParentTheme" parent="CometChatTheme.DayNight"/>
 ```
 
-```xml AndroidManifest.xml
+```xml AndroidManifest.xml lines
     <application
         android:theme="@style/YourAppParentTheme"
         ...
@@ -447,7 +447,7 @@ Integrate a conversation view that suits your application's **UX requirements**.
 
 * You need **mobile-friendly navigation** between multiple chats.
 * Your app supports **both 1:1 and group messaging**.
-* You want a **clean switch between list and message view** without sidebars.
+* You want **standard Android navigation patterns** with back stack support.
 
 [Integrate Conversation List + Message View](./android-conversation)
 
@@ -471,9 +471,9 @@ Integrate a conversation view that suits your application's **UX requirements**.
 
 **Use When:**
 
-* Your flow starts with **a specific contact or ticket** (e.g., customer support).
-* You want a **no-frills, clean chat screen**.
-* Perfect for **helpdesks, dating apps, or onboarding flows**.
+* Your flow starts with **a specific user or group** (e.g., customer support, user profile).
+* You want **direct chat access** without showing a conversation list.
+* Perfect for **support apps, dating apps, or notification-driven chats**.
 
 [Integrate One-to-One / Group Chat](./android-one-to-one-chat)
 

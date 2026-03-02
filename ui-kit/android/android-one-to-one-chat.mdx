@@ -3,7 +3,7 @@ title: "Building A One To One/Group Chat Experience"
 sidebarTitle: "One To One/Group Chat"
 ---
 
-The **One-to-One Chat** feature provides a streamlined **direct messaging interface**, making it ideal for **support chats, dating apps, and private messaging platforms**. This setup eliminates distractions by focusing solely on a **dedicated chat window**.
+The **One-to-One Chat** feature provides a **direct messaging interface** for Android applications, ideal for **support chats, dating apps, and private messaging **. This implementation launches directly into a specific chat conversation without showing a conversation list, providing a **focused messaging experience**.
 
 ***
 
@@ -15,22 +15,34 @@ The **One-to-One Chat** feature provides a streamlined **direct messaging interf
 
 ### **Key Components**
 
-1. **Chat Header** – Displays user/group name, profile image, and status.
-2. **Message List** – Shows chat history and new messages.
-3. **Message Composer** – Allows users to send messages, media, and reactions.
+1. **Message Header** – Displays user/group name, avatar, and status.
+2. **Message List** – Shows chat history with real-time message updates.
+3. **Message Composer** – Provides input field for sending text messages, media, and attachments.
 
 ***
 
 ## **Step-by-Step Guide**
 
+### **Use Case**
+
+This pattern is ideal when you want to:
+- Launch a chat directly from a user profile or contact card
+- Open a support chat from a help button
+- Start a conversation from a notification
+- Navigate to a specific chat without showing the conversation list
+
+The user or group ID is passed via Intent extras when launching the Activity.
+
+***
+
 ### **Step 1: Set Up Message Activity**
-Create an Activity - `MessageActivity.kt`  to manage and display the chat UI.
+Create an Activity - `MessageActivity` to display the full-screen chat interface.
 
 #### **Layout**
 
-Define the layout using CometChat UI Kit components:
+Define the layout with `CometChatMessageHeader`, `CometChatMessageList`, and `CometChatMessageComposer` in `activity_message.xml`:
 
-```xml activity_message.xml
+```xml activity_message.xml lines
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -73,9 +85,11 @@ Define the layout using CometChat UI Kit components:
 
 #### **Activity**
 
+Retrieve the user or group ID from the Intent extras and configure the message components:
+
 <Tabs>
 <Tab title="Kotlin">
-```kotlin MessageActivity.kt
+```kotlin MessageActivity.kt lines
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -179,7 +193,7 @@ class MessageActivity : AppCompatActivity() {
 </Tab>
 
 <Tab title="Java">
-```java MessageActivity.java
+```java MessageActivity.java lines
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -303,13 +317,24 @@ This is necessary to properly manage the **UI Kit's lifecycle events**.
 
 ***
 
-### **Step 2: Update MainActivity**
+### **Step 2: Launch MessageActivity from Your App**
 
-Update the `MainActivity` to navigate to the `MessageActivity`:
+Update your `MainActivity` (or any other Activity) to launch `MessageActivity` with the appropriate user or group ID:
+
+<Info>
+**Passing Data via Intent**
+
+You can pass either:
+- `uid` (String) - for one-to-one chats
+- `guid` (String) - for group chats
+
+The `MessageActivity` will automatically detect which type of chat to display based on the Intent extras.
+</Info>
 
 <Tabs> 
 <Tab title="Kotlin">
-```kotlin MainActivity.kt
+```kotlin MainActivity.kt highlight={15-17, 19-20, 49-52} lines
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -327,6 +352,9 @@ class MainActivity : ComponentActivity() {
     private val appID = "APP_ID" // Replace with your App ID
     private val region = "REGION" // Replace with your App Region
     private val authKey = "AUTH_KEY" // Replace with your Auth Key or leave blank if you are authenticating using Auth Token
+
+    private val uid = "cometchat-uid-1" // Replace with the UID of the user you want to chat with
+    private val target_uid = "cometchat-uid-2" // Replace with the UID of the user you want to chat with
 
     private val uiKitSettings = UIKitSettings.UIKitSettingsBuilder()
         .setRegion(region)
@@ -352,12 +380,12 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun loginUser() {
-        CometChatUIKit.login("cometchat-uid-1", object : CometChat.CallbackListener<User>() {
+        CometChatUIKit.login(uid, object : CometChat.CallbackListener<User>() {
             override fun onSuccess(user: User) {
 
                 // Launch One-to-One or Group Chat Screen
                  val intent = Intent(this@MainActivity, MessageActivity::class.java)
-                 intent.putExtra("uid", "cometchat-uid-1")
+                 intent.putExtra("uid", target_uid) // Pass the UID of the user you want to chat with
                  startActivity(intent)
             }
 
@@ -373,7 +401,7 @@ class MainActivity : ComponentActivity() {
 </Tab>
 
 <Tab title="Java">
-```java MainActivity.java
+```java MainActivity.java highlight={15-17, 19-20, 54-57} lines
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -391,6 +419,9 @@ public class MainActivity extends ComponentActivity {
     private final String appID = "APP_ID"; // Replace with your App ID
     private final String region = "REGION"; // Replace with your App Region
     private final String authKey = "AUTH_KEY"; // Replace with your Auth Key
+
+    private final String uid = "cometchat-uid-1"; // Replace with the UID of the user you want to chat with
+    private final String target_uid = "cometchat-uid-2"; // Replace with the UID of the user you want to chat with
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -419,14 +450,14 @@ public class MainActivity extends ComponentActivity {
     }
 
     private void loginUser() {
-        CometChatUIKit.login("cometchat-uid-1", new CometChat.CallbackListener<User>() {
+        CometChatUIKit.login(uid, new CometChat.CallbackListener<User>() {
             @Override
             public void onSuccess(User user) {
                 Log.d(TAG, "Login successful for user: " + user.getUid());
 
                 // Launch One-to-One or Group Chat Screen
                  Intent intent = new Intent(MainActivity.this, MessageActivity.class);
-                 intent.putExtra("uid", "cometchat-uid-1");
+                 intent.putExtra("uid", target_uid);
                  startActivity(intent);
             }
 
@@ -447,13 +478,23 @@ public class MainActivity extends ComponentActivity {
 
 ## **Running the Project**
 
-Once the components are configured, build and run the app:
+Once you've completed the setup, build and run the app:
 
-```sh
+```sh lines
 gradle build
 ```
 
-Ensure you've added the necessary permissions and initialized CometChat in your `Application` class.
+<Note>
+**Required Permissions**
+
+Ensure you've added the necessary permissions in your `AndroidManifest.xml` and initialized CometChat in your `Application` class.
+:
+
+```xml lines
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+```
+</Note>
 
 ***
 
@@ -461,6 +502,8 @@ Ensure you've added the necessary permissions and initialized CometChat in your 
 
 ### **Enhance the User Experience**
 
+* **[Components Overview](/ui-kit/android/components-overview)** – Explore all available UI Kit components and their customization options.
 * **[Advanced Customizations](/ui-kit/android/theme-introduction)** – Personalize the chat UI to align with your brand.
+* **[Feature Guides](/ui-kit/android/guide-overview)** – Add capabilities like threaded messages, blocking, and group management.
 
 ***
