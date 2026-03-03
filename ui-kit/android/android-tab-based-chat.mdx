@@ -4,36 +4,37 @@ sidebarTitle: "Tab Based Chat Experience"
 description: "Create a tab-based messaging UI with BottomNavigationView for Chats, Calls, Users, and Groups."
 ---
 
-This guide walks you through creating a **tab-based messaging UI** using **Android** and **CometChat UIKit**. The UI uses **BottomNavigationView** with different sections for **Chats, Calls, Users, and Groups**, allowing seamless navigation.
+<Accordion title="AI Agent Component Spec">
+
+| Field | Value |
+| --- | --- |
+| Package | `com.cometchat:chat-uikit-android` |
+| Components | `CometChatConversations`, `CometChatCallLogs`, `CometChatUsers`, `CometChatGroups`, `CometChatMessageHeader`, `CometChatMessageList`, `CometChatMessageComposer` |
+| Layout | Tabbed bottom navigation (Chats, Calls, Users, Groups) + fragment container |
+| Prerequisite | Complete [Integration](/ui-kit/android/getting-started) Steps 1–4 first |
+| Pattern | Full-featured messaging app with multiple sections |
+
+</Accordion>
+
+This guide builds a tabbed messaging UI — Chats, Calls, Users, and Groups tabs via `BottomNavigationView`, with each tab loading its CometChat component in a fragment container.
+
+This assumes you've already completed [Integration](/ui-kit/android/getting-started) (project created, dependencies installed, init + login working, theme set up).
 
 ---
 
-## User Interface Preview
+## What You're Building
 
 <Frame>
   <img src="/images/7e8b813d-chat_experience_full_tab_based-28115d603d38f5bbfbfe170739aa478c.png" />
 </Frame>
 
-This layout consists of:
+Three sections working together:
 
-1. **Bottom Navigation Bar** – Provides quick access to main sections (Chats, Calls, Users, Groups).
-2. **Fragment Container** – Displays the selected section's content using Android Fragments.
-3. **Dynamic Content** – Each tab loads its respective Fragment with CometChat UI components.
+1. **Bottom navigation bar** — switches between Chats, Calls, Users, and Groups
+2. **Fragment container** — renders the CometChat component for the active tab
+3. **Dynamic content** — each tab loads its respective Fragment with real-time data
 
----
-
-## Step-by-Step Guide
-
-### Navigation Pattern
-
-This implementation uses Android's **BottomNavigationView** pattern:
-
-1. **TabbedActivity** hosts the bottom navigation and fragment container
-2. User taps a tab in the bottom navigation
-3. The corresponding Fragment is loaded into the container
-4. Each Fragment displays its CometChat UI component (Conversations, CallLogs, Users, or Groups)
-
-This is the standard Android pattern for apps with multiple top-level destinations.
+This uses Android's `BottomNavigationView` pattern: `TabbedActivity` hosts the navigation and fragment container, user taps a tab, the corresponding Fragment loads.
 
 ---
 
@@ -856,12 +857,13 @@ Ensure you've added the necessary permissions in your `AndroidManifest.xml`and i
   <Card title="Components Overview" icon="grid-2" href="/ui-kit/android/components-overview">
     Explore all available UI Kit components and their customization options
   </Card>
-  <Card title="Advanced Customizations" icon="paintbrush" href="/ui-kit/android/theme-introduction">
-    Personalize the chat UI to align with your brand
+  <Card title="Theming" icon="paintbrush" href="/ui-kit/android/theme-introduction">
+    Customize colors, fonts, and styles to match your brand
+  </Card>
+  <Card title="Integration" icon="rocket" href="/ui-kit/android/getting-started">
+    Back to the main setup guide
   </Card>
   <Card title="Feature Guides" icon="book" href="/ui-kit/android/guide-overview">
     Add capabilities like threaded messages, blocking, and group management
   </Card>
 </CardGroup>
-
----

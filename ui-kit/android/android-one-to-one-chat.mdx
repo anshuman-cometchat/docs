@@ -4,35 +4,37 @@ sidebarTitle: "One To One/Group Chat"
 description: "Launch a direct one-on-one or group chat screen without a conversation list for focused messaging."
 ---
 
-The **One-to-One Chat** feature provides a **direct messaging interface** for Android applications, ideal for **support chats, dating apps, and private messaging **. This implementation launches directly into a specific chat conversation without showing a conversation list, providing a **focused messaging experience**.
+<Accordion title="AI Agent Component Spec">
+
+| Field | Value |
+| --- | --- |
+| Package | `com.cometchat:chat-uikit-android` |
+| Components | `CometChatMessageHeader`, `CometChatMessageList`, `CometChatMessageComposer` |
+| Layout | Single chat window — no conversation list |
+| Prerequisite | Complete [Integration](/ui-kit/android/getting-started) Steps 1–4 first |
+| Pattern | Support chat, embedded widgets, focused messaging |
+
+</Accordion>
+
+This guide builds a single chat window — no sidebar, no conversation list. Users go directly into a one-to-one or group chat. Good for support chat, dating apps, or notification-driven flows.
+
+This assumes you've already completed [Integration](/ui-kit/android/getting-started) (project created, dependencies installed, init + login working, theme set up).
 
 ---
 
-## User Interface Preview
+## What You're Building
 
 <Frame>
   <img src="/images/c401197a-chat_experience_one_on_one-5b74b8c178c83ecb0a8879e898fcb854.png" />
 </Frame>
 
-### Key Components
+Three components stacked vertically:
 
-1. **Message Header** – Displays user/group name, avatar, and status.
-2. **Message List** – Shows chat history with real-time message updates.
-3. **Message Composer** – Provides input field for sending text messages, media, and attachments.
+1. **Message header** — displays user/group name, avatar, and status
+2. **Message list** — real-time chat history with scrolling
+3. **Message composer** — text input with media and attachments
 
----
-
-## Step-by-Step Guide
-
-### Use Case
-
-This pattern is ideal when you want to:
-- Launch a chat directly from a user profile or contact card
-- Open a support chat from a help button
-- Start a conversation from a notification
-- Navigate to a specific chat without showing the conversation list
-
-The user or group ID is passed via Intent extras when launching the Activity.
+The user or group ID is passed via Intent extras when launching the Activity — ideal for launching from a user profile, support button, or notification.
 
 ---
 
@@ -505,12 +507,13 @@ Ensure you've added the necessary permissions in your `AndroidManifest.xml` and 
   <Card title="Components Overview" icon="grid-2" href="/ui-kit/android/components-overview">
     Explore all available UI Kit components and their customization options
   </Card>
-  <Card title="Advanced Customizations" icon="paintbrush" href="/ui-kit/android/theme-introduction">
-    Personalize the chat UI to align with your brand
+  <Card title="Theming" icon="paintbrush" href="/ui-kit/android/theme-introduction">
+    Customize colors, fonts, and styles to match your brand
+  </Card>
+  <Card title="Integration" icon="rocket" href="/ui-kit/android/getting-started">
+    Back to the main setup guide
   </Card>
   <Card title="Feature Guides" icon="book" href="/ui-kit/android/guide-overview">
     Add capabilities like threaded messages, blocking, and group management
   </Card>
 </CardGroup>
-
----
