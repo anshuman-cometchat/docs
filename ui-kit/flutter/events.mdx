@@ -24,8 +24,8 @@ void ccMessageSent(BaseMessage message, MessageStatus messageStatus) {
 **Available Event Types:**
 - **User Events** → Block/Unblock users
 - **Group Events** → Create, delete, join, leave groups
-- **Conversation Events** → Delete conversations
-- **Message Events** → Send, edit, delete, receive messages
+- **Conversation Events** → Delete conversations, update conversations
+- **Message Events** → Send, edit, delete, receive messages, reactions, AI messages
 - **Call Events** → Outgoing, accepted, rejected, ended calls
 - **UI Events** → Show/hide panels, active chat changes
 </Info>
@@ -212,6 +212,7 @@ The `CometChatConversationEvents` component emits events when the logged-in user
 **Available Events:**
 
 1. `ccConversationDeleted`: Triggered when the logged-in user deletes a conversation.
+2. `ccUpdateConversation`: Triggered when a conversation is updated (e.g., unread count changes).
 
 <Tabs>
 <Tab title="Dart">
@@ -245,6 +246,11 @@ class _ConversationEventsExampleState extends State<ConversationEventsExample> w
   
   @override
   void ccConversationDeleted(Conversation conversation) {
+    // TODO("Not yet implemented")
+  }
+
+  @override
+  void ccUpdateConversation(Conversation conversation) {
     // TODO("Not yet implemented")
   }
 
@@ -288,6 +294,13 @@ class _ConversationEventsExampleState extends State<ConversationEventsExample> w
 21. `onSchedulerMessageReceived`: Triggered when a scheduler message is received.
 22. `onMessageReactionAdded`: Triggered when a reaction is added to a message.
 23. `onMessageReactionRemoved`: Triggered when a reaction is removed from a message.
+24. `ccReplyToMessage`: Triggered when the logged-in user replies to a message.
+25. `onMessagesDeliveredToAll`: Triggered when messages are delivered to all recipients.
+26. `onMessagesReadByAll`: Triggered when messages are read by all recipients.
+27. `onMessageModerated`: Triggered when a message is moderated.
+28. `onAIAssistantMessageReceived`: Triggered when an AI Assistant message is received.
+29. `onAIToolResultReceived`: Triggered when an AI tool result is received.
+30. `onAIToolArgumentsReceived`: Triggered when AI tool arguments are received.
 
 <Tabs>
 <Tab title="Dart">
@@ -427,6 +440,41 @@ class _MessageEventsExampleState extends State<MessageEventsExample> with CometC
 
   @override
   void onMessageReactionRemoved(ReactionEvent reactionEvent) {
+    // TODO("Not yet implemented")  
+  }
+
+  @override
+  void ccReplyToMessage(BaseMessage message, MessageStatus status) {
+    // TODO("Not yet implemented")  
+  }
+
+  @override
+  void onMessagesDeliveredToAll(MessageReceipt messageReceipt) {
+    // TODO("Not yet implemented")  
+  }
+
+  @override
+  void onMessagesReadByAll(MessageReceipt messageReceipt) {
+    // TODO("Not yet implemented")  
+  }
+
+  @override
+  void onMessageModerated(BaseMessage message) {
+    // TODO("Not yet implemented")  
+  }
+
+  @override
+  void onAIAssistantMessageReceived(AIAssistantMessage aiAssistantMessage) {
+    // TODO("Not yet implemented")  
+  }
+
+  @override
+  void onAIToolResultReceived(AIToolResultMessage aiToolResultMessage) {
+    // TODO("Not yet implemented")  
+  }
+
+  @override
+  void onAIToolArgumentsReceived(AIToolArgumentMessage aiToolArgumentMessage) {
     // TODO("Not yet implemented")  
   }
 
