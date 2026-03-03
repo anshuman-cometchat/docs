@@ -3,6 +3,19 @@ title: "Component Styling"
 description: "Style CometChat UI Kit components in Android using XML themes and drawable overrides."
 ---
 
+<Accordion title="AI Agent Component Spec">
+
+| Field | Value |
+| --- | --- |
+| Goal | Customize UI Kit component appearance (colors, fonts, icons) via XML theme attributes |
+| Where | `app/src/main/res/values/themes.xml` — applied via `android:theme` in `AndroidManifest.xml` |
+| Pattern | Create a custom style extending the component's parent style → assign it to `AppTheme` via the component's theme attribute |
+| Example | `CometChatConversationsStyle` → `cometchatConversationsStyle`, `CometChatUsersStyle` → `cometchatUsersStyle` |
+| Constraints | Must extend `CometChatTheme.DayNight` as parent theme; rebuild after updating styles |
+| Related | [Theme Introduction](/ui-kit/android/theme-introduction) \| [Color Resources](/ui-kit/android/color-resources) \| [Message Bubble Styling](/ui-kit/android/message-bubble-styling) |
+
+</Accordion>
+
 This page shows how to style CometChat UI Kit components in Android by overriding XML theme attributes. It is written for Android developers customizing UI Kit v5.
 
 ## When to use this

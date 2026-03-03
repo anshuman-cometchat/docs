@@ -3,6 +3,20 @@ title: "Events"
 description: "Listen to UI Kit events for user actions, group changes, messages, and call lifecycle updates."
 ---
 
+<Accordion title="AI Agent Component Spec">
+
+| Field | Value |
+| --- | --- |
+| Package | `com.cometchat:chat-uikit-android` |
+| Conversation events | `ccConversationDeleted` |
+| User events | `ccUserBlocked`, `ccUserUnblocked` |
+| Group events | `ccGroupCreated`, `ccGroupDeleted`, `ccGroupLeft`, `ccGroupMemberScopeChanged`, `ccGroupMemberKicked`, `ccGroupMemberBanned`, `ccGroupMemberUnbanned`, `ccGroupMemberJoined`, `ccGroupMemberAdded`, `ccOwnershipChanged` |
+| Message events | `ccMessageSent`, `ccMessageEdited`, `ccMessageDeleted`, `ccMessageRead`, `ccLiveReaction` |
+| Call events | `ccOutgoingCall`, `ccCallAccepted`, `ccCallRejected`, `ccCallEnded` |
+| Purpose | Decoupled communication between UI Kit components — subscribe to events to react to changes without direct component references |
+
+</Accordion>
+
 Events enable a decoupled, flexible architecture in the CometChat UI Kit. Components and Composite Components emit events in response to user interactions or state changes, allowing other parts of your application to react without direct references between components.
 
 ## When to use this

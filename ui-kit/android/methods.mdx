@@ -3,6 +3,21 @@ title: "Methods"
 description: "Use CometChatUIKit wrapper methods for initialization, authentication, user creation, and message sending."
 ---
 
+<Accordion title="AI Agent Component Spec">
+
+| Field | Value |
+| --- | --- |
+| Package | `com.cometchat:chat-uikit-android` |
+| Import | `com.cometchat.chatuikit.CometChatUIKit` |
+| Init | `CometChatUIKit.init(context, uiKitSettings, callback)` |
+| Login (dev) | `CometChatUIKit.login("UID", callback)` |
+| Login (prod) | `CometChatUIKit.loginWithAuthToken("AUTH_TOKEN", callback)` |
+| Other methods | `CometChatUIKit.logout()`, `CometChatUIKit.getLoggedInUser()`, `CometChatUIKit.createUser(user, callback)` |
+| Send messages | `CometChatUIKit.sendTextMessage()`, `CometChatUIKit.sendMediaMessage()`, `CometChatUIKit.sendCustomMessage()` |
+| Note | Use these wrapper methods instead of raw SDK calls — they manage internal UI Kit eventing |
+
+</Accordion>
+
 `CometChatUIKit` provides wrapper methods around the CometChat SDK for initialization, authentication, user creation, date formatting, and sending messages — while automatically managing internal UI Kit events so that components like Message List and Conversations stay in sync.
 
 ## When to use this

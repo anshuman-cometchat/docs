@@ -3,6 +3,19 @@ title: "Sound Manager"
 description: "Play, pause, and customize audio cues for calls and messages using CometChatSoundManager."
 ---
 
+<Accordion title="AI Agent Component Spec">
+
+| Field | Value |
+| --- | --- |
+| Package | `com.cometchat:chat-uikit-android` |
+| Import | `com.cometchat.chatuikit.resources.soundmanager.CometChatSoundManager` |
+| Play sound | `CometChatSoundManager(context).play(Sound.incomingCall)` — or pass custom `@RawRes int` as second arg |
+| Pause sound | `CometChatSoundManager(context).pause()` |
+| Sound events | `incomingCall`, `outgoingCall`, `incomingMessage`, `incomingMessageFromOther`, `outgoingMessage` |
+| Source | [GitHub](https://github.com/cometchat/cometchat-uikit-android/tree/v5/chatuikit/src/main/java/com/cometchat/chatuikit/resources/soundmanager) |
+
+</Accordion>
+
 Use `CometChatSoundManager` to play UI Kit audio cues for calls and messages.
 
 ## When to use this
