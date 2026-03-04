@@ -26,9 +26,48 @@ The UI Kit is a set of independent widgets that compose into chat layouts. A typ
 - **CometChatMessageList** — scrollable message feed with reactions, receipts, and threads
 - **CometChatMessageComposer** — rich text input with attachments, mentions, and voice notes
 
-Data flow: selecting a conversation in CometChatConversations yields a `User` or `Group` object. That object is passed as a prop (`user` or `group`) to CometChatMessageHeader, CometChatMessageList, and CometChatMessageComposer. The message components use the SDK internally — CometChatMessageComposer sends messages, CometChatMessageList receives them via real-time listeners.
+**Data flow**: selecting a conversation in CometChatConversations yields a `User` or `Group` object. That object is passed as a prop (`user` or `group`) to CometChatMessageHeader, CometChatMessageList, and CometChatMessageComposer. The message components use the SDK internally — CometChatMessageComposer sends messages, CometChatMessageList receives them via real-time listeners.
+
+```mermaid
+flowchart LR
+    subgraph Sidebar
+        A[CometChatConversations]
+    end
+    
+    subgraph "Chat Panel"
+        B[CometChatMessageHeader]
+        C[CometChatMessageList]
+        D[CometChatMessageComposer]
+    end
+    
+    subgraph SDK
+        E[CometChat SDK]
+    end
+    
+    A -->|"User/Group object"| B
+    A -->|"User/Group object"| C
+    A -->|"User/Group object"| D
+    D -->|"sendMessage()"| E
+    E -->|"Real-time listeners"| C
+```
 
 Components communicate through a publish/subscribe event bus (`CometChatMessageEvents`, `CometChatConversationEvents`, `CometChatGroupEvents`, etc.). A component emits events that other components or application code can subscribe to without direct references. See [Events](/ui-kit/flutter/events) for the full list.
+
+```mermaid
+flowchart TB
+    subgraph "Event Bus"
+        E1[CometChatMessageEvents]
+        E2[CometChatConversationEvents]
+        E3[CometChatGroupEvents]
+    end
+    
+    C1[Component A] -->|"emit"| E1
+    E1 -->|"subscribe"| C2[Component B]
+    E1 -->|"subscribe"| C3[App Code]
+    
+    C4[Component C] -->|"emit"| E2
+    E2 -->|"subscribe"| C5[Component D]
+```
 
 Each component accepts callback props (`on<Event>`), view slot props (`<slot>View`) for replacing UI sections, `RequestBuilder` props for data filtering, and style class overrides via `CometChat<Component>Style`.
 
