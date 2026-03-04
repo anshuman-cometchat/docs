@@ -4,27 +4,18 @@ sidebarTitle: "Core"
 description: "Comprehensive guide to CometChat's core messaging features including instant messaging, media sharing, read receipts, and more"
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Agent Component Spec">
 
-Key components for core features:
-- **Instant Messaging** → [MessageComposer](/ui-kit/flutter/message-composer) | [MessageList](/ui-kit/flutter/message-list)
-- **Media Sharing** → [MessageComposer](/ui-kit/flutter/message-composer) | [MessageList](/ui-kit/flutter/message-list)
-- **Read Receipts** → [Conversations](/ui-kit/flutter/conversations) | [MessageList](/ui-kit/flutter/message-list)
-- **Typing Indicators** → [Conversations](/ui-kit/flutter/conversations) | [MessageHeader](/ui-kit/flutter/message-header)
-- **User Presence** → [Conversations](/ui-kit/flutter/conversations) | [Users](/ui-kit/flutter/users)
-- **Reactions** → [MessageList](/ui-kit/flutter/message-list)
-- **Mentions** → [MessageComposer](/ui-kit/flutter/message-composer) | [MessageList](/ui-kit/flutter/message-list)
-- **Threaded Messages** → [Threaded Messages](/ui-kit/flutter/threaded-messages-header)
-- **Group Chat** → [Groups](/ui-kit/flutter/groups)
-</Info>
+| Field | Value |
+| --- | --- |
+| Package | `cometchat_chat_uikit` |
+| Required setup | `CometChatUIKit.init(uiKitSettings: UIKitSettings)` then `CometChatUIKit.login(uid)` — must complete before rendering any component |
+| Core features | Instant Messaging, Media Sharing, Read Receipts, Mark as Unread, Typing Indicator, User Presence, Reactions, Mentions, Quoted Reply, Search, Threaded Conversations, Moderation, Report Message, Group Chat |
+| Key components | `CometChatConversations` → [Conversations](/ui-kit/flutter/conversations), `CometChatMessageList` → [Message List](/ui-kit/flutter/message-list), `CometChatMessageComposer` → [Message Composer](/ui-kit/flutter/message-composer), `CometChatMessageHeader` → [Message Header](/ui-kit/flutter/message-header), `CometChatUsers` → [Users](/ui-kit/flutter/users), `CometChatGroups` → [Groups](/ui-kit/flutter/groups), `CometChatGroupMembers` → [Group Members](/ui-kit/flutter/group-members) |
+
+</Accordion>
 
 The UI Kit comprises a variety of widgets, each designed to work seamlessly with one another to deliver a comprehensive and intuitive chat experience.
-
-<Note>
-**Available via:** [UI Kits](/ui-kit/flutter/overview) | [SDK](/sdk/flutter/overview) | [REST API](https://api-explorer.cometchat.com)
-</Note>
 
 Here's how different UI Kit widgets work together to achieve CometChat's Core features:
 

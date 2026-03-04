@@ -1,53 +1,24 @@
 ---
 title: "Call Features"
+sidebarTitle: "Calls"
 description: "Integrate one-on-one and group audio/video calling capabilities into your Flutter app with CometChat UI Kit"
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Agent Component Spec">
 
-```dart
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_calls_uikit/cometchat_calls_uikit.dart';
+| Field | Value |
+| --- | --- |
+| Packages | `cometchat_chat_uikit` + `cometchat_calls_uikit` (add to `pubspec.yaml`) |
+| Required setup | `CometChatUIKit.init(uiKitSettings: UIKitSettings)` then `CometChatUIKit.login(uid)` — Calls SDK must also be installed |
+| Call features | Incoming Call, Outgoing Call, Call Logs, Call Buttons |
+| Key components | `CometChatCallButtons` → [Call Buttons](/ui-kit/flutter/call-buttons), `CometChatIncomingCall` → [Incoming Call](/ui-kit/flutter/incoming-call), `CometChatOutgoingCall` → [Outgoing Call](/ui-kit/flutter/outgoing-call), `CometChatCallLogs` → [Call Logs](/ui-kit/flutter/call-logs) |
+| Auto-detection | UI Kit automatically detects the Calls SDK and enables call UI components |
+| Requirements | minSdkVersion 24 (Android), iOS 12+ |
 
-// Enable calling features in UIKitSettings
-UIKitSettings uiKitSettings = (UIKitSettingsBuilder()
-  ..appId = "APP_ID"
-  ..authKey = "AUTH_KEY"
-  ..region = "REGION"
-  ..callingExtension = CometChatCallingExtension()
-).build();
-
-// Initialize with calling support
-CometChatUIKit.init(uiKitSettings: uiKitSettings);
-
-// Set navigation key for incoming calls
-CometChatUsersWithMessages(key: CallNavigationContext.navigatorKey)
-
-// Add call listener
-CometChat.addCallListener(listenerId, this);
-```
-
-**Key Calling Components:**
-- `CometChatCallButtons` → [Docs](/ui-kit/flutter/call-buttons)
-- `CometChatIncomingCall` → [Docs](/ui-kit/flutter/incoming-call)
-- `CometChatOutgoingCall` → [Docs](/ui-kit/flutter/outgoing-call)
-- `CometChatCallLogs` → [Docs](/ui-kit/flutter/call-logs)
-- `CometChatCallingExtension` → Calling extension
-- `CallNavigationContext` → Navigation context for calls
-
-**Requirements:** `cometchat_calls_uikit` package, minSdkVersion 24 (Android), iOS 12+
-</Info>
-
-## Overview
-
+</Accordion>
+ 
 CometChat's Calls feature is an advanced functionality that allows you to seamlessly integrate one-on-one as well as group audio and video calling capabilities into your application. This document provides a technical overview of these features, as implemented in the Flutter UI Kit.
-
-<Note>
-**Available via:** [UI Kits](/ui-kit/flutter/overview) | [SDK](/sdk/flutter/overview)
-</Note>
-
+ 
 ## Integration
 
 First, make sure that you've correctly integrated the UI Kit library into your project. If you haven't done this yet or are facing difficulties, refer to our [Getting Started](/ui-kit/flutter/getting-started) guide. This guide will walk you through a step-by-step process of integrating our UI Kit into your Flutter project.

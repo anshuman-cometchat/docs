@@ -1,54 +1,27 @@
 ---
 title: "AI Features"
+sidebarTitle: "Smart Chat"
 description: "Enhance user interaction with AI-powered conversation starters, smart replies, and conversation summaries in your Flutter app"
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Agent Component Spec">
 
-```dart
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
+| Field | Value |
+| --- | --- |
+| Package | `cometchat_chat_uikit` |
+| Required setup | `CometChatUIKit.init(uiKitSettings: UIKitSettings)` then `CometChatUIKit.login(uid)` + AI features enabled in [CometChat Dashboard](/fundamentals/ai-user-copilot/overview) |
+| AI features | Conversation Starter, Smart Replies, Conversation Summary, AI Assist Bot |
+| Key components | `CometChatMessageList` → [Message List](/ui-kit/flutter/message-list) (Conversation Starter), `CometChatMessageComposer` → [Message Composer](/ui-kit/flutter/message-composer) (Smart Replies, Summary) |
+| AI Extensions | `AISmartRepliesExtension()`, `AIConversationStarterExtension()`, `AIAssistBotExtension()`, `AIConversationSummaryExtension()` |
+| Activation | Enable each AI feature from the CometChat Dashboard — UI Kit auto-integrates them after configuration |
 
-// Enable AI features in UIKitSettings
-UIKitSettings uiKitSettings = (UIKitSettingsBuilder()
-  ..aiFeature = [
-    AISmartRepliesExtension(),
-    AIConversationStarterExtension(),
-    AIAssistBotExtension(),
-    AIConversationSummaryExtension()
-  ]
-).build();
-
-// Initialize with AI features
-CometChatUIKit.init(uiKitSettings: uiKitSettings);
-```
-
-**Key AI Extensions:**
-- `AISmartRepliesExtension` → Smart reply suggestions
-- `AIConversationStarterExtension` → Conversation starters
-- `AIAssistBotExtension` → AI assistant bot
-- `AIConversationSummaryExtension` → Conversation summaries
-
-**Components:**
-- Conversation Starters → Auto-displayed in `CometChatMessageList` ([Docs](/ui-kit/flutter/message-list))
-- Smart Replies → Available in `CometChatMessageComposer` action sheet ([Docs](/ui-kit/flutter/message-composer))
-- Conversation Summary → Available in `CometChatMessageComposer` action sheet ([Docs](/ui-kit/flutter/message-composer))
-
-Activate features from [CometChat Dashboard](https://app.cometchat.com) → Extensions → AI
-</Info>
-
-## Overview
+</Accordion>
 
 CometChat's AI capabilities greatly enhance user interaction and engagement in your application. Let's understand how the Flutter UI Kit achieves these features.
 
 <Frame>
   <img src="/images/5b57feb3-ai_overview-e181192385baa430f73f90e7a24690e8.png" />
 </Frame>
-
-<Note>
-**Available via:** [UI Kits](/ui-kit/flutter/overview) | [SDK](/sdk/flutter/overview) | [Dashboard](https://app.cometchat.com)
-</Note>
 
 ***
 
