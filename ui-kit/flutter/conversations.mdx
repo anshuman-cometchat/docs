@@ -17,64 +17,134 @@ description: "Scrollable list of recent one-on-one and group conversations for t
   "props": {
     "data": {
       "conversationsRequestBuilder": {
-        "type": "ConversationsRequestBuilder",
+        "type": "ConversationsRequestBuilder?",
         "default": "SDK default (30 per page)",
         "note": "Pass the builder, not the result of .build()"
+      },
+      "conversationsProtocol": {
+        "type": "ConversationsBuilderProtocol?",
+        "default": "null",
+        "note": "Custom protocol for fetching conversations"
+      },
+      "scrollController": {
+        "type": "ScrollController?",
+        "default": "null",
+        "note": "Custom scroll controller for the list"
+      },
+      "title": {
+        "type": "String?",
+        "default": "Chats",
+        "note": "Title text for the app bar"
+      },
+      "controllerTag": {
+        "type": "String?",
+        "default": "null",
+        "note": "Tag for controller management"
+      },
+      "mentionAllLabel": {
+        "type": "String?",
+        "default": "null",
+        "note": "Custom label for @all mentions"
+      },
+      "mentionAllLabelId": {
+        "type": "String?",
+        "default": "null",
+        "note": "Custom label ID for @all mentions"
       }
     },
     "callbacks": {
-      "onItemTap": "Function(Conversation conversation)",
-      "onItemLongPress": "Function(Conversation conversation)",
-      "onSelection": "Function(List<Conversation>? list)",
-      "onBack": "VoidCallback",
-      "onError": "OnError",
-      "onLoad": "OnLoad<Conversation>",
-      "onEmpty": "OnEmpty",
-      "onSearchTap": "GestureTapCallback"
+      "onItemTap": "Function(Conversation conversation)?",
+      "onItemLongPress": "Function(Conversation conversation)?",
+      "onSelection": "Function(List<Conversation>? list)?",
+      "onBack": "VoidCallback?",
+      "onError": "OnError?",
+      "onLoad": "OnLoad<Conversation>?",
+      "onEmpty": "OnEmpty?",
+      "onSearchTap": "GestureTapCallback?",
+      "datePattern": "String Function(Conversation conversation)?",
+      "dateTimeFormatterCallback": "DateTimeFormatterCallback?"
     },
     "visibility": {
-      "receiptsVisibility": { "type": "bool", "default": true },
-      "usersStatusVisibility": { "type": "bool", "default": true },
-      "groupTypeVisibility": { "type": "bool", "default": true },
-      "deleteConversationOptionVisibility": { "type": "bool", "default": true },
-      "hideAppbar": { "type": "bool", "default": false },
-      "hideError": { "type": "bool", "default": false },
-      "hideSearch": { "type": "bool", "default": false },
-      "showBackButton": { "type": "bool", "default": false }
+      "receiptsVisibility": { "type": "bool?", "default": true },
+      "usersStatusVisibility": { "type": "bool?", "default": true },
+      "groupTypeVisibility": { "type": "bool?", "default": true },
+      "deleteConversationOptionVisibility": { "type": "bool?", "default": true },
+      "hideAppbar": { "type": "bool?", "default": false },
+      "hideError": { "type": "bool?", "default": false },
+      "hideSearch": { "type": "bool?", "default": false },
+      "showBackButton": { "type": "bool", "default": false },
+      "dateBackgroundIsTransparent": { "type": "bool?", "default": null },
+      "searchReadOnly": { "type": "bool", "default": false }
     },
     "sound": {
-      "disableSoundForMessages": { "type": "bool", "default": false },
-      "customSoundForMessages": { "type": "String", "default": "built-in" }
+      "disableSoundForMessages": { "type": "bool?", "default": false },
+      "customSoundForMessages": { "type": "String?", "default": "built-in" }
     },
     "selection": {
       "selectionMode": {
-        "type": "SelectionMode",
+        "type": "SelectionMode?",
         "values": ["SelectionMode.single", "SelectionMode.multiple", "SelectionMode.none"],
         "default": "null"
       },
       "activateSelection": {
-        "type": "ActivateSelection",
+        "type": "ActivateSelection?",
         "values": ["ActivateSelection.onClick", "ActivateSelection.onLongClick"],
         "default": "null"
       }
     },
     "viewSlots": {
-      "listItemView": "Widget Function(Conversation conversation)",
-      "leadingView": "Widget? Function(BuildContext context, Conversation conversation)",
-      "titleView": "Widget? Function(BuildContext context, Conversation conversation)",
-      "subtitleView": "Widget? Function(BuildContext context, Conversation conversation)",
-      "trailingView": "Widget? Function(Conversation conversation)",
-      "loadingStateView": "WidgetBuilder",
-      "emptyStateView": "WidgetBuilder",
-      "errorStateView": "WidgetBuilder",
-      "setOptions": "List<CometChatOption>? Function(Conversation, CometChatConversationsController, BuildContext)",
-      "addOptions": "List<CometChatOption>? Function(Conversation, CometChatConversationsController, BuildContext)"
+      "listItemView": "Widget Function(Conversation conversation)?",
+      "leadingView": "Widget? Function(BuildContext context, Conversation conversation)?",
+      "titleView": "Widget? Function(BuildContext context, Conversation conversation)?",
+      "subtitleView": "Widget? Function(BuildContext context, Conversation conversation)?",
+      "trailingView": "Widget? Function(Conversation conversation)?",
+      "loadingStateView": "WidgetBuilder?",
+      "emptyStateView": "WidgetBuilder?",
+      "errorStateView": "WidgetBuilder?",
+      "setOptions": "List<CometChatOption>? Function(Conversation, CometChatConversationsController, BuildContext)?",
+      "addOptions": "List<CometChatOption>? Function(Conversation, CometChatConversationsController, BuildContext)?"
     },
     "formatting": {
       "textFormatters": {
-        "type": "List<CometChatTextFormatter>",
+        "type": "List<CometChatTextFormatter>?",
         "default": "default formatters from data source"
+      },
+      "typingIndicatorText": {
+        "type": "String?",
+        "default": "typing..."
       }
+    },
+    "icons": {
+      "backButton": { "type": "Widget?", "default": "built-in back arrow" },
+      "protectedGroupIcon": { "type": "Widget?", "default": "built-in lock icon" },
+      "privateGroupIcon": { "type": "Widget?", "default": "built-in lock icon" },
+      "readIcon": { "type": "Widget?", "default": "built-in read icon" },
+      "deliveredIcon": { "type": "Widget?", "default": "built-in delivered icon" },
+      "sentIcon": { "type": "Widget?", "default": "built-in sent icon" },
+      "submitIcon": { "type": "Widget?", "default": "built-in check icon" },
+      "searchBoxIcon": { "type": "Widget?", "default": "built-in search icon" }
+    },
+    "layout": {
+      "datePadding": { "type": "EdgeInsets?", "default": "null" },
+      "dateHeight": { "type": "double?", "default": "null" },
+      "dateWidth": { "type": "double?", "default": "null" },
+      "badgeWidth": { "type": "double?", "default": "null" },
+      "badgeHeight": { "type": "double?", "default": "null" },
+      "badgePadding": { "type": "EdgeInsetsGeometry?", "default": "null" },
+      "avatarWidth": { "type": "double?", "default": "null" },
+      "avatarHeight": { "type": "double?", "default": "null" },
+      "avatarPadding": { "type": "EdgeInsetsGeometry?", "default": "null" },
+      "avatarMargin": { "type": "EdgeInsetsGeometry?", "default": "null" },
+      "statusIndicatorWidth": { "type": "double?", "default": "null" },
+      "statusIndicatorHeight": { "type": "double?", "default": "null" },
+      "statusIndicatorBorderRadius": { "type": "BorderRadiusGeometry?", "default": "null" },
+      "searchPadding": { "type": "EdgeInsetsGeometry?", "default": "null" },
+      "searchContentPadding": { "type": "EdgeInsetsGeometry?", "default": "null" }
+    },
+    "style": {
+      "conversationsStyle": { "type": "CometChatConversationsStyle", "default": "CometChatConversationsStyle()" },
+      "listItemStyle": { "type": "ListItemStyle?", "default": "null" },
+      "appBarOptions": { "type": "List<Widget>?", "default": "null" }
     }
   },
   "events": [
@@ -87,6 +157,16 @@ description: "Scrollable list of recent one-on-one and group conversations for t
       "name": "CometChatConversationEvents.ccUpdateConversation",
       "payload": "Conversation",
       "description": "Conversation updated"
+    },
+    {
+      "name": "CometChatConversationEvents.ccMessageRead",
+      "payload": "BaseMessage",
+      "description": "Message marked as read"
+    },
+    {
+      "name": "CometChatConversationEvents.ccMessageSent",
+      "payload": "BaseMessage, MessageStatus",
+      "description": "Message sent"
     }
   ],
   "sdkListeners": [
@@ -107,23 +187,35 @@ description: "Scrollable list of recent one-on-one and group conversations for t
     "onMessageDeleted",
     "onUserOnline",
     "onUserOffline",
+    "ccUserBlocked",
     "onGroupMemberJoined",
     "onGroupMemberLeft",
     "onGroupMemberKicked",
     "onGroupMemberBanned",
     "onGroupMemberUnbanned",
     "onGroupMemberScopeChanged",
-    "onMemberAddedToGroup"
+    "onMemberAddedToGroup",
+    "ccOwnershipChanged",
+    "ccGroupLeft",
+    "ccGroupDeleted",
+    "ccGroupMemberAdded",
+    "onIncomingCallReceived",
+    "onOutgoingCallAccepted",
+    "onOutgoingCallRejected",
+    "onIncomingCallCancelled",
+    "onCallEndedMessageReceived",
+    "onConnected"
   ],
   "compositionExample": {
     "description": "Sidebar conversations wired to message view",
     "components": [
       "CometChatConversations",
+      "CometChatMessages",
       "CometChatMessageHeader",
       "CometChatMessageList",
       "CometChatMessageComposer"
     ],
-    "flow": "onItemTap emits Conversation -> extract User/Group via conversationWith -> pass to MessageHeader, MessageList, MessageComposer"
+    "flow": "onItemTap emits Conversation -> extract User/Group via conversationWith -> pass to CometChatMessages or individual MessageHeader, MessageList, MessageComposer"
   },
   "types": {
     "CometChatOption": {
@@ -137,6 +229,10 @@ description: "Scrollable list of recent one-on-one and group conversations for t
       "single": "SelectionMode.single",
       "multiple": "SelectionMode.multiple",
       "none": "SelectionMode.none"
+    },
+    "ActivateSelection": {
+      "onClick": "ActivateSelection.onClick",
+      "onLongClick": "ActivateSelection.onLongClick"
     }
   }
 }
@@ -2034,3 +2130,20 @@ Subscribe using `CometChatConversationEvents.addConversationListListener()` and 
 | Toggle visibility of UI elements | Widget props | `<feature>Visibility` boolean props | `receiptsVisibility: false` |
 | Replace a section of the list item | Widget props | `<slot>View` render props | `listItemView: (conversation) => CustomWidget()` |
 | Change colors, fonts, spacing | Widget props | `conversationsStyle` | `conversationsStyle: CometChatConversationsStyle(backgroundColor: Colors.white)` |
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Users" icon="users" href="/ui-kit/flutter/users">
+    Display and select from a list of users
+  </Card>
+  <Card title="Groups" icon="user-group" href="/ui-kit/flutter/groups">
+    Display and select from a list of groups
+  </Card>
+  <Card title="Message List" icon="comments" href="/ui-kit/flutter/message-list">
+    Display messages in a conversation
+  </Card>
+  <Card title="Theming" icon="palette" href="/ui-kit/flutter/theme-introduction">
+    Customize the look and feel of components
+  </Card>
+</CardGroup>
