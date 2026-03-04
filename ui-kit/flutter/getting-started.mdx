@@ -1,408 +1,116 @@
 ---
-title: "Getting Started With CometChat Flutter UI Kit"
+title: "Getting Started"
 sidebarTitle: "Getting Started"
-description: "Install and configure CometChat Flutter UI Kit with step-by-step setup, initialization, and authentication guide"
+description: "Add CometChat to a Flutter app in 5 steps: create project, install, init, login, render."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Setup Reference**
+<Accordion title="AI Agent Component Spec">
 
-```bash
-# Install
-flutter pub add cometchat_chat_uikit
-flutter pub add cometchat_calls_uikit  # Optional: for calling
+| Field | Value |
+| --- | --- |
+| Package | `cometchat_chat_uikit` |
+| Init | `CometChatUIKit.init(uiKitSettings)` — must resolve before `login()` |
+| Login | `CometChatUIKit.login("UID")` — must resolve before rendering widgets |
+| Order | `init()` → `login()` → render. Breaking this order = blank screen |
+| Auth Key | Dev/testing only. Use Auth Token in production |
+| Calling | Optional. Install `cometchat_calls_uikit` to enable |
+| Platforms | iOS 13.0+, Android API 24+ (with calling) |
 
-# Initialize (run once at app start)
-UIKitSettings uiKitSettings = (UIKitSettingsBuilder()
-  ..appId = "YOUR_APP_ID"
-  ..region = "YOUR_REGION"
-  ..authKey = "YOUR_AUTH_KEY"
-  ..subscriptionType = CometChatSubscriptionType.allUsers
-  ..extensions = CometChatUIKitChatExtensions.getDefaultExtensions()
-  ..callingExtension = CometChatCallingExtension()
-).build();
-await CometChatUIKit.init(uiKitSettings: uiKitSettings);
+</Accordion>
 
-# Login (after init)
-await CometChatUIKit.login("cometchat-uid-1");
-```
-
-**Required Credentials:** App ID, Region, Auth Key (dev) or Auth Token (prod)  
-**Get from:** [CometChat Dashboard](https://app.cometchat.com) → Your App → API & Auth Keys
-
-**Integration Paths:**
-- **Conversation List + Message** → [flutter-conversation](/ui-kit/flutter/flutter-conversation)
-- **One-to-One Chat** → [flutter-one-to-one-chat](/ui-kit/flutter/flutter-one-to-one-chat)
-- **Tab-Based Chat** → [flutter-tab-based-chat](/ui-kit/flutter/flutter-tab-based-chat)
-</Info>
-
-The **CometChat UI Kit for Flutter** streamlines the integration of in-app chat functionality by providing a **comprehensive set of prebuilt UI widgets**. It offers seamless **theming options**, including **light and dark modes**, customizable fonts, colors, and extensive styling capabilities.
-
-With built-in support for **one-to-one and group conversations**, developers can efficiently enable chat features within their applications. Follow this guide to **quickly integrate chat functionality** using the CometChat Flutter UI Kit.
+This guide walks you through adding CometChat to a Flutter app. By the end you'll have a working chat UI.
 
 <Frame>
-  <iframe width="100%" height="400" src="https://www.youtube.com/embed/7ZMRhg1k1lc" title="YouTube video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+  <iframe width="100%" height="400" src="https://www.youtube.com/embed/I0yVOMlPMqc" title="YouTube video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
 </Frame>
 
-***
+---
 
-## **Prerequisites**
+## Prerequisites
 
-Before installing the **CometChat UI Kit for Flutter**, you must first **create a CometChat application** via the **[CometChat Dashboard](https://app.cometchat.com/)**. The dashboard provides all the essential chat service components, including:
+You need three things from the [CometChat Dashboard](https://app.cometchat.com/):
 
-* **User Management**
-* **Group Chat & Messaging**
-* **Voice & Video Calling**
-* **Real-time Notifications**
+| Credential | Where to find it |
+| --- | --- |
+| App ID | Dashboard → Your App → Credentials |
+| Auth Key | Dashboard → Your App → Credentials |
+| Region | Dashboard → Your App → Credentials (e.g. `us`, `eu`, `in`) |
 
-<Info>
+You also need Flutter 3.0+ installed with Android Studio or VS Code.
 
-To initialize the **UI Kit**, you will need the following credentials from your **CometChat application**:
+<Warning>
+Auth Key is for development only. In production, generate Auth Tokens server-side via the [REST API](https://api-explorer.cometchat.com/) and use `loginWithAuthToken()`. Never ship Auth Keys in client code.
+</Warning>
 
-1. **App ID**
-2. **Auth Key**
-3. **Region**
+---
 
-Ensure you have these details ready before proceeding with the installation and configuration.
-
-</Info>
-
-***
-
-## **Register & Set Up CometChat**
-
-Follow these steps to **register on CometChat** and **set up your development environment**.
-
-### **Step 1: Register on CometChat**
-
-To use **CometChat UI Kit**, you first need to register on the **CometChat Dashboard**.
-
-🔗 **[Click here to Sign Up](https://app.cometchat.com/login)**
-
-### **Step 2: Get Your Application Keys**
-
-After registering, create a **new app** and retrieve your **authentication details**:
-
-1. Navigate to the **QuickStart** or **API & Auth Keys** section.
-
-2. Note down the following keys:
-
-   * **App ID**
-   * **Auth Key**
-   * **Region**
-
-<Info>
-
-Each CometChat application can be integrated with a **single client app**. Users within the same application can communicate across multiple platforms, including **iOS, Android, and web**.
-
-</Info>
-
-### **Step 3: Set Up Your Development Environment**
-
-Ensure your system meets the following **prerequisites** before proceeding with integration.
-
-**System Requirements:**
-
-* **Flutter** installed on your system (Flutter 3.0 or higher recommended)
-* **Android Studio** or **VS Code** with configured Flutter/Dart plugins
-* **Xcode & CocoaPods** for iOS development
-* An **iOS device or simulator** with iOS 13.0 or above
-* An **Android device or emulator** with Android version 5.0 (API level 21) or above
-
-***
-
-## **Getting Started**
-
-### **Step 1: Create Flutter Application Project**
-
-To get started, create a new Flutter application project:
+## Step 1 — Create a Flutter Project
 
 ```bash
 flutter create my_chat_app
 cd my_chat_app
 ```
 
-***
+---
 
-### **Step 2: Add Dependency**
+## Step 2 — Install the UI Kit
 
-**1. Update Pubspec**
-
-To use this UI Kit in your Flutter project, you'll need to add the following dependency to the dependencies section of your `pubspec.yaml` file:
+Add to your `pubspec.yaml`:
 
 ```yaml pubspec.yaml
 dependencies:
   flutter:
     sdk: flutter
-  
   cometchat_chat_uikit: ^5.2.10
-  cometchat_calls_uikit: ^5.0.12  # Optional: Include if you're using Audio/Video Calling
+  cometchat_calls_uikit: ^5.0.12  # Optional: for voice/video calling
 ```
 
-**Final `pubspec.yaml` Example:**
-
-```yaml pubspec.yaml
-name: my_chat_app
-description: "A Flutter chat application using CometChat UI Kit"
-
-publish_to: 'none'
-
-version: 1.0.0+1
-
-environment:
-  sdk: '>=3.8.0 <4.0.0'
-
-dependencies:
-  flutter:
-    sdk: flutter
-
-  cometchat_chat_uikit: ^5.2.10
-  cometchat_calls_uikit: ^5.0.12  # Optional: Include if you're using Audio/Video Calling
-  cupertino_icons: ^1.0.8
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
-  flutter_lints: ^4.0.0
-
-flutter:
-  uses-material-design: true
-```
-
-After updating `pubspec.yaml`, run:
+Then run:
 
 ```bash
 flutter pub get
 ```
 
-***
-
-**2. Android App Setup**
-
-To ensure compatibility with the CometChat Calling UI Kit and its dependencies, your Flutter project must target a minimum SDK version of **24 or higher**.
-
-Update the `minSdkVersion` in your Android project configuration, located at `android/app/build.gradle`:
+**Android Setup** — Update `android/app/build.gradle`:
 
 ```gradle build.gradle
 android {
     defaultConfig {
-        minSdk = 24
-        // Other configurations...
+        minSdk = 24  // Required for calling
     }
 }
 ```
 
-***
-
-**3. Update iOS Podfile**
-
-In your Podfile (located at `ios/Podfile`), update the minimum iOS version your project supports to 12.0:
+**iOS Setup** — Update `ios/Podfile`:
 
 ```ruby Podfile
 platform :ios, '13.0'
 ```
 
-After updating, run:
+Then run:
 
 ```bash
-cd ios
-pod install
-cd ..
+cd ios && pod install && cd ..
 ```
 
-***
+---
 
-**4. Import CometChat UIKit**
+## Step 3 — Initialize CometChat
 
-In your Dart code, import the CometChat UIKit package to access its features. Add the following import statement to your `main.dart` file:
+Create a constants file and initialize the UI Kit before anything else.
 
-<Tabs>
-<Tab title="Dart">
-```dart main.dart
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_calls_uikit/cometchat_calls_uikit.dart';  // Optional: Include if you're using Audio/Video Calling
-```
-</Tab>
-</Tabs>
-
-***
-
-### **Step 3: Initialize UI Kit**
-
-Before using any features from the CometChat UI Kit, initialize it with your app credentials.
-
-<Warning>
-
-You must call `CometChatUIKit.init()` before rendering any UI Kit widgets or calling any SDK methods. Initialization must complete before login.
-
-</Warning>
-
-**1. Import & Configure UIKit Settings**
-
-You can store your app credentials (App ID, Auth Key, Region) in a dedicated configuration file and load them dynamically in your app.
-
-**Example Configuration File:**
-
-<Tabs>
-<Tab title="Dart">
-```dart cometchat_config.dart
+```dart title="lib/cometchat_config.dart"
 class CometChatConfig {
   static const String appId = "APP_ID";      // Replace with your App ID
-  static const String region = "REGION";     // Replace with your App Region
-  static const String authKey = "AUTH_KEY";  // Replace with your Auth Key
+  static const String region = "REGION";     // Replace with your Region
+  static const String authKey = "AUTH_KEY";  // Replace with your Auth Key (dev only)
 }
 ```
-</Tab>
-</Tabs>
 
-**Initialization Code:**
-
-<Tabs>
-<Tab title="Dart">
-```dart main.dart
+```dart title="lib/main.dart"
 import 'package:flutter/material.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:cometchat_calls_uikit/cometchat_calls_uikit.dart';  // Optional
-import 'cometchat_config.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'CometChat UI Kit',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Home(),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  const Home({super.key});
-
-  Future<void> _initializeAndLogin() async {
-    final settings = UIKitSettingsBuilder()
-      ..subscriptionType = CometChatSubscriptionType.allUsers
-      ..autoEstablishSocketConnection = true
-      ..appId = CometChatConfig.appId
-      ..region = CometChatConfig.region
-      ..authKey = CometChatConfig.authKey
-      ..extensions = CometChatUIKitChatExtensions.getDefaultExtensions()  // Replace with empty array to disable extensions
-      ..callingExtension = CometChatCallingExtension();  // Optional: Include if using Audio/Video Calling
-
-    await CometChatUIKit.init(
-      uiKitSettings: settings.build(),
-      onSuccess: (successMessage) {
-        debugPrint('✅ CometChat Initialized');
-      },
-      onError: (error) {
-        debugPrint('❌ CometChat Initialization error: $error');
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-      future: _initializeAndLogin(),
-      builder: (ctx, snap) {
-        if (snap.connectionState != ConnectionState.done) {
-          return const Scaffold(
-            body: SafeArea(
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
-        }
-        if (snap.hasError) {
-          return Scaffold(
-            body: SafeArea(
-              child: Center(
-                child: Text(
-                  'Error starting app:\n${snap.error}',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          );
-        }
-        return const LoginScreen();  // Navigate to your login screen
-      },
-    );
-  }
-}
-```
-</Tab>
-</Tabs>
-
-<Note>
-
-Store your CometChat credentials in a config file to simplify environment management and avoid hardcoding sensitive information.
-
-</Note>
-
-<Warning>
-
-**Auth Key** is for development/testing only. In production, generate **Auth Tokens** on your server using the REST API and pass them to the client. Never expose Auth Keys in production client code.
-
-</Warning>
-
-***
-
-### **Step 4: Login to UI Kit**
-
-Once the UI Kit is initialized, authenticate your user using the `login()` method. You'll receive a `User` object upon success.
-
-<Tabs>
-<Tab title="Dart">
-```dart main.dart
-CometChatUIKit.login(
-  "cometchat-uid-1",  // Replace with a valid UID
-  onSuccess: (user) {
-    debugPrint('✅ CometChat LoggedIn success: ${user.name}');
-    // Navigate to your chat screen
-  },
-  onError: (error) {
-    debugPrint('❌ CometChat LoggedIn error: $error');
-  },
-);
-```
-</Tab>
-</Tabs>
-
-**Test Users:**
-
-You can test using any of the following pre-generated users:
-
-* `cometchat-uid-1`
-* `cometchat-uid-2`
-* `cometchat-uid-3`
-* `cometchat-uid-4`
-* `cometchat-uid-5`
-
-<Note>
-
-For more information, refer to the documentation on [Init](/ui-kit/flutter/methods#init) and [Login](/ui-kit/flutter/methods#login-using-auth-key).
-
-</Note>
-
-**Example: Initialization and Login Combined**
-
-<Tabs>
-<Tab title="Dart">
-```dart main.dart
-import 'package:flutter/material.dart';
-import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_calls_uikit/cometchat_calls_uikit.dart';
 import 'cometchat_config.dart';
 
 void main() => runApp(const MyApp());
@@ -413,198 +121,169 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CometChat UI Kit',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Home(),
+      title: 'CometChat Demo',
+      home: const InitializerScreen(),
     );
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class InitializerScreen extends StatelessWidget {
+  const InitializerScreen({super.key});
 
-  Future<void> _initializeAndLogin() async {
-    final settings = UIKitSettingsBuilder()
-      ..subscriptionType = CometChatSubscriptionType.allUsers
-      ..autoEstablishSocketConnection = true
+  Future<void> _initCometChat() async {
+    final settings = (UIKitSettingsBuilder()
       ..appId = CometChatConfig.appId
       ..region = CometChatConfig.region
       ..authKey = CometChatConfig.authKey
+      ..subscriptionType = CometChatSubscriptionType.allUsers
+      ..autoEstablishSocketConnection = true
       ..extensions = CometChatUIKitChatExtensions.getDefaultExtensions()
-      ..callingExtension = CometChatCallingExtension();
+      ..callingExtension = CometChatCallingExtension()  // Optional
+    ).build();
 
-    await CometChatUIKit.init(uiKitSettings: settings.build());
-    await CometChatUIKit.login(
-      'cometchat-uid-1',
-      onSuccess: (_) => debugPrint('✅ Login Successful'),
-      onError: (err) => throw Exception('Login Failed: $err'),
-    );
+    await CometChatUIKit.init(uiKitSettings: settings);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-      future: _initializeAndLogin(),
-      builder: (ctx, snap) {
-        if (snap.connectionState != ConnectionState.done) {
+    return FutureBuilder(
+      future: _initCometChat(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
           return const Scaffold(
-            body: SafeArea(
-              child: Center(child: CircularProgressIndicator()),
-            ),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
-        if (snap.hasError) {
+        if (snapshot.hasError) {
           return Scaffold(
-            body: SafeArea(
-              child: Center(
-                child: Text(
-                  'Error starting app:\n${snap.error}',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
+            body: Center(child: Text('Init failed: ${snapshot.error}')),
           );
         }
-        return const ConversationsPage();  // Your main chat screen
+        return const LoginScreen();
       },
     );
   }
 }
 ```
-</Tab>
-</Tabs>
+
+<Warning>
+`init()` must resolve before you call `login()`. If you call `login()` before init completes, it will fail silently.
+</Warning>
+
+---
+
+## Step 4 — Login
+
+After init resolves, log the user in. For development, use one of the pre-created test UIDs:
+
+`cometchat-uid-1` · `cometchat-uid-2` · `cometchat-uid-3` · `cometchat-uid-4` · `cometchat-uid-5`
+
+```dart
+CometChatUIKit.login(
+  "cometchat-uid-1",
+  onSuccess: (user) {
+    debugPrint('Login successful: ${user.name}');
+    // Navigate to chat screen
+  },
+  onError: (error) {
+    debugPrint('Login failed: $error');
+  },
+);
+```
+
+Key points:
+- `getLoggedInUser()` checks for an existing session so you don't re-login unnecessarily.
+- Widgets must not render until login resolves — use a state flag to gate rendering.
 
 <Note>
-
-Extract credentials into a separate file (`cometchat_config.dart`) for better maintainability.
-
+For production, use `loginWithAuthToken()` instead of Auth Key. Generate tokens server-side via the REST API.
 </Note>
 
-***
+---
 
-### **Step 5: Choose a Chat Experience**
+## Step 5 — Choose a Chat Experience
 
-Integrate a conversation view that suits your application's **UX requirements**. Below are the available options:
+Integrate a conversation view that suits your app's UX. Each option below includes a step-by-step guide.
 
-***
+### Conversation List + Message View
 
-### **1️⃣ Conversation List + Message View**
+Two-panel layout — conversation list with navigation to messages. Think WhatsApp or Telegram.
 
-**Best for:** Flutter apps that need a **smooth, stack-based navigation** between conversations and messages.
-
-**Highlights:**
-
-* **Compact Layout** – Uses `Navigator.push()` for mobile-first navigation
-* **One-to-One & Group Chats** – Built-in support for private and group conversations
-* **Real-Time Messaging** – Message list and view auto-refresh with CometChat events
-* **State Persistence** – Session-aware updates across screens and app restarts
-* **Mobile-First UI** – Optimized widgets that adapt to different screen sizes
-* **Extremely Customizable** – Modify styles, themes, and components easily
+- Stack-based navigation with `Navigator.push()`
+- Switch between one-to-one and group conversations
+- Real-time updates and message sync across sessions
 
 <Frame>
   <img src="/images/e395dc74-chat_experience_sidebar_message-79d0b141acb1aea61bae33f121988572.png" />
 </Frame>
 
-**Use When:**
+<Card title="Build Conversation List + Message View" href="/ui-kit/flutter/flutter-conversation" icon="comments">
+  Step-by-step guide to build this layout
+</Card>
 
-* You want a **clean navigation experience** for multiple chat sessions
-* Your Flutter app supports **both direct and group messaging**
-* You prefer a **stack-based routing approach** using `Navigator`
+---
 
-[Integrate Conversation List + Message View](./flutter-conversation)
+### One-to-One / Group Chat
 
-***
+Single chat window — no conversation list. Good for support chat, embedded widgets, or focused messaging.
 
-### **2️⃣ One-to-One / Group Chat**
-
-**Best for:** When a user lands **directly into a chat screen**, bypassing the conversation list.
-
-**Highlights:**
-
-* **Single Screen Chat** – Use `CometChatMessageList` widget with preselected user/group
-* **No Conversation List** – Start with just the message screen
-* **Ideal for support & contextual chat** – Ticket-based or user-to-agent communication
-* **Simplified Routing** – Pass user/group as route argument
-* **Real-Time Communication** – Auto-updates messages and statuses
+- Dedicated chat window for one-on-one or group messaging
+- No conversation list — users go directly into the chat
+- Ideal for support chat or contextual messaging
 
 <Frame>
   <img src="/images/c401197a-chat_experience_one_on_one-5b74b8c178c83ecb0a8879e898fcb854.png" />
 </Frame>
 
-**Use When:**
+<Card title="Build One-to-One / Group Chat" href="/ui-kit/flutter/flutter-one-to-one-chat" icon="message">
+  Step-by-step guide to build this layout
+</Card>
 
-* Your chat starts **from a specific user or group ID**
-* You want a **clean, focused chat interface**
-* Use case involves **support, onboarding, or one-time messages**
+---
 
-[Integrate One-to-One / Group Chat](./flutter-one-to-one-chat)
+### Tab-Based Chat
 
-***
+Tabbed navigation — Chat, Call Logs, Users, Groups in separate tabs. Good for full-featured apps.
 
-### **3️⃣ Tab-Based Messaging UI (All-in-One)**
-
-**Best for:** Flutter apps needing a **multi-tab experience** to access Chat, Users, Calls, and Settings.
-
-**Highlights:**
-
-* **Tab Navigation** – Use `BottomNavigationBar` to switch between core features
-* **Independent Screens** – Chats, Calls, Users, and Settings in dedicated widgets
-* **No Sidebar** – True mobile layout using bottom tabs, ideal for smaller devices
-* **Scalable** – Add new tabs like Profile, Notifications, or Help later
-* **Seamless UX** – Syncs chat state across tabs with minimal boilerplate
+- `BottomNavigationBar` with independent screens
+- Unified experience for conversations, call history, and contacts
+- Scales well for adding future features
 
 <Frame>
   <img src="/images/7e8b813d-chat_experience_full_tab_based-28115d603d38f5bbfbfe170739aa478c.png" />
 </Frame>
 
-**Use When:**
+<Card title="Build Tab-Based Chat" href="/ui-kit/flutter/flutter-tab-based-chat" icon="table-columns">
+  Step-by-step guide to build this layout
+</Card>
 
-* You need a **full-featured chat solution** in one UI
-* Your users require **structured navigation** between modules
-* Use cases like **support apps, business messengers, or social platforms**
+---
 
-[Integrate Tab-Based Chat](./flutter-tab-based-chat)
+## Build Your Own Chat Experience
 
-***
+Need full control over the UI? Use individual widgets, customize themes, and wire up your own layouts.
 
-## **Build Your Own Chat Experience**
+- [Sample App](https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app) — Working reference app to compare against
+- [Components](/ui-kit/flutter/components-overview) — All prebuilt UI widgets with props and customization options
+- [Core Features](/ui-kit/flutter/core-features) — Messaging, real-time updates, and other capabilities
+- [Theming](/ui-kit/flutter/theme-introduction) — Colors, fonts, dark mode, and custom styling
+- [Build Your Own UI](/sdk/flutter/overview) — Skip the UI Kit entirely and build on the raw SDK
 
-**Best for:** Developers who need complete control over their chat interface, allowing customization of components, themes, and features to align with their app's design and functionality. Whether you're enhancing an existing chat experience or building from scratch, this approach provides the flexibility to tailor every aspect to your needs.
+---
 
-**Recommended for:**
-
-* Apps that require **a fully customized chat experience**
-* Developers who want to **extend functionalities and modify UI components**
-* Businesses integrating chat seamlessly into **existing platforms**
-
-**Key Areas to Explore:**
-
-* **[Flutter Sample App](https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app)** – Fully functional sample applications to accelerate your development
-* **[Core Features](./core-features)** – Learn about messaging, real-time updates, and other essential capabilities
-* **[Components](./components-overview)** – Utilize prebuilt UI elements or customize them to fit your design
-* **[Themes](./theme-introduction)** – Adjust colors, fonts, and styles to match your branding
-* **[Build Your Own UI](/sdk/flutter/overview)** – Prefer a custom UI over our UI Kits? Explore our SDKs to create a tailored chat experience
-
-***
-
-## **Next Steps**
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Conversation List + Message" icon="comments" href="/ui-kit/flutter/flutter-conversation">
-    Two-panel layout with conversation list and message view
+  <Card title="Components Overview" icon="grid-2" href="/ui-kit/flutter/components-overview">
+    Browse all prebuilt UI widgets
   </Card>
-  <Card title="One-to-One Chat" icon="message" href="/ui-kit/flutter/flutter-one-to-one-chat">
-    Direct messaging interface for focused conversations
+  <Card title="Theming" icon="paintbrush" href="/ui-kit/flutter/theme-introduction">
+    Customize colors, fonts, and styles
   </Card>
-  <Card title="Tab-Based Chat" icon="table-columns" href="/ui-kit/flutter/flutter-tab-based-chat">
-    Multi-tab experience with chats, calls, users, and groups
+  <Card title="Core Features" icon="comments" href="/ui-kit/flutter/core-features">
+    Chat features included out of the box
   </Card>
-  <Card title="Customize Theme" icon="palette" href="/ui-kit/flutter/theme-introduction">
-    Adjust colors, fonts, and styles to match your brand
+  <Card title="Methods" icon="code" href="/ui-kit/flutter/methods">
+    Init, login, and other SDK methods
   </Card>
 </CardGroup>
-
-***

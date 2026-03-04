@@ -1,248 +1,53 @@
 ---
-title: "Building A Messaging UI With Tabs, Sidebar, And Message View"
-sidebarTitle: "Tab Based Chat Experience"
-description: "Create a multi-tab chat interface with conversations, calls, users, and groups using Flutter bottom navigation"
+title: "Tab-Based Chat"
+sidebarTitle: "Tab-Based Chat"
+description: "Build a tab-based messaging UI with chats, calls, users, and groups in Flutter with CometChat UI Kit."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Agent Component Spec">
 
-```dart
-// Tab-based UI with bottom navigation
-Scaffold(
-  body: PageView(
-    controller: _pageController,
-    children: [
-      CometChatConversations(),
-      CometChatCallLogs(),
-      CometChatUsers(),
-      CometChatGroups(),
-    ],
-  ),
-  bottomNavigationBar: BottomNavigationBar(
-    currentIndex: _selectedIndex,
-    onTap: (index) {
-      setState(() => _selectedIndex = index);
-      _pageController.jumpToPage(index);
-    },
-    items: [
-      BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chat"),
-      BottomNavigationBarItem(icon: Icon(Icons.call), label: "Calls"),
-      BottomNavigationBarItem(icon: Icon(Icons.person), label: "Users"),
-      BottomNavigationBarItem(icon: Icon(Icons.group), label: "Groups"),
-    ],
-  ),
-)
-```
+| Field | Value |
+| --- | --- |
+| Package | `cometchat_chat_uikit` |
+| Framework | Flutter |
+| Components | `CometChatConversations`, `CometChatCallLogs`, `CometChatUsers`, `CometChatGroups`, `CometChatMessageHeader`, `CometChatMessageList`, `CometChatMessageComposer` |
+| Layout | Bottom navigation tabs (Chats, Calls, Users, Groups) + message view |
+| Prerequisite | Complete [Getting Started](/ui-kit/flutter/getting-started) Steps 1–4 first |
+| Pattern | Full-featured messaging app with multiple sections |
 
-**Key Components:**
-- **Conversations** → [CometChatConversations](/ui-kit/flutter/conversations)
-- **Call Logs** → [CometChatCallLogs](/ui-kit/flutter/call-logs)
-- **Users** → [CometChatUsers](/ui-kit/flutter/users)
-- **Groups** → [CometChatGroups](/ui-kit/flutter/groups)
-</Info>
+</Accordion>
 
-This guide walks you through creating a **tab-based messaging UI** using **Flutter** and **CometChat UIKit**. The UI will include different sections for **Chats, Calls, Users, and Groups**, allowing seamless navigation.
+This guide builds a tabbed messaging UI — Chats, Calls, Users, and Groups tabs with bottom navigation. Good for full-featured apps that need more than just conversations.
 
-***
-
-## **User Interface Preview**
+This assumes you've already completed [Getting Started](/ui-kit/flutter/getting-started) (project created, UI Kit installed, init + login working).
 
 <Frame>
   <img src="/images/7e8b813d-chat_experience_full_tab_based-28115d603d38f5bbfbfe170739aa478c.png" />
 </Frame>
 
-This layout consists of:
+[View Sample App on GitHub](https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app)
 
-1. **Bottom Navigation Bar** – Tabs for switching between Chats, Calls, Users, and Groups
-2. **Page View** – Displays the selected tab's content
-3. **Conversation List** – Shows recent conversations with active users and groups
-4. **Message View** – Opens when a conversation is tapped
+---
 
-***
+## What You're Building
 
-## **How It Works**
+Three sections working together:
 
-This implementation uses Flutter's `BottomNavigationBar` and `PageView` to create a tabbed interface:
+1. **Bottom navigation** — switches between Chats, Calls, Users, and Groups
+2. **Page view** — renders the list for the active tab
+3. **Message view** — header + messages + composer for the selected item
 
-1. **Bottom Navigation** – Provides quick access to different sections
-2. **Page View** – Swipeable pages for each tab
-3. **State Management** – Syncs selected tab with page view
-4. **Navigation** – Tapping a conversation opens the message screen
+---
 
-***
+## Step 1 — Create the Tabs Screen
 
-## **Use Cases**
+The tabs screen uses `BottomNavigationBar` and `PageView` to create a tabbed interface.
 
-* **All-in-One Chat Apps** – Complete messaging solution with multiple features
-* **Business Messengers** – Professional communication with organized sections
-* **Social Platforms** – Community chat with user discovery
-* **Support Apps** – Help desk with call logs and user management
-* **Team Collaboration** – Internal communication with group management
-
-***
-
-## **Implementation**
-
-### **Step 1: Render the Tab Component**
-
-The tab-based UI uses `BottomNavigationBar` for navigation and `PageView` for content display:
-
-<Tabs>
-<Tab title="Dart">
-```dart main.dart
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    body: PageView(
-      controller: _pageController,
-      onPageChanged: (index) {
-        setState(() {
-          _selectedIndex = index;
-        });
-      },
-      children: [
-        CometChatConversations(
-          showBackButton: false,
-          onItemTap: (conversation) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MessagesScreen(
-                  user: conversation.conversationWith is User
-                      ? conversation.conversationWith as User
-                      : null,
-                  group: conversation.conversationWith is Group
-                      ? conversation.conversationWith as Group
-                      : null,
-                ),
-              ),
-            );
-          },
-        ),
-        CometChatCallLogs(),
-        CometChatUsers(),
-        CometChatGroups(),
-      ],
-    ),
-    bottomNavigationBar: BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      onTap: _onItemTapped,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.chat),
-          label: "Chat",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.call),
-          label: "Calls",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: "Users",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.group),
-          label: "Groups",
-        ),
-      ],
-    ),
-  );
-}
-```
-</Tab>
-</Tabs>
-
-**Key Components:**
-
-| Component | Purpose | Key Features |
-| --- | --- | --- |
-| `PageView` | Container for swipeable pages | Smooth transitions, gesture support |
-| `BottomNavigationBar` | Tab navigation | Icon + label, active state |
-| `PageController` | Controls page view | Jump to page, animate transitions |
-
-***
-
-### **Full Example: main.dart**
-
-<Tabs>
-<Tab title="Dart">
-```dart main.dart
+```dart title="lib/tabs_screen.dart"
 import 'package:flutter/material.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_calls_uikit/cometchat_calls_uikit.dart';  // Optional: Include if you're using Audio/Video Calling
+import 'package:cometchat_calls_uikit/cometchat_calls_uikit.dart';
 import 'messages_screen.dart';
-import 'cometchat_config.dart';
-
-void main() => runApp(const MyApp());
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'CometChat UI Kit',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Home(),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  const Home({super.key});
-
-  Future<void> _initializeAndLogin() async {
-    final settings = UIKitSettingsBuilder()
-      ..subscriptionType = CometChatSubscriptionType.allUsers
-      ..autoEstablishSocketConnection = true
-      ..appId = CometChatConfig.appId
-      ..region = CometChatConfig.region
-      ..authKey = CometChatConfig.authKey
-      ..extensions = CometChatUIKitChatExtensions.getDefaultExtensions()  // Replace with empty array to disable extensions
-      ..callingExtension = CometChatCallingExtension();  // Optional: Include if you're using Audio/Video Calling
-
-    await CometChatUIKit.init(uiKitSettings: settings.build());
-    await CometChatUIKit.login(
-      'cometchat-uid-1',
-      onSuccess: (_) => debugPrint('✅ Login Successful'),
-      onError: (err) => throw Exception('Login Failed: $err'),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-      future: _initializeAndLogin(),
-      builder: (ctx, snap) {
-        if (snap.connectionState != ConnectionState.done) {
-          return const Scaffold(
-            body: SafeArea(
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
-        }
-        if (snap.hasError) {
-          return Scaffold(
-            body: SafeArea(
-              child: Center(
-                child: Text(
-                  'Error starting app:\n${snap.error}',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          );
-        }
-        return const TabsScreen();
-      },
-    );
-  }
-}
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -256,9 +61,7 @@ class _TabsScreenState extends State<TabsScreen> {
   final PageController _pageController = PageController();
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(() => _selectedIndex = index);
     _pageController.jumpToPage(index);
   }
 
@@ -273,25 +76,17 @@ class _TabsScreenState extends State<TabsScreen> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+        onPageChanged: (index) => setState(() => _selectedIndex = index),
         children: [
           CometChatConversations(
-            showBackButton: false,
             onItemTap: (conversation) {
+              final target = conversation.conversationWith;
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MessagesScreen(
-                    user: conversation.conversationWith is User
-                        ? conversation.conversationWith as User
-                        : null,
-                    group: conversation.conversationWith is Group
-                        ? conversation.conversationWith as Group
-                        : null,
+                  builder: (_) => MessagesScreen(
+                    user: target is User ? target : null,
+                    group: target is Group ? target : null,
                   ),
                 ),
               );
@@ -299,24 +94,16 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
           CometChatCallLogs(),
           CometChatUsers(
-            onItemTap: (user) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MessagesScreen(user: user),
-                ),
-              );
-            },
+            onItemTap: (user) => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => MessagesScreen(user: user)),
+            ),
           ),
           CometChatGroups(
-            onItemTap: (group) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MessagesScreen(group: group),
-                ),
-              );
-            },
+            onItemTap: (group) => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => MessagesScreen(group: group)),
+            ),
           ),
         ],
       ),
@@ -327,82 +114,47 @@ class _TabsScreenState extends State<TabsScreen> {
         selectedItemColor: Colors.deepPurple,
         unselectedItemColor: Colors.grey,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: "Chat",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.call),
-            label: "Calls",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Users",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group),
-            label: "Groups",
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chats"),
+          BottomNavigationBarItem(icon: Icon(Icons.call), label: "Calls"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Users"),
+          BottomNavigationBarItem(icon: Icon(Icons.group), label: "Groups"),
         ],
       ),
     );
   }
 }
 ```
-</Tab>
-</Tabs>
 
-***
+Key points:
+- `PageView` enables swipeable pages for each tab.
+- `BottomNavigationBar` provides quick access to different sections.
+- Each list component navigates to `MessagesScreen` on item tap.
 
-### **Step 2: Render the Messages Component**
+---
 
-To create a complete messaging view, include the following components in `messages_screen.dart`:
+## Step 2 — Create the Messages Screen
 
-* [Message Header](/ui-kit/flutter/message-header) – Displays conversation title and actions
-* [Message List](/ui-kit/flutter/message-list) – Shows all messages in the conversation
-* [Message Composer](/ui-kit/flutter/message-composer) – Input field for sending messages
+Same as the [Conversation + Message](/ui-kit/flutter/flutter-conversation) guide:
 
-<Frame>
-  <img src="/images/c9f210d3-messaegs-0ec2890a7a60ae5ea8e3991d83508474.png" />
-</Frame>
-
-<Tabs>
-<Tab title="Dart">
-```dart messages_screen.dart
+```dart title="lib/messages_screen.dart"
 import 'package:flutter/material.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 
-class MessagesScreen extends StatefulWidget {
+class MessagesScreen extends StatelessWidget {
   final User? user;
   final Group? group;
 
-  const MessagesScreen({Key? key, this.user, this.group}) : super(key: key);
+  const MessagesScreen({super.key, this.user, this.group});
 
-  @override
-  State<MessagesScreen> createState() => _MessagesScreenState();
-}
-
-class _MessagesScreenState extends State<MessagesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CometChatMessageHeader(
-        user: widget.user,
-        group: widget.group,
-      ),
+      appBar: CometChatMessageHeader(user: user, group: group),
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(
-              child: CometChatMessageList(
-                user: widget.user,
-                group: widget.group,
-              ),
-            ),
-            CometChatMessageComposer(
-              user: widget.user,
-              group: widget.group,
-            ),
+            Expanded(child: CometChatMessageList(user: user, group: group)),
+            CometChatMessageComposer(user: user, group: group),
           ],
         ),
       ),
@@ -410,401 +162,43 @@ class _MessagesScreenState extends State<MessagesScreen> {
   }
 }
 ```
-</Tab>
-</Tabs>
 
-***
+---
 
-### **Step 3: Run the App**
-
-Use the following command to run the app on a connected device or emulator:
+## Step 3 — Run the App
 
 ```bash
 flutter run
 ```
 
-This will launch the app, and you should see the tab-based chat experience with the sidebar and message view. You can navigate between different tabs (Chats, Calls, Users, and Groups) and interact with the messaging features seamlessly.
+You should see the tab bar at the bottom. Switch between Chats, Calls, Users, and Groups — tapping any item opens the message view.
 
-***
+---
 
-## **Tab Descriptions**
+## Tab Descriptions
 
-### **1. Chat Tab**
+| Tab | Component | Purpose |
+| --- | --- | --- |
+| Chats | `CometChatConversations` | Recent conversations with unread counts |
+| Calls | `CometChatCallLogs` | Call history (audio/video) |
+| Users | `CometChatUsers` | Browse and search all users |
+| Groups | `CometChatGroups` | Browse and join groups |
 
-Displays recent conversations with users and groups:
+---
 
-* **CometChatConversations** – Shows conversation list
-* **Real-time updates** – New messages appear instantly
-* **Unread counts** – Badge showing unread message count
-* **Last message preview** – Shows snippet of last message
-* **Tap to open** – Navigate to full message view
-
-### **2. Calls Tab**
-
-Shows call history and logs:
-
-* **CometChatCallLogs** – Displays all call records
-* **Call types** – Audio and video calls
-* **Call status** – Missed, incoming, outgoing
-* **Tap to call back** – Initiate new call from history
-* **Call duration** – Shows length of completed calls
-
-### **3. Users Tab**
-
-Browse and search all users:
-
-* **CometChatUsers** – Lists all available users
-* **Search functionality** – Find users by name
-* **User status** – Online/offline indicators
-* **Tap to chat** – Start conversation with any user
-* **User avatars** – Profile pictures
-
-### **4. Groups Tab**
-
-Manage and join groups:
-
-* **CometChatGroups** – Shows all groups
-* **Group types** – Public, private, password-protected
-* **Member count** – Number of participants
-* **Join groups** – Request to join or join directly
-* **Tap to chat** – Open group conversation
-
-***
-
-## **Customization Options**
-
-### **Custom Tab Icons**
-
-<Tabs>
-<Tab title="Dart">
-```dart
-BottomNavigationBar(
-  items: const [
-    BottomNavigationBarItem(
-      icon: Icon(Icons.forum),
-      activeIcon: Icon(Icons.forum, size: 28),
-      label: "Chats",
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.phone),
-      activeIcon: Icon(Icons.phone, size: 28),
-      label: "Calls",
-    ),
-    // ... more tabs
-  ],
-)
-```
-</Tab>
-</Tabs>
-
-### **Custom Tab Colors**
-
-<Tabs>
-<Tab title="Dart">
-```dart
-BottomNavigationBar(
-  selectedItemColor: Colors.blue,
-  unselectedItemColor: Colors.grey,
-  backgroundColor: Colors.white,
-  elevation: 8,
-  // ... items
-)
-```
-</Tab>
-</Tabs>
-
-### **Disable Swipe Between Tabs**
-
-<Tabs>
-<Tab title="Dart">
-```dart
-PageView(
-  controller: _pageController,
-  physics: NeverScrollableScrollPhysics(),  // Disable swipe
-  children: [
-    // ... pages
-  ],
-)
-```
-</Tab>
-</Tabs>
-
-### **Add More Tabs**
-
-<Tabs>
-<Tab title="Dart">
-```dart
-// Add a Settings tab
-children: [
-  CometChatConversations(),
-  CometChatCallLogs(),
-  CometChatUsers(),
-  CometChatGroups(),
-  SettingsScreen(),  // New tab
-],
-
-items: [
-  // ... existing items
-  BottomNavigationBarItem(
-    icon: Icon(Icons.settings),
-    label: "Settings",
-  ),
-],
-```
-</Tab>
-</Tabs>
-
-### **Custom Tab Styling**
-
-<Tabs>
-<Tab title="Dart">
-```dart
-CometChatConversations(
-  title: "My Chats",
-  conversationsStyle: ConversationsStyle(
-    background: Colors.white,
-    titleStyle: TextStyle(
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
-)
-```
-</Tab>
-</Tabs>
-
-For complete customization options, see:
-* [Conversations Customization](/ui-kit/flutter/conversations)
-* [Call Logs Customization](/ui-kit/flutter/call-logs)
-* [Users Customization](/ui-kit/flutter/users)
-* [Groups Customization](/ui-kit/flutter/groups)
-* [Theming Guide](/ui-kit/flutter/theme-introduction)
-
-***
-
-## **Common Use Cases**
-
-<AccordionGroup>
-  <Accordion title="Badge for Unread Messages">
-    <Tabs>
-    <Tab title="Dart">
-    ```dart
-    BottomNavigationBarItem(
-      icon: Stack(
-        children: [
-          Icon(Icons.chat),
-          if (unreadCount > 0)
-            Positioned(
-              right: 0,
-              top: 0,
-              child: Container(
-                padding: EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                constraints: BoxConstraints(
-                  minWidth: 16,
-                  minHeight: 16,
-                ),
-                child: Text(
-                  '$unreadCount',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-        ],
-      ),
-      label: "Chat",
-    )
-    ```
-    </Tab>
-    </Tabs>
-  </Accordion>
-
-  <Accordion title="Persist Selected Tab">
-    <Tabs>
-    <Tab title="Dart">
-    ```dart
-    // Save selected tab to shared preferences
-    void _onItemTapped(int index) async {
-      setState(() => _selectedIndex = index);
-      _pageController.jumpToPage(index);
-      
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt('selected_tab', index);
-    }
-
-    // Load selected tab on init
-    @override
-    void initState() {
-      super.initState();
-      _loadSelectedTab();
-    }
-
-    Future<void> _loadSelectedTab() async {
-      final prefs = await SharedPreferences.getInstance();
-      final savedIndex = prefs.getInt('selected_tab') ?? 0;
-      setState(() => _selectedIndex = savedIndex);
-      _pageController.jumpToPage(savedIndex);
-    }
-    ```
-    </Tab>
-    </Tabs>
-  </Accordion>
-
-  <Accordion title="Animated Tab Transitions">
-    <Tabs>
-    <Tab title="Dart">
-    ```dart
-    void _onItemTapped(int index) {
-      setState(() => _selectedIndex = index);
-      _pageController.animateToPage(
-        index,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-    ```
-    </Tab>
-    </Tabs>
-  </Accordion>
-
-  <Accordion title="Handle Back Button">
-    <Tabs>
-    <Tab title="Dart">
-    ```dart
-    @override
-    Widget build(BuildContext context) {
-      return WillPopScope(
-        onWillPop: () async {
-          if (_selectedIndex != 0) {
-            // Go back to first tab instead of exiting
-            _onItemTapped(0);
-            return false;
-          }
-          return true;  // Allow exit
-        },
-        child: Scaffold(
-          // ... rest of widget
-        ),
-      );
-    }
-    ```
-    </Tab>
-    </Tabs>
-  </Accordion>
-</AccordionGroup>
-
-***
-
-## **Best Practices**
-
-<AccordionGroup>
-  <Accordion title="Dispose Controllers">
-    Always dispose of controllers to prevent memory leaks:
-    
-    <Tabs>
-    <Tab title="Dart">
-    ```dart
-    @override
-    void dispose() {
-      _pageController.dispose();
-      super.dispose();
-    }
-    ```
-    </Tab>
-    </Tabs>
-  </Accordion>
-
-  <Accordion title="Use BottomNavigationBarType.fixed">
-    For 4+ tabs, use fixed type to prevent shifting:
-    
-    <Tabs>
-    <Tab title="Dart">
-    ```dart
-    BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,  // Prevents label shifting
-      // ... rest of properties
-    )
-    ```
-    </Tab>
-    </Tabs>
-  </Accordion>
-
-  <Accordion title="Lazy Load Tab Content">
-    Load tab content only when needed:
-    
-    <Tabs>
-    <Tab title="Dart">
-    ```dart
-    PageView(
-      controller: _pageController,
-      children: [
-        _selectedIndex == 0 ? CometChatConversations() : SizedBox(),
-        _selectedIndex == 1 ? CometChatCallLogs() : SizedBox(),
-        _selectedIndex == 2 ? CometChatUsers() : SizedBox(),
-        _selectedIndex == 3 ? CometChatGroups() : SizedBox(),
-      ],
-    )
-    ```
-    </Tab>
-    </Tabs>
-  </Accordion>
-
-  <Accordion title="Handle Tab Refresh">
-    Refresh tab content when switching:
-    
-    <Tabs>
-    <Tab title="Dart">
-    ```dart
-    void _onItemTapped(int index) {
-      setState(() => _selectedIndex = index);
-      _pageController.jumpToPage(index);
-      
-      // Refresh current tab
-      _refreshTab(index);
-    }
-
-    void _refreshTab(int index) {
-      // Implement refresh logic for each tab
-      switch (index) {
-        case 0:
-          // Refresh conversations
-          break;
-        case 1:
-          // Refresh call logs
-          break;
-        // ... etc
-      }
-    }
-    ```
-    </Tab>
-    </Tabs>
-  </Accordion>
-</AccordionGroup>
-
-***
-
-## **Next Steps**
+## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Conversations" icon="comments" href="/ui-kit/flutter/conversations">
-    Customize the conversation list appearance and behavior
+    Customize the conversation list
   </Card>
   <Card title="Call Logs" icon="phone" href="/ui-kit/flutter/call-logs">
-    Configure call history and calling features
+    Configure call history
   </Card>
   <Card title="Users & Groups" icon="users" href="/ui-kit/flutter/users">
-    Manage user lists and group memberships
+    Manage user and group lists
   </Card>
-  <Card title="Theming Guide" icon="palette" href="/ui-kit/flutter/theme-introduction">
-    Customize colors, fonts, and styles to match your brand
+  <Card title="Theming" icon="paintbrush" href="/ui-kit/flutter/theme-introduction">
+    Customize colors and styles
   </Card>
 </CardGroup>
-
-***

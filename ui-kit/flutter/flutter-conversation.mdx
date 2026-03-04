@@ -1,196 +1,51 @@
 ---
 title: "Conversation List + Message View"
 sidebarTitle: "Conversation + Message"
-description: "Build a two-panel chat interface with conversation list and message view using Flutter UI Kit widgets"
+description: "Build a two-panel chat interface with conversation list and message view using Flutter UI Kit widgets."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Agent Component Spec">
 
-```dart
-// Show conversations with navigation to messages
-CometChatConversations(
-  showBackButton: true,
-  onItemTap: (conversation) {
-    final target = conversation.conversationWith;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => MessagesScreen(
-          user: target is User ? target : null,
-          group: target is Group ? target : null,
-        ),
-      ),
-    );
-  },
-)
+| Field | Value |
+| --- | --- |
+| Package | `cometchat_chat_uikit` |
+| Framework | Flutter |
+| Components | `CometChatConversations`, `CometChatMessageHeader`, `CometChatMessageList`, `CometChatMessageComposer` |
+| Layout | Two-panel — conversation list + message view with Navigator push |
+| Prerequisite | Complete [Getting Started](/ui-kit/flutter/getting-started) Steps 1–4 first |
+| Pattern | WhatsApp, Telegram, Slack |
 
-// Messages screen with header, list, and composer
-Scaffold(
-  appBar: CometChatMessageHeader(user: user, group: group),
-  body: Column(
-    children: [
-      Expanded(child: CometChatMessageList(user: user, group: group)),
-      CometChatMessageComposer(user: user, group: group),
-    ],
-  ),
-)
-```
+</Accordion>
 
-**Key Components:**
-- **Conversations** → [CometChatConversations](/ui-kit/flutter/conversations)
-- **Message List** → [CometChatMessageList](/ui-kit/flutter/message-list)
-- **Message Composer** → [CometChatMessageComposer](/ui-kit/flutter/message-composer)
-- **Message Header** → [CometChatMessageHeader](/ui-kit/flutter/message-header)
-</Info>
+This guide builds a two-panel chat layout — conversation list that navigates to a message screen. Users tap a conversation to open it.
 
-The **Conversation List + Message View** layout provides a seamless **two-panel chat interface**, commonly seen in modern messaging apps like **WhatsApp Web**, **Slack**, and **Microsoft Teams**.
-
-This layout allows users to switch between conversations while keeping the active chat open, delivering a **smooth, real-time messaging experience**.
+This assumes you've already completed [Getting Started](/ui-kit/flutter/getting-started) (project created, UI Kit installed, init + login working).
 
 <Frame>
   <img src="/images/e395dc74-chat_experience_sidebar_message-79d0b141acb1aea61bae33f121988572.png" />
 </Frame>
 
-***
+[View Sample App on GitHub](https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app)
 
-## **How It Works**
+---
 
-This implementation uses Flutter's navigation system to create a mobile-friendly chat experience:
+## What You're Building
 
-1. **Conversation List Screen** – Displays all recent conversations using `CometChatConversations`
-2. **Navigation** – Tapping a conversation pushes the message screen onto the navigation stack
-3. **Message Screen** – Shows the full chat interface with header, message list, and composer
-4. **Back Navigation** – Users can return to the conversation list using the back button
+Two screens working together:
 
-***
+1. **Conversation list** — shows all active conversations (users and groups)
+2. **Message screen** — header + messages + composer for the selected conversation
 
-## **Implementation**
+---
 
-### **Step 1: Render the Conversation Component**
+## Step 1 — Create the Conversations Screen
 
-The `CometChatConversations` widget displays all conversations related to the currently logged-in user. Follow the steps below to render this component:
+The `CometChatConversations` widget displays all conversations. Tapping one navigates to the message screen.
 
-<Tabs>
-<Tab title="Dart">
-```dart main.dart
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    body: SafeArea(
-      child: CometChatConversations(
-        showBackButton: true,
-        onItemTap: (conversation) {
-          final target = conversation.conversationWith;
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => MessagesScreen(
-                user: target is User ? target : null,
-                group: target is Group ? target : null,
-              ),
-            ),
-          );
-        },
-      ),
-    ),
-  );
-}
-```
-</Tab>
-</Tabs>
-
-**Key Properties:**
-
-| Property | Type | Description |
-| --- | --- | --- |
-| `showBackButton` | bool | Shows/hides the back button in the app bar |
-| `onItemTap` | Function | Callback when a conversation is tapped |
-| `conversationWith` | User or Group | The target entity (user or group) for the conversation |
-
-***
-
-### **Full Example: main.dart**
-
-<Tabs>
-<Tab title="Dart">
-```dart main.dart
+```dart title="lib/conversations_page.dart"
 import 'package:flutter/material.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
-import 'package:cometchat_calls_uikit/cometchat_calls_uikit.dart';  // Optional: Include if you're using Audio/Video Calling
 import 'messages_screen.dart';
-import 'cometchat_config.dart';
-
-void main() => runApp(const MyApp());
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'CometChat UI Kit',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Home(),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  const Home({super.key});
-
-  Future<void> _initializeAndLogin() async {
-    final settings = UIKitSettingsBuilder()
-      ..subscriptionType = CometChatSubscriptionType.allUsers
-      ..autoEstablishSocketConnection = true
-      ..appId = CometChatConfig.appId
-      ..region = CometChatConfig.region
-      ..authKey = CometChatConfig.authKey
-      ..extensions = CometChatUIKitChatExtensions.getDefaultExtensions()  // Replace with empty array to disable extensions
-      ..callingExtension = CometChatCallingExtension();  // Optional: Include if you're using Audio/Video Calling
-
-    await CometChatUIKit.init(uiKitSettings: settings.build());
-    await CometChatUIKit.login(
-      'cometchat-uid-1',
-      onSuccess: (_) => debugPrint('✅ Login Successful'),
-      onError: (err) => throw Exception('Login Failed: $err'),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-      future: _initializeAndLogin(),
-      builder: (ctx, snap) {
-        if (snap.connectionState != ConnectionState.done) {
-          return const Scaffold(
-            body: SafeArea(
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
-        }
-        if (snap.hasError) {
-          return Scaffold(
-            body: SafeArea(
-              child: Center(
-                child: Text(
-                  'Error starting app:\n${snap.error}',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          );
-        }
-        return const ConversationsPage();
-      },
-    );
-  }
-}
 
 class ConversationsPage extends StatelessWidget {
   const ConversationsPage({super.key});
@@ -200,10 +55,8 @@ class ConversationsPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: CometChatConversations(
-          showBackButton: true,
           onItemTap: (conversation) {
             final target = conversation.conversationWith;
-
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -220,60 +73,38 @@ class ConversationsPage extends StatelessWidget {
   }
 }
 ```
-</Tab>
-</Tabs>
 
-***
+Key points:
+- `onItemTap` fires when a conversation is tapped, passing the `Conversation` object.
+- `conversationWith` returns either a `User` or `Group` — pass the correct one to the message screen.
 
-### **Step 2: Render the Messages Component**
+---
 
-To create a complete messaging view, include the following components in `messages_screen.dart`:
+## Step 2 — Create the Messages Screen
 
-* [Message Header](/ui-kit/flutter/message-header) – Displays conversation title and actions
-* [Message List](/ui-kit/flutter/message-list) – Shows all messages in the conversation
-* [Message Composer](/ui-kit/flutter/message-composer) – Input field for sending messages
+The message screen combines header, message list, and composer.
 
-<Frame>
-  <img src="/images/c9f210d3-messaegs-0ec2890a7a60ae5ea8e3991d83508474.png" />
-</Frame>
-
-<Tabs>
-<Tab title="Dart">
-```dart messages_screen.dart
+```dart title="lib/messages_screen.dart"
 import 'package:flutter/material.dart';
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 
-class MessagesScreen extends StatefulWidget {
+class MessagesScreen extends StatelessWidget {
   final User? user;
   final Group? group;
 
-  const MessagesScreen({Key? key, this.user, this.group}) : super(key: key);
+  const MessagesScreen({super.key, this.user, this.group});
 
-  @override
-  State<MessagesScreen> createState() => _MessagesScreenState();
-}
-
-class _MessagesScreenState extends State<MessagesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CometChatMessageHeader(
-        user: widget.user,
-        group: widget.group,
-      ),
+      appBar: CometChatMessageHeader(user: user, group: group),
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
-              child: CometChatMessageList(
-                user: widget.user,
-                group: widget.group,
-              ),
+              child: CometChatMessageList(user: user, group: group),
             ),
-            CometChatMessageComposer(
-              user: widget.user,
-              group: widget.group,
-            ),
+            CometChatMessageComposer(user: user, group: group),
           ],
         ),
       ),
@@ -281,175 +112,38 @@ class _MessagesScreenState extends State<MessagesScreen> {
   }
 }
 ```
-</Tab>
-</Tabs>
 
-**Component Breakdown:**
+| Component | Purpose |
+| --- | --- |
+| `CometChatMessageHeader` | Shows conversation title, avatar, and call buttons |
+| `CometChatMessageList` | Displays messages with real-time updates |
+| `CometChatMessageComposer` | Input field for text, media, and attachments |
 
-| Component | Purpose | Key Features |
-| --- | --- | --- |
-| `CometChatMessageHeader` | Shows conversation title, avatar, and actions | User/group info, back button, call buttons |
-| `CometChatMessageList` | Displays messages in chronological order | Real-time updates, reactions, replies |
-| `CometChatMessageComposer` | Input field for composing messages | Text, media, attachments, emojis |
+---
 
-***
-
-### **Step 3: Run the App**
-
-Use the following command to run the app on a connected device or emulator:
+## Step 3 — Run the App
 
 ```bash
 flutter run
 ```
 
-This will launch the app and display the **Conversation List**. Tapping a conversation will navigate to the **Message View**.
+You should see the conversation list. Tapping a conversation navigates to the message screen.
 
-***
+---
 
-## **Customization Options**
-
-### **Conversation List Customization**
-
-<Tabs>
-<Tab title="Dart">
-```dart
-CometChatConversations(
-  title: "My Chats",
-  showBackButton: false,
-  hideSearch: false,
-  onItemTap: (conversation) {
-    // Custom navigation logic
-  },
-  onItemLongPress: (conversation) {
-    // Show options menu
-  },
-  conversationsStyle: ConversationsStyle(
-    background: Colors.white,
-    titleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-  ),
-)
-```
-</Tab>
-</Tabs>
-
-### **Message Screen Customization**
-
-<Tabs>
-<Tab title="Dart">
-```dart
-CometChatMessageList(
-  user: user,
-  group: group,
-  hideMessageComposer: false,
-  hideMessageHeader: false,
-  messageListStyle: MessageListStyle(
-    background: Colors.grey[100],
-  ),
-)
-```
-</Tab>
-</Tabs>
-
-For complete customization options, see:
-* [Conversations Customization](/ui-kit/flutter/conversations)
-* [Message List Customization](/ui-kit/flutter/message-list)
-* [Message Composer Customization](/ui-kit/flutter/message-composer)
-* [Theming Guide](/ui-kit/flutter/theme-introduction)
-
-***
-
-## **Common Use Cases**
-
-<AccordionGroup>
-  <Accordion title="Filter Conversations by Type">
-    <Tabs>
-    <Tab title="Dart">
-    ```dart
-    CometChatConversations(
-      conversationsRequestBuilder: ConversationsRequestBuilder()
-        ..conversationType = CometChatConversationType.user  // or .group
-        ..limit = 30,
-    )
-    ```
-    </Tab>
-    </Tabs>
-  </Accordion>
-
-  <Accordion title="Handle Conversation Long Press">
-    <Tabs>
-    <Tab title="Dart">
-    ```dart
-    CometChatConversations(
-      onItemLongPress: (conversation) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Options'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  title: Text('Delete Conversation'),
-                  onTap: () {
-                    // Delete conversation logic
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    )
-    ```
-    </Tab>
-    </Tabs>
-  </Accordion>
-
-  <Accordion title="Navigate with Custom Animation">
-    <Tabs>
-    <Tab title="Dart">
-    ```dart
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => MessagesScreen(
-          user: target is User ? target : null,
-          group: target is Group ? target : null,
-        ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
-          );
-        },
-      ),
-    );
-    ```
-    </Tab>
-    </Tabs>
-  </Accordion>
-</AccordionGroup>
-
-***
-
-## **Next Steps**
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Customize Conversations" icon="list" href="/ui-kit/flutter/conversations">
-    Learn about all conversation list customization options
+  <Card title="Conversations" icon="list" href="/ui-kit/flutter/conversations">
+    Customize the conversation list
   </Card>
-  <Card title="Message Components" icon="message" href="/ui-kit/flutter/message-list">
-    Explore message list, header, and composer features
+  <Card title="Message List" icon="message" href="/ui-kit/flutter/message-list">
+    Customize the message view
   </Card>
-  <Card title="Theming Guide" icon="palette" href="/ui-kit/flutter/theme-introduction">
-    Customize colors, fonts, and styles to match your brand
+  <Card title="Theming" icon="paintbrush" href="/ui-kit/flutter/theme-introduction">
+    Customize colors and styles
   </Card>
-  <Card title="Events & Listeners" icon="bolt" href="/ui-kit/flutter/events">
-    Handle real-time events and user interactions
+  <Card title="Events" icon="bolt" href="/ui-kit/flutter/events">
+    Handle real-time events
   </Card>
 </CardGroup>
-
-***

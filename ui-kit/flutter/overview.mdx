@@ -1,219 +1,77 @@
 ---
-title: "CometChat UI Kit For Flutter"
+title: "Flutter UI Kit"
 sidebarTitle: "Overview"
-description: "Prebuilt Flutter widgets for chat, calling, and messaging with modular, customizable components for iOS and Android"
+description: "Prebuilt Flutter widgets for chat, voice, and video calling. Works on iOS and Android."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Agent Component Spec">
 
-```dart
-// Install
-flutter pub add cometchat_chat_uikit
+| Field | Value |
+| --- | --- |
+| Package | `cometchat_chat_uikit` v5.2.x |
+| Calling | Optional — `cometchat_calls_uikit` |
+| Platforms | iOS 13.0+, Android API 21+ |
+| Flutter | 3.0+ recommended |
+| Localization | Built-in support |
+| Source | [GitHub](https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/chat_uikit) |
 
-// Initialize (run once at app start)
-UIKitSettings uiKitSettings = (UIKitSettingsBuilder()
-  ..appId = "YOUR_APP_ID"
-  ..region = "YOUR_REGION"
-  ..subscriptionType = CometChatSubscriptionType.allUsers
-).build();
-CometChatUIKit.init(uiKitSettings: uiKitSettings);
+</Accordion>
 
-// Login
-CometChatUIKit.login("UID");
-
-// Show conversations
-CometChatConversations()
-
-// Show messages
-CometChatMessageList(user: user)  // or group: group
-```
-
-**Required Credentials:** App ID, Region, Auth Key (dev) or Auth Token (prod)  
-**Get from:** [CometChat Dashboard](https://app.cometchat.com) → Your App → API & Auth Keys
-</Info>
-
-The **CometChat UI Kit** for Flutter is a powerful solution designed to seamlessly integrate chat functionality into applications. It provides a robust set of **prebuilt UI widgets** that are **modular, customizable, and highly scalable**, allowing developers to accelerate their development process with minimal effort.
-
-***
-
-## **Why Choose CometChat UI Kit?**
-
-* **Rapid Integration** – Prebuilt UI widgets for faster deployment.
-* **Customizable & Flexible** – Modify the UI to align with your brand's identity.
-* **Cross-Platform Compatibility** – Works seamlessly across iOS and Android platforms.
-* **Scalable & Reliable** – Built on CometChat's **robust chat infrastructure** for enterprise-grade performance.
-
-***
-
-## **User Interface Preview**
+The CometChat Flutter UI Kit provides prebuilt, customizable widgets for adding chat, voice, and video calling to any Flutter app. Each widget handles its own data fetching, real-time listeners, and state — you just drop them into your layout.
 
 <Frame>
   <img src="/images/7e8b813d-chat_experience_full_tab_based-28115d603d38f5bbfbfe170739aa478c.png" />
 </Frame>
 
-***
+---
 
-## **Integration**
-
-### **UI Components (Assemble It Yourself)**
-
-A collection of individual widgets—like conversation lists, message lists, message composer, etc.—each with built-in chat logic so you can customize every element.
+## Get Started
 
 <Frame>
-  <iframe width="100%" height="400" src="https://www.youtube.com/embed/7ZMRhg1k1lc" title="YouTube video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+  <iframe width="100%" height="400" src="https://www.youtube.com/embed/I0yVOMlPMqc" title="YouTube video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
 </Frame>
 
-**How It Works**
+<Card title="Getting Started" icon="rocket" href="/ui-kit/flutter/getting-started">
+  Install, initialize, and build your first chat screen
+</Card>
 
-* Import the widgets you need from our UI Kits.
-* Arrange them in your desired layout, applying styling or customization as needed.
-* You don't need to rewrite the SDK calls yourself—each widget already integrates with CometChat logic.
+---
 
-**Why It's Great**
-
-* **Flexible Design** – You control the final UI arrangement.
-* **No Extra Overhead** – Implement only the features you need.
-* **Modular** – Use exactly what you want, when you want.
-
-[**Go to Flutter UI Docs**](/ui-kit/flutter/getting-started)
-
-***
-
-## **Before Getting Started**
-
-Before you begin, it's essential to grasp the fundamental concepts and features offered by CometChat's APIs, SDK, and UI Kit. You can find detailed information in the [Key Concepts](/fundamentals/key-concepts) documentation.
-
-You can start building a modern messaging experience in your app by installing the new UI Kit. This developer kit is an add-on feature to CometChat Flutter SDK so installing it will also install the core Chat SDK.
-
-To begin, please follow the [Getting Started](/ui-kit/flutter/getting-started) guide.
-
-***
-
-## **Key Features**
-
-### **Comprehensive Widget Library**
-
-The UI Kit includes a complete set of widgets for building chat experiences:
-
-* **CometChatConversations** – Display recent conversations with users and groups
-* **CometChatMessageList** – Full-featured messaging interface with real-time updates
-* **CometChatMessageComposer** – Input field for sending text, media, and attachments
-* **CometChatMessageHeader** – Conversation header with user/group info and actions
-* **CometChatUsers** – Browse and search users
-* **CometChatGroups** – Manage and join groups
-* **CometChatGroupMembers** – View and manage group participants
-* **Calling Components** – Voice and video calling widgets
-
-### **Built-in Chat Logic**
-
-Each widget comes with integrated CometChat SDK functionality:
-
-* Real-time message delivery and updates
-* Typing indicators and read receipts
-* User presence and status
-* Message reactions and threading
-* File and media sharing
-* Push notifications support
-
-### **Extensive Customization**
-
-Tailor the UI to match your brand:
-
-* **Theming** – Customize colors, fonts, and spacing
-* **Styling** – Override default styles for any component
-* **Templates** – Create custom message bubble layouts
-* **Formatters** – Add mentions, shortcuts, and URL previews
-* **Configurations** – Control feature availability and behavior
-
-***
-
-## **Architecture**
-
-The CometChat UI Kit for Flutter is built on top of the [CometChat Flutter SDK](/sdk/flutter/overview) and follows a modular architecture:
-
-```
-Your Flutter App
-    ↓
-CometChat UI Kit (Widgets)
-    ↓
-CometChat Flutter SDK (Core Chat Logic)
-    ↓
-CometChat Platform
-```
-
-This layered approach means:
-
-* **Widgets handle UI** – Rendering, user interactions, animations
-* **SDK handles logic** – Message delivery, real-time events, data management
-* **Platform handles infrastructure** – Scalability, reliability, security
-
-***
-
-## **Supported Platforms**
-
-The Flutter UI Kit works seamlessly across:
-
-* **iOS** – iPhone and iPad (iOS 13.0+)
-* **Android** – Phones and tablets (API level 21+)
-
-***
-
-## **Next Steps**
+## Explore
 
 <CardGroup cols={2}>
-  <Card title="Getting Started" icon="rocket" href="/ui-kit/flutter/getting-started">
-    Install the UI Kit and build your first chat screen
+  <Card title="Components" icon="grid-2" href="/ui-kit/flutter/components-overview">
+    Browse all prebuilt UI widgets
+  </Card>
+  <Card title="Features" icon="comments" href="/ui-kit/flutter/core-features">
+    Chat, calling, AI, and extensions
+  </Card>
+  <Card title="Theming" icon="paintbrush" href="/ui-kit/flutter/theme-introduction">
+    Colors, fonts, dark mode, and custom styling
   </Card>
   <Card title="Key Concepts" icon="book" href="/fundamentals/key-concepts">
-    Understand CometChat's core concepts and terminology
-  </Card>
-  <Card title="Components Overview" icon="grid" href="/ui-kit/flutter/components-overview">
-    Explore all available widgets and their capabilities
-  </Card>
-  <Card title="Theming Guide" icon="palette" href="/ui-kit/flutter/theme-introduction">
-    Customize colors, fonts, and styles to match your brand
+    Understand CometChat's core concepts
   </Card>
 </CardGroup>
 
-***
+---
 
-## **Helpful Resources**
+## Resources
 
-Explore these essential resources to gain a deeper understanding of **CometChat UI Kits** and streamline your integration process.
-
-<CardGroup cols={3}>  
-<Card title="Flutter Sample App" href="https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app">
-
-Fully functional sample applications to accelerate your development.
-
-View on GitHub
-
-</Card>
-
-<Card title="UI Kit Source Code" href="https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/chat_uikit">
-
-Access the complete UI Kit source code on GitHub.
-
-View on GitHub
-
-</Card>
-
-<Card title="Figma Design File" href="https://www.figma.com/community/file/1444324233177163609/cometchat-ui-kit-for-flutter">
-
-UI design resources for customization and prototyping.
-
-View on Figma
-
-</Card>
+<CardGroup cols={3}>
+  <Card title="Sample App" icon="github" href="https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/sample_app">
+    Working reference app
+  </Card>
+  <Card title="Source Code" icon="code" href="https://github.com/cometchat/cometchat-uikit-flutter/tree/v5/chat_uikit">
+    Full UI Kit source on GitHub
+  </Card>
+  <Card title="Figma" icon="figma" href="https://www.figma.com/community/file/1444324233177163609/cometchat-ui-kit-for-flutter">
+    Design resources and prototyping
+  </Card>
+  <Card title="Support" icon="headset" href="https://help.cometchat.com/hc/en-us/requests/new">
+    Open a support ticket
+  </Card>
+  <Card title="Community" icon="comments" href="http://community.cometchat.com/">
+    Developer community forum
+  </Card>
 </CardGroup>
-
-***
-
-## **Need Help?**
-
-If you need assistance, check out:
-
-* 💬 [Developer Community](http://community.cometchat.com/)
-* ❓ [Support Portal](https://help.cometchat.com/hc/en-us/requests/new)
