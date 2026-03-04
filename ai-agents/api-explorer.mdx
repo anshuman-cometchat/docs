@@ -1,0 +1,45 @@
+---
+title: "AI Agents APIs"
+sidebarTitle: "Overview"
+---
+
+The AI Agents API provides endpoints for creating, configuring, and managing AI-powered agents within your CometChat application. This API enables you to build agents that leverage third-party frameworks (OpenAI, AG2, CrewAI, LangGraph, etc.) or CometChat's native agent builder with tools, MCP servers, API tools, frontend actions, and RAG-based knowledge bases.
+
+Below is an overview of the key functionalities provided by the AI Agents API:
+
+1. The Third-Party Agents endpoints allow you to create and manage agents that delegate to external AI frameworks.
+2. The CometChat Agents endpoints allow you to create, configure, and manage native CometChat agents with full tool and knowledge base support.
+3. The Tool Management endpoints allow you to add, remove, and configure ready-to-use Composio tools, MCP servers, API tools, and frontend actions for your agents.
+4. The Variable Management endpoints allow you to manage predefined and custom variables used in agent configurations.
+5. The Knowledge Base endpoints allow you to manage file uploads, text details, and website crawling sources for RAG-based agent responses.
+6. The Integrations endpoints allow you to manage available AI framework integrations.
+7. The Forms endpoints provide dynamic form configurations for agent and tool creation workflows.
+
+---
+
+## API Constraints
+
+<Note>
+All endpoints require Basic authentication via the `appid` header unless explicitly marked as public. A few endpoints (such as OAuth callbacks) are public and do not require authentication.
+</Note>
+
+<Tabs>
+  <Tab title="Authentication">
+    | Property | Details |
+    |----------|---------|
+    | **Type** | Basic authentication |
+    | **Header** | `appid` |
+    | **Requirement** | Required on all endpoints unless marked as `@Public` |
+    | **Admin endpoints** | Some endpoints (integrations, forms management) require admin-level authentication via `AdminAuthGuard` |
+  </Tab>
+  <Tab title="Pagination">
+    Many list endpoints support cursor-based pagination with the following parameters:
+
+    | Parameter | Description |
+    |-----------|-------------|
+    | **`limit`** | Number of records per page |
+    | **`affix`** | Direction: `append` (next/older) or `prepend` (previous/newer) |
+    | **`cursor`** | Pagination cursor for fetching the next or previous page |
+    | **`search`** | Search filter (where applicable) |
+  </Tab>
+</Tabs>
