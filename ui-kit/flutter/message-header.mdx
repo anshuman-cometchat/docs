@@ -1,6 +1,74 @@
 ---
 title: "Message Header"
+description: "Widget that showcases the User or Group details in the toolbar with typing indicator and back navigation button."
 ---
+<Accordion title="AI Agent Component Spec">
+```json
+{
+  "component": "CometChatMessageHeader",
+  "package": "cometchat_chat_uikit",
+  "import": "import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';",
+  "description": "Widget that showcases the User or Group details in the toolbar with typing indicator and back navigation button.",
+  "props": {
+    "data": {
+      "user": { "type": "User?", "default": "null" },
+      "group": { "type": "Group?", "default": "null" }
+    },
+    "callbacks": {
+      "onBack": "VoidCallback?",
+      "newChatButtonClick": "VoidCallback?",
+      "chatHistoryButtonClick": "VoidCallback?"
+    },
+    "visibility": {
+      "showBackButton": { "type": "bool?", "default": "true" },
+      "hideVideoCallButton": { "type": "bool?", "default": "false" },
+      "hideVoiceCallButton": { "type": "bool?", "default": "false" },
+      "usersStatusVisibility": { "type": "bool?", "default": "true" },
+      "hideNewChatButton": { "type": "bool?", "default": "false" },
+      "hideChatHistoryButton": { "type": "bool?", "default": "false" }
+    },
+    "viewSlots": {
+      "backButton": "WidgetBuilder?",
+      "subtitleView": "Widget? Function(Group? group, User? user, BuildContext context)?",
+      "listItemView": "Widget Function(Group? group, User? user, BuildContext context)?",
+      "trailingView": "List<Widget>? Function(User? user, Group? group, BuildContext context)?",
+      "leadingStateView": "Widget? Function(Group? group, User? user, BuildContext context)?",
+      "titleView": "Widget? Function(Group? group, User? user, BuildContext context)?",
+      "auxiliaryButtonView": "Widget? Function(Group? group, User? user, BuildContext context)?"
+    },
+    "style": {
+      "messageHeaderStyle": "CometChatMessageHeaderStyle?",
+      "listItemStyle": "ListItemStyle?"
+    },
+    "layout": {
+      "avatarHeight": { "type": "double?", "default": "null" },
+      "avatarWidth": { "type": "double?", "default": "null" },
+      "height": { "type": "double?", "default": "65" },
+      "padding": { "type": "EdgeInsetsGeometry?", "default": "null" }
+    },
+    "icons": {
+      "menuIcon": "Widget?",
+      "newChatIcon": "IconData?",
+      "chatHistoryIcon": "IconData?"
+    },
+    "formatting": {
+      "dateTimeFormatterCallback": "DateTimeFormatterCallback?"
+    }
+  },
+  "sdkListeners": [
+    "onUserOnline",
+    "onUserOffline",
+    "onTypingStarted",
+    "onTypingEnded",
+    "onGroupMemberJoined",
+    "onGroupMemberLeft",
+    "onGroupMemberKicked",
+    "onGroupMemberBanned",
+    "onMemberAddedToGroup"
+  ]
+}
+```
+</Accordion>
 
 ## Overview
 

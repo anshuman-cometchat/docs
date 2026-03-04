@@ -60,6 +60,8 @@ Theming controls the look and feel of the chat UI — colors, fonts, and spacing
 
 Override theme properties in your `MaterialApp`:
 
+<Tabs>
+<Tab title="Dart">
 ```dart title="main.dart"
 MaterialApp(
   theme: ThemeData(
@@ -75,6 +77,8 @@ MaterialApp(
   home: MyApp(),
 )
 ```
+</Tab>
+</Tabs>
 
 ---
 
@@ -84,7 +88,9 @@ MaterialApp(
   <img src="/images/775aa09b-theming_light-d42812a5da605e05dbd958ada9e1d72e.png" />
 </Frame>
 
-```dart title="Light Theme"
+<Tabs>
+<Tab title="Light Theme">
+```dart
 ThemeData(
   extensions: [
     CometChatColorPalette(
@@ -97,12 +103,9 @@ ThemeData(
   ],
 )
 ```
-
-<Frame>
-  <img src="/images/82ac0120-theming_dark-cb83fbadb54727ba62037df9b46a84ab.png" />
-</Frame>
-
-```dart title="Dark Theme"
+</Tab>
+<Tab title="Dark Theme">
+```dart
 ThemeData(
   extensions: [
     CometChatColorPalette(
@@ -115,6 +118,12 @@ ThemeData(
   ],
 )
 ```
+</Tab>
+</Tabs>
+
+<Frame>
+  <img src="/images/82ac0120-theming_dark-cb83fbadb54727ba62037df9b46a84ab.png" />
+</Frame>
 
 ---
 
@@ -124,6 +133,8 @@ ThemeData(
   <img src="/images/782be32a-theming_light_custom-c09d25d13689506d39bc5b9266a2c273.png" />
 </Frame>
 
+<Tabs>
+<Tab title="Dart">
 ```dart
 ThemeData(
   fontFamily: 'Times New Roman',
@@ -136,6 +147,8 @@ ThemeData(
   ],
 )
 ```
+</Tab>
+</Tabs>
 
 ---
 

@@ -48,17 +48,23 @@ The `CometChatUrlFormatter` is automatically applied to messages. URLs are:
 
 The URL formatter is included by default. No additional setup required.
 
+<Tabs>
+<Tab title="Dart">
 ```dart
 CometChatMessageList(
   user: chatUser,
   // URL formatter is automatically included
 )
 ```
+</Tab>
+</Tabs>
 
 ### Custom URL Formatter
 
 Create a custom URL formatter with your own styling and behavior.
 
+<Tabs>
+<Tab title="Dart">
 ```dart
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
@@ -113,9 +119,13 @@ class CustomUrlFormatter extends CometChatUrlFormatter {
   }
 }
 ```
+</Tab>
+</Tabs>
 
 ### Apply Custom Formatter
 
+<Tabs>
+<Tab title="Dart">
 ```dart
 CometChatMessageList(
   user: chatUser,
@@ -125,6 +135,8 @@ CometChatMessageList(
   ],
 )
 ```
+</Tab>
+</Tabs>
 
 ---
 
@@ -134,6 +146,8 @@ CometChatMessageList(
 
 Override `getMessageBubbleTextStyle` to customize link appearance:
 
+<Tabs>
+<Tab title="Dart">
 ```dart
 @override
 TextStyle getMessageBubbleTextStyle(
@@ -155,11 +169,15 @@ TextStyle getMessageBubbleTextStyle(
   );
 }
 ```
+</Tab>
+</Tabs>
 
 ### Custom URL Pattern
 
 Use a custom regex pattern to match specific URL formats:
 
+<Tabs>
+<Tab title="Dart">
 ```dart
 CometChatUrlFormatter(
   pattern: RegExp(
@@ -167,11 +185,15 @@ CometChatUrlFormatter(
   ),
 )
 ```
+</Tab>
+</Tabs>
 
 ### Handle URL Clicks
 
 Override `getAttributedText` to add custom click handling:
 
+<Tabs>
+<Tab title="Dart">
 ```dart
 @override
 List<AttributedText> getAttributedText(
@@ -213,6 +235,8 @@ List<AttributedText> getAttributedText(
   );
 }
 ```
+</Tab>
+</Tabs>
 
 ---
 
@@ -229,6 +253,8 @@ List<AttributedText> getAttributedText(
 
 ## Complete Example
 
+<Tabs>
+<Tab title="Dart">
 ```dart
 import 'package:cometchat_chat_uikit/cometchat_chat_uikit.dart';
 import 'package:flutter/material.dart';
@@ -279,6 +305,8 @@ class _UrlFormatterExampleState extends State<UrlFormatterExample> {
   }
 }
 ```
+</Tab>
+</Tabs>
 
 ---
 
