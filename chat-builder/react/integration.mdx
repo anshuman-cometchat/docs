@@ -219,19 +219,20 @@ import { CometChatUIKit } from "@cometchat/chat-uikit-react";
 const UID = "YOUR_UID"; // Replace with your actual UID
 
 CometChatUIKit.getLoggedinUser().then((user: CometChat.User | null) => {
-  if (!user) {
-    // If no user is logged in, proceed with login
-    CometChatUIKit.login(UID)
-      .then((user: CometChat.User) => {
-        console.log("Login Successful:", { user });
-        // Mount your app
-      })
-      .catch(console.log);
-  } else {
-    // If user is already logged in, mount your app
-  }
+if (!user) {
+// If no user is logged in, proceed with login
+CometChatUIKit.login(UID)
+.then((user: CometChat.User) => {
+console.log("Login Successful:", { user });
+// Mount your app
+})
+.catch(console.log);
+} else {
+// If user is already logged in, mount your app
+}
 });
-```
+
+````
 </Tab>
 
 <Tab title="JavaScript">
@@ -253,7 +254,8 @@ CometChatUIKit.getLoggedinUser().then((user) => {
     // If user is already logged in, mount your app
   }
 });
-```
+````
+
 </Tab>
 </Tabs>
 
@@ -281,42 +283,43 @@ export const COMETCHAT_CONSTANTS = {
 };
 
 const uiKitSettings = new UIKitSettingsBuilder()
-  .setAppId(COMETCHAT_CONSTANTS.APP_ID)
-  .setRegion(COMETCHAT_CONSTANTS.REGION)
-  .setAuthKey(COMETCHAT_CONSTANTS.AUTH_KEY)
-  .subscribePresenceForAllUsers()
-  .build();
+.setAppId(COMETCHAT_CONSTANTS.APP_ID)
+.setRegion(COMETCHAT_CONSTANTS.REGION)
+.setAuthKey(COMETCHAT_CONSTANTS.AUTH_KEY)
+.subscribePresenceForAllUsers()
+.build();
 
 CometChatUIKit.init(uiKitSettings)?.then(() => {
-  setupLocalization();
+setupLocalization();
 
-  const UID = "YOUR_UID"; // Replace with your actual UID
+const UID = "YOUR_UID"; // Replace with your actual UID
 
-  CometChatUIKit.getLoggedinUser().then((user: CometChat.User | null) => {
-    if (!user) {
-      CometChatUIKit.login(UID)
-        .then((loggedUser: CometChat.User) => {
-          console.log("Login Successful:", loggedUser);
-          // Mount your app
-          ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-            <CometChatProvider>
-              <App />
-            </CometChatProvider>
-          );
-        })
-        .catch((error) => console.error("Login Failed:", error));
-    } else {
-      // User already logged in, mount app directly
-      console.log("User already logged in:", user);
-      ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-        <CometChatProvider>
-          <App />
-        </CometChatProvider>
-      );
-    }
-  });
+CometChatUIKit.getLoggedinUser().then((user: CometChat.User | null) => {
+if (!user) {
+CometChatUIKit.login(UID)
+.then((loggedUser: CometChat.User) => {
+console.log("Login Successful:", loggedUser);
+// Mount your app
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+<CometChatProvider>
+<App />
+</CometChatProvider>
+);
+})
+.catch((error) => console.error("Login Failed:", error));
+} else {
+// User already logged in, mount app directly
+console.log("User already logged in:", user);
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+<CometChatProvider>
+<App />
+</CometChatProvider>
+);
+}
 });
-```
+});
+
+````
 </Tab>
 
 <Tab title="JavaScript">
@@ -542,12 +545,6 @@ If you face any issues while integrating the builder in your app project, please
 ```
 
 If your development server is running, restart it to ensure the new TypeScript configuration is picked up.
-
-<Info>
-  Stuck on something? Our [Developer Community](http://community.cometchat.com/)
-  and [Support team](https://help.cometchat.com/hc/en-us/requests/new) are happy
-  to help.
-</Info>
 
 ---
 
