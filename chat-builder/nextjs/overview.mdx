@@ -28,11 +28,7 @@ The exported UI connects to CometChat's SDK and infrastructure, which manages me
 
 ### 1. Design
 
-Customize your chat experience using the visual UI Kit Builder:
-
-- **Configure layout** — Toggle all the required features in the dashboard. Choose whether you want a sidebar or not.
-- **Themes** — Select between system, light, and dark themes. Choose custom colors and typography.
-- Customize component behavior directly from the builder interface.
+Configure your chat layout, toggle features, and pick a theme using the UI Kit Builder.
 
 <Frame>
   <img src="/images/uikit-builder-preview.png" />
@@ -40,31 +36,11 @@ Customize your chat experience using the visual UI Kit Builder:
 
 ### 2. Export
 
-Once configured, export production-ready Next.js code tailored to your selected setup.
-
-1. Click on **Export Code**
-2. Review your export
-3. Your code will be successfully exported
+Click **Export Code** to generate a production-ready Next.js codebase based on your configuration.
 
 ### 3. Integrate
 
-Add the exported code into your Next.js application and connect using your CometChat App ID, Region, and Auth Key.
-
-1. **Install dependencies**
-2. **Copy CometChat folder** into your project's `src` directory
-3. **Initialize CometChat** in your app's entry file
-4. **User Authentication** — CometChat uses a UID (User ID) to identify each user. After initialization, authenticate users to enable chat functionality.
-5. **Render the CometChatApp component** — Render the chat UI by adding `CometChatApp` to your component
-6. **Run the app** — Start your application with the appropriate command based on your setup
-
-<Card
-  title="Follow the full Integration Guide"
-  icon="book"
-  href="/chat-builder/nextjs/integration"
->
-  Step-by-step instructions for integrating the UI Kit Builder into your Next.js
-  app
-</Card>
+Drop the exported code into your Next.js project, add your CometChat credentials, and run the app. See the [Integration Guide](/chat-builder/nextjs/integration) for full steps.
 
 ---
 
@@ -90,25 +66,3 @@ Experience the CometChat UI Kit Builder in action:
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
   ></iframe>
 </Frame>
-
----
-
-## Related Resources
-
-<CardGroup cols={2}>
-  <Card title="JavaScript Chat SDK" href="/sdk/javascript/overview">
-    Learn more about the CometChat JavaScript SDK
-  </Card>
-  <Card title="React Chat UI Kit" href="/ui-kit/react/overview">
-    Explore the React UI Kit components
-  </Card>
-  <Card title="React UI Kit Builder" href="/chat-builder/react/overview">
-    UI Kit Builder for React applications
-  </Card>
-  <Card
-    title="React Router UI Kit Builder"
-    href="/chat-builder/react-router/overview"
-  >
-    UI Kit Builder for React Router applications
-  </Card>
-</CardGroup>

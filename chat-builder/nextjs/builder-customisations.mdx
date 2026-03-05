@@ -8,20 +8,47 @@ The `CometChatSettings.ts` file handles basic feature toggles. For deeper custom
 
 ---
 
-## **Customization Workflow**
+## **App-Level Customizations**
+
+These ready-to-use props on the `CometChatApp` component let you quickly adjust common behaviors without modifying any internal components.
+
+### **Group Action Messages**
+
+Control the visibility of group action messages using the `showGroupActionMessages` prop:
+
+```jsx
+<CometChatApp showGroupActionMessages={true} />
+```
+
+- `true` (default) — Group action messages are **visible**
+- `false` — Group action messages are **hidden**
+
+### **Auto Open First Item**
+
+Control whether the first item in lists automatically opens on render using the `autoOpenFirstItem` prop:
+
+```jsx
+<CometChatApp autoOpenFirstItem={false} />
+```
+
+- `true` (default) — The first item in conversation list, user list, or group list opens automatically on first render
+- `false` — No item opens until the user clicks on one
+
+---
+
+## **Component-Level Customizations**
+
+For more advanced customizations tailored to your app's needs, you can modify individual UI Kit components directly.
+
+### **How to Customize**
 
 1. Find the component in the [UI Kit Components Overview](/ui-kit/react/components-overview)
 2. Check available props and customization options
 3. Update props or edit the component source code
 
-<Note>
-  After modifying the UI Kit Builder, re-download and reintegrate the code
-  package to apply changes.
-</Note>
+Below are some examples to help you get started with common customizations like date formats, conversation subtitles, and send buttons.
 
----
-
-## **Example: Custom Date Format**
+### **Custom Date Format**
 
 Customize how sticky date headers appear in the message list.
 
@@ -58,7 +85,7 @@ new CalendarObject({
 
 ---
 
-## **Example: Custom Conversation Subtitle**
+### **Custom Conversation Subtitle**
 
 Show online status or member count instead of the default last message preview.
 
@@ -73,19 +100,21 @@ import { CometChatConversations } from "@cometchat/chat-uikit-react";
 const customSubtitleView = (conversation) => {
   if (conversation.getConversationType() === "user") {
     const user = conversation.getConversationWith();
-    return <span>{user.getStatus() === "online" ? "🟢 Online" : "⚫ Offline"}</span>;
+    return (
+      <span>{user.getStatus() === "online" ? "🟢 Online" : "⚫ Offline"}</span>
+    );
   } else {
     const group = conversation.getConversationWith();
     return <span>{group.getMembersCount()} members</span>;
   }
 };
 
-<CometChatConversations subtitleView={customSubtitleView} />
+<CometChatConversations subtitleView={customSubtitleView} />;
 ```
 
 ---
 
-## **Example: Custom Send Button**
+### **Custom Send Button**
 
 Replace the default send button with your brand's icon.
 
@@ -94,7 +123,10 @@ Replace the default send button with your brand's icon.
 ```jsx
 "use client";
 
-import { CometChatMessageComposer, CometChatButton } from "@cometchat/chat-uikit-react";
+import {
+  CometChatMessageComposer,
+  CometChatButton,
+} from "@cometchat/chat-uikit-react";
 
 const brandedSendButton = (
   <CometChatButton
@@ -105,13 +137,13 @@ const brandedSendButton = (
   />
 );
 
-<CometChatMessageComposer user={chatUser} sendButtonView={brandedSendButton} />
+<CometChatMessageComposer user={chatUser} sendButtonView={brandedSendButton} />;
 ```
 
 ```css
 /* Style the custom send button */
 .cometchat-message-composer .cometchat-button {
-  background: #6852D6;
+  background: #6852d6;
   border-radius: 50%;
 }
 
