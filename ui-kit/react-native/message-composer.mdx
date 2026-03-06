@@ -1,12 +1,43 @@
 ---
 title: "Message Composer"
+description: "Compose and send messages including text, media, and attachments with CometChatMessageComposer component in React Native UI Kit."
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```tsx
+import { CometChatMessageComposer } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
+
+// For user chat
+<CometChatMessageComposer user={user} />
+
+// For group chat
+<CometChatMessageComposer group={group} />
+
+// With common props
+<CometChatMessageComposer
+  user={user}
+  onSendButtonPress={(message) => console.log("Sent:", message)}
+  onError={(error) => console.log("Error:", error)}
+  hideVoiceRecordingButton={false}
+/>
+```
+
+- **Message List** → [CometChatMessageList](/ui-kit/react-native/message-list)
+- **Message Header** → [CometChatMessageHeader](/ui-kit/react-native/message-header)
+</Info>
 
 ## Overview
 
-MessageComposer is a [Component](/ui-kit/react-native/components-overview#components) that enables users to write and send a variety of messages, including text, image, video, and custom messages.
+`CometChatMessageComposer` is a [Component](/ui-kit/react-native/components-overview#components) that enables users to write and send a variety of messages, including text, image, video, and custom messages.
 
 Features such as **Live Reaction**, **Attachments**, and **Message Editing** are also supported by it.
+
+<Note>
+**Available via:** [UI Kits](/ui-kit/react-native/overview)
+</Note>
 
 <Frame>
   <img src="/images/8becc772-message_composer-0cc03defaf535f332f7f8bb1ebd65392.png" />
@@ -42,6 +73,7 @@ The `onSendButtonPress` event gets activated when the send message button is cli
 <Tab title="App.tsx">
 ```tsx
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
 //code
 const onSendButtonPressHandler = (message: CometChat.BaseMessage) => {
   //code
@@ -66,6 +98,7 @@ This action doesn't change the behavior of the component but rather listens for 
 <Tab title="App.tsx">
 ```tsx
 import { CometChatMessageComposer } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
 //code
 const onError = (error: CometChat.CometChatException) => {
   //handle error
@@ -116,7 +149,7 @@ MessageComposer component does not have any available filters.
 
 ### Events
 
-[Events](/ui-kit/react-native/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+[Events](/ui-kit/react-native/components-overview#events) are emitted by a Component. By using events you can extend existing functionality. Being global events, they can be applied in multiple locations and are capable of being added or removed.
 
 The list of events emitted by the Messages component is as follows.
 
@@ -176,11 +209,11 @@ CometChatUIEventHandler.removeMessageListener("MESSAGE_LISTENER_ID");
 
 ## Customization
 
-To fit your app's design requirements, you can customize the appearance of the MessageComposer component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+To fit your app's design requirements, you can customize the appearance of the Message Composer component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+Using Style you can customize the look and feel of the component in your app. These parameters typically control elements such as the color, size, shape, and fonts used within the component.
 
 <Frame>
   <img src="/images/482915e0-message_composer_styling-db627f8855f376a0287e9d2d7f0be603.png" />
@@ -515,3 +548,23 @@ return (
 <Frame>
   <img src="/images/dbb04a8b-message_composer_header_view-11ddf1d50aa74a8868351007037451f9.png" />
 </Frame>
+
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Message List" icon="message" href="/ui-kit/react-native/message-list">
+    Display the list of messages in a conversation
+  </Card>
+  <Card title="Message Header" icon="heading" href="/ui-kit/react-native/message-header">
+    Display user or group details in the chat toolbar
+  </Card>
+  <Card title="Messages" icon="comments" href="/ui-kit/react-native/messages">
+    Complete messaging interface with header, list, and composer
+  </Card>
+  <Card title="Component Styling" icon="paintbrush" href="/ui-kit/react-native/component-styling">
+    Customize the appearance of UI Kit components
+  </Card>
+</CardGroup>

@@ -1,8 +1,46 @@
 ---
 title: "Methods"
+description: "Initialize, authenticate, and send messages using CometChatUIKit methods in React Native UI Kit."
 ---
 
-`CometChatUIKit` is a class that contains all necessary methods to help initialize the [CometChat SDK](/sdk/react-native/overview) with valid credentials for the ui kit to utilize.
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```tsx
+import { CometChatUIKit, UIKitSettings } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
+
+// Initialize
+const uikitSettings = new UIKitSettings({
+  appId: "APP_ID",
+  region: "REGION",
+  authKey: "AUTH_KEY" // For dev only
+});
+await CometChatUIKit.init(uikitSettings);
+
+// Login with UID (dev only)
+await CometChatUIKit.login({ uid: "user_uid" });
+
+// Login with Auth Token (production)
+await CometChatUIKit.login({ authToken: "AUTH_TOKEN" });
+
+// Logout
+await CometChatUIKit.logout();
+```
+
+- **Getting Started** → [Integration Guide](/ui-kit/react-native/integration)
+- **SDK Reference** → [CometChat SDK](/sdk/react-native/overview)
+</Info>
+
+<Warning>
+You must call `CometChatUIKit.init(UIKitSettings)` before rendering any UI Kit components or calling any SDK methods. Initialization must complete before login.
+</Warning>
+
+<Warning>
+**Auth Key** is for development/testing only. In production, generate **Auth Tokens** on your server using the REST API and pass them to the client. Never expose Auth Keys in production client code.
+</Warning>
+
+`CometChatUIKit` is a class that contains all necessary methods to help initialize the [CometChat SDK](/sdk/react-native/overview) with valid credentials for the UI Kit to utilize.
 
 The following properties and methods are present:
 
@@ -516,7 +554,7 @@ CometChatUIKit.update(user)
 
 ### How to logout from a logged-In User in App?
 
-just pass the loggedIn-user to the logout method
+Just pass the loggedIn-user to the logout method.
 
 <Tabs>
 <Tab title="JavaScript">
@@ -529,3 +567,23 @@ CometChatUIKit.logout();
 </Tab>
 
 </Tabs>
+
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Integration" icon="plug" href="/ui-kit/react-native/integration">
+    Complete guide to integrating the UI Kit
+  </Card>
+  <Card title="Events" icon="bolt" href="/ui-kit/react-native/events">
+    Listen to UI Kit events for custom behavior
+  </Card>
+  <Card title="Components Overview" icon="puzzle-piece" href="/ui-kit/react-native/components-overview">
+    Explore all available UI components
+  </Card>
+  <Card title="Theme" icon="palette" href="/ui-kit/react-native/theme">
+    Customize the look and feel of the UI Kit
+  </Card>
+</CardGroup>

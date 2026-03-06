@@ -1,10 +1,46 @@
 ---
 title: "Call Logs"
+description: "Display and manage the list of call history with CometChatCallLogs component in React Native UI Kit, including missed, received, and outgoing calls."
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```tsx
+import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
+import { CallLogRequestBuilder } from "@cometchat/chat-sdk-react-native";
+
+// Minimal usage
+<CometChatCallLogs />
+
+// With common props
+<CometChatCallLogs
+  onItemPress={(call) => console.log("Selected:", call)}
+  onError={(error) => console.log("Error:", error)}
+  hideBackButton={false}
+/>
+
+// With filters
+<CometChatCallLogs
+  callLogRequestBuilder={new CallLogRequestBuilder()
+    .setLimit(20)
+    .setCallStatus("cancelled")
+    .setAuthToken(loggedInUser.getAuthToken())}
+/>
+```
+
+- **Incoming Call** → [CometChatIncomingCall](/ui-kit/react-native/incoming-call)
+- **Outgoing Call** → [CometChatOutgoingCall](/ui-kit/react-native/outgoing-call)
+- **Call Buttons** → [CometChatCallButtons](/ui-kit/react-native/call-buttons)
+</Info>
 
 ## Overview
 
 `CometChatCallLogs` is a [Component](/ui-kit/react-native/components-overview#components) that shows the list of Call Logs available. By default, names are shown for all listed users, along with their avatars if available.
+
+<Note>
+**Available via:** [UI Kits](/ui-kit/react-native/overview) | [SDK](/sdk/react-native/call-logs) | [REST API](/rest-api/list-calls)
+</Note>
 
 <Frame>
   <img src="/images/7fe2a6db-call_logs-7b4f502153923374898f3887441ab8d2.png" />
@@ -125,7 +161,7 @@ return <CometChatCallLogs onBack={onBackHandler} />;
 
 ##### OnError
 
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the callLogs component.
+This action does not change the behavior of the component but rather listens for any errors that occur in the Call Logs component.
 
 <Tabs>
 <Tab title="App.tsx">
@@ -217,7 +253,7 @@ function App(): React.JSX.Element {
 
 ### Events
 
-[Events](/ui-kit/react-native/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+[Events](/ui-kit/react-native/components-overview#events) are emitted by a Component. By using events you can extend existing functionality. Being global events, they can be applied in multiple locations and are capable of being added or removed.
 
 The `CometChatCallLogs` component does not have any exposed events.
 
@@ -225,11 +261,11 @@ The `CometChatCallLogs` component does not have any exposed events.
 
 ## Customization
 
-To fit your app's design requirements, you can customize the appearance of the CallLog component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+To fit your app's design requirements, you can customize the appearance of the Call Logs component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+Using Style you can customize the look and feel of the component in your app. These parameters typically control elements such as the color, size, shape, and fonts used within the component.
 
 <Tabs>
 <Tab title="App.tsx">
@@ -513,7 +549,7 @@ return <CometChatCallLogs TrailingView={getTrailingView} />;
 
 #### AppBarOptions
 
-You can set Custom `AppBarOptions` to the `CometChatConversations` widget.
+You can set Custom `AppBarOptions` to the `CometChatCallLogs` component.
 
 Use Cases:
 
@@ -646,3 +682,23 @@ return (
   />
 );
 ```
+
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Incoming Call" icon="phone-arrow-down-left" href="/ui-kit/react-native/incoming-call">
+    Display and handle incoming calls
+  </Card>
+  <Card title="Outgoing Call" icon="phone-arrow-up-right" href="/ui-kit/react-native/outgoing-call">
+    Display and manage outgoing calls
+  </Card>
+  <Card title="Call Buttons" icon="phone" href="/ui-kit/react-native/call-buttons">
+    Add voice and video call buttons to your UI
+  </Card>
+  <Card title="Call Features" icon="video" href="/ui-kit/react-native/call-features">
+    Overview of all calling features
+  </Card>
+</CardGroup>

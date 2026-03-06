@@ -1,10 +1,52 @@
 ---
 title: "Conversations"
+description: "Display and manage the list of recent conversations for the logged-in user with CometChatConversations component in React Native UI Kit."
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```tsx
+import { 
+  CometChatConversations, 
+  CometChatUiKitConstants 
+} from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
+
+// Minimal usage
+<CometChatConversations />
+
+// Common pattern: Navigate to Messages on conversation tap
+<CometChatConversations
+  onItemPress={(conversation: CometChat.Conversation) => {
+    const conversationType = conversation.getConversationType();
+    
+    if (conversationType === CometChatUiKitConstants.ConversationTypeConstants.user) {
+      const user = conversation.getConversationWith() as CometChat.User;
+      // Navigate to Messages screen with user prop
+      // navigation.navigate('Messages', { user });
+    } else {
+      const group = conversation.getConversationWith() as CometChat.Group;
+      // Navigate to Messages screen with group prop
+      // navigation.navigate('Messages', { group });
+    }
+  }}
+  onError={(error: CometChat.CometChatException) => console.log("Error:", error)}
+/>
+```
+
+- **Message List** → [CometChatMessageList](/ui-kit/react-native/message-list)
+- **Users** → [CometChatUsers](/ui-kit/react-native/users)
+- **Groups** → [CometChatGroups](/ui-kit/react-native/groups)
+</Info>
 
 ## Overview
 
 `CometChatConversations` is a component that displays all conversations associated with the currently logged-in user.
+
+<Note>
+**Available via:** [UI Kits](/ui-kit/react-native/overview) | [SDK](/sdk/react-native/retrieve-conversations) | [REST API](/rest-api/chat-apis)
+</Note>
 
 <Frame>
   <img src="/images/f2c77c5b-Conversation-ac41cc6650fbb941c64f389aee910dbc.png" />
@@ -28,12 +70,13 @@ return <CometChatConversations />;
 
 ##### onItemPress
 
-Function executed when an item is long-pressed in the conversation list, commonly used to initiate actions like delete, selection, or entering multi-select mode.
+Function executed when an item is pressed in the conversation list, commonly used to navigate to the messages screen or initiate other actions.
 
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
 
 const onPressHandler = (conversationClicked: CometChat.Conversation) => {
   //code
@@ -56,6 +99,7 @@ Function executed when a conversation item is long-pressed, allowing additional 
 <Tab title="App.tsx">
 ```tsx
 import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
 
 const onLongPressHandler = (conversationClicked: CometChat.Conversation) => {
   //code
@@ -94,12 +138,13 @@ return <CometChatConversations hideBackButton={false} onBack={onBackHandler} />;
 
 ##### onSelection
 
-Called when a item from the fetched list is selected useful for multi-selection features.
+Called when an item from the fetched list is selected, useful for multi-selection features.
 
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
 
 const onSelectionHandler = (selection: Array<CometChat.Conversation>) => {
   //code
@@ -121,12 +166,13 @@ return (
 
 ##### OnError
 
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the Conversations component.
+This action does not change the behavior of the component but rather listens for any errors that occur in the Conversations component.
 
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
 
 const onErrorHandler = (error: CometChat.CometChatException) => {
   console.log("Error");
@@ -143,7 +189,7 @@ return <CometChatConversations onError={onErrorHandler} />;
 
 ##### onEmpty
 
-Called when the list is empty, enabling custom handling such as showing a placeholder message
+Called when the list is empty, enabling custom handling such as showing a placeholder message.
 
 <Tabs>
 <Tab title="App.tsx">
@@ -193,8 +239,9 @@ Called when submit selection button is pressed.
 <Tab title="App.tsx">
 ```tsx
 import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-const onSubmitHandler = (list:Array<CometChat.Conversation>) => {
+const onSubmitHandler = (list: Array<CometChat.Conversation>) => {
   console.log('Submit', list);
 };
 
@@ -244,11 +291,11 @@ return (
 
 ### Events
 
-[Events](/ui-kit/react-native/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+[Events](/ui-kit/react-native/components-overview#events) are emitted by a Component. By using events you can extend existing functionality. Being global events, they can be applied in multiple locations and are capable of being added or removed.
 
 ##### 1. ConversationDeleted
 
-This event will be emitted when the user deletes a conversation
+This event is emitted when the user deletes a conversation.
 
 <Tabs>
 <Tab title="Add Listener">
@@ -289,7 +336,7 @@ To fit your app's design requirements, you can customize the appearance of the c
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+Using Style you can customize the look and feel of the component in your app. These parameters typically control elements such as the color, size, shape, and fonts used within the component.
 
 ##### Style
 
@@ -350,9 +397,9 @@ Below is a list of customizations along with corresponding code snippets
 | **receiptsVisibility**                 | Prop used to control the visibility of read receipts without affecting the functionality of marking messages as read and delivered                    | `receiptsVisibility={false}`                 |
 | **selectionMode**                      | This method determines the selection mode for conversations, enabling users to select either a single conversation or multiple conversations at once. | `selectionMode="multiple"`                   |
 | **hideSubmitButton**                   | Prop used to toggle the visibility of the submit button when selectionMode is enabled.                                                                | `hideSubmitButton={true}`                    |
-| **usersStatusVisibility**              | Prop used to toggle user status visibilty.                                                                                                            | `usersStatusVisibility={false}`              |
-| **groupTypeVisibility**                | Prop used to toggle group type visibilty.                                                                                                             | `groupTypeVisibility={false}`                |
-| **deleteConversationOptionVisibility** | Prop used to toggle delete conversation option visibilty.                                                                                             | `deleteConversationOptionVisibility={false}` |
+| **usersStatusVisibility**              | Prop used to toggle user status visibility.                                                                                                           | `usersStatusVisibility={false}`              |
+| **groupTypeVisibility**                | Prop used to toggle group type visibility.                                                                                                            | `groupTypeVisibility={false}`                |
+| **deleteConversationOptionVisibility** | Prop used to toggle delete conversation option visibility.                                                                                            | `deleteConversationOptionVisibility={false}` |
 
 ### Advanced
 
@@ -1193,3 +1240,23 @@ return (
 </Tab>
 
 </Tabs>
+
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Message List" icon="message" href="/ui-kit/react-native/message-list">
+    Display the full chat interface after selecting a conversation
+  </Card>
+  <Card title="Users" icon="users" href="/ui-kit/react-native/users">
+    Display and interact with user lists
+  </Card>
+  <Card title="Groups" icon="user-group" href="/ui-kit/react-native/groups">
+    Display and manage group conversations
+  </Card>
+  <Card title="Component Styling" icon="paintbrush" href="/ui-kit/react-native/component-styling">
+    Customize the appearance of UI Kit components
+  </Card>
+</CardGroup>

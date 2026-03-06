@@ -1,10 +1,37 @@
 ---
 title: "Threaded Messages Header"
+description: "Display the parent message and reply count for threaded conversations with CometChatThreadHeader component in React Native UI Kit."
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```tsx
+import { CometChatThreadHeader } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
+
+// Basic usage with parent message
+<CometChatThreadHeader parentMessage={parentMessage} />
+
+// With common props
+<CometChatThreadHeader
+  parentMessage={parentMessage}
+  replyCountVisibility={true}
+  replyCountBarVisibility={true}
+/>
+```
+
+- **Message List** → [CometChatMessageList](/ui-kit/react-native/message-list)
+- **Threaded Messages** → [CometChatThreadedMessages](/ui-kit/react-native/threaded-messages)
+</Info>
 
 ## Overview
 
-`CometChatThreadHeader` is a [Component](/ui-kit/react-native/components-overview#components) that displays the parent message & number of replies of thread.
+`CometChatThreadHeader` is a [Component](/ui-kit/react-native/components-overview#components) that displays the parent message and number of replies in a thread.
+
+<Note>
+**Available via:** [UI Kits](/ui-kit/react-native/overview)
+</Note>
 
 <Frame>
   <img src="/images/ccfded5e-thread_header-02deacd1056bec41b2d4862bc713a4df.png" />
@@ -49,13 +76,13 @@ return (
 
 ## Customization
 
-To fit your app's design requirements, you can customize the appearance of the conversation component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+To fit your app's design requirements, you can customize the appearance of the Thread Header component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
 ***
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+Using Style you can customize the look and feel of the component in your app. These parameters typically control elements such as the color, size, shape, and fonts used within the component.
 
 ### Thread Header
 
@@ -203,3 +230,23 @@ return (
 </Tab>
 
 </Tabs>
+
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Threaded Messages" icon="comments" href="/ui-kit/react-native/threaded-messages">
+    Display the complete threaded conversation view
+  </Card>
+  <Card title="Message List" icon="message" href="/ui-kit/react-native/message-list">
+    Display the list of messages in a conversation
+  </Card>
+  <Card title="Message Template" icon="file-code" href="/ui-kit/react-native/message-template">
+    Customize message bubble templates
+  </Card>
+  <Card title="Component Styling" icon="paintbrush" href="/ui-kit/react-native/component-styling">
+    Customize the appearance of UI Kit components
+  </Card>
+</CardGroup>

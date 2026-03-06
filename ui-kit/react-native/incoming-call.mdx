@@ -1,10 +1,43 @@
 ---
 title: "Incoming Call"
+description: "Display and handle incoming voice and video calls with CometChatIncomingCall component in React Native UI Kit, providing options to accept or decline."
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```tsx
+import { CometChatIncomingCall } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
+
+// Basic usage with call object
+<CometChatIncomingCall
+  call={incomingCall}
+  onDecline={(call) => console.log("Declined")}
+/>
+
+// With common props
+<CometChatIncomingCall
+  call={incomingCall}
+  onAccept={(call) => console.log("Accepted:", call)}
+  onDecline={(call) => console.log("Declined:", call)}
+  onError={(error) => console.log("Error:", error)}
+  disableSoundForCalls={false}
+/>
+```
+
+- **Outgoing Call** → [CometChatOutgoingCall](/ui-kit/react-native/outgoing-call)
+- **Call Buttons** → [CometChatCallButtons](/ui-kit/react-native/call-buttons)
+- **Call Features** → [Call Features Overview](/ui-kit/react-native/call-features)
+</Info>
 
 ## Overview
 
-The `CometChatIncomingCall` is a [Component](/ui-kit/react-native/components-overview#components) that serves as a visual representation when the user receives an incoming call, such as a voice call or video call, providing options to answer or decline the call.
+`CometChatIncomingCall` is a [Component](/ui-kit/react-native/components-overview#components) that serves as a visual representation when the user receives an incoming call, such as a voice call or video call, providing options to answer or decline the call.
+
+<Note>
+**Available via:** [UI Kits](/ui-kit/react-native/overview)
+</Note>
 
 <Frame>
   <img src="/images/9737d621-Incoming_call-76e8c9c41ca422a3b1b08a7b26963b15.png" />
@@ -194,7 +227,7 @@ function App(): React.JSX.Element {
 
 ##### onError
 
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the Banned Members component.
+This action does not change the behavior of the component but rather listens for any errors that occur in the Incoming Call component.
 
 <Tabs>
 <Tab title="App.tsx">
@@ -264,7 +297,7 @@ The IncomingCall component does not have any exposed filters.
 
 ### Events
 
-[Events](/ui-kit/react-native/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+[Events](/ui-kit/react-native/components-overview#events) are emitted by a Component. By using events you can extend existing functionality. Being global events, they can be applied in multiple locations and are capable of being added or removed.
 
 The list of events emitted by the Incoming Call component is as follows.
 
@@ -327,11 +360,11 @@ CometChatUIEventHandler.removeCallListener("CALL_LISTENER_ID");
 
 ## Customization
 
-To fit your app's design requirements, you can customize the appearance of the conversation component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+To fit your app's design requirements, you can customize the appearance of the Incoming Call component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+Using Style you can customize the look and feel of the component in your app. These parameters typically control elements such as the color, size, shape, and fonts used within the component.
 
 You can customize the appearance of the `IncomingCall` Component by applying the `IncomingCallStyle` to it using the following code snippet.
 
@@ -556,3 +589,23 @@ return (
 ```
 
 ***
+
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Outgoing Call" icon="phone-arrow-up-right" href="/ui-kit/react-native/outgoing-call">
+    Display and manage outgoing calls
+  </Card>
+  <Card title="Call Buttons" icon="phone" href="/ui-kit/react-native/call-buttons">
+    Add voice and video call buttons to your UI
+  </Card>
+  <Card title="Call Features" icon="video" href="/ui-kit/react-native/call-features">
+    Overview of all calling features
+  </Card>
+  <Card title="Component Styling" icon="paintbrush" href="/ui-kit/react-native/component-styling">
+    Customize the appearance of UI Kit components
+  </Card>
+</CardGroup>

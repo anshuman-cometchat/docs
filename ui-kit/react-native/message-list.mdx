@@ -1,12 +1,43 @@
 ---
 title: "Message List"
+description: "Display and manage the list of messages in a conversation with CometChatMessageList component in React Native UI Kit, supporting text, media, reactions, and more."
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```tsx
+import { CometChatMessageList } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
+
+// For user chat
+<CometChatMessageList user={user} />
+
+// For group chat
+<CometChatMessageList group={group} />
+
+// With common props
+<CometChatMessageList
+  user={user}
+  onError={(error) => console.log("Error:", error)}
+  scrollToBottomOnNewMessage={true}
+  receiptsVisibility={true}
+/>
+```
+
+- **Message Header** → [CometChatMessageHeader](/ui-kit/react-native/message-header)
+- **Message Composer** → [CometChatMessageComposer](/ui-kit/react-native/message-composer)
+</Info>
 
 ## Overview
 
-`MessageList` is a [Composite Component](/ui-kit/react-native/components-overview#components) that displays a list of messages and effectively manages real-time operations. It includes various types of messages such as Text Messages, Media Messages, Stickers, and more.
+`CometChatMessageList` is a [Composite Component](/ui-kit/react-native/components-overview#components) that displays a list of messages and effectively manages real-time operations. It includes various types of messages such as Text Messages, Media Messages, Stickers, and more.
 
-`MessageList` is primarily a list of the base component [MessageBubble](/ui-kit/react-native/message-bubble-styling#message-bubbles). The MessageBubble Component is utilized to create different types of chat bubbles depending on the message type.
+`CometChatMessageList` is primarily a list of the base component [MessageBubble](/ui-kit/react-native/message-bubble-styling#message-bubbles). The MessageBubble Component is utilized to create different types of chat bubbles depending on the message type.
+
+<Note>
+**Available via:** [UI Kits](/ui-kit/react-native/overview)
+</Note>
 
 <Frame>
   <img src="/images/7c6476ad-message_list-f571abbea715b343416ff5ca1cbc8c9b.png" />
@@ -259,7 +290,7 @@ The following parameters in messageRequestBuilder will always be altered inside 
 
 ### Events
 
-[Events](/ui-kit/react-native/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+[Events](/ui-kit/react-native/components-overview#events) are emitted by a Component. By using events you can extend existing functionality. Being global events, they can be applied in multiple locations and are capable of being added or removed.
 
 The list of events emitted by the Message List component is as follows.
 
@@ -341,11 +372,11 @@ CometChatUIEventHandler.removeMessageListener("MESSAGE_LISTENER_ID");
 
 ## Customization
 
-To fit your app's design requirements, you can customize the appearance of the conversation component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+To fit your app's design requirements, you can customize the appearance of the Message List component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+Using Style you can customize the look and feel of the component in your app. These parameters typically control elements such as the color, size, shape, and fonts used within the component.
 
 <Frame>
   <img src="/images/03a08ce8-message_list_styling-ebbb6bea74da1c21078f037fb50d8bff.png" />
@@ -1179,3 +1210,23 @@ return (
 ```
 </Tab>
 </Tabs>
+
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Message Header" icon="heading" href="/ui-kit/react-native/message-header">
+    Display user or group details in the chat toolbar
+  </Card>
+  <Card title="Message Composer" icon="pen" href="/ui-kit/react-native/message-composer">
+    Compose and send messages in a chat
+  </Card>
+  <Card title="Messages" icon="comments" href="/ui-kit/react-native/messages">
+    Complete messaging interface with header, list, and composer
+  </Card>
+  <Card title="Component Styling" icon="paintbrush" href="/ui-kit/react-native/component-styling">
+    Customize the appearance of UI Kit components
+  </Card>
+</CardGroup>

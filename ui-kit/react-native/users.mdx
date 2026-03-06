@@ -1,10 +1,41 @@
 ---
 title: "Users"
+description: "Display and interact with a searchable list of all available users with CometChatUsers component in React Native UI Kit."
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```tsx
+import { CometChatUsers } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
+
+// Minimal usage
+<CometChatUsers />
+
+// Common pattern: Navigate to Messages on user tap
+<CometChatUsers
+  onItemPress={(user: CometChat.User) => {
+    // Navigate to CometChatMessages with user prop
+    // navigation.navigate('Messages', { user });
+    console.log("Selected user:", user.getUid(), user.getName());
+  }}
+  onError={(error: CometChat.CometChatException) => console.log("Error:", error)}
+/>
+```
+
+- **Conversations** → [CometChatConversations](/ui-kit/react-native/conversations)
+- **Groups** → [CometChatGroups](/ui-kit/react-native/groups)
+- **Message List** → [CometChatMessageList](/ui-kit/react-native/message-list)
+</Info>
 
 ## Overview
 
-The Users is a [Component](/ui-kit/react-native/components-overview#components), showcasing an accessible list of all available users. It provides an integral search functionality, allowing you to locate any specific user swiftly and easily. For each user listed, the widget displays the user's name by default, in conjunction with their avatar when available. Furthermore, it includes a status indicator, visually informing you whether a user is currently online or offline.
+The Users is a [Component](/ui-kit/react-native/components-overview#components), showcasing an accessible list of all available users. It provides an integral search functionality, allowing you to locate any specific user swiftly and easily. For each user listed, the component displays the user's name by default, in conjunction with their avatar when available. Furthermore, it includes a status indicator, visually informing you whether a user is currently online or offline.
+
+<Note>
+**Available via:** [UI Kits](/ui-kit/react-native/overview) | [SDK](/sdk/react-native/retrieve-users) | [REST API](/rest-api/chat-apis)
+</Note>
 
 <Frame>
   <img src="/images/358a0b21-users-4e1d9c895a8ae47d23ac0d6646db160b.png" />
@@ -98,7 +129,7 @@ return <CometChatUsers showBackButton={true} onBack={onBackHandler} />;
 
 ##### onSelection
 
-Called when a item from the fetched list is selected, useful for multi-selection features.
+Called when an item from the fetched list is selected, useful for multi-selection features.
 
 <Tabs>
 <Tab title="App.tsx">
@@ -123,7 +154,7 @@ return (
 
 ##### onError
 
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the Users component.
+This action does not change the behavior of the component but rather listens for any errors that occur in the Users component.
 
 <Tabs>
 <Tab title="App.tsx">
@@ -281,7 +312,7 @@ function App(): React.JSX.Element {
 
 ### Events
 
-[Events](/ui-kit/react-native/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+[Events](/ui-kit/react-native/components-overview#events) are emitted by a Component. By using events you can extend existing functionality. Being global events, they can be applied in multiple locations and are capable of being added or removed.
 
 To handle events supported by Users you have to add corresponding listeners by using `CometChatUIEventHandler.addUserListener`
 
@@ -318,7 +349,7 @@ To fit your app's design requirements, you can customize the appearance of the U
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+Using Style you can customize the look and feel of the component in your app. These parameters typically control elements such as the color, size, shape, and fonts used within the component.
 
 You can set the styling object to the `CometChatUsers` Component to customize the styling.
 
@@ -738,3 +769,23 @@ return (
 </Tab>
 
 </Tabs>
+
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Conversations" icon="comments" href="/ui-kit/react-native/conversations">
+    Display and manage the list of recent chats
+  </Card>
+  <Card title="Groups" icon="user-group" href="/ui-kit/react-native/groups">
+    Display and manage group conversations
+  </Card>
+  <Card title="Message List" icon="message" href="/ui-kit/react-native/message-list">
+    Display the full chat interface after selecting a user
+  </Card>
+  <Card title="Component Styling" icon="paintbrush" href="/ui-kit/react-native/component-styling">
+    Customize the appearance of UI Kit components
+  </Card>
+</CardGroup>

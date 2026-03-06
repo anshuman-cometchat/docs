@@ -1,10 +1,43 @@
 ---
 title: "Group Members"
+description: "Display and manage group members with CometChatGroupMembers component in React Native UI Kit, including member roles, permissions, and moderation actions."
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```tsx
+import { CometChatGroupMembers } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
+
+// Fetch group first
+const group = await CometChat.getGroup("group_guid");
+
+// Minimal usage
+<CometChatGroupMembers group={group} />
+
+// With common props
+<CometChatGroupMembers
+  group={group}
+  onItemPress={(member: CometChat.GroupMember) => {
+    console.log("Selected member:", member.getUid());
+  }}
+  onError={(error) => console.log("Error:", error)}
+/>
+```
+
+- **Groups** → [CometChatGroups](/ui-kit/react-native/groups)
+- **Add Members** → [CometChatAddMembers](/ui-kit/react-native/add-members)
+- **Banned Members** → [CometChatBannedMembers](/ui-kit/react-native/banned-members)
+</Info>
 
 ## Overview
 
 `CometChatGroupMembers` is a versatile [Component](/ui-kit/react-native/components-overview#components) designed to showcase all users who are either added to or invited to a group, thereby enabling them to participate in group discussions, access shared content, and engage in collaborative activities. Group members have the capability to communicate in real-time through messaging, voice and video calls, and various other interactions. Additionally, they can interact with each other, share files, and join calls based on the permissions established by the group administrator or owner.
+
+<Note>
+**Available via:** [UI Kits](/ui-kit/react-native/overview) | [SDK](/sdk/react-native/retrieve-group-members) | [REST API](/rest-api/group-members/list)
+</Note>
 
 <Frame>
   <img src="/images/c316bb0a-group_members-9849dc973b6addaffc0990af38520294.png" />
@@ -26,7 +59,7 @@ If you're defining the Group members within the XML code, you'll need to extract
 <Tab title="App.tsx">
 ```tsx
 import { CometChat } from "@cometchat/chat-sdk-react-native";
-import { CometChatGroupsMembers } from "@cometchat/chat-uikit-react-native";
+import { CometChatGroupMembers } from "@cometchat/chat-uikit-react-native";
 
 function App(): React.JSX.Element {
   const [group, setGroup] = useState<CometChat.Group | undefined>(undefined);
@@ -43,7 +76,7 @@ function App(): React.JSX.Element {
 
   return (
     <>
-      {group && <CometChatGroupsMembers group={group} />}
+      {group && <CometChatGroupMembers group={group} />}
     </>
   );
 }
@@ -129,7 +162,7 @@ return <CometChatGroupMembers showBackButton={true} onBack={onBackHandler} />;
 
 ##### onSelection
 
-Called when a item from the fetched list is selected, useful for multi-selection features.
+Called when an item from the fetched list is selected, useful for multi-selection features.
 
 <Tabs>
 <Tab title="App.tsx">
@@ -157,7 +190,7 @@ return (
 
 ##### onError
 
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the Users component.
+This action does not change the behavior of the component but rather listens for any errors that occur in the Group Members component.
 
 <Tabs>
 <Tab title="App.tsx">
@@ -200,7 +233,7 @@ In the example below, we are applying a filter to the Group List based on limit 
 <Tab title="App.tsx">
 ```tsx
 import { CometChat } from "@cometchat/chat-sdk-react-native";
-import { CometChatGroupsMembers } from "@cometchat/chat-uikit-react-native";
+import { CometChatGroupMembers } from "@cometchat/chat-uikit-react-native";
 
 function App(): React.JSX.Element {
   const [group, setGroup] = useState<CometChat.Group | undefined>(undefined);
@@ -226,7 +259,7 @@ function App(): React.JSX.Element {
   return (
     <>
       {group && (
-        <CometChatGroupsMembers
+        <CometChatGroupMembers
           group={group}
           groupMemberRequestBuilder={groupMemberRequestBuilder}
         />
@@ -252,7 +285,7 @@ The SearchRequestBuilder uses [GroupMembersRequestBuilder](/sdk/react-native/ret
 <Tab title="App.tsx">
 ```tsx
 import { CometChat } from "@cometchat/chat-sdk-react-native";
-import { CometChatGroupsMembers } from "@cometchat/chat-uikit-react-native";
+import { CometChatGroupMembers } from "@cometchat/chat-uikit-react-native";
 
 function App(): React.JSX.Element {
   const [group, setGroup] = useState<CometChat.Group | undefined>(undefined);
@@ -276,7 +309,7 @@ function App(): React.JSX.Element {
   return (
     <>
       {group && (
-        <CometChatGroupsMembers
+        <CometChatGroupMembers
           group={group}
           groupMemberRequestBuilder={searchRequestBuilder}
         />
@@ -294,7 +327,7 @@ function App(): React.JSX.Element {
 
 ### Events
 
-[Events](/ui-kit/react-native/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+[Events](/ui-kit/react-native/components-overview#events) are emitted by a Component. By using events you can extend existing functionality. Being global events, they can be applied in multiple locations and are capable of being added or removed.
 
 Events emitted by the Group Members component is as follows.
 
@@ -366,7 +399,7 @@ CometChatUIEventHandler.removeGroupListener("GROUP_LISTENER_ID");
 
 ## Customization
 
-To fit your app's design requirements, you can customize the appearance of the Groups component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+To fit your app's design requirements, you can customize the appearance of the Group Members component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
 ### Style
 
@@ -851,3 +884,23 @@ return (
 </Tab>
 
 </Tabs>
+
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Groups" icon="user-group" href="/ui-kit/react-native/groups">
+    Display and manage group conversations
+  </Card>
+  <Card title="Add Members" icon="user-plus" href="/ui-kit/react-native/add-members">
+    Add new members to a group
+  </Card>
+  <Card title="Banned Members" icon="ban" href="/ui-kit/react-native/banned-members">
+    View and manage banned group members
+  </Card>
+  <Card title="Component Styling" icon="paintbrush" href="/ui-kit/react-native/component-styling">
+    Customize the appearance of UI Kit components
+  </Card>
+</CardGroup>

@@ -1,6 +1,18 @@
 ---
 title: "Upgrading From V4"
+description: "Migrate from CometChat React Native UI Kit v4 to v5 with updated components, simplified theming, and modular architecture."
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+Key changes from v4 to v5:
+- Composite components (e.g., `CometChatConversationsWithMessages`) replaced with modular components (`CometChatConversations`, `CometChatMessageHeader`, `CometChatMessageList`, `CometChatMessageComposer`)
+- Theming: `new CometChatTheme({})` with setter methods → `CometChatThemeProvider` with a plain theme object
+- Styling: Nested style objects (e.g., `avatarStyle`, `listItemStyle`) → single `style` prop with `DeepPartial<>` types
+- Custom views: `ListItemView` → `ItemView`, `TailView` → `TrailingView`, `EmptyStateView` → `EmptyView`
+- Full property changes → [Property Changes](/ui-kit/react-native/property-changes)
+</Info>
 
 
 
@@ -53,12 +65,12 @@ The **v4** UI Kit provided composite components like `CometChatConversationsWith
 
 In **v5**, the composite approach is replaced with smaller, modular components like `Conversations`, `Message Header`, `Message List`, and `Message Composer`. Developers now need to stitch these components together to build the desired functionality. This change allows for greater flexibility and easier customization via props, significantly improving the developer experience while maintaining functionality.
 
-| Components in v5 UI Kit: |                                 |                       |
-| ------------------------ | ------------------------------- | --------------------- |
-| CometChatConversations   | CometChatUsers                  | CometChatGroups       |
-| CometChatGroupMembers    | CometChatMessageHeader          | CometChatMessageList  |
-| CometChatMessageComposer | CometChatThreadedMessagePreview | CometChatIncomingCall |
-| CometChatOutgoingCall    | CometChatCallButtons            | CometChatCallLogs     |
+| Components in v5 UI Kit:  |                                    |                            |
+| ------------------------- | ---------------------------------- | -------------------------- |
+| CometChatConversations    | CometChatUsers                     | CometChatGroups            |
+| CometChatGroupMembers     | CometChatMessageHeader             | CometChatMessageList       |
+| CometChatMessageComposer  | CometChatThreadHeader              | CometChatIncomingCall      |
+| CometChatOutgoingCall     | CometChatCallButtons               | CometChatCallLogs          |
 
 ## Theming
 
@@ -177,3 +189,22 @@ Custom view properties have undergone a comprehensive overhaul to ensure consist
 This consistent naming convention makes it easier for developers to understand and apply customizations across various components, streamlining the development process.
 
 For a comprehensive overview of newly added, renamed, and removed properties, refer to the [Property Changes](/ui-kit/react-native/property-changes) Documentation.
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Property Changes" icon="list-check" href="/ui-kit/react-native/property-changes">
+    Detailed reference of new, renamed, and removed props for each component
+  </Card>
+  <Card title="Getting Started" icon="rocket" href="/ui-kit/react-native/getting-started">
+    Set up the v5 UI Kit and send your first message
+  </Card>
+  <Card title="Theming" icon="palette" href="/ui-kit/react-native/theme">
+    Customize colors, fonts, and styles with the new theme system
+  </Card>
+  <Card title="Component Styling" icon="paintbrush" href="/ui-kit/react-native/component-styling">
+    Style individual components using the simplified v5 approach
+  </Card>
+</CardGroup>

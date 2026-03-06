@@ -1,6 +1,34 @@
 ---
 title: "Events"
+description: "Listen to UI Kit events for conversations, users, groups, messages, and calls in React Native UI Kit."
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```tsx
+import { CometChatUIEventHandler } from "@cometchat/chat-uikit-react-native";
+
+// Add message listener
+CometChatUIEventHandler.addMessageListener("LISTENER_ID", {
+  ccMessageSent: ({ message }) => console.log("Sent:", message),
+  ccMessageEdited: ({ message }) => console.log("Edited:", message),
+  ccMessageDeleted: ({ message }) => console.log("Deleted:", message),
+});
+
+// Add conversation listener
+CometChatUIEventHandler.addConversationListener("LISTENER_ID", {
+  ccConversationDeleted: (conversation) => console.log("Deleted:", conversation),
+});
+
+// Remove listeners
+CometChatUIEventHandler.removeMessageListener("LISTENER_ID");
+CometChatUIEventHandler.removeConversationListener("LISTENER_ID");
+```
+
+- **Methods** → [CometChatUIKit Methods](/ui-kit/react-native/methods)
+- **Components Overview** → [All Components](/ui-kit/react-native/components-overview)
+</Info>
 
 ## Overview
 
@@ -93,10 +121,30 @@ It consists of the following events:
 
 ### CometChatUIEventListener
 
-UI events, refer to actions or interactions performed by a user within the CometChat's UI Kit. These events are triggered when a user interacts with various UI elements, such as buttons, menus, checkboxes, input fields, or any other interactive components.
+UI events refer to actions or interactions performed by a user within the CometChat UI Kit. These events are triggered when a user interacts with various UI elements, such as buttons, menus, checkboxes, input fields, or any other interactive components.
 
 It consists of the following events:
 
 | Name                | Description                                                                  |
 | ------------------- | ---------------------------------------------------------------------------- |
 | ccActiveChatChanged | This event is triggered when the user navigates to a particular chat window. |
+
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Methods" icon="code" href="/ui-kit/react-native/methods">
+    Initialize and authenticate with CometChatUIKit
+  </Card>
+  <Card title="Components Overview" icon="puzzle-piece" href="/ui-kit/react-native/components-overview">
+    Explore all available UI components
+  </Card>
+  <Card title="Conversations" icon="comments" href="/ui-kit/react-native/conversations">
+    Display and manage conversation lists
+  </Card>
+  <Card title="Message List" icon="message" href="/ui-kit/react-native/message-list">
+    Display messages in a conversation
+  </Card>
+</CardGroup>

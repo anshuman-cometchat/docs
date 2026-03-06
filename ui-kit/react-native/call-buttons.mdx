@@ -1,10 +1,42 @@
 ---
 title: "Call Buttons"
+description: "Add voice and video call buttons with CometChatCallButtons component in React Native UI Kit, enabling users to initiate calls directly."
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```tsx
+import { CometChatCallButtons } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
+
+// For user calls
+<CometChatCallButtons user={user} />
+
+// For group calls
+<CometChatCallButtons group={group} />
+
+// With common props
+<CometChatCallButtons
+  user={user}
+  hideVoiceCall={false}
+  hideVideoCall={false}
+  onError={(error) => console.log("Error:", error)}
+/>
+```
+
+- **Incoming Call** → [CometChatIncomingCall](/ui-kit/react-native/incoming-call)
+- **Outgoing Call** → [CometChatOutgoingCall](/ui-kit/react-native/outgoing-call)
+- **Call Logs** → [CometChatCallLogs](/ui-kit/react-native/call-logs)
+</Info>
 
 ## Overview
 
-The `CometChatCallButtons` is a [Component](/ui-kit/react-native/components-overview#components) provides users with the ability to make calls, access call-related functionalities, and control call settings. Clicking this button typically triggers the call to be placed to the desired recipient.
+`CometChatCallButtons` is a [Component](/ui-kit/react-native/components-overview#components) that provides users with the ability to make calls, access call-related functionalities, and control call settings. Clicking this button typically triggers the call to be placed to the desired recipient.
+
+<Note>
+**Available via:** [UI Kits](/ui-kit/react-native/overview)
+</Note>
 
 <Frame>
   <img src="/images/2338801e-call_button-90161ce159058183ff0d16adbf8f4734.png" />
@@ -16,7 +48,9 @@ The `CometChatCallButtons` is a [Component](/ui-kit/react-native/components-over
 
 ### Integration
 
-The `CometChatCallButtons` is a [Component](/ui-kit/react-native/components-overview#components) provides users with the ability to make calls, access call-related functionalities, and control call settings. Clicking this button typically triggers the call to be placed to the desired recipient.
+### Integration
+
+`CometChatCallButtons` is a [Component](/ui-kit/react-native/components-overview#components) that provides users with the ability to make calls, access call-related functionalities, and control call settings. Clicking this button typically triggers the call to be placed to the desired recipient.
 
 <Tabs>
 <Tab title="App.tsx">
@@ -70,7 +104,7 @@ The `CometChatCallButtons` component does not have any exposed filters.
 
 ### Events
 
-[Events](/ui-kit/react-native/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
+[Events](/ui-kit/react-native/components-overview#events) are emitted by a Component. By using events you can extend existing functionality. Being global events, they can be applied in multiple locations and are capable of being added or removed.
 
 The list of events emitted by the `Call Buttons` component is as follows.
 
@@ -126,11 +160,11 @@ CometChatUIEventHandler.removeCallListener("CALL_LISTENER_ID");
 
 ## Customization
 
-To fit your app's design requirements, you can customize the appearance of the conversation component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+To fit your app's design requirements, you can customize the appearance of the Call Buttons component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
 ### Style
 
-Using Style you can customize the look and feel of the component in your app, These parameters typically control elements such as the color, size, shape, and fonts used within the component.
+Using Style you can customize the look and feel of the component in your app. These parameters typically control elements such as the color, size, shape, and fonts used within the component.
 
 <Tabs>
 <Tab title="App.tsx">
@@ -242,3 +276,23 @@ return (
 </Tabs>
 
 All exposed properties of `OutgoingCallConfiguration` can be found under [Outgoing Call](/ui-kit/react-native/outgoing-call).
+
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Incoming Call" icon="phone-arrow-down-left" href="/ui-kit/react-native/incoming-call">
+    Display and handle incoming calls
+  </Card>
+  <Card title="Outgoing Call" icon="phone-arrow-up-right" href="/ui-kit/react-native/outgoing-call">
+    Display and manage outgoing calls
+  </Card>
+  <Card title="Call Logs" icon="clock-rotate-left" href="/ui-kit/react-native/call-logs">
+    View call history and logs
+  </Card>
+  <Card title="Call Features" icon="video" href="/ui-kit/react-native/call-features">
+    Overview of all calling features
+  </Card>
+</CardGroup>

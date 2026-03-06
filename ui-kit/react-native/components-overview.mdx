@@ -1,12 +1,36 @@
 ---
 title: "Overview"
+description: "Understand the architecture of CometChat React Native UI Kit components including Base Components, Components, Composite Components, Actions, Events, and Configurations."
 ---
 
-CometChat's **UI Kit** is a set of pre-built UI components that allows you to easily craft an in-app chat with all the essential messaging features.
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```tsx
+import { CometChatConversations, CometChatMessageList } from "@cometchat/chat-uikit-react-native";
+
+// Base Components: Visual building blocks (no business logic)
+// Components: Base + business logic (data loading, actions, events)
+// Composite Components: Multiple components combined
+
+// Example: Conversations is a Component
+<CometChatConversations onItemPress={(conversation) => console.log(conversation)} />
+
+// Example: MessageList is a Component
+<CometChatMessageList user={selectedUser} />
+```
+
+- **Conversations** → [CometChatConversations](/ui-kit/react-native/conversations)
+- **Message List** → [CometChatMessageList](/ui-kit/react-native/message-list)
+- **Users** → [CometChatUsers](/ui-kit/react-native/users)
+- **Groups** → [CometChatGroups](/ui-kit/react-native/groups)
+</Info>
+
+CometChat's UI Kit is a set of pre-built UI components that allows you to easily craft an in-app chat with all the essential messaging features.
 
 ## Type of Components
 
-UI components based on the behaviour and functionality can be categorized into three types: Base Components, Components, and Composite Components.
+UI components based on their behavior and functionality can be categorized into three types: Base Components, Components, and Composite Components.
 
 ### Base Components
 
@@ -26,15 +50,15 @@ Actions direct the operational behavior of a component. They are split into two 
 
 ### Predefined Actions
 
-These are actions that are inherently programmed into a UI component. They are ingrained in the component itself by default, and they execute automatically in response to user interaction,without needing any additional user input.
+These are actions that are inherently programmed into a UI component. They are ingrained in the component itself by default and execute automatically in response to user interaction, without needing any additional user input.
 
 ### User-Defined Actions
 
-These are actions that must be explicitly specified by the user. They are not innately part of the component like predefined actions. Instead, they must be developed based on the unique needsof the user or the application. User-defined actions provide adaptability and allow for the creation of custom behaviors that align with the individual needs of the application.
+These are actions that must be explicitly specified by the user. They are not innately part of the component like predefined actions. Instead, they must be developed based on the unique needs of the user or the application. User-defined actions provide adaptability and allow for the creation of custom behaviors that align with the individual needs of the application.
 
 To customize the behavior of a component, actions must be overridden by the user. This provides the user with control over how the component responds to specific events or interactions.
 
-Both Components and Composite Components expose actions to the user, which means that users can interact with these types of components through predefined or user-defined actions. On the otherhand, Base Components do not expose actions to the user as they are the foundational buildingblocks mainly responsible for rendering the user interface and do not carry any business logic oractions.
+Both Components and Composite Components expose actions to the user, which means that users can interact with these types of components through predefined or user-defined actions. On the other hand, Base Components do not expose actions to the user as they are the foundational building blocks mainly responsible for rendering the user interface and do not carry any business logic or actions.
 
 ## Events
 
@@ -63,3 +87,22 @@ For custom icons, you can provide either JSX components or an ImageSourcePropTyp
 ImageSourcePropType (e.g., PNG, JPEG): The entire imageStyle passed will be applied to the image as expected.
 
 </Tip>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Conversations" icon="comments" href="/ui-kit/react-native/conversations">
+    Display and manage the list of recent chats
+  </Card>
+  <Card title="Message List" icon="message" href="/ui-kit/react-native/message-list">
+    Full chat interface with message list and composer
+  </Card>
+  <Card title="Users" icon="users" href="/ui-kit/react-native/users">
+    Display and interact with user lists
+  </Card>
+  <Card title="Groups" icon="user-group" href="/ui-kit/react-native/groups">
+    Display and manage group conversations
+  </Card>
+</CardGroup>
