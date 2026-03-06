@@ -6,30 +6,21 @@ description: "Overview of the CometChat UI Kit Builder directory layout for Reac
 
 The UI Kit Builder for React Native organizes code into logical directories for components, configuration, navigation, and utilities. This guide helps you navigate the structure so you know exactly where to make changes.
 
-<Tree>
-  <Folder name="src">
-    <Folder name="components" description="UI components organized by feature">
-      <Folder name="conversations" description="Chat and messaging components" />
-      <Folder name="calls" description="Voice/video calling components" />
-      <Folder name="groups" description="Group management components" />
-      <Folder name="users" description="User management components" />
-      <Folder name="login" description="Authentication components" />
-    </Folder>
-    <Folder name="config" description="Builder configuration">
-      <File name="store.ts" description="Zustand store for configuration management" />
-      <File name="config.json" description="Default configuration template" />
-    </Folder>
-    <Folder name="navigation" description="App navigation setup" />
-    <Folder name="utils" description="Helper utilities and constants">
-      <File name="AppConstants.tsx" description="CometChat credentials and app constants" />
-    </Folder>
-    <Folder name="assets" description="Icons, images, and fonts" />
-  </Folder>
-  <Folder name="ios" description="iOS native code and configuration" />
-  <Folder name="android" description="Android native code and configuration" />
-  <File name="App.tsx" description="Main application entry point" />
-  <File name="package.json" description="Dependencies and scripts" />
-</Tree>
+```
+src/
+├── components/
+│   ├── conversations/     # Chat and messaging components
+│   ├── calls/             # Voice/video calling components
+│   ├── groups/            # Group management components
+│   ├── users/             # User management components
+│   └── login/             # Authentication components
+├── config/
+│   ├── store.ts           # Zustand store for configuration
+│   └── config.json        # Default configuration template
+├── navigation/            # App navigation setup
+├── utils/                 # Helper utilities and constants
+└── assets/                # Icons, images, and fonts
+```
 
 ---
 
@@ -46,70 +37,65 @@ The UI Kit Builder for React Native organizes code into logical directories for 
 
 ## Key Folders
 
-### `src/config/`
+### `config/`
 
-Contains the Builder configuration system.
+Configuration management for the Builder settings.
 
-<Tree>
-  <Folder name="config">
-    <File name="store.ts" description="Zustand store managing Builder settings state" />
-    <File name="config.json" description="Default configuration with all feature toggles" />
-  </Folder>
-</Tree>
+```
+config/
+├── store.ts      # Zustand store managing Builder settings state
+└── config.json   # Default configuration with all feature toggles
+```
 
 | File | Purpose |
 | ---- | ------- |
 | `store.ts` | Zustand store that manages Builder settings, provides hooks for accessing configuration |
 | `config.json` | Default configuration template with all feature flags, layout, and style settings |
 
-### `src/components/`
+### `components/`
 
-Contains all UI components organized by feature area.
+Each component folder contains the main component file and associated hooks. These are the building blocks of your chat UI.
 
-<Tree>
-  <Folder name="components">
-    <Folder name="conversations" description="Conversation list, message threads, chat UI" />
-    <Folder name="calls" description="Call screens, call logs, call controls" />
-    <Folder name="groups" description="Group list, group details, member management" />
-    <Folder name="users" description="User list, user profiles, presence indicators" />
-    <Folder name="login" description="Login screen, authentication flow" />
-  </Folder>
-</Tree>
+```
+components/
+├── conversations/     # Conversation list, message threads, chat UI
+├── calls/             # Call screens, call logs, call controls
+├── groups/            # Group list, group details, member management
+├── users/             # User list, user profiles, presence indicators
+└── login/             # Login screen, authentication flow
+```
 
-### `src/navigation/`
+### `navigation/`
 
-Contains navigation configuration using React Navigation.
+Navigation configuration using React Navigation.
 
-<Tree>
-  <Folder name="navigation">
-    <File name="AppNavigator.tsx" description="Main navigation stack" />
-    <File name="TabNavigator.tsx" description="Bottom tab navigation" />
-    <File name="types.ts" description="Navigation type definitions" />
-  </Folder>
-</Tree>
+```
+navigation/
+├── AppNavigator.tsx   # Main navigation stack
+├── TabNavigator.tsx   # Bottom tab navigation
+└── types.ts           # Navigation type definitions
+```
 
-### `src/utils/`
+### `utils/`
 
 Utility functions and application constants.
 
-<Tree>
-  <Folder name="utils">
-    <File name="AppConstants.tsx" description="CometChat credentials (APP_ID, AUTH_KEY, REGION)" />
-    <File name="helpers.ts" description="General utility functions" />
-  </Folder>
-</Tree>
+```
+utils/
+├── AppConstants.tsx   # CometChat credentials (APP_ID, AUTH_KEY, REGION)
+└── helpers.ts         # General utility functions
+```
 
-### `src/assets/`
+### `assets/`
 
 Static assets including icons, images, and fonts.
 
-<Tree>
-  <Folder name="assets">
-    <Folder name="icons" description="App icons and UI icons" />
-    <Folder name="images" description="Illustrations and backgrounds" />
-    <Folder name="fonts" description="Custom font files" />
-  </Folder>
-</Tree>
+```
+assets/
+├── icons/             # App icons and UI icons
+├── images/            # Illustrations and backgrounds
+└── fonts/             # Custom font files
+```
 
 ---
 
@@ -119,40 +105,33 @@ Static assets including icons, images, and fonts.
 
 iOS-specific native code and configuration.
 
-<Tree>
-  <Folder name="ios">
-    <Folder name="YourApp">
-      <File name="AppDelegate.mm" description="iOS app delegate" />
-      <File name="Info.plist" description="iOS app configuration" />
-      <Folder name="Resources">
-        <Folder name="Fonts" description="iOS font files" />
-      </Folder>
-    </Folder>
-    <File name="Podfile" description="CocoaPods dependencies" />
-  </Folder>
-</Tree>
+```
+ios/
+├── YourApp/
+│   ├── AppDelegate.mm     # iOS app delegate
+│   ├── Info.plist         # iOS app configuration
+│   └── Resources/
+│       └── Fonts/         # iOS font files
+└── Podfile                # CocoaPods dependencies
+```
 
 ### `android/`
 
 Android-specific native code and configuration.
 
-<Tree>
-  <Folder name="android">
-    <Folder name="app">
-      <Folder name="src/main">
-        <File name="AndroidManifest.xml" description="Android app manifest" />
-        <Folder name="assets">
-          <Folder name="fonts" description="Android font files" />
-        </Folder>
-        <Folder name="java" description="Native Android code" />
-        <Folder name="res" description="Android resources" />
-      </Folder>
-      <File name="build.gradle" description="App-level Gradle config" />
-    </Folder>
-    <File name="build.gradle" description="Project-level Gradle config" />
-    <File name="settings.gradle" description="Gradle settings" />
-  </Folder>
-</Tree>
+```
+android/
+├── app/
+│   ├── src/main/
+│   │   ├── AndroidManifest.xml   # Android app manifest
+│   │   ├── assets/
+│   │   │   └── fonts/            # Android font files
+│   │   ├── java/                 # Native Android code
+│   │   └── res/                  # Android resources
+│   └── build.gradle              # App-level Gradle config
+├── build.gradle                  # Project-level Gradle config
+└── settings.gradle               # Gradle settings
+```
 
 ---
 
@@ -174,3 +153,28 @@ Android-specific native code and configuration.
 <Note>
   Prefer using `config.json` for feature toggles and the theme provider in `App.tsx` for styling. For extensive changes, create new components rather than modifying core files directly.
 </Note>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="UI Kit Builder Settings"
+    href="/chat-builder/react-native/builder-settings"
+  >
+    Configure feature toggles and behavior.
+  </Card>
+  <Card
+    title="Customizations"
+    href="/chat-builder/react-native/builder-customisations"
+  >
+    Modify component props, styling, and behavior.
+  </Card>
+  <Card title="Theming" href="/ui-kit/react-native/theme-introduction">
+    Customize colors, typography, and styling.
+  </Card>
+  <Card title="Components" href="/ui-kit/react-native/components-overview">
+    Explore available UI components.
+  </Card>
+</CardGroup>
