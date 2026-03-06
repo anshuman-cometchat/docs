@@ -213,15 +213,8 @@
                 "pages": [
                   "fundamentals/webhooks-overview",
                   "fundamentals/webhooks-management",
-                  "fundamentals/webhooks-events",
-                  {
-                    "group": "Legacy Webhooks",
-                    "pages": [
-                      "fundamentals/webhooks-legacy-overview",
-                      "fundamentals/webhooks-legacy-management",
-                      "fundamentals/webhooks-legacy-events"
-                    ]
-                  }
+                  "fundamentals/webhooks-events", 
+                  "fundamentals/webhooks-legacy"
                 ]
               },
               {
@@ -247,13 +240,11 @@
                 "pages": [
                   "/widget/html/overview",
                   "/widget/html/integration",
-                  "/widget/html/advanced",
+                  "/widget/html/advanced", 
                   {
-                    "group": "Legacy",
+                    "group": " ",
                     "pages": [
-                      "/widget/html/legacy/overview",
-                      "/widget/html/legacy/html-bootstrap-jquery",
-                      "/widget/legacy/custom-build"
+                      "/widget/html/legacy" 
                     ]
                   }
                 ]
@@ -265,10 +256,9 @@
                   "/widget/wordpress/overview",
                   "/widget/wordpress/integration",
                   {
-                    "group": "Legacy",
+                    "group": " ",
                     "pages": [
-                      "/widget/wordpress/legacy/overview",
-                      "/widget/wordpress/legacy/wordpress-buddypress"
+                      "/widget/wordpress/legacy"
                     ]
                   }
                 ]
@@ -4576,6 +4566,18 @@
                     ]
                   },
                   {
+                    "group": "Role Based Access Control",
+                    "pages": [
+                      "rest-api/rbac-overview",
+                      "rest-api/rbac/list-role-permissions",
+                      "rest-api/rbac/set-role-permissions",
+                      "rest-api/rbac/unset-role-permissions",
+                      "rest-api/rbac/list-scope-permissions",
+                      "rest-api/rbac/set-scope-permissions",
+                      "rest-api/rbac/unset-scope-permissions"
+                    ]
+                  },
+                  {
                     "group": "Metrics",
                     "pages": [
                       "rest-api/metrics/usage-metrics",
@@ -4903,7 +4905,15 @@
                   "/ai-agents/agent-builder/instructions",
                   "/ai-agents/agent-builder/knowledge-base/overview",
                   "/ai-agents/agent-builder/tools/overview",
-                  "/ai-agents/agent-builder/mcp/overview"
+                  "/ai-agents/agent-builder/mcp/overview",
+                  "/ai-agents/agent-builder/frontend-actions/overview",
+                  "/ai-agents/agent-builder/variables/overview"
+                ]
+              },
+              {
+                "group": "Guides",
+                "pages": [
+                  "/ai-agents/agent-builder/guides/implementing-authorization"
                 ]
               }
             ]
@@ -4918,6 +4928,7 @@
                   "/ai-agents/mastra",
                   "/ai-agents/mastra-actions",
                   "/ai-agents/mastra-tools",
+                  "/ai-agents/mastra-runtime-context",
                   {
                     "group": "Guides",
                     "pages": [
@@ -5147,8 +5158,9 @@
                   "notifications/ios-apns-push-notifications",
                   "notifications/ios-fcm-push-notifications",
                   "notifications/flutter-push-notifications-android",
-                  "notifications/flutter-push-notifications-ios",
-                  "notifications/react-native-push-notifications",
+                  "notifications/flutter-push-notifications-ios", 
+                  "notifications/react-native-push-notifications-android",
+                  "notifications/react-native-push-notifications-ios",
                   "notifications/web-push-notifications"
                 ]
               },
@@ -5157,6 +5169,7 @@
                 "pages": [
                   "notifications/preferences",
                   "notifications/templates-and-sounds",
+                  "notifications/badge-count",
                   "notifications/custom-providers",
                   "notifications/logs",
                   "notifications/constraints-and-limits"
@@ -5272,15 +5285,27 @@
     },
     {
       "source": "/webhooks/webhooks-legacy-overview",
-      "destination": "/fundamentals/webhooks-legacy-overview"
+      "destination": "/fundamentals/webhooks-legacy"
     },
     {
       "source": "/webhooks/webhooks-legacy-management",
-      "destination": "/fundamentals/webhooks-legacy-management"
+      "destination": "/fundamentals/webhooks-legacy"
     },
     {
       "source": "/webhooks/webhooks-legacy-events",
-      "destination": "/fundamentals/webhooks-legacy-events"
+      "destination": "/fundamentals/webhooks-legacy"
+    },
+    {
+      "source": "/fundamentals/webhooks-legacy-overview",
+      "destination": "/fundamentals/webhooks-legacy"
+    },
+    {
+      "source": "/fundamentals/webhooks-legacy-management",
+      "destination": "/fundamentals/webhooks-legacy"
+    },
+    {
+      "source": "/fundamentals/webhooks-legacy-events",
+      "destination": "/fundamentals/webhooks-legacy"
     },
     {
       "source": "/ai/bots",
@@ -5748,7 +5773,7 @@
     },
     {
       "source": "/widget/custom-build",
-      "destination": "/widget/legacy/custom-build"
+      "destination": "/widget/html/legacy"
     },
     {
       "source": "/ui-kit/react/builder-integration",
@@ -5800,15 +5825,35 @@
     },
     {
       "source": "/widget/legacy/overview",
-      "destination": "/widget/html/legacy/overview"
+      "destination": "/widget/html/legacy"
     },
     {
       "source": "/widget/legacy/wordpress-buddypress",
-      "destination": "/widget/wordpress/legacy/wordpress-buddypress"
+      "destination": "/widget/wordpress/legacy"
     },
     {
       "source": "/widget/legacy/html-bootstrap-jquery",
-      "destination": "/widget/html/legacy/html-bootstrap-jquery"
+      "destination": "/widget/html/legacy"
+    },
+    {
+      "source": "/widget/legacy/custom-build",
+      "destination": "/widget/html/legacy"
+    },
+    {
+      "source": "/widget/html/legacy/overview",
+      "destination": "/widget/html/legacy"
+    },
+    {
+      "source": "/widget/html/legacy/html-bootstrap-jquery",
+      "destination": "/widget/html/legacy"
+    },
+    {
+      "source": "/widget/wordpress/legacy/overview",
+      "destination": "/widget/wordpress/legacy"
+    },
+    {
+      "source": "/widget/wordpress/legacy/wordpress-buddypress",
+      "destination": "/widget/wordpress/legacy"
     },
     {
       "source": "/widget/ai-agents",
@@ -5901,6 +5946,10 @@
     {
         "source": "/notifications/sms-notification-extension",
         "destination": "/notifications/sms-notifications-extension-legacy"
+    },
+    {
+        "source": "/notifications/react-native-push-notifications",
+        "destination": "/notifications/react-native-push-notifications-android" 
     },
     {
       "source": "/sdk/ionic/overview",
