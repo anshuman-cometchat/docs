@@ -1,27 +1,48 @@
 ---
 title: "Create A Group"
+description: "Create public, private, and password-protected groups using the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Create a public group
+val group = Group("GUID", "Group Name", CometChatConstants.GROUP_TYPE_PUBLIC, "")
+CometChat.createGroup(group, object : CometChat.CallbackListener<Group>() {
+    override fun onSuccess(group: Group) { }
+    override fun onError(e: CometChatException) { }
+})
+
+// Create with members
+val groupMembers = listOf(
+    GroupMember("uid1", CometChatConstants.SCOPE_ADMIN),
+    GroupMember("uid2", CometChatConstants.SCOPE_PARTICIPANT)
+)
+CometChat.createGroupWithMembers(group, groupMembers, emptyList(), callback)
+```
+</Info>
+
+<Note>
+**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/android/overview)
+</Note>
 
 ## Create a Group
 
-*In other words, as a logged-in user, how do I create a public, private or password-protected group?*
+*As a logged-in user, how do I create a public, private, or password-protected group?*
 
-You can create a group using `createGroup()` method. This method takes a `Group` object as input.
+You can create a group using the `createGroup()` method. This method takes a `Group` object as input.
 
-To create an object of `Group` class, you can use either of the below two constructors:
+To create an object of the `Group` class, you can use either of the following constructors:
 
 1. `new Group(String GUID, String name, String groupType, String password)`
 2. `new Group(String GUID, String name, String groupType, String password, String icon, String description)`
 
-The `groupType` needs to be either of the below 3 values:
+The `groupType` needs to be one of the following values:
 
-1.`CometChatConstants.GROUP_TYPE_PUBLIC` (public)
-
-2.`CometChatConstants.GROUP_TYPE_PASSWORD` (password)
-
-3.`CometChatConstants.GROUP_TYPE_PRIVATE` (private)
+1. `CometChatConstants.GROUP_TYPE_PUBLIC` (public)
+2. `CometChatConstants.GROUP_TYPE_PASSWORD` (password)
+3. `CometChatConstants.GROUP_TYPE_PRIVATE` (private)
 
 <Tabs>
 <Tab title="Java">
@@ -76,30 +97,30 @@ The `createGroup()` method takes the following parameters:
 | --------- | ---------------------------- |
 | `group`   | An instance of `Group` class |
 
-After the successful creation of the group, you will receive an instance of `Group` class which contains all the information about the particular group.
+After the successful creation of the group, you will receive an instance of the `Group` class which contains all the information about the particular group.
 
 <Warning>
 
-GUID can be alphanumeric with underscore and hyphen. Spaces, punctuation and other special characters are not allowed.
+GUID can be alphanumeric with underscore and hyphen. Spaces, punctuation, and other special characters are not allowed.
 
 </Warning>
 
 ## Add members while creating a group
 
-You can create a group and add members at the same time using the `createGroupWithMembers()` method. This method takes the `Group` Object, Array of `Group Member` Object to be added & Array of `UIDs` to be banned.
+You can create a group and add members at the same time using the `createGroupWithMembers()` method. This method takes the `Group` object, an array of `GroupMember` objects to be added, and an array of `UIDs` to be banned.
 
-To create an object of `Group` class, you can use either of the below two constructors:
+To create an object of the `Group` class, you can use either of the following constructors:
 
 1. `new Group(String GUID, String name, String groupType, String password)`
 2. `new Group(String GUID, String name, String groupType, String password, String icon, String description)`
 
-The `groupType` needs to be either of the below 3 values:
+The `groupType` needs to be one of the following values:
 
 1. `CometChat.GROUP_TYPE.PUBLIC`
 2. `CometChat.GROUP_TYPE.PASSWORD`
 3. `CometChat.GROUP_TYPE.PRIVATE`
 
-To create an object of `Group Member` class, you can use the below constructor:
+To create an object of the `GroupMember` class, you can use the following constructor:
 
 * `new GroupMember(String UID, String scope)`
 
@@ -164,10 +185,10 @@ object : CreateGroupWithMembersListener() {
 
 </Tabs>
 
-The `onSuccess()` block of this method will provide you with 2 set of info:
+The `onSuccess()` block of this method provides you with 2 sets of information:
 
-1. Group : The group object containing the information about the group that is created.
-2. HashMap\<String, String> : A Hashmap that contains the key as the uid of the user that was supposed to be added and the value as success or error message.
+1. `Group`: The group object containing information about the group that was created.
+2. `HashMap<String, String>`: A HashMap that contains the UID of the user that was supposed to be added as the key and `success` or an error message as the value.
 
 ## Group Class
 
@@ -188,3 +209,56 @@ The `onSuccess()` block of this method will provide you with 2 set of info:
 | scope        | Yes                                                             | Scope of the logged in user. Can be: 1. Admin 2. Moderator 3. Participant |
 | membersCount | No                                                              | The number of members in the groups                                       |
 | tags         | Yes                                                             | A list of tags to identify specific groups.                               |
+
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use Descriptive Group Names and GUIDs">
+    Choose meaningful GUIDs and names that help identify groups. GUIDs should be alphanumeric with underscores/hyphens only - avoid spaces and special characters.
+  </Accordion>
+  <Accordion title="Set Appropriate Group Type">
+    Use PUBLIC for open communities, PRIVATE for invite-only groups, and PASSWORD for semi-private groups. Choose based on your privacy requirements.
+  </Accordion>
+  <Accordion title="Add Metadata for Custom Properties">
+    Use the metadata field to store custom group properties like categories, tags, or business-specific data without creating custom group types.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Group Creation Failed - Invalid GUID">
+    **Symptom:** `createGroup()` fails with "Invalid GUID" error.
+    
+    **Cause:** GUID contains spaces, punctuation, or special characters other than underscore and hyphen.
+    
+    **Solution:** Use only alphanumeric characters, underscores, and hyphens in GUIDs. Example: `"my_group_123"` or `"group-abc-456"`.
+  </Accordion>
+  <Accordion title="Group Already Exists">
+    **Symptom:** `createGroup()` fails with "Group already exists" error.
+    
+    **Cause:** A group with the same GUID already exists in your app.
+    
+    **Solution:** Use unique GUIDs for each group. Consider using UUIDs or timestamp-based identifiers to ensure uniqueness.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Join Group" icon="user-plus" href="/sdk/android/join-group">
+    Join existing groups to participate in conversations
+  </Card>
+  <Card title="Add Members" icon="user-group" href="/sdk/android/group-add-members">
+    Add members to your created groups
+  </Card>
+  <Card title="Update Group" icon="pen" href="/sdk/android/update-group">
+    Modify group details and settings
+  </Card>
+  <Card title="Send Messages" icon="paper-plane" href="/sdk/android/send-message">
+    Start sending messages in your group
+  </Card>
+</CardGroup>

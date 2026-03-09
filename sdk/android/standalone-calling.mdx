@@ -1,6 +1,35 @@
 ---
 title: "Standalone Calling"
+description: "Implement calling functionality using only the CometChat Calls SDK without the Chat SDK"
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```kotlin
+// Generate call token
+val sessionId = "UNIQUE_SESSION_ID"
+val userAuthToken = "USER_AUTH_TOKEN" // From REST API
+CometChatCalls.generateToken(sessionId, userAuthToken, object : CometChatCalls.CallbackListener<GenerateToken>() {
+    override fun onSuccess(generateToken: GenerateToken) {
+        // Start session with token
+    }
+    override fun onError(e: CometChatException) { }
+})
+
+// Start call session
+val callSettings = CometChatCalls.CallSettingsBuilder(context, videoContainer)
+    .setDefaultLayoutEnable(true)
+    .setIsAudioOnly(false)
+    .build()
+CometChatCalls.startSession(callToken, callSettings, callback)
+
+// End session
+CometChatCalls.endSession()
+```
+
+**Prerequisites:** [Calls SDK setup](/sdk/android/calling-setup), User auth token from REST API
+</Info>
 
 ## Overview
 
@@ -502,6 +531,10 @@ CometChatCalls.exitPIPMode()
 
 </Tabs>
 
+<Warning>
+Always remove call event listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
+
 ### Switch To Video Call
 
 Upgrades an ongoing audio call to a video call. This enables the camera and starts transmitting video to other participants. The remote participant receives the `onCallSwitchedToVideo()` callback.
@@ -585,3 +618,75 @@ CometChatCalls.endSession()
 </Tab>
 
 </Tabs>
+
+---
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Secure Auth Token Storage">
+    Store user auth tokens securely using Android's EncryptedSharedPreferences or KeyStore. Never hardcode tokens in your application code.
+  </Accordion>
+  <Accordion title="Generate Unique Session IDs">
+    Use UUIDs or timestamp-based IDs for session IDs to ensure uniqueness. Participants joining the same call must use the same session ID.
+  </Accordion>
+  <Accordion title="Handle Token Expiration">
+    Auth tokens can expire. Implement token refresh logic and handle token expiration errors gracefully by requesting new tokens from your backend.
+  </Accordion>
+  <Accordion title="Clean Up Resources">
+    Always call `CometChatCalls.endSession()` when leaving a call to release camera, microphone, and network resources. Also remove event listeners in `onDestroy()`.
+  </Accordion>
+  <Accordion title="Test Audio Routing">
+    Test audio routing on different devices and scenarios (Bluetooth connected, headphones plugged in) to ensure proper audio device selection.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Token Generation Failed">
+    **Symptom:** `generateToken()` fails with "Invalid auth token" error.
+    
+    **Cause:** The user auth token is invalid, expired, or incorrectly formatted.
+    
+    **Solution:** Verify the auth token was obtained correctly from the REST API. Check token expiration and request a new token if needed. Ensure the token is passed as a string without extra whitespace.
+  </Accordion>
+  <Accordion title="Session Start Failed">
+    **Symptom:** `startSession()` fails with "Invalid call token" error.
+    
+    **Cause:** The call token is invalid or the session ID doesn't match.
+    
+    **Solution:** Ensure you're using the `GenerateToken` object received from `generateToken()` onSuccess callback. Verify all participants use the same session ID to join the same call.
+  </Accordion>
+  <Accordion title="Video Container Not Showing">
+    **Symptom:** Call starts but no video is displayed.
+    
+    **Cause:** The `RelativeLayout` video container is not properly configured or has zero dimensions.
+    
+    **Solution:** Ensure the video container has non-zero width and height in your layout XML. Verify the container is visible and not hidden behind other views.
+  </Accordion>
+  <Accordion title="Camera Permission Denied">
+    **Symptom:** Video call fails with "Camera permission denied" error.
+    
+    **Cause:** The app doesn't have camera and microphone permissions.
+    
+    **Solution:** Request `CAMERA` and `RECORD_AUDIO` permissions at runtime before starting a call. Handle permission denial gracefully by showing an explanation to the user.
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Default Calling" icon="phone" href="/sdk/android/default-calling">
+    Implement calling with Chat SDK integration
+  </Card>
+  <Card title="Video View Customization" icon="palette" href="/sdk/android/video-view-customisation">
+    Customize the call UI appearance and layout
+  </Card>
+  <Card title="Session Timeout" icon="clock" href="/sdk/android/session-timeout">
+    Configure idle timeout and auto-termination
+  </Card>
+  <Card title="Recording" icon="record-vinyl" href="/sdk/android/recording">
+    Record call sessions for later playback
+  </Card>
+</CardGroup>

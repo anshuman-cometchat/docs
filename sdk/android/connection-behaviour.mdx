@@ -1,28 +1,55 @@
 ---
 title: "Connection Behaviour"
+description: "Understand and configure WebSocket connection management in the CometChat Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```kotlin
+// Auto mode (default) - SDK manages connection automatically
+val appSettings = AppSettings.AppSettingsBuilder()
+    .setRegion("REGION")
+    .autoEstablishSocketConnection(true)  // default
+    .build()
+
+// Manual mode - You control connection
+val appSettings = AppSettings.AppSettingsBuilder()
+    .setRegion("REGION")
+    .autoEstablishSocketConnection(false)
+    .build()
+
+// Manual connection management
+CometChat.connect(callback)  // Establish connection
+CometChat.disconnect(callback)  // Break connection
+CometChat.ping(callback)  // Keep alive (call within 30 seconds)
+```
+
+**Default:** Auto mode - SDK handles connection automatically  
+**Manual mode:** Requires explicit connect/disconnect calls
+</Info>
 
 
-## Default SDK behaviour on login
 
-When the login method of the SDK is called, the SDK performs the below operations:
+## Default SDK Behaviour on Login
+
+When the login method of the SDK is called, the SDK performs the following operations:
 
 1. Logs the user into the SDK
-2. Saves the details of the logged in user locally.
-3. Creates a web-socket connection for the logged in user.
+2. Saves the details of the logged-in user locally
+3. Creates a WebSocket connection for the logged-in user
 
-This makes sure that the logged in user starts receiving real-time messages sent to him or any groups that he is a part of as soon as he logs in.
+This ensures that the logged-in user starts receiving real-time messages sent to them or any groups they are a part of as soon as they log in.
 
-When the app is reopened, and the init() method is called, the web-socket connection to the server is established automatically.
+When the app is reopened and the `init()` method is called, the WebSocket connection to the server is established automatically.
 
-This is the default behaviour of the CometChat SDKs. However, if you wish to take control of the web-socket connection i.e if you wish to connect and disconnect to the web-socket server manually, you can refer to the Managing Web-socket Connection section.
+This is the default behaviour of the CometChat SDKs. However, if you want to take control of the WebSocket connection (connect and disconnect manually), refer to the Managing WebSocket Connection section.
 
 ## Auto Mode
 
-CometChat SDK default connection behaviour is auto mode. Auto mode, the SDK automatically establishes and maintains the WebSocket connection. You do not need to explicitly call any methods to do this.
+CometChat SDK's default connection behaviour is auto mode. In auto mode, the SDK automatically establishes and maintains the WebSocket connection. You do not need to explicitly call any methods to do this.
 
-To enable auto mode, you need to set the autoEstablishSocketConnection() method of AppSettings builder class to true. If you do not set this, the SDK will automatically apply the auto mode as the default behaviour for the WebSocket connection.
+To enable auto mode, set the `autoEstablishSocketConnection()` method of the `AppSettings` builder class to `true`. If you do not set this, the SDK automatically applies auto mode as the default behaviour for the WebSocket connection.
 
 <Frame>
   <img src="/images/c8c546a3-x8a7yv541r6b9g8t73h9j3afh1p4cgsopv6yj238ebz8565rscv568a40zf34f5h-c617ae8f9a6f09edf27d37dd01ce1bf3.png" />
@@ -39,13 +66,13 @@ If the app is in the foreground and there is no internet connection, the SDK wil
 
 ## Manual Mode
 
-In manual mode, you have to explicitly establish and disconnect the WebSocket connection. To do this, you need to set the `autoEstablishSocketConnection()` method to false and then call the `CometChat.connect()` method to establish the connection and the `CometChat.disconnect()` method to disconnect the connection.
+In manual mode, you must explicitly establish and disconnect the WebSocket connection. To do this, set the `autoEstablishSocketConnection()` method to `false` and then call the `CometChat.connect()` method to establish the connection and the `CometChat.disconnect()` method to disconnect.
 
-By default, if manual mode is activated, the SDK will disconnect the WebSocket connection after 30 seconds if the app goes into the background. This means that the WebSocket connection will remain alive for 30 seconds after the app goes into the background, but it will be disconnected after that time if no pings are received.
+By default, if manual mode is activated, the SDK disconnects the WebSocket connection after 30 seconds if the app goes into the background. This means the WebSocket connection remains alive for 30 seconds after the app goes into the background, but it disconnects after that time if no pings are received.
 
-To keep the WebSocket connection alive even if your app goes in the background, you need to call the `CometChat.ping()` method from your app within 30 seconds. This method sends a ping message to the CometChat server, which tells the server that the app is still active.
+To keep the WebSocket connection alive even if your app goes into the background, call the `CometChat.ping()` method from your app within 30 seconds. This method sends a ping message to the CometChat server, which tells the server that the app is still active.
 
-If you do not call the `CometChat.ping()` method within 30 seconds, the SDK will disconnect the WebSocket connection. This means that you will lose any messages that are sent to your app while it is in the background.
+If you do not call the `CometChat.ping()` method within 30 seconds, the SDK disconnects the WebSocket connection. This means you will lose any messages sent to your app while it is in the background.
 
 <Frame>
   <img src="/images/3207f2a4-6k068nprjmachrszi9ckyzgqxbf1rmc98asy5d09yhktx37v0pyxf6wxmufg2jci-4ab4b9056ff91b946fb2fc048bc764fa.png" />
@@ -58,11 +85,11 @@ If you do not call the `CometChat.ping()` method within 30 seconds, the SDK will
 
 ## Managing Manually
 
-The CometChat SDK also allows you to modify the above default behaviour of the SDK and take the control of the web-socket connection into your own hands. In order to achieve this, you need to follow the below steps:
+The CometChat SDK also allows you to modify the default behaviour and take control of the WebSocket connection yourself. To achieve this, follow the steps below.
 
 ## Enable Manual Mode
 
-While calling the init() function on the app startup, you need to inform the SDK that you will be managing the web socket connect. You can do so by using the `autoEstablishSocketConnection()` method provided by the `AppSettingsBuilder` class. This method takes a boolean value as an input. If set to true , the SDK will manage the web-socket connection internally based on the default behaviour mentioned above. If set to `false` , the web socket connection can will not be managed by the SDK and you will have to handle it manually. You can refer to the below code snippet for the same:
+While calling the `init()` function on app startup, you need to inform the SDK that you will be managing the WebSocket connection. You can do so by using the `autoEstablishSocketConnection()` method provided by the `AppSettingsBuilder` class. This method takes a boolean value as input. If set to `true`, the SDK manages the WebSocket connection internally based on the default behaviour mentioned above. If set to `false`, the WebSocket connection is not managed by the SDK and you must handle it manually. Refer to the code snippet below:
 
 <Tabs>
 <Tab title="Java">
@@ -117,11 +144,11 @@ CometChat.init(this, appId, appSettings, new CometChat.CallbackListener<String>(
 
 </Tabs>
 
-You can manage the connection to the web-socket server using the connect() , disconnect() and ping() methods provided by the SDK.
+You can manage the connection to the WebSocket server using the `connect()`, `disconnect()`, and `ping()` methods provided by the SDK.
 
-## Connect to the web-socket server
+## Connect to the WebSocket Server
 
-You need to use the `connect()` method provided by the `CometChat` class to establish the connection to the web-socket server. Please make sure that the user is logged in to the SDK before calling this method. You can use the CometChat.getLoggedInUser() method to check this. Once the connection is established, you will start receiving all the real-time events for the logged in user
+Use the `connect()` method provided by the `CometChat` class to establish the connection to the WebSocket server. Make sure the user is logged in to the SDK before calling this method. You can use the `CometChat.getLoggedInUser()` method to check this. Once the connection is established, you start receiving all real-time events for the logged-in user.
 
 <Tabs>
 <Tab title="Java">
@@ -158,9 +185,9 @@ CometChat.connect(object : CallbackListener<String>() {
 
 </Tabs>
 
-## Disconnect from the web-socket server
+## Disconnect from the WebSocket Server
 
-You can use the `disconnect()` method provided by the `CometChat` class to break the established connection. Once the connection is broken, you will stop receiving all the real-time events for the logged in user.
+Use the `disconnect()` method provided by the `CometChat` class to break the established connection. Once the connection is broken, you stop receiving all real-time events for the logged-in user.
 
 <Tabs>
 <Tab title="Java">
@@ -197,15 +224,15 @@ CometChat.disconnect(object : CallbackListener<String>() {
 
 </Tabs>
 
-## Maintain long-standing background connection
+## Maintain Long-Standing Background Connection
 
 <Note>
 
-To ensure that the WebSocket connection is always alive, you can create a service or background service that calls the `CometChat.ping()` method in a loop. This will ensure that the ping message is sent to the server every 30 seconds, even if the app is not in the foreground.
+To ensure that the WebSocket connection is always alive, you can create a service or background service that calls the `CometChat.ping()` method in a loop. This ensures that the ping message is sent to the server every 30 seconds, even if the app is not in the foreground.
 
 </Note>
 
-You can maintain a long-standing background connection event when your app is in the background, call the `CometChat.ping()` method within 30 seconds of your app entering the background or after the previous ping() call.
+You can maintain a long-standing background connection even when your app is in the background by calling the `CometChat.ping()` method within 30 seconds of your app entering the background or after the previous `ping()` call.
 
 <Tabs>
 <Tab title="Java">
@@ -242,4 +269,76 @@ CometChat.ping(object : CallbackListener<String>() {
 
 </Tabs>
 
-Reconnection If manual mode is enabled and the app is in the foreground, the SDK will automatically reconnect the WebSocket if the internet connection is lost. However, if the app is in the background and the WebSocket is disconnected or you called `CometChat.disconnect()`, then you will need to call the `CometChat.connect()` method to create a new WebSocket connection.
+Reconnection: If manual mode is enabled and the app is in the foreground, the SDK automatically reconnects the WebSocket if the internet connection is lost. However, if the app is in the background and the WebSocket is disconnected or you called `CometChat.disconnect()`, you need to call the `CometChat.connect()` method to create a new WebSocket connection.
+
+---
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use Auto Mode for Most Apps">
+    Auto mode is recommended for most applications as it handles connection management automatically. Only use manual mode if you have specific requirements for background connectivity or custom connection logic.
+  </Accordion>
+  <Accordion title="Implement Background Service for Manual Mode">
+    If using manual mode with background connectivity, implement a foreground service or WorkManager to call `CometChat.ping()` every 30 seconds. This ensures the connection stays alive when the app is backgrounded.
+  </Accordion>
+  <Accordion title="Handle Connection State Changes">
+    Implement connection listeners to track connection state changes and update your UI accordingly. Show connection status to users so they know when messages can be sent/received.
+  </Accordion>
+  <Accordion title="Test Background Behavior">
+    Thoroughly test your app's behavior when moving between foreground and background states. Verify messages are received correctly and the connection is managed as expected.
+  </Accordion>
+  <Accordion title="Consider Battery Impact">
+    Maintaining a persistent background connection consumes battery. Balance real-time message delivery needs with battery efficiency. Consider using push notifications for background message delivery instead.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Connection Not Established">
+    **Symptom:** `CometChat.connect()` fails or times out in manual mode.
+    
+    **Cause:** User may not be logged in, or network connectivity issues.
+    
+    **Solution:** Verify the user is logged in using `CometChat.getLoggedInUser()` before calling `connect()`. Check network connectivity and ensure the SDK is initialized. Review error messages in the callback for specific issues.
+  </Accordion>
+  <Accordion title="Messages Not Received in Background">
+    **Symptom:** Real-time messages are not received when the app is in the background.
+    
+    **Cause:** In auto mode, the WebSocket disconnects immediately when the app is backgrounded. In manual mode, the connection times out after 30 seconds without a ping.
+    
+    **Solution:** For auto mode, this is expected behavior - use push notifications for background message delivery. For manual mode, implement a background service that calls `CometChat.ping()` every 30 seconds to keep the connection alive.
+  </Accordion>
+  <Accordion title="Frequent Disconnections">
+    **Symptom:** WebSocket connection drops frequently even when the app is in the foreground.
+    
+    **Cause:** Network instability, server issues, or incorrect SDK configuration.
+    
+    **Solution:** The SDK automatically handles reconnection in auto mode. Check your network stability. Ensure you're not calling `disconnect()` unintentionally. Review SDK logs for specific error messages.
+  </Accordion>
+  <Accordion title="Ping Method Not Working">
+    **Symptom:** `CometChat.ping()` doesn't keep the connection alive in manual mode.
+    
+    **Cause:** Ping is not being called frequently enough (must be within 30 seconds), or the connection was already disconnected.
+    
+    **Solution:** Ensure `ping()` is called at least every 30 seconds. Verify the connection is established before calling `ping()`. Implement a reliable background service or timer to call `ping()` consistently.
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Setup" icon="gear" href="/sdk/android/setup">
+    Configure SDK initialization settings
+  </Card>
+  <Card title="Connection Status" icon="wifi" href="/sdk/android/connection-status">
+    Monitor SDK connection status changes
+  </Card>
+  <Card title="Login Listeners" icon="user-check" href="/sdk/android/login-listeners">
+    Handle user authentication events
+  </Card>
+  <Card title="Real-Time Listeners" icon="bell" href="/sdk/android/real-time-listeners">
+    Receive real-time messages and events
+  </Card>
+</CardGroup>

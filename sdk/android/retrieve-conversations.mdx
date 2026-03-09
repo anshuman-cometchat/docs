@@ -1,18 +1,41 @@
 ---
 title: "Retrieve Conversations"
+description: "Fetch and manage conversation lists for recent chats using the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Fetch conversations with filters
+val conversationsRequest = ConversationsRequestBuilder()
+    .setLimit(50)
+    .setConversationType(CometChatConstants.CONVERSATION_TYPE_USER)
+    .build()
+
+conversationsRequest.fetchNext(object : CallbackListener<List<Conversation>>() {
+    override fun onSuccess(conversations: List<Conversation>) { }
+    override fun onError(e: CometChatException) { }
+})
+
+// Get specific conversation
+CometChat.getConversation("UID_or_GUID", "user", callback)
+```
+</Info>
+
+<Note>
+**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/android/overview)
+</Note>
 
 Conversations provide the last messages for every one-on-one and group conversation the logged-in user is a part of. This makes it easy for you to build a **Recent Chat** list.
 
 ## Retrieve List of Conversations
 
-*In other words, as a logged-in user, how do I retrieve the latest conversations that I've been a part of?*
+How do I retrieve the latest conversations that I've been a part of?
 
-To fetch the list of conversations, you can use the `ConversationsRequest` class. To use this class i.e. to create an object of the `ConversationsRequest` class, you need to use the `ConversationsRequestBuilder` class. The `ConversationsRequestBuilder` class allows you to set the parameters based on which the conversations are to be fetched.
+To fetch the list of conversations, use the `ConversationsRequest` class. To create an object of the `ConversationsRequest` class, you need to use the `ConversationsRequestBuilder` class. The `ConversationsRequestBuilder` class allows you to set the parameters based on which the conversations are fetched.
 
-The `ConversationsRequestBuilder` class allows you to set the below parameters:
+The `ConversationsRequestBuilder` class allows you to set the following parameters:
 
 ### Set Limit
 
@@ -398,9 +421,9 @@ The `Conversation` object consists of the following fields:
 
 ## Tag Conversation
 
-*In other words, as a logged-in user, how do I tag a conversation?*
+How do I tag a conversation?
 
-To tag a specific conversation, you can use the `tagConversation()` method. The `tagConversation()` method accepts three parameters.
+To tag a specific conversation, use the `tagConversation()` method. The `tagConversation()` method accepts three parameters.
 
 1. `conversationWith`: UID/GUID of the user/group whose conversation you want to fetch.
 
@@ -466,9 +489,9 @@ The tags for conversations are one-way. This means that if user A tags a convers
 
 ## Retrieve Single Conversation
 
-*In other words, as a logged-in user, how do I retrieve a specific conversation?*
+How do I retrieve a specific conversation?
 
-In order to fetch a specific conversation, you can use the `getConversation` method. The `getConversation` method accepts two parameters.
+To fetch a specific conversation, use the `getConversation` method. The `getConversation` method accepts two parameters.
 
 1. `conversationWith`: UID/GUID of the user/group whose conversation you want to fetch.
 2. `conversationType`: The `conversationType` variable can hold one of the below two values:
@@ -539,3 +562,68 @@ val conversation = CometChatHelper.getConversationFromMessage(message)
 While converting a `Message` object to a `Conversation` object, the `unreadMessageCount` & `tags` will not be available in the `Conversation` object. The unread message count needs to be managed in your client-side code.
 
 </Note>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use Pagination for Performance">
+    Set a reasonable limit (30-50) and fetch conversations in batches. Maximum limit is 50 conversations per request.
+  </Accordion>
+  <Accordion title="Filter by Conversation Type">
+    Use `setConversationType()` to fetch only user or group conversations when building separate tabs or views.
+  </Accordion>
+  <Accordion title="Implement Search for Large Lists">
+    Enable "Conversation & Advanced Search" in Dashboard and use `setSearchKeyword()` for better user experience with many conversations.
+  </Accordion>
+  <Accordion title="Use Tags for Organization">
+    Tag conversations (e.g., "archived", "pinned", "important") to organize and filter conversations based on user preferences.
+  </Accordion>
+  <Accordion title="Handle Unread Count Client-Side">
+    When converting messages to conversations, manage unread counts in your app since they're not included in the conversion.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Empty Conversations List">
+    **Symptom:** `fetchNext()` returns an empty list even though conversations exist.
+    
+    **Cause:** User hasn't sent or received any messages, or filters are too restrictive.
+    
+    **Solution:** Remove filters temporarily to verify conversations exist. Check if the user has participated in any chats.
+  </Accordion>
+  <Accordion title="Search Not Working">
+    **Symptom:** `setSearchKeyword()` doesn't filter conversations.
+    
+    **Cause:** "Conversation & Advanced Search" feature not enabled in Dashboard.
+    
+    **Solution:** Enable the feature in [CometChat Dashboard](https://app.cometchat.com) under Chats → Settings → General Configuration. Available in Advanced & Custom plans only.
+  </Accordion>
+  <Accordion title="Unread Filter Not Working">
+    **Symptom:** `setUnread(true)` doesn't filter unread conversations.
+    
+    **Cause:** "Conversation & Advanced Search" feature not enabled.
+    
+    **Solution:** Enable the feature in Dashboard. This is a premium feature available in Advanced & Custom plans.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Delete Conversation" icon="trash" href="/sdk/android/delete-conversation">
+    Remove conversations from the list
+  </Card>
+  <Card title="Typing Indicators" icon="keyboard" href="/sdk/android/typing-indicators">
+    Show when users are typing
+  </Card>
+  <Card title="Read Receipts" icon="check-double" href="/sdk/android/delivery-read-receipts">
+    Track message delivery and read status
+  </Card>
+  <Card title="Send Messages" icon="paper-plane" href="/sdk/android/send-message">
+    Start sending messages in conversations
+  </Card>
+</CardGroup>

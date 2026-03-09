@@ -1,14 +1,35 @@
 ---
 title: "Retrieve Group Members"
+description: "Fetch and filter group members list using the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Fetch group members with filters
+val groupMembersRequest = GroupMembersRequestBuilder("GUID")
+    .setLimit(30)
+    .setSearchKeyword("search")
+    .setScopes(listOf("admin", "moderator"))
+    .build()
+
+groupMembersRequest.fetchNext(object : CallbackListener<List<GroupMember>>() {
+    override fun onSuccess(members: List<GroupMember>) { }
+    override fun onError(e: CometChatException) { }
+})
+```
+</Info>
+
+<Note>
+**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/android/overview)
+</Note>
 
 ## Retrieve the List of Group Members
 
-In order to fetch the list of groups members for a group, you can use the `GroupMembersRequest` class. To use this class i.e to create an object of the `GroupMembersRequest` class, you need to use the `GroupMembersRequestBuilder` class. The `GroupMembersRequestBuilder` class allows you to set the parameters based on which the groups are to be fetched.
+To fetch the list of group members for a group, use the `GroupMembersRequest` class. To create an object of the `GroupMembersRequest` class, you need to use the `GroupMembersRequestBuilder` class. The `GroupMembersRequestBuilder` class allows you to set the parameters based on which the group members are fetched.
 
-The `GroupMembersRequestBuilder` class allows you to set the below parameters:
+The `GroupMembersRequestBuilder` class allows you to set the following parameters:
 
 The `GUID` of the group for which the members are to be fetched must be specified in the constructor of the `GroupMembersRequestBuilder` class.
 
@@ -93,9 +114,9 @@ val groupMembersRequest = GroupMembersRequestBuilder(GUID)
 
 </Tabs>
 
-Finally, once all the parameters are set to the builder class, you need to call the `build()` method to get the object of the `GroupMembersRequest` class.
+Finally, once all the parameters are set on the builder class, call the `build()` method to get the object of the `GroupMembersRequest` class.
 
-Once you have the object of the `GroupMembersRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of `GroupMember` objects containing N number of members depending on the limit set.
+Once you have the object of the `GroupMembersRequest` class, call the `fetchNext()` method. This method returns a list of `GroupMember` objects containing N number of members depending on the limit set.
 
 <Tabs>
 <Tab title="Java">
@@ -141,3 +162,66 @@ groupMembersRequest?.fetchNext(object:CometChat.CallbackListener<List<GroupMembe
 </Tab>
 
 </Tabs>
+
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use Pagination for Large Groups">
+    Set an appropriate limit (e.g., 30) and call `fetchNext()` multiple times to load members in batches, especially for large groups.
+  </Accordion>
+  <Accordion title="Filter by Scope for Admin Views">
+    Use `setScopes()` to fetch only admins and moderators when building admin panels or management interfaces.
+  </Accordion>
+  <Accordion title="Implement Member Search">
+    Use `setSearchKeyword()` to allow users to quickly find specific members by name or UID in large groups.
+  </Accordion>
+  <Accordion title="Cache Member Lists">
+    Cache fetched member lists locally to reduce API calls and improve performance when users navigate back to member lists.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Empty Members List">
+    **Symptom:** `fetchNext()` returns an empty list even though the group has members.
+    
+    **Cause:** The GUID is incorrect, or filters are too restrictive.
+    
+    **Solution:** Verify the GUID is correct. Remove filters temporarily to check if members exist.
+  </Accordion>
+  <Accordion title="Cannot Fetch Members - Not a Member">
+    **Symptom:** `fetchNext()` fails with "Not a member" error.
+    
+    **Cause:** User is not a member of the group (for private groups).
+    
+    **Solution:** Ensure the user has joined the group before fetching members. Use [join-group](/sdk/android/join-group) first.
+  </Accordion>
+  <Accordion title="Scope Filter Not Working">
+    **Symptom:** `setScopes()` returns all members instead of filtered results.
+    
+    **Cause:** Scope values must be lowercase strings: "admin", "moderator", "participant".
+    
+    **Solution:** Use lowercase scope values. Check the [Group Class](/sdk/android/create-group#group-class) for valid scope constants.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Add Members" icon="user-plus" href="/sdk/android/group-add-members">
+    Add new members to groups
+  </Card>
+  <Card title="Kick Member" icon="user-minus" href="/sdk/android/group-kick-member">
+    Remove members from groups
+  </Card>
+  <Card title="Change Member Scope" icon="user-shield" href="/sdk/android/group-change-member-scope">
+    Update member roles and permissions
+  </Card>
+  <Card title="Retrieve Groups" icon="list" href="/sdk/android/retrieve-groups">
+    Fetch list of available groups
+  </Card>
+</CardGroup>

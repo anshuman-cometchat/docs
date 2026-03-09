@@ -1,8 +1,29 @@
 ---
 title: "Connection Status"
+description: "Monitor real-time connection status to CometChat web-socket servers in the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Add connection listener
+CometChat.addConnectionListener("LISTENER_ID", object : ConnectionListener {
+    override fun onConnected() { /* Connection established */ }
+    override fun onConnecting() { /* Attempting to connect */ }
+    override fun onDisconnected() { /* Connection lost */ }
+    override fun onFeatureThrottled() { /* Features throttled */ }
+    override fun onError(e: CometChatException) { /* Connection error */ }
+})
+
+// Get current connection status
+val status = CometChat.getConnectionStatus()
+// Returns: WS_STATE_CONNECTED, WS_STATE_CONNECTING, WS_STATE_DISCONNECTED, or WS_STATE_FEATURE_THROTTLED
+
+// Remove listener
+CometChat.removeConnectionListener("LISTENER_ID")
+```
+</Info>
 
 CometChat SDK provides you with a mechanism to get real-time status of the connection to CometChat web-socket servers. To achieve this you need to use the `ConnectionListener` class provided by the CometChat SDK
 
@@ -115,3 +136,40 @@ The above method will return either of the below 3 values:
 Know more about CometChat SDK connection behaviour [click here](/sdk/android/connection-behaviour)
 
 </Info>
+
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Monitor Connection Status in UI">
+    Display connection status indicators in your UI (e.g., "Connecting...", "Connected", "Offline") to inform users about network issues. Update the UI based on connection listener callbacks.
+  </Accordion>
+  <Accordion title="Handle Reconnection Gracefully">
+    The SDK automatically attempts to reconnect when disconnected. Show a reconnecting indicator and avoid blocking the UI. Don't manually call `login()` again during reconnection.
+  </Accordion>
+  <Accordion title="Queue Actions During Disconnection">
+    Queue user actions (sending messages, making calls) when disconnected and execute them once the connection is restored. This provides a better user experience during network fluctuations.
+  </Accordion>
+  <Accordion title="Remove Connection Listeners">
+    Remove connection listeners in `onDestroy()` to prevent memory leaks. Use unique listener IDs to manage multiple listeners across different activities.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Connection Behaviour" icon="network-wired" href="/sdk/android/connection-behaviour">
+    Learn about SDK connection behavior and reconnection logic
+  </Card>
+  <Card title="Setup" icon="gear" href="/sdk/android/setup">
+    Initialize the SDK and establish connection
+  </Card>
+  <Card title="User Presence" icon="circle-dot" href="/sdk/android/user-presence">
+    Track user online/offline status
+  </Card>
+  <Card title="Real-Time Listeners" icon="bell" href="/sdk/android/real-time-listeners">
+    Register listeners for messages, users, groups, and calls
+  </Card>
+</CardGroup>

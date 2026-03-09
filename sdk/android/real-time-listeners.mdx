@@ -1,8 +1,29 @@
 ---
 title: "All Real Time Listeners"
+description: "Register and manage real-time event listeners for users, groups, messages, and calls in the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// User listener
+CometChat.addUserListener("LISTENER_ID", object : CometChat.UserListener() {
+    override fun onUserOnline(user: User) { }
+    override fun onUserOffline(user: User) { }
+})
+
+// Message listener
+CometChat.addMessageListener("LISTENER_ID", object : CometChat.MessageListener() {
+    override fun onTextMessageReceived(message: TextMessage) { }
+    override fun onMediaMessageReceived(message: MediaMessage) { }
+})
+
+// Remove listeners (important!)
+CometChat.removeUserListener("LISTENER_ID")
+CometChat.removeMessageListener("LISTENER_ID")
+```
+</Info>
 
 CometChat provides 4 listeners viz.
 
@@ -40,6 +61,21 @@ CometChat.addUserListener(UNIQUE_LISTENER_ID, new CometChat.UserListener() {
 
 </Tab>
 
+<Tab title="Kotlin">
+```kotlin
+CometChat.addUserListener(UNIQUE_LISTENER_ID, object : CometChat.UserListener() {
+    override fun onUserOnline(user: User) {
+
+    }
+
+    override fun onUserOffline(user: User) {
+
+    }
+})
+```
+
+</Tab>
+
 </Tabs>
 
 where `UNIQUE_LISTENER_ID` is the unique identifier for the listener. Please make sure that no two listeners are added with the same listener id as this could lead to unexpected behavior resulting in loss of events.
@@ -54,7 +90,18 @@ CometChat.removeUserListener(UNIQUE_LISTENER_ID)
 
 </Tab>
 
+<Tab title="Kotlin">
+```kotlin
+CometChat.removeUserListener(UNIQUE_LISTENER_ID)
+```
+
+</Tab>
+
 </Tabs>
+
+<Warning>
+Always remove listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
 
 ## Group Listener
 
@@ -385,3 +432,40 @@ CometChat.addCallListener(UNIQUE_LISTENER_ID, object : CometChat.CallListener() 
 Where `UNIQUE_LISTENER_ID` is the unique identifier for the listener. Make sure that no two listeners are added with the same listener ID as this could lead to unexpected behavior resulting in loss of events.
 
 Once the activity/fragment where the `MessageListener` is declared is not in use, you need to remove the listener using the `removeMessageListener()` method which takes the id of the listener to be removed as the parameter. We suggest you call this method in the `onPause()` method of the activity/fragment.
+
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Always Remove Listeners">
+    Remove all listeners in `onDestroy()` or `onPause()` to prevent memory leaks. Store listener IDs as constants to ensure consistent removal.
+  </Accordion>
+  <Accordion title="Use Unique Listener IDs">
+    Use unique, descriptive listener IDs (e.g., "ChatActivity_MessageListener") to avoid conflicts. Never reuse the same ID for different listeners.
+  </Accordion>
+  <Accordion title="Register Listeners Early">
+    Register listeners in `onCreate()` or `onResume()` to ensure you don't miss any events. Register before fetching messages or loading conversations.
+  </Accordion>
+  <Accordion title="Handle All Callback Methods">
+    Implement all relevant callback methods even if you don't need them immediately. This prevents crashes if the SDK triggers unexpected events.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Receive Messages" icon="envelope" href="/sdk/android/receive-messages">
+    Handle incoming messages with message listeners
+  </Card>
+  <Card title="User Presence" icon="circle-dot" href="/sdk/android/user-presence">
+    Track user online/offline status with user listeners
+  </Card>
+  <Card title="Ringing" icon="phone" href="/sdk/android/default-calling">
+    Handle incoming calls with call listeners
+  </Card>
+  <Card title="Retrieve Groups" icon="users" href="/sdk/android/retrieve-groups">
+    Monitor group events with group listeners
+  </Card>
+</CardGroup>

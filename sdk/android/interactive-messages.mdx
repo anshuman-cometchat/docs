@@ -1,8 +1,38 @@
 ---
 title: "Interactive Messages"
+description: "Send messages with embedded interactive content like forms and buttons for enhanced user engagement"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Create interactive message with form
+val interactiveData = JSONObject().apply {
+    put("title", "Demo Form")
+    put("formFields", JSONArray().apply {
+        put(JSONObject().apply {
+            put("elementType", "textInput")
+            put("elementId", "element1")
+            put("label", "Name")
+        })
+    })
+}
+
+val interactiveMessage = InteractiveMessage("receiverId", CometChatConstants.RECEIVER_TYPE_USER, "form", interactiveData)
+CometChat.sendInteractiveMessage(interactiveMessage, object : CallbackListener<InteractiveMessage>() {
+    override fun onSuccess(message: InteractiveMessage) { }
+    override fun onError(e: CometChatException) { }
+})
+
+// Mark as interacted
+CometChat.markAsInteracted(messageId, "elementId", callback)
+```
+</Info>
+
+<Note>
+**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/android/overview)
+</Note>
 
 An `InteractiveMessage` is a specialized object that encapsulates an interactive unit within a chat message, such as an embedded form that users can fill out directly within the chat interface. This enhances user engagement by making the chat experience more interactive and responsive to user input.
 
@@ -31,6 +61,22 @@ An Interaction represents a user action involved with an `InteractiveMessage`. I
 This method marks a message as interacted by identifying it with the provided Id. it also logs the interactive element associated with the interaction.
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin
+val messageId = 1
+val elementId = "elementId"
+
+CometChat.markAsInteracted(messageId, elementId, object : CometChat.CallbackListener<Void?>() {
+    override fun onSuccess(unused: Void?) {
+
+    }
+
+    override fun onError(e: CometChatException) {
+      
+    }
+}) 
+```
+</Tab>
 <Tab title="Java">
 ```java
 int messageId = 1;
@@ -47,27 +93,7 @@ CometChat.markAsInteracted(messageId, elementId, new CometChat.CallbackListener<
     }
 });
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin
-val messageId = 1
-val elementId = "elementId"
-
-CometChat.markAsInteracted(messageId, elementId, object : CometChat.CallbackListener<Void?>() {
-    override fun onSuccess(unused: Void?) {
-
-    }
-
-    override fun onError(e: CometChatException) {
-      
-    }
-}) 
-```
-
-</Tab>
-
 </Tabs>
 
 ### Goal Completion
@@ -94,9 +120,52 @@ The `InteractionGoal` represents the desired outcome of an interaction with an I
 
 The `InteractiveMessage` can be sent using the `sendInteractiveMessage` method of the CometChat class. The method requires an `InteractiveMessage` object and a `CallbackListener` for handling the response.
 
+Before sending interactive messages, ensure you have [initialized the SDK](/sdk/android/setup) and [logged in a user](/sdk/android/authentication-overview).
+
 Here is an example of how to use it:
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin
+val interactiveData = JSONObject()
+try {
+    interactiveData.put("title", "Demo Form")
+    val jsonArray = JSONArray()
+    val textInput = JSONObject()
+    textInput.put("elementType", "textInput")
+    textInput.put("elementId", "element1")
+    textInput.put("label", "Name")
+    textInput.put("optional", false)
+    textInput.put("maxLines", 1)
+    jsonArray.put(textInput)
+    interactiveData.put("formFields", jsonArray)
+    val submitElement = JSONObject()
+    submitElement.put("elementType", "button")
+    submitElement.put("elementId", "element8")
+    submitElement.put("buttonText", "Submit")
+    submitElement.put("disableAfterInteracted", true)
+    val action = JSONObject()
+    action.put("actionType", "urlNavigation")
+    action.put("url", "https://www.cometchat.com/")
+    submitElement.put("action", action)
+    interactiveData.put("submitElement", submitElement)
+} catch (e: JSONException) {
+    throw RuntimeException(e)
+}
+
+val interactiveMessage = InteractiveMessage(receiverId, receiverType, "form", interactiveData)
+
+CometChat.sendInteractiveMessage(interactiveMessage, object : CometChat.CallbackListener<InteractiveMessage>() {
+    override fun onSuccess(interactiveMessage: InteractiveMessage) {
+        // This block is executed when the InteractiveMessage is sent successfully.
+    }
+
+    override fun onError(e: CometChatException) {
+        // This block is executed if an error occurs while sending the InteractiveMessage.
+    }
+})
+```
+</Tab>
 <Tab title="Java">
 ```java
 JSONObject interactiveData = new JSONObject();
@@ -139,63 +208,28 @@ CometChat.sendInteractiveMessage(interactiveMessage, new CometChat.CallbackListe
   }
 });
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin
-val interactiveData = JSONObject()
-try {
-    interactiveData.put("title", "Demo Form")
-    val jsonArray = JSONArray()
-    val textInput = JSONObject()
-    textInput.put("elementType", "textInput")
-    textInput.put("elementId", "element1")
-    textInput.put("label", "Name")
-    textInput.put("optional", false)
-    textInput.put("maxLines", 1)
-    jsonArray.put(textInput)
-    interactiveData.put("formFields", jsonArray)
-    val submitElement = JSONObject()
-    submitElement.put("elementType", "button")
-    submitElement.put("elementId", "element8")
-    submitElement.put("buttonText", "Submit")
-    submitElement.put("disableAfterInteracted", true)
-    val action = JSONObject()
-    action.put("actionType", "urlNavigation")
-    action.put("url", "https://www.cometchat.com/")
-    submitElement.put("action", action)
-    interactiveData.put("submitElement", submitElement)
-} catch (e: JSONException) {
-    throw RuntimeException(e)
-}
-
-val interactiveMessage = InteractiveMessage(receiverId, receiverType, "form", interactiveData)
-
-CometChat.sendInteractiveMessage(interactiveMessage, object : CometChat.CallbackListener<InteractiveMessage>() {
-    override fun onSuccess(interactiveMessage: InteractiveMessage) {
-        // This block is executed when the InteractiveMessage is sent successfully.
-    }
-
-    override fun onError(e: CometChatException) {
-        // This block is executed if an error occurs while sending the InteractiveMessage.
-    }
-})
-```
-
-</Tab>
-
 </Tabs>
 
 ### Event Listeners
 
-CometChat SDK provides event listeners to handle real-time events related to `InteractiveMessage`.
+CometChat SDK provides event listeners to handle real-time events related to `InteractiveMessage`. For more details on listener management, see [Real-Time Listeners](/sdk/android/real-time-listeners).
 
 On `InteractiveMessage` Received The `onInteractiveMessageReceived` event listener is triggered when an InteractiveMessage is received.
 
 Here is an example:
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin
+CometChat.addMessageListener("UNIQUE_ID", object : CometChat.MessageListener() {
+  override fun onInteractiveMessageReceived(interactiveMessage: InteractiveMessage) {
+      // This block is executed when an InteractiveMessage is received.
+      // Here you can define logic to handle the received InteractiveMessage and display it in your chat interface.
+  }
+})
+```
+</Tab>
 <Tab title="Java">
 ```java
 CometChat.addMessageListener("UNIQUE_ID", new CometChat.MessageListener() {
@@ -206,22 +240,12 @@ CometChat.addMessageListener("UNIQUE_ID", new CometChat.MessageListener() {
   }          
 });
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin
-CometChat.addMessageListener("UNIQUE_ID", object : CometChat.MessageListener() {
-  override fun onInteractiveMessageReceived(interactiveMessage: InteractiveMessage) {
-      // This block is executed when an InteractiveMessage is received.
-      // Here you can define logic to handle the received InteractiveMessage and display it in your chat interface.
-  }
-})
-```
-
-</Tab>
-
 </Tabs>
+
+<Warning>
+Always remove listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
 
 ### On Interaction Goal Completed
 
@@ -230,6 +254,16 @@ The `onInteractionGoalCompleted` event listener is invoked when an interaction g
 Here is an example:
 
 <Tabs>
+<Tab title="Kotlin">
+```kotlin
+CometChat.addMessageListener("UNIQUE_ID", object : CometChat.MessageListener() {
+  override fun onInteractionGoalCompleted(interactionReceipt: InteractionReceipt) {
+      // This block is executed when an interaction goal is completed.
+      // Here you can specify the actions your application should take once an interaction goal is achieved, such as updating the UI or notifying the user.
+  }
+})
+```
+</Tab>
 <Tab title="Java">
 ```java
 CometChat.addMessageListener("UNIQUE_ID", new CometChat.MessageListener() {
@@ -240,21 +274,7 @@ CometChat.addMessageListener("UNIQUE_ID", new CometChat.MessageListener() {
   }
 });
 ```
-
 </Tab>
-
-<Tab title="Kotlin">
-```kotlin
-CometChat.addMessageListener("UNIQUE_ID", object : CometChat.MessageListener() {
-  override fun onInteractionGoalCompleted(interactionReceipt: InteractionReceipt) {
-      // This block is executed when an interaction goal is completed.
-      // Here you can specify the actions your application should take once an interaction goal is achieved, such as updating the UI or notifying the user.
-  }
-})
-```
-
-</Tab>
-
 </Tabs>
 
 These event listeners offer your application a way to provide real-time updates in response to incoming interactive messages and goal completions, contributing to a more dynamic and responsive user chat experience.
@@ -262,3 +282,39 @@ These event listeners offer your application a way to provide real-time updates 
 ## Usage
 
 An `InteractiveMessage` is constructed with the receiver's UID, the receiver type, the interactive type, and interactive data as a JSONObject. Once created, the `InteractiveMessage` can be sent using CometChat's `sendInteractiveMessage()` method. Incoming `InteractiveMessages` can be received and processed via CometChat's message listener framework.
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Validate Interactive Data Structure">
+    Always validate your JSONObject structure before sending interactive messages. Ensure all required fields (elementType, elementId, etc.) are present to avoid runtime errors.
+  </Accordion>
+  <Accordion title="Use Unique Element IDs">
+    Assign unique element IDs to each interactive component within a message. This ensures accurate tracking of user interactions and prevents conflicts when processing interaction events.
+  </Accordion>
+  <Accordion title="Set Appropriate Interaction Goals">
+    Choose the right interaction goal type based on your use case. Use `ANY` for simple acknowledgments, `ANY_OF` for optional selections, and `ALL_OF` for required form completions.
+  </Accordion>
+  <Accordion title="Handle Interaction Receipts">
+    Implement the `onInteractionGoalCompleted` listener to track when users complete interactive elements. This enables you to trigger follow-up actions or update your UI accordingly.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Send Messages" icon="paper-plane" href="/sdk/android/send-message">
+    Learn how to send text, media, and custom messages
+  </Card>
+  <Card title="Mentions" icon="at" href="/sdk/android/mentions">
+    Mention specific users in messages for better engagement
+  </Card>
+  <Card title="Receive Messages" icon="envelope" href="/sdk/android/receive-messages">
+    Handle incoming messages with real-time listeners
+  </Card>
+  <Card title="Real-Time Listeners" icon="bell" href="/sdk/android/real-time-listeners">
+    Manage event listeners for real-time updates
+  </Card>
+</CardGroup>

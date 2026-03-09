@@ -1,30 +1,86 @@
 ---
 title: "User Presence"
+description: "Track and subscribe to user online/offline status and presence updates in your Android app"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+<Tabs>
+<Tab title="Kotlin">
+```kotlin
+// Subscribe to presence during init
+val appSettings = AppSettings.AppSettingsBuilder()
+    .subscribePresenceForAllUsers()
+    .setRegion("REGION")
+    .build()
+CometChat.init(context, "APP_ID", appSettings, callback)
 
-User Presence helps us understand if a user is available to chat or not.
+// Add user listener
+CometChat.addUserListener("LISTENER_ID", object : CometChat.UserListener() {
+    override fun onUserOnline(user: User?) {
+        Log.d(TAG, "${user?.name} is online")
+    }
+    override fun onUserOffline(user: User?) {
+        Log.d(TAG, "${user?.name} is offline")
+    }
+})
+
+// Remove listener (important!)
+CometChat.removeUserListener("LISTENER_ID")
+```
+</Tab>
+<Tab title="Java">
+```java
+// Subscribe to presence during init
+AppSettings appSettings = new AppSettings.AppSettingsBuilder()
+    .subscribePresenceForAllUsers()
+    .setRegion("REGION")
+    .build();
+CometChat.init(context, "APP_ID", appSettings, callback);
+
+// Add user listener
+CometChat.addUserListener("LISTENER_ID", new CometChat.UserListener() {
+    @Override public void onUserOnline(User user) {
+        Log.d(TAG, user.getName() + " is online");
+    }
+    @Override public void onUserOffline(User user) {
+        Log.d(TAG, user.getName() + " is offline");
+    }
+});
+
+// Remove listener (important!)
+CometChat.removeUserListener("LISTENER_ID");
+```
+</Tab>
+</Tabs>
+</Info>
+
+<Note>
+**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/android/overview)
+</Note>
+
+User Presence helps you understand if a user is available to chat or not.
 
 ## Real-time Presence
 
-*In other words, as a logged-in user, how do I know if a user is online or offline?*
+*As a logged-in user, how do I know if a user is online or offline?*
 
-Based on the settings provided in the `AppSettings` class while initializing CometChat using the `init()` method, the logged-in user will receive the presence for the other users in the app.
+Based on the settings provided in the `AppSettings` class while initializing CometChat using the `init()` method, the logged-in user will receive the presence for other users in the app.
 
 In the `AppSettings` class, you can set the type of presence you wish to receive.
 
-For presence subscription, the `AppSettingsBuilder` provides 3 methods :
+For presence subscription, the `AppSettingsBuilder` provides 3 methods:
 
-* `subscribePresenceForAllUsers()` - This will inform the logged-in user when any user in the app comes online or goes offline.
-* `subscribePresenceForRoles(List<String> roles)` - This will inform the logged-in user, only when the users with the specified roles come online or go offline.
-* `subscribePresenceForFriends()` - This will inform the logged-in user when any of their friends come online or go offline.
+* `subscribePresenceForAllUsers()` - Informs the logged-in user when any user in the app comes online or goes offline.
+* `subscribePresenceForRoles(List<String> roles)` - Informs the logged-in user only when users with the specified roles come online or go offline.
+* `subscribePresenceForFriends()` - Informs the logged-in user when any of their friends come online or go offline.
 
 If none of the above methods are set, no presence will be sent to the logged-in user.
 
-For every activity or fragment you wish to receive user events in, you need to register the `UserListener` using the `addUserListener()` method.
+For every activity or fragment where you wish to receive user events, you need to register the `UserListener` using the `addUserListener()` method.
 
-We suggest adding the listener in the `onResume()` method of the activity or the fragment where you wish to receive these events in.
+We suggest adding the listener in the `onResume()` method of the activity or fragment where you wish to receive these events.
 
 <Tabs>
 <Tab title="Java">
@@ -67,7 +123,7 @@ CometChat.addUserListener(listenerID,object :CometChat.UserListener(){
 
 You will receive an object of the `User` class in the listener methods.
 
-We recommend you remove the listener once the activity or fragment is not in use. We suggest adding this method in the `onPause()` method of the activity or the fragment where you wish to receive these events in.
+We recommend removing the listener once the activity or fragment is not in use. We suggest adding this method in the `onPause()` method of the activity or fragment where you wish to receive these events.
 
 <Tabs>
 <Tab title="Java">
@@ -90,15 +146,54 @@ CometChat.removeUserListener(listenerID)
 
 </Tabs>
 
+<Warning>
+Always remove listeners when they're no longer needed (e.g., in `onPause()` or `onDestroy()`). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
+
 ## User List Presence
 
-*In other words, as a logged-in user, when I retrieve the user list, how do I know if a user is online/offline?*
+*As a logged-in user, when I retrieve the user list, how do I know if a user is online/offline?*
 
 When you [retrieve the list of users](/sdk/android/retrieve-users), in the [User](/sdk/android/user-management#user-class) object, you will receive 2 keys:
 
-1. `status` - This will hold either of the two values :
+1. `status` - This holds either of the two values:
 
-* `online` - This indicates that the user is currently online and available to chat.
-* `offline` - This indicates that the user is currently offline and is not available to chat.
+* `online` - Indicates that the user is currently online and available to chat.
+* `offline` - Indicates that the user is currently offline and not available to chat.
 
-2. `lastActiveAt` - In case the user is offline, this field holds the timestamp of the time when the user was last online. This can be used to display a **Last seen** for that user.
+2. `lastActiveAt` - If the user is offline, this field holds the timestamp of when the user was last online. This can be used to display a **Last seen** indicator for that user.
+
+---
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Choose Appropriate Subscription Type">
+    Use `subscribePresenceForAllUsers()` for small communities (under 1000 users), `subscribePresenceForFriends()` for social apps where users have friend lists, or `subscribePresenceForRoles()` for role-based presence to optimize performance and reduce unnecessary presence updates.
+  </Accordion>
+  <Accordion title="Handle Presence Updates Efficiently">
+    Batch presence updates in your UI to avoid excessive re-renders when multiple users change status simultaneously. Consider debouncing presence updates if you're displaying a large user list.
+  </Accordion>
+  <Accordion title="Use lastActiveAt for Offline Users">
+    Display a "Last seen" indicator using the `lastActiveAt` timestamp for offline users to provide better context about user availability.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Retrieve Users" icon="users" href="/sdk/android/retrieve-users">
+    Fetch user lists with presence information
+  </Card>
+  <Card title="Connection Status" icon="wifi" href="/sdk/android/connection-status">
+    Monitor SDK connection state and handle reconnection
+  </Card>
+  <Card title="User Management" icon="user-gear" href="/sdk/android/user-management">
+    Learn about user objects and properties
+  </Card>
+  <Card title="Real-Time Listeners" icon="bell" href="/sdk/android/real-time-listeners">
+    Understand all available event listeners
+  </Card>
+</CardGroup>

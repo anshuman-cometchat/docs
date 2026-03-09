@@ -1,6 +1,35 @@
 ---
 title: "AI Moderation"
+description: "Automatically review messages for inappropriate content using AI moderation in the Android SDK"
 ---
+
+<Info>
+**Quick Reference for AI Agents & Developers**
+
+```kotlin
+// Send message (automatically moderated)
+val textMessage = TextMessage(receiverUID, "Hello!", CometChatConstants.RECEIVER_TYPE_USER)
+CometChat.sendMessage(textMessage, object : CometChat.CallbackListener<TextMessage>() {
+    override fun onSuccess(message: TextMessage) {
+        if (message.moderationStatus == ModerationStatus.PENDING) {
+            // Show pending indicator
+        }
+    }
+    override fun onError(e: CometChatException) { }
+})
+
+// Listen for moderation results
+CometChat.addMessageListener("LISTENER_ID", object : CometChat.MessageListener() {
+    override fun onMessageModerated(message: BaseMessage) {
+        // Handle APPROVED or DISAPPROVED status
+    }
+})
+```
+</Info>
+
+<Note>
+**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/android/overview) | [Dashboard](https://app.cometchat.com)
+</Note>
 
 ## Overview
 
@@ -234,4 +263,35 @@ When a message is disapproved, handle it appropriately in your UI:
 </Tabs>
 
 ## Next Steps
-After implementing AI Moderation, consider adding a reporting feature to allow users to flag messages they find inappropriate. For more details, see the [Flag Message](/sdk/android/flag-message) documentation.
+
+<CardGroup cols={2}>
+  <Card title="Moderation Overview" icon="shield" href="/moderation/overview">
+    Configure moderation rules and manage flagged messages
+  </Card>
+  <Card title="Flag Message" icon="flag" href="/sdk/android/flag-message">
+    Allow users to report inappropriate messages
+  </Card>
+  <Card title="Send Message" icon="paper-plane" href="/sdk/android/send-message">
+    Send text, image, and video messages with automatic moderation
+  </Card>
+  <Card title="Dashboard" icon="gauge" href="https://app.cometchat.com">
+    Enable and configure AI moderation in the CometChat Dashboard
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Show Pending Status in UI">
+    Display a visual indicator (e.g., clock icon, "Pending review" label) for messages with `PENDING` moderation status. This informs users that their message is being reviewed.
+  </Accordion>
+  <Accordion title="Handle Disapproved Messages Gracefully">
+    When a message is disapproved, show a user-friendly message explaining why it was blocked. Avoid technical jargon and provide guidance on acceptable content.
+  </Accordion>
+  <Accordion title="Configure Moderation Rules in Dashboard">
+    Set up moderation rules in the [CometChat Dashboard](https://app.cometchat.com) under Moderation > Rules. Define what content should be flagged or blocked based on your app's policies.
+  </Accordion>
+  <Accordion title="Test Moderation Before Production">
+    Test moderation with various content types (text, images, videos) in a development environment to ensure rules work as expected before deploying to production.
+  </Accordion>
+</AccordionGroup>

@@ -1,8 +1,68 @@
 ---
 title: "Threaded Messages"
+description: "Send and receive threaded messages to organize conversations around specific topics in the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+<Tabs>
+<Tab title="Kotlin">
+```kotlin
+// Send message in thread
+val textMessage = TextMessage("UID", "Reply text", CometChatConstants.RECEIVER_TYPE_USER)
+textMessage.parentMessageId = 100
+CometChat.sendMessage(textMessage, object : CallbackListener<TextMessage>() {
+    override fun onSuccess(message: TextMessage) { }
+    override fun onError(e: CometChatException) { }
+})
+
+// Fetch thread messages
+val messagesRequest = MessagesRequest.MessagesRequestBuilder()
+    .setParentMessageId(100)
+    .setLimit(30)
+    .build()
+messagesRequest.fetchPrevious(callback)
+
+// Exclude threads from main conversation
+val messagesRequest = MessagesRequest.MessagesRequestBuilder()
+    .setUID("user_uid")
+    .hideReplies(true)
+    .build()
+```
+</Tab>
+<Tab title="Java">
+```java
+// Send message in thread
+TextMessage textMessage = new TextMessage("UID", "Reply text", CometChatConstants.RECEIVER_TYPE_USER);
+textMessage.setParentMessageId(100);
+CometChat.sendMessage(textMessage, new CallbackListener<TextMessage>() {
+    @Override
+    public void onSuccess(TextMessage message) { }
+    @Override
+    public void onError(CometChatException e) { }
+});
+
+// Fetch thread messages
+MessagesRequest messagesRequest = new MessagesRequest.MessagesRequestBuilder()
+    .setParentMessageId(100)
+    .setLimit(30)
+    .build();
+messagesRequest.fetchPrevious(callback);
+
+// Exclude threads from main conversation
+MessagesRequest messagesRequest = new MessagesRequest.MessagesRequestBuilder()
+    .setUID("user_uid")
+    .hideReplies(true)
+    .build();
+```
+</Tab>
+</Tabs>
+</Info>
+
+<Note>
+**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/android/overview)
+</Note>
 
 Messages that are started from a particular message are called Threaded messages or simply threads. Each Thread is attached to a message which is the Parent message for that thread.
 
@@ -18,7 +78,7 @@ A message can be categorized as:
 
 Any of the above messages can be sent in a thread. As a thread is identified with a parent message, the `parentMessageId` must be set for the message. This will indicate that the message to be sent has to be a part of the thread of the message with the specified `parentMessageId`.
 
-This can be achieved using the `setParentMessageId()` method provided by the object of the `TextMessage`, `MediaMessage` and `CustomMessage` class. The id specified in the `setParentMessageId()` method maps the message sent to the particular thread.
+This can be achieved using the `setParentMessageId()` method provided by the object of the `TextMessage`, `MediaMessage` and `CustomMessage` class. The id specified in the `setParentMessageId()` method maps the message sent to the particular thread. For more details on message types, see [Message Structure & Hierarchy](/sdk/android/message-structure-and-hierarchy).
 
 **Example to Send a Text Message in a thread in a user conversation.**
 
@@ -135,7 +195,7 @@ CometChat.addMessageListener(listenerID, object : MessageListener() {
 
 ### Fetch all the messages for any particular thread.
 
-You can fetch all the messages belonging to a particular thread by using the `MessagesRequest` class.
+You can fetch all the messages belonging to a particular thread by using the `MessagesRequest` class. For more information on message filtering, see [Additional Message Filtering](/sdk/android/additional-message-filtering).
 
 The `MessageRequestBuilder` builds the `MessageRequest` object using the following functions:
 
@@ -241,3 +301,36 @@ messagesRequest.fetchPrevious(object : CallbackListener<List<BaseMessage?>?>() {
 </Tabs>
 
 The above snippet will return messages between the logged in user and `cometchat-uid-1` excluding all the threaded messages belonging to the same conversation.
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use hideReplies() for Main Conversations">
+    Always use `hideReplies(true)` when fetching messages for main user/group conversations to keep threads separate and maintain a clean conversation view. This prevents thread replies from cluttering the main message list.
+  </Accordion>
+  <Accordion title="Check parentMessageId for Thread Context">
+    When receiving real-time messages, always check the `parentMessageId` to determine if a message belongs to an active thread. This ensures proper message routing in your UI.
+  </Accordion>
+  <Accordion title="Validate Parent Message Exists">
+    Before allowing users to reply in a thread, verify that the parent message still exists and hasn't been deleted. This prevents orphaned thread messages.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Send Messages" icon="paper-plane" href="/sdk/android/send-message">
+    Learn how to send text, media, and custom messages
+  </Card>
+  <Card title="Receive Messages" icon="envelope" href="/sdk/android/receive-messages">
+    Handle real-time message events with listeners
+  </Card>
+  <Card title="Message Structure" icon="list" href="/sdk/android/message-structure-and-hierarchy">
+    Understand message objects and their properties
+  </Card>
+  <Card title="Reactions" icon="heart" href="/sdk/android/reactions">
+    Add emoji reactions to messages
+  </Card>
+</CardGroup>

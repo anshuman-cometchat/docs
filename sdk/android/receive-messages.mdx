@@ -11,11 +11,11 @@ Receiving messages with CometChat has two parts:
 
 ## Real-time Messages
 
-*In other words, as a recipient, how do I receive messages when my app is running?*
+How do I receive messages when my app is running?
 
-For every activity or fragment you wish to receive messages in, you need to register the `MessageListener` using the `addMessageListener()` method.
+For every activity or fragment you wish to receive messages in, register the `MessageListener` using the `addMessageListener()` method.
 
-We suggest adding the listener in the `onResume()` method of the activity or the fragment where you wish to receive these events in.
+We suggest adding the listener in the `onResume()` method of the activity or fragment where you wish to receive these events.
 
 <Tabs>
 <Tab title="Java">
@@ -100,7 +100,7 @@ As a sender, you will not receive your own message in a real-time message event.
 
 ## Missed Messages
 
-*In other words, as a recipient, how do I receive messages that I missed when my app was not running?*
+How do I receive messages that I missed when my app was not running?
 
 For most use cases, you will need to add functionality to load missed messages. If you're building an on-demand or live streaming app, you may choose to skip this and fetch the message history (say, last 100 messages) instead.
 
@@ -266,9 +266,9 @@ messagesRequest.fetchNext(object : CallbackListener<List<BaseMessage?>>() {
 
 ## Unread Messages
 
-*In other words, as a logged-in user, how do I fetch the messages I've not read?*
+How do I fetch the messages I've not read?
 
-Using the `MessagesRequest` class described above, you can fetch the unread messages for the logged-in user. In order to achieve this, you need to set the `unread` variable in the builder to `true` using the `setUnread()` method so that only the unread messages are fetched.
+Using the `MessagesRequest` class described above, you can fetch the unread messages for the logged-in user. To achieve this, set the `unread` variable in the builder to `true` using the `setUnread()` method so that only the unread messages are fetched.
 
 ### Fetch Unread Messages of a particular one-on-one conversation
 
@@ -409,7 +409,7 @@ The list of messages received is in the form of objects of `BaseMessage` class. 
 
 ## Message History
 
-*In other words, as a logged-in user, how do I fetch the message history for a user or a group conversation?*
+How do I fetch the message history for a user or a group conversation?
 
 ### Fetch Message History of a particular one-on-one conversation
 
@@ -551,9 +551,9 @@ Calling the `fetchPrevious()` method on the same object repeatedly allows you to
 
 ## Search Messages
 
-In other words, as a logged-in user, how do I search a message?
+How do I search for a message?
 
-In order to do this, you can use the `setSearchKeyword()` method. This method accepts string as input. When set, the SDK will fetch messages which match the `searchKeyword`.
+To search messages, use the `setSearchKeyword()` method. This method accepts a string as input. When set, the SDK will fetch messages that match the `searchKeyword`.
 
 <Note>
 
@@ -690,13 +690,13 @@ messagesRequest.fetchPrevious(object : CallbackListener<List<BaseMessage?>>() {
 
 ## Unread Messages Count
 
-*In other words, as a logged-in user, how do I find out the number of unread messages that I have?*
+How do I find out the number of unread messages that I have?
 
 ### Fetch Unread Message Count of a particular one-on-one conversation
 
-*In other words, how do I find out the number of unread messages I have from a particular user?*
+How do I find out the number of unread messages I have from a particular user?
 
-In order to get the unread message count for a particular user (with respect to the logged-in user), you can use the `getUnreadMessageCountForUser()`.
+To get the unread message count for a particular user (with respect to the logged-in user), use the `getUnreadMessageCountForUser()` method.
 
 This method has the two variants:
 
@@ -779,9 +779,9 @@ In the `onSuccess()` callback, you will receive a Hashmap which will contain the
 
 ### Fetch Unread Message Count of a particular group conversation
 
-*In other words, how do I find out the number of unread messages I have in a single group?*
+How do I find out the number of unread messages I have in a single group?
 
-In order to get the unread message count for a particular group, you can use the `getUnreadMessageCountForGroup()`.
+To get the unread message count for a particular group, use the `getUnreadMessageCountForGroup()` method.
 
 This method has two variants:
 
@@ -865,9 +865,9 @@ In the `onSuccess()` callback, you will receive a Hashmap which will contain the
 
 ### Fetch Unread Message Count of all one-on-one & group conversations
 
-*In other words, how do I find out the number of unread messages for every one-on-one and group conversation?*
+How do I find out the number of unread messages for every one-on-one and group conversation?
 
-In order to get all the unread message counts, you can use the `getUnreadMessageCount()` method. This method has two variants:
+To get all the unread message counts, use the `getUnreadMessageCount()` method. This method has two variants:
 
 <Tabs>
 <Tab title="Java">
@@ -947,9 +947,9 @@ In the `onSuccess()` callback, you will receive a hashmap having two keys:
 
 ### Fetch Unread Message Count of all one-on-one conversations
 
-*In other words, how do I find out the number of unread messages I have for every user?*
+How do I find out the number of unread messages I have for every user?
 
-In order to fetch the unread message counts for just the users, you can use the `getUnreadMessageCountForAllUsers()` method.
+To fetch the unread message counts for just the users, use the `getUnreadMessageCountForAllUsers()` method.
 
 This method, just like others, has two variants:
 
@@ -1028,9 +1028,9 @@ In the `onSuccess()` callback, you will receive a Hashmap that will contain the 
 
 ### Fetch Unread Message Count of all group conversations
 
-*In other words, how do I find out the number of unread messages for every group?*
+How do I find out the number of unread messages for every group?
 
-In order to fetch the unread message counts for all groups, you can use the `getUnreadMessageCountForAllGroups()` method.
+To fetch the unread message counts for all groups, use the `getUnreadMessageCountForAllGroups()` method.
 
 This method has two variants:
 

@@ -1,18 +1,40 @@
 ---
 title: "Recording"
+description: "Record calls and access recordings from the Dashboard using the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Configure call settings with recording
+val callSettings = CallSettingsBuilder(this, videoContainer)
+    .setSessionId(sessionId)
+    .showCallRecordButton(true)
+    .startRecordingOnCallStart(false)
+    .build()
 
-This section will guide you to implement call recording feature for the voice and video calls.
+// Start recording manually
+CallManager.getInstance().startRecording()
+
+// Stop recording
+CallManager.getInstance().stopRecording()
+```
+</Info>
+
+<Note>
+**Available via:** SDK | [Dashboard](https://app.cometchat.com)
+</Note>
+
+This section guides you through implementing the call recording feature for voice and video calls.
 
 ## Implementation
 
-Once you have decided to implement [Default Calling](/sdk/android/default-calling) or [Direct Calling](/sdk/android/direct-calling) calling and followed the steps to implement them. Just few additional listeners and methods will help you quickly implement call recording in your app.
+Once you have decided to implement [Default Calling](/sdk/android/default-calling) or [Direct Calling](/sdk/android/direct-calling) and followed the steps to implement them, a few additional listeners and methods will help you quickly implement call recording in your app.
 
-You need to make changes in the CometChat.startCall method and add the required listeners for recording. Please make sure your callSettings is configured accordingly for [Default Calling](/sdk/android/default-calling) or [Direct Calling](/sdk/android/direct-calling).
+You need to make changes in the `CometChat.startCall` method and add the required listeners for recording. Make sure your `callSettings` is configured accordingly for [Default Calling](/sdk/android/default-calling) or [Direct Calling](/sdk/android/direct-calling).
 
-A basic example of how to make changes to implement recording for a direct/default call:
+Here is a basic example of how to implement recording for a direct/default call:
 
 <Tabs>
 <Tab title="Java">
@@ -56,9 +78,9 @@ CometChat.startCall(callSettings, object : OngoingCallListener {
 
 ## Settings for call recording
 
-The `CallSettings`class allows you to customise the overall calling experience. The properties for the call/conference can be set using the `CallSettingsBuilder` class. This will eventually give you and object of the `CallSettings` class which you can pass to the `startCall()` method to start the call.
+The `CallSettings` class allows you to customize the overall calling experience. The properties for the call/conference can be set using the `CallSettingsBuilder` class. This gives you an object of the `CallSettings` class which you can pass to the `startCall()` method to start the call.
 
-The options available for recording of calls are:
+The options available for recording calls are:
 
 | Setting                                                        | Description                                                                                                                                                                          |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -106,3 +128,40 @@ CallManager.getInstance().stopRecording()
 </Tab>
 
 </Tabs>
+
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Inform Users About Recording">
+    Always notify participants when recording starts or stops. Use the `onRecordingStarted()` and `onRecordingStopped()` callbacks to display visual indicators (e.g., a red recording icon) in your UI.
+  </Accordion>
+  <Accordion title="Check Recording Permissions">
+    Ensure your app has the necessary permissions to record audio and video. Request permissions at runtime and handle cases where users deny recording permissions.
+  </Accordion>
+  <Accordion title="Use Auto-Recording Sparingly">
+    Only enable `startRecordingOnCallStart(true)` when required by your use case (e.g., compliance, training). For most applications, let users manually control recording to respect privacy.
+  </Accordion>
+  <Accordion title="Access Recordings from Dashboard">
+    Recordings are stored on CometChat servers and can be accessed from the [Dashboard](https://app.cometchat.com). Inform users where they can find their recordings after the call ends.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Ringing" icon="phone" href="/sdk/android/default-calling">
+    Implement complete calling workflow with incoming/outgoing call UI
+  </Card>
+  <Card title="Call Session" icon="video" href="/sdk/android/direct-calling">
+    Start and manage call sessions with video and audio controls
+  </Card>
+  <Card title="Call Logs" icon="list" href="/sdk/android/call-logs">
+    Retrieve and display call history for users and groups
+  </Card>
+  <Card title="Dashboard" icon="gauge" href="https://app.cometchat.com">
+    Access and manage call recordings from the CometChat Dashboard
+  </Card>
+</CardGroup>

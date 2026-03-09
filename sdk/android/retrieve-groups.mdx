@@ -1,14 +1,38 @@
 ---
 title: "Retrieve Groups"
+description: "Fetch and filter groups list using the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Fetch groups with filters
+val groupsRequest = GroupsRequestBuilder()
+    .setLimit(30)
+    .joinedOnly(true)
+    .setSearchKeyWord("search")
+    .build()
+
+groupsRequest.fetchNext(object : CallbackListener<List<Group>>() {
+    override fun onSuccess(groups: List<Group>) { }
+    override fun onError(e: CometChatException) { }
+})
+
+// Get specific group details
+CometChat.getGroup("GUID", callback)
+```
+</Info>
+
+<Note>
+**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/android/overview)
+</Note>
 
 ## Retrieve List of Groups
 
-*In other words, as a logged-in user, how do I retrieve the list of groups I've joined and groups that are available?*
+How do I retrieve the list of groups I've joined and groups that are available?
 
-In order to fetch the list of groups, you can use the `GroupsRequest` class. To use this class i.e to create an object of the `GroupsRequest` class, you need to use the `GroupsRequestBuilder` class. The `GroupsRequestBuilder` class allows you to set the parameters based on which the groups are to be fetched.
+To fetch the list of groups, use the `GroupsRequest` class. To create an object of the `GroupsRequest` class, you need to use the `GroupsRequestBuilder` class. The `GroupsRequestBuilder` class allows you to set the parameters based on which the groups are fetched.
 
 ### Set Limit
 
@@ -62,7 +86,7 @@ val groupsRequest = GroupsRequestBuilder()
 
 ### Joined Only
 
-This method when used, will ask CometChat to only return the groups that the user has joined or is a part of.
+This method tells CometChat to only return the groups that the user has joined or is a part of.
 
 <Tabs>
 <Tab title="Java">
@@ -145,11 +169,11 @@ val groupsRequest = GroupsRequestBuilder()
 
 </Tabs>
 
-Finally, once all the parameters are set to the builder class, you need to call the `build()` method to get the object of the `GroupsRequest` class.
+Finally, once all the parameters are set on the builder class, call the `build()` method to get the object of the `GroupsRequest` class.
 
-Once you have the object of the `GroupsRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of `Group` objects containing N number of groups depending on the limit set.
+Once you have the object of the `GroupsRequest` class, call the `fetchNext()` method. This method returns a list of `Group` objects containing N number of groups depending on the limit set.
 
-The list of groups fetched will only have the public and password type groups. The private groups will only be available if the user is a member of that private group.
+The list of groups fetched will only include public and password type groups. Private groups are only included if the user is a member of that private group.
 
 <Tabs>
 <Tab title="Java">
@@ -195,9 +219,9 @@ override fun onError(e: CometChatException) {
 
 ## Retrieve Particular Group Details
 
-*In other words, as a logged-in user, how do I retrieve information for a specific group?*
+How do I retrieve information for a specific group?
 
-To get the information of a group, you can use the `getGroup()` method.
+To get the information of a group, use the `getGroup()` method.
 
 <Tabs>
 <Tab title="Java">
@@ -292,3 +316,66 @@ override fun onError(e: CometChatException) {
 </Tabs>
 
 This method returns a `Hashmap` with the GUID of the group as the key and the online member count for that group as the value.
+
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use Pagination for Large Lists">
+    Set an appropriate limit (e.g., 30) and call `fetchNext()` multiple times to load groups in batches, improving performance and user experience.
+  </Accordion>
+  <Accordion title="Filter with joinedOnly for User Groups">
+    Use `joinedOnly(true)` to fetch only groups the user has joined, reducing unnecessary data transfer and improving load times.
+  </Accordion>
+  <Accordion title="Implement Search for Better UX">
+    Use `setSearchKeyWord()` to allow users to quickly find specific groups by name, especially in apps with many groups.
+  </Accordion>
+  <Accordion title="Use Tags for Categorization">
+    Organize groups with tags and use `setTags()` to fetch groups by category (e.g., "sports", "work", "friends").
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Empty Groups List">
+    **Symptom:** `fetchNext()` returns an empty list even though groups exist.
+    
+    **Cause:** Filters may be too restrictive, or the user hasn't joined any groups (when using `joinedOnly(true)`).
+    
+    **Solution:** Remove filters temporarily to verify groups exist. Check if `joinedOnly()` is appropriate for your use case.
+  </Accordion>
+  <Accordion title="Private Groups Not Showing">
+    **Symptom:** Private groups are missing from the fetched list.
+    
+    **Cause:** Private groups only appear if the user is a member.
+    
+    **Solution:** This is expected behavior. Users must be added to private groups by admins before they can see them.
+  </Accordion>
+  <Accordion title="getGroup() Returns Null">
+    **Symptom:** `getGroup()` fails with "Group not found" error.
+    
+    **Cause:** The GUID is incorrect, or the group has been deleted.
+    
+    **Solution:** Verify the GUID is correct. Check if the group still exists by fetching the groups list first.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Create Group" icon="users" href="/sdk/android/create-group">
+    Create new groups for your users
+  </Card>
+  <Card title="Join Group" icon="user-plus" href="/sdk/android/join-group">
+    Join groups to participate in conversations
+  </Card>
+  <Card title="Retrieve Members" icon="user-group" href="/sdk/android/retrieve-group-members">
+    Fetch list of group members
+  </Card>
+  <Card title="Additional Filtering" icon="filter" href="/sdk/android/additional-message-filtering">
+    Learn more about advanced filtering options
+  </Card>
+</CardGroup>

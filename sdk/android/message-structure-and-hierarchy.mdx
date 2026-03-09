@@ -1,8 +1,28 @@
 ---
 title: "Message Structure And Hierarchy"
+description: "Understand message categories, types, and hierarchy in the CometChat Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+**Message Categories:**
+- **Message**: text, image, video, audio, file
+- **Custom**: Developer-defined types (e.g., location)
+- **Interactive**: form, card, customInteractive
+- **Action**: groupMember, message (system-generated)
+- **Call**: audio, video (with status: initiated, ongoing, ended, etc.)
+
+**Check message type:**
+```kotlin
+when (message.category) {
+    CometChatConstants.CATEGORY_MESSAGE -> { /* Handle message */ }
+    CometChatConstants.CATEGORY_CUSTOM -> { /* Handle custom */ }
+    CometChatConstants.CATEGORY_ACTION -> { /* Handle action */ }
+    CometChatConstants.CATEGORY_CALL -> { /* Handle call */ }
+}
+```
+</Info>
 
 The below diagram helps you better understand the various message categories and types that a CometChat message can belong to.
 
@@ -85,3 +105,40 @@ The call messages have a property called status that helps you figure out the st
 5. unanswered - when the call was not answered by the receiver.
 6. busy - when the receiver of the call was busy on another call.
 7. ended - when the call was successfully completed and ended by either the initiator or receiver.
+
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Check Message Category Before Casting">
+    Always check the message category using `message.getCategory()` before casting to specific message types (TextMessage, MediaMessage, etc.) to avoid ClassCastException errors.
+  </Accordion>
+  <Accordion title="Handle All Message Types">
+    Implement handlers for all message categories and types your app supports. Use a default case to handle unknown or future message types gracefully.
+  </Accordion>
+  <Accordion title="Use Custom Messages for Special Content">
+    Use custom messages with unique types for content that doesn't fit standard categories (e.g., location sharing, polls, stickers). This keeps your implementation flexible and extensible.
+  </Accordion>
+  <Accordion title="Filter Messages by Category">
+    Use `MessagesRequest.setCategories()` to fetch only the message categories you need. This improves performance and reduces unnecessary data transfer.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Send Message" icon="paper-plane" href="/sdk/android/send-message">
+    Send text, media, and custom messages
+  </Card>
+  <Card title="Receive Messages" icon="envelope" href="/sdk/android/receive-messages">
+    Handle incoming messages of all types
+  </Card>
+  <Card title="Additional Message Filtering" icon="filter" href="/sdk/android/additional-message-filtering">
+    Filter messages by category, type, and other parameters
+  </Card>
+  <Card title="Interactive Messages" icon="square-check" href="/sdk/android/interactive-messages">
+    Create and handle interactive form and card messages
+  </Card>
+</CardGroup>

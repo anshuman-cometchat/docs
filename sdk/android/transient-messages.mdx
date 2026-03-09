@@ -1,10 +1,32 @@
 ---
 title: "Transient Messages"
+description: "Send ephemeral real-time messages that are not stored or tracked using the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Send transient message to user
+val data = JSONObject()
+data.put("LIVE_REACTION", "heart")
+val transientMessage = TransientMessage("UID", CometChatConstants.RECEIVER_TYPE_USER, data)
+CometChat.sendTransientMessage(transientMessage)
+
+// Receive transient messages
+CometChat.addMessageListener("LISTENER_ID", object : MessageListener() {
+    override fun onTransientMessageReceived(transientMessage: TransientMessage) {
+        Log.d(TAG, "Transient message: ${transientMessage.data}")
+    }
+})
+```
+</Info>
 
 Transient messages are messages that are sent in real-time only and are not saved or tracked anywhere. The receiver of the message will only receive the message if he is online and these messages cannot be retrieved later.
+
+<Note>
+**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/android/overview)
+</Note>
 
 ## Send a Transient Message
 
@@ -41,7 +63,7 @@ CometChat.sendTransientMessage(transientMessage)
 
 ## Real-time Transient Messages
 
-*In other words, as a recipient, how do I know when someone sends a transient message?*
+How do I know when someone sends a transient message?
 
 You will receive the transient message in the `onTransientMessageReceived()` method of the registered `MessageListener` class.
 
@@ -79,3 +101,40 @@ The `TransientMessage` class consists of the below parameters:
 | **receiverId**   | Unique Id of the receiver. This can be the Id of the group or the user the transient message is sent to. |
 | **receiverType** | The type of the receiver - `CometChat.RECEIVER_TYPE.USER` or `CometChat.RECEIVER_TYPE.GROUP`             |
 | **data**         | A JSONObject to provide data.                                                                            |
+
+<Warning>
+Always remove listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use for Ephemeral Events Only">
+    Transient messages are ideal for temporary events like typing indicators, live reactions, or presence updates. For messages that need to be stored or retrieved later, use regular text or custom messages instead.
+  </Accordion>
+  <Accordion title="Keep Data Payload Small">
+    Since transient messages are sent in real-time, keep the data payload minimal to reduce network overhead and improve delivery speed. Avoid sending large objects or binary data.
+  </Accordion>
+  <Accordion title="Handle Offline Recipients Gracefully">
+    Transient messages are only delivered to online users. If delivery confirmation is critical, implement a fallback mechanism using regular messages or check user presence before sending.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Send Messages" icon="paper-plane" href="/sdk/android/send-message">
+    Send text, media, and custom messages that are stored and retrievable
+  </Card>
+  <Card title="Receive Messages" icon="envelope" href="/sdk/android/receive-messages">
+    Handle real-time message delivery with message listeners
+  </Card>
+  <Card title="Typing Indicators" icon="keyboard" href="/sdk/android/typing-indicators">
+    Show real-time typing status for users and groups
+  </Card>
+  <Card title="Real-Time Listeners" icon="bell" href="/sdk/android/real-time-listeners">
+    Learn about all available real-time event listeners
+  </Card>
+</CardGroup>

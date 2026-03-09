@@ -1,8 +1,24 @@
 ---
 title: "Login Listeners"
+description: "Receive real-time updates for login and logout events in the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Add login listener
+CometChat.addLoginListener("LISTENER_ID", object : LoginListener() {
+    override fun loginSuccess(user: User) { /* Login successful */ }
+    override fun loginFailure(e: CometChatException) { /* Login failed */ }
+    override fun logoutSuccess() { /* Logout successful */ }
+    override fun logoutFailure(e: CometChatException) { /* Logout failed */ }
+})
+
+// Remove listener
+CometChat.removeLoginListener("LISTENER_ID")
+```
+</Info>
 
 The CometChat SDK provides you with real-time updates for the `login` and `logout` events. This can be achieved using the `LoginListener` class provided. LoginListener consists of 4 events that can be triggered. These are as follows:
 
@@ -86,3 +102,44 @@ CometChat.removeLoginListener("UNIQUE_ID")
 </Tab>
 
 </Tabs>
+
+
+<Warning>
+Always remove login listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use Login Listeners for Session Management">
+    Use `loginSuccess()` to initialize user-specific data (fetch conversations, register message listeners) and `logoutSuccess()` to clean up resources and navigate to the login screen.
+  </Accordion>
+  <Accordion title="Handle Login Failures Gracefully">
+    In `loginFailure()`, parse the `CometChatException` to show user-friendly error messages (e.g., "Invalid credentials", "Network error"). Provide retry options for transient failures.
+  </Accordion>
+  <Accordion title="Register Listeners Early">
+    Register login listeners before calling `CometChat.login()` to ensure you don't miss any events. Register in `onCreate()` or before authentication attempts.
+  </Accordion>
+  <Accordion title="Remove Listeners on Logout">
+    Remove all listeners (message, user, group, call) in `logoutSuccess()` to prevent receiving events after logout. This ensures a clean session termination.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Setup" icon="gear" href="/sdk/android/setup">
+    Initialize the SDK before logging in users
+  </Card>
+  <Card title="Authentication Overview" icon="key" href="/sdk/android/authentication-overview">
+    Learn about authentication methods and best practices
+  </Card>
+  <Card title="Connection Status" icon="network-wired" href="/sdk/android/connection-status">
+    Monitor connection status to CometChat servers
+  </Card>
+  <Card title="Real-Time Listeners" icon="bell" href="/sdk/android/real-time-listeners">
+    Register listeners for messages, users, groups, and calls
+  </Card>
+</CardGroup>

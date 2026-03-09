@@ -15,9 +15,9 @@ You can also send metadata along with a text or media message. Think, for exampl
 
 ## Text Message
 
-*In other words, as a sender, how do I send a text message?*
+How do I send a text message?
 
-To send a text message to a single user or group, you need to use the `sendMessage()` method and pass a `TextMessage` object to it.
+To send a text message to a single user or group, use the `sendMessage()` method and pass a `TextMessage` object to it.
 
 ### Add Metadata
 
@@ -198,9 +198,9 @@ When a text message is sent successfully, the response will include a `TextMessa
 
 ## Media Message
 
-*In other words, as a sender, how do I send a media message like photos, videos & files?*
+How do I send a media message like photos, videos, and files?
 
-To send a media message to any user or group, you need to use the `sendMediaMessage()` method and pass a `MediaMessage` object to it.
+To send a media message to any user or group, use the `sendMediaMessage()` method and pass a `MediaMessage` object to it.
 
 ### Add Metadata
 
@@ -752,11 +752,11 @@ You can use the `setMetadata()`, `setCaption()` & `setTags()` methods to add met
 
 ## Custom Message
 
-*In other words, as a sender, how do I send a custom message like location co-ordinates?*
+How do I send a custom message like location coordinates?
 
 CometChat allows you to send custom messages which are neither text nor media messages.
 
-In order to send a custom message, you need to use the `sendCustomMessage()` method.
+To send a custom message, use the `sendCustomMessage()` method.
 
 The `sendCustomMessage()` methods takes an object of the `CustomMessage` which can be obtained using the below constructor.
 
@@ -922,9 +922,9 @@ On success, you will receive an object of `CustomMessage` class.
 
 ### Update Conversation
 
-*How can I decide whether the custom message should update the last message of a conversation?*
+How can I decide whether the custom message should update the last message of a conversation?
 
-By default, a custom message will update the last message of a conversation. If you wish to not update the last message of the conversation when a custom message is sent, please use `shouldUpdateConversation(boolean value)` method of the Custom Message.
+By default, a custom message will update the last message of a conversation. If you do not want to update the last message of the conversation when a custom message is sent, use the `shouldUpdateConversation(boolean value)` method of the Custom Message.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -1035,9 +1035,9 @@ CometChat.sendCustomMessage(customMessage, object : CallbackListener<CustomMessa
 
 ### Custom Notification Body
 
-*How can i customise the notification body of custom message?*
+How can I customize the notification body of a custom message?
 
-To add a custom notification body for `Push, Email & SMS` notification of a custom message you can use the `setConversationText(text: string)` method of Custom Message class.
+To add a custom notification body for `Push, Email & SMS` notification of a custom message, use the `setConversationText(text: string)` method of the Custom Message class.
 
 <Tabs>
 <Tab title="Java (User)">

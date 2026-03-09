@@ -1,8 +1,31 @@
 ---
 title: "Add Members To A Group"
+description: "Add members to groups with specific roles using the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Add members to a group
+val members = listOf(
+    GroupMember("uid1", CometChatConstants.SCOPE_MODERATOR),
+    GroupMember("uid2", CometChatConstants.SCOPE_PARTICIPANT)
+)
+
+CometChat.addMembersToGroup("GUID", members, null, 
+    object : CallbackListener<HashMap<String, String>>() {
+        override fun onSuccess(result: HashMap<String, String>) { }
+        override fun onError(e: CometChatException) { }
+    })
+```
+
+**Note:** Only admins and moderators can add members. The result HashMap contains UID as key and "success" or error message as value.
+</Info>
+
+<Note>
+**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/android/overview)
+</Note>
 
 ## Add Members to Group
 
@@ -60,7 +83,7 @@ In the `onSuccess()` method of the `CallbackListener`, you will receive a HashMa
 
 ## Real-Time Group Member Added Events
 
-*In other words, as a member of a group, how do I know when someone is added to the group when my app is running?*
+How do I know when someone is added to the group while my app is running?
 
 <Note>
 
@@ -68,9 +91,9 @@ When a group member is added by another member, this event is triggered. When a 
 
 </Note>
 
-To receive real-time events whenever a new member is added to a group, you need to implement the `onMemberAddedToGroup()` methods of the `GroupListener` class.
+To receive real-time events whenever a new member is added to a group, implement the `onMemberAddedToGroup()` method of the `GroupListener` class.
 
-* `onMemberAddedToGroup()` - This method is triggered when any user is added to the group so that the logged-in user is informed of the other members added to the group.
+* `onMemberAddedToGroup()` - This method is triggered when any user is added to the group, informing the logged-in user of the other members added to the group.
 
 <Tabs>
 <Tab title="Java">
@@ -100,9 +123,9 @@ CometChat.addGroupListener("UNIQUE_ID", object : CometChat.GroupListener() {
 
 ## Member Added to Group event in Message History
 
-*In other words, as a member of a group, how do I know when someone is added to the group when my app is not running?*
+How do I know when someone is added to the group while my app is not running?
 
-When you retrieve the list of previous messages if a member has been added to any group that the logged-in user is a member of, the list of messages will contain an `Action` message. An `Action` message is a sub-class of `BaseMessage` class.
+When you retrieve the list of previous messages, if a member has been added to any group that the logged-in user is a member of, the list of messages will contain an `Action` message. An `Action` message is a sub-class of the `BaseMessage` class.
 
 For the group member added event, in the `Action` object received, the following fields can help you get the relevant information-
 
@@ -110,3 +133,69 @@ For the group member added event, in the `Action` object received, the following
 2. `actionOn` - User object containing the details of the user who was added to the group
 3. `actionBy` - User object containing the details of the user who added the member to the group
 4. `actionFor` - Group object containing the details of the group to which the member was added
+
+<Warning>
+Always remove group listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Assign Appropriate Scopes">
+    Choose member scopes carefully: ADMIN for full control, MODERATOR for moderation tasks, PARTICIPANT for regular members. Limit admin count to maintain control.
+  </Accordion>
+  <Accordion title="Batch Add Members">
+    Add multiple members in a single call instead of multiple individual calls to improve performance and reduce API overhead.
+  </Accordion>
+  <Accordion title="Handle Partial Success">
+    Check the result HashMap for each UID - some additions may succeed while others fail. Handle each case appropriately in your UI.
+  </Accordion>
+  <Accordion title="Validate UIDs Before Adding">
+    Verify user UIDs exist before attempting to add them to avoid unnecessary API errors.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Add Failed - Insufficient Permissions">
+    **Symptom:** `addMembersToGroup()` fails with "Insufficient permissions" error.
+    
+    **Cause:** User is not an admin or moderator of the group.
+    
+    **Solution:** Only admins and moderators can add members. Check the user's scope before showing add member options.
+  </Accordion>
+  <Accordion title="Some Members Not Added">
+    **Symptom:** Result HashMap shows errors for some UIDs.
+    
+    **Cause:** UIDs may not exist, users may already be members, or users may be banned.
+    
+    **Solution:** Check the error message for each UID in the result HashMap. Verify UIDs exist and users aren't already members or banned.
+  </Accordion>
+  <Accordion title="Cannot Add to Private Group">
+    **Symptom:** Adding members to private group fails.
+    
+    **Cause:** Private groups have restricted membership.
+    
+    **Solution:** Ensure you have admin or moderator permissions. Private groups require explicit member additions by authorized users.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Kick Member" icon="user-minus" href="/sdk/android/group-kick-member">
+    Remove members from groups
+  </Card>
+  <Card title="Change Member Scope" icon="user-shield" href="/sdk/android/group-change-member-scope">
+    Update member roles and permissions
+  </Card>
+  <Card title="Retrieve Members" icon="users" href="/sdk/android/retrieve-group-members">
+    Fetch list of group members
+  </Card>
+  <Card title="Group Listeners" icon="bell" href="/sdk/android/real-time-listeners">
+    Handle real-time group events
+  </Card>
+</CardGroup>

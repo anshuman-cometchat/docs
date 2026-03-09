@@ -1,8 +1,38 @@
 ---
 title: "Retrieve Users"
+description: "Fetch user details, retrieve user lists with filters, and get online user counts using the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Get logged-in user
+val user = CometChat.getLoggedInUser()
+
+// Fetch user list with filters
+val usersRequest = UsersRequestBuilder()
+    .setLimit(30)
+    .setSearchKeyword("john")
+    .hideBlockedUsers(true)
+    .build()
+
+usersRequest.fetchNext(object : CallbackListener<List<User?>>() {
+    override fun onSuccess(list: List<User?>) { }
+    override fun onError(e: CometChatException) { }
+})
+
+// Get specific user details
+CometChat.getUser("UID", object : CometChat.CallbackListener<User>() {
+    override fun onSuccess(user: User) { }
+    override fun onError(e: CometChatException) { }
+})
+```
+</Info>
+
+<Note>
+**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/android/overview)
+</Note>
 
 ## Retrieve Logged In User Details
 
@@ -29,9 +59,9 @@ This method will return a `User` object containing all the information related t
 
 ## Retrieve List of Users
 
-In order to fetch the list of users, you can use the `UsersRequest` class. To use this class i.e to create an object of the UsersRequest class, you need to use the `UsersRequestBuilder` class. The `UsersRequestBuilder` class allows you to set the parameters based on which the users are to be fetched.
+To fetch the list of users, you can use the `UsersRequest` class. To create an object of the `UsersRequest` class, you need to use the `UsersRequestBuilder` class. The `UsersRequestBuilder` class allows you to set the parameters based on which the users are to be fetched.
 
-The `UsersRequestBuilder` class allows you to set the below parameters:
+The `UsersRequestBuilder` class allows you to set the following parameters:
 
 ### Set Limit
 
@@ -87,7 +117,7 @@ val usersRequest = UsersRequestBuilder()
 
 ### Search In
 
-This method allows you to define in which user property should the searchKeyword be searched. This method only works in combination with `setSearchKeyword()`. By default the keyword is searched in both UID & Name.
+This method allows you to define in which user property the `searchKeyword` should be searched. This method only works in combination with `setSearchKeyword()`. By default, the keyword is searched in both UID and Name.
 
 <Tabs>
 <Tab title="Java">
@@ -122,12 +152,12 @@ val usersRequest = UsersRequestBuilder()
 
 ### Set Status
 
-The status based on which the users are to be fetched. The status parameter can contain one of the below two values:
+The status based on which the users are to be fetched. The status parameter can contain one of the following values:
 
-* CometChat.USER\_STATUS.ONLINE - will return the list of only online users.
-* CometChat.USER\_STATUS.OFFLINE - will return the list of only offline users.
+* `CometChat.USER_STATUS.ONLINE` - Returns the list of only online users.
+* `CometChat.USER_STATUS.OFFLINE` - Returns the list of only offline users.
 
-If this parameter is not set, will return all the available users.
+If this parameter is not set, all available users will be returned.
 
 <Tabs>
 <Tab title="Java">
@@ -152,11 +182,11 @@ val usersRequest = UsersRequestBuilder()
 
 </Tabs>
 
-If this parameter is not set, will return all users.
+If this parameter is not set, all users will be returned.
 
 ### Hide Blocked Users
 
-This method is used to determine if the blocked users should be returned as a part of the user list. If set to `true`, the user list will not contain the users blocked by the logged-in user.
+This method determines if blocked users should be returned as part of the user list. If set to `true`, the user list will not contain users blocked by the logged-in user.
 
 <Tabs>
 <Tab title="Java">
@@ -336,7 +366,7 @@ val usersRequest = UsersRequestBuilder()
 
 ### Sort By
 
-This method allows you to sort the User List by a specific property of User. By default the User List is sorted by `status => name => UID` . If `name` is pass to the `sortBy()` method the user list will be sorted by `name => UID`.
+This method allows you to sort the User List by a specific property of User. By default, the User List is sorted by `status => name => UID`. If `name` is passed to the `sortBy()` method, the user list will be sorted by `name => UID`.
 
 <Tabs>
 <Tab title="Java">
@@ -524,3 +554,39 @@ override fun onError(e: CometChatException) {
 </Tab>
 
 </Tabs>
+
+---
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use Pagination for Large User Lists">
+    Always set a reasonable limit (20-50 users) and use `fetchNext()` to paginate through results. This prevents memory issues and improves performance when dealing with large user bases.
+  </Accordion>
+  <Accordion title="Filter Users at Query Time">
+    Use `UsersRequestBuilder` filters (search, status, roles, tags) to fetch only the users you need rather than fetching all users and filtering client-side. This reduces bandwidth and improves response times.
+  </Accordion>
+  <Accordion title="Cache User Details Locally">
+    Store frequently accessed user details locally to reduce API calls. Use `getLoggedInUser()` to check login status without making network requests.
+  </Accordion>
+  <Accordion title="Combine Multiple Filters">
+    You can chain multiple filters like `setSearchKeyword()`, `hideBlockedUsers()`, and `setUserStatus()` to create precise queries that return exactly the users you need.
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="User Presence" icon="circle-dot" href="/sdk/android/user-presence">
+    Track and subscribe to user online/offline status updates
+  </Card>
+  <Card title="Block Users" icon="user-slash" href="/sdk/android/block-users">
+    Block and unblock users to control interactions
+  </Card>
+  <Card title="User Management" icon="user-gear" href="/sdk/android/user-management">
+    Create, update, and manage user accounts
+  </Card>
+  <Card title="Send Messages" icon="paper-plane" href="/sdk/android/send-message">
+    Start sending messages to retrieved users
+  </Card>
+</CardGroup>

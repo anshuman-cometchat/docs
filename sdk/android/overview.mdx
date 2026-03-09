@@ -1,10 +1,39 @@
 ---
 title: "Overview"
+description: "Get started with the CometChat Android SDK - install, initialize, and add real-time chat to your Android application"
 ---
 
+<Info>
+**Quick Setup Reference**
 
+```kotlin
+// 1. Add dependency to build.gradle
+implementation "com.cometchat:chat-sdk-android:4.1.8"
 
-This guide demonstrates how to add chat to an Android application. Before you begin, we strongly recommend you read the [Key Concepts](/sdk/android/key-concepts) guide.
+// 2. Initialize (run once at app start)
+val appSettings = AppSettings.AppSettingsBuilder()
+    .subscribePresenceForAllUsers()
+    .setRegion("REGION")
+    .build()
+CometChat.init(context, "APP_ID", appSettings, callback)
+
+// 3. Login user
+CometChat.login("UID", "AUTH_KEY", callback)  // Dev only
+```
+
+**Required Credentials:** App ID, Region, Auth Key (dev) or Auth Token (prod)  
+**Get from:** [CometChat Dashboard](https://app.cometchat.com) → Your App → API & Auth Keys
+</Info>
+
+<Warning>
+`CometChat.init()` must be called before any other SDK method. Calling `login()`, `sendMessage()`, or registering listeners before `init()` will fail.
+</Warning>
+
+<Warning>
+**Auth Key** is for development/testing only. In production, generate **Auth Tokens** on your server using the REST API and pass them to the client. Never expose Auth Keys in production client code.
+</Warning>
+
+This guide demonstrates how to add chat to an Android application. Before you begin, we strongly recommend reading the [Key Concepts](/sdk/android/key-concepts) guide.
 
 #### **I want to integrate with my app**
 
@@ -12,7 +41,7 @@ This guide demonstrates how to add chat to an Android application. Before you be
 2. [Add the CometChat dependency](./overview#add-the-cometchat-dependency)
 3. [Initialize CometChat](./overview#initialise-cometchat)
 4. [Register and Login your user](./overview#register-and-login-your-user)
-5. [Integrate Our UI Kits](./overview#integrate-our-ui-kits)
+5. [Integrate our UI Kits](./overview#integrate-our-ui-kits)
 
 #### **I want to explore a sample app (includes UI)**
 
@@ -24,7 +53,7 @@ Import the app into Android Studio and follow the steps mentioned in the `README
 
 ### Get your Application Keys
 
-[Signup for CometChat](https://app.cometchat.com) and then:
+[Sign up for CometChat](https://app.cometchat.com) and then:
 
 1. Create a new app
 2. Head over to the **API Keys** section and note the **Auth Key**, **App ID** & **Region**
@@ -33,14 +62,14 @@ Import the app into Android Studio and follow the steps mentioned in the `README
 Minimum Requirements
 
 * Android API Level 21
-* Android API level 24 (in case you are using the calls SDKS)
-* Androidx Compatibility
+* Android API Level 24 (if you are using the Calls SDK)
+* AndroidX Compatibility
 
 </Note>
 
 ### Add the CometChat Dependency
 
-First, add the repository URL to the **project level**`build.gradle` file in the `repositories` block under the `allprojects` section.
+First, add the repository URL to the **project level** `build.gradle` file in the `repositories` block under the `allprojects` section.
 
 <Tabs>
 <Tab title="Groovy">
@@ -58,7 +87,7 @@ allprojects {
 
 </Tabs>
 
-Then, add CometChat to the **app level**`build.gradle` file in the `dependencies` section.
+Then, add CometChat to the **app level** `build.gradle` file in the `dependencies` section.
 
 <Tabs>
 <Tab title="Groovy">
@@ -74,11 +103,11 @@ dependencies {
 
 <Note>
 
-v2.4+ onwards, Voice & Video Calling functionality has been moved to a separate library. In case you plan to use the calling feature, please add the Calling dependency `implementation 'com.cometchat:calls-sdk-android:4.3.3'` in the dependencies section of the app-level `build.gradle` file.
+Starting from v2.4+, Voice & Video Calling functionality has been moved to a separate library. If you plan to use the calling feature, add the Calling dependency `implementation 'com.cometchat:calls-sdk-android:4.3.3'` in the dependencies section of the app-level `build.gradle` file.
 
 </Note>
 
-Finally, add the below lines `android` section of the **app level** gradle file
+Finally, add the following lines to the `android` section of the **app level** gradle file.
 
 <Tabs>
 <Tab title="Groovy">
@@ -97,18 +126,18 @@ android {
 
 ### Initialise CometChat
 
-The `init()` method initializes the settings required for CometChat. The `init()` method takes the below parameters:
+The `init()` method initializes the settings required for CometChat. This method takes the following parameters:
 
-1. appID - You CometChat App ID
-2. appSettings - An object of the AppSettings class can be created using the AppSettingsBuilder class. The region field is mandatory and can be set using the `setRegion()` method.
+1. `appID` - Your CometChat App ID
+2. `appSettings` - An object of the `AppSettings` class created using the `AppSettingsBuilder` class. The region field is mandatory and can be set using the `setRegion()` method.
 
-The `AppSettings` class allows you to configure three settings:
+The `AppSettings` class allows you to configure the following settings:
 
-* **Region**: The region where you app was created.
-* [Presence Subscription](/sdk/android/user-presence): Represents the subscription type for user presence (real-time online/offline status)
-* **autoEstablishSocketConnection(boolean value)**: This property takes a boolean value which when set to true informs the SDK to manage the web-socket connection internally. If set to false, it informs the SDK that the web-socket connection will be managed manually. The default value for this parameter is true. For more information on this, please check the Managing Web-Socket connections manually section. The default value for this property is **true.**
-* **overrideAdminHost(adminHost: string)**: This method takes the admin URL as input and uses this admin URL instead of the default admin URL. This can be used in case of dedicated deployment of CometChat.
-* **overrideClientHost(clientHost: string)**: This method takes the client URL as input and uses this client URL instead of the default client URL. This can be used in case of dedicated deployment of CometChat.
+* **Region**: The region where your app was created.
+* **[Presence Subscription](/sdk/android/user-presence)**: Represents the subscription type for user presence (real-time online/offline status).
+* **autoEstablishSocketConnection(boolean value)**: When set to `true`, the SDK manages the WebSocket connection internally. When set to `false`, you must manage the WebSocket connection manually. The default value is `true`. For more information, see the Managing Web-Socket connections manually section.
+* **overrideAdminHost(adminHost: string)**: Takes the admin URL as input and uses it instead of the default admin URL. This is useful for dedicated deployments of CometChat.
+* **overrideClientHost(clientHost: string)**: Takes the client URL as input and uses it instead of the default client URL. This is useful for dedicated deployments of CometChat.
 
 <Tabs>
 <Tab title="Java">
@@ -168,13 +197,13 @@ CometChat.init(
 
 </Tabs>
 
-Make sure you replace the `APP_ID` with your CometChat **App ID** and `region` with your **App Region** in the above code.
+Make sure you replace `APP_ID` with your CometChat **App ID** and `region` with your **App Region** in the above code.
 
 ### Register and Login your User
 
-Once initialization is successful, you will need to create a user.
+Once initialization is successful, you need to create a user.
 
-To create users on the fly, you can use the `createUser()` method. This method takes a `User` object and the `Auth Key` as input parameters and returns the created `User` object if the request is successful.
+To create users on the fly, use the `createUser()` method. This method takes a `User` object and the `Auth Key` as input parameters and returns the created `User` object if the request is successful.
 
 <Tabs>
 <Tab title="Java">
@@ -221,11 +250,11 @@ CometChat.createUser(user, authKey, object : CometChat.CallbackListener<User>() 
 
 </Tabs>
 
-Make sure that `UID` and `name` are specified as these are mandatory fields to create a user.
+Make sure that `UID` and `name` are specified, as these are mandatory fields to create a user.
 
-Once you have created the user successfully, you will need to log the user into CometChat using the `login()` method.
+Once you have created the user successfully, you need to log the user into CometChat using the `login()` method.
 
-We recommend you call the CometChat `login()` method once your user logs into your app. The `login()` method needs to be called only once.
+We recommend calling the CometChat `login()` method once your user logs into your app. The `login()` method only needs to be called once.
 
 <Note>
 
@@ -286,7 +315,7 @@ if (CometChat.getLoggedInUser() == null) {
 
 </Tabs>
 
-Make sure you replace the `AUTH_KEY` with your App **Auth Key** in the above code.
+Make sure you replace `AUTH_KEY` with your App **Auth Key** in the above code.
 
 The `login()` method returns the `User` object containing all the information of the logged-in user.
 
@@ -298,4 +327,23 @@ UID can be alphanumeric with underscore and hyphen. Spaces, punctuation and othe
 
 ### Integrate our UI Kits
 
-* Please refer [Android Java UI Kit](/ui-kit/android/overview) section to integrate Android Java UI Kit inside your app.
+* Refer to the [Android Java UI Kit](/ui-kit/android/overview) section to integrate the Android Java UI Kit into your app.
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Setup SDK" icon="gear" href="/sdk/android/setup">
+    Detailed installation and initialization guide for the Android SDK
+  </Card>
+  <Card title="Key Concepts" icon="book" href="/sdk/android/key-concepts">
+    Understand core concepts like users, groups, messages, and conversations
+  </Card>
+  <Card title="Authentication" icon="key" href="/sdk/android/authentication-overview">
+    Learn about secure authentication with Auth Tokens for production apps
+  </Card>
+  <Card title="Send Messages" icon="paper-plane" href="/sdk/android/send-message">
+    Start sending text, media, and custom messages to users and groups
+  </Card>
+</CardGroup>

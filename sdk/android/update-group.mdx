@@ -1,14 +1,35 @@
 ---
 title: "Update A Group"
+description: "Modify group details, settings, and metadata using the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Update group details
+val group = Group("GUID", "New Name", CometChatConstants.GROUP_TYPE_PUBLIC, "")
+group.description = "Updated description"
+group.icon = "https://example.com/icon.png"
+
+CometChat.updateGroup(group, object : CometChat.CallbackListener<Group>() {
+    override fun onSuccess(updatedGroup: Group) { }
+    override fun onError(e: CometChatException) { }
+})
+```
+
+**Note:** Only admins and moderators can update group details. See [Group Class](/sdk/android/create-group#group-class) for editable fields.
+</Info>
+
+<Note>
+**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/android/overview)
+</Note>
 
 ## Update Group
 
-*In other words, as a group owner, how can I update the group details?*
+*As a group owner, how can I update the group details?*
 
-You can update the existing details of the group using the `updateGroup()` method.
+You can update the existing details of a group using the `updateGroup()` method.
 
 <Tabs>
 <Tab title="Java">
@@ -56,12 +77,75 @@ CometChat.updateGroup(group,object :CometChat.CallbackListener<Group>(){
 
 </Tabs>
 
-This method takes an instance of the `Group` class as a parameter which should contain the data that you wish to update.
+This method takes an instance of the `Group` class as a parameter, which should contain the data you wish to update.
 
-| Parameter | Description                  |
-| --------- | ---------------------------- |
-| `group`   | an instance of class `Group` |
+| Parameter | Description                    |
+| --------- | ------------------------------ |
+| `group`   | An instance of the `Group` class |
 
-After the successful update of the group, you will receive an instance of `Group` class containing updated information of the group.
+After the successful update of the group, you will receive an instance of the `Group` class containing the updated information of the group.
 
-For more information on the `Group` class, please check [here](/sdk/android/create-group#group-class)
+For more information on the `Group` class, see [here](/sdk/android/create-group#group-class).
+
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Update Only Changed Fields">
+    Create a Group object with the GUID and only set the fields you want to update. Unchanged fields will retain their existing values.
+  </Accordion>
+  <Accordion title="Use Metadata for Custom Properties">
+    Store custom group properties in the metadata field as JSON to extend group functionality without modifying the core schema.
+  </Accordion>
+  <Accordion title="Validate Input Before Updating">
+    Validate group names, descriptions, and icon URLs before calling updateGroup() to avoid API errors and improve user experience.
+  </Accordion>
+  <Accordion title="Handle Update Events">
+    Listen for group update events to keep your UI synchronized when other admins or moderators modify group details.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Update Failed - Insufficient Permissions">
+    **Symptom:** `updateGroup()` fails with "Insufficient permissions" error.
+    
+    **Cause:** User is not an admin or moderator of the group.
+    
+    **Solution:** Only admins and moderators can update group details. Check the user's scope using `group.getScope()` before attempting updates.
+  </Accordion>
+  <Accordion title="Update Failed - Invalid GUID">
+    **Symptom:** `updateGroup()` fails with "Group not found" error.
+    
+    **Cause:** The GUID in the Group object is incorrect or the group doesn't exist.
+    
+    **Solution:** Verify the GUID is correct. Fetch the group first using [retrieve-groups](/sdk/android/retrieve-groups) to ensure it exists.
+  </Accordion>
+  <Accordion title="Cannot Change Group Type">
+    **Symptom:** Group type doesn't change after calling `updateGroup()`.
+    
+    **Cause:** Group type (public/private/password) cannot be changed after creation.
+    
+    **Solution:** Group type is immutable. If you need a different type, create a new group and migrate members.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Create Group" icon="users" href="/sdk/android/create-group">
+    Learn about the Group class and editable fields
+  </Card>
+  <Card title="Delete Group" icon="trash" href="/sdk/android/delete-group">
+    Permanently delete groups you own
+  </Card>
+  <Card title="Manage Members" icon="user-group" href="/sdk/android/group-add-members">
+    Add or remove group members
+  </Card>
+  <Card title="Transfer Ownership" icon="user-shield" href="/sdk/android/transfer-group-ownership">
+    Transfer admin rights to another member
+  </Card>
+</CardGroup>

@@ -1,8 +1,28 @@
 ---
 title: "Additional Message Filtering"
+description: "Filter messages by category, type, timestamp, tags, and other parameters using MessagesRequest in the Android SDK"
 ---
 
+<Info>
+**Quick Reference for AI Agents & Developers**
 
+```kotlin
+// Build filtered message request
+val messagesRequest = MessagesRequestBuilder()
+    .setUID("user_uid")                    // User conversation
+    .setLimit(50)                          // Max 100 per request
+    .setCategories(listOf("message"))      // Filter by category
+    .setTypes(listOf("text", "image"))     // Filter by type
+    .setUnread(true)                       // Only unread messages
+    .hideDeletedMessages(true)             // Exclude deleted
+    .hideReplies(true)                     // Exclude threaded messages
+    .build()
+
+// Fetch messages
+messagesRequest.fetchNext(callback)
+messagesRequest.fetchPrevious(callback)
+```
+</Info>
 
 The `MessagesRequest` class as you must be familiar with helps you to fetch messages based on the various parameters provided to it. This document will help you understand better the various options that are available using the `MessagesRequest` class.
 
@@ -27,9 +47,9 @@ Now that you are clear how to use the `MessagesRequest` class, below are the var
 
 ## Number of messages fetched
 
-*In other words, how do I set the number of messages fetched in a single iteration*
+How do I set the number of messages fetched in a single iteration?
 
-To achieve this, you can use the `setLimit()` method. This method takes an integer value as the input and informs the SDK to fetch the specified number of messages in one iteration. The maximum number of messages that can be fetched in one go is `100`.
+To achieve this, use the `setLimit()` method. This method takes an integer value as the input and informs the SDK to fetch the specified number of messages in one iteration. The maximum number of messages that can be fetched in one go is `100`.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -84,9 +104,9 @@ val messagesRequest = MessagesRequestBuilder()
 
 ## Messages for a user conversation
 
-*In other words, how do I fetch messages between me and any user*
+How do I fetch messages between me and any user?
 
-This can be achieved using the `setUID()` method. This method takes the UID of the user with whom the conversation is to be fetched. When a valid UID is passed, the SDK will return all the messages that are a part of the conversation between the logged-in user and the UID that has been specified.
+This can be achieved using the `setUID()` method. This method takes the UID of the user with whom the conversation is to be fetched. When a valid UID is passed, the SDK returns all the messages that are a part of the conversation between the logged-in user and the UID that has been specified.
 
 <Tabs>
 <Tab title="Java">
@@ -113,9 +133,9 @@ val messagesRequest = MessagesRequestBuilder()
 
 ## Messages for a group conversation
 
-*In other words, how do I fetch messages for any group conversation*
+How do I fetch messages for any group conversation?
 
-You can achieve this using the `setGUID()` method. This method takes the GUID of a group for which the conversations are to be fetched. Passing a valid GUID to this method will return all the messages that are a part of the group conversation. Please note that the logged-in user must be a member of the group to fetch the messages for that group.
+You can achieve this using the `setGUID()` method. This method takes the GUID of a group for which the conversations are to be fetched. Passing a valid GUID to this method returns all the messages that are a part of the group conversation. Note that the logged-in user must be a member of the group to fetch the messages for that group.
 
 MessagesRequest messagesRequest = new MessagesRequest.MessagesRequestBuilder() .setGUID("cometchat-guid-1") .setLimit(50) .build();
 
@@ -144,9 +164,9 @@ val messagesRequest = MessagesRequestBuilder()
 
 ## Messages before/after a message
 
-*In other words, how do I fetch messages before or after a particular message*
+How do I fetch messages before or after a particular message?
 
-This can be achieved using the `setMessageId()` method. This method takes the message-id as input and provides messages only after/before the message-id based on if the fetchNext() or fetchPrevious() method is triggered.
+This can be achieved using the `setMessageId()` method. This method takes the message-id as input and provides messages only after/before the message-id based on whether the fetchNext() or fetchPrevious() method is triggered.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -207,9 +227,9 @@ This method can be used along with `setUID()` or `setGUID()` methods to fetch me
 
 ## Messages before/after a given time
 
-*In other words, how do I fetch messages before or after a particular date or time*
+How do I fetch messages before or after a particular date or time?
 
-You can easily achieve this using the `setTimestamp()` method. This method takes the Unix timestamp as input and provides messages only after/before the timestamp based on if fetchNext() or fetchPrevious() method is triggered.
+You can easily achieve this using the `setTimestamp()` method. This method takes the Unix timestamp as input and provides messages only after/before the timestamp based on whether fetchNext() or fetchPrevious() method is triggered.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -270,9 +290,9 @@ This method can be used along with `setUID()` or `setGUID()` methods to fetch me
 
 ## Unread messages
 
-*In other words, how do I fetch unread messages*
+How do I fetch unread messages?
 
-This can easily be achieved using setting the unread flag to true. For this, you need to use the `setUnread()` method. This method takes a boolean value as input. If the value is set to true, the SDK will return just the unread messages.
+This can easily be achieved by setting the unread flag to true. For this, use the `setUnread()` method. This method takes a boolean value as input. If the value is set to true, the SDK returns just the unread messages.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -333,9 +353,9 @@ This method along with `setGUID()` or `setUID()` can be used to fetch unread mes
 
 ## Exclude messages from blocked users
 
-*In other words, how do I fetch messages excluding the messages from the users I have blocked*
+How do I fetch messages excluding the messages from the users I have blocked?
 
-This can be easily achieved using the`hideMessagesFromBlockedUsers()` method. This method accepts a boolean value which determines if the messages from users blocked by the logged-in user need to be a part if the fetched messages. If the value is set to true, the messages will be hidden and won't be a part of the messages fetched. The default value is false i.e if this method is not used, the messages from blocked users will be included in the fetched messages.
+This can be easily achieved using the `hideMessagesFromBlockedUsers()` method. This method accepts a boolean value which determines if the messages from users blocked by the logged-in user need to be a part of the fetched messages. If the value is set to true, the messages will be hidden and won't be a part of the messages fetched. The default value is false, meaning if this method is not used, the messages from blocked users will be included in the fetched messages.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -396,9 +416,9 @@ This method can be used to hide the messages by users blocked by logged in user 
 
 ## Updated and received messages
 
-*In other words, how do I fetch messages that have been received or updated after a particular date or time*
+How do I fetch messages that have been received or updated after a particular date or time?
 
-This method accepts a Unix timestamp value and will return all the messages that have been updated and the ones that have been sent/received after the specified time. The messages updated could mean the messages that have been marked as read/delivered or if the messages are edited or deleted.
+This method accepts a Unix timestamp value and returns all the messages that have been updated and the ones that have been sent/received after the specified time. The messages updated could mean the messages that have been marked as read/delivered or if the messages are edited or deleted.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -459,9 +479,9 @@ This can be useful in finding the messages that have been received or updated af
 
 ## Updated messages only
 
-*In other words, how do I fetch messages that have been updated after a particular date or time*
+How do I fetch messages that have been updated after a particular date or time?
 
-This can be achieved easily by setting the updatesOnly parameter to true. To do so, you can use the updatesOnly() method. This method takes a boolean input and can be used with the `setUpdatedAfter()` method to get jus the updated messages and not the messages sent/received after the specified time. This method cannot be used independently and always needs to be used with the `setUpdatedAfter()` method.
+This can be achieved easily by setting the updatesOnly parameter to true. To do so, use the `updatesOnly()` method. This method takes a boolean input and can be used with the `setUpdatedAfter()` method to get just the updated messages and not the messages sent/received after the specified time. This method cannot be used independently and always needs to be used with the `setUpdatedAfter()` method.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -524,11 +544,11 @@ val messagesRequest = MessagesRequestBuilder()
 
 ## Messages for multiple categories
 
-*In other words, how do I fetch messages belonging to multiple categories*
+How do I fetch messages belonging to multiple categories?
 
 We recommend before trying this, you refer to the [Message structure and hierarchy guide](/sdk/android/message-structure-and-hierarchy) to get familiar with the various categories of messages.
 
-For this, you will have to use the `setCategories()` method. This method accepts a list of categories. This tells the SDK to fetch messages only belonging to these categories.
+For this, use the `setCategories()` method. This method accepts a list of categories. This tells the SDK to fetch messages only belonging to these categories.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -601,7 +621,7 @@ The above snippet will help you get only the messages belonging to the `message`
 
 ## Messages for multiple types
 
-*In other words, how do I fetch messages belonging to multiple types*
+How do I fetch messages belonging to multiple types?
 
 We recommend before trying this, you refer to the [Message structure and hierarchy guide](/sdk/android/message-structure-and-hierarchy) to get familiar with the various types of messages.
 
@@ -698,9 +718,9 @@ Using the above code snippet, you can fetch all the media messages. This along w
 
 ## Messages for a specific thread
 
-*In other words, how do I fetch messages that are a part of a thread and not directly a user/group conversations*
+How do I fetch messages that are a part of a thread and not directly a user/group conversation?
 
-This can be done using the `setParentMessageId()` method. This method needs to be used when you have implemented threaded conversations in your app. This method will return the messages only belonging to the thread with the specified parent Id.
+This can be done using the `setParentMessageId()` method. This method needs to be used when you have implemented threaded conversations in your app. This method returns the messages only belonging to the thread with the specified parent Id.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -760,9 +780,9 @@ The above code snippet returns the messages that belong to the thread with paren
 
 ## Hide threaded messages in user/group conversations
 
-*In other words, how do I exclude threaded messages from the normal user/group conversations*
+How do I exclude threaded messages from the normal user/group conversations?
 
-In order to do this, you can use the `hideReplies()` method. This method is also related to threaded conversations. This method takes boolean as input. This boolean when set to true will make sure that the messages that belong to threads are not fetched. If set to false, which is also the default value, the messages belong to the threads will also be fetched along with other messages.
+To do this, use the `hideReplies()` method. This method is also related to threaded conversations. This method takes a boolean as input. This boolean when set to true ensures that the messages that belong to threads are not fetched. If set to false, which is also the default value, the messages belonging to the threads will also be fetched along with other messages.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -821,9 +841,9 @@ val messagesRequest = MessagesRequestBuilder()
 
 ## Hide deleted messages in user/group conversations
 
-*In other words, how do I exclude deleted messages a user/group conversations*
+How do I exclude deleted messages from a user/group conversation?
 
-In order to do this, you can use the hideDeletedMessages() method. This method takes boolean as input. This boolean when set to true will make sure that the deleted messages are not fetched. If set to false, which is also the default value, the deleted messages will also be fetched along with other messages.
+To do this, use the `hideDeletedMessages()` method. This method takes a boolean as input. This boolean when set to true ensures that the deleted messages are not fetched. If set to false, which is also the default value, the deleted messages will also be fetched along with other messages.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -882,9 +902,9 @@ val messagesRequest = MessagesRequestBuilder()
 
 ## Hide quoted messages in user/group conversations
 
-*In other words, how do I exclude quoted messages in a user/group conversations*
+How do I exclude quoted messages in a user/group conversation?
 
-In order to do this, you can use the `hideQuotedMessages()` method. This method takes boolean as input. This boolean when set to true will make sure that the quoted messages are not fetched. If set to false, which is also the default value, the quoted messages will also be fetched along with other messages.
+To do this, use the `hideQuotedMessages()` method. This method takes a boolean as input. This boolean when set to true ensures that the quoted messages are not fetched. If set to false, which is also the default value, the quoted messages will also be fetched along with other messages.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -943,9 +963,9 @@ val messagesRequest = MessagesRequestBuilder()
 
 ## Messages by tags
 
-*In other words, how do I fetch messages belonging to specific tags*
+How do I fetch messages belonging to specific tags?
 
-In order to do this, you can use the `setTags()` method. This method accepts a list of tags. This tells the SDK to fetch messages only belonging to these tags.
+To do this, use the `setTags()` method. This method accepts a list of tags. This tells the SDK to fetch messages only belonging to these tags.
 
 <Tabs>
 <Tab title="Java">
@@ -982,9 +1002,9 @@ val messagesRequest = MessagesRequestBuilder()
 
 ## Messages with tags
 
-*In other words, how do I fetch messages with the tags information*
+How do I fetch messages with the tags information?
 
-In order to do this, you can use the `withTags()` method. This method accepts boolean as input. When set to `true` , the SDK will fetch messages along with the tags information. When set to `false` , the SDK will not fetch tags information associated with messages. The default value for this parameter is `false` .
+To do this, use the `withTags()` method. This method accepts a boolean as input. When set to `true`, the SDK fetches messages along with the tags information. When set to `false`, the SDK does not fetch tags information associated with messages. The default value for this parameter is `false`.
 
 <Tabs>
 <Tab title="Java">
@@ -1270,3 +1290,43 @@ val UID = "cometchat-uid-1"
 </Tab>
 
 </Tabs>
+
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use Pagination Effectively">
+    Set a reasonable limit (20-50 messages) using `setLimit()` to balance performance and user experience. Fetch more messages as users scroll using `fetchNext()` or `fetchPrevious()`.
+  </Accordion>
+  <Accordion title="Combine Filters for Specific Use Cases">
+    Combine multiple filters to create specific views (e.g., unread media messages, messages with links, messages from specific time ranges). This reduces client-side filtering.
+  </Accordion>
+  <Accordion title="Cache Filtered Results Locally">
+    Store filtered message results in local storage to provide offline access and reduce API calls. Refresh the cache when new messages arrive via listeners.
+  </Accordion>
+  <Accordion title="Use setUpdatedAfter for Sync">
+    Use `setUpdatedAfter()` with `updatesOnly(true)` to efficiently sync messages that have been edited, deleted, or marked as read/delivered since your last fetch.
+  </Accordion>
+  <Accordion title="Enable Advanced Search Features">
+    For advanced filtering (links, attachments, reactions, mentions), ensure "Conversation & Advanced Search" is enabled in your CometChat Dashboard under Chats → Settings → General Configuration.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Receive Messages" icon="envelope" href="/sdk/android/receive-messages">
+    Handle incoming messages with message listeners
+  </Card>
+  <Card title="Message Structure" icon="sitemap" href="/sdk/android/message-structure-and-hierarchy">
+    Understand message categories and types
+  </Card>
+  <Card title="Threaded Messages" icon="comments" href="/sdk/android/threaded-messages">
+    Implement threaded conversations with parent messages
+  </Card>
+  <Card title="Retrieve Conversations" icon="list" href="/sdk/android/retrieve-conversations">
+    Fetch conversation list with unread counts
+  </Card>
+</CardGroup>
