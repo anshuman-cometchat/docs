@@ -114,6 +114,115 @@ let messagesRequest: CometChat.MessagesRequest =
 
 </Tabs>
 
+When messages are fetched successfully, the response will include an array of message objects containing all information related to each message.
+
+<Note>
+The examples on this page use a small `setLimit()` value for brevity. In production, use a higher limit (up to 100) for efficient pagination.
+</Note>
+
+<Accordion title="Response">
+**On Success** — Returns an array of `TextMessage` objects for the specified user conversation:
+
+<span id="user-conversation-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125641"` |
+| `muid` | string | Client-generated unique message ID | `"_19v4y6elj"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The text content of the message | `"hi"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#user-conversation-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#user-conversation-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1772706632` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1772706632` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#user-conversation-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#user-conversation-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="user-conversation-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772703126` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="user-conversation-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772450329` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="user-conversation-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "hi", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="user-conversation-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content | `"hi"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-85fc027f-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#user-conversation-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#user-conversation-entities-object) |
+
+---
+
+<span id="user-conversation-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#user-conversation-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#user-conversation-receiver-object) |
+
+</Accordion>
+
 ## Messages for a group conversation
 
 *In other words, how do I fetch messages for any group conversation*
@@ -142,6 +251,115 @@ let messagesRequest: CometChat.MessagesRequest =
 </Tab>
 
 </Tabs>
+
+When messages are fetched successfully, the response will include an array of message objects containing all information related to each message.
+
+<Accordion title="Response">
+**On Success** — Returns an array of `TextMessage` objects for the specified group conversation:
+
+<span id="group-conversation-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125647"` |
+| `muid` | string | Client-generated unique message ID | `"_wldd52695"` |
+| `receiverId` | string | GUID of the group | `"group_1772706842135"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"group"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The text content of the message | `"how's it going"` |
+| `conversationId` | string | Unique conversation identifier | `"group_group_1772706842135"` |
+| `sender` | object | Sender user details | [See below ↓](#group-conversation-sender-object) |
+| `receiver` | object | Receiver group details | [See below ↓](#group-conversation-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1772706897` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1772706897` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#group-conversation-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#group-conversation-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="group-conversation-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772706892` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="group-conversation-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object (Group):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `guid` | string | Unique group ID | `"group_1772706842135"` |
+| `name` | string | Group name | `"Avengers Group"` |
+| `type` | string | Group type | `"public"` |
+| `owner` | string | UID of the group owner | `"superhero1"` |
+| `scope` | string | Logged-in user's scope in the group | `"admin"` |
+| `membersCount` | number | Number of members in the group | `2` |
+| `hasJoined` | boolean | Whether the logged-in user has joined | `true` |
+| `isBanned` | boolean | Whether the logged-in user is banned | `false` |
+| `conversationId` | string | Unique conversation identifier | `"group_group_1772706842135"` |
+| `createdAt` | number | Group creation timestamp (epoch) | `1772706842` |
+| `joinedAt` | number | Timestamp when the user joined (epoch) | `1772706842` |
+| `updatedAt` | number | Last updated timestamp (epoch) | `1772706877` |
+
+---
+
+<span id="group-conversation-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "how's it going", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="group-conversation-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content | `"how's it going"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-85fc027f-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#group-conversation-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#group-conversation-entities-object) |
+
+---
+
+<span id="group-conversation-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#group-conversation-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "group"` — entity matches [receiver ↑](#group-conversation-receiver-object) |
+
+</Accordion>
 
 <Note>
 
@@ -218,6 +436,114 @@ let GUID: string = "GUID",
 
 This method can be used along with `setUID()` or `setGUID()` methods to fetch messages after/before any specific message-id for a particular user/group conversation.
 
+When messages are fetched successfully, the response will include an array of message objects containing all information related to each message.
+
+<Accordion title="Response">
+**On Success** — Returns an array of `TextMessage` objects before or after the specified message ID:
+
+<span id="before-after-message-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125334"` |
+| `muid` | string | Client-generated unique message ID | `"cc_1772437741542_6_zz3xjd2"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The text content of the message | `"hello there"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#before-after-message-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#before-after-message-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1772437744` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1772437744` |
+| `replyCount` | number | Number of threaded replies to this message | `5` |
+| `deliveredAt` | number | Timestamp when the message was delivered (epoch) | `1772450305` |
+| `readAt` | number | Timestamp when the message was read (epoch) | `1772450305` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#before-after-message-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#before-after-message-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="before-after-message-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772437730` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="before-after-message-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772384727` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="before-after-message-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "hello there", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="before-after-message-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content | `"hello there"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_5-bd01135d-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#before-after-message-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#before-after-message-entities-object) |
+
+---
+
+<span id="before-after-message-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#before-after-message-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#before-after-message-receiver-object) |
+
+</Accordion>
+
 ## Messages before/after a given time
 
 *In other words, how do I fetch messages before or after a particular date or time*
@@ -287,6 +613,111 @@ let GUID: string = "GUID",
 
 This method can be used along with `setUID()` or `setGUID()` methods to fetch messages after/before any specific date or time for a particular user/group conversation.
 
+When messages are fetched successfully, the response will include an array of message objects containing all information related to each message.
+
+<Accordion title="Response">
+**On Success** — Returns an array of `TextMessage` objects before or after the specified timestamp:
+
+<span id="before-after-time-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125641"` |
+| `muid` | string | Client-generated unique message ID | `"_19v4y6elj"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The text content of the message | `"hi"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#before-after-time-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#before-after-time-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1772706632` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1772706632` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#before-after-time-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#before-after-time-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="before-after-time-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772703126` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="before-after-time-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772450329` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="before-after-time-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "hi", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="before-after-time-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content | `"hi"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-85fc027f-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#before-after-time-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#before-after-time-entities-object) |
+
+---
+
+<span id="before-after-time-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#before-after-time-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#before-after-time-receiver-object) |
+
+</Accordion>
+
 ## Unread messages
 
 *In other words, how do I fetch unread messages*
@@ -352,6 +783,111 @@ let GUID: string = "GUID",
 
 This method along with `setGUID()` or `setUID()` can be used to fetch unread messages for a particular group or user conversation respectively.
 
+When messages are fetched successfully, the response will include an array of unread message objects.
+
+<Accordion title="Response">
+**On Success** — Returns an array of unread `TextMessage` objects for the specified conversation:
+
+<span id="unread-messages-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125652"` |
+| `muid` | string | Client-generated unique message ID | `"_363o8rfag"` |
+| `receiverId` | string | UID of the receiver | `"superhero1"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The text content of the message | `"I'm fine"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#unread-messages-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#unread-messages-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1772708621` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1772708622` |
+| `deliveredAt` | number | Timestamp when the message was delivered (epoch) | `1772708622` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#unread-messages-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#unread-messages-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="unread-messages-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772708593` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="unread-messages-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772708586` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="unread-messages-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "I'm fine", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="unread-messages-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content | `"I'm fine"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-1b3edc1d-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#unread-messages-metadata-object) |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#unread-messages-entities-object) |
+
+---
+
+<span id="unread-messages-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#unread-messages-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#unread-messages-receiver-object) |
+
+</Accordion>
+
 ## Exclude messages from blocked users
 
 *In other words, how do I fetch messages excluding the messages from the users I have blocked*
@@ -416,6 +952,10 @@ let GUID: string = "GUID",
 </Tabs>
 
 This method can be used to hide the messages by users blocked by logged in user in groups that both the members are a part of.
+
+<Accordion title="Response">
+**On Success** — The response structure is the same as a regular message fetch. The only difference is that messages from blocked users will be absent from the results. For one such regular response structure, see [Messages for group conversation ↑](#group-conversation-response).
+</Accordion>
 
 ## Updated and received messages
 
@@ -485,6 +1025,123 @@ let GUID: string = "GUID",
 </Tabs>
 
 This can be useful in finding the messages that have been received or updated after a certain time. Can prove very useful if you are saving the messages locally and would like to know the messages that have been updated or received after the last message available in your local databases.
+
+When messages are fetched successfully, the response may include both action messages (for updates like edits, deletes, read/delivered status changes) and regular messages (for newly received messages).
+
+<Accordion title="Response">
+**On Success** — Returns an array containing action messages (for updates) and regular messages (for new messages received after the specified timestamp):
+
+<span id="updated-received-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Action Message Object (for edited/deleted/read/delivered updates):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125657"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"message"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"action"` |
+| `action` | string | The action that was performed | `"edited"` |
+| `message` | string | Action message text | `""` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `actionBy` | object | User who performed the action | [See below ↓](#updated-received-actionby-object) |
+| `actionFor` | object | User the action was performed for | [See below ↓](#updated-received-actionfor-object) |
+| `actionOn` | object | The message that was acted upon | [See below ↓](#updated-received-actionon-object) |
+| `sender` | object | Sender user details (same as actionBy) | [See below ↓](#updated-received-actionby-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#updated-received-actionfor-object) |
+| `sentAt` | number | Timestamp when the action occurred (epoch) | `1772709041` |
+| `updatedAt` | number | Timestamp when the action was last updated (epoch) | `1772709041` |
+| `data` | object | Action data including entities | [See below ↓](#updated-received-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="updated-received-actionby-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`actionBy` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772709037` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="updated-received-actionfor-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`actionFor` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772709006` |
+| `conversationId` | string | Conversation identifier | `"superhero1_user_superhero2"` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="updated-received-actionon-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`actionOn` Object (the message that was edited/deleted):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125654"` |
+| `muid` | string | Client-generated unique message ID | `"_umdly7vy7"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The updated text content | `"hello edited"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | Same structure as [actionBy ↑](#updated-received-actionby-object) |
+| `receiver` | object | Receiver user details | Same structure as [actionFor ↑](#updated-received-actionfor-object) |
+| `sentAt` | number | Original sent timestamp (epoch) | `1772709026` |
+| `updatedAt` | number | Last updated timestamp (epoch) | `1772709027` |
+| `deliveredAt` | number | Delivered timestamp (epoch) | `1772709027` |
+| `editedAt` | number | Timestamp when the message was edited (epoch) | `1772709041` |
+| `editedBy` | string | UID of the user who edited the message | `"superhero1"` |
+| `metadata` | object | Extension metadata | Same structure as regular message metadata |
+| `data` | object | Message data with entities and text | Contains `text`, `resource`, `metadata`, `moderation`, `entities` |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="updated-received-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object (Action Message):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `action` | string | The action type | `"edited"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-85fc027f-..."` |
+| `entities` | object | Entity wrappers for the action | [See below ↓](#updated-received-entities-object) |
+
+---
+
+<span id="updated-received-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object (Action Message):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `by` | object | Entity wrapper for who performed the action (`{entity, entityType}`) | `entityType: "user"` — entity matches [actionBy ↑](#updated-received-actionby-object) |
+| `for` | object | Entity wrapper for who the action was for (`{entity, entityType}`) | `entityType: "user"` — entity matches [actionFor ↑](#updated-received-actionfor-object) |
+| `on` | object | Entity wrapper for the message acted upon (`{entity, entityType}`) | `entityType: "message"` — entity matches [actionOn ↑](#updated-received-actionon-object) |
+
+</Accordion>
 
 ## Updated messages only
 
@@ -557,6 +1214,115 @@ let GUID: string = "GUID",
 
 </Tabs>
 
+When messages are fetched successfully, the response will include only the messages that have been updated (edited, deleted, read/delivered status changed) after the specified timestamp — not newly received messages.
+
+<Accordion title="Response">
+**On Success** — Returns an array of updated `TextMessage` objects (edited messages in this example):
+
+<span id="updated-only-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125671"` |
+| `muid` | string | Client-generated unique message ID | `"_bf82a3mae"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The updated text content of the message | `"one - edited"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#updated-only-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#updated-only-receiver-object) |
+| `sentAt` | number | Timestamp when the message was originally sent (epoch) | `1772710689` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1772710741` |
+| `editedAt` | number | Timestamp when the message was edited (epoch) | `1772710741` |
+| `editedBy` | string | UID of the user who edited the message | `"superhero1"` |
+| `deliveredAt` | number | Timestamp when the message was delivered (epoch) | `1772710690` |
+| `readAt` | number | Timestamp when the message was read (epoch) | `1772710690` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#updated-only-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#updated-only-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="updated-only-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772710681` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="updated-only-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772710682` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="updated-only-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "one", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="updated-only-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The updated text content | `"one - edited"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-85fc027f-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#updated-only-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#updated-only-entities-object) |
+
+---
+
+<span id="updated-only-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#updated-only-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#updated-only-receiver-object) |
+
+</Accordion>
+
 ## Messages for multiple categories
 
 *In other words, how do I fetch messages belonging to multiple categories*
@@ -627,6 +1393,176 @@ let GUID: string = "GUID",
 </Tabs>
 
 The above snippet will help you get only the messages belonging to the `message` and `custom` category. This can also be used to disable certain categories of messages like `call` and `action`.
+
+<Accordion title="Response">
+**On Success** — Returns an array containing messages from the specified categories (`custom` and `call` in this example). The response includes different message structures depending on the category:
+
+<span id="multiple-categories-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Custom Message Object (category: `custom`):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125679"` |
+| `muid` | string | Client-generated unique message ID | `"_0jfpc22x9"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type (extension-specific) | `"extension_sticker"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"custom"` |
+| `customData` | object | Custom data payload for this message | `{"sticker_name": "happy ghost", "sticker_url": "https://..."}` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#multiple-categories-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#multiple-categories-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1772710916` |
+| `deliveredAt` | number | Timestamp when the message was delivered (epoch) | `1772710917` |
+| `readAt` | number | Timestamp when the message was read (epoch) | `1772710917` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1772710917` |
+| `metadata` | object | Message metadata | [See below ↓](#multiple-categories-custom-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#multiple-categories-custom-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="multiple-categories-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772710911` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="multiple-categories-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772710895` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="multiple-categories-custom-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object (Custom Message):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `incrementUnreadCount` | boolean | Whether this message increments the unread count | `true` |
+
+---
+
+<span id="multiple-categories-custom-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object (Custom Message):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `customData` | object | Custom data payload | `{"sticker_name": "happy ghost", "sticker_url": "https://..."}` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-85fc027f-..."` |
+| `updateConversation` | boolean | Whether this message updates the conversation list | `true` |
+| `metadata` | object | Message metadata | `{"incrementUnreadCount": true}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#multiple-categories-custom-entities-object) |
+
+---
+
+<span id="multiple-categories-custom-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object (Custom Message):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#multiple-categories-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#multiple-categories-receiver-object) |
+
+---
+
+<span id="multiple-categories-call-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Call Message Object (category: `call`):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125680"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Call type | `"audio"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"call"` |
+| `action` | string | Call action | `"initiated"` or `"cancelled"` |
+| `sessionId` | string | Unique call session identifier | `"v1.us.208136f5ba34a5a2.1772711101..."` |
+| `status` | string | Call status | `"initiated"` or `"cancelled"` |
+| `initiatedAt` | number | Timestamp when the call was initiated (epoch) | `1772711101` |
+| `joinedAt` | number | Timestamp when the caller joined (epoch, present for `initiated`) | `1772711101` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See above ↑](#multiple-categories-sender-object) |
+| `receiver` | object | Receiver user details | [See above ↑](#multiple-categories-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1772711101` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1772711101` |
+| `callInitiator` | object | User who initiated the call | Same structure as [sender ↑](#multiple-categories-sender-object) |
+| `callReceiver` | object | User who received the call | Same structure as [receiver ↑](#multiple-categories-receiver-object) |
+| `data` | object | Call data including action entities | [See below ↓](#multiple-categories-call-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="multiple-categories-call-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object (Call Message):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `action` | string | Call action type | `"initiated"` or `"cancelled"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-85fc027f-..."` |
+| `entities` | object | Call entity wrappers | [See below ↓](#multiple-categories-call-entities-object) |
+
+---
+
+<span id="multiple-categories-call-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object (Call Message):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `by` | object | User who performed the action (`{entity, entityType}`) | `entityType: "user"` — the call initiator |
+| `for` | object | User the action was performed for (`{entity, entityType}`) | `entityType: "user"` — the call receiver |
+| `on` | object | The call session entity (`{entity, entityType}`) | `entityType: "call"` — [See below ↓](#multiple-categories-call-on-entity) |
+
+---
+
+<span id="multiple-categories-call-on-entity" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities.on.entity` Object (Call Session):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `conversationId` | string | Conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | string | UID of the call sender | `"superhero1"` |
+| `receiver` | string | UID of the call receiver | `"superhero2"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `type` | string | Call type | `"audio"` |
+| `status` | string | Call status | `"initiated"` or `"cancelled"` |
+| `sessionid` | string | Call session ID | `"v1.us.208136f5ba34a5a2.1772711101..."` |
+| `initiatedAt` | number | Timestamp when the call was initiated (epoch) | `1772711101` |
+| `joinedAt` | number | Timestamp when the caller joined (epoch, present for `initiated`) | `1772711101` |
+| `data` | object | Nested entities for sender/receiver | Contains `entities` with `sender` and `receiver` wrappers |
+| `wsChannel` | object | WebSocket channel details for the call | `{"identity": "...", "secret": "...", "service": "..."}` |
+
+</Accordion>
 
 ## Messages for multiple types
 
@@ -707,6 +1643,139 @@ let GUID: string = "GUID",
 
 Using the above code snippet, you can fetch all the media messages.
 
+<Accordion title="Response">
+**On Success** — Returns an array of media `Message` objects matching the specified types (`image` and `audio` in this example):
+
+<span id="multiple-types-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125754"` |
+| `muid` | string | Client-generated unique message ID | `"_i62mzac34"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type (matches the requested types) | `"audio"` or `"image"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#multiple-types-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#multiple-types-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1772791833` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1772791833` |
+| `metadata` | object | File and extension metadata | [See below ↓](#multiple-types-metadata-object) |
+| `data` | object | Additional message data including attachments and entities | [See below ↓](#multiple-types-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="multiple-types-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772791811` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="multiple-types-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772719315` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="multiple-types-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+The metadata structure varies by message type:
+
+**For `audio` messages:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `file` | array | File reference array | `[]` |
+| `fileName` | string | Name of the audio file | `"recording.wav"` |
+| `fileSize` | number | File size in bytes | `409004` |
+| `fileType` | string | MIME type of the file | `"audio/wav"` |
+
+**For `image` messages:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+| `file` | array | File reference array | `[]` |
+| `fileName` | string | Name of the image file | `"dummy.webp"` |
+| `fileSize` | number | File size in bytes | `19554` |
+| `fileType` | string | MIME type of the file | `"image/webp"` |
+
+**`metadata.@injected.extensions` Object (Image):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `thumbnail-generation` | object | Generated thumbnail URLs for the image | Contains `url_small`, `url_medium`, `url_large`, and `attachments` array |
+
+---
+
+<span id="multiple-types-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `attachments` | array | Array of attachment objects | [See below ↓](#multiple-types-attachments-object) |
+| `url` | string | Direct URL to the media file | `"https://data-us.cometchat.io/..."` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-3893da9d-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#multiple-types-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#multiple-types-entities-object) |
+
+---
+
+<span id="multiple-types-attachments-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.attachments` Array (per item):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `extension` | string | File extension | `"wav"` or `"webp"` |
+| `mimeType` | string | MIME type | `"audio/wav"` or `"image/webp"` |
+| `name` | string | File name | `"recording.wav"` |
+| `size` | number | File size in bytes | `409004` |
+| `url` | string | Direct URL to the file | `"https://data-us.cometchat.io/..."` |
+
+---
+
+<span id="multiple-types-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#multiple-types-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#multiple-types-receiver-object) |
+
+</Accordion>
+
 ## Messages for a specific thread
 
 *In other words, how do I fetch messages that are a part of a thread and not directly a user/group conversations*
@@ -776,6 +1845,110 @@ let GUID: string = "GUID",
 
 The above code snippet returns the messages that belong to the thread with parent id 100.
 
+<Accordion title="Response">
+**On Success** — Returns an array of `TextMessage` objects that belong to the specified thread (replies to the parent message):
+
+<span id="thread-messages-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125758"` |
+| `muid` | string | Client-generated unique message ID | `"_angx5llih"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The text content of the thread reply | `"thread reply 1"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `parentMessageId` | string | ID of the parent message this reply belongs to | `"125751"` |
+| `sender` | object | Sender user details | [See below ↓](#thread-messages-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#thread-messages-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1772797901` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1772797901` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#thread-messages-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#thread-messages-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="thread-messages-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772797895` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="thread-messages-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1772719315` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="thread-messages-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "thread reply 1", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="thread-messages-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content of the thread reply | `"thread reply 1"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-7cf7e736-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#thread-messages-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#thread-messages-entities-object) |
+
+---
+
+<span id="thread-messages-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#thread-messages-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#thread-messages-receiver-object) |
+
+</Accordion>
+
 ## Hide threaded messages in user/group conversations
 
 *In other words, how do I exclude threaded messages from the normal user/group conversations*
@@ -838,6 +2011,110 @@ let GUID: string = "GUID",
 </Tab>
 
 </Tabs>
+
+<Accordion title="Response">
+**On Success** — Returns an array of `TextMessage` objects from the main conversation only (thread replies are excluded). Messages that are thread parents will still appear with their `replyCount`:
+
+<span id="hide-threaded-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125884"` |
+| `muid` | string | Client-generated unique message ID | `"_g5o26um1n"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The text content of the message | `"hello"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `replyCount` | number | Number of thread replies (present only on thread parent messages) | `2` |
+| `sender` | object | Sender user details | [See below ↓](#hide-threaded-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#hide-threaded-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1773060107` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1773060107` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#hide-threaded-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#hide-threaded-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="hide-threaded-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773060100` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="hide-threaded-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773041090` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="hide-threaded-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "hello", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="hide-threaded-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content | `"hello"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-5c0e1cd7-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#hide-threaded-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#hide-threaded-entities-object) |
+
+---
+
+<span id="hide-threaded-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#hide-threaded-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#hide-threaded-receiver-object) |
+
+</Accordion>
 
 ## Hide deleted messages in user/group conversations
 
@@ -902,6 +2179,110 @@ let GUID: string = "GUID",
 
 </Tabs>
 
+<Accordion title="Response">
+
+On Success — Returns an array of `TextMessage` objects from the conversation, excluding any messages that have been deleted. Deleted messages are simply absent from the results. In this example, `categories: ["message"]` was also set to filter for standard messages only.
+
+<span id="hide-deleted-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per element in the array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125904"` |
+| `muid` | string | Client-generated unique message ID | `"_nj0d6qk3v"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | Text content of the message | `"msg before deleted msg"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#hide-deleted-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#hide-deleted-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1773129488` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1773129488` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#hide-deleted-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#hide-deleted-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="hide-deleted-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773129390` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="hide-deleted-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773124800` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="hide-deleted-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "msg before deleted msg", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="hide-deleted-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content of the message | `"msg before deleted msg"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-939a34c6-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#hide-deleted-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#hide-deleted-entities-object) |
+
+---
+
+<span id="hide-deleted-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#hide-deleted-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#hide-deleted-receiver-object) |
+
+</Accordion>
+
 ## Hide quoted messages in user/group conversations
 
 *In other words, how do I exclude quoted messages in a user/group conversations*
@@ -964,6 +2345,109 @@ let GUID: string = "GUID",
 </Tab>
 
 </Tabs>
+
+<Accordion title="Response">
+**On Success** — Returns an array of `TextMessage` objects from the conversation, excluding any messages that were sent as quoted replies. Only original (non-quoted) messages are included:
+
+<span id="hide-quoted-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125889"` |
+| `muid` | string | Client-generated unique message ID | `"_5d8kekzrn"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The text content of the message | `"hello"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#hide-quoted-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#hide-quoted-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1773060624` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1773060624` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#hide-quoted-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#hide-quoted-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="hide-quoted-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773060591` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="hide-quoted-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773041090` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="hide-quoted-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "hello", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="hide-quoted-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content | `"hello"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-5c0e1cd7-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#hide-quoted-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#hide-quoted-entities-object) |
+
+---
+
+<span id="hide-quoted-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#hide-quoted-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#hide-quoted-receiver-object) |
+
+</Accordion>
 
 ## Messages by tags
 
@@ -1032,6 +2516,109 @@ let GUID: string = "GUID",
 
 </Tabs>
 
+<Accordion title="Response">
+**On Success** — Returns an array of `TextMessage` objects that match the specified tags (`tags: ["tag1"]` in this example). Only messages tagged with the provided tags are returned:
+
+<span id="messages-by-tags-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125893"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The text content of the message | `"message 1 with tag1"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#messages-by-tags-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#messages-by-tags-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1773123536` |
+| `deliveredAt` | number | Timestamp when the message was delivered (epoch) | `1773123537` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1773123537` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#messages-by-tags-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#messages-by-tags-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="messages-by-tags-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773123450` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-by-tags-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773123510` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-by-tags-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "message 1 with tag1", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="messages-by-tags-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content | `"message 1 with tag1"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-705024e4-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#messages-by-tags-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#messages-by-tags-entities-object) |
+
+---
+
+<span id="messages-by-tags-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#messages-by-tags-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#messages-by-tags-receiver-object) |
+
+</Accordion>
+
 ## Messages with tags
 
 *In other words, how do I fetch messages with the tags information*
@@ -1094,6 +2681,110 @@ let GUID: string = "GUID",
 </Tab>
 
 </Tabs>
+
+<Accordion title="Response">
+**On Success** — Returns an array of `TextMessage` objects with the `tags` information included on each message. Messages that have tags will include a `tags` array, while messages without tags will not have this field:
+
+<span id="messages-with-tags-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125894"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The text content of the message | `"hello"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `tags` | array | Array of tag strings associated with this message (only present on tagged messages) | `["tag1"]` |
+| `sender` | object | Sender user details | [See below ↓](#messages-with-tags-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#messages-with-tags-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1773123546` |
+| `deliveredAt` | number | Timestamp when the message was delivered (epoch) | `1773123547` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1773123547` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#messages-with-tags-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#messages-with-tags-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="messages-with-tags-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773123450` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-with-tags-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773123510` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-with-tags-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "hello", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="messages-with-tags-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content | `"hello"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-705024e4-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#messages-with-tags-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#messages-with-tags-entities-object) |
+
+---
+
+<span id="messages-with-tags-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#messages-with-tags-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#messages-with-tags-receiver-object) |
+
+</Accordion>
 
 ## Messages with links
 
@@ -1164,6 +2855,110 @@ let GUID: string = "GUID",
 
 </Tabs>
 
+<Accordion title="Response">
+**On Success** — Returns an array of `TextMessage` objects that contain links in their text content:
+
+<span id="messages-with-links-response" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per item in array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125896"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Receiver type | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | The text content containing a link | `"hey, check out: https://www.example.com"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#messages-with-links-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#messages-with-links-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1773123969` |
+| `deliveredAt` | number | Timestamp when the message was delivered (epoch) | `1773123969` |
+| `readAt` | number | Timestamp when the message was read (epoch) | `1773123983` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1773123983` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#messages-with-links-metadata-object) |
+| `data` | object | Additional message data including entities | [See below ↓](#messages-with-links-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="messages-with-links-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773123450` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-with-links-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773123678` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-with-links-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "hey, check out: https://www.example.com", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="messages-with-links-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content containing a link | `"hey, check out: https://www.example.com"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-705024e4-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#messages-with-links-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#messages-with-links-entities-object) |
+
+---
+
+<span id="messages-with-links-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#messages-with-links-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#messages-with-links-receiver-object) |
+
+</Accordion>
+
 ## Messages with attachments
 
 In other words, as a logged-in user, how do I fetch messages that contains attachments?
@@ -1232,6 +3027,130 @@ let GUID: string = "GUID",
 </Tab>
 
 </Tabs>
+
+The response will contain a list of media message objects with attachment details, including file metadata and thumbnail URLs.
+
+<Accordion title="Response">
+
+On Success — Returns an array of `MediaMessage` objects. Each message includes an `attachments` array with file details, plus thumbnail generation metadata when available.
+
+<span id="messages-with-attachments-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per element in the array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125898"` |
+| `muid` | string | Client-generated unique message ID | `"_boivkgy41"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type (image, audio, video, file) | `"image"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | Text content (empty for media messages) | — |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#messages-with-attachments-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#messages-with-attachments-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1773124815` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1773124815` |
+| `metadata` | object | Extension metadata (thumbnail generation, file info) | [See below ↓](#messages-with-attachments-metadata-object) |
+| `data` | object | Additional message data including attachments and entities | [See below ↓](#messages-with-attachments-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="messages-with-attachments-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773124809` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-with-attachments-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773124800` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-with-attachments-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+| `file` | array | File reference array | `[]` |
+| `fileName` | string | Original file name | `"dummy.jpg"` |
+| `fileSize` | number | File size in bytes | `5253` |
+| `fileType` | string | MIME type of the file | `"image/jpeg"` |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `thumbnail-generation` | object | Thumbnail generation results with URLs for small, medium, and large thumbnails | `{"url_small": "https://..._small.jpg", "url_medium": "https://..._medium.jpg", "url_large": "https://..._large.jpg", "attachments": [...]}` |
+
+---
+
+<span id="messages-with-attachments-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `url` | string | Direct URL to the media file | `"https://data-us.cometchat.io/.../image.jpg"` |
+| `attachments` | array | Array of attachment objects | [See below ↓](#messages-with-attachments-attachments-array) |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-939a34c6-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#messages-with-attachments-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#messages-with-attachments-entities-object) |
+
+---
+
+<span id="messages-with-attachments-attachments-array" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.attachments` Array (per element):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `extension` | string | File extension | `"jpg"` |
+| `mimeType` | string | MIME type | `"image/jpeg"` |
+| `name` | string | File name | `"dummy.jpg"` |
+| `size` | number | File size in bytes | `5253` |
+| `url` | string | Direct URL to the file | `"https://data-us.cometchat.io/.../image.jpg"` |
+
+---
+
+<span id="messages-with-attachments-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#messages-with-attachments-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#messages-with-attachments-receiver-object) |
+
+</Accordion>
 
 ## Messages with reactions
 
@@ -1302,6 +3221,126 @@ let GUID: string = "GUID",
 
 </Tabs>
 
+The response will contain a list of message objects that have reactions. Each message's `data` object includes a `reactions` array with emoji details.
+
+<Accordion title="Response">
+
+On Success — Returns an array of `BaseMessage` objects (text, media, etc.) that have reactions. Each message's `data` object contains a `reactions` array with reaction emoji, count, and whether the logged-in user reacted.
+
+<span id="messages-with-reactions-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per element in the array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125896"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | Text content of the message | `"hey, check out: https://www.example.com"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#messages-with-reactions-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#messages-with-reactions-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1773123969` |
+| `deliveredAt` | number | Timestamp when the message was delivered (epoch) | `1773123969` |
+| `readAt` | number | Timestamp when the message was read (epoch) | `1773123983` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1773123983` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#messages-with-reactions-metadata-object) |
+| `data` | object | Additional message data including reactions and entities | [See below ↓](#messages-with-reactions-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="messages-with-reactions-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773123450` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-with-reactions-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773123678` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-with-reactions-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "hey, check out: https://www.example.com", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="messages-with-reactions-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content of the message | `"hey, check out: https://www.example.com"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-705024e4-..."` |
+| `reactions` | array | Array of reaction objects | [See below ↓](#messages-with-reactions-reactions-array) |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#messages-with-reactions-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#messages-with-reactions-entities-object) |
+
+---
+
+<span id="messages-with-reactions-reactions-array" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.reactions` Array (per element):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `reaction` | string | The emoji reaction | `"🤡"` |
+| `count` | number | Number of users who reacted with this emoji | `1` |
+| `reactedByMe` | boolean | Whether the logged-in user reacted with this emoji | `true` |
+
+---
+
+<span id="messages-with-reactions-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#messages-with-reactions-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#messages-with-reactions-receiver-object) |
+
+</Accordion>
+
 ## Messages with mentions
 
 In other words, as a logged-in user, how do I fetch messages that contains mentions?
@@ -1370,6 +3409,147 @@ let GUID: string = "GUID",
 </Tab>
 
 </Tabs>
+
+The response will contain a list of text message objects that include mentions. Each message has a `mentionedUsers` array, a `mentionedMe` boolean, and a `data.mentions` object keyed by UID.
+
+<Accordion title="Response">
+
+On Success — Returns an array of `TextMessage` objects that contain mentions. Each message includes `mentionedUsers` (array of user objects), `mentionedMe` (boolean), and `data.mentions` (object keyed by mentioned user UID).
+
+<span id="messages-with-mentions-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per element in the array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125900"` |
+| `muid` | string | Client-generated unique message ID | `"_7ua87khcz"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | Text content with mention syntax | `"🏃 <@uid:superhero2>"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#messages-with-mentions-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#messages-with-mentions-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1773125275` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1773125275` |
+| `mentionedUsers` | array | Array of mentioned user objects | [See below ↓](#messages-with-mentions-mentionedusers-array) |
+| `mentionedMe` | boolean | Whether the logged-in user was mentioned | `false` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#messages-with-mentions-metadata-object) |
+| `data` | object | Additional message data including mentions and entities | [See below ↓](#messages-with-mentions-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="messages-with-mentions-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773125266` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-with-mentions-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773124800` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-with-mentions-mentionedusers-array" style={{scrollMarginTop: '100px'}}></span>
+
+**`mentionedUsers` Array (per element):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID of the mentioned user | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773124800` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="messages-with-mentions-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "🏃 <@uid:superhero2>", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="messages-with-mentions-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content with mention syntax | `"🏃 <@uid:superhero2>"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-939a34c6-..."` |
+| `mentions` | object | Mentioned users keyed by UID | [See below ↓](#messages-with-mentions-data-mentions-object) |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#messages-with-mentions-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#messages-with-mentions-entities-object) |
+
+---
+
+<span id="messages-with-mentions-data-mentions-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.mentions` Object (keyed by UID):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `status` | string | Online status | `"offline"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773124800` |
+| `conversationId` | string | Conversation ID with this user | `"superhero1_user_superhero2"` |
+
+---
+
+<span id="messages-with-mentions-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#messages-with-mentions-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#messages-with-mentions-receiver-object) |
+
+</Accordion>
 
 ## Messages with particular user mentions
 
@@ -1440,6 +3620,147 @@ let GUID: string = "GUID",
 
 </Tabs>
 
+The response will contain a list of text message objects that mention the specific user(s) passed in `setMentionedUIDs()`. Each message includes `mentionedUsers`, `mentionedMe`, and `data.mentions` — filtered to only return messages where the specified UIDs are mentioned.
+
+<Accordion title="Response">
+
+On Success — Returns an array of `TextMessage` objects where the specified user(s) are mentioned. For example, when filtering with `mentions: ["superhero2"]`, only messages that mention `superhero2` are returned. Each message includes `mentionedUsers` (array of user objects), `mentionedMe` (boolean), and `data.mentions` (object keyed by mentioned user UID).
+
+<span id="particular-mentions-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per element in the array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125900"` |
+| `muid` | string | Client-generated unique message ID | `"_7ua87khcz"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type | `"text"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `text` | string | Text content with mention syntax | `"🏃 <@uid:superhero2>"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#particular-mentions-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#particular-mentions-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1773125275` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1773125275` |
+| `mentionedUsers` | array | Array of mentioned user objects | [See below ↓](#particular-mentions-mentionedusers-array) |
+| `mentionedMe` | boolean | Whether the logged-in user was mentioned | `false` |
+| `metadata` | object | Extension metadata (data masking, link preview, etc.) | [See below ↓](#particular-mentions-metadata-object) |
+| `data` | object | Additional message data including mentions and entities | [See below ↓](#particular-mentions-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="particular-mentions-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773125266` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"online"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="particular-mentions-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773124800` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="particular-mentions-mentionedusers-array" style={{scrollMarginTop: '100px'}}></span>
+
+**`mentionedUsers` Array (per element):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID of the mentioned user | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773124800` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="particular-mentions-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `data-masking` | object | Data masking extension results | `{"sensitive_data": "no", "message_masked": "🏃 <@uid:superhero2>", ...}` |
+| `link-preview` | object | Link preview extension results | `{"links": []}` |
+
+---
+
+<span id="particular-mentions-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `text` | string | The text content with mention syntax | `"🏃 <@uid:superhero2>"` |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-939a34c6-..."` |
+| `mentions` | object | Mentioned users keyed by UID | [See below ↓](#particular-mentions-data-mentions-object) |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#particular-mentions-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#particular-mentions-entities-object) |
+
+---
+
+<span id="particular-mentions-data-mentions-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.mentions` Object (keyed by UID):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `status` | string | Online status | `"offline"` |
+| `role` | string | User role | `"default"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773124800` |
+| `conversationId` | string | Conversation ID with this user | `"superhero1_user_superhero2"` |
+
+---
+
+<span id="particular-mentions-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#particular-mentions-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#particular-mentions-receiver-object) |
+
+</Accordion>
+
 ## Messages with specific attachment types
 
 In other words, as a logged-in user, how do I fetch messages that contain specific types of attachments?
@@ -1508,6 +3829,129 @@ let GUID: string = "GUID",
 </Tab>
 
 </Tabs>
+
+The response will contain a list of media message objects filtered to only the specified attachment types (e.g., image and video). Each message includes an `attachments` array with file details and thumbnail generation metadata.
+
+<Accordion title="Response">
+
+On Success — Returns an array of `MediaMessage` objects matching the specified attachment types. For example, when filtering with `setAttachmentTypes([IMAGE, VIDEO])`, only image and video messages are returned. Each message includes `attachments`, file metadata, and thumbnail URLs.
+
+<span id="specific-attachment-types-message-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Message Object (per element in the array):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `id` | string | Unique message ID | `"125898"` |
+| `muid` | string | Client-generated unique message ID | `"_boivkgy41"` |
+| `receiverId` | string | UID of the receiver | `"superhero2"` |
+| `type` | string | Message type (matches the filtered attachment types) | `"image"` or `"video"` |
+| `receiverType` | string | Type of receiver | `"user"` |
+| `category` | string | Message category | `"message"` |
+| `conversationId` | string | Unique conversation identifier | `"superhero1_user_superhero2"` |
+| `sender` | object | Sender user details | [See below ↓](#specific-attachment-types-sender-object) |
+| `receiver` | object | Receiver user details | [See below ↓](#specific-attachment-types-receiver-object) |
+| `sentAt` | number | Timestamp when the message was sent (epoch) | `1773124815` |
+| `updatedAt` | number | Timestamp when the message was last updated (epoch) | `1773124815` |
+| `metadata` | object | Extension metadata (thumbnail generation, file info) | [See below ↓](#specific-attachment-types-metadata-object) |
+| `data` | object | Additional message data including attachments and entities | [See below ↓](#specific-attachment-types-data-object) |
+| `rawMessage` | object | Raw message object as received from the server | Same structure as the parent message object (without the `rawMessage` field) |
+
+---
+
+<span id="specific-attachment-types-sender-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`sender` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero1"` |
+| `name` | string | Display name | `"Iron Man"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773124809` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="specific-attachment-types-receiver-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`receiver` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `uid` | string | Unique user ID | `"superhero2"` |
+| `name` | string | Display name | `"Captain America"` |
+| `lastActiveAt` | number | Last active timestamp (epoch) | `1773124800` |
+| `role` | string | User role | `"default"` |
+| `status` | string | Online status | `"offline"` |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user | `false` |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user | `false` |
+| `deactivatedAt` | number | Deactivation timestamp (0 if active) | `0` |
+
+---
+
+<span id="specific-attachment-types-metadata-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`metadata` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `@injected` | object | Server-injected extension data | Contains `extensions` object |
+| `file` | array | File reference array | `[]` |
+| `fileName` | string | Original file name | `"dummy.jpg"` |
+| `fileSize` | number | File size in bytes | `5253` |
+| `fileType` | string | MIME type of the file | `"image/jpeg"` |
+
+**`metadata.@injected.extensions` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `thumbnail-generation` | object | Thumbnail generation results with URLs for small, medium, and large thumbnails | `{"url_small": "https://..._small.jpg", "url_medium": "https://..._medium.jpg", "url_large": "https://..._large.jpg", "attachments": [...]}` |
+
+---
+
+<span id="specific-attachment-types-data-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `url` | string | Direct URL to the media file | `"https://data-us.cometchat.io/.../image.jpg"` |
+| `attachments` | array | Array of attachment objects | [See below ↓](#specific-attachment-types-attachments-array) |
+| `resource` | string | SDK resource identifier | `"WEB-4_1_8-939a34c6-..."` |
+| `metadata` | object | Same as top-level metadata | [See above ↑](#specific-attachment-types-metadata-object) |
+| `moderation` | object | Moderation status | `{"status": "approved"}` |
+| `entities` | object | Sender and receiver entity wrappers | [See below ↓](#specific-attachment-types-entities-object) |
+
+---
+
+<span id="specific-attachment-types-attachments-array" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.attachments` Array (per element):**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `extension` | string | File extension | `"jpg"` or `"mov"` |
+| `mimeType` | string | MIME type | `"image/jpeg"` or `"video/quicktime"` |
+| `name` | string | File name | `"dummy.jpg"` |
+| `size` | number | File size in bytes | `5253` |
+| `url` | string | Direct URL to the file | `"https://data-us.cometchat.io/.../image.jpg"` |
+
+---
+
+<span id="specific-attachment-types-entities-object" style={{scrollMarginTop: '100px'}}></span>
+
+**`data.entities` Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `sender` | object | Sender entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [sender ↑](#specific-attachment-types-sender-object) |
+| `receiver` | object | Receiver entity wrapper (`{entity, entityType}`) | `entityType: "user"` — entity matches [receiver ↑](#specific-attachment-types-receiver-object) |
+
+</Accordion>
 
 <Accordion title="Best Practices">
 - **Combine filters strategically**: Use `setCategories()` with `setTypes()` for precise filtering
