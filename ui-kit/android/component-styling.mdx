@@ -604,13 +604,13 @@ What you're changing: option sheet background and icon tint.
 - **Code**:
 ```xml res/values/themes.xml lines
 <resources>
-    <style name="CustomMessageOptionSheetStyle" parent="CometChatPopupMenuStyle">
-        <item name="cometchatPopupMenuItemStartIconTint">#F76808</item>
-        <item name="cometchatPopupMenuBackgroundColor">#FFF9F5</item>
+    <style name="CustomMessageOptionSheetStyle" parent="CometChatMessageOptionSheetStyle">
+        <item name="cometchatMessageOptionSheetIconTint">#F76808</item>
+        <item name="cometchatMessageOptionSheetBackgroundColor">#FFF9F5</item>
     </style>
 
     <style name="AppTheme" parent="CometChatTheme.DayNight">
-        <item name="cometchatPopupMenuStyle">@style/CustomMessageOptionSheetStyle</item>
+        <item name="cometchatMessageListMessageOptionSheetStyle">@style/CustomMessageOptionSheetStyle</item>
     </style>
 </resources>
 ```
