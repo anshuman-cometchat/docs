@@ -86,6 +86,29 @@ CometChatCalls.joinPresentation(generatedToken, presentationSettings, onSuccess:
 
 </Tabs>
 
+<Accordion title="Response">
+**On Success** — A `Widget?` representing the presentation UI to be displayed in your application:
+
+<span id="presenter-start-session-widget-object" style={{scrollMarginTop: '100px'}}></span>
+
+**Widget Object:**
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `callingWidget` | Widget? | A Flutter widget containing the presentation UI. Display this widget in your screen to show the presentation interface. | `Widget` |
+
+</Accordion>
+
+<Accordion title="Error">
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `code` | string | Error code identifier | `"ERR_CHAT_API_FAILURE"` |
+| `message` | string | Human-readable error message | `"Failed to start the presentation session."` |
+| `details` | string | Additional technical details | `"The call token provided is invalid or expired."` |
+
+</Accordion>
+
 The `CometChatCallsEventsListener` listener provides you with the below callback methods:
 
 | Callback Method                                                    | Description                                                                                                                  |
