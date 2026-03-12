@@ -9127,7 +9127,15 @@
                     },
                     "integrationMeta": {
                         "type": "object",
-                        "description": "Required if integrationType is \"agent\". URL where the agent is deployed"
+                        "description": "Required if integrationType is \"agent\". URL where the agent is deployed",
+                        "properties": {
+                            "url": {
+                                "type": "string",
+                                "description": "Deployment URL of the external agent",
+                                "example": "https://my-agent.example.com/api/chat"
+                            }
+                        },
+                        "additionalProperties": true
                     },
                     "actions": {
                         "description": "List of actions",
@@ -9228,7 +9236,15 @@
                     },
                     "integrationMeta": {
                         "type": "object",
-                        "description": "Required if integrationType is \"agent\". URL where the agent is deployed"
+                        "description": "Required if integrationType is \"agent\". URL where the agent is deployed",
+                        "properties": {
+                            "url": {
+                                "type": "string",
+                                "description": "Deployment URL of the external agent",
+                                "example": "https://my-agent.example.com/api/chat"
+                            }
+                        },
+                        "additionalProperties": true
                     },
                     "actions": {
                         "description": "List of actions",
@@ -9742,7 +9758,8 @@
                 },
                 "required": [
                     "name",
-                    "sourceType"
+                    "sourceType",
+                    "constantValue"
                 ]
             },
             "UpdateCustomVariableDto": {
