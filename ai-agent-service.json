@@ -9689,18 +9689,10 @@
                         "items": {
                             "type": "string"
                         }
-                    },
-                    "authMeta": {
-                        "type": "object",
-                        "description": "Credentials or metadata required for authenticating the tool",
-                        "example": [
-                            "emailId: \"example@cometchat.com\""
-                        ]
                     }
                 },
                 "required": [
-                    "actions",
-                    "authMeta"
+                    "actions"
                 ]
             },
             "CreateCustomVariableDto": {
@@ -9954,7 +9946,34 @@
                         "description": "Array of parameters for the API tool",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ApiToolParameter"
+                            "type": "object",
+                            "properties": {
+                                "key": {
+                                    "type": "string",
+                                    "description": "Parameter key/name",
+                                    "example": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "Parameter type",
+                                    "example": "string"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Parameter description",
+                                    "example": "Email of the lead"
+                                },
+                                "required": {
+                                    "type": "boolean",
+                                    "description": "Whether the parameter is required",
+                                    "example": false
+                                }
+                            },
+                            "required": [
+                                "key",
+                                "type",
+                                "description"
+                            ]
                         }
                     },
                     "icon": {
@@ -10042,7 +10061,34 @@
                         "description": "Array of parameters for the API tool",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ApiToolParameter"
+                            "type": "object",
+                            "properties": {
+                                "key": {
+                                    "type": "string",
+                                    "description": "Parameter key/name",
+                                    "example": "email"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "Parameter type",
+                                    "example": "string"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Parameter description",
+                                    "example": "Email of the lead"
+                                },
+                                "required": {
+                                    "type": "boolean",
+                                    "description": "Whether the parameter is required",
+                                    "example": false
+                                }
+                            },
+                            "required": [
+                                "key",
+                                "type",
+                                "description"
+                            ]
                         }
                     },
                     "icon": {
@@ -10358,12 +10404,6 @@
                         "description": "Fetch and return sitemap URLs from the website",
                         "default": false,
                         "example": true
-                    },
-                    "crawlerType": {
-                        "type": "string",
-                        "description": "Crawler service to use for crawling (firecrawl, puppeteer, etc.)",
-                        "default": "firecrawl",
-                        "example": "firecrawl"
                     }
                 },
                 "required": [
@@ -10386,12 +10426,6 @@
                         "default": 30000,
                         "example": 30000
                     },
-                    "crawlerType": {
-                        "type": "string",
-                        "description": "Crawler service to use for page crawling (firecrawl, puppeteer, etc.)",
-                        "default": "firecrawl",
-                        "example": "firecrawl"
-                    },
                     "format": {
                         "type": "string",
                         "description": "Extract content in specific format",
@@ -10413,10 +10447,6 @@
                 "properties": {
                     "exclude": {
                         "description": "Array of unique IDs to exclude from crawling",
-                        "example": [
-                            "550e8400-e29b-41d4-a716-446655440001",
-                            "550e8400-e29b-41d4-a716-446655440002"
-                        ],
                         "type": "array",
                         "items": {
                             "type": "string"
