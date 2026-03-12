@@ -4,7 +4,18 @@
         "/ai-agents/agents": {
             "post": {
                 "operationId": "AgentsController_createAgent",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "chatApiVersion",
+                        "required": false,
+                        "in": "header",
+                        "description": "Chat API version. Defaults to `v3.0`.",
+                        "schema": {
+                            "type": "string",
+                            "default": "v3.0"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -9086,90 +9097,312 @@
         },
         "schemas": {
             "CreateAgentDTO": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "description": "Name of the agent"
-                    },
-                    "icon": {
-                        "type": "string",
-                        "description": "URL to the icon/avatar of the agent"
-                    },
-                    "isActive": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "Is the agent active?"
-                    },
-                    "integrateWith": {
-                        "type": "string",
-                        "description": "ID of the LLM or platform this agent connects to"
-                    },
-                    "integrationType": {
-                        "type": "string",
-                        "enum": [
-                            "llm",
-                            "agent"
-                        ],
-                        "description": "Type of connection: llm or agent"
-                    },
-                    "integrationMeta": {
-                        "type": "object",
-                        "description": "Required if integrationType is \"agent\". URL where the agent is deployed",
-                        "properties": {
-                            "url": {
-                                "type": "string",
-                                "description": "Deployment URL of the external agent",
-                                "example": "https://my-agent.example.com/api/chat"
-                            }
-                        },
-                        "additionalProperties": true
-                    },
-                    "actions": {
-                        "description": "List of actions",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "tools": {
-                        "description": "List of tools",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "cometchatTools": {
-                        "description": "List of CometChat-provided tools",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "instruction": {
-                        "type": "string",
-                        "description": "Instruction for the agent"
-                    },
-                    "suggestions": {
-                        "description": "Array of suggestion texts for the agent",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "metaData": {
-                        "type": "object",
-                        "description": "Optional metadata object for the agent"
+                "discriminator": {
+                    "propertyName": "integrateWith",
+                    "mapping": {
+                        "mastra": "#/components/schemas/CreateMastraAgentDTO",
+                        "mastra-legacy": "#/components/schemas/CreateMastraLegacyAgentDTO",
+                        "langgraph": "#/components/schemas/CreateLangGraphAgentDTO",
+                        "crewai": "#/components/schemas/CreateCrewAIAgentDTO",
+                        "vercelV5": "#/components/schemas/CreateVercelV5AgentDTO",
+                        "ag2": "#/components/schemas/CreateAG2AgentDTO",
+                        "rasa": "#/components/schemas/CreateRasaAgentDTO",
+                        "agno": "#/components/schemas/CreateAgnoAgentDTO",
+                        "ag-ui": "#/components/schemas/CreateAGUIAgentDTO"
                     }
                 },
-                "required": [
-                    "name",
-                    "isActive",
-                    "integrateWith",
-                    "integrationType",
-                    "actions",
-                    "tools"
+                "oneOf": [
+                    { "$ref": "#/components/schemas/CreateMastraAgentDTO" },
+                    { "$ref": "#/components/schemas/CreateMastraLegacyAgentDTO" },
+                    { "$ref": "#/components/schemas/CreateLangGraphAgentDTO" },
+                    { "$ref": "#/components/schemas/CreateCrewAIAgentDTO" },
+                    { "$ref": "#/components/schemas/CreateVercelV5AgentDTO" },
+                    { "$ref": "#/components/schemas/CreateAG2AgentDTO" },
+                    { "$ref": "#/components/schemas/CreateRasaAgentDTO" },
+                    { "$ref": "#/components/schemas/CreateAgnoAgentDTO" },
+                    { "$ref": "#/components/schemas/CreateAGUIAgentDTO" }
                 ]
+            },
+            "CreateMastraAgentDTO": {
+                "type": "object",
+                "required": ["name", "isActive", "integrateWith", "integrationType", "actions", "tools", "integrationMeta"],
+                "properties": {
+                    "name": { "type": "string", "description": "Name of the agent", "example": "My Mastra Agent" },
+                    "icon": { "type": "string", "format": "url", "description": "URL to the icon/avatar of the agent" },
+                    "isActive": { "type": "boolean", "default": true, "description": "Whether the agent is active" },
+                    "integrateWith": { "type": "string", "enum": ["mastra"], "description": "Integration platform identifier" },
+                    "integrationType": { "type": "string", "enum": ["agent"], "description": "Type of connection" },
+                    "integrationMeta": {
+                        "type": "object",
+                        "required": ["baseUrl"],
+                        "description": "Mastra-specific configuration",
+                        "properties": {
+                            "baseUrl": { "type": "string", "description": "The web address where your Mastra agent is hosted", "example": "https://my-mastra-app.example.com" },
+                            "agentId": { "type": "string", "description": "Mastra Agent ID", "example": "weatherAgent" }
+                        }
+                    },
+                    "tools": { "type": "array", "items": { "type": "string" }, "description": "List of tool names (must exist in the app's tools)" },
+                    "actions": { "type": "array", "items": { "type": "string" }, "description": "List of action names (must exist in the app's actions)" },
+                    "metaData": {
+                        "type": "object",
+                        "description": "Metadata for the agent",
+                        "properties": {
+                            "greetingMessage": { "type": "string", "description": "Greeting message shown when a conversation starts" },
+                            "introductoryMessage": { "type": "string", "description": "Introductory message for the agent" },
+                            "suggestedMessages": { "type": "array", "items": { "type": "string" }, "description": "Quick prompts users can click to start a conversation" }
+                        }
+                    }
+                }
+            },
+            "CreateMastraLegacyAgentDTO": {
+                "type": "object",
+                "required": ["name", "isActive", "integrateWith", "integrationType", "actions", "tools", "integrationMeta"],
+                "properties": {
+                    "name": { "type": "string", "description": "Name of the agent", "example": "My Legacy Mastra Agent" },
+                    "icon": { "type": "string", "format": "url", "description": "URL to the icon/avatar of the agent" },
+                    "isActive": { "type": "boolean", "default": true, "description": "Whether the agent is active" },
+                    "integrateWith": { "type": "string", "enum": ["mastra-legacy"], "description": "Integration platform identifier" },
+                    "integrationType": { "type": "string", "enum": ["agent"], "description": "Type of connection" },
+                    "integrationMeta": {
+                        "type": "object",
+                        "required": ["baseUrl"],
+                        "description": "Mastra (Legacy) configuration",
+                        "properties": {
+                            "baseUrl": { "type": "string", "description": "The web address where your Mastra agent is hosted", "example": "https://my-mastra-legacy.example.com" },
+                            "agentId": { "type": "string", "description": "Mastra Agent ID", "example": "weatherAgent" }
+                        }
+                    },
+                    "tools": { "type": "array", "items": { "type": "string" }, "description": "List of tool names (must exist in the app's tools)" },
+                    "actions": { "type": "array", "items": { "type": "string" }, "description": "List of action names (must exist in the app's actions)" },
+                    "metaData": {
+                        "type": "object",
+                        "description": "Metadata for the agent",
+                        "properties": {
+                            "greetingMessage": { "type": "string", "description": "Greeting message shown when a conversation starts" },
+                            "introductoryMessage": { "type": "string", "description": "Introductory message for the agent" },
+                            "suggestedMessages": { "type": "array", "items": { "type": "string" }, "description": "Quick prompts users can click to start a conversation" }
+                        }
+                    }
+                }
+            },
+            "CreateLangGraphAgentDTO": {
+                "type": "object",
+                "required": ["name", "isActive", "integrateWith", "integrationType", "actions", "tools", "integrationMeta"],
+                "properties": {
+                    "name": { "type": "string", "description": "Name of the agent", "example": "My LangGraph Agent" },
+                    "icon": { "type": "string", "format": "url", "description": "URL to the icon/avatar of the agent" },
+                    "isActive": { "type": "boolean", "default": true, "description": "Whether the agent is active" },
+                    "integrateWith": { "type": "string", "enum": ["langgraph"], "description": "Integration platform identifier" },
+                    "integrationType": { "type": "string", "enum": ["agent"], "description": "Type of connection" },
+                    "integrationMeta": {
+                        "type": "object",
+                        "required": ["baseUrl"],
+                        "description": "LangGraph-specific configuration",
+                        "properties": {
+                            "baseUrl": { "type": "string", "description": "The web address where your agent is hosted", "example": "https://my-langgraph-app.example.com" },
+                            "headers": { "type": "object", "description": "Custom headers as JSON object (e.g., authorization tokens)", "example": { "authorization": "Basic your_basic_auth" } }
+                        }
+                    },
+                    "tools": { "type": "array", "items": { "type": "string" }, "description": "List of tool names (must exist in the app's tools)" },
+                    "actions": { "type": "array", "items": { "type": "string" }, "description": "List of action names (must exist in the app's actions)" },
+                    "metaData": {
+                        "type": "object",
+                        "description": "Metadata for the agent",
+                        "properties": {
+                            "greetingMessage": { "type": "string", "description": "Greeting message shown when a conversation starts" },
+                            "introductoryMessage": { "type": "string", "description": "Introductory message for the agent" },
+                            "suggestedMessages": { "type": "array", "items": { "type": "string" }, "description": "Quick prompts users can click to start a conversation" }
+                        }
+                    }
+                }
+            },
+            "CreateCrewAIAgentDTO": {
+                "type": "object",
+                "required": ["name", "isActive", "integrateWith", "integrationType", "actions", "tools", "integrationMeta"],
+                "properties": {
+                    "name": { "type": "string", "description": "Name of the agent", "example": "My CrewAI Agent" },
+                    "icon": { "type": "string", "format": "url", "description": "URL to the icon/avatar of the agent" },
+                    "isActive": { "type": "boolean", "default": true, "description": "Whether the agent is active" },
+                    "integrateWith": { "type": "string", "enum": ["crewai"], "description": "Integration platform identifier" },
+                    "integrationType": { "type": "string", "enum": ["agent"], "description": "Type of connection" },
+                    "integrationMeta": {
+                        "type": "object",
+                        "required": ["baseUrl"],
+                        "description": "CrewAI compatible agent configuration",
+                        "properties": {
+                            "baseUrl": { "type": "string", "description": "The web address where your CrewAI agent is hosted", "example": "https://my-crewai-app.example.com" },
+                            "headers": { "type": "object", "description": "Custom headers as JSON object (e.g., authorization tokens)", "example": { "authorization": "Basic your_basic_auth" } }
+                        }
+                    },
+                    "tools": { "type": "array", "items": { "type": "string" }, "description": "List of tool names (must exist in the app's tools)" },
+                    "actions": { "type": "array", "items": { "type": "string" }, "description": "List of action names (must exist in the app's actions)" },
+                    "metaData": {
+                        "type": "object",
+                        "description": "Metadata for the agent",
+                        "properties": {
+                            "greetingMessage": { "type": "string", "description": "Greeting message shown when a conversation starts" },
+                            "introductoryMessage": { "type": "string", "description": "Introductory message for the agent" },
+                            "suggestedMessages": { "type": "array", "items": { "type": "string" }, "description": "Quick prompts users can click to start a conversation" }
+                        }
+                    }
+                }
+            },
+            "CreateVercelV5AgentDTO": {
+                "type": "object",
+                "required": ["name", "isActive", "integrateWith", "integrationType", "actions", "tools", "integrationMeta"],
+                "properties": {
+                    "name": { "type": "string", "description": "Name of the agent", "example": "My Vercel Agent" },
+                    "icon": { "type": "string", "format": "url", "description": "URL to the icon/avatar of the agent" },
+                    "isActive": { "type": "boolean", "default": true, "description": "Whether the agent is active" },
+                    "integrateWith": { "type": "string", "enum": ["vercelV5"], "description": "Integration platform identifier" },
+                    "integrationType": { "type": "string", "enum": ["agent"], "description": "Type of connection" },
+                    "integrationMeta": {
+                        "type": "object",
+                        "required": ["baseUrl"],
+                        "description": "Vercel AI V5 configuration",
+                        "properties": {
+                            "baseUrl": { "type": "string", "description": "The web address where your Vercel AI agent is hosted", "example": "https://my-vercel-app.vercel.app/api/chat" },
+                            "headers": { "type": "object", "description": "Custom headers as JSON object (e.g., authorization tokens)", "example": { "authorization": "Bearer token123" } }
+                        }
+                    },
+                    "tools": { "type": "array", "items": { "type": "string" }, "description": "List of tool names (must exist in the app's tools)" },
+                    "actions": { "type": "array", "items": { "type": "string" }, "description": "List of action names (must exist in the app's actions)" },
+                    "metaData": {
+                        "type": "object",
+                        "description": "Metadata for the agent",
+                        "properties": {
+                            "greetingMessage": { "type": "string", "description": "Greeting message shown when a conversation starts" },
+                            "introductoryMessage": { "type": "string", "description": "Introductory message for the agent" },
+                            "suggestedMessages": { "type": "array", "items": { "type": "string" }, "description": "Quick prompts users can click to start a conversation" }
+                        }
+                    }
+                }
+            },
+            "CreateAG2AgentDTO": {
+                "type": "object",
+                "required": ["name", "isActive", "integrateWith", "integrationType", "actions", "tools", "integrationMeta"],
+                "properties": {
+                    "name": { "type": "string", "description": "Name of the agent", "example": "My AG2 Agent" },
+                    "icon": { "type": "string", "format": "url", "description": "URL to the icon/avatar of the agent" },
+                    "isActive": { "type": "boolean", "default": true, "description": "Whether the agent is active" },
+                    "integrateWith": { "type": "string", "enum": ["ag2"], "description": "Integration platform identifier" },
+                    "integrationType": { "type": "string", "enum": ["agent"], "description": "Type of connection" },
+                    "integrationMeta": {
+                        "type": "object",
+                        "required": ["baseUrl"],
+                        "description": "AG2-specific configuration",
+                        "properties": {
+                            "baseUrl": { "type": "string", "description": "The web address where your AG2 agent is hosted", "example": "https://my-ag2-app.example.com" },
+                            "defaultUserId": { "type": "string", "description": "Default User ID", "example": "user_123" },
+                            "headers": { "type": "string", "description": "Headers as key:value pairs, each on a new line. Should be valid JSON", "example": "{\"authorization\": \"Bearer token123\"}" }
+                        }
+                    },
+                    "tools": { "type": "array", "items": { "type": "string" }, "description": "List of tool names (must exist in the app's tools)" },
+                    "actions": { "type": "array", "items": { "type": "string" }, "description": "List of action names (must exist in the app's actions)" },
+                    "metaData": {
+                        "type": "object",
+                        "description": "Metadata for the agent",
+                        "properties": {
+                            "greetingMessage": { "type": "string", "description": "Greeting message shown when a conversation starts" },
+                            "introductoryMessage": { "type": "string", "description": "Introductory message for the agent" },
+                            "suggestedMessages": { "type": "array", "items": { "type": "string" }, "description": "Quick prompts users can click to start a conversation" }
+                        }
+                    }
+                }
+            },
+            "CreateRasaAgentDTO": {
+                "type": "object",
+                "required": ["name", "isActive", "integrateWith", "integrationType", "actions", "tools", "integrationMeta"],
+                "properties": {
+                    "name": { "type": "string", "description": "Name of the agent", "example": "My Rasa Agent" },
+                    "icon": { "type": "string", "format": "url", "description": "URL to the icon/avatar of the agent" },
+                    "isActive": { "type": "boolean", "default": true, "description": "Whether the agent is active" },
+                    "integrateWith": { "type": "string", "enum": ["rasa"], "description": "Integration platform identifier" },
+                    "integrationType": { "type": "string", "enum": ["agent"], "description": "Type of connection" },
+                    "integrationMeta": {
+                        "type": "object",
+                        "required": ["baseUrl"],
+                        "description": "Rasa-specific configuration",
+                        "properties": {
+                            "baseUrl": { "type": "string", "description": "The web address where your Rasa agent is hosted", "example": "https://my-rasa-app.example.com" },
+                            "headers": { "type": "string", "description": "Headers as key:value pairs, each on a new line" }
+                        }
+                    },
+                    "tools": { "type": "array", "items": { "type": "string" }, "description": "List of tool names (must exist in the app's tools)" },
+                    "actions": { "type": "array", "items": { "type": "string" }, "description": "List of action names (must exist in the app's actions)" },
+                    "metaData": {
+                        "type": "object",
+                        "description": "Metadata for the agent",
+                        "properties": {
+                            "greetingMessage": { "type": "string", "description": "Greeting message shown when a conversation starts" },
+                            "introductoryMessage": { "type": "string", "description": "Introductory message for the agent" },
+                            "suggestedMessages": { "type": "array", "items": { "type": "string" }, "description": "Quick prompts users can click to start a conversation" }
+                        }
+                    }
+                }
+            },
+            "CreateAgnoAgentDTO": {
+                "type": "object",
+                "required": ["name", "isActive", "integrateWith", "integrationType", "actions", "tools", "integrationMeta"],
+                "properties": {
+                    "name": { "type": "string", "description": "Name of the agent", "example": "My Agno Agent" },
+                    "icon": { "type": "string", "format": "url", "description": "URL to the icon/avatar of the agent" },
+                    "isActive": { "type": "boolean", "default": true, "description": "Whether the agent is active" },
+                    "integrateWith": { "type": "string", "enum": ["agno"], "description": "Integration platform identifier" },
+                    "integrationType": { "type": "string", "enum": ["agent"], "description": "Type of connection" },
+                    "integrationMeta": {
+                        "type": "object",
+                        "required": ["baseUrl"],
+                        "description": "Agno-specific configuration",
+                        "properties": {
+                            "baseUrl": { "type": "string", "description": "The web address where your Agno agent is hosted", "example": "https://my-agno-app.example.com" },
+                            "agentId": { "type": "string", "description": "Agno Agent ID", "example": "my-agent-id" },
+                            "headers": { "type": "string", "description": "Headers as key:value pairs, each on a new line" }
+                        }
+                    },
+                    "tools": { "type": "array", "items": { "type": "string" }, "description": "List of tool names (must exist in the app's tools)" },
+                    "actions": { "type": "array", "items": { "type": "string" }, "description": "List of action names (must exist in the app's actions)" },
+                    "metaData": {
+                        "type": "object",
+                        "description": "Metadata for the agent",
+                        "properties": {
+                            "greetingMessage": { "type": "string", "description": "Greeting message shown when a conversation starts" },
+                            "introductoryMessage": { "type": "string", "description": "Introductory message for the agent" },
+                            "suggestedMessages": { "type": "array", "items": { "type": "string" }, "description": "Quick prompts users can click to start a conversation" }
+                        }
+                    }
+                }
+            },
+            "CreateAGUIAgentDTO": {
+                "type": "object",
+                "required": ["name", "isActive", "integrateWith", "integrationType", "actions", "tools", "integrationMeta"],
+                "properties": {
+                    "name": { "type": "string", "description": "Name of the agent", "example": "My AG-UI Agent" },
+                    "icon": { "type": "string", "format": "url", "description": "URL to the icon/avatar of the agent" },
+                    "isActive": { "type": "boolean", "default": true, "description": "Whether the agent is active" },
+                    "integrateWith": { "type": "string", "enum": ["ag-ui"], "description": "Integration platform identifier" },
+                    "integrationType": { "type": "string", "enum": ["agent"], "description": "Type of connection" },
+                    "integrationMeta": {
+                        "type": "object",
+                        "required": ["baseUrl"],
+                        "description": "AG-UI compatible agent configuration",
+                        "properties": {
+                            "baseUrl": { "type": "string", "description": "The web address where your AG-UI agent is hosted", "example": "https://my-agui-app.example.com" },
+                            "headers": { "type": "object", "description": "Custom headers as JSON object (e.g., authorization tokens)", "example": { "authorization": "Basic your_basic_auth" } }
+                        }
+                    },
+                    "tools": { "type": "array", "items": { "type": "string" }, "description": "List of tool names (must exist in the app's tools)" },
+                    "actions": { "type": "array", "items": { "type": "string" }, "description": "List of action names (must exist in the app's actions)" },
+                    "metaData": {
+                        "type": "object",
+                        "description": "Metadata for the agent",
+                        "properties": {
+                            "greetingMessage": { "type": "string", "description": "Greeting message shown when a conversation starts" },
+                            "introductoryMessage": { "type": "string", "description": "Introductory message for the agent" },
+                            "suggestedMessages": { "type": "array", "items": { "type": "string" }, "description": "Quick prompts users can click to start a conversation" }
+                        }
+                    }
+                }
             },
             "GetAgentDetailDto": {
                 "type": "object",
