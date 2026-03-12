@@ -1339,15 +1339,6 @@
                         "schema": {
                             "type": "string"
                         }
-                    },
-                    {
-                        "name": "slug",
-                        "required": false,
-                        "in": "query",
-                        "description": "Filter by specific integration slug",
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
@@ -1485,15 +1476,6 @@
                         "required": false,
                         "in": "query",
                         "description": "Search term to filter by name/description",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "_",
-                        "required": false,
-                        "in": "query",
-                        "description": "Cache-busting timestamp (ignored by server)",
                         "schema": {
                             "type": "string"
                         }
@@ -1709,17 +1691,28 @@
                         "apiKey": []
                     }
                 ],
-                "summary": "Get Enabled Items",
+                "summary": "List Agent Enabled Items",
                 "tags": [
                     "Agent Builder"
                 ],
-                "description": "Retrieves all enabled items for a specific agent, organized by type. Use this endpoint to audit which tools, actions, and servers are active for an agent.\n\n**Categories:** Tools (with their actions), frontend actions, API tools, and MCP servers. Each category can be individually toggled via query parameters.\n\n**Filtering:** Use the `key` parameter to filter results by name or description across all categories."
+                "description": "Retrieves all enabled items for a specific agent, categorized by type. Use this endpoint to see which tools, frontend actions, API tools, and MCP servers are currently enabled for an agent.\n\n**Categories:** Results are grouped into tools, frontend actions, API tools, and MCP servers. Use query parameters to include or exclude specific categories.\n\n**Search:** Use the `key` parameter to filter enabled items by name or description."
             }
         },
         "/ai-agents/agent-builder/agents": {
             "post": {
                 "operationId": "AgentBuilderController_create",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "chatApiVersion",
+                        "required": false,
+                        "in": "header",
+                        "description": "Chat API version. Defaults to `v3.0`.",
+                        "schema": {
+                            "type": "string",
+                            "default": "v3.0"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -2159,12 +2152,12 @@
                 "description": "Retrieves a paginated list of agents for your CometChat app. Use this endpoint to browse, search, and manage your agents.\n\n**Pagination:** Supports cursor-based pagination using `createdAt` timestamps with prepend/append navigation. Results are sorted by creation date in descending order.\n\n**Search:** Use the `search` parameter to filter agents by name, description, or UID."
             }
         },
-        "/ai-agents/agent-builder/agents/{id}": {
+        "/ai-agents/agent-builder/agents/{uid}": {
             "get": {
                 "operationId": "AgentBuilderController_findOne",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "uid",
                         "required": true,
                         "in": "path",
                         "description": "Unique identifier of the agent",
@@ -2349,7 +2342,7 @@
                 "operationId": "AgentBuilderController_update",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "uid",
                         "required": true,
                         "in": "path",
                         "description": "Unique identifier of the agent",
@@ -2435,7 +2428,7 @@
                 "operationId": "AgentBuilderController_remove",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "uid",
                         "required": true,
                         "in": "path",
                         "description": "Unique identifier of the agent",
@@ -6289,178 +6282,6 @@
                 "summary": "Delete MCP Server"
             }
         },
-        "/ai-agents/agent-builder/tools/agent/{agentUid}": {
-            "get": {
-                "operationId": "ReadyToUseToolsController_getAvailableIntegration",
-                "parameters": [
-                    {
-                        "name": "agentUid",
-                        "required": true,
-                        "in": "path",
-                        "description": "AI Agent UID",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "slug",
-                        "required": false,
-                        "in": "query",
-                        "description": "Optional slug to filter integration (e.g., gmail, googlesheets)",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "limit",
-                        "required": false,
-                        "in": "query",
-                        "schema": {
-                            "type": "number"
-                        }
-                    },
-                    {
-                        "name": "affix",
-                        "required": false,
-                        "in": "query",
-                        "schema": {
-                            "enum": [
-                                "prepend",
-                                "append"
-                            ],
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "createdAt",
-                        "required": false,
-                        "in": "query",
-                        "schema": {
-                            "type": "number"
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "required": false,
-                        "in": "query",
-                        "description": "Search term for tool name or slug",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Available tool integrations retrieved successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "slug": {
-                                                        "type": "string",
-                                                        "example": "gmail"
-                                                    },
-                                                    "name": {
-                                                        "type": "string",
-                                                        "example": "Gmail"
-                                                    },
-                                                    "icon": {
-                                                        "type": "string",
-                                                        "example": "https://example.com/gmail-icon.png"
-                                                    },
-                                                    "description": {
-                                                        "type": "string",
-                                                        "example": "Gmail integration for sending and managing emails"
-                                                    },
-                                                    "actions": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "object"
-                                                        },
-                                                        "example": [
-                                                            {
-                                                                "name": "GMAIL_SEND_EMAIL",
-                                                                "displayName": "Send Email"
-                                                            }
-                                                        ]
-                                                    },
-                                                    "isAuthenticated": {
-                                                        "type": "boolean",
-                                                        "example": false
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        "meta": {
-                                            "type": "object",
-                                            "properties": {
-                                                "previous": {
-                                                    "type": "object",
-                                                    "example": {
-                                                        "affix": "prepend",
-                                                        "createdAt": 1700000000000
-                                                    }
-                                                },
-                                                "current": {
-                                                    "type": "object",
-                                                    "example": {
-                                                        "limit": 10,
-                                                        "count": 5
-                                                    }
-                                                },
-                                                "next": {
-                                                    "type": "object",
-                                                    "example": {
-                                                        "affix": "append",
-                                                        "createdAt": 1700000000000
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized — missing or invalid API key.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ErrorResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ],
-                "summary": "List Tool Integrations",
-                "tags": [
-                    "Agent Builder Ready to Use Tools"
-                ],
-                "description": "Retrieves a paginated list of ready-to-use tool integrations available for the specified agent. Use this endpoint to discover and browse pre-built tool integrations.\n\n**Tool details:** Each tool includes its slug, name, icon, description, available actions, and authentication status.\n\n**Pagination:** Supports cursor-based pagination using the `affix` and `createdAt` query parameters. Optionally filter by slug or search by tool name."
-            }
-        },
         "/ai-agents/agent-builder/agents/{agentUid}/tools/{slug}/actions": {
             "get": {
                 "operationId": "ReadyToUseToolsController_getAvailableToolsForAgent",
@@ -6498,56 +6319,6 @@
                 "tags": [
                     "Agent Builder Ready to Use Tools"
                 ]
-            }
-        },
-        "/ai-agents/agent-builder/agents/{agentUid}/tools/{slug}/authenticate": {
-            "post": {
-                "operationId": "ReadyToUseToolsController_authenticateTool",
-                "parameters": [
-                    {
-                        "name": "agentUid",
-                        "required": true,
-                        "in": "path",
-                        "description": "AI Agent UID",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "slug",
-                        "required": true,
-                        "in": "path",
-                        "description": "Tool slug to authenticate (e.g., gmail, googlesheets)",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AuthenticateToolDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OAuth authentication initiated successfully with redirect URL"
-                    }
-                },
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ],
-                "summary": "Authenticate Tool with OAuth",
-                "tags": [
-                    "Agent Builder Ready to Use Tools"
-                ],
-                "description": "Initiates OAuth authentication for a ready-to-use tool integration. Use this endpoint to connect a tool (e.g., Gmail, Google Sheets) to an agent by generating an OAuth redirect URL.\n\n**Workflow:** After calling this endpoint, redirect the user to the returned URL to complete the OAuth flow."
             }
         },
         "/ai-agents/agent-builder/frontend-actions": {
@@ -9673,7 +9444,6 @@
                     },
                     "tools": {
                         "description": "Array of tool names available to this agent",
-                        "default": [],
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -9681,7 +9451,6 @@
                     },
                     "apiTools": {
                         "description": "Array of API tool names available to this agent",
-                        "default": [],
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -9689,7 +9458,6 @@
                     },
                     "mcpServers": {
                         "description": "Array of MCP server names available to this agent",
-                        "default": [],
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -9710,7 +9478,20 @@
                     },
                     "modelMetaData": {
                         "type": "object",
-                        "description": "Configuration metadata for the AI model"
+                        "description": "Configuration metadata for the AI model",
+                        "properties": {
+                            "temperature": {
+                                "type": "number",
+                                "description": "Controls randomness in responses. Lower values make output more focused and deterministic.",
+                                "example": 0.7
+                            },
+                            "maxTokens": {
+                                "type": "number",
+                                "description": "Maximum number of tokens to generate in the response.",
+                                "example": 4096
+                            }
+                        },
+                        "additionalProperties": true
                     },
                     "isActive": {
                         "type": "boolean",
@@ -9720,7 +9501,6 @@
                 },
                 "required": [
                     "name",
-                    "description",
                     "isActive"
                 ]
             },
@@ -9741,7 +9521,6 @@
                     },
                     "tools": {
                         "description": "Array of tool names available to this agent",
-                        "default": [],
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -9749,7 +9528,6 @@
                     },
                     "apiTools": {
                         "description": "Array of API tool names available to this agent",
-                        "default": [],
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -9757,7 +9535,6 @@
                     },
                     "mcpServers": {
                         "description": "Array of MCP server names available to this agent",
-                        "default": [],
                         "type": "array",
                         "items": {
                             "type": "string"
@@ -9778,7 +9555,20 @@
                     },
                     "modelMetaData": {
                         "type": "object",
-                        "description": "Configuration metadata for the AI model"
+                        "description": "Configuration metadata for the AI model",
+                        "properties": {
+                            "temperature": {
+                                "type": "number",
+                                "description": "Controls randomness in responses. Lower values make output more focused and deterministic.",
+                                "example": 0.7
+                            },
+                            "maxTokens": {
+                                "type": "number",
+                                "description": "Maximum number of tokens to generate in the response.",
+                                "example": 4096
+                            }
+                        },
+                        "additionalProperties": true
                     },
                     "isActive": {
                         "type": "boolean",
@@ -10320,18 +10110,6 @@
                         "type": "string",
                         "description": "Updated icon for the MCP server",
                         "example": "http://localhost:3002/icon.png"
-                    }
-                }
-            },
-            "AuthenticateToolDto": {
-                "type": "object",
-                "properties": {
-                    "authMeta": {
-                        "type": "object",
-                        "description": "Authentication metadata required for the tool",
-                        "example": {
-                            "emailId": "user@example.com"
-                        }
                     }
                 }
             },
