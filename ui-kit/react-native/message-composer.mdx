@@ -69,6 +69,10 @@ return <CometChatMessageComposer group={group} />;
 
 The `onSendButtonPress` event gets activated when the send message button is clicked. It has a predefined function of sending messages entered in the composer `EditText`. However, you can overide this action with the following code snippet.
 
+```tsx
+onSendButtonPress?: (message: CometChat.BaseMessage) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
@@ -94,6 +98,10 @@ return (
 
 This action doesn't change the behavior of the component but rather listens for any errors that occur in the `CometChatMessageComposer` component.
 
+```tsx
+onError?: (error: CometChat.CometChatException) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
@@ -118,6 +126,10 @@ return (
 ##### onTextChange
 
 Function triggered whenever the message input's text value changes, enabling dynamic text handling.
+
+```tsx
+onTextChange?: (text: string) => void
+```
 
 <Tabs>
 <Tab title="App.tsx">

@@ -96,6 +96,10 @@ function App(): React.JSX.Element {
 
 Function invoked when a user item is clicked, typically used to open a user profile or chat screen.
 
+```tsx
+onItemPress?: (groupMember: CometChat.GroupMember) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
@@ -106,7 +110,7 @@ const onPressHandler = (groupMember: CometChat.GroupMember) => {
   //code
 };
 
-return <CometChatGroupMembers onItemPress={onPressHandler} />;
+return <CometChatGroupMembers group={group} onItemPress={onPressHandler} />;
 ```
 
 </Tab>
@@ -119,6 +123,10 @@ return <CometChatGroupMembers onItemPress={onPressHandler} />;
 
 Function executed when a user item is long-pressed, allowing additional actions like delete or block.
 
+```tsx
+onItemLongPress?: (groupMember: CometChat.GroupMember) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
@@ -129,7 +137,7 @@ const onLongPressHandler = (groupMember: CometChat.GroupMember) => {
   //code
 };
 
-return <CometChatGroupMembers onItemLongPress={onLongPressHandler} />;
+return <CometChatGroupMembers group={group} onItemLongPress={onLongPressHandler} />;
 ```
 
 </Tab>
@@ -164,18 +172,23 @@ return <CometChatGroupMembers showBackButton={true} onBack={onBackHandler} />;
 
 Called when an item from the fetched list is selected, useful for multi-selection features.
 
+```tsx
+onSelection?: (list: CometChat.GroupMember[]) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-const onSelectionHandler = (selection: Array<CometChat.GroupMember>) => {
+const onSelectionHandler = (list: CometChat.GroupMember[]) => {
   //code
 };
 
 return (
   <CometChatGroupMembers
+    group={group}
     selectionMode={"single"}
     onSelection={onSelectionHandler}
   />
@@ -192,17 +205,75 @@ return (
 
 This action does not change the behavior of the component but rather listens for any errors that occur in the Group Members component.
 
+```tsx
+onError?: () => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatGroupMembers } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-const onErrorHandler = (error: CometChat.CometChatException) => {
+const onErrorHandler = () => {
   console.log("Error");
 };
 
-return <CometChatGroupMembers onError={onErrorHandler} />;
+return <CometChatGroupMembers group={group} onError={onErrorHandler} />;
+```
+
+</Tab>
+
+</Tabs>
+
+***
+
+##### onLoad
+
+Callback triggered once the group members have loaded (i.e., the fetched list is not empty).
+
+```tsx
+onLoad?: (list: CometChat.GroupMember[]) => void
+```
+
+<Tabs>
+<Tab title="App.tsx">
+```tsx
+import { CometChatGroupMembers } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
+
+const onLoadHandler = (list: CometChat.GroupMember[]) => {
+  console.log("Loaded members:", list.length);
+};
+
+return <CometChatGroupMembers group={group} onLoad={onLoadHandler} />;
+```
+
+</Tab>
+
+</Tabs>
+
+***
+
+##### onEmpty
+
+Callback triggered when the group members list is empty.
+
+```tsx
+onEmpty?: () => void
+```
+
+<Tabs>
+<Tab title="App.tsx">
+```tsx
+import { CometChatGroupMembers } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
+
+const onEmptyHandler = () => {
+  console.log("No group members found");
+};
+
+return <CometChatGroupMembers group={group} onEmpty={onEmptyHandler} />;
 ```
 
 </Tab>
@@ -482,13 +553,20 @@ Below is a list of customizations along with corresponding code snippets
 
 | Property                  | Description                                                                                          | Code                                                   |
 | ------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| **showBackButton**        | Used to show or hide back button                                                                     | `showBackButton={true}?: boolean`                      |
+| **showBackButton**        | Used to show or hide back button                                                                     | `showBackButton?: boolean`                             |
 | **hideError**             | Used to hide error on fetching groups                                                                | `hideError?: boolean`                                  |
 | **hideSearch**            | Used to toggle visibility for search box                                                             | `hideSearch?: boolean`                                 |
-| **searchPlaceholderText** | Used to set custom search placeholder text                                                           | `searchPlaceholderText='Custom Search PlaceHolder'`    |
-| **selectionMode**         | set the number of group members that can be selected, SelectionMode can be single, multiple or none. | `selectionMode?: 'none'` \| `'single'` \| `'multiple'` |
+| **searchPlaceholderText** | Used to set custom search placeholder text                                                           | `searchPlaceholderText?: string`                       |
+| **selectionMode**         | set the number of group members that can be selected, SelectionMode can be single, multiple or none. | `selectionMode?: 'none' \| 'single' \| 'multiple'`     |
 | **group**                 | Used to pass group object of which group members will be shown                                       | `group: CometChat.Group`                               |
 | **hideHeader**            | Used to toggle visibility for the toolbar/header                                                     | `hideHeader?: boolean`                                 |
+| **hideKickMemberOption**  | Hide the "Remove" (Kick) option from the default menu                                                | `hideKickMemberOption?: boolean`                       |
+| **hideBanMemberOption**   | Hide the "Ban" option from the default menu                                                          | `hideBanMemberOption?: boolean`                        |
+| **hideScopeChangeOption** | Hide the "Change Scope" option from the default menu                                                 | `hideScopeChangeOption?: boolean`                      |
+| **hideLoadingState**      | Hide the loading skeleton                                                                            | `hideLoadingState?: boolean`                           |
+| **usersStatusVisibility** | Toggle visibility of user status indicators                                                          | `usersStatusVisibility?: boolean`                      |
+| **searchKeyword**         | Set initial search keyword                                                                           | `searchKeyword?: string`                               |
+| **excludeOwner**          | Exclude the group owner from the members list                                                        | `excludeOwner?: boolean`                               |
 
 ***
 

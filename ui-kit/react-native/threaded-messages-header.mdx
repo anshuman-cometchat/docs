@@ -18,6 +18,9 @@ import { CometChat } from "@cometchat/chat-sdk-react-native";
   parentMessage={parentMessage}
   replyCountVisibility={true}
   replyCountBarVisibility={true}
+  receiptsVisibility={true}
+  avatarVisibility={true}
+  alignment="left"
 />
 ```
 
@@ -152,14 +155,17 @@ These are a set of small functional customizations that allow you to fine-tune t
 
 Below is a list of customizations along with corresponding code snippets
 
-| Property                    | Description                                                         | Code                            |
-| --------------------------- | ------------------------------------------------------------------- | ------------------------------- |
-| **parentMessage**           | Used to to set the message for which the replies need to be fetched | `parentMessage={messageObject}` |
-| **template**                | Used to to set custom template for the parent message               | `template={templateObject}`     |
-| **replyCountVisibility**    | Used to toggle reply count visibility                               | `replyCountVisibility={true}`   |
-| **replyCountBarVisibility** | Used to to toggle reply count bar visibility                        | `template={templateObject}`     |
-| **receiptsVisibility**      | Used to to toggle receipts Visibility                               | `template={templateObject}`     |
-| **avatarVisibility**        | Used to to toggle avatarVisibility                                  | `template={templateObject}`     |
+| Property                    | Description                                                         | Code                                                                                  |
+| --------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **parentMessage**           | Used to to set the message for which the replies need to be fetched | `parentMessage: CometChat.BaseMessage`                                                |
+| **template**                | Used to to set custom template for the parent message               | `template?: CometChatMessageTemplate`                                                 |
+| **replyCountVisibility**    | Used to toggle reply count visibility                               | `replyCountVisibility?: boolean`                                                      |
+| **replyCountBarVisibility** | Used to to toggle reply count bar visibility                        | `replyCountBarVisibility?: boolean`                                                   |
+| **receiptsVisibility**      | Used to to toggle receipts Visibility                               | `receiptsVisibility?: boolean`                                                        |
+| **avatarVisibility**        | Used to to toggle avatarVisibility                                  | `avatarVisibility?: boolean`                                                          |
+| **alignment**               | Alignment type for the parent message bubble                        | `alignment?: MessageBubbleAlignmentType`                                              |
+| **datePattern**             | Function that returns a custom string for the message's sent date   | `datePattern?: (message: CometChat.BaseMessage) => string`                            |
+| **textFormatters**          | Collection of text formatter classes to apply custom formatting     | `textFormatters?: Array<CometChatMentionsFormatter \| CometChatUrlsFormatter \| CometChatTextFormatter>` |
 
 ***
 

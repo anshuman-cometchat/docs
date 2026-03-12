@@ -77,6 +77,13 @@ Simply adding the `CometChatMessageList` component to the layout will result in 
 
 `onThreadRepliesPress` is triggered when you press on the threaded message bubble. The `onThreadRepliesPress` action doesn't have a predefined behavior. You can override this action using the following code snippet.
 
+```tsx
+onThreadRepliesPress?: (
+  messageObject: CometChat.BaseMessage,
+  messageBubbleView: () => JSX.Element | null
+) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
@@ -106,6 +113,10 @@ return (
 
 This action doesn't change the behavior of the component but rather listens for any errors that occur in the MessageList component.
 
+```tsx
+onError?: (e: CometChat.CometChatException) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
@@ -133,6 +144,13 @@ return (
 ##### onReactionLongPress
 
 Function triggered when a user long presses on a reaction pill, allowing developers to override the default behavior.
+
+```tsx
+onReactionLongPress?: (
+  reaction: CometChat.ReactionCount,
+  messageObject: CometChat.BaseMessage
+) => void
+```
 
 <Tabs>
 <Tab title="App.tsx">
@@ -184,6 +202,13 @@ return (
 ##### onReactionPress
 
 Function triggered when a reaction is clicked, enabling developers to customize reaction interactions.
+
+```tsx
+onReactionPress?: (
+  reaction: CometChat.ReactionCount,
+  messageObject: CometChat.BaseMessage
+) => void
+```
 
 <Tabs>
 <Tab title="App.tsx">
@@ -442,6 +467,7 @@ Below is a list of customizations along with corresponding code snippets
 | **hideMessageInfoOption**      | used to toggle visibility of hide message info option in MessageList                                                                               | `hideMessageInfoOption={true}`                            |
 | **hideGroupActionMessages**    | used to toggle visibility of hide group action info option in MessageList                                                                          | `hideGroupActionMessages={true}`                          |
 | **hideTimestamp**              | used to toggle visibility of hide timestamp in MessageList                                                                                         | `hideTimestamp={true}`                                    |
+| **hideModerationStatus**       | Hides moderation status UI (bottom view) and suppresses moderation toasts                                                                          | `hideModerationStatus={true}`                             |
 | **startFromUnreadMessages**    | When set to true, the chat will load from the first unread message if unread messages exist, otherwise loads from the latest messages. Default is false. | `startFromUnreadMessages={true}`                          |
 | **showMarkAsUnreadOption**     | When set to true, shows the "Mark Unread" option in the message actions menu. This option will only appear for received messages, not for the user's own messages. Default is false. | `showMarkAsUnreadOption={true}`                           |
 | **NewMessageIndicatorView**    | Custom view component for the "New Messages" indicator.                                                                                            | `NewMessageIndicatorView={MyCustomIndicator}`             |

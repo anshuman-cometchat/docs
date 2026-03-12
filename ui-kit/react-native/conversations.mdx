@@ -72,13 +72,17 @@ return <CometChatConversations />;
 
 Function executed when an item is pressed in the conversation list, commonly used to navigate to the messages screen or initiate other actions.
 
+```tsx
+onItemPress?: (item: CometChat.Conversation) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-const onPressHandler = (conversationClicked: CometChat.Conversation) => {
+const onPressHandler = (conversation: CometChat.Conversation) => {
   //code
 };
 
@@ -95,13 +99,17 @@ return <CometChatConversations onItemPress={onPressHandler} />;
 
 Function executed when a conversation item is long-pressed, allowing additional actions like delete or select.
 
+```tsx
+onItemLongPress?: (item: CometChat.Conversation) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-const onLongPressHandler = (conversationClicked: CometChat.Conversation) => {
+const onLongPressHandler = (conversation: CometChat.Conversation) => {
   //code
 };
 
@@ -140,13 +148,17 @@ return <CometChatConversations hideBackButton={false} onBack={onBackHandler} />;
 
 Called when an item from the fetched list is selected, useful for multi-selection features.
 
+```tsx
+onSelection?: (conversations: Array<CometChat.Conversation>) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-const onSelectionHandler = (selection: Array<CometChat.Conversation>) => {
+const onSelectionHandler = (conversations: Array<CometChat.Conversation>) => {
   //code
 };
 
@@ -168,14 +180,18 @@ return (
 
 This action does not change the behavior of the component but rather listens for any errors that occur in the Conversations component.
 
+```tsx
+onError?: (e: CometChat.CometChatException) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-const onErrorHandler = (error: CometChat.CometChatException) => {
-  console.log("Error");
+const onErrorHandler = (e: CometChat.CometChatException) => {
+  console.log("Error:", e);
 };
 
 return <CometChatConversations onError={onErrorHandler} />;
@@ -213,13 +229,18 @@ return <CometChatConversations onEmpty={onEmptyHandler} />;
 
 Invoked when the list is successfully fetched and loaded, helping track component readiness.
 
+```tsx
+onLoad?: (list: CometChat.Conversation[]) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-const onLoadHandler = () => {
-  console.log("Loading");
+const onLoadHandler = (list: CometChat.Conversation[]) => {
+  console.log("Conversations loaded:", list.length);
 };
 
 return <CometChatConversations onLoad={onLoadHandler} />;
@@ -231,9 +252,75 @@ return <CometChatConversations onLoad={onLoadHandler} />;
 
 ***
 
+##### onSearchBarClicked
+
+Callback triggered when the search bar is clicked or focused.
+
+```tsx
+onSearchBarClicked?: () => void
+```
+
+<Tabs>
+<Tab title="App.tsx">
+```tsx
+import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
+
+const onSearchBarClickedHandler = () => {
+  console.log("Search bar clicked");
+};
+
+return (
+  <CometChatConversations
+    showSearchBar={true}
+    onSearchBarClicked={onSearchBarClickedHandler}
+  />
+);
+```
+
+</Tab>
+
+</Tabs>
+
+***
+
+##### onSearchTextChanged
+
+Callback triggered when search text changes.
+
+```tsx
+onSearchTextChanged?: (searchText: string) => void
+```
+
+<Tabs>
+<Tab title="App.tsx">
+```tsx
+import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
+
+const onSearchTextChangedHandler = (searchText: string) => {
+  console.log("Search text:", searchText);
+};
+
+return (
+  <CometChatConversations
+    showSearchBar={true}
+    onSearchTextChanged={onSearchTextChangedHandler}
+  />
+);
+```
+
+</Tab>
+
+</Tabs>
+
+***
+
 ##### onSubmit
 
 Called when submit selection button is pressed.
+
+```tsx
+onSubmit?: (conversation: Array<CometChat.Conversation>) => void
+```
 
 <Tabs>
 <Tab title="App.tsx">
@@ -391,15 +478,17 @@ Below is a list of customizations along with corresponding code snippets
 
 | Property                               | Description                                                                                                                                           | Code                                         |
 | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| **hideBackButton**                     | Prop used to toggle the visibility of the back button in the app bar.                                                                                 | `hideBackButton={true}`                      |
-| **hideHeader**                         | Prop used to toggle visibility for the toolbar/header bar                                                                                             | `hideHeader={true}`                          |
-| **hideError**                          | Prop to hide error state on fetching conversations                                                                                                    | `hideError={true}`                           |
-| **receiptsVisibility**                 | Prop used to control the visibility of read receipts without affecting the functionality of marking messages as read and delivered                    | `receiptsVisibility={false}`                 |
-| **selectionMode**                      | This method determines the selection mode for conversations, enabling users to select either a single conversation or multiple conversations at once. | `selectionMode="multiple"`                   |
-| **hideSubmitButton**                   | Prop used to toggle the visibility of the submit button when selectionMode is enabled.                                                                | `hideSubmitButton={true}`                    |
-| **usersStatusVisibility**              | Prop used to toggle user status visibility.                                                                                                           | `usersStatusVisibility={false}`              |
-| **groupTypeVisibility**                | Prop used to toggle group type visibility.                                                                                                            | `groupTypeVisibility={false}`                |
-| **deleteConversationOptionVisibility** | Prop used to toggle delete conversation option visibility.                                                                                            | `deleteConversationOptionVisibility={false}` |
+| **hideBackButton**                     | Prop used to toggle the visibility of the back button in the app bar.                                                                                 | `hideBackButton?: boolean`                   |
+| **hideHeader**                         | Prop used to toggle visibility for the toolbar/header bar                                                                                             | `hideHeader?: boolean`                       |
+| **hideError**                          | Prop to hide error state on fetching conversations                                                                                                    | `hideError?: boolean`                        |
+| **receiptsVisibility**                 | Prop used to control the visibility of read receipts without affecting the functionality of marking messages as read and delivered                    | `receiptsVisibility?: boolean`               |
+| **selectionMode**                      | This method determines the selection mode for conversations, enabling users to select either a single conversation or multiple conversations at once. | `selectionMode?: SelectionMode`              |
+| **hideSubmitButton**                   | Prop used to toggle the visibility of the submit button when selectionMode is enabled.                                                                | `hideSubmitButton?: boolean`                 |
+| **usersStatusVisibility**              | Prop used to toggle user status visibility.                                                                                                           | `usersStatusVisibility?: boolean`            |
+| **groupTypeVisibility**                | Prop used to toggle group type visibility.                                                                                                            | `groupTypeVisibility?: boolean`              |
+| **deleteConversationOptionVisibility** | Prop used to toggle delete conversation option visibility.                                                                                            | `deleteConversationOptionVisibility?: boolean` |
+| **showSearchBar**                      | Toggle search bar visibility in the conversations header.                                                                                             | `showSearchBar?: boolean`                    |
+| **searchText**                         | Current search text value.                                                                                                                            | `searchText?: string`                        |
 
 ### Advanced
 
@@ -468,6 +557,10 @@ return (
 
 This method allows developers to set a custom loading view that is displayed when data is being fetched or loaded within the component. Instead of using a default loading spinner, a custom animation, progress bar, or branded loading screen can be displayed.
 
+```tsx
+LoadingView?: () => JSX.Element
+```
+
 Use cases:
 
 * Showing a skeleton loader for conversations while data loads
@@ -477,7 +570,7 @@ Use cases:
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
-import { CometChatUsers } from "@cometchat/chat-uikit-react-native";
+import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
 //code
 const getLoadingView = (): JSX.Element => {
   //your custom Loading View
@@ -499,6 +592,10 @@ return (
 #### EmptyView
 
 Configures a custom view to be displayed when there are no conversations or messages in the list. This improves the user experience by providing meaningful content instead of an empty screen.
+
+```tsx
+EmptyView?: () => JSX.Element
+```
 
 Examples:
 
@@ -530,6 +627,10 @@ return (
 
 Defines a custom error state view that appears when an issue occurs while loading conversations or messages. This enhances the user experience by displaying friendly error messages instead of generic system errors.
 
+```tsx
+ErrorView?: () => JSX.Element
+```
+
 Common use cases:
 
 * Showing "Something went wrong. Please try again." with a retry button
@@ -559,6 +660,10 @@ return (
 #### LeadingView
 
 Allows setting a custom leading view element that appears at the beginning of each conversation item. This is typically used to modify profile pictures, avatars, or icons in the conversation list.
+
+```tsx
+LeadingView?: (conversation: CometChat.Conversation) => JSX.Element
+```
 
 Examples:
 
@@ -594,6 +699,10 @@ return (
 
 Overrides the default title view in the conversation list with a custom layout. This is useful for branding or modifying how conversation names and details are displayed.
 
+```tsx
+TitleView?: (conversation: CometChat.Conversation) => JSX.Element
+```
+
 Examples:
 
 * Displaying conversation titles with additional metadata (e.g., last seen time)
@@ -606,7 +715,7 @@ Examples:
 import { CometChatConversations } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 //code
-const getTitleView = (user: CometChat.Conversation): JSX.Element => {
+const getTitleView = (conversation: CometChat.Conversation): JSX.Element => {
   //your custom Title View
   //return jsx;
 };
@@ -630,6 +739,10 @@ Demonstration
 #### TrailingView
 
 Customizes the trailing (end) view of a conversation item, which is typically used for action buttons or additional information.
+
+```tsx
+TrailingView?: (item: CometChat.Conversation) => JSX.Element
+```
 
 Examples:
 
@@ -669,6 +782,10 @@ Demonstration
 #### ItemView
 
 This function allows developers to assign a completely custom list item design to the Conversations Component, replacing the default layout.
+
+```tsx
+ItemView?: (item: CometChat.Conversation) => JSX.Element
+```
 
 Use cases:
 

@@ -67,13 +67,17 @@ return <CometChatGroups />;
 
 Function invoked when a Group item is clicked, typically used to open a Group profile or chat screen.
 
+```tsx
+onItemPress?: (item: CometChat.Group) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatGroups } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-const onPressHandler = (user: CometChat.Group) => {
+const onPressHandler = (group: CometChat.Group) => {
   //code
 };
 
@@ -90,13 +94,17 @@ return <CometChatGroups onItemPress={onPressHandler} />;
 
 Function executed when a Group item is long-pressed, allowing additional actions like delete or block.
 
+```tsx
+onItemLongPress?: (item: CometChat.Group) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatGroups } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-const onLongPressHandler = (user: CometChat.Group) => {
+const onLongPressHandler = (group: CometChat.Group) => {
   //code
 };
 
@@ -135,13 +143,17 @@ return <CometChatGroups showBackButton={true} onBack={onBackHandler} />;
 
 Called when an item from the fetched list is selected, useful for multi-selection features.
 
+```tsx
+onSelection?: (list: Array<CometChat.Group>) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatGroups } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-const onSelectionHandler = (selection: Array<CometChat.Group>) => {
+const onSelectionHandler = (list: Array<CometChat.Group>) => {
   //code
 };
 
@@ -160,17 +172,74 @@ return (
 
 This action does not change the behavior of the component but rather listens for any errors that occur in the Groups component.
 
+```tsx
+onError?: (e: CometChat.CometChatException) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatGroups } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 
-const onErrorHandler = (error: CometChat.CometChatException) => {
-  console.log("Error");
+const onErrorHandler = (e: CometChat.CometChatException) => {
+  console.log("Error:", e);
 };
 
 return <CometChatGroups onError={onErrorHandler} />;
+```
+
+</Tab>
+
+</Tabs>
+
+***
+
+##### onLoad
+
+Callback triggered once the groups have loaded and are not empty.
+
+```tsx
+onLoad?: (list: CometChat.GroupMember[]) => void
+```
+
+<Tabs>
+<Tab title="App.tsx">
+```tsx
+import { CometChatGroups } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
+
+const onLoadHandler = (list: CometChat.GroupMember[]) => {
+  console.log("Groups loaded:", list.length);
+};
+
+return <CometChatGroups onLoad={onLoadHandler} />;
+```
+
+</Tab>
+
+</Tabs>
+
+***
+
+##### onEmpty
+
+Callback triggered when the fetched list is empty.
+
+```tsx
+onEmpty?: () => void
+```
+
+<Tabs>
+<Tab title="App.tsx">
+```tsx
+import { CometChatGroups } from "@cometchat/chat-uikit-react-native";
+
+const onEmptyHandler = () => {
+  console.log("No groups found");
+};
+
+return <CometChatGroups onEmpty={onEmptyHandler} />;
 ```
 
 </Tab>
@@ -367,15 +436,18 @@ These are a set of small functional customizations that allow you to fine-tune t
 
 Below is a list of customizations along with corresponding code snippets
 
-| Property                  | Description                                                                                                                     | Code                       |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| **hideHeader**            | Used to toggle visibility for the toolbar/header                                                                                | `hideHeader?: boolean`     |
-| **showBackButton**        | Used to toggle visibility for back button                                                                                       | `showBackButton?: boolean` |
-| **hideSearch**            | Used to toggle visibility for search box                                                                                        | `hideSearch?: boolean`     |
-| **hideError**             | Used to hide error on fetching groups                                                                                           | `hideError?: boolean`      |
-| **selectionMode**         | This method determines the selection mode for groups, enabling users to select either a single group or multiple groups at once. | `selectionMode='multiple'` |
-| **hideSubmitButton**      | Used to toggle the visibility of the submit button when selectionMode is enabled.                                               | `hideSubmitButton={true}`  |
-| **searchPlaceholderText** | Used to set search placeholder text                                                                                             | `searchPlaceholderText=''` |
+| Property                  | Description                                                                                                                     | Code                          |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| **hideHeader**            | Used to toggle visibility for the toolbar/header                                                                                | `hideHeader?: boolean`        |
+| **showBackButton**        | Used to toggle visibility for back button                                                                                       | `showBackButton?: boolean`    |
+| **hideSearch**            | Used to toggle visibility for search box                                                                                        | `hideSearch?: boolean`        |
+| **hideError**             | Used to hide error on fetching groups                                                                                           | `hideError?: boolean`         |
+| **selectionMode**         | This method determines the selection mode for groups, enabling users to select either a single group or multiple groups at once. | `selectionMode?: SelectionMode` |
+| **hideSubmitButton**      | Used to toggle the visibility of the submit button when selectionMode is enabled.                                               | `hideSubmitButton?: boolean`  |
+| **searchPlaceholderText** | Used to set search placeholder text                                                                                             | `searchPlaceholderText?: string` |
+| **hideLoadingState**      | Hide the loading skeleton                                                                                                       | `hideLoadingState?: boolean`  |
+| **groupTypeVisibility**   | Toggle visibility of group type (public/private/password)                                                                       | `groupTypeVisibility?: boolean` |
+| **searchKeyword**         | Set initial search keyword                                                                                                      | `searchKeyword?: string`      |
 
 ***
 

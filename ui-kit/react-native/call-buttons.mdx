@@ -19,8 +19,8 @@ import { CometChat } from "@cometchat/chat-sdk-react-native";
 // With common props
 <CometChatCallButtons
   user={user}
-  hideVoiceCall={false}
-  hideVideoCall={false}
+  hideVoiceCallButton={false}
+  hideVideoCallButton={false}
   onError={(error) => console.log("Error:", error)}
 />
 ```
@@ -74,6 +74,10 @@ return <CometChatCallButtons group={group} />;
 
 This action doesn't change the behavior of the component but rather listens for any errors that occur in the Call Button component.
 
+```tsx
+onError?: (e: CometChat.CometChatException) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
@@ -81,7 +85,7 @@ import { CometChat } from "@cometchat/chat-sdk-react-native";
 import { CometChatCallButtons } from "@cometchat/chat-uikit-react-native";
 //code
 
-const onErrorHandler = (error: CometChat.CometChatException) => {
+const onErrorHandler = (e: CometChat.CometChatException) => {
   //handle Error
 };
 
@@ -223,8 +227,8 @@ Below is a list of customizations along with corresponding code snippets
 | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
 | **group**                     | Used to set the group object for Call Buttons                                                                                                                           | `group?: CometChat.Group`                                     |
 | **user**                      | Sets the user object for Call Buttons                                                                                                                                   | `user?: CometChat.User`                                       |
-| **hideVoiceCall**             | Used to hide Voice Call                                                                                                                                                 | \`hideVoiceCall?: boolean                                     |
-| **hideVideoCall**             | Used to hide Video Call                                                                                                                                                 | \`hideVideoCall?: boolean                                     |
+| **hideVoiceCallButton**       | Used to hide Voice Call button                                                                                                                                          | `hideVoiceCallButton?: boolean`                               |
+| **hideVideoCallButton**       | Used to hide Video Call button                                                                                                                                          | `hideVideoCallButton?: boolean`                               |
 | **callSettingsBuilder**       | Sets the call settings builder callback function. This callback is responsible for configuring the call settings based on the user, group, and call type (audio/video). | `callSettingsBuilder={callSettingsBuilderObject}`             |
 | **outgoingCallConfiguration** | Sets the configurations for outgoing call component.                                                                                                                    | `outgoingCallConfiguration={outgoingCallConfigurationObject}` |
 

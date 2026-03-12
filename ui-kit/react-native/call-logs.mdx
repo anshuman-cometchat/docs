@@ -15,9 +15,10 @@ import { CallLogRequestBuilder } from "@cometchat/chat-sdk-react-native";
 
 // With common props
 <CometChatCallLogs
-  onItemPress={(call) => console.log("Selected:", call)}
-  onError={(error) => console.log("Error:", error)}
-  hideBackButton={false}
+  onItemPress={(call: any) => console.log("Selected:", call)}
+  onError={(error: CometChat.CometChatException) => console.log("Error:", error)}
+  showBackButton={true}
+  onLoad={(list: any[]) => console.log("Loaded:", list.length)}
 />
 
 // With filters
@@ -72,6 +73,10 @@ return <CometChatCallLogs />;
 
 `onItemPress` is triggered when you click on a ListItem of the Call Logs component. By default it initiate a call to the participant associated with the respective ListItem. You can override this action using the following code snippet.
 
+```tsx
+onItemPress?: (call: any) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
@@ -95,13 +100,17 @@ return (
 
 Function executed when a callLog item is long-pressed, allowing additional actions like delete or select.
 
+```tsx
+onItemLongPress?: (prop: { call: any }) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 //code
-const onItemLongPressHandler = (i: any) => {
+const onItemLongPressHandler = (prop: { call: any }) => {
   //handle long press
 };
 
@@ -115,6 +124,12 @@ return <CometChatCallLogs onItemLongPress={onItemLongPressHandler} />;
 ***
 
 ##### onCallIconPress
+
+Callback when the call icon is pressed.
+
+```tsx
+onCallIconPress?: (item: any) => void
+```
 
 <Tabs>
 <Tab title="App.tsx">
@@ -143,6 +158,10 @@ return (
 
 `onBack` is triggered when you press the back button in the app bar. You can override this action using the following code snippet.
 
+```tsx
+onBack?: () => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
@@ -159,9 +178,13 @@ return <CometChatCallLogs onBack={onBackHandler} />;
 
 </Tabs>
 
-##### OnError
+##### onError
 
 This action does not change the behavior of the component but rather listens for any errors that occur in the Call Logs component.
+
+```tsx
+onError?: (e: CometChat.CometChatException) => void
+```
 
 <Tabs>
 <Tab title="App.tsx">
@@ -170,10 +193,62 @@ import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
 import { CometChat } from "@cometchat/chat-sdk-react-native";
 //code
 const onErrorHandler = (e: CometChat.CometChatException) => {
-  //handle back
+  //handle error
 };
 
 return <CometChatCallLogs onError={onErrorHandler} />;
+```
+
+</Tab>
+
+</Tabs>
+
+***
+
+##### onLoad
+
+Callback when the list is fetched and loaded.
+
+```tsx
+onLoad?: (list: any[]) => void
+```
+
+<Tabs>
+<Tab title="App.tsx">
+```tsx
+import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
+//code
+const onLoadHandler = (list: any[]) => {
+  console.log("Call logs loaded:", list.length);
+};
+
+return <CometChatCallLogs onLoad={onLoadHandler} />;
+```
+
+</Tab>
+
+</Tabs>
+
+***
+
+##### onEmpty
+
+Callback when the list is empty (no items).
+
+```tsx
+onEmpty?: () => void
+```
+
+<Tabs>
+<Tab title="App.tsx">
+```tsx
+import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
+//code
+const onEmptyHandler = () => {
+  console.log("No call logs available");
+};
+
+return <CometChatCallLogs onEmpty={onEmptyHandler} />;
 ```
 
 </Tab>
@@ -315,11 +390,11 @@ These are a set of small functional customizations that allow you to fine-tune t
 | Property                      | Description                                          | Code                                                          |
 | ----------------------------- | ---------------------------------------------------- | ------------------------------------------------------------- |
 | **datePattern**               | Used to set custom date pattern                      | `datePattern?: DatePattern`                                   |
-| **hideBackButton**            | Used to show/hide the back button                    | `hideBackButton?: boolean`                                    |
+| **showBackButton**            | Used to show/hide the back button                    | `showBackButton?: boolean`                                    |
 | **hideError**                 | Used to hide errors                                  | `hideError?: boolean`                                         |
 | **outgoingCallConfiguration** | Sets the configurations for outgoing call component. | `outgoingCallConfiguration={outgoingCallConfigurationObject}` |
-| **hideHeader**                | Used to toggle visibility of header                  | `hideHeader={true}`                                           |
-| **hideLoadingState**          | Used to toggle visibility of Loading state           | `hideLoadingState={true}`                                     |
+| **hideHeader**                | Used to toggle visibility of header                  | `hideHeader?: boolean`                                        |
+| **hideLoadingState**          | Used to toggle visibility of Loading state           | `hideLoadingState?: boolean`                                  |
 
 ***
 
@@ -330,6 +405,10 @@ For advanced-level customization, you can set custom views to the component. Thi
 #### LoadingView
 
 Allows setting a custom loading view when fetching call logs.
+
+```tsx
+LoadingView?: () => JSX.Element
+```
 
 Use Cases:
 
@@ -342,7 +421,7 @@ Use Cases:
 ```tsx
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
 //code
-const getLoadingView = () => {
+const getLoadingView = (): JSX.Element => {
   //return jsx;
 };
 return <CometChatCallLogs LoadingView={getLoadingView} />;
@@ -356,6 +435,10 @@ return <CometChatCallLogs LoadingView={getLoadingView} />;
 
 Defines a custom view when no call logs are available.
 
+```tsx
+EmptyView?: () => JSX.Element
+```
+
 Use Cases:
 
 * Show a friendly message like "No calls yet!".
@@ -367,7 +450,7 @@ Use Cases:
 ```tsx
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
 //code
-const getEmptyView = () => {
+const getEmptyView = (): JSX.Element => {
   //return jsx;
 };
 return <CometChatCallLogs EmptyView={getEmptyView} />;
@@ -383,6 +466,10 @@ return <CometChatCallLogs EmptyView={getEmptyView} />;
 
 Allows setting a custom error state view when fetching call logs fails.
 
+```tsx
+ErrorView?: (e: CometChat.CometChatException) => JSX.Element
+```
+
 Use Cases:
 
 * Display a retry button.
@@ -393,8 +480,9 @@ Use Cases:
 <Tab title="App.tsx">
 ```tsx
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
+import { CometChat } from "@cometchat/chat-sdk-react-native";
 //code
-const getErrorView = (e: CometChat.CometChatException) => {
+const getErrorView = (e: CometChat.CometChatException): JSX.Element => {
   //return jsx;
 };
 return <CometChatCallLogs ErrorView={getErrorView} />;
@@ -408,6 +496,10 @@ return <CometChatCallLogs ErrorView={getErrorView} />;
 
 Allows setting a custom layout for each call log item.
 
+```tsx
+ItemView?: (call?: any) => JSX.Element
+```
+
 Use Cases:
 
 * Customize the entire call log card.
@@ -419,7 +511,7 @@ Use Cases:
 ```tsx
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
 //code
-const getItemView = (call: any) => {
+const getItemView = (call: any): JSX.Element => {
   //return jsx;
 };
 return <CometChatCallLogs ItemView={getItemView} />;
@@ -448,7 +540,7 @@ Use Cases:
 ```tsx
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
 //code
-const getTitleView = (call: any) => {
+const getTitleView = (call: any): JSX.Element => {
   //return jsx;
 };
 return <CometChatCallLogs TitleView={getTitleView} />;
@@ -473,7 +565,7 @@ Use Cases:
 ```tsx
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
 //code
-const getLeadingView = (call: any) => {
+const getLeadingView = (call: any): JSX.Element => {
   //return jsx;
 };
 return <CometChatCallLogs LeadingView={getLeadingView} />;
@@ -487,6 +579,10 @@ return <CometChatCallLogs LeadingView={getLeadingView} />;
 
 Enables customizing the subtitle view, usually used for additional call details.
 
+```tsx
+SubtitleView?: (call?: any) => JSX.Element
+```
+
 Use Cases:
 
 * Display call type (Missed, Received, Outgoing).
@@ -498,7 +594,7 @@ Use Cases:
 ```tsx
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
 //code
-const getSubtitleView = (call: any) => {
+const getSubtitleView = (call: any): JSX.Element => {
   //return jsx;
 };
 return <CometChatCallLogs SubtitleView={getSubtitleView} />;
@@ -520,6 +616,10 @@ return <CometChatCallLogs SubtitleView={getSubtitleView} />;
 
 Customizes the trailing section, typically for call duration or actions.
 
+```tsx
+TrailingView?: (call?: any, defaultOnPress?: (call: any) => void) => JSX.Element
+```
+
 Use Cases:
 
 * Display call duration.
@@ -531,7 +631,7 @@ Use Cases:
 ```tsx
 import { CometChatCallLogs } from "@cometchat/chat-uikit-react-native";
 //code
-const getTrailingView = (call: any) => {
+const getTrailingView = (call: any, defaultOnPress?: (call: any) => void): JSX.Element => {
   //return jsx;
 };
 return <CometChatCallLogs TrailingView={getTrailingView} />;

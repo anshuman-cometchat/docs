@@ -71,6 +71,10 @@ The `MessageHeader` component does not have any exposed actions.
 
 This action does not change the behavior of the component but rather listens for any errors that occur in the Message Header component.
 
+```tsx
+onError?: (error: CometChat.CometChatException) => void
+```
+
 <Tabs>
 <Tab title="App.tsx">
 ```tsx
@@ -94,6 +98,10 @@ return (
 ##### onBack
 
 `onBack` is triggered when you press the back button in the app bar. It has a predefined behavior; when clicked, it navigates to the previous activity. However, you can override this action using the following code snippet.
+
+```tsx
+onBack?: () => void
+```
 
 <Tabs>
 <Tab title="App.tsx">
