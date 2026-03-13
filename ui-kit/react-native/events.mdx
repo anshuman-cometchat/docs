@@ -3,38 +3,25 @@ title: "Events"
 description: "Listen to UI Kit events for conversations, users, groups, messages, and calls in React Native UI Kit."
 ---
 
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
-```tsx
-import { CometChatUIEventHandler } from "@cometchat/chat-uikit-react-native";
+| Field | Value |
+| --- | --- |
+| Package | `@cometchat/chat-uikit-react-native` |
+| Import | `import { CometChatUIEventHandler } from "@cometchat/chat-uikit-react-native";` |
+| Conversation events | `ccConversationDeleted`, `ccUpdateConversation` |
+| User events | `ccUserBlocked`, `ccUserUnblocked` |
+| Group events | `ccGroupCreated`, `ccGroupDeleted`, `ccGroupLeft`, `ccGroupMemberScopeChanged`, `ccGroupMemberKicked`, `ccGroupMemberBanned`, `ccGroupMemberUnbanned`, `ccGroupMemberJoined`, `ccGroupMemberAdded`, `ccOwnershipChanged` |
+| Message events | `ccMessageSent`, `ccMessageEdited`, `ccMessageDeleted`, `ccMessageRead`, `ccLiveReaction`, plus SDK listener events |
+| Call events | `onIncomingCallAccepted`, `onIncomingCallRejected`, `onCallEnded`, `onCallInitiated`, `onOutgoingCallAccepted`, `onOutgoingCallRejected` |
+| UI events | `ccActiveChatChanged` |
+| Purpose | Decoupled communication between UI Kit components — subscribe to events to react to changes without direct component references |
 
-// Add message listener
-CometChatUIEventHandler.addMessageListener("LISTENER_ID", {
-  ccMessageSent: ({ message }) => console.log("Sent:", message),
-  ccMessageEdited: ({ message }) => console.log("Edited:", message),
-  ccMessageDeleted: ({ message }) => console.log("Deleted:", message),
-});
+</Accordion>
 
-// Add conversation listener
-CometChatUIEventHandler.addConversationListener("LISTENER_ID", {
-  ccConversationDeleted: (conversation) => console.log("Deleted:", conversation),
-});
+Events provide decoupled communication between UI Kit components. Components emit events in response to user interactions or state changes, allowing other parts of the application to react without direct component references.
 
-// Remove listeners
-CometChatUIEventHandler.removeMessageListener("LISTENER_ID");
-CometChatUIEventHandler.removeConversationListener("LISTENER_ID");
-```
-
-- **Methods** → [CometChatUIKit Methods](/ui-kit/react-native/methods)
-- **Components Overview** → [All Components](/ui-kit/react-native/components-overview)
-</Info>
-
-## Overview
-
-Events allow for a decoupled, flexible architecture where different parts of the application can interact without having to directly reference each other. This makes it easier to create complex, interactive experiences, as well as to extend and customize the functionality provided by the CometChat UI Kit.
-
-Both Components and Composite Components have the ability to emit events. These events are dispatched in response to certain changes or user interactions within the component. By emitting events, these components allow other parts of the application to react to changes or interactions, thus enabling dynamic and interactive behavior within the application.
+Both Components and Composite Components have the ability to emit events. By emitting events, these components allow other parts of the application to react to changes or interactions, enabling dynamic and interactive behavior within the application.
 
 ### CometChatConversationEventListener
 
