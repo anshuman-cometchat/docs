@@ -1,6 +1,7 @@
 ---
-title: "Localize"
-description: "Add multi-language support to your CometChat React Native app with automatic device language detection and custom translation overrides for 19+ supported languages."
+title: "Localization"
+sidebarTitle: "Localize"
+description: "Configure multi-language localization, custom translations, and automatic device language detection in CometChat React Native UI Kit."
 ---
 
 <Accordion title="AI Integration Quick Reference">
@@ -20,49 +21,53 @@ description: "Add multi-language support to your CometChat React Native app with
 
 </Accordion>
 
-## Overview
-
-CometChat UI Kit provides language localization to adapt to the language of a specific country or region. This document outlines how a developer can customize localization provided by UI Kit to their requirements.
-
-`CometChatI18nProvider` is a context provider that enables developers to supply custom translations and manage localization across their application.
-
-Presently, the UI Kit supports 19 languages for localization, which are:
-
-* English (en, en-US, en-GB)
-* Chinese (zh, zh-TW)
-* Spanish (es)
-* Hindi (hi)
-* Russian (ru)
-* Portuguese (pt)
-* Malay (ms)
-* French (fr)
-* German (de)
-* Swedish (sv)
-* Lithuanian (lt)
-* Hungarian (hu)
-* Italian (it)
-* Korean (ko)
-* Japanese (ja)
-* Dutch (nl)
-* Turkish (tr)
-
-## Customization
-
-The `CometChatI18nProvider` component enables developers to pass custom translations. Developers can override existing translations or add new ones.
-
-The `CometChatI18nProvider` component accepts the following props:
-
-* `selectedLanguage`: The language to use for translations. Defaults to the user's device language, or defaults to English if `autoDetectLanguage` is false.
-* `autoDetectLanguage`: Whether to automatically detect the user's device language.
-* `translations`: An object containing the translation overrides for each language.
-
-Users can provide new languages by adding a new key in the translations object.
+The `CometChatI18nProvider` manages multi-language localization for the UI Kit. It handles automatic language detection, manual language switching, and custom translations.
 
 <Warning>
-
-To ensure the app dynamically adapts to the device's language settings and properly displays localized content, it must be wrapped in the `CometChatI18nProvider`. Without this wrapper, automatic language detection and custom translations will not work in the app's UI.
-
+Prerequisites:
+1. Install `react-native-localize`: `npm install react-native-localize`
+2. Wrap your app with `CometChatI18nProvider` inside `CometChatThemeProvider`
+3. Without the provider wrapper, automatic language detection won't work
 </Warning>
+
+---
+
+## Supported Languages
+
+| Language | Code |
+| --- | --- |
+| English (United States) | `en-US` |
+| English (United Kingdom) | `en-GB` |
+| Chinese | `zh` |
+| Chinese (Traditional) | `zh-TW` |
+| Spanish | `es` |
+| Hindi | `hi` |
+| Russian | `ru` |
+| Portuguese | `pt` |
+| Malay | `ms` |
+| French | `fr` |
+| German | `de` |
+| Swedish | `sv` |
+| Lithuanian | `lt` |
+| Hungarian | `hu` |
+| Italian | `it` |
+| Korean | `ko` |
+| Japanese | `ja` |
+| Dutch | `nl` |
+| Turkish | `tr` |
+
+---
+
+## Provider Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `selectedLanguage` | `string` | Language code to use. Defaults to device language or English |
+| `autoDetectLanguage` | `boolean` | Auto-detect device language. Default: `true` |
+| `translations` | `object` | Custom translation overrides per language |
+| `fallbackLanguage` | `string` | Fallback language if selected is unavailable |
+
+---
 
 ## Prerequisites
 
@@ -185,6 +190,23 @@ const CustomComponent = () => {
 </Tabs>
 
 CometChat UI Kit provides a `useCometChatTranslation` hook to access translations within components, which can be used when developing custom components.
+
+---
+
+## Methods
+
+### useCometChatTranslation
+
+Hook to access translations within components.
+
+```ts
+import { useCometChatTranslation } from "@cometchat/chat-uikit-react-native";
+
+const { t } = useCometChatTranslation();
+const translatedText = t("CHATS"); // Returns localized string
+```
+
+---
 
 ## Customization Capabilities
 

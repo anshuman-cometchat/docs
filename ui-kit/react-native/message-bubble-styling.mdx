@@ -12,13 +12,47 @@ description: "Customize the appearance of incoming and outgoing message bubbles 
 | Import | `import { CometChatThemeProvider } from "@cometchat/chat-uikit-react-native";` |
 | Incoming bubbles | `messageListStyles: { incomingMessageBubbleStyles: { containerStyle: { backgroundColor: "#FEEDE1" } } }` |
 | Outgoing bubbles | `messageListStyles: { outgoingMessageBubbleStyles: { containerStyle: { backgroundColor: "#F76808" } } }` |
-| Bubble types | `textBubbleStyles`, `imageBubbleStyles`, `videoBubbleStyles`, `audioBubbleStyles`, `fileBubbleStyles`, `pollBubbleStyles`, `stickerBubbleStyles` |
+| Bubble types | `textBubbleStyles`, `imageBubbleStyles`, `videoBubbleStyles`, `audioBubbleStyles`, `fileBubbleStyles`, `pollBubbleStyles`, `stickerBubbleStyles`, `assistantBubbleStyles` |
 | Special bubbles | `deletedBubbleStyles`, `collaborativeBubbleStyles`, `groupCallBubbleStyles`, `linkPreviewBubbleStyles` |
 | Action bubbles | `groupActionBubbleStyles`, `callActionBubbleStyles`, `userCallBubbleStyles` |
 | Precedence | Specific bubble style > Container style > Default (deep merge) |
 | Source | [GitHub theme interface](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/packages/ChatUiKit/src/theme/type.ts) |
 
 </Accordion>
+
+Customize message bubble appearance by passing bubble styles in `theme.messageListStyles`.
+
+<Warning>
+Prerequisites:
+1. Wrap your app with `CometChatThemeProvider`
+2. Bubble styles are passed via `theme={{ light: { messageListStyles: { ... } } }}`
+3. Specific bubble type styles (e.g., `textBubbleStyles`) override general `containerStyle`
+</Warning>
+
+---
+
+## Bubble Style Keys
+
+| Bubble Type | Style Key | Common Properties |
+| --- | --- | --- |
+| All incoming | `incomingMessageBubbleStyles` | `containerStyle`, `avatarStyle`, `receiptStyles`, `reactionStyles` |
+| All outgoing | `outgoingMessageBubbleStyles` | `containerStyle`, `avatarStyle`, `receiptStyles`, `reactionStyles` |
+| Text | `textBubbleStyles` | `containerStyle`, `textStyle`, `mentionsStyle` |
+| AI Assistant | `assistantBubbleStyles` | `containerStyle`, `textStyle`, `copyButtonStyle`, `errorContainerStyle` |
+| Image | `imageBubbleStyles` | `containerStyle`, `imageStyle` |
+| Video | `videoBubbleStyles` | `containerStyle`, `playIconStyle`, `playIconContainerStyle` |
+| Audio | `audioBubbleStyles` | `containerStyle`, `playIconStyle`, `waveStyle` |
+| File | `fileBubbleStyles` | `containerStyle`, `titleStyle`, `subtitleStyle`, `downloadIconStyle` |
+| Sticker | `stickerBubbleStyles` | `containerStyle`, `imageStyle` |
+| Poll | `pollBubbleStyles` | `containerStyle`, `progressBarStyle`, `selectedIconStyle`, `titleStyle` |
+| Link Preview | `linkPreviewBubbleStyles` | `containerStyle`, `bodyStyle`, `headerImageContainerStyle` |
+| Collaborative | `collaborativeBubbleStyles` | `containerStyle`, `iconStyle`, `buttonTextStyle`, `dividerStyle` |
+| Meet Call | `meetCallBubbleStyles` | `containerStyle`, `iconStyle`, `dividerStyle` |
+| Deleted | `deletedBubbleStyles` | `containerStyle`, `icon` |
+| Group Action | `groupActionBubbleStyles` | `containerStyle`, `textStyle` |
+| Call Action | `callActionBubbleStyles` | `containerStyle`, `textStyle`, `iconStyle`, `missedCallContainerStyle` |
+
+---
 
 ## Overview
 

@@ -1,5 +1,6 @@
 ---
 title: "Component Styling"
+sidebarTitle: "Component Styling"
 description: "Customize the appearance of individual CometChat React Native UI Kit components using theme overrides for colors, typography, icons, and layout styles."
 ---
 
@@ -20,6 +21,47 @@ description: "Customize the appearance of individual CometChat React Native UI K
 | Source | [GitHub theme interface](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/packages/ChatUiKit/src/theme/type.ts) |
 
 </Accordion>
+
+Style individual UI Kit components by passing component-specific style objects in the theme.
+
+<Warning>
+Prerequisites:
+1. Wrap your app with `CometChatThemeProvider`
+2. Component styles are passed via `theme={{ light: { <componentStyles>: { ... } } }}`
+3. Style props on components take precedence over theme styles
+</Warning>
+
+---
+
+## Component Style Keys
+
+| Component | Theme Key | Common Style Properties |
+| --- | --- | --- |
+| Conversations | `conversationStyles` | `containerStyle`, `itemStyle`, `avatarStyle` |
+| Users | `userStyles` | `titleStyle`, `titleSeparatorStyle`, `itemStyle` |
+| Groups | `groupStyles` | `titleStyle`, `titleSeparatorStyle`, `itemStyle` |
+| Group Members | `groupMemberStyle` | `titleStyle`, `titleSeparatorStyle`, `backButtonIconStyle` |
+| Message Header | `messageHeaderStyles` | `titleTextStyle`, `avatarStyle`, `callButtonStyle` |
+| Message List | `messageListStyles` | `containerStyle`, `incomingMessageBubbleStyles`, `outgoingMessageBubbleStyles` |
+| Message Composer | `messageComposerStyles` | `sendIconContainerStyle`, `attachmentIconStyle`, `voiceRecordingIconStyle` |
+| Thread Header | `threadHeaderStyles` | `containerStyle`, `replyCountBarStyle`, `messageBubbleContainerStyle` |
+| Call Logs | `callLogsStyles` | `titleTextStyle`, `titleSeparatorStyle`, `itemStyle` |
+| Incoming Call | `incomingCallStyle` | `containerStyle`, `avatarStyle`, `acceptCallButtonStyle`, `declineCallButtonStyle` |
+| Outgoing Call | `outgoingCallStyle` | `avatarStyle`, `endCallButtonStyle` |
+| Call Buttons | `callButtonStyles` | `audioCallButtonIconStyle`, `videoCallButtonIconStyle` |
+| Avatar | `avatarStyle` | `containerStyle`, `imageStyle` |
+| Badge | `badgeStyle` | `containerStyle`, `textStyle` |
+| Status Indicator | `statusIndicatorStyle` | `containerStyleOnline`, `containerStyleOffline` |
+| Date | `dateStyles` | `textStyle`, `containerStyle` |
+| Receipt | `receiptStyles` | `readIconStyle`, `deliveredIconStyle`, `sentIconStyle` |
+| Action Sheet | `actionSheetStyle` | `optionsItemStyle` |
+| AI Chat History | `chatHistoryStyles` | `containerStyle`, `headerStyle`, `messageItemStyle` |
+| Confirm Dialog | `confirmDialogStyles` | `containerStyle`, `titleStyle`, `messageStyle` |
+| Media Recorder | `mediaRecorderStyle` | `animationStyle`, `playIconStyle`, `pauseIconStyle` |
+| Message Information | `messageInformationStyles` | `containerStyle`, `titleStyle`, `messageBubbleContainerStyle` |
+| Reaction List | `reactionListStyles` | `tabStyle`, `reactionListItemStyle` |
+
+---
 
 ## Overview
 
