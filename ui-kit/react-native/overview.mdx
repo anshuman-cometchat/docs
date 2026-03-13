@@ -1,83 +1,81 @@
 ---
-title: "Overview"
-description: "Build a full-featured React Native chat app using CometChat's prebuilt UI components with support for messaging, calling, and customization."
+title: "React Native UI Kit"
+sidebarTitle: "Overview"
+description: "Prebuilt React Native components for chat, voice, and video calling. Supports React Native CLI and Expo."
 ---
 
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
-```bash
-# Install the UI Kit and the required Chat SDK
-npm i @cometchat/chat-uikit-react-native
-npm i @cometchat/chat-sdk-react-native
-```
+| Field | Value |
+| --- | --- |
+| Package | `@cometchat/chat-uikit-react-native` v5.x |
+| Peer deps | `react-native` >=0.70, `@cometchat/chat-sdk-react-native`, `react-native-gesture-handler`, `react-native-safe-area-context` |
+| Calling | Optional — `@cometchat/calls-sdk-react-native` |
+| Localization | Built-in localization support |
+| Source | [GitHub](https://github.com/cometchat/cometchat-uikit-react-native/tree/v5) |
 
-```tsx lines
-import { CometChatUIKit, UIKitSettings } from "@cometchat/chat-uikit-react-native";
-import { CometChat } from "@cometchat/chat-sdk-react-native";
+</Accordion>
 
-// Initialize
-const uiKitSettings: UIKitSettings = {
-  appId: "APP_ID",
-  authKey: "AUTH_KEY",
-  region: "us",
-  subscriptionType: CometChat.AppSettings.SUBSCRIPTION_TYPE_ALL_USERS as UIKitSettings["subscriptionType"],
-};
-await CometChatUIKit.init(uiKitSettings);
+The CometChat React Native UI Kit provides prebuilt, customizable components for adding chat, voice, and video calling to any React Native app. Each component handles its own data fetching, real-time listeners, and state — you just drop them into your layout.
 
-// Login
-await CometChatUIKit.login({ uid: "cometchat-uid-1" });
-```
-
-- **Getting Started** → [Getting Started Guide](/ui-kit/react-native/getting-started)
-- **All Components** → [Components Overview](/ui-kit/react-native/components-overview)
-- **Methods Reference** → [Methods](/ui-kit/react-native/methods)
-</Info>
-
-With CometChat's UI Kit for React Native, you can effortlessly build a chat app equipped with all the essential messaging features, along with customizable options tailored to your application requirements. This UI Kit comprises prebuilt UI components organized into smaller modules and components, each configurable to meet your specific needs.
+<Frame>
+  <img src="/images/94312eb7-intro_web_screens-7ee27b256c54ea069273e198ec2aad4e.png" />
+</Frame>
 
 <Warning>
-You must call `CometChatUIKit.init(UIKitSettings)` before rendering any UI Kit components or calling any SDK methods. Initialization must complete before login.
+`CometChatUIKit.init(UIKitSettings)` must be called before rendering any UI Kit components or calling any SDK methods. Initialization must complete before login.
 </Warning>
 
 <Warning>
-**Auth Key** is for development/testing only. In production, generate **Auth Tokens** on your server using the REST API and pass them to the client. Never expose Auth Keys in production client code.
+Auth Key is for development/testing only. In production, generate Auth Tokens on your server using the REST API and pass them to the client. Never expose Auth Keys in production client code.
 </Warning>
 
-## Before Getting Started
+---
 
-Before you begin, it's essential to grasp the fundamental concepts and features offered by CometChat's APIs, SDK, and UI Kit. You can find detailed information in the [Key Concepts](/fundamentals/key-concepts) documentation.
+## Get Started
 
-The UI Kit library comprises pre-built React Native components for effortless integration and is built on top of the [React Native Chat SDK](/sdk/react-native/overview). You need to install the Chat SDK alongside the UI Kit as a required dependency.
-
-To begin, follow the [Getting Started](/ui-kit/react-native/getting-started) guide.
-
-## Quick Links
+Pick your framework and follow the step-by-step integration guide:
 
 <CardGroup cols={2}>
-  <Card title="React Native Sample App" icon="grid-2" href="https://github.com/cometchat/cometchat-uikit-react-native/tree/v5">
-    Ready-to-use app examples to kickstart your project.
+  <Card title="React Native CLI" icon="react" href="/ui-kit/react-native/react-native-cli-integration">
+    Standard React Native project setup
   </Card>
-  <Card title="UI Kit Source Code" icon="file-lines" href="https://github.com/cometchat/cometchat-uikit-react-native/tree/v5">
-    Access the complete source code on GitHub.
+  <Card title="Expo" icon={<img src="/docs/images/icons/expo.svg" alt="Expo" />} href="/ui-kit/react-native/expo-integration">
+    Expo managed workflow
   </Card>
 </CardGroup>
 
 ---
 
-## Next Steps
+## Explore
 
 <CardGroup cols={2}>
-  <Card title="Getting Started" icon="rocket" href="/ui-kit/react-native/getting-started">
-    Set up the UI Kit and send your first message
+  <Card title="Components" icon="grid-2" href="/ui-kit/react-native/components-overview">
+    Browse all prebuilt UI components
   </Card>
-  <Card title="Components Overview" icon="puzzle-piece" href="/ui-kit/react-native/components-overview">
-    Explore all available prebuilt UI components
+  <Card title="Features" icon="comments" href="/ui-kit/react-native/core-features">
+    Chat, calling, AI, and extensions
   </Card>
-  <Card title="Core Features" icon="comments" href="/ui-kit/react-native/core-features">
-    Learn about messaging, groups, and user management
+  <Card title="Theming" icon="paintbrush" href="/ui-kit/react-native/theme">
+    Colors, fonts, dark mode, and custom styling
   </Card>
-  <Card title="Theming" icon="palette" href="/ui-kit/react-native/theme">
-    Customize colors, fonts, and appearance
+  <Card title="Methods" icon="code" href="/ui-kit/react-native/methods">
+    Initialize, authenticate, and send messages
+  </Card>
+</CardGroup>
+
+---
+
+## Resources
+
+<CardGroup cols={3}>
+  <Card title="Sample App" icon="github" href="https://github.com/cometchat/cometchat-uikit-react-native/tree/v5">
+    Working reference app
+  </Card>
+  <Card title="Source Code" icon="code" href="https://github.com/cometchat/cometchat-uikit-react-native/tree/v5">
+    Full UI Kit source on GitHub
+  </Card>
+  <Card title="Support" icon="headset" href="https://help.cometchat.com/hc/en-us/requests/new">
+    Open a support ticket
   </Card>
 </CardGroup>
