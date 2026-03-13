@@ -3,22 +3,16 @@ title: "Property Changes"
 description: "Comprehensive reference of new, renamed, and removed properties for each CometChat React Native UI Kit v5 component."
 ---
 
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
-Common v4 → v5 property renames:
-- `ListItemView` → `ItemView`
-- `TailView` → `TrailingView`
-- `EmptyStateView` → `EmptyView`
-- `ErrorStateView` → `ErrorView`
-- `LoadingStateView` → `LoadingView`
-- `disableUsersPresence` → `usersStatusVisibility`
-- `[component]Style` → `style` (e.g., `conversationsStyle` → `style`)
-- `AppBarOption` → `AppBarOptions`
-- `hideSubmitIcon` → `hideSubmitButton`
+| Field | Value |
+| --- | --- |
+| Package | `@cometchat/chat-uikit-react-native` |
+| Common renames | `ListItemView` → `ItemView`, `TailView` → `TrailingView`, `EmptyStateView` → `EmptyView`, `ErrorStateView` → `ErrorView` |
+| Style changes | `[component]Style` → `style` (e.g., `conversationsStyle` → `style`), all use `DeepPartial<>` types |
+| Migration guide | [Upgrading from V4](/ui-kit/react-native/upgrading-from-v4) |
 
-All style props now use `DeepPartial<>` types for flexible overrides.
-</Info>
+</Accordion>
 
 ## Conversations
 
