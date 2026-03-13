@@ -3,34 +3,22 @@ title: "Localize"
 description: "Add multi-language support to your CometChat React Native app with automatic device language detection and custom translation overrides for 19+ supported languages."
 ---
 
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
-```tsx
-import { CometChatI18nProvider } from "@cometchat/chat-uikit-react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+| Field | Value |
+| --- | --- |
+| Goal | Add multi-language support with automatic device language detection |
+| Provider | `CometChatI18nProvider` — wrap app to enable localization |
+| Import | `import { CometChatI18nProvider } from "@cometchat/chat-uikit-react-native";` |
+| Auto-detect | `<CometChatI18nProvider autoDetectLanguage={true}>` |
+| Set language | `selectedLanguage="fr"` — manually set language code |
+| Override strings | `translations={{ "en-US": { CHATS: "My Chats" } }}` |
+| Add language | `translations={{ "custom": { CHATS: "Welcome" } }}` with `selectedLanguage="custom"` |
+| Use in components | `const { t } = useCometChatTranslation(); t("CHATS")` |
+| Supported languages | 19: en-US, en-GB, zh, zh-TW, es, hi, ru, pt, ms, fr, de, sv, lt, hu, it, ko, ja, nl, tr |
+| Dependency | Requires `react-native-localize` package for auto-detection |
 
-// Auto-detect device language
-<SafeAreaView style={{ flex: 1 }}>
-  <CometChatI18nProvider autoDetectLanguage={true}>
-    {/* Components will use device language */}
-  </CometChatI18nProvider>
-</SafeAreaView>
-
-// Override translations
-<CometChatI18nProvider
-  selectedLanguage="en-US"
-  translations={{
-    "en-US": { CHATS: "My Custom Chats Title" },
-  }}
->
-  {/* Components will use custom translations */}
-</CometChatI18nProvider>
-```
-
-- **Theme Setup** → [Introduction to Theming](/ui-kit/react-native/theme)
-- **Sound Manager** → [Sound Manager](/ui-kit/react-native/sound-manager)
-</Info>
+</Accordion>
 
 ## Overview
 

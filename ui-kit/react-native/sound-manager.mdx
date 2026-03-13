@@ -3,28 +3,19 @@ title: "Sound Manager"
 description: "Manage audio playback for incoming and outgoing messages and calls in CometChat React Native UI Kit using CometChatSoundManager with default or custom sounds."
 ---
 
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
-```tsx
-import { CometChatSoundManager } from "@cometchat/chat-uikit-react-native";
+| Field | Value |
+| --- | --- |
+| Goal | Manage audio playback for incoming/outgoing calls and messages |
+| Import | `import { CometChatSoundManager } from "@cometchat/chat-uikit-react-native";` |
+| Play sound | `CometChatSoundManager.play("incomingMessage")` |
+| Custom sound | `CometChatSoundManager.play("outgoingMessage", "path/to/sound.mp3")` |
+| Pause sound | `CometChatSoundManager.pause()` |
+| Sound events | `incomingMessage`, `outgoingMessage`, `incomingCall`, `outgoingCall` |
+| Default behavior | Plays built-in sounds; pass custom path as second arg to override |
 
-// Play default sounds
-CometChatSoundManager.play("incomingMessage"); // Incoming message sound
-CometChatSoundManager.play("outgoingMessage"); // Outgoing message sound
-CometChatSoundManager.play("incomingCall");    // Incoming call sound
-CometChatSoundManager.play("outgoingCall");    // Outgoing call sound
-
-// Play custom sound
-CometChatSoundManager.play("outgoingMessage", "path/to/custom-sound.mp3");
-
-// Pause any playing sound
-CometChatSoundManager.pause();
-```
-
-- **Localization** → [Localize](/ui-kit/react-native/localize)
-- **Theme Setup** → [Introduction to Theming](/ui-kit/react-native/theme)
-</Info>
+</Accordion>
 
 ## Overview
 

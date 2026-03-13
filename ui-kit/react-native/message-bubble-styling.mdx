@@ -3,37 +3,22 @@ title: "Message Bubble Styling"
 description: "Customize the appearance of incoming and outgoing message bubbles in CometChat React Native UI Kit, including text, image, video, audio, file, poll, and other message types."
 ---
 
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
-```tsx
-import { CometChatThemeProvider } from "@cometchat/chat-uikit-react-native";
+| Field | Value |
+| --- | --- |
+| Goal | Customize incoming/outgoing message bubble appearance |
+| Provider | `CometChatThemeProvider` — pass bubble styles in `theme.messageListStyles` |
+| Import | `import { CometChatThemeProvider } from "@cometchat/chat-uikit-react-native";` |
+| Incoming bubbles | `messageListStyles: { incomingMessageBubbleStyles: { containerStyle: { backgroundColor: "#FEEDE1" } } }` |
+| Outgoing bubbles | `messageListStyles: { outgoingMessageBubbleStyles: { containerStyle: { backgroundColor: "#F76808" } } }` |
+| Bubble types | `textBubbleStyles`, `imageBubbleStyles`, `videoBubbleStyles`, `audioBubbleStyles`, `fileBubbleStyles`, `pollBubbleStyles`, `stickerBubbleStyles` |
+| Special bubbles | `deletedBubbleStyles`, `collaborativeBubbleStyles`, `groupCallBubbleStyles`, `linkPreviewBubbleStyles` |
+| Action bubbles | `groupActionBubbleStyles`, `callActionBubbleStyles`, `userCallBubbleStyles` |
+| Precedence | Specific bubble style > Container style > Default (deep merge) |
+| Source | [GitHub theme interface](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/packages/ChatUiKit/src/theme/type.ts) |
 
-// Customize incoming and outgoing message bubbles
-<CometChatThemeProvider
-  theme={{
-    light: {
-      messageListStyles: {
-        incomingMessageBubbleStyles: {
-          containerStyle: { backgroundColor: "#FEEDE1" },
-          textBubbleStyles: { containerStyle: { backgroundColor: "#FEEDE1" } },
-        },
-        outgoingMessageBubbleStyles: {
-          containerStyle: { backgroundColor: "#F76808" },
-          textBubbleStyles: { containerStyle: { backgroundColor: "#F76808" } },
-        },
-      },
-    },
-  }}
->
-  {/* CometChat components */}
-</CometChatThemeProvider>
-```
-
-- **Theme Setup** → [Introduction to Theming](/ui-kit/react-native/theme)
-- **Colors** → [Color Resources](/ui-kit/react-native/colors)
-- **Component Styling** → [Component Styling](/ui-kit/react-native/component-styling)
-</Info>
+</Accordion>
 
 ## Overview
 

@@ -1,35 +1,63 @@
 ---
-title: "Colors"
-description: "Customize the color palette for CometChat React Native UI Kit components, including primary, neutral, alert, text, icon, and button colors with automatic light and dark mode support."
+title: "Color Resources"
+sidebarTitle: "Colors"
+description: "Complete reference of all color tokens available in the CometChat React Native UI Kit, including primary, neutral, alert, and semantic color palettes for light and dark modes."
 ---
 
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
-```tsx
-import { CometChatThemeProvider } from "@cometchat/chat-uikit-react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+| Field | Value |
+| --- | --- |
+| Goal | Override UI Kit color tokens to match a brand |
+| Provider | `CometChatThemeProvider` — wrap app and pass `theme` prop |
+| Import | `import { CometChatThemeProvider } from "@cometchat/chat-uikit-react-native";` |
+| Override colors | `theme={{ light: { color: { primary: "#F76808", textPrimary: "#7f7f00" } } }}` |
+| Key tokens | `primary` (brand/accent), `neutral50` (surfaces), `background1` (main bg), `textPrimary` |
+| Extended colors | Auto-generated from `primary` (extendedPrimary50–900) unless explicitly overridden |
+| Dark mode | `theme={{ dark: { color: { ... } } }}` — separate palette for dark theme |
+| Constraints | Colors must be hex values, extended colors auto-derive from primary |
+| Source | [GitHub theme types](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/packages/ChatUiKit/src/theme/type.ts) &#124; [Color helper](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/packages/ChatUiKit/src/theme/CometChatThemeHelper.ts) |
 
-// Override primary and text colors
-<SafeAreaView style={{ flex: 1 }}>
-  <CometChatThemeProvider
-    theme={{
-      light: {
-        color: {
-          primary: "#b2b200",
-          textPrimary: "#7f7f00",
-        },
-      },
-    }}
-  >
-    {/* Components will use the custom colors */}
-  </CometChatThemeProvider>
-</SafeAreaView>
-```
+</Accordion>
 
-- **Theme Setup** → [Introduction to Theming](/ui-kit/react-native/theme)
-- **Message Bubble Styling** → [Message Bubble Styling](/ui-kit/react-native/message-bubble-styling)
-</Info>
+The UI Kit's color palette uses theme tokens for consistent styling. Override these tokens via `CometChatThemeProvider` to match your brand.
+
+<Warning>
+Prerequisites:
+1. Wrap your app with `CometChatThemeProvider`
+2. Colors must be supplied as hex values (e.g., `#F76808`)
+3. Extended primary colors auto-generate from `primary` unless explicitly overridden
+</Warning>
+
+---
+
+## Color Token Reference
+
+This table maps every commonly used token to what it visually controls.
+
+| Token | What It Controls | Default (Light) | Used By |
+| --- | --- | --- | --- |
+| `primary` | Brand accent, outgoing bubble bg, active states, buttons | `#6852D6` | Outgoing bubbles, send button, active tabs |
+| `neutral50` | White surface | `#FFFFFF` | Background color 01, cards |
+| `neutral100` | Light surface | `#FAFAFA` | Background color 02 |
+| `neutral300` | Incoming bubble background, borders | `#E8E8E8` | Incoming message bubbles |
+| `neutral500` | Muted text, placeholders | `#A1A1A1` | Placeholder text, disabled states |
+| `neutral600` | Secondary text | `#727272` | Timestamps, subtitles |
+| `neutral900` | Strongest text | `#141414` | Text color primary |
+| `background1` | Main app background | `neutral50` | Root container background |
+| `background2` | Secondary/panel background | `neutral100` | Sidebars, panels |
+| `background3` | Tertiary background | `neutral200` | Nested panels, cards |
+| `textPrimary` | Primary text color | `neutral900` | Main body text |
+| `textSecondary` | Secondary/caption text | `neutral600` | Timestamps, subtitles |
+| `extendedPrimary50–900` | Primary color scale (lightest to darkest) | Auto-generated | Hover states, gradients, shades |
+| `info` | Informational states | `#0B7BEA` | Info callouts |
+| `warning` | Warning states | `#FFAB00` | Warning callouts |
+| `success` | Success states | `#09C26F` | Online indicators, success messages |
+| `error` | Error states | `#F44649` | Error messages, validation |
+| `staticBlack` | Static black (doesn't change with theme) | `#141414` | Fixed dark elements |
+| `staticWhite` | Static white (doesn't change with theme) | `#FFFFFF` | Fixed light elements |
+
+---
 
 ## Overview
 

@@ -3,37 +3,23 @@ title: "Component Styling"
 description: "Customize the appearance of individual CometChat React Native UI Kit components using theme overrides for colors, typography, icons, and layout styles."
 ---
 
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
-```tsx
-import { CometChatThemeProvider } from "@cometchat/chat-uikit-react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+| Field | Value |
+| --- | --- |
+| Goal | Style individual UI Kit components via theme overrides |
+| Provider | `CometChatThemeProvider` — pass component styles in `theme` prop |
+| Import | `import { CometChatThemeProvider } from "@cometchat/chat-uikit-react-native";` |
+| Pattern | `theme={{ light: { <componentStyles>: { ... } } }}` |
+| Conversations | `conversationStyles: { itemStyle: { avatarStyle: { containerStyle: { borderRadius: 8 } } } }` |
+| Users | `userStyles: { titleStyle: { color: "#F76808" }, itemStyle: { ... } }` |
+| Groups | `groupStyles: { titleStyle: { ... }, itemStyle: { ... } }` |
+| Message List | `messageListStyles: { containerStyle: { ... }, outgoingMessageBubbleStyles: { ... } }` |
+| Message Composer | `messageComposerStyles: { sendIconContainerStyle: { ... }, attachmentIconStyle: { ... } }` |
+| Precedence | Style prop > Custom theme > Default theme (deep merge) |
+| Source | [GitHub theme interface](https://github.com/cometchat/cometchat-uikit-react-native/blob/v5/packages/ChatUiKit/src/theme/type.ts) |
 
-// Override styles for a specific component via the theme
-<SafeAreaView style={{ flex: 1 }}>
-  <CometChatThemeProvider
-    theme={{
-      light: {
-        conversationStyles: {
-          itemStyle: {
-            avatarStyle: {
-              containerStyle: { borderRadius: 8, backgroundColor: "#FBAA75" },
-            },
-          },
-        },
-      },
-    }}
-  >
-    {/* CometChat components */}
-  </CometChatThemeProvider>
-</SafeAreaView>
-```
-
-- **Theme Setup** → [Introduction to Theming](/ui-kit/react-native/theme)
-- **Colors** → [Color Resources](/ui-kit/react-native/colors)
-- **Message Bubble Styling** → [Message Bubble Styling](/ui-kit/react-native/message-bubble-styling)
-</Info>
+</Accordion>
 
 ## Overview
 
