@@ -218,105 +218,6 @@
                 "description": "Retrieves all BYO agents configured for your CometChat app. Use this endpoint to view all registered BYO (Bring Your Own) agents and their current configuration."
             }
         },
-        "/ai-agents/agents/{id}": {
-            "patch": {
-                "operationId": "AgentsController_updateAgent",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "chatApiVersion",
-                        "required": false,
-                        "in": "header",
-                        "description": "Chat API version. Defaults to `v3.0`.",
-                        "schema": {
-                            "type": "string",
-                            "default": "v3.0"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateAgentDTO"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Agent updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SuccessBooleanResponse"
-                                },
-                                "example": {
-                                    "success": true
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ],
-                "tags": [
-                    "Agents"
-                ],
-                "description": "Updates an existing BYO agent by its UID. Use this endpoint to modify agent configuration, update referenced tools, or change the connected AI framework.\n\n**Validation:** Referenced tools and actions are validated if provided.",
-                "summary": "Update BYO Agent"
-            },
-            "delete": {
-                "operationId": "AgentsController_deleteAgent",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Agent deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SuccessMessageResponse"
-                                },
-                                "example": {
-                                    "success": true,
-                                    "message": "Agent with UID '863f3501-af1b-46c1-9740-5c725b85daba' has been deleted successfully"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ],
-                "tags": [
-                    "Agents"
-                ],
-                "description": "Deletes a BYO agent by its UID. Use this endpoint to remove a BYO agent that is no longer needed.",
-                "summary": "Delete BYO Agent"
-            }
-        },
         "/ai-agents/tools": {
             "post": {
                 "operationId": "ToolsController_createTool",
@@ -999,70 +900,6 @@
                     "Agent Builder"
                 ],
                 "description": "Retrieves all enabled variables (predefined and custom) for the application. Use this endpoint to view variable definitions and understand where they are used.\n\n**Usage tracking:** Each variable includes information showing which agents reference it in their instructions and which API tools use it.\n\n**Grouping:** Set `groupByCategory` to `true` to group results by category (e.g., auth, custom); otherwise results are returned as a flat array."
-            }
-        },
-        "/ai-agents/agent-builder/agents/{agentId}/tools/search": {
-            "get": {
-                "operationId": "AgentBuilderController_searchAllTools",
-                "parameters": [
-                    {
-                        "name": "agentId",
-                        "required": true,
-                        "in": "path",
-                        "description": "Unique identifier of the agent",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "key",
-                        "required": false,
-                        "in": "query",
-                        "description": "Search term to filter actions by name, description, or slug",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Aggregated search results from all tool sources",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "results": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object"
-                                            },
-                                            "example": []
-                                        }
-                                    }
-                                },
-                                "example": {
-                                    "success": true,
-                                    "results": []
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ],
-                "summary": "Search Agent Tools",
-                "tags": [
-                    "Agent Builder"
-                ],
-                "description": "Searches across all tool types available for an agent, including ready-to-use tool actions, API tools, and MCP servers. Use this endpoint to find specific tools across all categories.\n\n**Filtering:** Use the `key` parameter to filter by name, description, or slug, and the `slug` parameter to filter by a specific integration."
             }
         },
         "/ai-agents/agent-builder/agents/{agentUid}/enabled-items": {
@@ -1831,278 +1668,6 @@
                     "Agent Builder"
                 ],
                 "description": "Retrieves a paginated list of agents for your CometChat app. Use this endpoint to browse, search, and manage your agents.\n\n**Pagination:** Supports cursor-based pagination using `createdAt` timestamps with prepend/append navigation. Results are sorted by creation date in descending order.\n\n**Search:** Use the `search` parameter to filter agents by name, description, or UID."
-            }
-        },
-        "/ai-agents/agent-builder/agents/{uid}": {
-            "get": {
-                "operationId": "AgentBuilderController_findOne",
-                "parameters": [
-                    {
-                        "name": "uid",
-                        "required": true,
-                        "in": "path",
-                        "description": "Unique identifier of the agent",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Agent details",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "uid": {
-                                            "type": "string",
-                                            "example": "agent-uuid-1234"
-                                        },
-                                        "appId": {
-                                            "type": "string",
-                                            "example": "my-app-id"
-                                        },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Support Agent"
-                                        },
-                                        "icon": {
-                                            "type": "string",
-                                            "example": "https://example.com/icon.png"
-                                        },
-                                        "isActive": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "A helpful support agent"
-                                        },
-                                        "tools": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            },
-                                            "example": [
-                                                "gmail",
-                                                "slack"
-                                            ]
-                                        },
-                                        "files": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            },
-                                            "example": []
-                                        },
-                                        "websites": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            },
-                                            "example": []
-                                        },
-                                        "otherKbIntegrations": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            },
-                                            "example": []
-                                        },
-                                        "apiTools": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            },
-                                            "example": []
-                                        },
-                                        "mcpServers": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            },
-                                            "example": []
-                                        },
-                                        "frontendActions": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            },
-                                            "example": []
-                                        },
-                                        "ragVersion": {
-                                            "type": "string",
-                                            "enum": [
-                                                "v1",
-                                                "v2"
-                                            ],
-                                            "example": "v2"
-                                        },
-                                        "lastMessageAt": {
-                                            "type": "number",
-                                            "nullable": true,
-                                            "example": 1700000000000
-                                        },
-                                        "instruction": {
-                                            "type": "string",
-                                            "example": "You are a helpful assistant"
-                                        },
-                                        "formattedInstruction": {
-                                            "type": "string",
-                                            "example": "You are a helpful assistant"
-                                        },
-                                        "metaData": {
-                                            "type": "object",
-                                            "example": {}
-                                        },
-                                        "model": {
-                                            "type": "string",
-                                            "example": "gpt-4o-mini"
-                                        },
-                                        "modelMetaData": {
-                                            "type": "object",
-                                            "example": {}
-                                        },
-                                        "createdAt": {
-                                            "type": "number",
-                                            "example": 1700000000000
-                                        },
-                                        "updatedAt": {
-                                            "type": "number",
-                                            "example": 1700000000000
-                                        }
-                                    }
-                                },
-                                "example": {
-                                    "uid": "agent-uuid-1234",
-                                    "appId": "my-app-id",
-                                    "name": "Support Agent",
-                                    "icon": "https://example.com/icon.png",
-                                    "isActive": true,
-                                    "description": "A helpful support agent",
-                                    "tools": [
-                                        "gmail"
-                                    ],
-                                    "files": [],
-                                    "websites": [],
-                                    "otherKbIntegrations": [],
-                                    "apiTools": [],
-                                    "mcpServers": [],
-                                    "frontendActions": [],
-                                    "ragVersion": "v2",
-                                    "lastMessageAt": null,
-                                    "instruction": "You are a helpful assistant",
-                                    "formattedInstruction": "You are a helpful assistant",
-                                    "metaData": {},
-                                    "model": "gpt-4o-mini",
-                                    "modelMetaData": {},
-                                    "createdAt": 1700000000000,
-                                    "updatedAt": 1700000000000
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ],
-                "summary": "Get Agent",
-                "tags": [
-                    "Agent Builder"
-                ],
-                "description": "Retrieves a specific agent by its unique identifier. Use this endpoint to inspect an agent's full configuration, including its tools, model, and instructions."
-            },
-            "patch": {
-                "operationId": "AgentBuilderController_update",
-                "parameters": [
-                    {
-                        "name": "uid",
-                        "required": true,
-                        "in": "path",
-                        "description": "Unique identifier of the agent",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateCometChatAgentDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Agent updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SuccessBooleanResponse"
-                                },
-                                "example": {
-                                    "success": true
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ],
-                "summary": "Update Agent",
-                "tags": [
-                    "Agent Builder"
-                ],
-                "description": "Updates an existing agent by its UID. Use this endpoint to modify an agent's configuration, instructions, model, or connected tools.\n\n**Validation:** Referenced tools, API tools, and MCP servers are validated if provided."
-            },
-            "delete": {
-                "operationId": "AgentBuilderController_remove",
-                "parameters": [
-                    {
-                        "name": "uid",
-                        "required": true,
-                        "in": "path",
-                        "description": "Unique identifier of the agent",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Agent deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SuccessMessageResponse"
-                                },
-                                "example": {
-                                    "success": true,
-                                    "message": "Operation completed successfully"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ],
-                "summary": "Delete Agent",
-                "tags": [
-                    "Agent Builder"
-                ],
-                "description": "Deletes an agent by its UID. Use this endpoint to remove an agent that is no longer needed."
             }
         },
         "/ai-agents/agent-builder/agents/{agentUid}/tools/add": {
@@ -3559,106 +3124,6 @@
                     "Agent Builder"
                 ],
                 "description": "Removes one or more frontend actions from a specific agent. Use this endpoint to revoke frontend action capabilities from an agent.\n\n**Request body:** The `frontendActions` array contains frontend action identifiers to remove. Returns the updated agent object."
-            }
-        },
-        "/ai-agents/agent-builder/agents/{agentId}/knowledge-base/{sourceType}/add": {
-            "patch": {
-                "operationId": "AgentBuilderController_addFilesToKnowledgeBase",
-                "parameters": [
-                    {
-                        "name": "agentId",
-                        "required": true,
-                        "in": "path",
-                        "description": "Unique identifier of the agent",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sourceType",
-                        "required": true,
-                        "in": "path",
-                        "description": "Source type (uploads, knowledge-base, etc.)",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ManageKnowledgeBaseFilesDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Files added to knowledge base successfully"
-                    }
-                },
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ],
-                "summary": "Add Files to Agent Knowledge Base",
-                "tags": [
-                    "Agent Builder"
-                ],
-                "description": "Associates uploaded files or text entries with an agent's knowledge base. Use this endpoint after uploading files via the Initiate File Uploads endpoint to make them available to the agent.\n\n**Source types:** Specify the source type (e.g., uploads, text) in the path."
-            }
-        },
-        "/ai-agents/agent-builder/agents/{agentId}/knowledge-base/{sourceType}/remove": {
-            "patch": {
-                "operationId": "AgentBuilderController_removeFilesFromKnowledgeBase",
-                "parameters": [
-                    {
-                        "name": "agentId",
-                        "required": true,
-                        "in": "path",
-                        "description": "Unique identifier of the agent",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sourceType",
-                        "required": true,
-                        "in": "path",
-                        "description": "Source type (uploads, knowledge-base, etc.)",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ManageKnowledgeBaseFilesDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Files removed from knowledge base successfully"
-                    }
-                },
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ],
-                "summary": "Remove Files from Agent Knowledge Base",
-                "tags": [
-                    "Agent Builder"
-                ],
-                "description": "Removes files or text entries from an agent's knowledge base. Use this endpoint to disassociate specific sources from an agent without deleting the underlying content.\n\n**Source types:** Specify the source type (e.g., uploads, text) in the path."
             }
         },
         "/ai-agents/agent-builder/agents/{agentUid}/tools/{slug}/actions/add": {
@@ -7739,6 +7204,543 @@
                 "tags": [
                     "knowledge-base"
                 ]
+            }
+        },
+        "/ai-agents/agents/{agentUid}": {
+            "patch": {
+                "operationId": "AgentsController_updateAgent",
+                "parameters": [
+                    {
+                        "name": "agentUid",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Unique identifier of the agent"
+                    },
+                    {
+                        "name": "chatApiVersion",
+                        "required": false,
+                        "in": "header",
+                        "description": "Chat API version. Defaults to `v3.0`.",
+                        "schema": {
+                            "type": "string",
+                            "default": "v3.0"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateAgentDTO"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Agent updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessBooleanResponse"
+                                },
+                                "example": {
+                                    "success": true
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "tags": [
+                    "Agents"
+                ],
+                "description": "Updates an existing BYO agent by its UID. Use this endpoint to modify agent configuration, update referenced tools, or change the connected AI framework.\n\n**Validation:** Referenced tools and actions are validated if provided.",
+                "summary": "Update BYO Agent"
+            },
+            "delete": {
+                "operationId": "AgentsController_deleteAgent",
+                "parameters": [
+                    {
+                        "name": "agentUid",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Unique identifier of the agent"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Agent deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessMessageResponse"
+                                },
+                                "example": {
+                                    "success": true,
+                                    "message": "Agent with UID '863f3501-af1b-46c1-9740-5c725b85daba' has been deleted successfully"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "tags": [
+                    "Agents"
+                ],
+                "description": "Deletes a BYO agent by its UID. Use this endpoint to remove a BYO agent that is no longer needed.",
+                "summary": "Delete BYO Agent"
+            }
+        },
+        "/ai-agents/agent-builder/agents/{agentUid}/tools/search": {
+            "get": {
+                "operationId": "AgentBuilderController_searchAllTools",
+                "parameters": [
+                    {
+                        "name": "agentUid",
+                        "required": true,
+                        "in": "path",
+                        "description": "Unique identifier of the agent",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "key",
+                        "required": false,
+                        "in": "query",
+                        "description": "Search term to filter actions by name, description, or slug",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Aggregated search results from all tool sources",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            },
+                                            "example": []
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "success": true,
+                                    "results": []
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "summary": "Search Agent Tools",
+                "tags": [
+                    "Agent Builder"
+                ],
+                "description": "Searches across all tool types available for an agent, including ready-to-use tool actions, API tools, and MCP servers. Use this endpoint to find specific tools across all categories.\n\n**Filtering:** Use the `key` parameter to filter by name, description, or slug, and the `slug` parameter to filter by a specific integration."
+            }
+        },
+        "/ai-agents/agent-builder/agents/{agentUid}": {
+            "get": {
+                "operationId": "AgentBuilderController_findOne",
+                "parameters": [
+                    {
+                        "name": "agentUid",
+                        "required": true,
+                        "in": "path",
+                        "description": "Unique identifier of the agent",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Agent details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "uid": {
+                                            "type": "string",
+                                            "example": "agent-uuid-1234"
+                                        },
+                                        "appId": {
+                                            "type": "string",
+                                            "example": "my-app-id"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Support Agent"
+                                        },
+                                        "icon": {
+                                            "type": "string",
+                                            "example": "https://example.com/icon.png"
+                                        },
+                                        "isActive": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "A helpful support agent"
+                                        },
+                                        "tools": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": [
+                                                "gmail",
+                                                "slack"
+                                            ]
+                                        },
+                                        "files": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": []
+                                        },
+                                        "websites": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": []
+                                        },
+                                        "otherKbIntegrations": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": []
+                                        },
+                                        "apiTools": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": []
+                                        },
+                                        "mcpServers": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": []
+                                        },
+                                        "frontendActions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "example": []
+                                        },
+                                        "ragVersion": {
+                                            "type": "string",
+                                            "enum": [
+                                                "v1",
+                                                "v2"
+                                            ],
+                                            "example": "v2"
+                                        },
+                                        "lastMessageAt": {
+                                            "type": "number",
+                                            "nullable": true,
+                                            "example": 1700000000000
+                                        },
+                                        "instruction": {
+                                            "type": "string",
+                                            "example": "You are a helpful assistant"
+                                        },
+                                        "formattedInstruction": {
+                                            "type": "string",
+                                            "example": "You are a helpful assistant"
+                                        },
+                                        "metaData": {
+                                            "type": "object",
+                                            "example": {}
+                                        },
+                                        "model": {
+                                            "type": "string",
+                                            "example": "gpt-4o-mini"
+                                        },
+                                        "modelMetaData": {
+                                            "type": "object",
+                                            "example": {}
+                                        },
+                                        "createdAt": {
+                                            "type": "number",
+                                            "example": 1700000000000
+                                        },
+                                        "updatedAt": {
+                                            "type": "number",
+                                            "example": 1700000000000
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "uid": "agent-uuid-1234",
+                                    "appId": "my-app-id",
+                                    "name": "Support Agent",
+                                    "icon": "https://example.com/icon.png",
+                                    "isActive": true,
+                                    "description": "A helpful support agent",
+                                    "tools": [
+                                        "gmail"
+                                    ],
+                                    "files": [],
+                                    "websites": [],
+                                    "otherKbIntegrations": [],
+                                    "apiTools": [],
+                                    "mcpServers": [],
+                                    "frontendActions": [],
+                                    "ragVersion": "v2",
+                                    "lastMessageAt": null,
+                                    "instruction": "You are a helpful assistant",
+                                    "formattedInstruction": "You are a helpful assistant",
+                                    "metaData": {},
+                                    "model": "gpt-4o-mini",
+                                    "modelMetaData": {},
+                                    "createdAt": 1700000000000,
+                                    "updatedAt": 1700000000000
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "summary": "Get Agent",
+                "tags": [
+                    "Agent Builder"
+                ],
+                "description": "Retrieves a specific agent by its unique identifier. Use this endpoint to inspect an agent's full configuration, including its tools, model, and instructions."
+            },
+            "patch": {
+                "operationId": "AgentBuilderController_update",
+                "parameters": [
+                    {
+                        "name": "agentUid",
+                        "required": true,
+                        "in": "path",
+                        "description": "Unique identifier of the agent",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCometChatAgentDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Agent updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessBooleanResponse"
+                                },
+                                "example": {
+                                    "success": true
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "summary": "Update Agent",
+                "tags": [
+                    "Agent Builder"
+                ],
+                "description": "Updates an existing agent by its UID. Use this endpoint to modify an agent's configuration, instructions, model, or connected tools.\n\n**Validation:** Referenced tools, API tools, and MCP servers are validated if provided."
+            },
+            "delete": {
+                "operationId": "AgentBuilderController_remove",
+                "parameters": [
+                    {
+                        "name": "agentUid",
+                        "required": true,
+                        "in": "path",
+                        "description": "Unique identifier of the agent",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Agent deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SuccessMessageResponse"
+                                },
+                                "example": {
+                                    "success": true,
+                                    "message": "Operation completed successfully"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "summary": "Delete Agent",
+                "tags": [
+                    "Agent Builder"
+                ],
+                "description": "Deletes an agent by its UID. Use this endpoint to remove an agent that is no longer needed."
+            }
+        },
+        "/ai-agents/agent-builder/agents/{agentUid}/knowledge-base/{sourceType}/add": {
+            "patch": {
+                "operationId": "AgentBuilderController_addFilesToKnowledgeBase",
+                "parameters": [
+                    {
+                        "name": "agentUid",
+                        "required": true,
+                        "in": "path",
+                        "description": "Unique identifier of the agent",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sourceType",
+                        "required": true,
+                        "in": "path",
+                        "description": "Source type (uploads, knowledge-base, etc.)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ManageKnowledgeBaseFilesDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Files added to knowledge base successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "summary": "Add Files to Agent Knowledge Base",
+                "tags": [
+                    "Agent Builder"
+                ],
+                "description": "Associates uploaded files or text entries with an agent's knowledge base. Use this endpoint after uploading files via the Initiate File Uploads endpoint to make them available to the agent.\n\n**Source types:** Specify the source type (e.g., uploads, text) in the path."
+            }
+        },
+        "/ai-agents/agent-builder/agents/{agentUid}/knowledge-base/{sourceType}/remove": {
+            "patch": {
+                "operationId": "AgentBuilderController_removeFilesFromKnowledgeBase",
+                "parameters": [
+                    {
+                        "name": "agentUid",
+                        "required": true,
+                        "in": "path",
+                        "description": "Unique identifier of the agent",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sourceType",
+                        "required": true,
+                        "in": "path",
+                        "description": "Source type (uploads, knowledge-base, etc.)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ManageKnowledgeBaseFilesDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Files removed from knowledge base successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "summary": "Remove Files from Agent Knowledge Base",
+                "tags": [
+                    "Agent Builder"
+                ],
+                "description": "Removes files or text entries from an agent's knowledge base. Use this endpoint to disassociate specific sources from an agent without deleting the underlying content.\n\n**Source types:** Specify the source type (e.g., uploads, text) in the path."
             }
         }
     },
