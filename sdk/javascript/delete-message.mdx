@@ -91,6 +91,15 @@ try {
 
 Once the message is deleted, In the `onSuccess()` callback, you get an object of the `BaseMessage` class, with the `deletedAt` field set with the timestamp of the time the message was deleted. Also, the `deletedBy` field is set. These two fields can be used to identify if the message is deleted while iterating through a list of messages.
 
+The `deleteMessage()` method returns a [`BaseMessage`](/sdk/reference/messages#basemessage) object. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| id | `getId()` | `number` | Unique message ID |
+| sender | `getSender()` | [`User`](/sdk/reference/entities#user) | The user who sent the message |
+| deletedAt | `getDeletedAt()` | `number` | Timestamp when the message was deleted |
+| deletedBy | `getDeletedBy()` | `string` | UID of the user who deleted the message |
+
 By default, CometChat allows certain roles to delete a message.
 
 | User Role       | Conversation Type       | Deletion Capabilities          |
@@ -140,6 +149,15 @@ CometChat.addMessageListener(
 </Tab>
 
 </Tabs>
+
+The `onMessageDeleted` callback receives a [`BaseMessage`](/sdk/reference/messages#basemessage) object with the `deletedAt` and `deletedBy` fields set. Access the data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| id | `getId()` | `number` | Unique message ID |
+| sender | `getSender()` | [`User`](/sdk/reference/entities#user) | The user who sent the message |
+| deletedAt | `getDeletedAt()` | `number` | Timestamp when the message was deleted |
+| deletedBy | `getDeletedBy()` | `string` | UID of the user who deleted the message |
 
 ## Missed Message Delete Events
 

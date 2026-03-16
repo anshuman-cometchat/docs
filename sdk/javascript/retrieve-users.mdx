@@ -62,6 +62,17 @@ CometChat.getLoggedinUser().then(
 
 This method will return a `User` object containing all the information related to the logged-in user.
 
+The method returns a [`User`](/sdk/reference/entities#user) object. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| uid | `getUid()` | `string` | Unique user ID |
+| name | `getName()` | `string` | Display name of the user |
+| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
+| status | `getStatus()` | `string` | Online status of the user |
+| lastActiveAt | `getLastActiveAt()` | `number` | Timestamp when the user was last active |
+| role | `getRole()` | `string` | Role assigned to the user |
+
 ## Retrieve List of Users
 
 In order to fetch the list of users, you can use the `UsersRequest` class. To use this class i.e to create an object of the `UsersRequest` class, you need to use the `UsersRequestBuilder` class. The `UsersRequestBuilder` class allows you to set the parameters based on which the users are to be fetched.
@@ -481,6 +492,17 @@ usersRequest.fetchNext().then(
 
 </Tabs>
 
+The `fetchNext()` method returns an array of [`User`](/sdk/reference/entities#user) objects. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| uid | `getUid()` | `string` | Unique user ID |
+| name | `getName()` | `string` | Display name of the user |
+| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
+| status | `getStatus()` | `string` | Online status of the user |
+| lastActiveAt | `getLastActiveAt()` | `number` | Timestamp when the user was last active |
+| role | `getRole()` | `string` | Role assigned to the user |
+
 ## Retrieve Particular User Details
 
 To get the information of a user, you can use the `getUser()` method.
@@ -523,6 +545,17 @@ The `getUser()` method takes the following parameters:
 | UID       | The UID of the user for whom the details are to be fetched |
 
 It returns the `User` object containing the details of the user.
+
+The method returns a [`User`](/sdk/reference/entities#user) object. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| uid | `getUid()` | `string` | Unique user ID |
+| name | `getName()` | `string` | Display name of the user |
+| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
+| status | `getStatus()` | `string` | Online status of the user |
+| lastActiveAt | `getLastActiveAt()` | `number` | Timestamp when the user was last active |
+| role | `getRole()` | `string` | Role assigned to the user |
 
 ## Get online user count
 

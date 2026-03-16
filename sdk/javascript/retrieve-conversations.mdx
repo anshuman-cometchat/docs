@@ -101,6 +101,11 @@ let limit: number = 30,
 
 </Tabs>
 
+<Note>
+The default value for `setLimit` is 30 and the max value is 50.
+</Note>
+
+When conversations are fetched successfully, the response will include an array of `Conversation` objects filtered by the specified type.
 ### With User and Group Tags
 
 This method can be used to fetch the user/group tags in the `Conversation` Object. By default the value is `false`.
@@ -130,6 +135,7 @@ let limit: number = 30,
 
 </Tabs>
 
+When conversations are fetched successfully, the response will include `tags` arrays on the `conversationWith` objects (user or group).
 ### Set User Tags
 
 This method fetches user conversations that have the specified tags.
@@ -161,6 +167,7 @@ let limit: number = 30,
 
 </Tabs>
 
+When conversations are fetched successfully, the response will include only user conversations where the user has the specified tags.
 ### Set Group Tags
 
 This method fetches group conversations that have the specified tags.
@@ -192,6 +199,7 @@ let limit: number = 30,
 
 </Tabs>
 
+When conversations are fetched successfully, the response will include only group conversations where the group has the specified tags.
 ### With Tags
 
 This method makes sure that the tags associated with the conversations are returned along with the other details of the conversations. The default value for this parameter is `false`
@@ -220,7 +228,6 @@ conversationRequest: CometChat.ConversationsRequest = new CometChat.Conversation
 </Tab>
 
 </Tabs>
-
 ### Set Tags
 
 This method helps you fetch the conversations based on the specified tags.
@@ -251,7 +258,6 @@ let limit: number = 30,
 </Tab>
 
 </Tabs>
-
 ### Include Blocked Users
 
 This method helps you fetch the conversations of users whom the logged-in user has blocked.
@@ -281,6 +287,7 @@ let limit: number = 30,
 
 </Tabs>
 
+When conversations are fetched successfully, the response will include conversations with blocked users. To also get the blocked info details (`blockedByMe`, `blockedByMeAt`, `blockedAt`), set `withBlockedInfo` to `true` as well.
 ### With Blocked Info
 
 This method can be used to fetch the blocked information of the blocked user in the `ConversationWith` object.
@@ -309,7 +316,6 @@ let limit: number = 30,
 </Tab>
 
 </Tabs>
-
 ### Search Conversations
 
 This method helps you search a conversation based on User or Group name.
@@ -345,6 +351,7 @@ let limit: number = 30,
 
 </Tabs>
 
+When conversations are fetched successfully, the response will include conversations where the user or group name matches the search keyword.
 ### Unread Conversations
 
 This method helps you fetch unread conversations.
@@ -380,6 +387,7 @@ let limit: number = 30,
 
 </Tabs>
 
+When conversations are fetched successfully, the response will include only conversations that have unread messages (where `unreadMessageCount` is greater than 0).
 ### Hide Agentic Conversations
 
 This method allows you to exclude agent conversations from the conversation list. When set to `true`, conversations with AI agents will be filtered out.
@@ -408,7 +416,6 @@ let limit: number = 30,
 </Tab>
 
 </Tabs>
-
 ### Only Agentic Conversations
 
 This method allows you to fetch only agent conversations. When set to `true`, only conversations with AI agents will be returned in the list.
@@ -444,6 +451,7 @@ The `setHideAgentic()` and `setOnlyAgentic()` methods are mutually exclusive. Yo
 
 </Note>
 
+When conversations are fetched successfully, the response will include only conversations with AI agents. Agent users have `role: "@agentic"` and include agent-specific metadata.
 Finally, once all the parameters are set to the builder class, you need to call the `build()` method to get the object of the `ConversationsRequest` class.
 
 Once you have the object of the `ConversationsRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of `Conversation` objects containing X number of users depending on the limit set.
@@ -500,6 +508,21 @@ The `Conversation` Object consists of the following fields:
 | lastMessage        | Last message the conversation.                                    |
 | conversationWith   | User or Group object containing the details of the user or group. |
 | unreadMessageCount | Unread message count for the conversation.                        |
+| unreadMentionsCount | Count of unread mentions in the conversation.                    |
+| lastReadMessageId  | ID of the last read message in the conversation.                  |
+| latestMessageId    | ID of the latest message in the conversation.                     |
+| tags               | Array of tags associated with the conversation (when using `withTags`). |
+
+The `fetchNext()` method returns an array of [`Conversation`](/sdk/reference/entities#conversation) objects. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| conversationId | `getConversationId()` | `string` | Unique conversation ID |
+| conversationType | `getConversationType()` | `string` | Type of conversation (`"user"` or `"group"`) |
+| lastMessage | `getLastMessage()` | `BaseMessage` | The last message in the conversation |
+| conversationWith | `getConversationWith()` | `User` \| `Group` | The user or group this conversation is with |
+| unreadMessageCount | `getUnreadMessageCount()` | `number` | Number of unread messages |
+| tags | `getTags()` | `string[]` | Tags associated with the conversation (when using `withTags`) |
 
 ## Tag Conversation
 
@@ -559,6 +582,7 @@ The tags for conversations are one-way. This means that if user A tags a convers
 
 </Note>
 
+When the conversation is tagged successfully, the response will return a single `Conversation` object (not an array) with the `tags` field included.
 ## Retrieve Single Conversation
 
 *In other words, as a logged-in user, how do I retrieve a specific conversation?*
@@ -606,6 +630,18 @@ CometChat.getConversation(conversationWith, conversationType).then(
 
 </Tabs>
 
+When the conversation is fetched successfully, the response will return a single `Conversation` object (not an array).
+The `getConversation()` method returns a single [`Conversation`](/sdk/reference/entities#conversation) object. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| conversationId | `getConversationId()` | `string` | Unique conversation ID |
+| conversationType | `getConversationType()` | `string` | Type of conversation (`"user"` or `"group"`) |
+| lastMessage | `getLastMessage()` | `BaseMessage` | The last message in the conversation |
+| conversationWith | `getConversationWith()` | `User` \| `Group` | The user or group this conversation is with |
+| unreadMessageCount | `getUnreadMessageCount()` | `number` | Number of unread messages |
+| tags | `getTags()` | `string[]` | Tags associated with the conversation (when using `withTags`) |
+
 ## Convert Messages to Conversations
 
 As per our [receive messages](/sdk/javascript/receive-message) guide, for real-time messages, you will always receive `Message` objects and not `Conversation` objects. Thus, you will need a mechanism to convert the Message object to the `Conversation` object. You can use the `getConversationFromMessage(BaseMessage message)` of the `CometChatHelper` class.
@@ -646,7 +682,6 @@ CometChat.CometChatHelper.getConversationFromMessage(message).then(
 While converting the `Message` object to the `Conversation` object, the `unreadMessageCount` & `tags` will not be available in the `Conversation` object. The unread message count needs to be managed in your client-side code.
 
 </Note>
-
 ---
 
 ## Next Steps

@@ -80,6 +80,17 @@ CometChat keeps a track of the groups joined and you do not need to join the gro
 
 You can identify if a group is joined using the `hasJoined` parameter in the `Group` object.
 
+The method returns a [`Group`](/sdk/reference/entities#group) object with `hasJoined` set to `true`. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| guid | `getGuid()` | `string` | Unique group ID |
+| name | `getName()` | `string` | Display name of the group |
+| type | `getType()` | `string` | Group type (`"public"`, `"private"`, or `"password"`) |
+| hasJoined | `getHasJoined()` | `boolean` | Whether the logged-in user has joined this group |
+| scope | `getScope()` | `string` | Scope of the logged-in user in the group |
+| membersCount | `getMembersCount()` | `number` | Total number of members in the group |
+
 ## Real-time Group Member Joined Events
 
 *In other words, as a member of a group, how do I know if someone joins the group when my app is running?*

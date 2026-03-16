@@ -80,6 +80,8 @@ CometChat.addMembersToGroup(GUID, membersList, []).then(
 
 It will return a Array which will contain the `UID` of the users and the value will either be `success` or an error message describing why the operation to add the user to the group.
 
+The method returns a response object (map) where each key is a `UID` and the value is either `"success"` or an error message describing why the operation failed for that user.
+
 ## Real-Time Group Member Added Events
 
 *In other words, as a member of a group, how do I know when someone is added to the group when my app is running?*

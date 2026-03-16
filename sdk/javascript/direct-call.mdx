@@ -360,6 +360,16 @@ CometChatCalls.removeCallEventListener(listenerId);
 | `onCallSwitchedToVideo(event)` | Invoked when an audio call is upgraded to a video call. Contains `sessionId`, `initiator`, and `responder`. |
 | `onError(error)` | Invoked when an error occurs during the call session. |
 
+The ringing flow methods (`initiateCall()`, `acceptCall()`, `rejectCall()`, `endCall()`) return [`Call`](/sdk/reference/messages#call) objects. Access the data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| sessionId | `getSessionId()` | `string` | Unique session ID for the call |
+| callInitiator | `getCallInitiator()` | `User` | The user who initiated the call |
+| callReceiver | `getCallReceiver()` | `User` \| `Group` | The user or group receiving the call |
+| action | `getAction()` | `string` | Current call action/status |
+| initiatedAt | `getInitiatedAt()` | `number` | Timestamp when the call was initiated |
+
 ## End Call Session
 
 Ending a call session properly is essential to release media resources (camera, microphone, network connections) and update call state across all participants. The termination process differs based on whether you're using the Ringing flow or Session Only flow.

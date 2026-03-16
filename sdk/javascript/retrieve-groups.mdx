@@ -228,6 +228,17 @@ groupsRequest.fetchNext().then(
 
 </Tabs>
 
+The `fetchNext()` method returns an array of [`Group`](/sdk/reference/entities#group) objects. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| guid | `getGuid()` | `string` | Unique group ID |
+| name | `getName()` | `string` | Display name of the group |
+| type | `getType()` | `string` | Group type (`"public"`, `"private"`, or `"password"`) |
+| membersCount | `getMembersCount()` | `number` | Total number of members in the group |
+| owner | `getOwner()` | `string` | UID of the group owner |
+| hasJoined | `getHasJoined()` | `boolean` | Whether the logged-in user has joined this group |
+
 ## Retrieve Particular Group Details
 
 *In other words, as a logged-in user, how do I retrieve information for a specific group?*
@@ -270,6 +281,17 @@ CometChat.getGroup(GUID).then(
 | `GUID`    | The GUID of the group for whom the details are to be fetched |
 
 It returns `Group` object containing the details of the group.
+
+The method returns a [`Group`](/sdk/reference/entities#group) object. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| guid | `getGuid()` | `string` | Unique group ID |
+| name | `getName()` | `string` | Display name of the group |
+| type | `getType()` | `string` | Group type (`"public"`, `"private"`, or `"password"`) |
+| membersCount | `getMembersCount()` | `number` | Total number of members in the group |
+| owner | `getOwner()` | `string` | UID of the group owner |
+| hasJoined | `getHasJoined()` | `boolean` | Whether the logged-in user has joined this group |
 
 ## Get online group member count
 

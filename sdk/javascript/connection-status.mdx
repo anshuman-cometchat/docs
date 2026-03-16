@@ -113,6 +113,15 @@ The `CometChat.getConnectionStatus` method will return either of the below 3 val
 2. connected
 3. disconnected
 
+The connection listener callbacks and `getConnectionStatus()` return string enum values representing the current WebSocket connection state:
+
+| Value | Callback | Description |
+|-------|----------|-------------|
+| `"connected"` | `onConnected()` | SDK has an active connection to CometChat servers |
+| `"connecting"` | `inConnecting()` | SDK is attempting to establish or re-establish a connection |
+| `"disconnected"` | `onDisconnected()` | SDK is disconnected due to network issues or other errors |
+| `"featureThrottled"` | — | A feature has been throttled due to rate limiting |
+
 
 <Warning>
 Always remove connection listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.

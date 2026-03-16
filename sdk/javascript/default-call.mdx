@@ -141,6 +141,17 @@ CometChat.initiateCall(call).then(
 
 On success, a `Call` object is returned containing the call details including a unique `sessionId` required for starting the call session.
 
+The `initiateCall()` method returns a [`Call`](/sdk/reference/messages#call) object. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| sessionId | `getSessionId()` | `string` | Unique session ID for the call |
+| callInitiator | `getCallInitiator()` | `User` | The user who initiated the call |
+| callReceiver | `getCallReceiver()` | `User` \| `Group` | The user or group receiving the call |
+| type | `getType()` | `string` | Type of call (`"audio"` or `"video"`) |
+| action | `getAction()` | `string` | Current call action/status |
+| initiatedAt | `getInitiatedAt()` | `number` | Timestamp when the call was initiated |
+
 ## Call Listeners
 
 Register the `CallListener` to receive real-time call events. Each listener requires a unique `listenerId` string to prevent duplicate registrations and enable targeted removal.
@@ -222,6 +233,16 @@ CometChat.removeCallListener(listenerId);
 | `onOutgoingCallRejected(call)` | Invoked on the caller's device when the receiver rejects the call. Dismiss outgoing call UI here. |
 | `onIncomingCallCancelled(call)` | Invoked on the receiver's device when the caller cancels before answering. Dismiss incoming call UI here. |
 | `onCallEndedMessageReceived(call)` | Invoked when a call ends. The `call` contains final status and duration. Update call history here. |
+
+All call listener callbacks receive a [`Call`](/sdk/reference/messages#call) object. Access the data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| sessionId | `getSessionId()` | `string` | Unique session ID for the call |
+| callInitiator | `getCallInitiator()` | `User` | The user who initiated the call |
+| callReceiver | `getCallReceiver()` | `User` \| `Group` | The user or group receiving the call |
+| action | `getAction()` | `string` | Current call action/status |
+| initiatedAt | `getInitiatedAt()` | `number` | Timestamp when the call was initiated |
 
 ## Accept Call
 

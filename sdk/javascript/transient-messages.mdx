@@ -134,6 +134,15 @@ The `TransientMessage` class consists of the below parameters:
 | **receiverType** | The type of the receiver - `CometChat.RECEIVER_TYPE.USER` or `CometChat.RECEIVER_TYPE.GROUP`             |
 | **data**         | A JSONObject to provide data.                                                                            |
 
+The listener callback receives a [`TransientMessage`](/sdk/reference/auxiliary#transientmessage) object. Access the data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| sender | `getSender()` | [`User`](/sdk/reference/entities#user) | The user who sent the transient message |
+| receiverId | `getReceiverId()` | `string` | UID or GUID of the receiver |
+| receiverType | `getReceiverType()` | `string` | Type of receiver (`user` or `group`) |
+| data | `getData()` | `Object` | Custom JSON data payload |
+
 ---
 
 ## Next Steps

@@ -114,6 +114,17 @@ The createGroup() method takes the following parameters:
 
 After successful creation of the group, you will receive an instance of `Group` class which contains all the information about the particular group.
 
+The method returns a [`Group`](/sdk/reference/entities#group) object. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| guid | `getGuid()` | `string` | Unique group ID |
+| name | `getName()` | `string` | Display name of the group |
+| type | `getType()` | `string` | Group type (`"public"`, `"private"`, or `"password"`) |
+| owner | `getOwner()` | `string` | UID of the group owner |
+| membersCount | `getMembersCount()` | `number` | Total number of members in the group |
+| createdAt | `getCreatedAt()` | `number` | Timestamp when the group was created |
+
 <Warning>
 
 GUID can be alphanumeric with underscore and hyphen. Spaces, punctuation and other special characters are not allowed.

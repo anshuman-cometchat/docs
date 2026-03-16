@@ -93,6 +93,16 @@ CometChat.createUser(user, authKey).then(
 </Tab>
 </Tabs>
 
+The method returns a [`User`](/sdk/reference/entities#user) object. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| uid | `getUid()` | `string` | Unique user ID |
+| name | `getName()` | `string` | Display name of the user |
+| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
+| role | `getRole()` | `string` | Role assigned to the user |
+| status | `getStatus()` | `string` | Online status of the user |
+
 <Warning>
 
 UID can be alphanumeric with underscore and hyphen. Spaces, punctuation and other special characters are not allowed.
@@ -145,6 +155,16 @@ CometChat.updateUser(user, authKey).then(
 </Tabs>
 
 Please make sure the `User` object provided to the `updateUser()` method has the `UID` of the user to be updated set.
+
+The method returns a [`User`](/sdk/reference/entities#user) object. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| uid | `getUid()` | `string` | Unique user ID |
+| name | `getName()` | `string` | Display name of the user |
+| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
+| role | `getRole()` | `string` | Role assigned to the user |
+| metadata | `getMetadata()` | `Object` | Custom metadata attached to the user |
 
 ## Updating logged-in user
 

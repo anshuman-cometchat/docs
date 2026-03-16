@@ -199,6 +199,15 @@ The `TypingIndicator` class consists of the below parameters:
 | **receiverType** | This parameter indicates if the typing indicator is to be sent to a user or a group. The possible values are: 1. `CometChat.RECEIVER_TYPE.USER` 2. `CometChat.RECEIVER_TYPE.GROUP` |
 | **metadata**     | A JSONObject to provider additional data.                                                                                                                                          |
 
+The `onTypingStarted` and `onTypingEnded` listener callbacks receive a [`TypingIndicator`](/sdk/reference/auxiliary#typingindicator) object. Access the data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| receiverId | `getReceiverId()` | `string` | UID or GUID of the typing indicator recipient |
+| receiverType | `getReceiverType()` | `string` | Type of receiver (`"user"` or `"group"`) |
+| sender | `getSender()` | `User` | The user who is typing |
+| metadata | `getMetadata()` | `Object` | Additional custom data sent with the indicator |
+
 <Accordion title="Best Practices">
 - **Debounce typing events**: Don't call `startTyping()` on every keystroke - debounce to ~300ms intervals
 - **Auto-stop typing**: Call `endTyping()` after a period of inactivity (e.g., 3-5 seconds)

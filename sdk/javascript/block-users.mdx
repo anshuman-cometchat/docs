@@ -81,6 +81,15 @@ try {
 
 It returns a Array which contains `UID's` as the keys and "success" or "fail" as the value based on if the block operation for the `UID` was successful or not.
 
+The method returns an array of [`User`](/sdk/reference/entities#user) objects with the `blockedByMe` field set to `true`. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| uid | `getUid()` | `string` | Unique user ID |
+| name | `getName()` | `string` | Display name of the user |
+| blockedByMe | `getBlockedByMe()` | `boolean` | Whether the logged-in user has blocked this user |
+| hasBlockedMe | `getHasBlockedMe()` | `boolean` | Whether this user has blocked the logged-in user |
+
 ## Unblock Users
 
 *In other words, as a logged-in user, how do I unblock a user I previously blocked?*
@@ -135,6 +144,15 @@ try {
 </Tabs>
 
 It returns a Array which contains `UID's` as the keys and `success` or `fail` as the value based on if the unblock operation for the `UID` was successful or not.
+
+The method returns an array of [`User`](/sdk/reference/entities#user) objects with the `blockedByMe` field set to `false`. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| uid | `getUid()` | `string` | Unique user ID |
+| name | `getName()` | `string` | Display name of the user |
+| blockedByMe | `getBlockedByMe()` | `boolean` | Whether the logged-in user has blocked this user |
+| hasBlockedMe | `getHasBlockedMe()` | `boolean` | Whether this user has blocked the logged-in user |
 
 ## Get List of Blocked Users
 

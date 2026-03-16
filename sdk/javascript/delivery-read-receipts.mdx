@@ -767,6 +767,19 @@ You will receive events in the form of `MessageReceipt` objects. The message rec
 | `deliveredAt`  | The timestamp of the time when the message was delivered. This will only be present if the receiptType is delivered.                      |
 | `readAt`       | The timestamp of the time when the message was read. This will only be present when the receiptType is read.                              |
 
+The listener callbacks receive a [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) object. Access the data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| messageId | `getMessageId()` | `string` | ID of the message this receipt is for |
+| sender | `getSender()` | `User` | User who triggered the receipt |
+| receiptType | `getReceiptType()` | `string` | Type of receipt (`"delivery"` or `"read"`) |
+| timestamp | `getTimestamp()` | `number` | Timestamp of the receipt event |
+| deliveredAt | `getDeliveredAt()` | `number` | Timestamp when the message was delivered |
+| readAt | `getReadAt()` | `number` | Timestamp when the message was read |
+
+The `markAsDelivered()` and `markAsRead()` methods are fire-and-forget — they do not return a `MessageReceipt` object. Use the listener callbacks above to receive delivery and read confirmations.
+
 ### Missed Receipts
 
 You will receive message receipts when you load offline messages. While fetching messages in bulk, the message object will have two fields i.e. `deliveredAt` and `readAt` which hold the timestamp for the time the message was delivered and read respectively. Using these two variables, the delivery and read status for a message can be obtained.

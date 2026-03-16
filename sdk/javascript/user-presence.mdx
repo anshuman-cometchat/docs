@@ -96,6 +96,15 @@ CometChat.addUserListener(
 
 You will receive an object of the `User` class in the listener methods.
 
+The listener callbacks provide a [`User`](/sdk/reference/entities#user) object with presence fields populated. Access the response data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| uid | `getUid()` | `string` | Unique user ID |
+| name | `getName()` | `string` | Display name of the user |
+| status | `getStatus()` | `string` | Online status of the user (`"online"` or `"offline"`) |
+| lastActiveAt | `getLastActiveAt()` | `number` | Timestamp when the user was last active |
+
 <Warning>
 **Listener Cleanup:** Always remove the listener when the component or view is unmounted/destroyed to prevent memory leaks and duplicate callbacks. Use `CometChat.removeUserListener(listenerID)` in your cleanup logic.
 </Warning>

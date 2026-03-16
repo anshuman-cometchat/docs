@@ -89,3 +89,129 @@ These properties may or may not be populated depending on the method or request 
 | Property | Getter | Return Type | Description |
 |----------|--------|-------------|-------------|
 | tags | `getTags()` | `string[]` | Tags associated with the message |
+
+---
+
+## MediaMessage
+
+`MediaMessage` extends [BaseMessage](#basemessage) and represents a message with media attachments such as images, videos, audio files, or documents.
+
+It inherits all properties from `BaseMessage` and adds the following.
+
+### Properties
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| caption | `getCaption()` | `string` | Caption text for the media message |
+| attachment | `getAttachment()` | `Attachment` | The primary attachment of the media message |
+| attachments | `getAttachments()` | `Attachment[]` | All attachments of the media message |
+| url | `getURL()` | `string` | URL of the media file |
+| metadata | `getMetadata()` | `Object` | Custom metadata attached to the message |
+| data | `getData()` | `Object` | Raw data payload of the message |
+| moderationStatus | `getModerationStatus()` | `ModerationStatus` | Moderation status of the message. Returns `"unmoderated"` if not moderated. |
+
+### Conditional Properties
+
+These properties may or may not be populated depending on the method or request configuration used to fetch the message.
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| tags | `getTags()` | `string[]` | Tags associated with the message |
+
+---
+
+## CustomMessage
+
+`CustomMessage` extends [BaseMessage](#basemessage) and represents a developer-defined message with a custom data payload.
+
+It inherits all properties from `BaseMessage` and adds the following.
+
+### Properties
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| customData | `getCustomData()` | `Object` | The custom data payload set by the developer |
+| subType | `getSubType()` | `string` | Sub type of the custom message |
+| conversationText | `getConversationText()` | `string` | Preview text displayed in the conversation list |
+| updateConversation | `willUpdateConversation()` | `boolean` | Whether this message updates the conversation's last message |
+| sendNotification | `willSendNotification()` | `boolean` | Whether a push notification is sent for this message |
+| metadata | `getMetadata()` | `Object` | Custom metadata attached to the message |
+| data | `getData()` | `Object` | Raw data payload of the message |
+
+### Conditional Properties
+
+These properties may or may not be populated depending on the method or request configuration used to fetch the message.
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| tags | `getTags()` | `string[]` | Tags associated with the message |
+
+---
+
+## InteractiveMessage
+
+`InteractiveMessage` extends [BaseMessage](#basemessage) and represents a message with interactive UI elements such as forms, cards, or buttons.
+
+It inherits all properties from `BaseMessage` and adds the following.
+
+### Properties
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| interactiveData | `getInteractiveData()` | `Object` | The interactive element data (form fields, buttons, etc.) |
+| interactionGoal | `getInteractionGoal()` | `InteractionGoal` | The goal that defines when the interaction is considered complete |
+| interactions | `getInteractions()` | `Interaction[]` | Array of interactions that have occurred on this message |
+| allowSenderInteraction | `getIsSenderInteractionAllowed()` | `boolean` | Whether the sender is allowed to interact with the message |
+| metadata | `getMetadata()` | `Object` | Custom metadata attached to the message |
+| data | `getData()` | `Object` | Raw data payload of the message |
+
+### Conditional Properties
+
+These properties may or may not be populated depending on the method or request configuration used to fetch the message.
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| tags | `getTags()` | `string[]` | Tags associated with the message |
+
+---
+
+## Action
+
+`Action` extends [BaseMessage](#basemessage) and represents a system-generated action message such as a member joining, leaving, or being banned from a group.
+
+It inherits all properties from `BaseMessage` and adds the following.
+
+### Properties
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| action | `getAction()` | `string` | The action being performed (e.g., `"joined"`, `"left"`, `"kicked"`, `"banned"`) |
+| message | `getMessage()` | `string` | The default human-readable action message |
+| actionBy | `getActionBy()` | `User` \| `Group` \| `BaseMessage` | The entity that performed the action |
+| actionOn | `getActionOn()` | `User` \| `Group` \| `BaseMessage` | The entity on which the action was performed |
+| actionFor | `getActionFor()` | `User` \| `Group` \| `BaseMessage` | The entity for whom the action was performed |
+| oldScope | `getOldScope()` | `string` | Previous scope of the member (for scope change actions) |
+| newScope | `getNewScope()` | `string` | New scope of the member (for scope change actions) |
+| rawData | `getRawData()` | `Object` | Raw JSON data of the action message |
+| metadata | `getMetadata()` | `Object` | Custom metadata attached to the action message |
+
+---
+
+## Call
+
+`Call` extends [BaseMessage](#basemessage) and represents a voice or video call message.
+
+It inherits all properties from `BaseMessage` and adds the following.
+
+### Properties
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| sessionId | `getSessionId()` | `string` | Unique session ID of the call |
+| callInitiator | `getCallInitiator()` | `User` | The user who initiated the call |
+| callReceiver | `getCallReceiver()` | `User` \| `Group` | The user or group receiving the call |
+| action | `getAction()` | `string` | The call action (e.g., `"initiated"`, `"ongoing"`, `"ended"`, `"cancelled"`, `"rejected"`) |
+| initiatedAt | `getInitiatedAt()` | `number` | Timestamp when the call was initiated |
+| joinedAt | `getJoinedAt()` | `number` | Timestamp when the call was joined |
+| rawData | `getRawData()` | `Object` | Raw JSON data of the call message |
+| metadata | `getMetadata()` | `Object` | Custom metadata attached to the call message |

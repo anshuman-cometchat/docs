@@ -113,6 +113,14 @@ CometChat.removeReaction(messageId, emoji)
 
 </Tabs>
 
+Both `addReaction()` and `removeReaction()` return a [`BaseMessage`](/sdk/reference/messages#basemessage) object with the updated reactions. Access the reaction data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| id | `getId()` | `number` | Unique message ID |
+| sender | `getSender()` | [`User`](/sdk/reference/entities#user) | The user who sent the message |
+| reactions | `getReactions()` | [`ReactionCount[]`](/sdk/reference/auxiliary#reactioncount) | Array of reaction counts on the message |
+
 ## Fetch Reactions for a Message
 
 To get all reactions for a specific message, first create a `ReactionRequest` using `ReactionRequestBuilder`. You can specify the number of reactions to fetch with setLimit with max limit 100. For this, you will require the ID of the message. This ID needs to be passed to the `setMessageId()` method of the builder class. The `setReaction()` will allow you to fetch details for specific reaction or emoji.
@@ -266,6 +274,15 @@ CometChat.addMessageListener(listenerID, {
 </Tab>
 
 </Tabs>
+
+Each reaction listener callback receives a [`ReactionEvent`](/sdk/reference/auxiliary#reactionevent) object. Access the event data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| reaction | `getReaction()` | `string` | The emoji reaction that was added or removed |
+| receiverId | `getReceiverId()` | `string` | UID or GUID of the receiver |
+| receiverType | `getReceiverType()` | `string` | Type of receiver (`user` or `group`) |
+| conversationId | `getConversationId()` | `string` | ID of the conversation |
 
 ## Removing a Reaction Listener
 

@@ -392,6 +392,13 @@ To retrieve the list of users mentioned in the particular message, you can use t
 message.getMentionedUsers()
 ```
 
+Messages containing mentions are returned as [`BaseMessage`](/sdk/reference/messages#basemessage) objects with mention-related fields populated. Access the mention data using getter methods:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| mentionedUsers | `getMentionedUsers()` | [`User[]`](/sdk/reference/entities#user) | Array of users mentioned in the message |
+| hasMentionedMe | `hasMentionedMe()` | `boolean` | Whether the logged-in user is mentioned in the message |
+
 <Accordion title="Best Practices">
 - **Use correct format**: Always use `<@uid:UID>` format for mentions in message text
 - **Validate UIDs**: Ensure mentioned UIDs exist before sending

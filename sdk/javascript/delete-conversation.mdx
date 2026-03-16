@@ -102,6 +102,8 @@ The `deleteConversation()` method takes the following parameters:
 | conversationWith | `UID` of the user or `GUID` of the group whose conversation you want to delete.   | YES      |
 | conversationType | The type of conversation you want to delete . It can be either `user` or `group`. | YES      |
 
+On success, the `deleteConversation()` method resolves with a success message string confirming the operation.
+
 <Accordion title="Best Practices">
 - **Confirm before deleting**: Always show a confirmation dialog before deleting conversations
 - **Update UI immediately**: Remove the conversation from the list optimistically, then handle errors
