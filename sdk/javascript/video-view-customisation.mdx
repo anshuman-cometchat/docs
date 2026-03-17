@@ -1,25 +1,17 @@
 ---
 title: "Video View Customisation"
-description: "Customize the main video container in CometChat calls including aspect ratio, full screen button, name labels, and network labels."
+description: "Customize the main video container in CometChat calls — aspect ratio, full screen button, name label, and network label positioning."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
 <Info>
-**Quick Reference for AI Agents & Developers**
-
-```javascript
-// Customize main video container
-const videoSettings = new CometChat.MainVideoContainerSetting();
-videoSettings.setMainVideoAspectRatio(CometChat.CallSettings.ASPECT_RATIO_CONTAIN);
-videoSettings.setFullScreenButtonParams(CometChat.CallSettings.POSITION_BOTTOM_RIGHT, true);
-videoSettings.setNameLabelParams(CometChat.CallSettings.POSITION_BOTTOM_LEFT, true, "rgba(27,27,27,0.4)");
-
-// Apply to call settings
-const callSettings = new CometChatCalls.CallSettingsBuilder()
-  .setMainVideoContainerSetting(videoSettings)
-  .build();
-```
+**Quick Reference**
+- **Class:** `CometChat.MainVideoContainerSetting`
+- **Apply via:** `CallSettingsBuilder.setMainVideoContainerSetting(videoSettings)`
+- **Customizable elements:** Aspect ratio, full screen button, name label, network label
+- **Position constants:** `POSITION_TOP_LEFT`, `POSITION_TOP_RIGHT`, `POSITION_BOTTOM_LEFT`, `POSITION_BOTTOM_RIGHT`
+- **Requires:** [Default Calling](/sdk/javascript/default-call) or [Direct Calling](/sdk/javascript/direct-call) setup
 </Info>
+
 This section will guide you to customise the main video container.
 
 ## Implementation
@@ -42,48 +34,62 @@ The `MainVideoContainerSetting` Class is the required in case you want to custom
 Example:
 
 <Tabs>
-<Tab title="TypeScript">
-```typescript
+<Tab title="JavaScript">
+```javascript
 let videoSettings = new CometChat.MainVideoContainerSetting();
 
-videoSettings.setMainVideoAspectRatio(CometChat.CallSettings.ASPECT_RATIO_CONTAIN);	
+videoSettings.setMainVideoAspectRatio(CometChat.CallSettings.ASPECT_RATIO_CONTAIN);
 videoSettings.setFullScreenButtonParams(CometChat.CallSettings.POSITION_BOTTOM_RIGHT, true);
 videoSettings.setNameLabelParams(CometChat.CallSettings.POSITION_BOTTOM_LEFT, true, "rgba(27, 27, 27, 0.4)");
-videoSettings.setNetworkLabelParams(CometChat.CallSettings.POSITION_BOTTOM_RIGHT, true); 
+videoSettings.setNetworkLabelParams(CometChat.CallSettings.POSITION_BOTTOM_RIGHT, true);
 ```
-
 </Tab>
+<Tab title="TypeScript">
+```typescript
+let videoSettings: CometChat.MainVideoContainerSetting = new CometChat.MainVideoContainerSetting();
 
+videoSettings.setMainVideoAspectRatio(CometChat.CallSettings.ASPECT_RATIO_CONTAIN);
+videoSettings.setFullScreenButtonParams(CometChat.CallSettings.POSITION_BOTTOM_RIGHT, true);
+videoSettings.setNameLabelParams(CometChat.CallSettings.POSITION_BOTTOM_LEFT, true, "rgba(27, 27, 27, 0.4)");
+videoSettings.setNetworkLabelParams(CometChat.CallSettings.POSITION_BOTTOM_RIGHT, true);
+```
+</Tab>
 </Tabs>
 
+<AccordionGroup>
 <Accordion title="Best Practices">
-- **Use position constants** — Always use `CometChat.CallSettings.POSITION_*` constants instead of raw strings for positioning parameters.
-- **Test all aspect ratios** — Try both `ASPECT_RATIO_CONTAIN` and `ASPECT_RATIO_COVER` to see which works best for your layout.
-- **Keep name labels visible** — Name labels help users identify participants. Only hide them if your UI provides an alternative way to show participant names.
-- **Apply settings before starting the call** — Pass the `MainVideoContainerSetting` object to `CallSettingsBuilder` before calling `startCall()`.
-</Accordion>
 
-<Accordion title="Troubleshooting">
-- **Settings not applied** — Ensure you pass the `MainVideoContainerSetting` object to `setMainVideoContainerSetting()` on the `CallSettingsBuilder` before starting the call.
-- **Full screen button not visible** — Check that `setFullScreenButtonParams()` has `visibility` set to `true` and the position doesn't overlap with other UI elements.
-- **Name label background color not changing** — Verify the color string format is correct (e.g., `"rgba(27, 27, 27, 0.4)"` or `"#1B1B1B"`).
-- **Video aspect ratio looks wrong** — Try switching between `ASPECT_RATIO_CONTAIN` (shows full video with letterboxing) and `ASPECT_RATIO_COVER` (fills container, may crop).
+| Practice | Details |
+| --- | --- |
+| Aspect ratio choice | Use `ASPECT_RATIO_CONTAIN` to show the full video without cropping; use `ASPECT_RATIO_COVER` for a full-bleed look that may crop edges |
+| Label positioning | Avoid placing the name label and network label in the same corner to prevent overlap |
+| Full screen button | Keep the full screen button visible for better UX; only hide it if your app provides its own full screen toggle |
+
 </Accordion>
+<Accordion title="Troubleshooting">
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Video settings not applied | `setMainVideoContainerSetting()` not called on `CallSettingsBuilder` | Pass the `MainVideoContainerSetting` object to `CallSettingsBuilder.setMainVideoContainerSetting()` before calling `startCall()` |
+| Labels overlapping | Multiple labels positioned in the same corner | Assign different position constants to each label |
+| Full screen button missing | Visibility set to `false` | Set the second parameter of `setFullScreenButtonParams()` to `true` |
+
+</Accordion>
+</AccordionGroup>
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Default Calling" href="/sdk/javascript/default-call">
-    Implement standard audio and video calls
+  <Card title="Default Calling" icon="phone" href="/sdk/javascript/default-call">
+    Implement default audio/video calling.
   </Card>
-  <Card title="Direct Calling" href="/sdk/javascript/direct-call">
-    Start calls without a prior message
+  <Card title="Direct Calling" icon="video" href="/sdk/javascript/direct-call">
+    Implement direct calling without call events.
   </Card>
-  <Card title="Virtual Background" href="/sdk/javascript/virtual-background">
-    Add background blur and custom images to calls
+  <Card title="Virtual Background" icon="image" href="/sdk/javascript/virtual-background">
+    Add virtual background and blur effects.
   </Card>
-  <Card title="Recording" href="/sdk/javascript/recording">
-    Record audio and video calls
+  <Card title="Recording" icon="circle-dot" href="/sdk/javascript/recording">
+    Record calls for playback.
   </Card>
 </CardGroup>
-
