@@ -328,7 +328,7 @@ CometChat.sendMediaMessage(mediaMessage).then(
 
 ### Send a URL
 
-Send media hosted on your server or cloud storage using the `Attachment` class:
+Send media hosted on your server or cloud storage using the [`Attachment`](/sdk/reference/auxiliary#attachment) class:
 
 <Tabs>
 <Tab title="User">
@@ -920,6 +920,14 @@ By default, custom messages update the conversation's last message. To prevent t
 ```javascript
 customMessage.shouldUpdateConversation(false);
 ```
+
+{/* ### Control Push Notifications
+
+By default, custom messages don't trigger push notifications. To enable them:
+
+```javascript
+customMessage.shouldSendNotification(true);
+``` */}
 
 ### Custom Notification Text
 
