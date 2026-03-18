@@ -31,86 +31,209 @@ You can also send [Interactive Messages](/sdk/javascript/interactive-messages) f
 Send a text message using `CometChat.sendMessage()` with a `TextMessage` object.
 
 <Tabs>
-<Tab title="JavaScript">
+<Tab title="User">
 ```javascript
-const receiverID = "UID"; // or GUID for groups
-const receiverType = CometChat.RECEIVER_TYPE.USER; // or GROUP
-const textMessage = new CometChat.TextMessage(receiverID, "Hello!", receiverType);
+let receiverID = "UID";
+let messageText = "Hello world!";
+let receiverType = CometChat.RECEIVER_TYPE.USER;
+let textMessage = new CometChat.TextMessage(
+  receiverID,
+  messageText,
+  receiverType
+);
 
 CometChat.sendMessage(textMessage).then(
-  message => console.log("Message sent:", message),
-  error => console.log("Error:", error)
+  (message) => {
+    console.log("Message sent successfully:", message);
+  },
+  (error) => {
+    console.log("Message sending failed with error:", error);
+  }
 );
 ```
 </Tab>
-<Tab title="TypeScript">
-```typescript
-const receiverID: string = "UID";
-const receiverType: string = CometChat.RECEIVER_TYPE.USER;
-const textMessage = new CometChat.TextMessage(receiverID, "Hello!", receiverType);
+<Tab title="Group">
+```javascript
+let receiverID = "GUID";
+let messageText = "Hello world!";
+let receiverType = CometChat.RECEIVER_TYPE.GROUP;
+let textMessage = new CometChat.TextMessage(
+  receiverID,
+  messageText,
+  receiverType
+);
 
 CometChat.sendMessage(textMessage).then(
-  (message: CometChat.TextMessage) => console.log("Message sent:", message),
-  (error: CometChat.CometChatException) => console.log("Error:", error)
+  (message) => {
+    console.log("Message sent successfully:", message);
+  },
+  (error) => {
+    console.log("Message sending failed with error:", error);
+  }
 );
+```
+</Tab>
+<Tab title="TypeScript (User)">
+```typescript
+let receiverID: string = "UID",
+  messageText: string = "Hello world!",
+  receiverType: string = CometChat.RECEIVER_TYPE.USER,
+  textMessage: CometChat.TextMessage = new CometChat.TextMessage(
+    receiverID,
+    messageText,
+    receiverType
+  );
+
+CometChat.sendMessage(textMessage).then(
+  (message: CometChat.TextMessage) => {
+    console.log("Message sent successfully:", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Message sending failed with error:", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript (Group)">
+```typescript
+let receiverID: string = "GUID",
+  messageText: string = "Hello world!",
+  receiverType: string = CometChat.RECEIVER_TYPE.GROUP,
+  textMessage: CometChat.TextMessage = new CometChat.TextMessage(
+    receiverID,
+    messageText,
+    receiverType
+  );
+
+CometChat.sendMessage(textMessage).then(
+  (message: CometChat.TextMessage) => {
+    console.log("Message sent successfully:", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Message sending failed with error:", error);
+  }
+);
+```
+</Tab>
+<Tab title="Async/Await">
+```javascript
+try {
+  const receiverID = "UID";
+  const messageText = "Hello world!";
+  const receiverType = CometChat.RECEIVER_TYPE.USER;
+  const textMessage = new CometChat.TextMessage(
+    receiverID,
+    messageText,
+    receiverType
+  );
+
+  const message = await CometChat.sendMessage(textMessage);
+  console.log("Message sent successfully:", message);
+} catch (error) {
+  console.log("Message sending failed with error:", error);
+}
 ```
 </Tab>
 </Tabs>
 
-### TextMessage Parameters
+The `TextMessage` class constructor takes the following parameters:
 
-| Parameter | Type | Description |
+| Parameter | Description | Required |
 | --- | --- | --- |
-| `receiverID` | `string` | UID of user or GUID of group |
-| `messageText` | `string` | The text content |
-| `receiverType` | `string` | `CometChat.RECEIVER_TYPE.USER` or `GROUP` |
+| `receiverID` | UID of the user or GUID of the group receiving the message | Yes |
+| `messageText` | The text message content | Yes |
+| `receiverType` | `CometChat.RECEIVER_TYPE.USER` or `CometChat.RECEIVER_TYPE.GROUP` | Yes |
 
-### Optional: Add Metadata
+### Add Metadata
 
-Attach custom JSON data to any message:
+Attach custom JSON data to the message:
 
+<Tabs>
+<Tab title="JavaScript">
 ```javascript
-textMessage.setMetadata({
+let metadata = {
   latitude: "50.6192171633316",
-  longitude: "-72.68182268750002"
-});
+  longitude: "-72.68182268750002",
+};
+
+textMessage.setMetadata(metadata);
 ```
+</Tab>
+<Tab title="TypeScript">
+```typescript
+let metadata: Object = {
+  latitude: "50.6192171633316",
+  longitude: "-72.68182268750002",
+};
 
-### Optional: Add Tags
+textMessage.setMetadata(metadata);
+```
+</Tab>
+</Tabs>
 
-Tag messages for filtering:
+### Add Tags
 
+Tag messages for easy filtering later:
+
+<Tabs>
+<Tab title="JavaScript">
 ```javascript
-textMessage.setTags(["starred", "important"]);
+let tags = ["starredMessage"];
+
+textMessage.setTags(tags);
 ```
+</Tab>
+<Tab title="TypeScript">
+```typescript
+let tags: Array<String> = ["starredMessage"];
 
-### Optional: Quote a Message
+textMessage.setTags(tags);
+```
+</Tab>
+</Tabs>
 
-Reply to a specific message:
+### Quote a Message
 
+Reply to a specific message by setting its ID:
+
+<Tabs>
+<Tab title="JavaScript">
 ```javascript
-textMessage.setQuotedMessageId(123); // ID of message to quote
+textMessage.setQuotedMessageId(10);
 ```
+</Tab>
+<Tab title="TypeScript">
+```typescript
+textMessage.setQuotedMessageId(10);
+```
+</Tab>
+</Tabs>
 
 ## Media Message
 
 Send images, videos, audio, or files using `CometChat.sendMediaMessage()`.
 
-### Option 1: Upload a File
+There are two ways to send media messages:
+1. **Upload a file** — Pass a file object and CometChat uploads it automatically
+2. **Send a URL** — Provide a URL to media hosted on your server or cloud storage
 
-Pass a file object directly — CometChat uploads it automatically:
+### Upload a File
+
+Get the file from an input element and pass it to `MediaMessage`:
+
+```html
+<input type="file" name="img_file" id="img_file" />
+```
 
 <Tabs>
-<Tab title="JavaScript">
+<Tab title="User">
 ```javascript
-// Get file from input element
-const file = document.getElementById("fileInput").files[0];
+let receiverID = "UID";
+let messageType = CometChat.MESSAGE_TYPE.IMAGE;
+let receiverType = CometChat.RECEIVER_TYPE.USER;
+let file = document.getElementById("img_file").files[0];
 
-const receiverID = "UID";
-const messageType = CometChat.MESSAGE_TYPE.IMAGE; // or VIDEO, AUDIO, FILE
-const receiverType = CometChat.RECEIVER_TYPE.USER;
-
-const mediaMessage = new CometChat.MediaMessage(
+let mediaMessage = new CometChat.MediaMessage(
   receiverID,
   file,
   messageType,
@@ -118,108 +241,534 @@ const mediaMessage = new CometChat.MediaMessage(
 );
 
 CometChat.sendMediaMessage(mediaMessage).then(
-  message => console.log("Media sent:", message),
-  error => console.log("Error:", error)
+  (message) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error) => {
+    console.log("Media message sending failed with error", error);
+  }
 );
 ```
 </Tab>
-<Tab title="TypeScript">
-```typescript
-const file: File = (document.getElementById("fileInput") as HTMLInputElement).files![0];
+<Tab title="Group">
+```javascript
+let receiverID = "GUID";
+let messageType = CometChat.MESSAGE_TYPE.IMAGE;
+let receiverType = CometChat.RECEIVER_TYPE.GROUP;
+let file = document.getElementById("img_file").files[0];
 
-const mediaMessage = new CometChat.MediaMessage(
-  "UID",
+let mediaMessage = new CometChat.MediaMessage(
+  receiverID,
   file,
-  CometChat.MESSAGE_TYPE.IMAGE,
-  CometChat.RECEIVER_TYPE.USER
+  messageType,
+  receiverType
 );
 
 CometChat.sendMediaMessage(mediaMessage).then(
-  (message: CometChat.MediaMessage) => console.log("Media sent:", message),
-  (error: CometChat.CometChatException) => console.log("Error:", error)
+  (message) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript (User)">
+```typescript
+let receiverID: string = "UID",
+  messageType: string = CometChat.MESSAGE_TYPE.IMAGE,
+  receiverType: string = CometChat.RECEIVER_TYPE.USER,
+  file: File = (document.getElementById("img_file") as HTMLInputElement).files![0];
+
+let mediaMessage: CometChat.MediaMessage = new CometChat.MediaMessage(
+  receiverID,
+  file,
+  messageType,
+  receiverType
+);
+
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message: CometChat.MediaMessage) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript (Group)">
+```typescript
+let receiverID: string = "GUID",
+  messageType: string = CometChat.MESSAGE_TYPE.IMAGE,
+  receiverType: string = CometChat.RECEIVER_TYPE.GROUP,
+  file: File = (document.getElementById("img_file") as HTMLInputElement).files![0];
+
+let mediaMessage: CometChat.MediaMessage = new CometChat.MediaMessage(
+  receiverID,
+  file,
+  messageType,
+  receiverType
+);
+
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message: CometChat.MediaMessage) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Media message sending failed with error", error);
+  }
 );
 ```
 </Tab>
 </Tabs>
 
-### Option 2: Send a URL
+### Send a URL
 
-Send media hosted on your server or cloud storage:
+Send media hosted on your server or cloud storage using the `Attachment` class:
 
+<Tabs>
+<Tab title="User">
 ```javascript
-const mediaMessage = new CometChat.MediaMessage(
-  "UID",
+let receiverID = "UID";
+let messageType = CometChat.MESSAGE_TYPE.IMAGE;
+let receiverType = CometChat.RECEIVER_TYPE.USER;
+let mediaMessage = new CometChat.MediaMessage(
+  receiverID,
   "",
-  CometChat.MESSAGE_TYPE.IMAGE,
-  CometChat.RECEIVER_TYPE.USER
+  messageType,
+  receiverType
 );
 
-const attachment = new CometChat.Attachment({
-  name: "photo",
+let file = {
+  name: "mario",
   extension: "png",
   mimeType: "image/png",
-  url: "https://example.com/photo.png"
-});
+  url: "https://pngimg.com/uploads/mario/mario_PNG125.png",
+};
 
+let attachment = new CometChat.Attachment(file);
 mediaMessage.setAttachment(attachment);
 
 CometChat.sendMediaMessage(mediaMessage).then(
-  message => console.log("Media sent:", message),
-  error => console.log("Error:", error)
+  (message) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error) => {
+    console.log("Media message sending failed with error", error);
+  }
 );
 ```
+</Tab>
+<Tab title="Group">
+```javascript
+let receiverID = "GUID";
+let messageType = CometChat.MESSAGE_TYPE.IMAGE;
+let receiverType = CometChat.RECEIVER_TYPE.GROUP;
+let mediaMessage = new CometChat.MediaMessage(
+  receiverID,
+  "",
+  messageType,
+  receiverType
+);
 
-### MediaMessage Parameters
+let file = {
+  name: "mario",
+  extension: "png",
+  mimeType: "image/png",
+  url: "https://pngimg.com/uploads/mario/mario_PNG125.png",
+};
 
-| Parameter | Type | Description |
+let attachment = new CometChat.Attachment(file);
+mediaMessage.setAttachment(attachment);
+
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript (User)">
+```typescript
+let receiverID: string = "UID",
+  messageType: string = CometChat.MESSAGE_TYPE.IMAGE,
+  receiverType: string = CometChat.RECEIVER_TYPE.USER,
+  mediaMessage: CometChat.MediaMessage = new CometChat.MediaMessage(
+    receiverID,
+    "",
+    messageType,
+    receiverType
+  );
+
+let file: Object = {
+  name: "mario",
+  extension: "png",
+  mimeType: "image/png",
+  url: "https://pngimg.com/uploads/mario/mario_PNG125.png",
+};
+
+let attachment: CometChat.Attachment = new CometChat.Attachment(file);
+mediaMessage.setAttachment(attachment);
+
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message: CometChat.MediaMessage) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript (Group)">
+```typescript
+let receiverID: string = "GUID",
+  messageType: string = CometChat.MESSAGE_TYPE.IMAGE,
+  receiverType: string = CometChat.RECEIVER_TYPE.GROUP,
+  mediaMessage: CometChat.MediaMessage = new CometChat.MediaMessage(
+    receiverID,
+    "",
+    messageType,
+    receiverType
+  );
+
+let file: Object = {
+  name: "mario",
+  extension: "png",
+  mimeType: "image/png",
+  url: "https://pngimg.com/uploads/mario/mario_PNG125.png",
+};
+
+let attachment: CometChat.Attachment = new CometChat.Attachment(file);
+mediaMessage.setAttachment(attachment);
+
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message: CometChat.MediaMessage) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
+```
+</Tab>
+</Tabs>
+
+The `MediaMessage` class constructor takes the following parameters:
+
+| Parameter | Description | Required |
 | --- | --- | --- |
-| `receiverID` | `string` | UID of user or GUID of group |
-| `file` | `File` or `string` | File object or empty string (if using URL) |
-| `messageType` | `string` | `IMAGE`, `VIDEO`, `AUDIO`, or `FILE` |
-| `receiverType` | `string` | `USER` or `GROUP` |
+| `receiverID` | UID of the user or GUID of the group | Yes |
+| `file` | File object to upload, or empty string if using URL | Yes |
+| `messageType` | `CometChat.MESSAGE_TYPE.IMAGE`, `VIDEO`, `AUDIO`, or `FILE` | Yes |
+| `receiverType` | `CometChat.RECEIVER_TYPE.USER` or `GROUP` | Yes |
 
-### Optional: Add Caption
+### Add Caption
 
+Add text along with the media:
+
+<Tabs>
+<Tab title="JavaScript">
 ```javascript
 mediaMessage.setCaption("Check out this photo!");
 ```
-
-### Multiple Attachments
-
-Send multiple files in a single message:
-
-<Tabs>
-<Tab title="File Objects">
-```javascript
-const files = document.getElementById("fileInput").files; // FileList
-
-const mediaMessage = new CometChat.MediaMessage(
-  "UID",
-  files,
-  CometChat.MESSAGE_TYPE.FILE,
-  CometChat.RECEIVER_TYPE.USER
-);
-
-CometChat.sendMediaMessage(mediaMessage);
+</Tab>
+<Tab title="TypeScript">
+```typescript
+mediaMessage.setCaption("Check out this photo!");
 ```
 </Tab>
-<Tab title="URLs">
+</Tabs>
+
+### Add Metadata and Tags
+
+Same as text messages:
+
 ```javascript
-const mediaMessage = new CometChat.MediaMessage(
-  "UID",
-  "",
-  CometChat.MESSAGE_TYPE.IMAGE,
-  CometChat.RECEIVER_TYPE.USER
+mediaMessage.setMetadata({ location: "Paris" });
+mediaMessage.setTags(["vacation"]);
+mediaMessage.setQuotedMessageId(10);
+```
+
+## Multiple Attachments
+
+Send multiple files in a single media message.
+
+### Upload Multiple Files
+
+<Tabs>
+<Tab title="User">
+```javascript
+let receiverID = "UID";
+let messageType = CometChat.MESSAGE_TYPE.FILE;
+let receiverType = CometChat.RECEIVER_TYPE.USER;
+let files = document.getElementById("img_file").files; // FileList
+
+let mediaMessage = new CometChat.MediaMessage(
+  receiverID,
+  files,
+  messageType,
+  receiverType
 );
 
-const attachments = [
-  new CometChat.Attachment({ name: "img1", extension: "png", mimeType: "image/png", url: "https://example.com/1.png" }),
-  new CometChat.Attachment({ name: "img2", extension: "png", mimeType: "image/png", url: "https://example.com/2.png" })
-];
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
+```
+</Tab>
+<Tab title="Group">
+```javascript
+let receiverID = "GUID";
+let messageType = CometChat.MESSAGE_TYPE.FILE;
+let receiverType = CometChat.RECEIVER_TYPE.GROUP;
+let files = document.getElementById("img_file").files;
+
+let mediaMessage = new CometChat.MediaMessage(
+  receiverID,
+  files,
+  messageType,
+  receiverType
+);
+
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript (User)">
+```typescript
+let receiverID: string = "UID",
+  messageType: string = CometChat.MESSAGE_TYPE.FILE,
+  receiverType: string = CometChat.RECEIVER_TYPE.USER,
+  files: FileList = (document.getElementById("img_file") as HTMLInputElement).files!;
+
+let mediaMessage: CometChat.MediaMessage = new CometChat.MediaMessage(
+  receiverID,
+  files,
+  messageType,
+  receiverType
+);
+
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message: CometChat.MediaMessage) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript (Group)">
+```typescript
+let receiverID: string = "GUID",
+  messageType: string = CometChat.MESSAGE_TYPE.FILE,
+  receiverType: string = CometChat.RECEIVER_TYPE.GROUP,
+  files: FileList = (document.getElementById("img_file") as HTMLInputElement).files!;
+
+let mediaMessage: CometChat.MediaMessage = new CometChat.MediaMessage(
+  receiverID,
+  files,
+  messageType,
+  receiverType
+);
+
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message: CometChat.MediaMessage) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
+```
+</Tab>
+</Tabs>
+
+### Send Multiple URLs
+
+<Tabs>
+<Tab title="User">
+```javascript
+let receiverID = "UID";
+let messageType = CometChat.MESSAGE_TYPE.IMAGE;
+let receiverType = CometChat.RECEIVER_TYPE.USER;
+let mediaMessage = new CometChat.MediaMessage(
+  receiverID,
+  "",
+  messageType,
+  receiverType
+);
+
+let attachment1 = {
+  name: "mario",
+  extension: "png",
+  mimeType: "image/png",
+  url: "https://pngimg.com/uploads/mario/mario_PNG125.png",
+};
+
+let attachment2 = {
+  name: "jaguar",
+  extension: "png",
+  mimeType: "image/png",
+  url: "https://pngimg.com/uploads/jaguar/jaguar_PNG20759.png",
+};
+
+let attachments = [];
+attachments.push(new CometChat.Attachment(attachment1));
+attachments.push(new CometChat.Attachment(attachment2));
 
 mediaMessage.setAttachments(attachments);
 
-CometChat.sendMediaMessage(mediaMessage);
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
+```
+</Tab>
+<Tab title="Group">
+```javascript
+let receiverID = "GUID";
+let messageType = CometChat.MESSAGE_TYPE.IMAGE;
+let receiverType = CometChat.RECEIVER_TYPE.GROUP;
+let mediaMessage = new CometChat.MediaMessage(
+  receiverID,
+  "",
+  messageType,
+  receiverType
+);
+
+let attachment1 = {
+  name: "mario",
+  extension: "png",
+  mimeType: "image/png",
+  url: "https://pngimg.com/uploads/mario/mario_PNG125.png",
+};
+
+let attachment2 = {
+  name: "jaguar",
+  extension: "png",
+  mimeType: "image/png",
+  url: "https://pngimg.com/uploads/jaguar/jaguar_PNG20759.png",
+};
+
+let attachments = [];
+attachments.push(new CometChat.Attachment(attachment1));
+attachments.push(new CometChat.Attachment(attachment2));
+
+mediaMessage.setAttachments(attachments);
+
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript (User)">
+```typescript
+let receiverID: string = "UID",
+  messageType: string = CometChat.MESSAGE_TYPE.IMAGE,
+  receiverType: string = CometChat.RECEIVER_TYPE.USER,
+  mediaMessage: CometChat.MediaMessage = new CometChat.MediaMessage(
+    receiverID,
+    "",
+    messageType,
+    receiverType
+  );
+
+let attachment1: Object = {
+  name: "mario",
+  extension: "png",
+  mimeType: "image/png",
+  url: "https://pngimg.com/uploads/mario/mario_PNG125.png",
+};
+
+let attachment2: Object = {
+  name: "jaguar",
+  extension: "png",
+  mimeType: "image/png",
+  url: "https://pngimg.com/uploads/jaguar/jaguar_PNG20759.png",
+};
+
+let attachments: Array<CometChat.Attachment> = [];
+attachments.push(new CometChat.Attachment(attachment1));
+attachments.push(new CometChat.Attachment(attachment2));
+
+mediaMessage.setAttachments(attachments);
+
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message: CometChat.MediaMessage) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript (Group)">
+```typescript
+let receiverID: string = "GUID",
+  messageType: string = CometChat.MESSAGE_TYPE.IMAGE,
+  receiverType: string = CometChat.RECEIVER_TYPE.GROUP,
+  mediaMessage: CometChat.MediaMessage = new CometChat.MediaMessage(
+    receiverID,
+    "",
+    messageType,
+    receiverType
+  );
+
+let attachment1: Object = {
+  name: "mario",
+  extension: "png",
+  mimeType: "image/png",
+  url: "https://pngimg.com/uploads/mario/mario_PNG125.png",
+};
+
+let attachment2: Object = {
+  name: "jaguar",
+  extension: "png",
+  mimeType: "image/png",
+  url: "https://pngimg.com/uploads/jaguar/jaguar_PNG20759.png",
+};
+
+let attachments: Array<CometChat.Attachment> = [];
+attachments.push(new CometChat.Attachment(attachment1));
+attachments.push(new CometChat.Attachment(attachment2));
+
+mediaMessage.setAttachments(attachments);
+
+CometChat.sendMediaMessage(mediaMessage).then(
+  (message: CometChat.MediaMessage) => {
+    console.log("Media message sent successfully", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Media message sending failed with error", error);
+  }
+);
 ```
 </Tab>
 </Tabs>
@@ -229,17 +778,17 @@ CometChat.sendMediaMessage(mediaMessage);
 Send structured data that doesn't fit text or media categories — like location coordinates, polls, or game moves.
 
 <Tabs>
-<Tab title="JavaScript">
+<Tab title="User">
 ```javascript
-const receiverID = "UID";
-const receiverType = CometChat.RECEIVER_TYPE.USER;
-const customType = "location";
-const customData = {
+let receiverID = "UID";
+let customData = {
   latitude: "50.6192171633316",
-  longitude: "-72.68182268750002"
+  longitude: "-72.68182268750002",
 };
+let customType = "location";
+let receiverType = CometChat.RECEIVER_TYPE.USER;
 
-const customMessage = new CometChat.CustomMessage(
+let customMessage = new CometChat.CustomMessage(
   receiverID,
   receiverType,
   customType,
@@ -247,38 +796,118 @@ const customMessage = new CometChat.CustomMessage(
 );
 
 CometChat.sendCustomMessage(customMessage).then(
-  message => console.log("Custom message sent:", message),
-  error => console.log("Error:", error)
+  (message) => {
+    console.log("Custom message sent successfully", message);
+  },
+  (error) => {
+    console.log("Custom message sending failed with error", error);
+  }
 );
 ```
 </Tab>
-<Tab title="TypeScript">
-```typescript
-const customMessage = new CometChat.CustomMessage(
-  "UID",
-  CometChat.RECEIVER_TYPE.USER,
-  "location",
-  { latitude: "50.6192171633316", longitude: "-72.68182268750002" }
+<Tab title="Group">
+```javascript
+let receiverID = "GUID";
+let customData = {
+  latitude: "50.6192171633316",
+  longitude: "-72.68182268750002",
+};
+let customType = "location";
+let receiverType = CometChat.RECEIVER_TYPE.GROUP;
+
+let customMessage = new CometChat.CustomMessage(
+  receiverID,
+  receiverType,
+  customType,
+  customData
 );
 
 CometChat.sendCustomMessage(customMessage).then(
-  (message: CometChat.CustomMessage) => console.log("Custom message sent:", message),
-  (error: CometChat.CometChatException) => console.log("Error:", error)
+  (message) => {
+    console.log("Custom message sent successfully", message);
+  },
+  (error) => {
+    console.log("Custom message sending failed with error", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript (User)">
+```typescript
+let receiverID: string = "UID",
+  customData: Object = {
+    latitude: "50.6192171633316",
+    longitude: "-72.68182268750002",
+  },
+  customType: string = "location",
+  receiverType: string = CometChat.RECEIVER_TYPE.USER,
+  customMessage: CometChat.CustomMessage = new CometChat.CustomMessage(
+    receiverID,
+    receiverType,
+    customType,
+    customData
+  );
+
+CometChat.sendCustomMessage(customMessage).then(
+  (message: CometChat.CustomMessage) => {
+    console.log("Custom message sent successfully", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Custom message sending failed with error", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript (Group)">
+```typescript
+let receiverID: string = "GUID",
+  customData: Object = {
+    latitude: "50.6192171633316",
+    longitude: "-72.68182268750002",
+  },
+  customType: string = "location",
+  receiverType: string = CometChat.RECEIVER_TYPE.GROUP,
+  customMessage: CometChat.CustomMessage = new CometChat.CustomMessage(
+    receiverID,
+    receiverType,
+    customType,
+    customData
+  );
+
+CometChat.sendCustomMessage(customMessage).then(
+  (message: CometChat.CustomMessage) => {
+    console.log("Custom message sent successfully", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Custom message sending failed with error", error);
+  }
 );
 ```
 </Tab>
 </Tabs>
 
-### CustomMessage Parameters
+The `CustomMessage` class constructor takes the following parameters:
 
-| Parameter | Type | Description |
+| Parameter | Description | Required |
 | --- | --- | --- |
-| `receiverID` | `string` | UID of user or GUID of group |
-| `receiverType` | `string` | `USER` or `GROUP` |
-| `customType` | `string` | Your custom type (e.g., `"location"`, `"poll"`) |
-| `customData` | `object` | JSON data to send |
+| `receiverID` | UID of the user or GUID of the group | Yes |
+| `receiverType` | `CometChat.RECEIVER_TYPE.USER` or `GROUP` | Yes |
+| `customType` | Your custom type string (e.g., `"location"`, `"poll"`) | Yes |
+| `customData` | JSON object with your custom data | Yes |
 
-### Optional: Control Conversation Update
+### Add Tags
+
+```javascript
+customMessage.setTags(["starredMessage"]);
+```
+
+### Quote a Message
+
+```javascript
+customMessage.setQuotedMessageId(10);
+```
+
+### Control Conversation Update
 
 By default, custom messages update the conversation's last message. To prevent this:
 
@@ -286,36 +915,17 @@ By default, custom messages update the conversation's last message. To prevent t
 customMessage.shouldUpdateConversation(false);
 ```
 
-### Optional: Custom Notification Text
+### Custom Notification Text
 
-Set custom text for push/email/SMS notifications:
+Set custom text for push, email, and SMS notifications:
 
 ```javascript
 customMessage.setConversationText("Shared a location");
 ```
 
-## Common Options
-
-These methods work on all message types:
-
-| Method | Description |
-| --- | --- |
-| `setMetadata(object)` | Attach custom JSON data |
-| `setTags(array)` | Add string tags for filtering |
-| `setQuotedMessageId(id)` | Reply to a specific message |
-
-## Response
-
-All send methods return a Promise that resolves with the sent message object containing:
-
-| Property | Description |
-| --- | --- |
-| `getId()` | Unique message ID |
-| `getSender()` | User object of the sender |
-| `getReceiverId()` | UID or GUID of the recipient |
-| `getSentAt()` | Timestamp when sent |
-| `getMetadata()` | Custom metadata (if set) |
-| `getTags()` | Tags array (if set) |
+<Note>
+You can also send interactive messages with forms, cards, and buttons. See [Interactive Messages](/sdk/javascript/interactive-messages) for details.
+</Note>
 
 ---
 
