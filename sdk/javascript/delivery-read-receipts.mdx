@@ -4,832 +4,565 @@ sidebarTitle: "Delivery & Read Receipts"
 description: "Mark messages as delivered, read, or unread and receive real-time receipt events using the CometChat JavaScript SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Accordion title="AI Integration Quick Reference">
+<Accordion title="Quick Reference">
+
+| Method | Description |
+| --- | --- |
+| `markAsDelivered(message)` | Mark a message as delivered |
+| `markAsRead(message)` | Mark a message as read |
+| `markConversationAsDelivered(id, type)` | Mark entire conversation as delivered |
+| `markConversationAsRead(id, type)` | Mark entire conversation as read |
+| `markMessageAsUnread(message)` | Mark a message as unread |
+| `getMessageReceipts(messageId)` | Get delivery/read receipts for a message |
 
 ```javascript
-// Mark message as delivered (pass message object)
-await CometChat.markAsDelivered(message);
+// Mark as delivered/read (pass message object)
+CometChat.markAsDelivered(message);
+CometChat.markAsRead(message);
 
-// Mark message as read (pass message object)
-await CometChat.markAsRead(message);
-
-// Mark entire conversation as read
-await CometChat.markConversationAsRead("USER_UID", "user");
-
-// Mark message as unread
-await CometChat.markMessageAsUnread(message);
+// Mark entire conversation
+CometChat.markConversationAsRead("UID", "user");
 
 // Listen for receipt events
-CometChat.addMessageListener("receipts", new CometChat.MessageListener({
+CometChat.addMessageListener("LISTENER_ID", new CometChat.MessageListener({
   onMessagesDelivered: (receipt) => { },
   onMessagesRead: (receipt) => { },
-  onMessagesDeliveredToAll: (receipt) => { },  // Group only
-  onMessagesReadByAll: (receipt) => { }         // Group only
+  onMessagesDeliveredToAll: (receipt) => { },  // Groups only
+  onMessagesReadByAll: (receipt) => { }        // Groups only
 }));
 ```
 </Accordion>
 
-Delivery and read receipts let you track whether messages have been delivered to and read by recipients. This page covers marking messages as delivered, read, or unread, and receiving real-time receipt events.
+Delivery and read receipts track whether messages have been delivered to and read by recipients.
 
-## Mark Messages as Delivered
+## Mark as Delivered
 
-You can mark the messages for a particular conversation as read using the `markAsDelivered()` method. This method takes the below parameters as input:
+Use `markAsDelivered()` to mark messages as delivered. You can pass either a message object or individual parameters.
 
-| Parameter      | Information                                                                                                                                                                         |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `messageId`    | The ID of the message above which all the messages for a particular conversation are to be marked as read.                                                                          |
-| `receiverId`   | In case of one to one conversation message's sender `UID` will be the receipt's receiver Id. In case of group conversation message's receiver Id will be the receipt's receiver Id. |
-| `receiverType` | Type of the receiver. Could be either of the two values( user or group).                                                                                                            |
-| `senderId`     | The `UID` of the sender of the message.                                                                                                                                             |
+### Using Message Object
 
-Messages for both user & group conversations can be marked as read using this method.
+<Tabs>
+<Tab title="JavaScript">
+```javascript
+CometChat.markAsDelivered(message).then(
+  () => {
+    console.log("Marked as delivered successfully");
+  },
+  (error) => {
+    console.log("Error marking as delivered:", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript">
+```typescript
+CometChat.markAsDelivered(message).then(
+  () => {
+    console.log("Marked as delivered successfully");
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Error marking as delivered:", error);
+  }
+);
+```
+</Tab>
+</Tabs>
 
-Ideally, you would like to mark all the messages as delivered for any conversation when the user opens the chat window for that conversation. This includes two scenarios:
+### Using Parameters
 
-1. **When the list of messages for the conversation is fetched**: In this case you need to obtain the last message in the list of messages and pass the message ID of that message to the markAsDelivered() method.
-2. **When the user is on the chat window and a real-time message is received:** In this case you need to obtain the message ID of the message and pass it to the markAsDelivered() method.
+| Parameter | Description |
+| --- | --- |
+| `messageId` | ID of the message to mark as delivered |
+| `receiverId` | For user chats: sender's UID. For groups: group GUID |
+| `receiverType` | `"user"` or `"group"` |
+| `senderId` | UID of the message sender |
 
 <Tabs>
 <Tab title="User">
 ```javascript
-const messageId = "MESSAGE_ID";
-const receiverId = "MESSAGE_RECEIVER_UID";
-const receiverType = "user";
-const senderId = "MESSAGE_SENDER_UID";
-CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId);
-```
+let messageId = "MESSAGE_ID";
+let receiverId = "MESSAGE_SENDER_UID";
+let receiverType = "user";
+let senderId = "MESSAGE_SENDER_UID";
 
-</Tab>
-
-<Tab title="Group">
-```javascript
-const messageId = "MESSAGE_ID";
-const receiverId = "MESSAGE_RECEIVER_GUID";
-const receiverType = "group";
-const senderId = "MESSAGE_SENDER_UID";
-CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId);
-```
-
-</Tab>
-
-<Tab title="User(TypeScript)">
-```typescript
-const messageId: string = "MESSAGE_ID";
-const receiverId: string = "MESSAGE_RECEIVER_UID";
-const receiverType: string = "user";
-const senderId: string = "MESSAGE_SENDER_UID";
-CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId);
-```
-
-</Tab>
-
-<Tab title="Group(TypeScript)">
-```typescript
-const messageId: string = "MESSAGE_ID";
-const receiverId: string = "MESSAGE_RECEIVER_GUID";
-const receiverType: string = "group";
-const senderId: string = "MESSAGE_SENDER_UID";
-CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId);
-```
-
-</Tab>
-
-</Tabs>
-
-This method will mark all the messages before the messageId specified, for the conversation with receiverId and receiverType(user/group) as delivered.
-
-In case you would like to be notified of an error if the receipts fail to go through you can use `.then(successCallback, failureCallback)` of the `markAsDelivered` method.
-
-<Tabs>
-<Tab title="User">
-```javascript
-CometChat.markAsDelivered(
-  message.getId(),
-  message.getSender().getUid(),
-  "user",
-  message.getSender().getUid()
-).then(
-  () => {
-    console.log("mark as delivered success.");
-  },
-  (error) => {
-    console.log(
-      "An error occurred when marking the message as delivered.",
-      error
-    );
-  }
-);
-```
-
-</Tab>
-
-<Tab title="Group">
-```javascript
-CometChat.markAsDelivered(
-  message.getId(),
-  message.getReceiverUid(),
-  "group",
-  message.getSender().getUid()
-).then(
-  () => {
-    console.log("mark as delivered success.");
-  },
-  (error) => {
-    console.log(
-      "An error occurred when marking the message as delivered.",
-      error
-    );
-  }
-);
-```
-
-</Tab>
-
-<Tab title="User(TypeScript)">
-```typescript
-const messageId: string = "MESSAGE_ID";
-const receiverId: string = "MESSAGE_SENDER_UID";
-const receiverType: string = "user";
-const senderId: string = "MESSAGE_SENDER_UID";
 CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId).then(
   () => {
-    console.log("mark as delivered success.");
-  },
-  (error: CometChat.CometChatException) => {
-    console.log(
-      "An error occurred when marking the message as delivered.",
-      error
-    );
-  }
-);
-```
-
-</Tab>
-
-<Tab title="Group(TypeScript)">
-```typescript
-const messageId: string = "MESSAGE_ID";
-const receiverId: string = "MESSAGE_RECEIVER_GUID";
-const receiverType: string = "group";
-const senderId: string = "MESSAGE_SENDER_UID";
-CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId).then(
-  () => {
-    console.log("mark as delivered success.");
-  },
-  (error: CometChat.CometChatException) => {
-    console.log(
-      "An error occurred when marking the message as delivered.",
-      error
-    );
-  }
-);
-```
-
-</Tab>
-
-</Tabs>
-
-Another option the CometChat SDK provides is to pass the entire message object to the markAsDelivered() method.
-
-<Tabs>
-<Tab title="Mark as Delivered">
-```javascript
-CometChat.markAsDelivered(message);
-```
-
-</Tab>
-
-<Tab title="TypeScript">
-```typescript
-let message: CometChat.BaseMessage;
-CometChat.markAsDelivered(message);
-```
-
-</Tab>
-
-</Tabs>
-
-In case you would like to be notified of an error if the receipts fail to go through you can use `.then(successCallback, failureCallback)` of the `markAsDelivered` method.
-
-<Tabs>
-<Tab title="Mark as Delivered">
-```javascript
-CometChat.markAsDelivered(message).then(
-  () => {
-    console.log("mark as delivered success.");
+    console.log("Marked as delivered successfully");
   },
   (error) => {
-    console.log(
-      "An error occurred when marking the message as delivered.",
-      error
-    );
+    console.log("Error marking as delivered:", error);
   }
 );
 ```
-
 </Tab>
+<Tab title="Group">
+```javascript
+let messageId = "MESSAGE_ID";
+let receiverId = "GROUP_GUID";
+let receiverType = "group";
+let senderId = "MESSAGE_SENDER_UID";
 
-<Tab title="TypeScript">
-```typescript
-let message: CometChat.BaseMessage;
-CometChat.markAsDelivered(message).then(
+CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId).then(
   () => {
-    console.log("mark as delivered success.");
+    console.log("Marked as delivered successfully");
+  },
+  (error) => {
+    console.log("Error marking as delivered:", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript (User)">
+```typescript
+let messageId: string = "MESSAGE_ID";
+let receiverId: string = "MESSAGE_SENDER_UID";
+let receiverType: string = "user";
+let senderId: string = "MESSAGE_SENDER_UID";
+
+CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId).then(
+  () => {
+    console.log("Marked as delivered successfully");
   },
   (error: CometChat.CometChatException) => {
-    console.log(
-      "An error occurred when marking the message as delivered.",
-      error
-    );
+    console.log("Error marking as delivered:", error);
   }
 );
 ```
-
 </Tab>
+<Tab title="TypeScript (Group)">
+```typescript
+let messageId: string = "MESSAGE_ID";
+let receiverId: string = "GROUP_GUID";
+let receiverType: string = "group";
+let senderId: string = "MESSAGE_SENDER_UID";
 
+CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId).then(
+  () => {
+    console.log("Marked as delivered successfully");
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Error marking as delivered:", error);
+  }
+);
+```
+</Tab>
 </Tabs>
 
 ## Mark Conversation as Delivered
 
-You can mark an entire conversation as delivered for a user or group using the `markConversationAsDelivered()` method. This method takes the below parameters as input:
-
-| Parameter          | Information                                                                    |
-| ------------------ | ------------------------------------------------------------------------------ |
-| `conversationWith` | The ID of the user (UID) or group (GUID) for the conversation.                 |
-| `conversationType` | Type of the conversation. Could be either `user` or `group`.                   |
-
-This method will mark all messages in the conversation as delivered.
+Use `markConversationAsDelivered()` to mark all messages in a conversation as delivered.
 
 <Tabs>
 <Tab title="User">
 ```javascript
-const conversationWith = "USER_UID";
-const conversationType = "user";
+let conversationWith = "USER_UID";
+let conversationType = "user";
 
 CometChat.markConversationAsDelivered(conversationWith, conversationType).then(
   (response) => {
     console.log("Conversation marked as delivered", response);
   },
   (error) => {
-    console.log("Error marking conversation as delivered", error);
+    console.log("Error:", error);
   }
 );
 ```
 </Tab>
-
 <Tab title="Group">
 ```javascript
-const conversationWith = "GROUP_GUID";
-const conversationType = "group";
+let conversationWith = "GROUP_GUID";
+let conversationType = "group";
 
 CometChat.markConversationAsDelivered(conversationWith, conversationType).then(
   (response) => {
     console.log("Conversation marked as delivered", response);
   },
   (error) => {
-    console.log("Error marking conversation as delivered", error);
+    console.log("Error:", error);
   }
 );
 ```
 </Tab>
-
-<Tab title="User(TypeScript)">
+<Tab title="TypeScript (User)">
 ```typescript
-const conversationWith: string = "USER_UID";
-const conversationType: string = "user";
+let conversationWith: string = "USER_UID";
+let conversationType: string = "user";
 
 CometChat.markConversationAsDelivered(conversationWith, conversationType).then(
   (response: string) => {
     console.log("Conversation marked as delivered", response);
   },
   (error: CometChat.CometChatException) => {
-    console.log("Error marking conversation as delivered", error);
+    console.log("Error:", error);
   }
 );
 ```
 </Tab>
-
-<Tab title="Group(TypeScript)">
+<Tab title="TypeScript (Group)">
 ```typescript
-const conversationWith: string = "GROUP_GUID";
-const conversationType: string = "group";
+let conversationWith: string = "GROUP_GUID";
+let conversationType: string = "group";
 
 CometChat.markConversationAsDelivered(conversationWith, conversationType).then(
   (response: string) => {
     console.log("Conversation marked as delivered", response);
   },
   (error: CometChat.CometChatException) => {
-    console.log("Error marking conversation as delivered", error);
+    console.log("Error:", error);
   }
 );
 ```
 </Tab>
 </Tabs>
 
-## Mark Messages as Read
+## Mark as Read
 
-You can mark the messages for a particular conversation as read using the `markAsRead()` method. This method takes the below parameters as input:
+Use `markAsRead()` to mark messages as read. You can pass either a message object or individual parameters.
 
-| Parameter      | Information                                                                                                                                                                        |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `messageId`    | The ID of the message above which all the messages for a particular conversation are to be marked as read.                                                                         |
-| `receiverId`   | In case of one to one conversation message's sender `UID` will be the receipt's receiver Id. In case of group conversation message's receiver Id will be the receipt's receiver Id |
-| `receiverType` | Type of the receiver. Could be either of the two values( user or group)                                                                                                            |
-| `senderId`     | The `UID` of the sender of the message.                                                                                                                                            |
-
-Messages for both user and group conversations can be marked as read using this method.
-
-Ideally, you would like to mark all the messages as read for any conversation when the user opens the chat window for that conversation. This includes two scenarios:
-
-1. **When the list of messages for the conversation is fetched**: In this case you need to obtain the last message in the list of messages and pass the message ID of that message to the markAsRead() method.
-2. **When the user is on the chat window and a real-time message is received:** In this case you need to obtain the message ID of the message and pass it to the markAsRead() method
+### Using Message Object
 
 <Tabs>
-<Tab title="User Conversation">
+<Tab title="JavaScript">
 ```javascript
-const messageId = "MESSAGE_ID";
-const receiverId = "MESSAGE_SENDER_UID";
-const receiverType = "user";
-const senderId = "MESSAGE_SENDER_UID";
-CometChat.markAsRead(messageId, receiverId, receiverType, senderId);
+CometChat.markAsRead(message).then(
+  () => {
+    console.log("Marked as read successfully");
+  },
+  (error) => {
+    console.log("Error marking as read:", error);
+  }
+);
 ```
-
 </Tab>
-
-<Tab title="Group Conversation">
-```javascript
-const receiverId = "MESSAGE_RECEIVER_GUID";
-const receiverType = "group";
-const senderId = "MESSAGE_SENDER_UID";
-CometChat.markAsRead(messageId, receiverId, receiverType, senderId);
-```
-
-</Tab>
-
-<Tab title="User(TypeScript)">
+<Tab title="TypeScript">
 ```typescript
-const messageId: string = "MESSAGE_ID";
-const receiverId: string = "MESSAGE_SENDER_UID";
-const receiverType: string = "user";
-const senderId: string = "MESSAGE_SENDER_UID";
-CometChat.markAsRead(messageId, receiverId, receiverType, senderId);
+CometChat.markAsRead(message).then(
+  () => {
+    console.log("Marked as read successfully");
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Error marking as read:", error);
+  }
+);
 ```
-
 </Tab>
-
-<Tab title="Group(TypeScript)">
-```typescript
-const messageId: string = "MESSAGE_ID";
-const receiverId: string = "MESSAGE_RECEIVER_GUID";
-const receiverType: string = "group";
-const senderId: string = "MESSAGE_SENDER_UID";
-CometChat.markAsRead(messageId, receiverId, receiverType, senderId);
-```
-
-</Tab>
-
 </Tabs>
 
-This method will mark all the messages before the messageId specified, for the conversation with receiverId and receiverType(user/group) as read.
-
-In case you would like to be notified of an error if the receipts fail to go through you can use `.then(successCallback, failureCallback)` of the `markAsDelivered` method.
+### Using Parameters
 
 <Tabs>
 <Tab title="User">
 ```javascript
-CometChat.markAsRead(
-  message.getId(),
-  message.getSender().getUid(),
-  "user",
-  message.getSender().getUid()
-).then(
+let messageId = "MESSAGE_ID";
+let receiverId = "MESSAGE_SENDER_UID";
+let receiverType = "user";
+let senderId = "MESSAGE_SENDER_UID";
+
+CometChat.markAsRead(messageId, receiverId, receiverType, senderId).then(
   () => {
-    console.log("mark as read success.");
+    console.log("Marked as read successfully");
   },
   (error) => {
-    console.log("An error occurred when marking the message as read.", error);
+    console.log("Error marking as read:", error);
   }
 );
 ```
-
 </Tab>
-
 <Tab title="Group">
 ```javascript
-CometChat.markAsRead(
-  message.getId(),
-  message.getReceiverUid(),
-  "group",
-  message.getSender().getUid()
-).then(
-  () => {
-    console.log("mark as read success.");
-  },
-  (error) => {
-    console.log("An error occurred when marking the message as read.", error);
-  }
-);
-```
+let messageId = "MESSAGE_ID";
+let receiverId = "GROUP_GUID";
+let receiverType = "group";
+let senderId = "MESSAGE_SENDER_UID";
 
-</Tab>
-
-<Tab title="User(TypeScript)">
-```typescript
-const messageId: string = "MESSAGE_ID";
-const receiverId: string = "MESSAGE_SENDER_UID";
-const receiverType: string = "user";
-const senderId: string = "MESSAGE_SENDER_UID";
 CometChat.markAsRead(messageId, receiverId, receiverType, senderId).then(
   () => {
-    console.log("mark as read success.");
-  },
-  (error: CometChat.CometChatException) => {
-    console.log("An error occurred when marking the message as read.", error);
-  }
-);
-```
-
-</Tab>
-
-<Tab title="Group(TypeScript)">
-```typescript
-const messageId: string = "MESSAGE_ID";
-const receiverId: string = "MESSAGE_RECEIVER_GUID";
-const receiverType: string = "group";
-const senderId: string = "MESSAGE_SENDER_UID";
-CometChat.markAsRead(messageId, receiverId, receiverType, senderId).then(
-  () => {
-    console.log("mark as read success.");
-  },
-  (error: CometChat.CometChatException) => {
-    console.log("An error occurred when marking the message as read.", error);
-  }
-);
-```
-
-</Tab>
-
-</Tabs>
-
-Another option the CometChat SDK provides is to pass the entire message object to the markAsRead() method.
-
-<Tabs>
-<Tab title="Mark as Read">
-```javascript
-CometChat.markAsRead(message);
-```
-
-</Tab>
-
-<Tab title="TypeScript">
-```typescript
-let message: CometChat.BaseMessage;
-CometChat.markAsRead(message);
-```
-
-</Tab>
-
-</Tabs>
-
-In case you would like to be notified of an error if the receipts fail to go through you can use `.then(successCallback, failureCallback)` of the `markAsDelivered` method.
-
-<Tabs>
-<Tab title="Mark as Read">
-```javascript
-CometChat.markAsRead(message).then(
-  () => {
-    console.log("mark as read success.");
+    console.log("Marked as read successfully");
   },
   (error) => {
-    console.log("An error occurred when marking the message as read.", error);
+    console.log("Error marking as read:", error);
   }
 );
 ```
-
 </Tab>
-
-<Tab title="TypeScript">
+<Tab title="TypeScript (User)">
 ```typescript
-let message: CometChat.BaseMessage;
-CometChat.markAsRead(message).then(
+let messageId: string = "MESSAGE_ID";
+let receiverId: string = "MESSAGE_SENDER_UID";
+let receiverType: string = "user";
+let senderId: string = "MESSAGE_SENDER_UID";
+
+CometChat.markAsRead(messageId, receiverId, receiverType, senderId).then(
   () => {
-    console.log("mark as read success.");
+    console.log("Marked as read successfully");
   },
   (error: CometChat.CometChatException) => {
-    console.log("An error occurred when marking the message as read.", error);
+    console.log("Error marking as read:", error);
   }
 );
 ```
-
 </Tab>
+<Tab title="TypeScript (Group)">
+```typescript
+let messageId: string = "MESSAGE_ID";
+let receiverId: string = "GROUP_GUID";
+let receiverType: string = "group";
+let senderId: string = "MESSAGE_SENDER_UID";
 
+CometChat.markAsRead(messageId, receiverId, receiverType, senderId).then(
+  () => {
+    console.log("Marked as read successfully");
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Error marking as read:", error);
+  }
+);
+```
+</Tab>
 </Tabs>
 
 ## Mark Conversation as Read
 
-You can mark an entire conversation as read for a user or group using the `markConversationAsRead()` method. This method takes the below parameters as input:
-
-| Parameter          | Information                                                                    |
-| ------------------ | ------------------------------------------------------------------------------ |
-| `conversationWith` | The ID of the user (UID) or group (GUID) for the conversation.                 |
-| `conversationType` | Type of the conversation. Could be either `user` or `group`.                   |
- 
-This method will mark all messages in the conversation as read.
+Use `markConversationAsRead()` to mark all messages in a conversation as read.
 
 <Tabs>
 <Tab title="User">
 ```javascript
-const conversationWith = "USER_UID";
-const conversationType = "user";
+let conversationWith = "USER_UID";
+let conversationType = "user";
 
 CometChat.markConversationAsRead(conversationWith, conversationType).then(
   (response) => {
     console.log("Conversation marked as read", response);
   },
   (error) => {
-    console.log("Error marking conversation as read", error);
+    console.log("Error:", error);
   }
 );
 ```
 </Tab>
-
 <Tab title="Group">
 ```javascript
-const conversationWith = "GROUP_GUID";
-const conversationType = "group";
+let conversationWith = "GROUP_GUID";
+let conversationType = "group";
 
 CometChat.markConversationAsRead(conversationWith, conversationType).then(
   (response) => {
     console.log("Conversation marked as read", response);
   },
   (error) => {
-    console.log("Error marking conversation as read", error);
+    console.log("Error:", error);
   }
 );
 ```
 </Tab>
-
-<Tab title="User(TypeScript)">
+<Tab title="TypeScript (User)">
 ```typescript
-const conversationWith: string = "USER_UID";
-const conversationType: string = "user";
+let conversationWith: string = "USER_UID";
+let conversationType: string = "user";
 
 CometChat.markConversationAsRead(conversationWith, conversationType).then(
   (response: string) => {
     console.log("Conversation marked as read", response);
   },
   (error: CometChat.CometChatException) => {
-    console.log("Error marking conversation as read", error);
+    console.log("Error:", error);
   }
 );
 ```
 </Tab>
-
-<Tab title="Group(TypeScript)">
+<Tab title="TypeScript (Group)">
 ```typescript
-const conversationWith: string = "GROUP_GUID";
-const conversationType: string = "group";
+let conversationWith: string = "GROUP_GUID";
+let conversationType: string = "group";
 
 CometChat.markConversationAsRead(conversationWith, conversationType).then(
   (response: string) => {
     console.log("Conversation marked as read", response);
   },
   (error: CometChat.CometChatException) => {
-    console.log("Error marking conversation as read", error);
+    console.log("Error:", error);
   }
 );
 ```
 </Tab>
 </Tabs>
 
-## Mark Messages as Unread
+## Mark as Unread
 
-Mark messages as unread to revisit important messages later, even if they've been previously viewed.
-
-You can mark the messages for a particular conversation as unread using the `markMessageAsUnread()` method. This method takes the below parameters as input:
-
-| Parameter | Information                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| message   | To mark a message as unread, pass a non-null [`BaseMessage`](/sdk/reference/messages#basemessage) instance to the `markMessageAsUnread()` function. All messages below that message in the conversation will contribute to the unread messages count. Example: When User B sends User A a total of 10 messages, and User A invokes the `markMessageAsUnread()` method on the fifth message, all messages located below the fifth message within the conversation list will be designated as unread. This results in a notification indicating there are 5 unread messages in the conversation list. |
+Use `markMessageAsUnread()` to mark a message as unread. All messages below that message will contribute to the unread count.
 
 <Note>
 You cannot mark your own messages as unread. This method only works for messages received from other users.
 </Note>
 
 <Tabs>
-<Tab title="Mark Messages as Unread">
-```javascript
-CometChat.markMessageAsUnread(message);
-```
-
-</Tab>
-
-<Tab title="TypeScript">
-```typescript
-let message: CometChat.BaseMessage;
-CometChat.markMessageAsUnread(message);
-```
-
-</Tab>
-
-</Tabs>
-
-In case you would like to be notified of an error if the receipts fail to go through you can use `.then(successCallback, failureCallback).` On success, this method returns an updated [`Conversation`](/sdk/reference/entities#conversation) object with the updated unread message count and other conversation data.
-
-<Tabs>
-<Tab title="Mark Messages as Unread">
+<Tab title="JavaScript">
 ```javascript
 CometChat.markMessageAsUnread(message).then(
   (conversation) => {
-    console.log("mark messages as unread success.", conversation);
-    console.log("Unread message count:", conversation.getUnreadMessageCount());
+    console.log("Marked as unread successfully", conversation);
+    console.log("Unread count:", conversation.getUnreadMessageCount());
   },
   (error) => {
-    console.log("An error occurred when marking the message as unread.", error);
+    console.log("Error marking as unread:", error);
   }
 );
 ```
-
 </Tab>
-
 <Tab title="TypeScript">
 ```typescript
-let message: CometChat.BaseMessage;
 CometChat.markMessageAsUnread(message).then(
   (conversation: CometChat.Conversation) => {
-    console.log("mark messages as unread success.", conversation);
-    console.log("Unread message count:", conversation.getUnreadMessageCount());
+    console.log("Marked as unread successfully", conversation);
+    console.log("Unread count:", conversation.getUnreadMessageCount());
   },
   (error: CometChat.CometChatException) => {
-    console.log("An error occurred when marking the message as unread.", error);
+    console.log("Error marking as unread:", error);
   }
 );
 ```
-
 </Tab>
-
 </Tabs>
 
-## Receive Delivery & Read Receipts
+On success, returns an updated [`Conversation`](/sdk/reference/entities#conversation) object with the new unread message count.
 
-### Real-time Events
+## Real-Time Receipt Events
 
-1. `onMessagesDelivered()` - This event is triggered when a message is delivered to a user.
-2. `onMessagesRead()` - This event is triggered when a message is read by a user.
-3. `onMessagesDeliveredToAll()` - This event is triggered when a group message is delivered to all members of the group. This event is only for Group conversations.
-4. `onMessagesReadByAll()` - This event is triggered when a group message is read by all members of the group. This event is only for Group conversations.
+Register a `MessageListener` to receive delivery and read receipt events.
+
+| Callback | Description |
+| --- | --- |
+| `onMessagesDelivered` | Message delivered to a user |
+| `onMessagesRead` | Message read by a user |
+| `onMessagesDeliveredToAll` | Group message delivered to all members |
+| `onMessagesReadByAll` | Group message read by all members |
 
 <Tabs>
-<Tab title="Message Listener">
+<Tab title="JavaScript">
 ```javascript
-let listenerId = "UNIQUE_LISTENER_ID";
+let listenerID = "UNIQUE_LISTENER_ID";
 
 CometChat.addMessageListener(
-  "listenerId",
+  listenerID,
   new CometChat.MessageListener({
     onMessagesDelivered: (messageReceipt) => {
-      console.log("Message is delivered to a user: ", { messageReceipt });
+      console.log("Message delivered:", messageReceipt);
     },
     onMessagesRead: (messageReceipt) => {
-      console.log("Message is read by a user: ", { messageReceipt });
+      console.log("Message read:", messageReceipt);
     },
-    /** This event is only for Group Conversation. */
     onMessagesDeliveredToAll: (messageReceipt) => {
-      console.log("Message delivered to all members of group: ", {
-        messageReceipt,
-      });
+      console.log("Message delivered to all group members:", messageReceipt);
     },
-    /** This event is only for Group Conversation. */
     onMessagesReadByAll: (messageReceipt) => {
-      console.log("Message read by all members of group: ", { messageReceipt });
-    },
+      console.log("Message read by all group members:", messageReceipt);
+    }
   })
 );
 ```
-
 </Tab>
-
 <Tab title="TypeScript">
 ```typescript
-let listenerId: string = "UNIQUE_LISTENER_ID";
+let listenerID: string = "UNIQUE_LISTENER_ID";
 
 CometChat.addMessageListener(
-  listenerId,
+  listenerID,
   new CometChat.MessageListener({
     onMessagesDelivered: (messageReceipt: CometChat.MessageReceipt) => {
-      console.log("Message is delivered to a user: ", { messageReceipt });
+      console.log("Message delivered:", messageReceipt);
     },
     onMessagesRead: (messageReceipt: CometChat.MessageReceipt) => {
-      console.log("Message is read by a user: ", { messageReceipt });
+      console.log("Message read:", messageReceipt);
     },
-    /** This event is only for Group Conversation. */
     onMessagesDeliveredToAll: (messageReceipt: CometChat.MessageReceipt) => {
-      console.log("Message delivered to all members of group: ", {
-        messageReceipt,
-      });
+      console.log("Message delivered to all group members:", messageReceipt);
     },
-    /** This event is only for Group Conversation. */
     onMessagesReadByAll: (messageReceipt: CometChat.MessageReceipt) => {
-      console.log("Message read by all members of group: ", { messageReceipt });
-    },
+      console.log("Message read by all group members:", messageReceipt);
+    }
   })
 );
 ```
-
 </Tab>
-
 </Tabs>
-
-You will receive events in the form of `MessageReceipt` objects. The message receipt contains the below parameters:
-
-| Parameter      | Information                                                                                                                               |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `messageId`    | The Id of the message prior to which all the messages for that particular conversation have been marked as read.                          |
-| `sender`       | User object containing the details of the user who has marked the message as read. System User for `deliveredToAll` & `readByAll` events. |
-| `receiverId`   | Id of the receiver whose conversation has been marked as read.                                                                            |
-| `receiverType` | type of the receiver (user/group)                                                                                                         |
-| `receiptType`  | Type of the receipt (read/delivered)                                                                                                      |
-| `deliveredAt`  | The timestamp of the time when the message was delivered. This will only be present if the receiptType is delivered.                      |
-| `readAt`       | The timestamp of the time when the message was read. This will only be present when the receiptType is read.                              |
-
-The listener callbacks receive a [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) object. Access the data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| messageId | `getMessageId()` | `string` | ID of the message this receipt is for |
-| sender | `getSender()` | [`User`](/sdk/reference/entities#user) | User who triggered the receipt |
-| receiptType | `getReceiptType()` | `string` | Type of receipt (`"delivery"` or `"read"`) |
-| timestamp | `getTimestamp()` | `string` | Timestamp of the receipt event |
-| deliveredAt | `getDeliveredAt()` | `number` | Timestamp when the message was delivered |
-| readAt | `getReadAt()` | `number` | Timestamp when the message was read |
-
-The `markAsDelivered()` and `markAsRead()` methods are fire-and-forget — they do not return a `MessageReceipt` object. Use the listener callbacks above to receive delivery and read confirmations.
-
-### Missed Receipts
-
-You will receive message receipts when you load offline messages. While fetching messages in bulk, the message object will have two fields i.e. `deliveredAt` and `readAt` which hold the timestamp for the time the message was delivered and read respectively. Using these two variables, the delivery and read status for a message can be obtained.
-
-However, for a group message, if you wish to fetch the `deliveredAt` and `readAt` fields of individual member of the group you can use the below-described method.
-
-### Receipt History for a Single Message
-
-To fetch the message receipts, you can use the `getMessageReceipts()` method.
-
-<Tabs>
-<Tab title="Get Message Receipt">
-```javascript
-let messageId = msgId;
-CometChat.getMessageReceipts(messageId).then(
-  (receipts) => {
-    console.log("Message details fetched:", receipts);
-  },
-  (error) => {
-    console.log("Error in getting messag details ", error);
-  }
-);
-```
-
-</Tab>
-
-<Tab title="TypeScript">
-```typescript
-let messageId: number = 1;
-CometChat.getMessageReceipts(messageId).then(
-  (receipts: CometChat.MessageReceipt[]) => {
-    console.log("Message details fetched:", receipts);
-  },
-  (error: CometChat.CometChatException) => {
-    console.log("Error in getting messag details ", error);
-  }
-);
-```
-
-</Tab>
-
-</Tabs>
-
-You will receive a list of [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) objects.
-
-<Accordion title="AI Integration Quick Reference">
-
-The following features will be available only if the **Enhanced Messaging Status** feature is enabled for your app.
-
-* `onMessagesDeliveredToAll` event,
-* `onMessagesReadByAll` event,
-* `deliveredAt` field in a group message,
-* `readAt` field in a group message.
-* `markMessageAsUnread` method.
-
-</Accordion>
 
 <Warning>
-Always remove message listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
+Always remove listeners when no longer needed to prevent memory leaks.
 
 ```javascript
 CometChat.removeMessageListener("UNIQUE_LISTENER_ID");
 ```
 </Warning>
+
+### MessageReceipt Object
+
+The listener callbacks receive a [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) object:
+
+| Field | Getter | Return Type | Description |
+| --- | --- | --- | --- |
+| messageId | `getMessageId()` | `string` | ID of the message |
+| sender | `getSender()` | [`User`](/sdk/reference/entities#user) | User who triggered the receipt |
+| receiverId | `getReceiverId()` | `string` | ID of the receiver |
+| receiverType | `getReceiverType()` | `string` | `"user"` or `"group"` |
+| receiptType | `getReceiptType()` | `string` | `"delivery"` or `"read"` |
+| deliveredAt | `getDeliveredAt()` | `number` | Timestamp when delivered |
+| readAt | `getReadAt()` | `number` | Timestamp when read |
+
+## Get Receipt History
+
+Use `getMessageReceipts()` to fetch delivery and read receipts for a specific message. Useful for group messages to see which members have received/read the message.
+
+<Tabs>
+<Tab title="JavaScript">
+```javascript
+let messageId = 123;
+
+CometChat.getMessageReceipts(messageId).then(
+  (receipts) => {
+    console.log("Message receipts:", receipts);
+  },
+  (error) => {
+    console.log("Error fetching receipts:", error);
+  }
+);
+```
+</Tab>
+<Tab title="TypeScript">
+```typescript
+let messageId: number = 123;
+
+CometChat.getMessageReceipts(messageId).then(
+  (receipts: CometChat.MessageReceipt[]) => {
+    console.log("Message receipts:", receipts);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Error fetching receipts:", error);
+  }
+);
+```
+</Tab>
+</Tabs>
+
+Returns an array of [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) objects.
+
+## Missed Receipts
+
+When fetching messages, each message object includes `deliveredAt` and `readAt` timestamps indicating when the message was delivered and read.
+
+```javascript
+let deliveredAt = message.getDeliveredAt();
+let readAt = message.getReadAt();
+```
+
+<Note>
+The following features require **Enhanced Messaging Status** to be enabled for your app:
+- `onMessagesDeliveredToAll` event
+- `onMessagesReadByAll` event
+- `deliveredAt` field in group messages
+- `readAt` field in group messages
+- `markMessageAsUnread()` method
+</Note>
 
 ---
 
@@ -837,7 +570,7 @@ CometChat.removeMessageListener("UNIQUE_LISTENER_ID");
 
 <CardGroup cols={2}>
   <Card title="Typing Indicators" icon="keyboard" href="/sdk/javascript/typing-indicators">
-    Show real-time typing status to users in conversations
+    Show real-time typing status in conversations
   </Card>
   <Card title="Receive Messages" icon="envelope-open" href="/sdk/javascript/receive-message">
     Listen for incoming messages in real time
