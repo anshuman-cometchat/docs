@@ -1,5 +1,6 @@
 ---
 title: "Block Users"
+sidebarTitle: "Block Users"
 description: "Block and unblock users, and retrieve the list of blocked users using the CometChat JavaScript SDK."
 ---
 
@@ -23,9 +24,7 @@ let blockedUsers = await request.fetchNext();
 
 ## Block Users
 
-*In other words, as a logged-in user, how do I block a user from sending me messages?*
-
-You can block users using the `blockUsers()` method. Once any user is blocked, all the communication to and from the respective user will be completely blocked. You can block multiple users in a single operation. The `blockUsers()` method takes a `Array` as a parameter which holds the list of `UID's` to be blocked.
+Block users to prevent all communication with them. Use `blockUsers()` with an array of UIDs.
 
 <Tabs>
 <Tab title="JavaScript">
@@ -74,7 +73,7 @@ try {
 
 </Tabs>
 
-It returns a Array which contains `UID's` as the keys and "success" or "fail" as the value based on if the block operation for the `UID` was successful or not.
+Returns an object with UIDs as keys and `"success"` or `"fail"` as values.
 
 The method returns an array of [`User`](/sdk/reference/entities#user) objects with the `blockedByMe` field set to `true`. Access the response data using getter methods:
 
@@ -87,9 +86,7 @@ The method returns an array of [`User`](/sdk/reference/entities#user) objects wi
 
 ## Unblock Users
 
-*In other words, as a logged-in user, how do I unblock a user I previously blocked?*
-
-You can unblock the already blocked users using the `unblockUsers()` method. You can unblock multiple users in a single operation. The `unblockUsers()` method takes a `Array` as a parameter which holds the list of `UID's` to be unblocked.
+Unblock previously blocked users using `unblockUsers()` with an array of UIDs.
 
 <Tabs>
 <Tab title="JavaScript">
@@ -138,7 +135,7 @@ try {
 
 </Tabs>
 
-It returns a Array which contains `UID's` as the keys and `success` or `fail` as the value based on if the unblock operation for the `UID` was successful or not.
+Returns an object with UIDs as keys and `"success"` or `"fail"` as values.
 
 The method returns an array of [`User`](/sdk/reference/entities#user) objects with the `blockedByMe` field set to `false`. Access the response data using getter methods:
 
@@ -151,15 +148,11 @@ The method returns an array of [`User`](/sdk/reference/entities#user) objects wi
 
 ## Get List of Blocked Users
 
-*In other words, as a logged-in user, how do I get a list of all users I've blocked?*
-
-In order to fetch the list of blocked users, you can use the `BlockedUsersRequest` class. To use this class i.e to create an object of the `BlockedUsersRequest class`, you need to use the `BlockedUsersRequestBuilder` class. The `BlockedUsersRequestBuilder` class allows you to set the parameters based on which the blocked users are to be fetched.
-
-The `BlockedUsersRequestBuilder` class allows you to set the below parameters:
+Use `BlockedUsersRequestBuilder` to fetch blocked users with filtering and pagination.
 
 ### Set Limit
 
-This method sets the limit i.e. the number of blocked users that should be fetched in a single iteration.
+Sets the number of blocked users to fetch per request.
 
 <Tabs>
 <Tab title="Set Limit">
@@ -186,7 +179,7 @@ let blockedUsersRequest: CometChat.BlockedUsersRequest = new CometChat.BlockedUs
 
 ### Set Search Keyword
 
-This method allows you to set the search string based on which the blocked users are to be fetched.
+Filters blocked users by a search string.
 
 <Tabs>
 <Tab title="Set Search Keyword">
@@ -217,9 +210,11 @@ let blockedUsersRequest: CometChat.BlockedUsersRequest = new CometChat.BlockedUs
 
 ### Set Direction
 
-* CometChat.BlockedUsersRequest.directions.BLOCKED\_BY\_ME - This will ensure that the list of blocked users only contains the users blocked by the logged in user.
-* CometChat.BlockedUsersRequest.directions.HAS\_BLOCKED\_ME - This will ensure that the list of blocked users only contains the users that have blocked the logged in user.
-* CometChat.BlockedUsersRequest.directions.BOTH - This will make sure the list of users includes both the above cases. This is the default value for the direction variable if it is not set.
+Filters by block direction:
+
+- `BLOCKED_BY_ME` — Users blocked by the logged-in user
+- `HAS_BLOCKED_ME` — Users who have blocked the logged-in user
+- `BOTH` — Both directions (default)
 
 <Tabs>
 <Tab title="Set Direction">
@@ -246,9 +241,7 @@ let blockedUsersRequest: CometChat.BlockedUsersRequest = new CometChat.BlockedUs
 
 </Tabs>
 
-Finally, once all the parameters are set to the builder class, you need to call the build() method to get the object of the `BlockedUsersRequest` class.
-
-Once you have the object of the `BlockedUsersRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of `User` objects containing n number of blocked users where N is the limit set in the builder class.
+After configuring the builder, call `build()` to get the `BlockedUsersRequest` object, then call `fetchNext()` to retrieve blocked users.
 
 <Tabs>
 <Tab title="JavaScript">

@@ -1,5 +1,6 @@
 ---
 title: "User Management"
+sidebarTitle: "User Management"
 description: "Create, update, and manage CometChat users programmatically using the JavaScript SDK. Includes user creation, profile updates, and the User class reference."
 ---
 
@@ -23,29 +24,20 @@ await CometChat.updateCurrentUserDetails(user);
 **Note:** User creation/deletion should ideally happen on your backend via the [REST API](https://api-explorer.cometchat.com).
 </Accordion>
 
-When a user logs into your app, you need to programmatically login the user into CometChat. But before you log in the user to CometChat, you need to create the user.
+Users must exist in CometChat before they can log in. Typically:
 
-Summing up-
+1. User registers in your app → Create user in CometChat
+2. User logs into your app → [Log user into CometChat](/sdk/javascript/authentication-overview)
 
-**When a user registers in your app**
+## Creating a User
 
-1. You add the user details in your database
-2. You create a user in CometChat
-
-**When a user logs into your app**
-
-1. You log in the user to your app
-2. You [log in the user in CometChat](/sdk/javascript/authentication-overview) (programmatically)
-
-## Creating a user
-
-Ideally, user creation should take place at your backend. You can refer our Rest API to learn more about [creating a user](https://api-explorer.cometchat.com/reference/creates-user) and use the appropriate code sample based on your backend language.
+User creation should ideally happen on your backend via the [REST API](https://api-explorer.cometchat.com/reference/creates-user).
 
 <Warning>
 **Security:** Never expose your `Auth Key` in client-side production code. User creation and updates using `Auth Key` should ideally happen on your backend server. Use client-side creation only for prototyping or development.
 </Warning>
 
-However, if you wish to create users on the fly, you can use the `createUser()` method. This method takes a `User` object and the `Auth Key` as input parameters and returns the created `User` object if the request is successful.
+For client-side creation (development only), use `createUser()`:
 
 <Tabs>
 <Tab title="JavaScript">
@@ -104,9 +96,11 @@ UID can be alphanumeric with underscore and hyphen. Spaces, punctuation and othe
 
 </Warning>
 
-## Updating a user
+## Updating a User
 
-Updating a user similar to creating a user should ideally be achieved at your backend using the Restful APIs. For more information, you can check the [update a user](https://api-explorer.cometchat.com/reference/update-user) section. However, this can be achieved on the fly as well as using the `updateUser()` method. This method takes a `User` object and the `Auth Key` as inputs and returns the updated `User` object on the successful execution of the request.
+Like creation, user updates should ideally happen on your backend via the [REST API](https://api-explorer.cometchat.com/reference/update-user).
+
+For client-side updates (development only), use `updateUser()`:
 
 <Tabs>
 <Tab title="JavaScript">
@@ -149,7 +143,7 @@ CometChat.updateUser(user, authKey).then(
 </Tab>
 </Tabs>
 
-Please make sure the `User` object provided to the `updateUser()` method has the `UID` of the user to be updated set.
+Ensure the `User` object has the correct `UID` set.
 
 The method returns a [`User`](/sdk/reference/entities#user) object. Access the response data using getter methods:
 
@@ -161,9 +155,9 @@ The method returns a [`User`](/sdk/reference/entities#user) object. Access the r
 | role | `getRole()` | `string` | Role assigned to the user |
 | metadata | `getMetadata()` | `Object` | Custom metadata attached to the user |
 
-## Updating logged-in user
+## Updating Logged-in User
 
-Updating a logged-in user is similar to updating a user. The only difference being this method does not require an AuthKey. This method takes a `User` object as input and returns the updated `User` object on the successful execution of the request.
+Use `updateCurrentUserDetails()` to update the current user without an Auth Key. Note: You cannot update the user's role with this method.
 
 <Tabs>
 <Tab title="JavaScript">
@@ -204,11 +198,9 @@ CometChat.updateCurrentUserDetails(user).then(
 </Tab>
 </Tabs>
 
-By using the `updateCurrentUserDetails()` method one can only update the logged-in user irrespective of the UID passed. Also, it is not possible to update the role of a logged-in user.
+## Deleting a User
 
-## Deleting a user
-
-Deleting a user can only be achieved via the Restful APIs. For more information please check the [delete a user](https://api-explorer.cometchat.com/reference/delete-user) section.
+User deletion is only available via the [REST API](https://api-explorer.cometchat.com/reference/delete-user).
 
 ## User Class
 
