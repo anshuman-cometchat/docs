@@ -1,0 +1,86 @@
+---
+title: "Best Practices"
+description: "Recommended patterns and practices for building with the CometChat JavaScript SDK."
+---
+
+Follow these best practices to build reliable, performant, and secure applications with the CometChat JavaScript SDK.
+
+## Initialization
+
+<AccordionGroup>
+  <Accordion title="Initialize once at app startup">
+    Call `CometChat.init()` as early as possible in your application lifecycle — typically in your entry file (`index.js`, `main.js`, or `App.js`). It only needs to be called once per session.
+  </Accordion>
+  <Accordion title="Use environment variables for credentials">
+    Store App ID, Region, and Auth Key in environment variables rather than hardcoding them. This makes it easier to switch between development and production environments.
+  </Accordion>
+</AccordionGroup>
+
+## Authentication
+
+<AccordionGroup>
+  <Accordion title="Always check for existing sessions">
+    Before calling `login()`, use `CometChat.getLoggedinUser()` to check if a session already exists. This avoids unnecessary login calls and prevents session conflicts.
+  </Accordion>
+  <Accordion title="Use Auth Tokens in production">
+    Auth Keys are convenient for development but expose your app to security risks in production. Always generate Auth Tokens server-side using the [REST API](https://api-explorer.cometchat.com/reference/create-authtoken) and pass them to the client.
+  </Accordion>
+  <Accordion title="Handle token expiry gracefully">
+    Auth Tokens can expire. Implement a mechanism to detect login failures due to expired tokens and re-generate them from your server. Use the [Login Listener](/sdk/javascript/login-listener) to detect session changes.
+  </Accordion>
+  <Accordion title="Logout on user sign-out">
+    Always call `CometChat.logout()` when your user signs out of your app. This clears the SDK session and stops real-time event delivery, preventing stale data and memory leaks.
+  </Accordion>
+</AccordionGroup>
+
+## Listeners
+
+<AccordionGroup>
+  <Accordion title="Use unique listener IDs">
+    Each listener must have a unique ID string. If you register a new listener with the same ID, it will replace the previous one. Use descriptive IDs like `"LOGIN_LISTENER_MAIN"` or `"MESSAGE_LISTENER_CHAT_SCREEN"` to avoid accidental overwrites.
+  </Accordion>
+  <Accordion title="Register early, remove on cleanup">
+    Register listeners as early as possible in your app lifecycle (e.g., right after `login()`). Remove them when the component or page that registered them is destroyed to prevent memory leaks.
+  </Accordion>
+  <Accordion title="Handle logoutSuccess for session management">
+    Use the `logoutSuccess` callback to clear your app's local state, redirect to the login screen, and clean up any other SDK listeners. This ensures a clean state when the user logs out.
+  </Accordion>
+</AccordionGroup>
+
+## Rate Limits
+
+<AccordionGroup>
+  <Accordion title="Batch operations to stay within limits">
+    If you need to perform many operations (e.g., sending messages to multiple users), space them out over time rather than firing them all at once. Use a queue or throttle mechanism to stay within the per-minute limits.
+  </Accordion>
+  <Accordion title="Monitor rate limit headers">
+    Check the `X-Rate-Limit-Remaining` header in REST API responses to proactively slow down before hitting the limit. This is more efficient than waiting for `429` errors.
+  </Accordion>
+  <Accordion title="Distinguish core vs standard operations">
+    Core operations (login, create/delete user, create/join group) share a lower cumulative limit of 10,000/min. Standard operations have a higher 20,000/min limit. Plan your architecture accordingly — avoid frequent login/logout cycles.
+  </Accordion>
+</AccordionGroup>
+
+## SSR Frameworks
+
+<AccordionGroup>
+  <Accordion title="Initialize only on the client side">
+    CometChat SDK requires browser APIs (`window`, `WebSocket`). For Next.js, Nuxt, or other SSR frameworks, use dynamic imports or `useEffect` to ensure the SDK loads only on the client.
+  </Accordion>
+  <Accordion title="Use loading states during SDK initialization">
+    Show a loading indicator while the SDK initializes on the client. This prevents hydration mismatches and provides a better user experience.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Troubleshooting" icon="wrench" href="/sdk/javascript/troubleshooting">
+    Common issues and solutions
+  </Card>
+  <Card title="Setup SDK" icon="gear" href="/sdk/javascript/setup-sdk">
+    Installation and initialization guide
+  </Card>
+</CardGroup>

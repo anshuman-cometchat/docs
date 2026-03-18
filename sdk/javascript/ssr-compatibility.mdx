@@ -265,20 +265,6 @@ export class AppComponent implements OnInit {
 The dedicated Ionic Cordova SDK has been deprecated. For new Ionic/Cordova applications, use the JavaScript SDK as shown above. Existing users can refer to the [legacy documentation](/sdk/ionic-legacy/overview).
 </Note>
 
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="ReferenceError: window is not defined">
-    The SDK is being imported on the server. Use dynamic imports inside `useEffect`, `componentDidMount`, or `mounted` hooks to ensure client-side only execution.
-  </Accordion>
-  <Accordion title="Hydration mismatch errors">
-    Ensure the loading state renders the same content on server and client. Use a simple loading indicator until the SDK is ready.
-  </Accordion>
-  <Accordion title="SDK not available after import">
-    When using `require()`, assign to `window.CometChat` to make it globally available. Then access it as `CometChat` (without window prefix) in child components.
-  </Accordion>
-</AccordionGroup>
-
 ---
 
 ## Next Steps

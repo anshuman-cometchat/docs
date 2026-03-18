@@ -181,20 +181,6 @@ In order to stop receiving events related to login and logout you need to use th
 Always remove login listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
 </Warning>
 
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Use unique listener IDs">
-    Each listener must have a unique ID string. If you register a new listener with the same ID, it will replace the previous one. Use descriptive IDs like `"LOGIN_LISTENER_MAIN"` or `"LOGIN_LISTENER_AUTH_SCREEN"` to avoid accidental overwrites.
-  </Accordion>
-  <Accordion title="Handle logoutSuccess for session management">
-    Use the `logoutSuccess` callback to clear your app's local state, redirect to the login screen, and clean up any other SDK listeners. This ensures a clean state when the user logs out.
-  </Accordion>
-  <Accordion title="Register early, remove on cleanup">
-    Register login listeners as early as possible in your app lifecycle (e.g., right after `init()`). Remove them only when the component or page that registered them is destroyed.
-  </Accordion>
-</AccordionGroup>
-
 ---
 
 ## Next Steps

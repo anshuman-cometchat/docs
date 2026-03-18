@@ -153,34 +153,6 @@ let appSetting = new CometChat.AppSettingsBuilder()
   .build();
 ```
 
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Initialize once at app startup">
-    Call `CometChat.init()` as early as possible in your application lifecycle. It only needs to be called once per session.
-  </Accordion>
-  <Accordion title="Check for existing sessions">
-    After initialization, use `CometChat.getLoggedinUser()` to check if a session exists before calling `login()`.
-  </Accordion>
-  <Accordion title="Use environment variables">
-    Store App ID, Region, and Auth Key in environment variables rather than hardcoding them.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="init() fails with 'App ID not found'">
-    Verify your App ID matches the one in your [CometChat Dashboard](https://app.cometchat.com). Check that you're using the correct region.
-  </Accordion>
-  <Accordion title="SDK methods fail with 'CometChat not initialized'">
-    Ensure `init()` completes successfully before calling other SDK methods. Wait for the Promise to resolve.
-  </Accordion>
-  <Accordion title="WebSocket connection issues">
-    Corporate firewalls may block WebSocket connections. Check your network configuration or try [manual WebSocket management](/sdk/javascript/managing-web-sockets-connections-manually).
-  </Accordion>
-</AccordionGroup>
-
 ---
 
 ## Next Steps
