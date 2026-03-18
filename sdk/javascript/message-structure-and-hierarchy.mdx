@@ -1,10 +1,9 @@
 ---
-title: "Message"
-sidebarTitle: "Message Structure And Hierarchy"
+title: "Message Structure and Hierarchy"
+sidebarTitle: "Message Structure"
 description: "Understand the message categories, types, and hierarchy in the CometChat JavaScript SDK including text, media, custom, action, interactive, and call messages."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
 <Accordion title="AI Integration Quick Reference">
 
 Message categories and types:
@@ -15,36 +14,44 @@ Message categories and types:
 - **call** → `audio`, `video`
 </Accordion>
 
-The below diagram helps you better understand the various message categories and types that a CometChat message can belong to.
+Every message in CometChat belongs to a category and has a specific type. Understanding this hierarchy helps you handle different message types correctly in your application.
+
+## Message Hierarchy
 
 <Frame>
   <img src="/images/ad217f65-jgtc448cy7c09u7czal1sfaik2des539pdc0hutnkabz12dj5nvp4qrqx27ko2mt-41e88ee5900754688cfe821fee472d58.jpg" />
 </Frame>
 
-### Checking Message Category and Type
+## Categories Overview
 
-You can determine the category and type of any received message using the following methods:
+| Category | Types | Description |
+| --- | --- | --- |
+| `message` | `text`, `image`, `video`, `audio`, `file` | Standard user messages |
+| `custom` | Developer-defined | Custom data (location, polls, etc.) |
+| `interactive` | `form`, `card`, `customInteractive` | Messages with actionable UI elements |
+| `action` | `groupMember`, `message` | System-generated events |
+| `call` | `audio`, `video` | Call-related messages |
+
+## Checking Message Category and Type
+
+Use `getCategory()` and `getType()` to determine how to handle a received message:
 
 <Tabs>
 <Tab title="JavaScript">
 ```javascript
-// Check message category
-const category = message.getCategory(); // "message", "custom", "action", "call", "interactive"
+const category = message.getCategory();
+const type = message.getType();
 
-// Check message type
-const type = message.getType(); // "text", "image", "video", "audio", "file", etc.
-
-// Example: Handle different message categories
 switch (category) {
   case CometChat.CATEGORY_MESSAGE:
     if (type === CometChat.MESSAGE_TYPE.TEXT) {
-      console.log("Text message:", message.getText());
+      console.log("Text:", message.getText());
     } else if (type === CometChat.MESSAGE_TYPE.IMAGE) {
       console.log("Image URL:", message.getData().url);
     }
     break;
   case CometChat.CATEGORY_CUSTOM:
-    console.log("Custom message type:", type, "data:", message.getData());
+    console.log("Custom type:", type, "data:", message.getData());
     break;
   case CometChat.CATEGORY_ACTION:
     console.log("Action:", message.getAction());
@@ -57,16 +64,14 @@ switch (category) {
 </Tab>
 <Tab title="TypeScript">
 ```typescript
-// Check message category
 const category: string = message.getCategory();
 const type: string = message.getType();
 
-// Example: Handle different message categories
 switch (category) {
   case CometChat.CATEGORY_MESSAGE:
     if (type === CometChat.MESSAGE_TYPE.TEXT) {
       const textMsg = message as CometChat.TextMessage;
-      console.log("Text message:", textMsg.getText());
+      console.log("Text:", textMsg.getText());
     } else if (type === CometChat.MESSAGE_TYPE.IMAGE) {
       const mediaMsg = message as CometChat.MediaMessage;
       console.log("Image URL:", mediaMsg.getData().url);
@@ -74,7 +79,7 @@ switch (category) {
     break;
   case CometChat.CATEGORY_CUSTOM:
     const customMsg = message as CometChat.CustomMessage;
-    console.log("Custom message type:", type, "data:", customMsg.getData());
+    console.log("Custom type:", type, "data:", customMsg.getData());
     break;
   case CometChat.CATEGORY_ACTION:
     const actionMsg = message as CometChat.Action;
@@ -89,83 +94,78 @@ switch (category) {
 </Tab>
 </Tabs>
 
-As you can see in the above diagram, every message belongs to a particular category. A message can belong to either one of the 4 categories
+## Message Category
 
-1. Message
-2. Custom
-3. Action
-4. Call
+Messages with category `message` are standard user-sent messages:
 
-Each category can be further be classified into types.
+| Type | Description |
+| --- | --- |
+| `text` | Plain text message |
+| `image` | Image attachment |
+| `video` | Video attachment |
+| `audio` | Audio attachment |
+| `file` | File attachment |
 
-A message belonging to the category `message` can be classified into either 1 of the below types:
+## Custom Category
 
-1. text - A plain text message
-2. image- An image message
-3. video- A video message
-4. audio- An audio message
-5. file- A file message
+Custom messages allow you to send data that doesn't fit the default categories. You define your own type to identify the message (e.g., `location`, `poll`, `sticker`).
 
-## Custom
+```javascript
+// Example: Sending a location as a custom message
+const customMessage = new CometChat.CustomMessage(
+  receiverID,
+  CometChat.RECEIVER_TYPE.USER,
+  "location",
+  { latitude: 37.7749, longitude: -122.4194 }
+);
+```
 
-In the case of messages that belong to the `custom` category, there are no predefined types. Custom messages can be used by developers to send messages that do not fit in the default category and types provided by CometChat. For messages with the category `custom`, the developers can set their own type to uniquely identify the custom message. A very good example of a custom message would be the sharing of location co-ordinates. In this case, the developer can decide to use the custom message with type set to `location`.
+See [Send Message → Custom Messages](/sdk/javascript/send-message#custom-message) for details.
 
-For sending custom messages, see [Send Message → Custom Messages](/sdk/javascript/send-message#custom-message).
+## Interactive Category
 
-## Interactive
+Interactive messages contain actionable UI elements that users can interact with directly in the chat:
 
-An InteractiveMessage is a specialized object that encapsulates an interactive unit within a chat message, such as an embedded form that users can fill out directly within the chat interface. Messages belonging to the interactive category can further be classified into one of the below types:
+| Type | Description |
+| --- | --- |
+| `form` | Embedded form with input fields |
+| `card` | Card with buttons and actions |
+| `customInteractive` | Custom interactive elements |
 
-1. form- for interactive form
-2. card- for interactive card
-3. customInteractive- for custom interaction messages
+See [Interactive Messages](/sdk/javascript/interactive-messages) for implementation details.
 
-<Note>
+## Action Category
 
-to know about Interactive messages please [click here](/sdk/javascript/interactive-messages)
+Action messages are system-generated events. They have a `type` and an `action` property:
 
-</Note>
+**Type: `groupMember`** — Actions on group members:
+- `joined` — Member joined the group
+- `left` — Member left the group
+- `kicked` — Member was kicked
+- `banned` — Member was banned
+- `unbanned` — Member was unbanned
+- `added` — Member was added
+- `scopeChanged` — Member's scope was changed
 
-## Action
+**Type: `message`** — Actions on messages:
+- `edited` — Message was edited
+- `deleted` — Message was deleted
 
-Action messages are system-generated messages. Messages belonging to the `action` category can further be classified into one of the below types:
+## Call Category
 
-1. groupMember - action performed on a group member.
-2. message - action performed on a message.
+Call messages track call events with types `audio` or `video`. The `status` property indicates the call state:
 
-Action messages hold another property called `action` which actually determine the action that has been performed For the type `groupMember` the action can be either one of the below:
+| Status | Description |
+| --- | --- |
+| `initiated` | Call started |
+| `ongoing` | Call accepted and in progress |
+| `canceled` | Caller canceled |
+| `rejected` | Receiver rejected |
+| `unanswered` | No answer |
+| `busy` | Receiver on another call |
+| `ended` | Call completed |
 
-1. joined - when a group member joins a group
-2. left - when a group member leaves a group
-3. kicked - when a group member is kicked from the group
-4. banned - when a group member is banned from the group
-5. unbanned - when a group member is unbanned from the group
-6. added - when a user is added to the group
-7. scopeChanged - When the scope of a group member is changed.
-
-For the type `message`, the action can be either one of the below:
-
-1. edited - when a message is edited.
-2. deleted - when a message is deleted.
-
-## Call
-
-Messages with the category `call` are Calling related messages. These can belong to either one of the 2 types
-
-1. audio
-2. video
-
-For implementing calling, see [Default Calling](/sdk/javascript/default-call) or [Direct Calling](/sdk/javascript/direct-call).
-
-The call messages have a property called status that helps you figure out the status of the call. The status can be either one of the below values:
-
-1. initiated - when a is initiated to a user/group
-2. ongoing - when the receiver of the call has accepted the call
-3. canceled - when the call has been canceled by the initiator of the call
-4. rejected - when the call has been rejected by the receiver of the call
-5. unanswered - when the call was not answered by the receiver.
-6. busy - when the receiver of the call was busy on another call.
-7. ended - when the call was successfully completed and ended by either the initiator or receiver.
+See [Default Calling](/sdk/javascript/default-call) or [Direct Calling](/sdk/javascript/direct-call) for implementation.
 
 ---
 
