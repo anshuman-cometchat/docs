@@ -1,5 +1,6 @@
 ---
 title: "Video View Customisation"
+sidebarTitle: "Video View Customisation"
 description: "Customize the main video container in CometChat calls — aspect ratio, full screen button, name label, and network label positioning."
 ---
 
@@ -12,17 +13,15 @@ description: "Customize the main video container in CometChat calls — aspect r
 - **Requires:** [Default Calling](/sdk/javascript/default-call) or [Direct Calling](/sdk/javascript/direct-call) setup
 </Info>
 
-This section will guide you to customise the main video container.
+Customize the main video container layout, including aspect ratio, button positions, and label visibility.
 
 ## Implementation
 
-Once you have decided to implement [Default Calling](/sdk/javascript/default-call) or [Direct Calling](/sdk/javascript/direct-call) calling and followed the steps to implement them. Just few additional methods will help you quickly customize the main video container.
-
-Please make sure your callSettings is configured accordingly for [Default Calling](/sdk/javascript/default-call) or [Direct Calling](/sdk/javascript/direct-call).
+After setting up [Ringing](/sdk/javascript/default-call) or [Call Session](/sdk/javascript/direct-call), configure video view options in your call settings.
 
 ## Main Video Container Setting
 
-The `MainVideoContainerSetting` Class is the required in case you want to customise the main video view. You need to pass the Object of the `MainVideoContainerSetting` Class in the `setMainVideoContainerSetting()` method of the `CallSettingsBuilder`.
+The `MainVideoContainerSetting` class customizes the main video view. Pass a `MainVideoContainerSetting` instance to `setMainVideoContainerSetting()` in `CallSettingsBuilder`.
 
 | Setting                                                                              | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

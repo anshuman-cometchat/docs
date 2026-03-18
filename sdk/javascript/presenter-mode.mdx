@@ -1,5 +1,6 @@
 ---
 title: "Presenter Mode"
+sidebarTitle: "Presenter Mode"
 description: "Learn how to implement Presenter Mode for webinars, keynotes, and online classes using the CometChat JavaScript Calls SDK."
 ---
 
@@ -23,36 +24,22 @@ CometChatCalls.joinPresentation(callToken, settings, htmlElement);
 
 ## Overview
 
-The Presenter Mode feature allows developers to create a calling service experience in which:
+Presenter Mode enables broadcast-style calling experiences where presenters share content with passive viewers.
 
-1. There are one or more users who are presenting their video, audio and/or screen (Maximum 5)
-2. Viewers who are consumers of that presentation. (They cannot send their audio, video or screen streams out).
-3. The total number of presenters and viewers can go up to 100.
-4. Features such as mute/unmute audio, show/hide camera capture, recording, etc. will be enabled only for the Presenter in this mode.
-5. Other call participants will not get these features. Hence they act like passive viewers in the call.
+| Role | Capabilities | Max Count |
+| ---- | ------------ | --------- |
+| Presenter | Video, audio, screen sharing, mute controls, recording | 5 |
+| Viewer | Watch and listen only (no outgoing streams) | Up to 100 total |
 
-Using this feature developers can create experiences such as:
+Use cases: webinars, keynotes, all-hands meetings, online classes, talk shows.
 
-1. All hands calls
-2. Keynote speeches
-3. Webinars
-4. Talk shows
-5. Online classes
-6. and many more...
-
-### About this guide
-
-This guide demonstrates how to start a presentation into an React Native application. Before you begin, we strongly recommend you read the calling setup guide.
-
-Before starting a call session you have to generate a call token using the generateToken() method of the CometChatCalls SDK as mentioned [here](/sdk/javascript/direct-call#generate-call-token).
+Before starting a presentation, generate a call token using `generateToken()` as described in [Call Session](/sdk/javascript/direct-call#generate-call-token).
 
 ### Start Presentation Session
 
-The most important class that will be used in the implementation is the `PresentationSettings` class. This class allows you to set the various parameters for the Presentation Mode. In order to set the various parameters of the `PresentationSettings` class, you need to use the `PresentationSettingsBuilder` class. Below are the various options available with the `PresentationSettings` class.
+Configure the presentation using `PresentationSettingsBuilder`. Set the user type with `setIsPresenter(true)` for presenters or `setIsPresenter(false)` for viewers.
 
-You will need to set the User Type, There are 2 type of users in Presenter Mode, `Presenter` & `Participant` , You can set this `PresentationSettingsBuilder` by using the following method `setIsPresenter(true/false)`
-
-A basic example of how to start a Presentation:
+Basic example:
 
 <Tabs>
 <Tab title="JavaScript">
@@ -75,9 +62,15 @@ CometChatCalls.joinPresentation(
 
 </Tabs>
 
-## **Listeners**
+## Listeners
 
-Listeners can be added in two ways the first one is to use `.setCallEventListener(listeners : OngoingCallListener)` method in `CallSettingsBuilder` or `PresenterSettingsBuilder` class. The second way is to use `CometChatCalls.addCallEventListener(name: string, callListener: OngoingCallListener)` by this you can add multiple listeners and remove the specific listener by their name `CometChatCalls.removeCallEventListener(name: string)`
+Add listeners in two ways:
+1. Use `.setCallEventListener()` in `PresentationSettingsBuilder`
+2. Use `CometChatCalls.addCallEventListener(name, listener)` for multiple listeners
+
+<Warning>
+Always remove listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
 
 <Tabs>
 <Tab title="JavaScript">
@@ -117,7 +110,7 @@ useEffect(() => {
 
 </Tabs>
 
-The `CometChatCallsEventsListener` listener provides you with the below callback methods:
+### Events
 
 | Callback Method                                 | Description                                                                                                                  |
 | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
@@ -134,14 +127,7 @@ The `CometChatCallsEventsListener` listener provides you with the below callback
 
 ## Settings
 
-The `PresentationSettings` class is the most important class when it comes to the implementation of the Calling feature. This is the class that allows you to customize the overall calling experience. The properties for the call/conference can be set using the `PresentationSettingsBuilder` class. This will eventually give you and object of the `PresentationSettings` class which you can pass to the `joinPresentation()` method to start the call.
-
-The **mandatory** parameters that are required to be present for any call/conference to work are:
-
-1. Context - context of the activity/application
-2. RelativeLayout - A RelativeLayout object in which the calling UI is loaded.
-
-The options available for customization of calls are:
+Configure the presentation experience using `PresentationSettingsBuilder`:
 
 | Parameter                                                     | Description                                                                                                                                                                                                                                                                                                                     |
 | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -159,17 +145,7 @@ The options available for customization of calls are:
 | `setDefaultAudioMode(audioMode: string)`                      | This method can be used if you wish to start the call with a specific audio mode. The available options are 1. CometChatCalls.AUDIO\_MODE.SPEAKER = "SPEAKER" 2. CometChatCalls.AUDIO\_MODE.EARPIECE = "EARPIECE" 3. CometChatCalls.AUDIO\_MODE.BLUETOOTH = "BLUETOOTH" 4. CometChatCalls.AUDIO\_MODE.HEADPHONES = "HEADPHONES" |
 | `setEventListener(new CometChatCallsEventsListener())`        | The `CometChatCallsEventsListener` listener provides you callbacks                                                                                                                                                                                                                                                              |
 
-In case you wish to achieve a completely customised UI for the Calling experience, you can do so by embedding default android buttons to the screen as per your requirement and then use the below methods to achieve different functionalities for the embedded buttons.
-
-For the use case where you wish to align your own custom buttons and not use the default layout provided by CometChat you can embed the buttons in your layout and use the below methods to perform the corresponding operations:
-
-<Warning>
-Always remove call event listeners when they're no longer needed (e.g., on component unmount or when the presentation screen is closed). Failing to remove listeners can cause memory leaks and duplicate event handling.
-
-```javascript
-CometChatCalls.removeCallEventListener("UNIQUE_ID");
-```
-</Warning>
+For custom UI, embed your own buttons and use the call control methods described in [Call Session Methods](/sdk/javascript/direct-call#methods).
 
 ---
 

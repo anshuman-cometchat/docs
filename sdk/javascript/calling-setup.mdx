@@ -1,5 +1,6 @@
 ---
 title: "Setup"
+sidebarTitle: "Setup"
 description: "Install and initialize the CometChat Calls SDK for JavaScript to enable voice and video calling in your application."
 ---
 
@@ -78,15 +79,17 @@ import { CometChatCalls } from "@cometchat/calls-sdk-javascript";
 
 ### Initialize CometChatCalls
 
-The `init()` method initialises the settings required for `CometChatCalls`. The `init()` method takes a single paramater, that is the instance of `CallAppSettings` class.
+The `init()` method initializes the Calls SDK. It takes a `CallAppSettings` instance as its parameter.
 
-The `CallAppSettingsBuilder` class allows you to configure three settings:
+`CallAppSettingsBuilder` accepts three settings:
 
-1. **appID:** You CometChat App ID
-2. **region**: The region where your app was created
-3. **host:** This method takes the client URL as input and uses this client URL instead of the default client URL. This can be used in case of dedicated deployment of CometChat.
+| Setting | Description |
+| ------- | ----------- |
+| `appID` | Your CometChat App ID |
+| `region` | The region where your app was created |
+| `host` | (Optional) Custom client URL for dedicated deployments |
 
-You need to call init() before calling any other method from `CometChatCalls`. We suggest you call the init() method on app startup, preferably in the index.js file.
+Call `init()` before any other `CometChatCalls` method — ideally on app startup.
 
 <Tabs>
 <Tab title="JavaScript">

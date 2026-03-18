@@ -1,5 +1,6 @@
 ---
 title: "Virtual Background"
+sidebarTitle: "Virtual Background"
 description: "Implement virtual background features in CometChat video calls — background blur, custom images, and enforced backgrounds using the JavaScript SDK."
 ---
 
@@ -12,30 +13,22 @@ description: "Implement virtual background features in CometChat video calls —
 - **Requires:** [Default Calling](/sdk/javascript/default-call) or [Direct Calling](/sdk/javascript/direct-call) setup
 </Info>
 
-This section will guide you to implement virtual background feature in video calls.
+Apply blur or custom image backgrounds during video calls.
 
 ## Implementation
 
-Once you have decided to implement [Default Calling](/sdk/javascript/default-call) or [Direct Calling](/sdk/javascript/direct-call) calling and followed the steps to implement them. Just few additional methods will help you quickly implement virtual background.
-
-Please make sure your callSettings is configured accordingly for [Default Calling](/sdk/javascript/default-call) or [Direct Calling](/sdk/javascript/direct-call).
+After setting up [Ringing](/sdk/javascript/default-call) or [Call Session](/sdk/javascript/direct-call), configure virtual background options in your call settings.
 
 ## Settings
 
-The `CallSettings`class allows you to customise the overall calling experience. The properties for the call/conference can be set using the `CallSettingsBuilder` class. This will eventually give you and object of the `CallSettings` class which you can pass to the `startCall()` method to start the call.
-
-The **mandatory** parameters that are required to be present for any call/conference to work are:
-
-1. sessionId - The unique session Id for the call/conference session.
-
-The options available for virtual background are:
+Configure virtual background using `CallSettingsBuilder`:
 
 | Setting                                                                | Description                                                                                                    |
 | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `showVirtualBackgroundSetting(showVBSettings: boolean)`                | This method shows/hides the virtual background settings in the menu bar. **Default value = true**              |
 | `setVirtualBackground(virtualBackground: CometChat.VirtualBackground)` | This method will set the virtual background setting. This methods takes an Object of Virtual Background Class. |
 
-For the use case where you wish to align your own custom buttons and not use the default layout provided by CometChat, you can embed the buttons in your layout and use the below methods to perform the corresponding operations:
+For custom UI without the default layout, use these methods to control virtual background:
 
 ### Open Virtual Background Setting
 
@@ -100,7 +93,7 @@ callController.setBackgroundImage(imageURL);
 
 ## Virtual Background Settings
 
-The `VirtualBackground` Class is the required in case you want to change how the end user can use virtual background features in a video call. You need to pass the Object of the `VirtualBackground` Class in the `setVirtualBackground()` method of the `CallSettingsBuilder`.
+The `VirtualBackground` class controls how users interact with virtual background features. Pass a `VirtualBackground` instance to `setVirtualBackground()` in `CallSettingsBuilder`.
 
 | Setting                                                  | Description                                                                                                                                                              |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

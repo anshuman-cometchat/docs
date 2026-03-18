@@ -1,5 +1,6 @@
 ---
 title: "Call Logs"
+sidebarTitle: "Call Logs"
 description: "Fetch, filter, and retrieve call history including duration, participants, and recording status using the CometChat Calls SDK."
 ---
 
@@ -25,15 +26,11 @@ let details = await CometChatCalls.getCallDetails("SESSION_ID", authToken);
 
 ## Overview
 
-CometChat's Web Call SDK provides a comprehensive way to integrate call logs into your application, enhancing your user experience by allowing users to effortlessly keep track of their communication history. Call logs provide crucial information such as call duration, participants, and more.
-
-This feature not only allows users to review their past interactions but it also serves as an effective tool to revisit important conversation details. With the flexibility of fetching call logs, filtering them according to specific parameters, and obtaining detailed information of individual calls, application developers can use this feature to build a more robust and interactive communication framework.
-
-In the following sections, we will guide you through the process of working with call logs, offering a deeper insight into how to optimally use this feature in your Web application.
+Retrieve and display call history including duration, participants, status, and recording information.
 
 ## Fetching Call Logs
 
-To fetch all call logs in your 23b application, you should use the `CallLogRequestBuilder`, This builder allows you to customize the call logs fetching process according to your needs.
+Use `CallLogRequestBuilder` to fetch and filter call logs:
 
 ```javascript
 let callLogRequestBuilder = new CometChatCalls.CallLogRequestBuilder()
@@ -43,7 +40,7 @@ let callLogRequestBuilder = new CometChatCalls.CallLogRequestBuilder()
         .build()
 ```
 
-`CallLogRequestBuilder` has the following settings available.
+### Builder Settings
 
 | Setting                                                                                              | Description                                                  |
 | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
@@ -59,7 +56,7 @@ let callLogRequestBuilder = new CometChatCalls.CallLogRequestBuilder()
 
 ### Fetch Next
 
-The `fetchNext()` method retrieves the next set of call logs.
+Retrieves the next set of call logs:
 
 ```javascript
 let callLogRequestBuilder = new CometChatCalls.CallLogRequestBuilder()
@@ -79,7 +76,7 @@ callLogRequestBuilder.fetchNext()
 
 ### Fetch Previous
 
-The `fetchPrevious()` method retrieves the previous set of call logs.
+Retrieves the previous set of call logs:
 
 ```javascript
 let callLogRequestBuilder = new CometChatCalls.CallLogRequestBuilder()
@@ -110,7 +107,7 @@ The `fetchNext()` and `fetchPrevious()` methods return an array of [`Call`](/sdk
 
 ## Get Call Details
 
-To retrieve the specific details of a call, use the `getCallDetails()` method. This method requires the Auth token of the logged-in user and the session ID along with a callback listener.
+Retrieve details for a specific call session using `getCallDetails()`:
 
 <Tabs>
 <Tab title="JavaScript">
