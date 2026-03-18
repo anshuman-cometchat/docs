@@ -1,6 +1,7 @@
 ---
 title: "Delivery & Read Receipts"
-description: "Learn how to mark messages as delivered, read, or unread and receive real-time receipt events using the CometChat JavaScript SDK."
+sidebarTitle: "Delivery & Read Receipts"
+description: "Mark messages as delivered, read, or unread and receive real-time receipt events using the CometChat JavaScript SDK."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
@@ -32,8 +33,6 @@ CometChat.addMessageListener("receipts", new CometChat.MessageListener({
 Delivery and read receipts let you track whether messages have been delivered to and read by recipients. This page covers marking messages as delivered, read, or unread, and receiving real-time receipt events.
 
 ## Mark Messages as Delivered
-
-*In other words, as a recipient, how do I inform the sender that I've received a message?*
 
 You can mark the messages for a particular conversation as read using the `markAsDelivered()` method. This method takes the below parameters as input:
 
@@ -330,8 +329,6 @@ CometChat.markConversationAsDelivered(conversationWith, conversationType).then(
 
 ## Mark Messages as Read
 
-*In other words, as a recipient, how do I inform the sender I've read a message?*
-
 You can mark the messages for a particular conversation as read using the `markAsRead()` method. This method takes the below parameters as input:
 
 | Parameter      | Information                                                                                                                                                                        |
@@ -608,11 +605,7 @@ CometChat.markConversationAsRead(conversationWith, conversationType).then(
 
 ## Mark Messages as Unread
 
-The Mark messages as Unread feature allows users to designate specific messages or conversations as unread, even if they have been previously viewed.
-
-This feature is valuable for users who want to revisit and respond to important messages or conversations later, ensuring they don't forget or overlook them.
-
-In other words, how I can mark a message as unread?
+Mark messages as unread to revisit important messages later, even if they've been previously viewed.
 
 You can mark the messages for a particular conversation as unread using the `markMessageAsUnread()` method. This method takes the below parameters as input:
 
@@ -678,11 +671,9 @@ CometChat.markMessageAsUnread(message).then(
 
 </Tabs>
 
-Receive Delivery & Read Receipts
+## Receive Delivery & Read Receipts
 
-*In other words, as a recipient, how do I know when a message I sent has been delivered or read by someone?*
-
-### Real-time events
+### Real-time Events
 
 1. `onMessagesDelivered()` - This event is triggered when a message is delivered to a user.
 2. `onMessagesRead()` - This event is triggered when a message is read by a user.

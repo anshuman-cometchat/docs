@@ -1,6 +1,7 @@
 ---
 title: "Threaded Messages"
-description: "Send, receive, and fetch threaded messages using the CometChat JavaScript SDK. Includes real-time listeners, thread message history, and filtering thread replies."
+sidebarTitle: "Threaded Messages"
+description: "Send, receive, and fetch threaded messages using the CometChat JavaScript SDK."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
@@ -23,21 +24,11 @@ const request = new CometChat.MessagesRequestBuilder()
 ```
 </Accordion>
 
-Messages that are started from a particular message are called Threaded messages or simply threads. Each Thread is attached to a message which is the Parent message for that thread.
+Threaded messages (or threads) are messages started from a particular parent message. Each thread is attached to a parent message.
 
 ## Send Message in a Thread
 
-As mentioned in the [Send a Message](/sdk/javascript/send-message) section. You can either send a message to a User or a Group based on the `receiverType` and the UID/GUID specified for the message. A message can belong to either of the below types:
-
-1. Text Message
-2. Media Message
-3. Custom Message.
-
-Any of the above messages can be sent in a thread. As mentioned, a thread is identified based on the Parent message. So while sending a message the `parentMessageId` must be set for the message to indicate that the message to be sent needs to be a part of the thread with the specified `parentMessageId`.
-
-This can be achieved using the `setParentMessageId()` method provided by the object of the `TextMessage`, `MediaMessage` and `CustomMessage` class. The id specified in the `setParentMessageId()` method maps the message sent to the particular thread.
-
-**Example to Send a Text Message in a thread in a user conversation.**
+Any message type (Text, Media, or Custom) can be sent in a thread. Set the `parentMessageId` using `setParentMessageId()` to indicate which thread the message belongs to.
 
 <Tabs>
 <Tab title="User">
@@ -78,19 +69,11 @@ CometChat.sendMessage(textMessage).then(
 
 </Tabs>
 
-The above snippet shows how a message with the text "Hello" can be sent in the thread with `parentMessageId` 100.
-
-Similarly, using the `setParentMessageId()` method, Media and Custom Messages can be sent in threads too.
+The above snippet sends "Hello" in the thread with `parentMessageId` 100. Media and Custom messages can also be sent in threads using `setParentMessageId()`.
 
 ### Receiving Real-Time Messages
 
-The procedure to receive real-time messages is exactly the same as mentioned in the [Receive Messages](/sdk/javascript/receive-message). This can be achieved using the `MessageListener` class provided by the SDK.
-
-<Warning>
-Always remove listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
-</Warning>
-
-To add a MessageListener, you can use the `addMessageListener()` method of the SDK. The only thing that needs to be checked is if the received message belongs to the active thread. This can be done using the `parentMessageId` field of the message object.
+Use `MessageListener` to receive real-time thread messages. Check if the received message belongs to the active thread using `getParentMessageId()`.
 
 <Tabs>
 <Tab title="Message Listener">
@@ -155,9 +138,7 @@ CometChat.addMessageListener(
 
 ### Fetch all the messages for any particular thread.
 
-You can fetch all the messages belonging to a particular thread by using the `MessagesRequest` class. In order to get an object of the `MessagesRequest` class, you need to use the `MessagesRequestBuilder` class. and use the `setParentMessageId()` method of the `MessagesRequestBuilder` to inform the SDK that you only need the messages belonging to the thread with the specified parentMessageId.
-
-Once you have the object of the `MessagesRequest` class, you need to call the `fetchPrevious()` method to get the latest messages in the thread. In one integration, a maximum of 100 messages can be fetched. If you wish to fetch the next set of messages, you need to call the `fetchPrevious()` method again on the same object.
+Use `MessagesRequestBuilder` with `setParentMessageId()` to fetch messages belonging to a specific thread. Call `fetchPrevious()` to get messages (max 100 per request).
 
 <Tabs>
 <Tab title="Fetch all message for a thread">
@@ -215,7 +196,7 @@ The `fetchPrevious()` method returns an array of [`BaseMessage`](/sdk/reference/
 
 ## Avoid Threaded Messages in User/Group Conversations
 
-While fetching messages for normal user/group conversations using the `MessagesRequest`, the threaded messages by default will be a part of the list of messages received. In order to exclude the threaded messages from the list of user/group messages, you need to use the `hideReplies()` method of the `MessagesRequestBuilder` class. This method takes a boolean argument which when set to true excludes the messages belonging to threads from the list of messages.
+Use `hideReplies(true)` to exclude threaded messages when fetching messages for a conversation.
 
 <Tabs>
 <Tab title="User">
@@ -304,7 +285,7 @@ messagesRequest.fetchPrevious().then(
 
 </Tabs>
 
-The above snippet will return messages between the logged in user and `cometchat-uid-1` excluding all the threaded messages belonging to the same conversation.
+The above snippet returns messages excluding threaded replies.
 
 ---
 
