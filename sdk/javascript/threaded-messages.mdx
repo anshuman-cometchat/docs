@@ -4,8 +4,7 @@ description: "Send, receive, and fetch threaded messages using the CometChat Jav
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```javascript
 // Send message in a thread
@@ -22,7 +21,7 @@ const messages = await request.fetchPrevious();
 const request = new CometChat.MessagesRequestBuilder()
   .setUID("UID").setLimit(30).hideReplies(true).build();
 ```
-</Info>
+</Accordion>
 
 Messages that are started from a particular message are called Threaded messages or simply threads. Each Thread is attached to a message which is the Parent message for that thread.
 

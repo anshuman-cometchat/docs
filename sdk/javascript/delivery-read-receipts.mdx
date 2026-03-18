@@ -4,8 +4,7 @@ description: "Learn how to mark messages as delivered, read, or unread and recei
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```javascript
 // Mark message as delivered (pass message object)
@@ -28,7 +27,7 @@ CometChat.addMessageListener("receipts", new CometChat.MessageListener({
   onMessagesReadByAll: (receipt) => { }         // Group only
 }));
 ```
-</Info>
+</Accordion>
 
 Delivery and read receipts let you track whether messages have been delivered to and read by recipients. This page covers marking messages as delivered, read, or unread, and receiving real-time receipt events.
 
@@ -821,7 +820,7 @@ CometChat.getMessageReceipts(messageId).then(
 
 You will receive a list of `MessageReceipt` objects.
 
-<Info>
+<Accordion title="AI Integration Quick Reference">
 
 The following features will be available only if the **Enhanced Messaging Status** feature is enabled for your app.
 
@@ -831,7 +830,7 @@ The following features will be available only if the **Enhanced Messaging Status
 * `readAt` field in a group message.
 * `markMessageAsUnread` method.
 
-</Info>
+</Accordion>
 
 <Warning>
 Always remove message listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.

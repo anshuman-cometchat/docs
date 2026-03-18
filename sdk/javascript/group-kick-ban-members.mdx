@@ -4,8 +4,7 @@ description: "Learn how to kick, ban, and unban group members, fetch banned memb
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```javascript
 // Kick a member
@@ -21,7 +20,7 @@ await CometChat.unbanGroupMember("GUID", "UID");
 const request = new CometChat.BannedMembersRequestBuilder("GUID").setLimit(30).build();
 const bannedMembers = await request.fetchNext();
 ```
-</Info>
+</Accordion>
 
 There are certain actions that can be performed on the group members:
 

@@ -5,8 +5,7 @@ description: "Learn how to send messages with user mentions, retrieve mentioned 
 
 
 {/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```javascript
 // Send a message with a mention (use <@uid:UID> format)
@@ -21,7 +20,7 @@ const request = new CometChat.MessagesRequestBuilder()
   .setUID("UID").setLimit(30).mentionsWithTagInfo(true).build();
 const messages = await request.fetchPrevious();
 ```
-</Info>
+</Accordion>
 
 
 
