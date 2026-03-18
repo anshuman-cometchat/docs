@@ -1,5 +1,6 @@
 ---
 title: "Ban Or Kick Member From A Group"
+sidebarTitle: "Kick & Ban Members"
 description: "Learn how to kick, ban, and unban group members, fetch banned member lists, and receive real-time events using the CometChat JavaScript SDK."
 ---
 
@@ -29,11 +30,11 @@ There are certain actions that can be performed on the group members:
 3. Unban a member from the group
 4. Update the scope of the member of the group
 
-All the above actions can only be performed by the **Admin** or the **Moderator** of the group.
+Only Admins or Moderators can perform these actions.
 
 ## Kick a Group Member
 
-The Admin or Moderator of a group can kick a member out of the group using the `kickGroupMember()` method.
+Admins or Moderators can remove a member using `kickGroupMember()`. The kicked user can rejoin the group later.
 
 <Tabs>
 <Tab title="Kick Group Member">
@@ -70,20 +71,18 @@ CometChat.kickGroupMember(GUID, UID).then(
 
 </Tabs>
 
-The `kickGroupMember()` takes following parameters
+The `kickGroupMember()` method takes the following parameters:
 
 | Parameter | Description                                           |
 | --------- | ----------------------------------------------------- |
-| `UID`     | The UID of the user to be kicked.                     |
+| `UID`     | The UID of the user to be kicked                      |
 | `GUID`    | The GUID of the group from which user is to be kicked |
 
-The kicked user will be no longer part of the group and can not perform any actions in the group, but the kicked user can rejoin the group.
-
-On success, the method resolves with a success message string confirming the operation.
+On success, the method resolves with a success message string.
 
 ## Ban a Group Member
 
-The Admin or Moderator of the group can ban a member from the group using the `banGroupMember()` method.
+Admins or Moderators can ban a member using `banGroupMember()`. Unlike kicked users, banned users cannot rejoin until unbanned.
 
 <Tabs>
 <Tab title="Ban Group Member">
@@ -124,16 +123,14 @@ The `banGroupMember()` method takes the following parameters:
 
 | Parameter | Description                                            |
 | --------- | ------------------------------------------------------ |
-| `UID`     | The UID of the user to be banned.                      |
-| `GUID`    | The GUID of the group from which user is to be banned. |
+| `UID`     | The UID of the user to be banned                       |
+| `GUID`    | The GUID of the group from which user is to be banned  |
 
-The banned user will be no longer part of the group and can not perform any actions in the group. A banned user cannot rejoin the same group without being unbanned.
-
-On success, the method resolves with a success message string confirming the operation.
+On success, the method resolves with a success message string.
 
 ## Unban a Banned Group Member from a Group
 
-Only Admin or Moderators of the group can unban a previously banned member from the group using the `unbanGroupMember()` method.
+Admins or Moderators can unban a previously banned member using `unbanGroupMember()`.
 
 <Tabs>
 <Tab title="Unban Group Member">
@@ -174,22 +171,18 @@ The `unbanGroupMember()` method takes the following parameters
 
 | Parameter | Description                                          |
 | --------- | ---------------------------------------------------- |
-| `UID`     | The UID of the user to be unbanned.                  |
-| `GUID`    | The UID of the group from which user is to be banned |
+| `UID`     | The UID of the user to be unbanned                   |
+| `GUID`    | The GUID of the group from which user is to be unbanned |
 
-The unbanned user can now rejoin the group.
+Once unbanned, the user can rejoin the group.
 
 ## Get List of Banned Members for a Group
 
-In order to fetch the list of banned groups members for a group, you can use the `BannedGroupMembersRequest` class. To use this class i.e to create an object of the BannedGroupMembersRequest class, you need to use the `BannedGroupMembersRequestBuilder` class. The `BannedGroupMembersRequestBuilder` class allows you to set the parameters based on which the banned group members are to be fetched.
-
-The `BannedGroupMembersRequestBuilder` class allows you to set the below parameters:
-
-The `GUID` of the group for which the banned members are to be fetched must be specified in the constructor of the `GroupMembersRequestBuilder` class.
+Use `BannedMembersRequestBuilder` to fetch banned members of a [Group](/sdk/reference/entities#group). The GUID must be specified in the constructor.
 
 ### Set Limit
 
-This method sets the limit i.e. the number of banned members that should be fetched in a single iteration.
+Sets the number of banned members to fetch per request.
 
 <Tabs>
 <Tab title="Set Limit">
@@ -218,7 +211,7 @@ let bannedGroupMembersRequest: CometChat.BannedMembersRequest = new CometChat.Ba
 
 ### Set Search Keyword
 
-This method allows you to set the search string based on which the banned group members are to be fetched.
+Filters banned members by a search string.
 
 <Tabs>
 <Tab title="Set Search Keyword">
@@ -249,9 +242,7 @@ let bannedGroupMembersRequest: CometChat.BannedMembersRequest = new CometChat.Ba
 
 </Tabs>
 
-Finally, once all the parameters are set to the builder class, you need to call the build() method to get the object of the `BannedGroupMembersRequest` class.
-
-Once you have the object of the `BannedGroupMembersRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of `GroupMember` objects containing n number of banned members where n is the limit set in the builder class.
+Once configured, call `build()` to create the request, then `fetchNext()` to retrieve banned members.
 
 <Tabs>
 <Tab title="Banned Group Members Request">
@@ -296,13 +287,13 @@ bannedGroupMembersRequest.fetchNext().then(
 
 ## Real-Time Group Member Kicked/Banned Events
 
-*In other words, as a member of a group, how do I know when someone is banned/kicked when my app is running?*
+Implement these `GroupListener` methods to receive real-time notifications:
 
-In order to get real-time events for the kick/ban/unban group members you need to override the following methods of the `GroupListener` class.
-
-1. `onGroupMemberKicked()` - triggered when any group member has been kicked.
-2. `onGroupMemberBanned()` - triggered when any group member has been banned.
-3. `onGroupMemberUnbanned()` - triggered when any group member has been unbanned.
+| Method | Triggered When |
+|--------|----------------|
+| `onGroupMemberKicked()` | A member is kicked |
+| `onGroupMemberBanned()` | A member is banned |
+| `onGroupMemberUnbanned()` | A member is unbanned |
 
 <Tabs>
 <Tab title="Group Listener">
@@ -361,30 +352,34 @@ CometChat.removeGroupListener("UNIQUE_LISTENER_ID");
 
 ## Missed Group Member Kicked/Banned Events
 
-*In other words, as a member of a group, how do I know when someone is banned/kicked when my app is not running?*
+When fetching previous messages, kick/ban/unban actions appear as [Action](/sdk/reference/messages#action) messages (a subclass of `BaseMessage`).
 
-When you retrieve the list of previous messages if a member has been kicked/banned/unbanned from any group that the logged-in user is a member of, the list of messages will contain an `Action` message. An `Action` message is a sub-class of `BaseMessage` class.
+**Kicked event:**
 
-For group member kicked event, the details can be obtained using the below fields of the `Action` class-
+| Field | Value/Type | Description |
+|-------|------------|-------------|
+| `action` | `"kicked"` | The action type |
+| `actionBy` | [User](/sdk/reference/entities#user) | The user who kicked the member |
+| `actionOn` | [User](/sdk/reference/entities#user) | The member who was kicked |
+| `actionFor` | [Group](/sdk/reference/entities#group) | The group |
 
-1. `action` - `kicked`
-2. `actionBy` - User object containing the details of the user who has kicked the member
-3. `actionOn` - User object containing the details of the member that has been kicked
-4. `actionFor` - Group object containing the details of the Group from which the member was kicked
+**Banned event:**
 
-For group member banned event, the details can be obtained using the below fields of the `Action` class-
+| Field | Value/Type | Description |
+|-------|------------|-------------|
+| `action` | `"banned"` | The action type |
+| `actionBy` | [User](/sdk/reference/entities#user) | The user who banned the member |
+| `actionOn` | [User](/sdk/reference/entities#user) | The member who was banned |
+| `actionFor` | [Group](/sdk/reference/entities#group) | The group |
 
-1. `action` - `banned`
-2. `actionBy` - User object containing the details of the user who has banned the member
-3. `actionOn` - User object containing the details of the member that has been banned
-4. `actionFor` - Group object containing the details of the Group from which the member was banned
+**Unbanned event:**
 
-For group member unbanned event, the details can be obtained using the below fields of the `Action` class-
-
-1. `action` - `unbanned`
-2. `actionBy` - User object containing the details of the user who has unbanned the member
-3. `actionOn` - User object containing the details of the member that has been unbanned
-4. `actionFor` - Group object containing the details of the Group from which the member was unbanned
+| Field | Value/Type | Description |
+|-------|------------|-------------|
+| `action` | `"unbanned"` | The action type |
+| `actionBy` | [User](/sdk/reference/entities#user) | The user who unbanned the member |
+| `actionOn` | [User](/sdk/reference/entities#user) | The member who was unbanned |
+| `actionFor` | [Group](/sdk/reference/entities#group) | The group |
 
 ---
 

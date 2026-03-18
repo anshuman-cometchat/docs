@@ -1,5 +1,6 @@
 ---
 title: "Retrieve Groups"
+sidebarTitle: "Retrieve Groups"
 description: "Fetch, filter, and search groups using the CometChat JavaScript SDK. Includes pagination, tag-based filtering, joined-only groups, and online member counts."
 ---
 
@@ -26,15 +27,11 @@ const count = await CometChat.getOnlineGroupMemberCount(["GUID"]);
 
 ## Retrieve List of Groups
 
-*In other words, as a logged-in user, how do I retrieve the list of groups I've joined and groups that are available?*
-
-In order to fetch the list of groups, you can use the `GroupsRequest` class. To use this class i.e to create an object of the `GroupsRequest` class, you need to use the `GroupsRequestBuilder` class. The `GroupsRequestBuilder` class allows you to set the parameters based on which the groups are to be fetched.
-
-The `GroupsRequestBuilder` class allows you to set the below parameters:
+Use `GroupsRequestBuilder` to fetch groups with filtering, searching, and pagination.
 
 ### Set Limit
 
-This method sets the limit i.e. the number of groups that should be fetched in a single iteration.
+Sets the number of groups to fetch per request.
 
 <Tabs>
 <Tab title="Set Limit">
@@ -61,7 +58,7 @@ let groupsRequest = new CometChat.GroupsRequestBuilder()
 
 ### Set Search Keyword
 
-This method allows you to set the search string based on which the groups are to be fetched.
+Filters groups by a search string.
 
 <Tabs>
 <Tab title="Set Search Keyword">
@@ -92,7 +89,7 @@ let groupsRequest: CometChat.GroupsRequest = new CometChat.GroupsRequestBuilder(
 
 ### Joined Only
 
-This method when used, will ask the SDK to only return the groups that the user has joined or is a part of.
+When `true`, returns only groups the logged-in user has joined.
 
 <Tabs>
 <Tab title="Joined Only">
@@ -121,7 +118,7 @@ let groupsRequest: CometChat.GroupsRequest = new CometChat.GroupsRequestBuilder(
 
 ### Set Tags
 
-This method accepts a list of tags based on which the list of groups is to be fetched. The list fetched will only contain the groups that have been tagged with the specified tags.
+Filters groups by specified tags.
 
 <Tabs>
 <Tab title="Set Tags">
@@ -152,7 +149,7 @@ let groupsRequest: CometChat.GroupsRequest = new CometChat.GroupsRequestBuilder(
 
 ### With Tags
 
-This property when set to true will fetch tags data along with the list of groups.
+When `true`, includes tag data in the returned group objects.
 
 <Tabs>
 <Tab title="With Tags">
@@ -179,11 +176,11 @@ let groupsRequest: CometChat.GroupsRequest = new CometChat.GroupsRequestBuilder(
 
 </Tabs>
 
-Finally, once all the parameters are set to the builder class, you need to call the build() method to get the object of the `GroupsRequest` class.
+After configuring the builder, call `build()` to get the `GroupsRequest` object, then call `fetchNext()` to retrieve groups.
 
-Once you have the object of the `GroupsRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of `Group` objects containing n number of groups where n is the limit set in the builder class.
-
-The list of groups fetched will only have the public and password type groups. The private groups will only be available if the user is a member of the group.
+<Note>
+The list only includes public and password-protected groups. Private groups appear only if the user is a member.
+</Note>
 
 <Tabs>
 <Tab title="Groups Request">
@@ -237,9 +234,7 @@ The `fetchNext()` method returns an array of [`Group`](/sdk/reference/entities#g
 
 ## Retrieve Particular Group Details
 
-*In other words, as a logged-in user, how do I retrieve information for a specific group?*
-
-To get the information of a group, you can use the `getGroup()` method.
+Use `getGroup()` to fetch a specific group's details by GUID.
 
 <Tabs>
 <Tab title="Retrieve Particular Group's Details">
@@ -272,11 +267,11 @@ CometChat.getGroup(GUID).then(
 
 </Tabs>
 
-| Parameter | Description                                                  |
-| --------- | ------------------------------------------------------------ |
-| `GUID`    | The GUID of the group for whom the details are to be fetched |
+| Parameter | Description |
+| --------- | ----------- |
+| `GUID` | The GUID of the group to fetch |
 
-It returns `Group` object containing the details of the group.
+Returns a [`Group`](/sdk/reference/entities#group) object with the group's details.
 
 The method returns a [`Group`](/sdk/reference/entities#group) object. Access the response data using getter methods:
 
@@ -289,9 +284,9 @@ The method returns a [`Group`](/sdk/reference/entities#group) object. Access the
 | owner | `getOwner()` | `string` | UID of the group owner |
 | hasJoined | `getHasJoined()` | `boolean` | Whether the logged-in user has joined this group |
 
-## Get online group member count
+## Get Online Group Member Count
 
-To get the total count of online users in particular groups, you can use the `getOnlineGroupMemberCount()` method.
+Use `getOnlineGroupMemberCount()` to get the number of online members in specified groups.
 
 <Tabs>
 <Tab title="Get Online Group Member Count">
@@ -324,7 +319,7 @@ CometChat.getOnlineGroupMemberCount(guids).then(
 
 </Tabs>
 
-This method returns a JSON Object with the GUID as the key and the online member count for that group as the value.
+Returns an object with GUIDs as keys and online member counts as values.
 
 ---
 

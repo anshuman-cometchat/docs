@@ -1,5 +1,6 @@
 ---
 title: "Change Member Scope"
+sidebarTitle: "Change Scope"
 description: "Learn how to change group member roles (admin, moderator, participant) and receive real-time scope change events using the CometChat JavaScript SDK."
 ---
 
@@ -21,7 +22,7 @@ You can change the role of a group member between admin, moderator, and particip
 
 ## Change Scope of a Group Member
 
-In order to change the scope of a group member, you can use the `changeGroupMemberScope()`.
+Use `updateGroupMemberScope()` to change a member's role within a [Group](/sdk/reference/entities#group).
 
 <Tabs>
 <Tab title="Change Scope">
@@ -64,19 +65,17 @@ This method takes the below parameters:
 
 | Parameter | Description                                                                                                                                                 |
 | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `UID`     | The UID of the member whose scope you would like to change                                                                                                  |
-| `GUID`    | The GUID of the group for which the member's scope needs to be changed                                                                                      |
-| `scope`   | The updated scope of the member. This can be either of the 3 values: 1.`CometChat.SCOPE.ADMIN`2.`CometChat.SCOPE.MODERATOR` 3.`CometChat.SCOPE.PARTICIPANT` |
+| `UID`     | The UID of the member whose scope you want to change                                                                                                        |
+| `GUID`    | The GUID of the group                                                                                                                                       |
+| `scope`   | The new scope: `CometChat.SCOPE.ADMIN`, `CometChat.SCOPE.MODERATOR`, or `CometChat.SCOPE.PARTICIPANT` |
 
-The default scope of any member is `participant`. Only the **Admin** of the group can change the scope of any participant in the group.
+The default scope is `participant`. Only Admins can change member scopes.
 
-On success, the method resolves with a success message string confirming the operation.
+On success, the method resolves with a success message string.
 
 ## Real-Time Group Member Scope Changed Events
 
-*In other words, as a member of a group, how do I know when someone's scope is changed when my app is running?*
-
-In order to receive real-time events for the change member scope event, you will need to override the `onGroupMemberScopeChanged()` method of the `GroupListener` class
+Implement `onGroupMemberScopeChanged()` in `GroupListener` to receive real-time notifications when a member's scope changes.
 
 <Tabs>
 <Tab title="Group Listener">
@@ -123,18 +122,16 @@ CometChat.removeGroupListener("UNIQUE_LISTENER_ID");
 
 ## Missed Group Member Scope Changed Events
 
-*In other words, as a member of a group, how do I know when someone's scope is changed when my app is not running?*
+When fetching previous messages, scope changes appear as [Action](/sdk/reference/messages#action) messages (a subclass of `BaseMessage`).
 
-When you retrieve the list of previous messages if a member's scope has been changed for any group that the logged-in user is a member of, the list of messages will contain an `Action` message. An `Action` message is a sub-class of `BaseMessage` class.
-
-For the group member scope changed event, in the `Action` object received, the following fields can help you get the relevant information-
-
-1. `action` - `scopeChanged`
-2. `actionOn` - User object containing the details of the user whose scope has been changed
-3. `actionBy` - User object containing the details of the user who changed the scope of the member
-4. `actionFor` - Group object containing the details of the group in which the member scope was changed
-5. `oldScope` - The original scope of the member
-6. `newScope` - The updated scope of the member
+| Field | Value/Type | Description |
+|-------|------------|-------------|
+| `action` | `"scopeChanged"` | The action type |
+| `actionOn` | [User](/sdk/reference/entities#user) | The user whose scope changed |
+| `actionBy` | [User](/sdk/reference/entities#user) | The user who changed the scope |
+| `actionFor` | [Group](/sdk/reference/entities#group) | The group |
+| `oldScope` | `string` | The previous scope |
+| `newScope` | `string` | The new scope |
 
 ---
 

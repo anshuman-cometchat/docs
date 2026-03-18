@@ -1,5 +1,6 @@
 ---
 title: "Update A Group"
+sidebarTitle: "Update Group"
 description: "Update group details such as name, type, icon, and description using the CometChat JavaScript SDK."
 ---
 
@@ -15,9 +16,7 @@ const updated = await CometChat.updateGroup(group);
 
 ## Update Group
 
-*In other words, as a group owner, how can I update the group details?*
-
-You can update the existing details of the group using the `updateGroup()` method.
+Use `updateGroup()` to modify group details. Pass a `Group` object with the updated values.
 
 <Tabs>
 <Tab title="Update Group">
@@ -59,13 +58,11 @@ CometChat.updateGroup(group).then(
 
 </Tabs>
 
-This method takes an instance of the `Group` class as a parameter which should contain the data that you wish to update.
+| Parameter | Description |
+| --------- | ----------- |
+| `group` | An instance of `Group` class with updated values |
 
-| Parameter | Description                  |
-| --------- | ---------------------------- |
-| `group`   | an instance of class `Group` |
-
-After a successful update of the group, you will receive an instance of `Group` class containing update information of the group.
+On success, returns a [`Group`](/sdk/reference/entities#group) object with the updated details.
 
 The method returns a [`Group`](/sdk/reference/entities#group) object. Access the response data using getter methods:
 

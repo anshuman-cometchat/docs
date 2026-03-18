@@ -1,5 +1,6 @@
 ---
 title: "Retrieve Group Members"
+sidebarTitle: "Retrieve Members"
 description: "Fetch and filter group members by scope, status, and search keyword using the CometChat JavaScript SDK with pagination support."
 ---
 
@@ -24,15 +25,11 @@ const request = new CometChat.GroupMembersRequestBuilder("GUID")
 
 ## Retrieve the List of Group Members
 
-In order to fetch the list of groups members for a group, you can use the `GroupMembersRequest` class. To use this class i.e to create an object of the GroupMembersRequest class, you need to use the `GroupMembersRequestBuilder` class. The `GroupMembersRequestBuilder` class allows you to set the parameters based on which the groups are to be fetched.
-
-The `GroupMembersRequestBuilder` class allows you to set the below parameters:
-
-The GUID of the group for which the members are to be fetched must be specified in the constructor of the `GroupMembersRequestBuilder` class.
+Use `GroupMembersRequestBuilder` to fetch members of a [Group](/sdk/reference/entities#group). The GUID must be specified in the constructor.
 
 ### Set Limit
 
-This method sets the limit i.e. the number of members that should be fetched in a single iteration.
+Sets the number of members to fetch per request.
 
 <Tabs>
 <Tab title="Set Limit">
@@ -61,7 +58,7 @@ let groupMembersRequest: CometChat.GroupMembersRequest = new CometChat.GroupMemb
 
 ### Set Search Keyword
 
-This method allows you to set the search string based on which the group members are to be fetched.
+Filters members by a search string.
 
 <Tabs>
 <Tab title="Set Search Keyword">
@@ -94,7 +91,7 @@ let groupMembersRequest: CometChat.GroupMembersRequest = new CometChat.GroupMemb
 
 ### Set Scopes
 
-This method allows you to fetch group members based on multiple scopes.
+Filters members by one or more scopes (`admin`, `moderator`, `participant`).
 
 <Tabs>
 <Tab title="Set Scopes">
@@ -127,12 +124,14 @@ let groupMembersRequest: CometChat.GroupMembersRequest = new CometChat.GroupMemb
 
 ### Set Status
 
-The status based on which the group members are to be fetched. The status parameter can contain one of the below two values:
+Filters members by online status:
 
-* CometChat.USER_STATUS.ONLINE - will return the list of only online group members.
-* CometChat.USER_STATUS.OFFLINE - will return the list of only offline group members.
+| Value | Description |
+|-------|-------------|
+| `CometChat.USER_STATUS.ONLINE` | Only online members |
+| `CometChat.USER_STATUS.OFFLINE` | Only offline members |
 
-If this parameter is not set, will return all the group members regardless of their status.
+If not set, returns all members regardless of status.
 
 <Tabs>
 <Tab title="Set Status">
@@ -161,9 +160,7 @@ let groupMembersRequest: CometChat.GroupMembersRequest = new CometChat.GroupMemb
 
 </Tabs>
 
-Finally, once all the parameters are set to the builder class, you need to call the build() method to get the object of the `GroupMembersRequest` class.
-
-Once you have the object of the `GroupMembersRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of `GroupMember` objects containing n number of members where n is the limit set in the builder class.
+Once configured, call `build()` to create the request, then `fetchNext()` to retrieve members.
 
 <Tabs>
 <Tab title="Group Members Request">
