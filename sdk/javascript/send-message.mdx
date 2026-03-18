@@ -144,6 +144,8 @@ The `TextMessage` class constructor takes the following parameters:
 | `messageText` | The text message content | Yes |
 | `receiverType` | `CometChat.RECEIVER_TYPE.USER` or `CometChat.RECEIVER_TYPE.GROUP` | Yes |
 
+On success, `sendMessage()` returns a [TextMessage](/sdk/reference/messages#textmessage) object.
+
 ### Add Metadata
 
 Attach custom JSON data to the message:
@@ -467,6 +469,8 @@ The `MediaMessage` class constructor takes the following parameters:
 | `file` | File object to upload, or empty string if using URL | Yes |
 | `messageType` | `CometChat.MESSAGE_TYPE.IMAGE`, `VIDEO`, `AUDIO`, or `FILE` | Yes |
 | `receiverType` | `CometChat.RECEIVER_TYPE.USER` or `GROUP` | Yes |
+
+On success, `sendMediaMessage()` returns a [MediaMessage](/sdk/reference/messages#mediamessage) object.
 
 ### Add Caption
 
@@ -894,6 +898,8 @@ The `CustomMessage` class constructor takes the following parameters:
 | `receiverType` | `CometChat.RECEIVER_TYPE.USER` or `GROUP` | Yes |
 | `customType` | Your custom type string (e.g., `"location"`, `"poll"`) | Yes |
 | `customData` | JSON object with your custom data | Yes |
+
+On success, `sendCustomMessage()` returns a [CustomMessage](/sdk/reference/messages#custommessage) object.
 
 ### Add Tags
 
