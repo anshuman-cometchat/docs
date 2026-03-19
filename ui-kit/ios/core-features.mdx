@@ -15,7 +15,7 @@ description: "Essential chat features built into CometChat UI Kit for iOS"
     {"name": "userPresence", "description": "Display online/offline status for users", "component": "CometChatConversations", "enabledByDefault": true},
     {"name": "reactions", "description": "Let users react to messages with emojis", "component": "CometChatMessageList", "enabledByDefault": true},
     {"name": "mentions", "description": "Tag users in messages with @mentions", "component": "CometChatMessageComposer", "enabledByDefault": true},
-    {"name": "threadedConversations", "description": "Reply to specific messages in threads", "component": "CometChatThreadedMessages", "enabledByDefault": true},
+    {"name": "threadedConversations", "description": "Reply to specific messages in threads", "component": "CometChatThreadedMessageHeader", "enabledByDefault": true},
     {"name": "groupChat", "description": "Create and manage group conversations", "component": "CometChatGroups", "enabledByDefault": true},
     {"name": "search", "description": "Search across conversations and messages", "component": "CometChatSearch", "enabledByDefault": true}
   ],
@@ -475,11 +475,56 @@ class ThreadedMessagesViewController: UIViewController {
     }
     
     // Open thread view for a message
+    // Note: Thread replies are handled automatically by CometChatMessageList
+    // when user taps "Reply in thread". The thread view uses CometChatThreadedMessageHeader
+    // combined with CometChatMessageList and CometChatMessageComposer.
     func openThread(for parentMessage: BaseMessage, user: User) {
-        let threadedMessages = CometChatThreadedMessages()
-        threadedMessages.set(parentMessage: parentMessage)
-        threadedMessages.set(user: user)
-        navigationController?.pushViewController(threadedMessages, animated: true)
+        // Create a view controller to host the threaded messages
+        let threadVC = UIViewController()
+        threadVC.view.backgroundColor = .systemBackground
+        
+        // Create threaded message header
+        let threadedHeader = CometChatThreadedMessageHeader()
+        threadedHeader.set(parentMessage: parentMessage)
+        threadedHeader.set(controller: threadVC)
+        threadedHeader.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Create message list for thread replies
+        let messageList = CometChatMessageList()
+        messageList.set(user: user)
+        messageList.set(parentMessage: parentMessage)
+        messageList.set(controller: threadVC)
+        messageList.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Create composer for thread replies
+        let composer = CometChatMessageComposer()
+        composer.set(user: user)
+        composer.set(parentMessage: parentMessage)
+        composer.set(controller: threadVC)
+        composer.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add to view
+        threadVC.view.addSubview(threadedHeader)
+        threadVC.view.addSubview(messageList)
+        threadVC.view.addSubview(composer)
+        
+        // Layout constraints
+        NSLayoutConstraint.activate([
+            threadedHeader.topAnchor.constraint(equalTo: threadVC.view.safeAreaLayoutGuide.topAnchor),
+            threadedHeader.leadingAnchor.constraint(equalTo: threadVC.view.leadingAnchor),
+            threadedHeader.trailingAnchor.constraint(equalTo: threadVC.view.trailingAnchor),
+            
+            messageList.topAnchor.constraint(equalTo: threadedHeader.bottomAnchor),
+            messageList.leadingAnchor.constraint(equalTo: threadVC.view.leadingAnchor),
+            messageList.trailingAnchor.constraint(equalTo: threadVC.view.trailingAnchor),
+            messageList.bottomAnchor.constraint(equalTo: composer.topAnchor),
+            
+            composer.leadingAnchor.constraint(equalTo: threadVC.view.leadingAnchor),
+            composer.trailingAnchor.constraint(equalTo: threadVC.view.trailingAnchor),
+            composer.bottomAnchor.constraint(equalTo: threadVC.view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        
+        navigationController?.pushViewController(threadVC, animated: true)
     }
     
     // Send reply in thread programmatically

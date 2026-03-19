@@ -200,7 +200,7 @@ class MainTabBarController: UITabBarController {
         
         // Calls Tab - call history
         let callsVC = CometChatCallLogs()
-        callsVC.set(onItemClick: { [weak self] callLog, _ in
+        callsVC.set(onItemClick: { [weak self] callLog in
             self?.handleCallLogTap(callLog)
         })
         let callsNav = UINavigationController(rootViewController: callsVC)
@@ -615,7 +615,7 @@ Displays call history. See [Call Logs](/ui-kit/ios/call-logs) for full documenta
 
 ```swift
 let callLogs = CometChatCallLogs()
-callLogs.set(onItemClick: { callLog, indexPath in })
+callLogs.set(onItemClick: { callLog in })
 ```
 
 ---

@@ -19,19 +19,20 @@ The `CometChatCallLogs` component shows the list of call logs available. By defa
   "inherits": "UIViewController",
   "primaryOutput": {
     "callback": "onItemClick",
-    "type": "(CallLog, IndexPath) -> Void"
+    "type": "(Any) -> Void",
+    "note": "CallLog is passed as Any type, cast to CometChatCallsSDK.CallLog"
   },
   "props": {
     "data": {
       "callRequestBuilder": { "type": "CallLogsRequest.CallLogsBuilder?", "default": "nil" }
     },
     "callbacks": {
-      "onItemClick": "(CallLog, IndexPath) -> Void",
-      "onItemLongClick": "(CallLog, IndexPath) -> Void",
+      "onItemClick": "(Any) -> Void",
+      "onItemLongClick": "(Any, IndexPath) -> Void",
       "onBack": "() -> Void",
-      "onError": "(CometChatCallException) -> Void",
+      "onError": "(Any) -> Void",
       "onEmpty": "() -> Void",
-      "onLoad": "([CallLog]) -> Void"
+      "onLoad": "([Any]) -> Void"
     },
     "visibility": {
       "hideError": { "type": "Bool", "default": false },
@@ -40,10 +41,10 @@ The `CometChatCallLogs` component shows the list of call logs available. By defa
       "hideBackIcon": { "type": "Bool", "default": false }
     },
     "viewSlots": {
-      "listItemView": "(CallLog) -> UIView",
-      "titleView": "(CallLog) -> UIView",
-      "leadingView": "(CallLog) -> UIView",
-      "trailView": "(CallLog) -> UIView"
+      "listItemView": "(Any) -> UIView",
+      "titleView": "(Any) -> UIView",
+      "leadingView": "(Any) -> UIView",
+      "trailView": "(Any) -> UIView"
     }
   },
   "events": [],
@@ -97,9 +98,12 @@ self.navigationController?.pushViewController(callLogs, animated: true)
 <Tabs>
 <Tab title="Swift">
 ```swift
-// syntax for set(onItemClick: @escaping ((_ callLog: CometChatCallsSDK.CallLog, _ indexPath: IndexPath) -> Void))
-cometChatCallLogs.set(onItemClick: { callLogs, indexPath in
+// syntax for set(onItemClick: ((_ callLog: Any) -> ())?)
+// Note: callLog is of type CometChatCallsSDK.CallLog, cast it to access properties
+cometChatCallLogs.set(onItemClick: { callLog in
     // Override on item click
+    guard let callLog = callLog as? CallLog else { return }
+    // Access callLog properties
 })
 ```
 
@@ -116,9 +120,12 @@ cometChatCallLogs.set(onItemClick: { callLogs, indexPath in
 <Tabs>
 <Tab title="Swift">
 ```swift
-// syntax for set(onItemLongClick: @escaping ((_ callLog: CometChatCallsSDK.CallLog, _ indexPath: IndexPath) -> Void))
+// syntax for set(onItemLongClick: ((_ callLog: Any, _ indexPath: IndexPath) -> ())?)
+// Note: callLog is of type CometChatCallsSDK.CallLog, cast it to access properties
 cometChatCallLogs.set(onItemLongClick: { callLog, indexPath in
-    // Override on item click
+    // Override on item long click
+    guard let callLog = callLog as? CallLog else { return }
+    // Access callLog properties
 })
 ```
 

@@ -116,7 +116,7 @@ To fit your app's design requirements, you can customize the appearance of the c
 
 ### Style
 
-`ThreadedMessagesStyle` contains various properties which can be used to customize the UI of `CometChatThreadedMessages`.
+`ThreadedMessageHeaderStyle` contains various properties which can be used to customize the UI of `CometChatThreadedMessageHeader`.
 
 **Global Level Styling**
 
@@ -330,11 +330,56 @@ Present the threaded messages view when a user taps on a message's reply count:
 ```swift
 // In your message list delegate or action handler
 func openThread(for parentMessage: BaseMessage) {
-    let threadedMessages = CometChatThreadedMessages()
-    threadedMessages.set(parentMessage: parentMessage)
-    threadedMessages.set(controller: self)
+    // Create a view controller to host the threaded messages
+    let threadVC = UIViewController()
+    threadVC.view.backgroundColor = .systemBackground
     
-    self.navigationController?.pushViewController(threadedMessages, animated: true)
+    // Create threaded message header
+    let threadedHeader = CometChatThreadedMessageHeader()
+    threadedHeader.set(parentMessage: parentMessage)
+    threadedHeader.set(controller: threadVC)
+    threadedHeader.translatesAutoresizingMaskIntoConstraints = false
+    
+    // Create message list for thread replies
+    let messageList = CometChatMessageList()
+    if let user = parentMessage.sender {
+        messageList.set(user: user)
+    }
+    messageList.set(parentMessage: parentMessage)
+    messageList.set(controller: threadVC)
+    messageList.translatesAutoresizingMaskIntoConstraints = false
+    
+    // Create composer for thread replies
+    let composer = CometChatMessageComposer()
+    if let user = parentMessage.sender {
+        composer.set(user: user)
+    }
+    composer.set(parentMessage: parentMessage)
+    composer.set(controller: threadVC)
+    composer.translatesAutoresizingMaskIntoConstraints = false
+    
+    // Add to view
+    threadVC.view.addSubview(threadedHeader)
+    threadVC.view.addSubview(messageList)
+    threadVC.view.addSubview(composer)
+    
+    // Layout constraints
+    NSLayoutConstraint.activate([
+        threadedHeader.topAnchor.constraint(equalTo: threadVC.view.safeAreaLayoutGuide.topAnchor),
+        threadedHeader.leadingAnchor.constraint(equalTo: threadVC.view.leadingAnchor),
+        threadedHeader.trailingAnchor.constraint(equalTo: threadVC.view.trailingAnchor),
+        
+        messageList.topAnchor.constraint(equalTo: threadedHeader.bottomAnchor),
+        messageList.leadingAnchor.constraint(equalTo: threadVC.view.leadingAnchor),
+        messageList.trailingAnchor.constraint(equalTo: threadVC.view.trailingAnchor),
+        messageList.bottomAnchor.constraint(equalTo: composer.topAnchor),
+        
+        composer.leadingAnchor.constraint(equalTo: threadVC.view.leadingAnchor),
+        composer.trailingAnchor.constraint(equalTo: threadVC.view.trailingAnchor),
+        composer.bottomAnchor.constraint(equalTo: threadVC.view.safeAreaLayoutGuide.bottomAnchor)
+    ])
+    
+    self.navigationController?.pushViewController(threadVC, animated: true)
 }
 ```
 </Tab>
@@ -384,10 +429,10 @@ messageList.set(messagesRequestBuilder: messageRequestBuilder)
 ---
 
 <Note>
-To ensure that the `ThreadedMessages` is properly configured, passing the controller is mandatory.
+To ensure that the `CometChatThreadedMessageHeader` is properly configured, passing the controller is mandatory.
 
 ```swift
-let threadedMessageView = CometChatThreadedMessages()
-threadedMessageView.set(controller: UIViewController) // Passing the controller is required
+let threadedMessageHeader = CometChatThreadedMessageHeader()
+threadedMessageHeader.set(controller: UIViewController) // Passing the controller is required
 ```
 </Note>
