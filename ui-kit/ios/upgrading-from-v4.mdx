@@ -399,7 +399,7 @@ In v5, the approach to properties has been refined:
 | hideLoadingView | Bool | Hides loading view |
 | hideNewMessageIndicator | Bool | Hides new message indicator |
 | set(onThreadRepliesClick:) | (BaseMessage, CometChatMessageTemplate) -> Void | Thread click callback |
-| set(onReactionClick:) | (CometChat.ReactionCount, BaseMessage) -> Void | Reaction click callback |
+| set(onReactionClick:) | (CometChat.ReactionCount, BaseMessage?) -> Void | Reaction click callback |
 | set(onError:) | (CometChatException) -> Void | Error callback |
 | set(onEmpty:) | () -> Void | Empty state callback |
 | set(onLoad:) | ([BaseMessage]) -> Void | Load callback |
@@ -476,7 +476,7 @@ In v5, the approach to properties has been refined:
 | hideStickersButton | Bool | Hides stickers button |
 | hideSendButton | Bool | Hides send button |
 | set(onSendButtonClick:) | (BaseMessage) -> Void | Send button callback |
-| set(onTextChanged:) | (String) -> Void | Text change callback |
+| set(onTextChangedListener:) | (String) -> Void | Text change callback |
 | set(onError:) | (CometChatException) -> Void | Error callback |
 | set(attachmentOptions:) | (User?, Group?, UIViewController?) -> [CometChatMessageComposerAction] | Custom attachment options |
 | set(sendButtonView:) | (User?, Group?) -> UIView | Custom send button |

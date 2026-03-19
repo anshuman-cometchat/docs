@@ -41,7 +41,7 @@ The `CometChatMessageComposer` component enables users to write and send message
     },
     "callbacks": {
       "onSendButtonClick": "(BaseMessage) -> Void",
-      "onTextChanged": "(String) -> Void",
+      "onTextChangedListener": "(String) -> Void",
       "onError": "(CometChatException) -> Void"
     },
     "visibility": {
@@ -95,7 +95,7 @@ The `CometChatMessageComposer` component enables users to write and send message
   "compositionExample": {
     "description": "MessageComposer is typically used within CometChatMessages alongside MessageHeader and MessageList",
     "components": ["CometChatMessageHeader", "CometChatMessageList", "CometChatMessageComposer"],
-    "flow": "User types message → onTextChanged fires → User taps send → onSendButtonClick fires → Message sent"
+    "flow": "User types message → onTextChangedListener fires → User taps send → onSendButtonClick fires → Message sent"
   },
   "types": {
     "CometChatMessageComposerAction": {
@@ -141,7 +141,7 @@ class ChatViewController: UIViewController {
         })
         
         // Handle text changes for typing indicators
-        messageComposer.set(onTextChanged: { [weak self] text in
+        messageComposer.set(onTextChangedListener: { [weak self] text in
             print("User is typing: \(text)")
         })
         
@@ -192,7 +192,7 @@ messageComposer.set(onSendButtonClick: { [weak self] message in
 })
 ```
 
-#### onTextChanged
+#### onTextChangedListener
 
 Fires when the user types in the composer. Use this for typing indicators or text validation.
 
@@ -201,7 +201,7 @@ import CometChatUIKitSwift
 
 let messageComposer = CometChatMessageComposer()
 
-messageComposer.set(onTextChanged: { [weak self] text in
+messageComposer.set(onTextChangedListener: { [weak self] text in
     guard let self = self else { return }
     print("Current text: \(text)")
 })
@@ -226,7 +226,7 @@ messageComposer.set(onError: { error in
 | Method | Description | Example |
 |--------|-------------|---------|
 | `set(onSendButtonClick:)` | Triggered when send button is clicked | Custom send handling |
-| `set(onTextChanged:)` | Triggered when text changes | Typing indicators |
+| `set(onTextChangedListener:)` | Triggered when text changes | Typing indicators |
 | `set(onError:)` | Triggered when an error occurs | Show error alert |
 | `set(user:)` | Sets the user for direct messaging | Configure recipient |
 | `set(group:)` | Sets the group for group messaging | Configure group |

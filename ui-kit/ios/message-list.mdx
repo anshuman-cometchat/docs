@@ -36,7 +36,7 @@ The `CometChatMessageList` component displays a scrollable list of messages in a
     },
     "callbacks": {
       "onThreadRepliesClick": "(BaseMessage, MessageTemplate) -> Void",
-      "onReactionClick": "(ReactionCount, BaseMessage) -> Void",
+      "onReactionClick": "(ReactionCount, BaseMessage?) -> Void",
       "onReactionListItemClick": "(MessageReaction, BaseMessage) -> Void",
       "onError": "(CometChatException) -> Void",
       "onEmpty": "() -> Void",
@@ -150,6 +150,7 @@ class ChatViewController: UIViewController {
         
         // Handle reactions
         messageList.set(onReactionClick: { [weak self] reactionCount, message in
+            guard let message = message else { return }
             self?.showReactionDetails(reactionCount, for: message)
         })
         
@@ -263,8 +264,8 @@ import CometChatSDK
 let messageList = CometChatMessageList()
 
 messageList.set(onReactionClick: { [weak self] reactionCount, message in
-    guard let self = self else { return }
-    print("Reaction \(reactionCount.reaction) tapped on message \(message.id)")
+    guard let self = self, let message = message else { return }
+    print("Reaction \(reactionCount.reaction ?? "") tapped on message \(message.id)")
 })
 ```
 
