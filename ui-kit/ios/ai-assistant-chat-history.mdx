@@ -168,7 +168,7 @@ class AIAssistantViewController: UIViewController {
     // MARK: - Callbacks
     private func setupCallbacks() {
         // New chat button tapped
-        chatHistoryComponent.onNewChatButtonClicked = { [weak self] in
+        chatHistoryComponent.onNewChatButtonClicked = { [weak self] user in
             self?.startNewAIChat()
         }
         
@@ -594,7 +594,7 @@ class MainTabBarController: UITabBarController {
         // AI Assistant Tab
         let aiVC = CometChatAIAssistanceChatHistory()
         aiVC.user = currentUser
-        aiVC.onNewChatButtonClicked = { [weak self] in
+        aiVC.onNewChatButtonClicked = { [weak self] user in
             self?.startNewAIChat()
         }
         let aiNav = UINavigationController(rootViewController: aiVC)
@@ -676,9 +676,9 @@ class ProfileViewController: UIViewController {
         let chatHistory = CometChatAIAssistanceChatHistory()
         chatHistory.user = user
         
-        chatHistory.onNewChatButtonClicked = { [weak self] in
+        chatHistory.onNewChatButtonClicked = { [weak self] selectedUser in
             let messagesVC = CometChatMessages()
-            messagesVC.user = self?.user
+            messagesVC.user = selectedUser
             self?.navigationController?.pushViewController(messagesVC, animated: true)
         }
         
@@ -713,7 +713,7 @@ class ProfileViewController: UIViewController {
 
 | Method | Parameters | Description |
 |--------|------------|-------------|
-| `onNewChatButtonClicked` | `() -> Void` | New chat button tapped |
+| `onNewChatButtonClicked` | `(User) -> Void` | New chat button tapped |
 | `onMessageClicked` | `(BaseMessage) -> Void` | Message tapped |
 | `set(onLoad:)` | `([BaseMessage]) -> Void` | Data loaded |
 | `set(onEmpty:)` | `() -> Void` | No data |

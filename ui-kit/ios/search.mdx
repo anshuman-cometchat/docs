@@ -30,7 +30,7 @@ The `CometChatSearch` component is a powerful and customizable search interface 
       "messagesRequestBuilder": { "type": "MessagesRequest.MessageRequestBuilder", "default": "SDK default" }
     },
     "callbacks": {
-      "onConversationClicked": "(Conversation) -> Void",
+      "onConversationClicked": "(Conversation, IndexPath) -> Void",
       "onMessageClicked": "(BaseMessage) -> Void",
       "onBack": "() -> Void",
       "onError": "(CometChatException) -> Void",
@@ -111,7 +111,7 @@ Triggered when you click on a Conversation from the search result. This action d
 import CometChatUIKitSwift
 
 let search = CometChatSearch()
-search.onConversationClicked = { conversation in
+search.onConversationClicked = { conversation, indexPath in
     print("Conversation clicked:", conversation.conversationId)
 }
 ```
@@ -759,7 +759,7 @@ Open the search screen from a conversations list:
 @objc func openSearch() {
     let searchVC = CometChatSearch()
     
-    searchVC.onConversationClicked = { [weak self] conversation in
+    searchVC.onConversationClicked = { [weak self] conversation, indexPath in
         // Navigate to messages for the selected conversation
         let messagesVC = CometChatMessages()
         if let user = conversation.conversationWith as? User {
