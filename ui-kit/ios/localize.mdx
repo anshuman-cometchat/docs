@@ -4,6 +4,21 @@ sidebarTitle: "Localization"
 description: "Adapt CometChat UI Kit to different languages and customize date/time formatting for your iOS application"
 ---
 
+<Accordion title="AI Integration Quick Reference">
+
+| Field | Value |
+| --- | --- |
+| Platform | iOS UI Kit |
+| Localize Class | `CometChatLocalize` |
+| Set Locale | `CometChatLocalize.set(locale: .french)` |
+| Get Locale | `CometChatLocalize.getLocale()` |
+| Supported Languages | 17 languages (en, fr, de, es, hi, ru, pt, zh, ja, ko, tr, ms, sv, lt, hu, nl) |
+| Override Strings | Define same key in app's `Localizable.strings` |
+| DateTime Formatter | `CometChatUIKit.dateTimeFormatter` or component-level |
+| DateTime Closures | `time`, `today`, `yesterday`, `lastweek`, `otherDay`, `minute`, `minutes`, `hour`, `hours` |
+
+</Accordion>
+
 ## Overview
 
 CometChat UI Kit provides language localization to adapt to the language of a specific country or region. The `CometChatLocalize` class allows you to detect the language of your users based on their browser or device settings, and set the language accordingly.
@@ -241,8 +256,14 @@ The `CometChatDateTimeFormatter` gives developers fine-grained control over how 
 
 ## Next Steps
 
-- [Theme Introduction](/ui-kit/ios/theme-introduction) — Customize the visual appearance of UI components
-- [Color Resources](/ui-kit/ios/color-resources) — Configure color schemes for your app
-- [Component Styling](/ui-kit/ios/component-styling) — Apply custom styles to individual components
-
----
+<CardGroup cols={3}>
+<Card title="Theme Introduction" href="/ui-kit/ios/theme-introduction">
+  Customize the visual appearance of UI components
+</Card>
+<Card title="Color Resources" href="/ui-kit/ios/color-resources">
+  Configure color schemes for your app
+</Card>
+<Card title="Component Styling" href="/ui-kit/ios/component-styling">
+  Apply custom styles to individual components
+</Card>
+</CardGroup>

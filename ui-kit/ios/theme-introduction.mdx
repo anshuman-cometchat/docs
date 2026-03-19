@@ -4,31 +4,20 @@ sidebarTitle: "Introduction"
 description: "Create visually consistent and customizable user interfaces with CometChat theming for iOS"
 ---
 
-<Accordion title="AI Agent Platform Spec">
-```json
-{
-  "platform": "iOS UI Kit",
-  "package": "CometChatUIKitSwift",
-  "themeSystem": {
-    "class": "CometChatTheme",
-    "description": "Global theming system for all CometChat components"
-  },
-  "globalStyles": {
-    "primaryColor": "UIColor - Main accent color",
-    "backgroundColor": "UIColor - Background color",
-    "borderColor": "UIColor - Border color"
-  },
-  "colorCustomization": {
-    "method": "CometChatTheme.primaryColor = UIColor",
-    "example": "CometChatTheme.primaryColor = UIColor(hex: \"#F76808\")"
-  },
-  "typographyCustomization": {
-    "class": "CometChatTypography",
-    "properties": ["Body.regular", "Body.bold", "Heading.regular"],
-    "example": "CometChatTypography.Body.regular = UIFont.systemFont(ofSize: 18, weight: .bold)"
-  }
-}
-```
+<Accordion title="AI Integration Quick Reference">
+
+| Field | Value |
+| --- | --- |
+| Platform | iOS UI Kit |
+| Package | `CometChatUIKitSwift` |
+| Theme Class | `CometChatTheme` — Global theming system for all CometChat components |
+| Primary Color | `CometChatTheme.primaryColor = UIColor` |
+| Background Color | `CometChatTheme.backgroundColor` |
+| Border Color | `CometChatTheme.borderColor` |
+| Typography Class | `CometChatTypography` |
+| Typography Properties | `Body.regular`, `Body.bold`, `Heading.regular` |
+| Example | `CometChatTheme.primaryColor = UIColor(hex: "#F76808")` |
+
 </Accordion>
 
 ## Overview
@@ -99,3 +88,17 @@ CometChatTheme.primaryColor = UIColor(hex: "#F76808")
 </Frame>
 
 ---
+
+## Next Steps
+
+<CardGroup cols={3}>
+<Card title="Color Resources" href="/ui-kit/ios/color-resources">
+  Customize theme colors and dark mode
+</Card>
+<Card title="Component Styling" href="/ui-kit/ios/component-styling">
+  Style individual components
+</Card>
+<Card title="Message Bubble Styling" href="/ui-kit/ios/message-bubble-styling">
+  Customize message bubbles
+</Card>
+</CardGroup>

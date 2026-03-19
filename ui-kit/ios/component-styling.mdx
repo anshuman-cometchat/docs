@@ -4,6 +4,20 @@ sidebarTitle: "Component Styling"
 description: "Complete guide to styling CometChat iOS UI Kit components - colors, fonts, and custom appearances"
 ---
 
+<Accordion title="AI Integration Quick Reference">
+
+| Field | Value |
+| --- | --- |
+| Platform | iOS UI Kit |
+| Global Styling | `CometChatConversations.style.titleColor = UIColor` |
+| Instance Styling | `let style = ConversationsStyle(); conversations.style = style` |
+| Style Classes | `ConversationsStyle`, `UsersStyle`, `GroupsStyle`, `MessageListStyle`, etc. |
+| Base Styles | `AvatarStyle`, `BadgeStyle`, `StatusIndicatorStyle`, `ReceiptStyle` |
+| Apply Timing | Global styles before `CometChatUIKit.init()` |
+| Precedence | Instance styles override global styles |
+
+</Accordion>
+
 ## Overview
 
 Every CometChat component can be styled to match your app's design. You can apply styles globally (affects all instances) or per-instance (affects one component).
@@ -547,6 +561,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 ## Related
 
-- [Color Resources](/ui-kit/ios/color-resources) - Theme colors
-- [Theme Introduction](/ui-kit/ios/theme-introduction) - Complete theming
-- [Components Overview](/ui-kit/ios/components-overview) - All components
+<CardGroup cols={3}>
+<Card title="Color Resources" href="/ui-kit/ios/color-resources">
+  Theme colors
+</Card>
+<Card title="Theme Introduction" href="/ui-kit/ios/theme-introduction">
+  Complete theming
+</Card>
+<Card title="Components Overview" href="/ui-kit/ios/components-overview">
+  All components
+</Card>
+</CardGroup>

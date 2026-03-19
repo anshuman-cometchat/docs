@@ -4,6 +4,21 @@ sidebarTitle: "Color Resources"
 description: "Complete guide to customizing colors in CometChat iOS UI Kit - themes, dark mode, and branding"
 ---
 
+<Accordion title="AI Integration Quick Reference">
+
+| Field | Value |
+| --- | --- |
+| Platform | iOS UI Kit |
+| Theme Class | `CometChatTheme` |
+| Primary Color | `CometChatTheme.primaryColor` — Main brand color (#6852D6 default) |
+| Background Colors | `backgroundColor01`, `backgroundColor02`, `backgroundColor03` |
+| Text Colors | `textColorPrimary`, `textColorSecondary`, `textColorTertiary` |
+| Alert Colors | `successColor`, `errorColor`, `warningColor`, `infoColor` |
+| Dark Mode | Use `UIColor { traitCollection in }` for dynamic colors |
+| Apply Timing | Set theme before `CometChatUIKit.init()` |
+
+</Accordion>
+
 ## Overview
 
 CometChat UI Kit uses `CometChatTheme` to manage colors across all components. Colors automatically adapt to Light and Dark mode, ensuring a consistent experience.
@@ -315,6 +330,14 @@ extension UIColor {
 
 ## Related
 
-- [Component Styling](/ui-kit/ios/component-styling) - Style individual components
-- [Theme Introduction](/ui-kit/ios/theme-introduction) - Complete theming guide
-- [Getting Started](/ui-kit/ios/getting-started) - Initial setup
+<CardGroup cols={3}>
+<Card title="Component Styling" href="/ui-kit/ios/component-styling">
+  Style individual components
+</Card>
+<Card title="Theme Introduction" href="/ui-kit/ios/theme-introduction">
+  Complete theming guide
+</Card>
+<Card title="Getting Started" href="/ui-kit/ios/getting-started">
+  Initial setup
+</Card>
+</CardGroup>
