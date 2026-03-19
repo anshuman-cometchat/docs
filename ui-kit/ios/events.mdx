@@ -17,8 +17,8 @@ description: "Listen and respond to user actions and state changes in CometChat 
       "listenerClass": "CometChatUserEvents",
       "protocol": "CometChatUserEventListener",
       "events": [
-        {"name": "onUserBlock", "payload": "User", "description": "User was blocked"},
-        {"name": "onUserUnblock", "payload": "User", "description": "User was unblocked"}
+        {"name": "ccUserBlocked", "payload": "User", "description": "User was blocked"},
+        {"name": "ccUserUnblocked", "payload": "User", "description": "User was unblocked"}
       ]
     },
     {
@@ -26,13 +26,13 @@ description: "Listen and respond to user actions and state changes in CometChat 
       "listenerClass": "CometChatGroupEvents",
       "protocol": "CometChatGroupEventListener",
       "events": [
-        {"name": "onGroupCreate", "payload": "Group", "description": "New group created"},
-        {"name": "onGroupDelete", "payload": "Group", "description": "Group deleted"},
-        {"name": "onGroupMemberJoin", "payload": "(User, Group)", "description": "User joined group"},
-        {"name": "onGroupMemberLeave", "payload": "(User, Group)", "description": "User left group"},
-        {"name": "onGroupMemberKick", "payload": "(User, Group)", "description": "Member kicked"},
-        {"name": "onGroupMemberBan", "payload": "(User, Group)", "description": "Member banned"},
-        {"name": "onOwnershipChange", "payload": "(Group, GroupMember)", "description": "Ownership transferred"}
+        {"name": "ccGroupCreated", "payload": "Group", "description": "New group created"},
+        {"name": "ccGroupDeleted", "payload": "Group", "description": "Group deleted"},
+        {"name": "ccGroupMemberJoined", "payload": "(User, Group)", "description": "User joined group"},
+        {"name": "ccGroupLeft", "payload": "(ActionMessage, User, Group)", "description": "User left group"},
+        {"name": "ccGroupMemberKicked", "payload": "(ActionMessage, User, User, Group)", "description": "Member kicked"},
+        {"name": "ccGroupMemberBanned", "payload": "(ActionMessage, User, User, Group)", "description": "Member banned"},
+        {"name": "ccOwnershipChanged", "payload": "(Group, GroupMember)", "description": "Ownership transferred"}
       ]
     },
     {
@@ -137,12 +137,12 @@ class UserEventsViewController: UIViewController {
 
 extension UserEventsViewController: CometChatUserEventListener {
     
-    func onUserBlock(user: User) {
+    func ccUserBlocked(user: User) {
         print("Blocked: \(user.name ?? "")")
         // Update UI - hide user from lists, disable messaging
     }
     
-    func onUserUnblock(user: User) {
+    func ccUserUnblocked(user: User) {
         print("Unblocked: \(user.name ?? "")")
         // Update UI - show user in lists, enable messaging
     }
@@ -155,18 +155,18 @@ Notify other components when you block/unblock a user:
 
 ```swift
 // After blocking a user
-CometChatUserEvents.emitOnUserBlock(user: blockedUser)
+CometChatUserEvents.ccUserBlocked(user: blockedUser)
 
 // After unblocking a user
-CometChatUserEvents.emitOnUserUnblock(user: unblockedUser)
+CometChatUserEvents.ccUserUnblocked(user: unblockedUser)
 ```
 
 ### User Events Reference
 
 | Event | Description |
 |-------|-------------|
-| `onUserBlock` | User was blocked by logged-in user |
-| `onUserUnblock` | User was unblocked by logged-in user |
+| `ccUserBlocked` | User was blocked by logged-in user |
+| `ccUserUnblocked` | User was unblocked by logged-in user |
 
 ## Group Events
 
@@ -775,3 +775,24 @@ class MyViewController: UIViewController {
 4. **Don't emit unnecessarily** - Only emit events when state actually changes
 
 5. **Use a central manager** - For app-wide event handling, create a singleton manager
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Methods" href="/ui-kit/ios/methods">
+    Reference for UI Kit wrapper methods.
+  </Card>
+  <Card title="Message List" href="/ui-kit/ios/message-list">
+    Display and customize chat messages.
+  </Card>
+  <Card title="Conversations" href="/ui-kit/ios/conversations">
+    Manage conversation lists.
+  </Card>
+  <Card title="Groups" href="/ui-kit/ios/groups">
+    Work with group chat functionality.
+  </Card>
+</CardGroup>
+
+---
