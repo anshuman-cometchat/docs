@@ -20,6 +20,45 @@ This guide covers common issues and solutions when working with the CometChat iO
 
 ---
 
+## CocoaPods Issues
+
+| Issue | Solution |
+|-------|----------|
+| "Could not find compatible versions" | Run `pod install --repo-update` to refresh spec repos |
+| Pod version not found | Verify the version exists on [CocoaPods](https://cocoapods.org/pods/CometChatUIKitSwift) |
+| Repo clone failures | Clean repos with commands below, then retry |
+| Build errors after pod install | Open `.xcworkspace` file, not `.xcodeproj` |
+
+### Clean and Retry
+
+```bash
+rm -rf Pods Podfile.lock
+pod cache clean --all
+pod install --repo-update
+```
+
+### Reset CocoaPods Completely
+
+If repo errors persist:
+
+```bash
+rm -rf ~/.cocoapods/repos
+pod setup
+pod install --repo-update
+```
+
+### Fallback to Swift Package Manager
+
+If CocoaPods continues to fail, use SPM instead:
+
+1. Remove Podfile and Pods folder
+2. Open your `.xcodeproj` in Xcode
+3. Go to **File → Add Package Dependencies**
+4. Add `https://github.com/cometchat/cometchat-uikit-ios` with version `5.1.9`
+5. Add `https://github.com/cometchat/chat-sdk-ios` with version `4.1.0`
+
+---
+
 ## Initialization Issues
 
 | Issue | Solution |

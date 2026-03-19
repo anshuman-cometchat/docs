@@ -9,7 +9,7 @@ description: "Add CometChat to an iOS app in 5 steps: create project, install, i
 | Field | Value |
 | --- | --- |
 | Package | `CometChatUIKitSwift` |
-| Version | `5.1.7` |
+| Version | `5.1.9` |
 | Requirements | Xcode 16+, iOS 13.0+, Swift 5.0+ |
 | Init | `CometChatUIKit.init(uiKitSettings:)` — must complete before `login()` |
 | Login | `CometChatUIKit.login(uid:)` — must complete before rendering components |
@@ -78,7 +78,7 @@ platform :ios, '13.0'
 use_frameworks!
 
 target 'YourApp' do
-  pod 'CometChatUIKitSwift', '5.1.7'
+  pod 'CometChatUIKitSwift', '5.1.9'
   
   # Optional: Voice/Video Calling
   pod 'CometChatCallsSDK', '4.2.2'
@@ -88,13 +88,13 @@ end
 3. Install dependencies:
 
 ```bash
-pod install
+pod install --repo-update
 ```
 
 4. Close the `.xcodeproj` file and open the `.xcworkspace` file instead. CocoaPods creates a workspace that includes your project and the installed pods.
 
 <Tip>
-If you hit issues, run `pod install --repo-update`. Always open the `.xcworkspace` file after installing pods — opening the `.xcodeproj` will cause build errors.
+Always open the `.xcworkspace` file after installing pods — opening the `.xcodeproj` will cause build errors. Having issues? See [CocoaPods Troubleshooting](/ui-kit/ios/troubleshooting#cocoapods-issues).
 </Tip>
 </Tab>
 
@@ -110,7 +110,7 @@ https://github.com/cometchat/cometchat-uikit-ios
 3. Select **Up to Exact Version** and enter:
 
 ```
-5.1.7
+5.1.9
 ```
 
 4. Add the Chat SDK separately using:
