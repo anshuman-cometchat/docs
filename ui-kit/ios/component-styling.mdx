@@ -233,14 +233,14 @@ import CometChatUIKitSwift
 CometChatMessageList.style.backgroundColor = UIColor(hex: "#FBAA75")
 
 // Outgoing message bubbles (your messages)
-CometChatMessageList.messageBubbleStyle.outgoing.backgroundColor = UIColor(hex: "#F76808")
-CometChatMessageList.messageBubbleStyle.outgoing.textColor = .white
-CometChatMessageList.messageBubbleStyle.outgoing.textFont = UIFont.systemFont(ofSize: 15)
+CometChatMessageBubble.style.outgoing.backgroundColor = UIColor(hex: "#F76808")
+CometChatMessageBubble.style.outgoing.textBubbleStyle.textColor = .white
+CometChatMessageBubble.style.outgoing.textBubbleStyle.textFont = UIFont.systemFont(ofSize: 15)
 
 // Incoming message bubbles (other's messages)
-CometChatMessageList.messageBubbleStyle.incoming.backgroundColor = UIColor(hex: "#E8E8E8")
-CometChatMessageList.messageBubbleStyle.incoming.textColor = UIColor(hex: "#212121")
-CometChatMessageList.messageBubbleStyle.incoming.textFont = UIFont.systemFont(ofSize: 15)
+CometChatMessageBubble.style.incoming.backgroundColor = UIColor(hex: "#E8E8E8")
+CometChatMessageBubble.style.incoming.textBubbleStyle.textColor = UIColor(hex: "#212121")
+CometChatMessageBubble.style.incoming.textBubbleStyle.textFont = UIFont.systemFont(ofSize: 15)
 
 // Timestamp style
 CometChatMessageList.style.timestampTextColor = UIColor(hex: "#9E9E9E")
@@ -517,10 +517,10 @@ class StyleManager {
         
         // Apply to Message List
         CometChatMessageList.style.backgroundColor = surfaceColor
-        CometChatMessageList.messageBubbleStyle.outgoing.backgroundColor = primaryColor
-        CometChatMessageList.messageBubbleStyle.outgoing.textColor = .white
-        CometChatMessageList.messageBubbleStyle.incoming.backgroundColor = .white
-        CometChatMessageList.messageBubbleStyle.incoming.textColor = textPrimary
+        CometChatMessageBubble.style.outgoing.backgroundColor = primaryColor
+        CometChatMessageBubble.style.outgoing.textBubbleStyle.textColor = .white
+        CometChatMessageBubble.style.incoming.backgroundColor = .white
+        CometChatMessageBubble.style.incoming.textBubbleStyle.textColor = textPrimary
         
         // Apply to Message Composer
         CometChatMessageComposer.style.activeSendButtonImageBackgroundColor = primaryColor
