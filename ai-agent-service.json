@@ -1112,7 +1112,8 @@
                         "in": "query",
                         "schema": {
                             "type": "number"
-                        }
+                        },
+                        "description": "Maximum number of results to return per page."
                     },
                     {
                         "name": "affix",
@@ -1124,7 +1125,8 @@
                                 "append"
                             ],
                             "type": "string"
-                        }
+                        },
+                        "description": "To paginate over results, use the value of affix as prepend or append."
                     },
                     {
                         "name": "createdAt",
@@ -1132,7 +1134,8 @@
                         "in": "query",
                         "schema": {
                             "type": "number"
-                        }
+                        },
+                        "description": "To be used with affix for pagination."
                     },
                     {
                         "name": "search",
@@ -1728,7 +1731,8 @@
                         "in": "query",
                         "schema": {
                             "type": "number"
-                        }
+                        },
+                        "description": "Maximum number of results to return per page."
                     },
                     {
                         "name": "affix",
@@ -1740,7 +1744,8 @@
                                 "append"
                             ],
                             "type": "string"
-                        }
+                        },
+                        "description": "To paginate over results, use the value of affix as prepend or append."
                     },
                     {
                         "name": "createdAt",
@@ -1748,7 +1753,8 @@
                         "in": "query",
                         "schema": {
                             "type": "number"
-                        }
+                        },
+                        "description": "To be used with affix for pagination."
                     }
                 ],
                 "responses": {
@@ -1962,7 +1968,7 @@
                 "tags": [
                     "Agent Builder API Tools"
                 ],
-                "description": "Retrieves a paginated list of API tools for the application. Use this endpoint to browse and manage custom API tool configurations.\n\n**Pagination:** Supports cursor-based pagination using the `affix` and `createdAt` query parameters. Use `affix=append` with a `createdAt` timestamp to fetch the next page, or `affix=prepend` for the previous page. Results are sorted by creation date in descending order with a maximum of 10 items per page."
+                "description": "Retrieves a paginated list of API tools for the application. Use this endpoint to browse and manage custom API tool configurations."
             },
             "post": {
                 "operationId": "ApiToolsController_createApiTool",
@@ -2532,7 +2538,8 @@
                         "in": "query",
                         "schema": {
                             "type": "number"
-                        }
+                        },
+                        "description": "Maximum number of results to return per page."
                     },
                     {
                         "name": "affix",
@@ -2544,7 +2551,8 @@
                                 "append"
                             ],
                             "type": "string"
-                        }
+                        },
+                        "description": "To paginate over results, use the value of affix as prepend or append."
                     },
                     {
                         "name": "createdAt",
@@ -2552,7 +2560,8 @@
                         "in": "query",
                         "schema": {
                             "type": "number"
-                        }
+                        },
+                        "description": "To be used with affix for pagination."
                     }
                 ],
                 "responses": {
@@ -2676,7 +2685,7 @@
                 "tags": [
                     "Agent Builder MCP Servers"
                 ],
-                "description": "Retrieves a paginated list of MCP servers for the application. Use this endpoint to browse and manage MCP server configurations.\n\n**Pagination:** Supports cursor-based pagination using the `affix` and `createdAt` query parameters. Use `affix=append` with a `createdAt` timestamp to fetch the next page, or `affix=prepend` for the previous page. Results are sorted by creation date in descending order with a maximum of 10 items per page.",
+                "description": "Retrieves a paginated list of MCP servers for the application. Use this endpoint to browse and manage MCP server configurations.",
                 "summary": "List MCP Servers"
             }
         },
@@ -2887,7 +2896,8 @@
                         "in": "query",
                         "schema": {
                             "type": "number"
-                        }
+                        },
+                        "description": "Maximum number of results to return per page."
                     },
                     {
                         "name": "affix",
@@ -2899,7 +2909,8 @@
                                 "append"
                             ],
                             "type": "string"
-                        }
+                        },
+                        "description": "To paginate over results, use the value of affix as prepend or append."
                     },
                     {
                         "name": "createdAt",
@@ -2907,7 +2918,8 @@
                         "in": "query",
                         "schema": {
                             "type": "number"
-                        }
+                        },
+                        "description": "To be used with affix for pagination."
                     }
                 ],
                 "responses": {
@@ -3089,7 +3101,7 @@
                 "tags": [
                     "Agent Builder Frontend Actions"
                 ],
-                "description": "Retrieves a paginated list of frontend actions for the application. Use this endpoint to browse and manage frontend action configurations.\n\n**Pagination:** Supports cursor-based pagination using the `affix` and `createdAt` query parameters. Use `affix=append` with a `createdAt` timestamp to fetch the next page, or `affix=prepend` for the previous page. Results are sorted by creation date in descending order with a maximum of 10 items per page."
+                "description": "Retrieves a paginated list of frontend actions for the application. Use this endpoint to browse and manage frontend action configurations."
             },
             "post": {
                 "operationId": "FrontendActionsController_createFrontendAction",
@@ -4072,14 +4084,14 @@
         },
         "/ai-agents/agent-builder/knowledge-base": {
             "get": {
-                "description": "Retrieves knowledge base records for the application. Use this endpoint to browse all knowledge base sources including files, text entries, and websites.\n\n**Pagination:** Uses cursor-based pagination with records returned in descending order (newest first). Supports bidirectional navigation using `cursor` and `affix` parameters.",
+                "description": "Retrieves knowledge base records for the application. Use this endpoint to browse all knowledge base sources including files, text entries, and websites.",
                 "operationId": "RagController_getKnowledgeBase",
                 "parameters": [
                     {
                         "name": "cursor",
                         "required": false,
                         "in": "query",
-                        "description": "Pagination cursor (paginationKey from previous response meta). Used to fetch records relative to a specific position.",
+                        "description": "To be used with affix for pagination.",
                         "schema": {
                             "example": "1732492800000.12345",
                             "type": "string"
@@ -4089,7 +4101,7 @@
                         "name": "limit",
                         "required": false,
                         "in": "query",
-                        "description": "Number of records per page (default: 10, maximum: 100)",
+                        "description": "Maximum number of results to return per page.",
                         "schema": {
                             "example": 20,
                             "type": "number"
@@ -4099,7 +4111,7 @@
                         "name": "affix",
                         "required": false,
                         "in": "query",
-                        "description": "Navigation direction: \"append\" for next/older records, \"prepend\" for previous/newer records",
+                        "description": "To paginate over results, use the value of affix as prepend or append.",
                         "schema": {
                             "enum": [
                                 "append",
@@ -4294,7 +4306,7 @@
         },
         "/ai-agents/agent-builder/knowledge-base/{sourceType}/{uniqueId}/pages": {
             "get": {
-                "description": "Retrieves paginated pages for a specific knowledge base source file. Use this endpoint to inspect the individual pages extracted from a knowledge base source.\n\n**Pagination:** Supports `limit`, `page`, and `affix` parameters.",
+                "description": "Retrieves paginated pages for a specific knowledge base source file. Use this endpoint to inspect the individual pages extracted from a knowledge base source.",
                 "operationId": "RagController_getSourcePages",
                 "parameters": [
                     {
@@ -4319,7 +4331,7 @@
                         "name": "limit",
                         "required": false,
                         "in": "query",
-                        "description": "Number of pages to return (default 1)",
+                        "description": "Maximum number of results to return per page.",
                         "schema": {
                             "type": "number"
                         }
@@ -4328,7 +4340,7 @@
                         "name": "page",
                         "required": false,
                         "in": "query",
-                        "description": "Cursor page number for pagination",
+                        "description": "To be used with affix for pagination.",
                         "schema": {
                             "type": "number"
                         }
@@ -4337,7 +4349,7 @@
                         "name": "affix",
                         "required": false,
                         "in": "query",
-                        "description": "append or prepend",
+                        "description": "To paginate over results, use the value of affix as prepend or append.",
                         "schema": {
                             "enum": [
                                 "prepend",
@@ -4747,7 +4759,7 @@
         },
         "/ai-agents/agent-builder/knowledge-base/website/{parentUniqueId}/discovered-urls": {
             "get": {
-                "description": "Retrieves all URLs discovered during a website crawl. Use this endpoint to review which pages were found before processing them.\n\n**Pagination:** Supports cursor-based pagination.",
+                "description": "Retrieves all URLs discovered during a website crawl. Use this endpoint to review which pages were found before processing them.",
                 "operationId": "CrawlWebPagesController_getDiscoveredUrls",
                 "parameters": [
                     {
@@ -4762,7 +4774,7 @@
                         "name": "cursor",
                         "required": false,
                         "in": "query",
-                        "description": "Pagination cursor (timestamp from previous response meta)",
+                        "description": "To be used with affix for pagination.",
                         "schema": {
                             "example": "1701789000000",
                             "type": "string"
@@ -4772,7 +4784,7 @@
                         "name": "limit",
                         "required": false,
                         "in": "query",
-                        "description": "Number of records per page (default: 10, maximum: 100)",
+                        "description": "Maximum number of results to return per page.",
                         "schema": {
                             "example": 20,
                             "type": "number"
@@ -4782,7 +4794,7 @@
                         "name": "affix",
                         "required": false,
                         "in": "query",
-                        "description": "Navigation direction: \"append\" for next/older records, \"prepend\" for previous/newer records",
+                        "description": "To paginate over results, use the value of affix as prepend or append.",
                         "schema": {
                             "enum": [
                                 "append",
