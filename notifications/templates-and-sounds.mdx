@@ -102,24 +102,20 @@ The sender's name lives at `message.data.entities.sender.entity.name`, so use `{
 
 Ideally, the "Body (Fallback)" value should not contain any placeholders to prevent additional resolution failures.
 
-##### Controlling notifications for custom messages
-
-Custom category messages require an explicit opt-in to trigger notifications. The `sendNotification` flag is a boolean field on the message's data payload that controls whether CometChat processes the message for push, email, and SMS notifications.
+<Note title="Enabling notifications for custom messages">
+By default, messages with `category: "custom"` do not trigger any notifications (push, email, or SMS). To opt in, set `sendNotification: true` in the message's data payload.
 
 | `sendNotification` value | Behavior |
 | --- | --- |
-| `true` | Notifications are processed normally (push, email, SMS) |
+| `true` | Notifications are processed normally across all channels |
 | `false` or not set | The message is silently skipped — no notifications are sent |
 
-<Warning>
-By default, custom messages without `sendNotification: true` explicitly set will not trigger any notifications. The sender must opt in by including this flag in the message payload.
-</Warning>
+This check runs before template resolution. A skipped message produces no notification activity at all.
 
-This applies uniformly across all notification channels — push, email, and SMS. The check runs before any template resolution or delivery logic, so a skipped message produces no notification activity at all.
+Set `sendNotification: true` for custom messages that represent user-facing activity (e.g., polls, payments, shared locations). Omit the flag for background or system-level custom messages that should not interrupt the recipient.
 
-**When to use this:**
-- Set `sendNotification: true` for custom messages that represent user-facing activity (e.g., polls, payments, shared locations) where the recipient should be alerted.
-- Omit the flag (or set it to `false`) for background or system-level custom messages that should not interrupt the recipient (e.g., typing indicators sent as custom messages, metadata syncs, or silent state updates).
+For the notification body to resolve correctly, ensure your custom message includes a `data.text` field. Without it, the `{{message.data.text}}` placeholder falls back to the configured fallback value.
+</Note>
 
 #### 4. Poll message templates
 
