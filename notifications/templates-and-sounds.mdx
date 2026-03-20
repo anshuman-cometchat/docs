@@ -110,11 +110,7 @@ By default, messages with `category: "custom"` do not trigger any notifications 
 | `true` | Notifications are processed normally across all channels |
 | `false` or not set | The message is silently skipped — no notifications are sent |
 
-This check runs before template resolution. A skipped message produces no notification activity at all.
-
 Set `sendNotification: true` for custom messages that represent user-facing activity (e.g., polls, payments, shared locations). Omit the flag for background or system-level custom messages that should not interrupt the recipient.
-
-For the notification body to resolve correctly, ensure your custom message includes a `data.text` field. Without it, the `{{message.data.text}}` placeholder falls back to the configured fallback value.
 </Note>
 
 #### 4. Poll message templates
