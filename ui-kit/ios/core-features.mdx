@@ -48,7 +48,7 @@ class ChatViewController: UIViewController {
         let messagesVC = CometChatMessages()
         
         // Set the user to chat with
-        CometChat.getUser(UID: "user-123") { user in
+        CometChat.getUser(UID: "cometchat-uid-1") { user in
             DispatchQueue.main.async {
                 messagesVC.set(user: user)
                 self.navigationController?.pushViewController(messagesVC, animated: true)
@@ -88,7 +88,7 @@ class MediaChatViewController: UIViewController {
         // - Documents
         // - Audio files
         
-        CometChat.getUser(UID: "user-123") { user in
+        CometChat.getUser(UID: "cometchat-uid-1") { user in
             DispatchQueue.main.async {
                 messagesVC.set(user: user)
                 self.navigationController?.pushViewController(messagesVC, animated: true)
@@ -148,7 +148,7 @@ class ReceiptsViewController: UIViewController {
         // To hide receipts:
         // messagesVC.hideReceipts = true
         
-        CometChat.getUser(UID: "user-123") { user in
+        CometChat.getUser(UID: "cometchat-uid-1") { user in
             DispatchQueue.main.async {
                 messagesVC.set(user: user)
                 self.navigationController?.pushViewController(messagesVC, animated: true)
@@ -200,7 +200,7 @@ class UnreadMessagesViewController: UIViewController {
         // Enable starting from first unread message
         messagesVC.scrollToUnreadMessages = true
         
-        CometChat.getUser(UID: "user-123") { user in
+        CometChat.getUser(UID: "cometchat-uid-1") { user in
             DispatchQueue.main.async {
                 messagesVC.set(user: user)
                 self.navigationController?.pushViewController(messagesVC, animated: true)
@@ -247,7 +247,7 @@ class TypingIndicatorViewController: UIViewController {
         
         let messagesVC = CometChatMessages()
         
-        CometChat.getUser(UID: "user-123") { user in
+        CometChat.getUser(UID: "cometchat-uid-1") { user in
             DispatchQueue.main.async {
                 messagesVC.set(user: user)
                 self.navigationController?.pushViewController(messagesVC, animated: true)
@@ -352,7 +352,7 @@ class ReactionsViewController: UIViewController {
         
         let messagesVC = CometChatMessages()
         
-        CometChat.getUser(UID: "user-123") { user in
+        CometChat.getUser(UID: "cometchat-uid-1") { user in
             DispatchQueue.main.async {
                 messagesVC.set(user: user)
                 self.navigationController?.pushViewController(messagesVC, animated: true)
@@ -464,7 +464,7 @@ class ThreadedMessagesViewController: UIViewController {
         
         let messagesVC = CometChatMessages()
         
-        CometChat.getUser(UID: "user-123") { user in
+        CometChat.getUser(UID: "cometchat-uid-1") { user in
             DispatchQueue.main.async {
                 messagesVC.set(user: user)
                 self.navigationController?.pushViewController(messagesVC, animated: true)
@@ -648,7 +648,7 @@ class QuotedReplyViewController: UIViewController {
         
         let messagesVC = CometChatMessages()
         
-        CometChat.getUser(UID: "user-123") { user in
+        CometChat.getUser(UID: "cometchat-uid-1") { user in
             DispatchQueue.main.async {
                 messagesVC.set(user: user)
                 self.navigationController?.pushViewController(messagesVC, animated: true)
@@ -730,7 +730,7 @@ class ModerationViewController: UIViewController {
         
         let messagesVC = CometChatMessages()
         
-        CometChat.getUser(UID: "user-123") { user in
+        CometChat.getUser(UID: "cometchat-uid-1") { user in
             DispatchQueue.main.async {
                 messagesVC.set(user: user)
                 self.navigationController?.pushViewController(messagesVC, animated: true)
@@ -769,7 +769,7 @@ class ReportMessageViewController: UIViewController {
         
         let messagesVC = CometChatMessages()
         
-        CometChat.getUser(UID: "user-123") { user in
+        CometChat.getUser(UID: "cometchat-uid-1") { user in
             DispatchQueue.main.async {
                 messagesVC.set(user: user)
                 self.navigationController?.pushViewController(messagesVC, animated: true)
@@ -785,7 +785,7 @@ class ReportMessageViewController: UIViewController {
 View and manage reported messages in [Flagged Messages](/moderation/flagged-messages).
 </Note>
 
-## Complete Chat App Example
+{/* ## Complete Chat App Example
 
 Here's a production-ready implementation combining all core features:
 
@@ -821,7 +821,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func loginAndShowChat() {
-        CometChatUIKit.login(uid: "user-123") { result in
+        CometChatUIKit.login(uid: "cometchat-uid-1") { result in
             switch result {
             case .success(let user):
                 print("Logged in as: \(user.name ?? "")")
@@ -898,9 +898,9 @@ class MainTabBarController: UITabBarController {
         viewControllers = [conversationsNav, usersNav, groupsNav]
     }
 }
-```
+``` */}
 
-## Feature Summary
+{/* ## Feature Summary
 
 | Feature | Component | Enabled by Default |
 |---------|-----------|-------------------|
@@ -913,4 +913,4 @@ class MainTabBarController: UITabBarController {
 | Mentions | [MessageComposer](/ui-kit/ios/message-composer) | ✅ |
 | Threads | [ThreadedMessages](/ui-kit/ios/threaded-messages-header) | ✅ |
 | Search | [Search](/ui-kit/ios/search) | ✅ |
-| Moderation | Dashboard Config | Configure in Dashboard |
+| Moderation | Dashboard Config | Configure in Dashboard | */}
