@@ -3,31 +3,12 @@ title: "Extensions"
 description: "Enable powerful chat features with zero code using CometChat extensions"
 ---
 
-<Accordion title="AI Integration Quick Reference">
-```json
-{
-  "category": "extensions",
-  "dashboardSetup": {
-    "location": "CometChat Dashboard → Extensions",
-    "activation": "Enable extensions in dashboard, they appear automatically in UI Kit"
-  },
-  "extensions": [
-    {"name": "stickers", "component": "CometChatMessageComposer", "setupGuide": "/fundamentals/stickers"},
-    {"name": "polls", "component": "CometChatMessageComposer", "setupGuide": "/fundamentals/polls"},
-    {"name": "whiteboard", "component": "CometChatMessageComposer", "setupGuide": "/fundamentals/collaborative-whiteboard"},
-    {"name": "document", "component": "CometChatMessageComposer", "setupGuide": "/fundamentals/collaborative-document"},
-    {"name": "reactions", "component": "CometChatMessageList", "setupGuide": "/fundamentals/reactions"},
-    {"name": "translation", "component": "CometChatMessageList", "setupGuide": "/fundamentals/message-translation"},
-    {"name": "linkPreview", "component": "CometChatMessageList", "setupGuide": "/fundamentals/link-preview"},
-    {"name": "profanityFilter", "component": "CometChatMessageList", "setupGuide": "/moderation/legacy-extensions"},
-    {"name": "dataMasking", "component": "CometChatMessageList", "setupGuide": "/moderation/legacy-extensions"},
-    {"name": "imageModeration", "component": "CometChatMessageList", "setupGuide": "/moderation/legacy-extensions"},
-    {"name": "thumbnails", "component": "CometChatMessageList", "setupGuide": "/fundamentals/thumbnail-generation"},
-    {"name": "smartReplies", "component": "CometChatMessageComposer", "setupGuide": "/fundamentals/smart-replies"}
-  ]
-}
-```
-</Accordion>
+| Field | Value |
+|-------|-------|
+| Dashboard setup | CometChat Dashboard → Extensions |
+| Activation | Enable in dashboard, features appear automatically in UI Kit |
+| Code required | None — extensions work out of the box |
+| Platforms | Works across iOS, Android, and Web with the same configuration |
 
 Extensions add powerful features to your chat app without writing any code. Simply enable them in your [CometChat Dashboard](https://app.cometchat.com), and they automatically appear in the UI Kit components.
 
@@ -39,12 +20,12 @@ Extensions add powerful features to your chat app without writing any code. Simp
 4. The features automatically appear in your app after initialization
 
 <Note>
-Extensions are enabled at the dashboard level. Once activated, they work across all platforms (iOS, Android, Web) using the same CometChat app. No code changes required.
+Extensions are enabled at the dashboard level. Once activated, they work across all platforms (iOS, Android, Web) using the same CometChat app.
 </Note>
 
-For detailed information on all extensions, see [Extensions Overview](/fundamentals/extensions-overview).
+## Composer Extensions
 
-## Available Extensions
+These extensions add new options to the [Message Composer](/ui-kit/ios/message-composer) attachment menu or action sheet.
 
 ### Stickers
 
@@ -54,11 +35,9 @@ Let users express emotions with fun, pre-designed stickers.
   <img src="/images/8d6e960d-stickers-7942a0da9cbc29036f79d55676f8bca4.png" />
 </Frame>
 
-| Feature | Details |
-|---------|---------|
-| Appears in | [Message Composer](/ui-kit/ios/message-composer) attachment menu |
-| Setup guide | [Sticker Extension](/fundamentals/stickers) |
-| Code required | None - automatic after dashboard activation |
+| Component | Setup Guide |
+|-----------|-------------|
+| [Message Composer](/ui-kit/ios/message-composer) | [Sticker Extension](/fundamentals/stickers) |
 
 ### Polls
 
@@ -68,11 +47,9 @@ Create polls to gather opinions in group chats quickly.
   <img src="/images/63897180-polls-916d9d0221d8d325a1bd3c80bcfdb70f.png" />
 </Frame>
 
-| Feature | Details |
-|---------|---------|
-| Appears in | [Message Composer](/ui-kit/ios/message-composer) action sheet |
-| Setup guide | [Polls Extension](/fundamentals/polls) |
-| Code required | None - automatic after dashboard activation |
+| Component | Setup Guide |
+|-----------|-------------|
+| [Message Composer](/ui-kit/ios/message-composer) | [Polls Extension](/fundamentals/polls) |
 
 ### Collaborative Whiteboard
 
@@ -82,11 +59,9 @@ Real-time whiteboard for drawing, brainstorming, and sharing ideas together.
   <img src="/images/0d8981b7-collaborative-whiteboard-5a8803d8e98749ed39851a34721ff094.png" />
 </Frame>
 
-| Feature | Details |
-|---------|---------|
-| Appears in | [Message Composer](/ui-kit/ios/message-composer) action sheet |
-| Setup guide | [Collaborative Whiteboard](/fundamentals/collaborative-whiteboard) |
-| Code required | None - automatic after dashboard activation |
+| Component | Setup Guide |
+|-----------|-------------|
+| [Message Composer](/ui-kit/ios/message-composer) | [Collaborative Whiteboard](/fundamentals/collaborative-whiteboard) |
 
 ### Collaborative Document
 
@@ -96,11 +71,21 @@ Work together on shared documents in real-time with other users.
   <img src="/images/fb87a1db-collaborative-document-5e6df9a4ae2e74a9e7631df74b7971e4.png" />
 </Frame>
 
-| Feature | Details |
-|---------|---------|
-| Appears in | [Message Composer](/ui-kit/ios/message-composer) action sheet |
-| Setup guide | [Collaborative Document](/fundamentals/collaborative-document) |
-| Code required | None - automatic after dashboard activation |
+| Component | Setup Guide |
+|-----------|-------------|
+| [Message Composer](/ui-kit/ios/message-composer) | [Collaborative Document](/fundamentals/collaborative-document) |
+
+### Smart Replies
+
+AI-powered suggested responses for faster, more efficient conversations.
+
+| Component | Setup Guide |
+|-----------|-------------|
+| [Message Composer](/ui-kit/ios/message-composer) | [Smart Replies](/fundamentals/smart-replies) |
+
+## Message List Extensions
+
+These extensions enhance messages displayed in the [Message List](/ui-kit/ios/message-list).
 
 ### Message Reactions
 
@@ -110,11 +95,9 @@ Let users react to messages with a range of emojis for quick responses.
   <img src="/images/6ee460cf-extension_message_reactions_screens-5aa0ea266fef6fdadadef80d0a707d62.png" />
 </Frame>
 
-| Feature | Details |
-|---------|---------|
-| Appears in | [Message List](/ui-kit/ios/message-list) long-press menu |
-| Setup guide | [Reactions Extension](/fundamentals/reactions) |
-| Code required | None - automatic after dashboard activation |
+| Component | Setup Guide |
+|-----------|-------------|
+| [Message List](/ui-kit/ios/message-list) | [Reactions Extension](/fundamentals/reactions) |
 
 ### Message Translation
 
@@ -124,11 +107,9 @@ Translate messages into any language instantly, eliminating language barriers.
   <img src="/images/83dae8d1-translation-1e7ffc5b3c9f25a7a670485e9ca7e78e.png" />
 </Frame>
 
-| Feature | Details |
-|---------|---------|
-| Appears in | [Message List](/ui-kit/ios/message-list) message actions |
-| Setup guide | [Message Translation](/fundamentals/message-translation) |
-| Code required | None - automatic after dashboard activation |
+| Component | Setup Guide |
+|-----------|-------------|
+| [Message List](/ui-kit/ios/message-list) | [Message Translation](/fundamentals/message-translation) |
 
 ### Link Preview
 
@@ -138,53 +119,9 @@ Show rich previews for URLs shared in chat including title, description, and thu
   <img src="/images/bcbe2f2a-link-preview-a2bd03dce69ae5765847418b88ed849b.png" />
 </Frame>
 
-| Feature | Details |
-|---------|---------|
-| Appears in | [Message List](/ui-kit/ios/message-list) message bubbles |
-| Setup guide | [Link Preview](/fundamentals/link-preview) |
-| Code required | None - automatic after dashboard activation |
-
-### Profanity Filter
-
-Automatically censor inappropriate and obscene words in messages.
-
-<Frame>
-  <img src="/images/bed902e7-extension_profanity_filter_screens-15b99ab8c5a88b7dee28904ce087e4df.png" />
-</Frame>
-
-| Feature | Details |
-|---------|---------|
-| Appears in | [Message List](/ui-kit/ios/message-list) - filtered automatically |
-| Setup guide | [Legacy Extensions](/moderation/legacy-extensions) |
-| Code required | None - automatic after dashboard activation |
-
-### Data Masking
-
-Automatically mask sensitive data like credit card numbers and phone numbers.
-
-<Frame>
-  <img src="/images/cb60706e-extension_data_masking_screens-3c5363e1989e7e26cd7a3985590e84a4.png" />
-</Frame>
-
-| Feature | Details |
-|---------|---------|
-| Appears in | [Message List](/ui-kit/ios/message-list) - masked automatically |
-| Setup guide | [Legacy Extensions](/moderation/legacy-extensions) |
-| Code required | None - automatic after dashboard activation |
-
-### Image Moderation
-
-Detect and filter inappropriate or explicit images using AI/ML.
-
-<Frame>
-  <img src="/images/72d11e6d-extension_image_moderation_screens-34da779e11f0d81d2cc6004273ca2d25.png" />
-</Frame>
-
-| Feature | Details |
-|---------|---------|
-| Appears in | [Message List](/ui-kit/ios/message-list) - filtered automatically |
-| Setup guide | [Legacy Extensions](/moderation/legacy-extensions) |
-| Code required | None - automatic after dashboard activation |
+| Component | Setup Guide |
+|-----------|-------------|
+| [Message List](/ui-kit/ios/message-list) | [Link Preview](/fundamentals/link-preview) |
 
 ### Thumbnail Generation
 
@@ -194,42 +131,70 @@ Automatically create smaller preview images for faster loading and reduced bandw
   <img src="/images/29a4e7bb-thumbnail-96a3bb74abb716add7c27c0de539540c.png" />
 </Frame>
 
-| Feature | Details |
-|---------|---------|
-| Appears in | [Message List](/ui-kit/ios/message-list) image bubbles |
-| Setup guide | [Thumbnail Generation](/fundamentals/thumbnail-generation) |
-| Code required | None - automatic after dashboard activation |
+| Component | Setup Guide |
+|-----------|-------------|
+| [Message List](/ui-kit/ios/message-list) | [Thumbnail Generation](/fundamentals/thumbnail-generation) |
 
-### Smart Replies
+## Moderation Extensions
 
-AI-powered suggested responses for faster, more efficient conversations.
+These extensions help maintain a safe chat environment by filtering content automatically.
 
-| Feature | Details |
-|---------|---------|
-| Appears in | [Message Composer](/ui-kit/ios/message-composer) suggestions |
-| Setup guide | [Smart Replies](/fundamentals/smart-replies) |
-| Code required | None - automatic after dashboard activation |
+### Profanity Filter
+
+Automatically censor inappropriate and obscene words in messages.
+
+<Frame>
+  <img src="/images/bed902e7-extension_profanity_filter_screens-15b99ab8c5a88b7dee28904ce087e4df.png" />
+</Frame>
+
+| Component | Setup Guide |
+|-----------|-------------|
+| [Message List](/ui-kit/ios/message-list) | [Legacy Extensions](/moderation/legacy-extensions) |
+
+### Data Masking
+
+Automatically mask sensitive data like credit card numbers and phone numbers.
+
+<Frame>
+  <img src="/images/cb60706e-extension_data_masking_screens-3c5363e1989e7e26cd7a3985590e84a4.png" />
+</Frame>
+
+| Component | Setup Guide |
+|-----------|-------------|
+| [Message List](/ui-kit/ios/message-list) | [Legacy Extensions](/moderation/legacy-extensions) |
+
+### Image Moderation
+
+Detect and filter inappropriate or explicit images using AI/ML.
+
+<Frame>
+  <img src="/images/72d11e6d-extension_image_moderation_screens-34da779e11f0d81d2cc6004273ca2d25.png" />
+</Frame>
+
+| Component | Setup Guide |
+|-----------|-------------|
+| [Message List](/ui-kit/ios/message-list) | [Legacy Extensions](/moderation/legacy-extensions) |
 
 ## Extensions Summary
 
-| Extension | Component | Use Case |
-|-----------|-----------|----------|
-| Stickers | Message Composer | Fun expression |
-| Polls | Message Composer | Group decisions |
-| Whiteboard | Message Composer | Visual collaboration |
-| Document | Message Composer | Document collaboration |
-| Reactions | Message List | Quick responses |
-| Translation | Message List | Multi-language support |
-| Link Preview | Message List | Rich URL previews |
-| Profanity Filter | Message List | Content moderation |
-| Data Masking | Message List | Privacy protection |
-| Image Moderation | Message List | Safe content |
-| Thumbnails | Message List | Faster loading |
-| Smart Replies | Message Composer | Quick responses |
+| Extension | Category | Component | Use Case |
+|-----------|----------|-----------|----------|
+| Stickers | Composer | Message Composer | Fun expression |
+| Polls | Composer | Message Composer | Group decisions |
+| Whiteboard | Composer | Message Composer | Visual collaboration |
+| Document | Composer | Message Composer | Document collaboration |
+| Smart Replies | Composer | Message Composer | Quick responses |
+| Reactions | Message List | Message List | Quick responses |
+| Translation | Message List | Message List | Multi-language support |
+| Link Preview | Message List | Message List | Rich URL previews |
+| Thumbnails | Message List | Message List | Faster loading |
+| Profanity Filter | Moderation | Message List | Content moderation |
+| Data Masking | Moderation | Message List | Privacy protection |
+| Image Moderation | Moderation | Message List | Safe content |
 
-## Related
+## Next Steps
 
-- [Extensions Overview](/fundamentals/extensions-overview) - Full extension documentation
-- [Moderation](/moderation/overview) - Content moderation features
-- [Message Composer](/ui-kit/ios/message-composer) - Where composer extensions appear
-- [Message List](/ui-kit/ios/message-list) - Where message extensions appear
+- [Extensions Overview](/fundamentals/extensions-overview) — Full extension documentation
+- [Moderation](/moderation/overview) — Content moderation features
+- [Message Composer](/ui-kit/ios/message-composer) — Where composer extensions appear
+- [Message List](/ui-kit/ios/message-list) — Where message extensions appear
