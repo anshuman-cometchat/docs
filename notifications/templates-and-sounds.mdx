@@ -102,6 +102,17 @@ The sender's name lives at `message.data.entities.sender.entity.name`, so use `{
 
 Ideally, the "Body (Fallback)" value should not contain any placeholders to prevent additional resolution failures.
 
+<Note title="Enabling notifications for custom messages">
+By default, messages with `category: "custom"` do not trigger any notifications (push, email, or SMS). To opt in, set `sendNotification: true` in the message's data payload.
+
+| `sendNotification` value | Behavior |
+| --- | --- |
+| `true` | Notifications are processed normally across all channels |
+| `false` or not set | The message is silently skipped — no notifications are sent |
+
+Set `sendNotification: true` for custom messages that represent user-facing activity (e.g., polls, payments, shared locations). Omit the flag for background or system-level custom messages that should not interrupt the recipient.
+</Note>
+
 #### 4. Poll message templates
 
 | Template for       | Default template values                                                                         | Privacy template values                                                                         |
