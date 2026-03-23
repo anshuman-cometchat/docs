@@ -755,7 +755,7 @@ CometChat.addMessageListener(
 
 </Tabs>
 
-You will receive events in the form of `MessageReceipt` objects. The message receipt contains the below parameters:
+You will receive events in the form of [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) objects. The message receipt contains the below parameters:
 
 | Parameter      | Information                                                                                                                               |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
@@ -766,17 +766,6 @@ You will receive events in the form of `MessageReceipt` objects. The message rec
 | `receiptType`  | Type of the receipt (read/delivered)                                                                                                      |
 | `deliveredAt`  | The timestamp of the time when the message was delivered. This will only be present if the receiptType is delivered.                      |
 | `readAt`       | The timestamp of the time when the message was read. This will only be present when the receiptType is read.                              |
-
-The listener callbacks receive a [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) object. Access the data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| messageId | `getMessageId()` | `string` | ID of the message this receipt is for |
-| sender | `getSender()` | `User` | User who triggered the receipt |
-| receiptType | `getReceiptType()` | `string` | Type of receipt (`"delivery"` or `"read"`) |
-| timestamp | `getTimestamp()` | `number` | Timestamp of the receipt event |
-| deliveredAt | `getDeliveredAt()` | `number` | Timestamp when the message was delivered |
-| readAt | `getReadAt()` | `number` | Timestamp when the message was read |
 
 The `markAsDelivered()` and `markAsRead()` methods are fire-and-forget — they do not return a `MessageReceipt` object. Use the listener callbacks above to receive delivery and read confirmations.
 
@@ -823,7 +812,7 @@ CometChat.getMessageReceipts(messageId).then(
 
 </Tabs>
 
-You will receive a list of `MessageReceipt` objects.
+You will receive a list of [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) objects.
 
 <Info>
 
