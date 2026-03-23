@@ -4399,7 +4399,7 @@
         },
         "/ai-agents/agent-builder/knowledge-base/{sourceType}/{uniqueId}/sync": {
             "patch": {
-                "description": "Triggers re-indexing for a specific knowledge base source by its type and unique ID. Use this endpoint to sync the vector embeddings when the source content has been updated.\n\n**Source types:** Supports uploads, text entries, and website sources.",
+                "description": "Retries the indexing process for a specific knowledge base source that failed during its initial processing. Provide the source type and its unique ID to re-trigger vectorization.\n\n**Supported source types:** `uploads`, `text`, `website`.",
                 "operationId": "RagController_revectorizeSource",
                 "parameters": [
                     {
@@ -4441,7 +4441,7 @@
                         "apiKey": []
                     }
                 ],
-                "summary": "Sync Knowledge Base Source",
+                "summary": "Retry Knowledge Base Source Indexing",
                 "tags": [
                     "knowledge-base"
                 ]
@@ -5205,7 +5205,7 @@
         },
         "/ai-agents/agent-builder/knowledge-base/website/{parentUniqueId}/discovered-urls/sync": {
             "patch": {
-                "description": "Selectively re-processes specific discovered URLs that are not excluded. Use this endpoint to sync individual URLs within a parent website crawl without processing all discovered URLs.",
+                "description": "Retries the indexing process for specific pages under a website knowledge base source. Pass the unique IDs of the pages to re-index, or send an empty array to automatically retry all pages that failed during a previous indexing attempt.",
                 "operationId": "CrawlWebPagesController_syncDiscoveredUrls",
                 "parameters": [
                     {
@@ -5325,7 +5325,7 @@
                         "apiKey": []
                     }
                 ],
-                "summary": "Sync Discovered URLs",
+                "summary": "Retry Indexing for Website Pages",
                 "tags": [
                     "crawl-web-pages"
                 ]
