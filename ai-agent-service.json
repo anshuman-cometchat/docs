@@ -4373,19 +4373,83 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "object"
+                                            "type": "object",
+                                            "properties": {
+                                                "sourceDetails": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "fileName": {
+                                                            "type": "string",
+                                                            "example": "product-guide.pdf"
+                                                        },
+                                                        "totalPages": {
+                                                            "type": "number",
+                                                            "example": 1
+                                                        },
+                                                        "createdAt": {
+                                                            "type": "string",
+                                                            "example": "2026-03-12T12:52:28.063000"
+                                                        }
+                                                    }
+                                                },
+                                                "pageContent": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "content": {
+                                                                "type": "string"
+                                                            },
+                                                            "pageNumber": {
+                                                                "type": "number"
+                                                            },
+                                                            "charCount": {
+                                                                "type": "number"
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         },
                                         "meta": {
-                                            "type": "object"
+                                            "type": "object",
+                                            "properties": {
+                                                "current": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "limit": {
+                                                            "type": "number"
+                                                        },
+                                                        "count": {
+                                                            "type": "number"
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 },
                                 "example": {
-                                    "data": [],
-                                    "meta": {}
+                                    "data": {
+                                        "sourceDetails": {
+                                            "fileName": "product-guide.pdf",
+                                            "totalPages": 1,
+                                            "createdAt": "2026-03-12T12:52:28.063000"
+                                        },
+                                        "pageContent": [
+                                            {
+                                                "content": "This is the extracted text content from the first page of the uploaded document. It contains the information that was indexed into the knowledge base for retrieval during agent conversations.",
+                                                "pageNumber": 1,
+                                                "charCount": 185
+                                            }
+                                        ]
+                                    },
+                                    "meta": {
+                                        "current": {
+                                            "limit": 1,
+                                            "count": 1
+                                        }
+                                    }
                                 }
                             }
                         }
