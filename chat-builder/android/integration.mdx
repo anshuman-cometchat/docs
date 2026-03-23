@@ -37,7 +37,7 @@ Before getting started, make sure you have:
 
 1. Log in to your [CometChat Dashboard](https://app.cometchat.com).
 2. Select your application from the list.
-3. Navigate to **Integrate** → **Android** → **Launch UI Kit Builder**.
+3. Navigate to **Chat & Messaging** → **Get Started / Integrate** → **Android** → **Launch UI Kit Builder**.
 
 ---
 
@@ -96,12 +96,16 @@ Add the CometChat UI Kit dependencies to your app-level `build.gradle.kts`:
 ```kotlin
 dependencies {
     // CometChat UIKit
-    implementation("com.cometchat:chat-uikit-android:5.1.+")
+    implementation("com.cometchat:chat-uikit-android:5.2.+")
 
     // (Optional) Include this if your app uses voice/video calling features
     implementation("com.cometchat:calls-sdk-android:4.1.+")
 }
 ```
+
+<Note>
+  Version 5.2.+ is required for all BuilderSettingsHelper APIs to work correctly.
+</Note>
 
 ### Step 4: Apply the Builder Settings Plugin
 
@@ -149,12 +153,38 @@ Copy the `BuilderSettingsHelper.kt` file from the sample app to your project:
   Update the package declaration in `BuilderSettingsHelper.kt` to match your project's package name. Also remove the `applySettingsToBottomNavigationView` method if you're not using the sample app's navigation structure.
 </Note>
 
+### Step 7.1: Add Bottom Navigation Menu Resource
+
+If you're using the sample app's navigation structure, copy the menu folder from the sample app to your project's resources:
+
+- **Source:** `src/main/res/menu/builder_bottom_nav_menu.xml`
+- **Destination:** `src/main/res/menu/builder_bottom_nav_menu.xml`
+
+<Note>
+  This menu resource is required if `BuilderSettingsHelper.kt` references `R.id.nav_chats`, `R.id.nav_calls`, `R.id.nav_users`, or `R.id.nav_groups`.
+</Note>
+
 ### Step 8: Add Font Resources
 
 Copy the `font` folder from the sample app to your project's resources:
 
 - **Source:** `src/main/res/font`
 - **Destination:** `src/main/res/font`
+
+### Step 8.1: Add Required Permissions
+
+Add the following permissions to your `AndroidManifest.xml` for camera, audio, storage, and internet access:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+<uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+<uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+<uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+```
 
 ### Step 9: Set the Builder Theme
 
@@ -166,6 +196,32 @@ Update your `AndroidManifest.xml` to use the CometChat Builder theme:
     ...>
 </application>
 ```
+
+### Step 9.1: Initialize CometChat UIKit
+
+Before using any CometChat UI components, initialize the UIKit in your Application class or before launching any CometChat activities:
+
+```kotlin
+val uiKitSettings = UIKitSettings.UIKitSettingsBuilder()
+    .setAppId("YOUR_APP_ID")
+    .setRegion("YOUR_REGION")
+    .setAuthKey("YOUR_AUTH_KEY")
+    .subscribePresenceForAllUsers()
+    .build()
+
+CometChatUIKit.init(context, uiKitSettings, object : CometChat.CallbackListener<String>() {
+    override fun onSuccess(successMessage: String?) {
+        // UIKit initialized successfully
+    }
+    override fun onError(e: CometChatException?) {
+        // Handle initialization error
+    }
+})
+```
+
+<Note>
+  Replace `YOUR_APP_ID`, `YOUR_REGION`, and `YOUR_AUTH_KEY` with your actual CometChat credentials from the Dashboard.
+</Note>
 
 ### Step 10: Apply Settings to UI Components
 
@@ -275,6 +331,17 @@ dependencies {
 }
 ```
 
+### Step 5.1: Set Builder Theme
+
+In your app's `AndroidManifest.xml`, set the theme to use the CometChat Builder theme:
+
+```xml
+<application
+    android:theme="@style/CometChat.Builder.Theme"
+    ...>
+</application>
+```
+
 ### Step 6: Add Jetifier Flag
 
 Add to your `gradle.properties`:
@@ -302,7 +369,23 @@ Ensure the imported module is visible in your project and contains all necessary
 
 ### Step 9: Launch Activities
 
-Launch CometChat activities based on your app's state:
+Launch CometChat activities based on your app's state. Here's a complete MainActivity example:
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        // Check login state and navigate accordingly
+        if (CometChatUIKit.isInitialized() && CometChat.getLoggedInUser() != null) {
+            startActivity(Intent(this, HomeActivity::class.java))
+        } else {
+            startActivity(Intent(this, SplashActivity::class.java))
+        }
+        finish()
+    }
+}
+```
 
 **If CometChat is not initialized or user is not logged in:**
 
