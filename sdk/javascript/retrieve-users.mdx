@@ -60,22 +60,13 @@ CometChat.getLoggedinUser().then(
 
 </Tabs>
 
-This method will return a `User` object containing all the information related to the logged-in user.
-
-The method returns a [`User`](/sdk/reference/entities#user) object. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| uid | `getUid()` | `string` | Unique user ID |
-| name | `getName()` | `string` | Display name of the user |
-| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
-| status | `getStatus()` | `string` | Online status of the user |
-| lastActiveAt | `getLastActiveAt()` | `number` | Timestamp when the user was last active |
-| role | `getRole()` | `string` | Role assigned to the user |
+This method returns a [`User`](/sdk/reference/entities#user) object with the logged-in user's information
 
 ## Retrieve List of Users
 
 In order to fetch the list of users, you can use the `UsersRequest` class. To use this class i.e to create an object of the `UsersRequest` class, you need to use the `UsersRequestBuilder` class. The `UsersRequestBuilder` class allows you to set the parameters based on which the users are to be fetched.
+
+Fetching using this builder will return [`User`](/sdk/reference/entities#user) objects
 
 The `UsersRequestBuilder` class allows you to set the below parameters:
 
@@ -206,6 +197,12 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 
 </Tabs>
 
+Relevant fields to access on returned users:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| status | `getStatus()` | `string` | Online status of the user (`"online"` or `"offline"`) |
+
 ### Hide Blocked Users
 
 This method is used to determine if the blocked users should be returned as a part of the user list. If set to true, the user list will not contain the users blocked by the logged in user.
@@ -265,6 +262,12 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 </Tab>
 
 </Tabs>
+
+Relevant fields to access on returned users:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| role | `getRole()` | `string` | Role assigned to the user |
 
 ### Friends Only
 
@@ -326,6 +329,12 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 
 </Tabs>
 
+Relevant fields to access on returned users:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| tags | `getTags()` | `string[]` | Tags associated with the user |
+
 ### With Tags
 
 This property when set to true will fetch tags data along with the list of users.
@@ -354,6 +363,12 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 </Tab>
 
 </Tabs>
+
+Relevant fields to access on returned users:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| tags | `getTags()` | `string[]` | Tags associated with the user |
 
 ### Set UIDs
 
@@ -492,16 +507,7 @@ usersRequest.fetchNext().then(
 
 </Tabs>
 
-The `fetchNext()` method returns an array of [`User`](/sdk/reference/entities#user) objects. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| uid | `getUid()` | `string` | Unique user ID |
-| name | `getName()` | `string` | Display name of the user |
-| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
-| status | `getStatus()` | `string` | Online status of the user |
-| lastActiveAt | `getLastActiveAt()` | `number` | Timestamp when the user was last active |
-| role | `getRole()` | `string` | Role assigned to the user |
+The `fetchNext()` method returns an array of [`User`](/sdk/reference/entities#user) objects.
 
 ## Retrieve Particular User Details
 
@@ -544,18 +550,7 @@ The `getUser()` method takes the following parameters:
 | --------- | ---------------------------------------------------------- |
 | UID       | The UID of the user for whom the details are to be fetched |
 
-It returns the `User` object containing the details of the user.
-
-The method returns a [`User`](/sdk/reference/entities#user) object. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| uid | `getUid()` | `string` | Unique user ID |
-| name | `getName()` | `string` | Display name of the user |
-| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
-| status | `getStatus()` | `string` | Online status of the user |
-| lastActiveAt | `getLastActiveAt()` | `number` | Timestamp when the user was last active |
-| role | `getRole()` | `string` | Role assigned to the user |
+It returns the [`User`](/sdk/reference/entities#user) object containing the details of the user.
 
 ## Get online user count
 
@@ -591,6 +586,8 @@ CometChat.getOnlineUserCount().then(
 </Tabs>
 
 This method returns the total online user count for your app.
+
+`getOnlineUserCount()` resolves with a `number` representing the total count of currently online users in your app.
 
 ---
 
