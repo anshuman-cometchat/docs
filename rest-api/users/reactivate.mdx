@@ -1,3 +1,25 @@
 ---
 openapi: put /users
 ---
+
+## Common errors
+
+| Error Code | HTTP Status | Cause |
+| ---------- | ----------- | ----- |
+| `AUTH_ERR_EMPTY_APIKEY` | 401 | The `apikey` header is missing from the request |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | 401 | The provided API key is invalid |
+| `AUTH_ERR_NO_ACCESS` | 403 | The API key has `authOnly` scope — reactivating users requires a `fullAccess` key |
+| `ERR_UID_NOT_FOUND` | 404 | One or more of the specified UIDs do not exist or were not previously deactivated |
+
+For the complete error reference, see [Error Guide](/articles/error-guide).
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Deactivate Users" href="/rest-api/users/deactivate">
+    Temporarily disable users while preserving their data.
+  </Card>
+  <Card title="List Users" href="/rest-api/users/list">
+    Filter users by status to find deactivated accounts.
+  </Card>
+</CardGroup>

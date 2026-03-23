@@ -1,3 +1,32 @@
 ---
 openapi: delete /users/{uid}
 ---
+
+## Common errors
+
+| Error Code                  | HTTP Status | Cause                                                                         |
+| --------------------------- | ----------- | ----------------------------------------------------------------------------- |
+| `AUTH_ERR_EMPTY_APIKEY`     | 401         | The `apikey` header is missing from the request                               |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | 401         | The provided API key is invalid                                               |
+| `AUTH_ERR_NO_ACCESS`        | 403         | The API key has `authOnly` scope — deleting users requires a `fullAccess` key |
+| `ERR_UID_NOT_FOUND`         | 404         | No user exists with the specified UID                                         |
+
+<Warning>
+  **Deactivate vs permanent delete:** By default, this deactivates the user —
+  the user's message history is preserved but they can no longer log in. Use the
+  `permanent` flag for complete removal of all user data, which cannot be
+  undone.
+</Warning>
+
+For the complete error reference, see [Error Guide](/articles/error-guide).
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Deactivate Users" href="/rest-api/users/deactivate">
+    Temporarily disable users instead of deleting them.
+  </Card>
+  <Card title="Reactivate Users" href="/rest-api/users/reactivate">
+    Restore previously deactivated users.
+  </Card>
+</CardGroup>

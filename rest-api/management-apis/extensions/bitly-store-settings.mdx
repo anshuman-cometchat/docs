@@ -1,3 +1,20 @@
 ---
 openapi: post /apps/{appId}/extensions/url-shortener-bitly/v1/settings
 ---
+
+## Common errors
+
+| Error Code | HTTP Status | Cause |
+| ---------- | ----------- | ----- |
+| `AUTH_ERR_INVALID_APPID` | 401 | The provided `appId` is invalid or does not exist |
+| `AUTH_ERR_INVALID_SECRET_KEY` | 401 | The provided key and/or secret is invalid or incorrect |
+
+For the complete error reference, see [Error Guide](/articles/error-guide).
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Management APIs Overview" href="/rest-api/management-apis">
+    View all management operations.
+  </Card>
+</CardGroup>

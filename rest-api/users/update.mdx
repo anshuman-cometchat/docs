@@ -1,3 +1,25 @@
 ---
 openapi: put /users/{uid}
 ---
+
+## Common errors
+
+| Error Code                  | HTTP Status | Cause                                                                         |
+| --------------------------- | ----------- | ----------------------------------------------------------------------------- |
+| `AUTH_ERR_EMPTY_APIKEY`     | 401         | The `apikey` header is missing from the request                               |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | 401         | The provided API key is invalid                                               |
+| `AUTH_ERR_NO_ACCESS`        | 403         | The API key has `authOnly` scope — updating users requires a `fullAccess` key |
+| `ERR_UID_NOT_FOUND`         | 404         | No user exists with the specified UID, or the user has been deactivated       |
+
+For the complete error reference, see [Error Guide](/articles/error-guide).
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Get User" href="/rest-api/users/get">
+    Retrieve the current user details before updating.
+  </Card>
+  <Card title="Assign a Role" href="/rest-api/roles">
+    Manage roles that can be assigned to users.
+  </Card>
+</CardGroup>

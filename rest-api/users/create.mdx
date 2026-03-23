@@ -4,17 +4,44 @@ openapi: post /users
 
 ## Constraints
 
-| Item | Constraint | Notes |
-| ---- | ---------- | ----- |
-| UID character limit | 100 characters | Alphanumeric with dashes only; spaces not allowed |
-| User name | 100 characters (UTF8mb4) | Supports all languages and emojis |
-| Avatar URL | 3000 characters max | CometChat doesn't store the image; no resolution limit |
-| Profile URL | 3000 characters max | Same as avatar |
-| Metadata | 5 KB max (within 10 KB POST limit) | Store custom key-value pairs |
-| Tags | Up to 25 tags, 100 characters each (UTF8mb4) | Enable filtering and searching |
-| Maximum groups per user | 2000 | Must leave existing groups to join new ones beyond limit |
-| Maximum friends per user | 1000 | Bidirectional relationships count toward both users' limits |
-| Maximum auth tokens per user | No limit | Allows login across multiple devices |
-| Maximum Bot users per app | 25 | Special accounts for automated messaging |
-| Bot UID character limit | 50 characters | Shorter than regular user UIDs |
-| Maximum users per app | No limit | Pricing based on Monthly Active Users (MAU) |
+| Item                         | Constraint                                   | Notes                                                       |
+| ---------------------------- | -------------------------------------------- | ----------------------------------------------------------- |
+| UID character limit          | 100 characters                               | Alphanumeric with dashes only; spaces not allowed           |
+| User name                    | 100 characters (UTF8mb4)                     | Supports all languages and emojis                           |
+| Avatar URL                   | 3000 characters max                          | CometChat doesn't store the image; no resolution limit      |
+| Profile URL                  | 3000 characters max                          | Same as avatar                                              |
+| Metadata                     | 5 KB max (within 10 KB POST limit)           | Store custom key-value pairs                                |
+| Tags                         | Up to 25 tags, 100 characters each (UTF8mb4) | Enable filtering and searching                              |
+| Maximum groups per user      | 2000                                         | Must leave existing groups to join new ones beyond limit    |
+| Maximum friends per user     | 1000                                         | Bidirectional relationships count toward both users' limits |
+| Maximum auth tokens per user | 100 active (rolling retention)               | Oldest tokens are archived when limit is exceeded           |
+| Maximum Bot users per app    | 25                                           | Special accounts for automated messaging                    |
+| Maximum users per app        | No limit                                     | Pricing based on Monthly Active Users (MAU)                 |
+
+## Common errors
+
+| Error Code                  | HTTP Status | Cause                                                                         |
+| --------------------------- | ----------- | ----------------------------------------------------------------------------- |
+| `AUTH_ERR_EMPTY_APIKEY`     | 401         | The `apikey` header is missing from the request                               |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | 401         | The provided API key is invalid or does not exist                             |
+| `AUTH_ERR_NO_ACCESS`        | 403         | The API key has `authOnly` scope — creating users requires a `fullAccess` key |
+| `ERR_UID_ALREADY_EXISTS`    | 409         | A user with the same UID already exists (UIDs are case-insensitive)           |
+
+For the complete error reference, see [Error Guide](/articles/error-guide).
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Create Auth Token" href="/rest-api/auth-tokens/create">
+    Generate an auth token so the user can log in via the SDK.
+  </Card>
+  <Card title="Add to a Group" href="/rest-api/group-members/add-members">
+    Add the newly created user to a group.
+  </Card>
+  <Card title="Send a Message" href="/rest-api/messages/send-message">
+    Send a message on behalf of the user.
+  </Card>
+  <Card title="Assign a Role" href="/rest-api/roles">
+    Configure permissions by assigning a role.
+  </Card>
+</CardGroup>

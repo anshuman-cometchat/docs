@@ -4,8 +4,25 @@ openapi: post /apps
 
 ## Constraints
 
-| Item | Constraint | Notes |
-| ---- | ---------- | ----- |
-| App name | 100 characters (UTF8mb4) | Supports all languages and emojis |
-| App version | v3 | Only option available |
-| Maximum collaborators per app | 25 | Team management limit |
+| Item                          | Constraint               | Notes                             |
+| ----------------------------- | ------------------------ | --------------------------------- |
+| App name                      | 100 characters (UTF8mb4) | Supports all languages and emojis |
+| App version                   | v3                       | Only option available             |
+| Maximum collaborators per app | 25                       | Team management limit             |
+
+## Common errors
+
+| Error Code                    | HTTP Status | Cause                                                  |
+| ----------------------------- | ----------- | ------------------------------------------------------ |
+| `AUTH_ERR_EMPTY_APPID`        | 401         | The `appId` is missing from the request                |
+| `AUTH_ERR_INVALID_SECRET_KEY` | 401         | The provided key and/or secret is invalid or incorrect |
+
+For the complete error reference, see [Error Guide](/articles/error-guide).
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Management APIs Overview" href="/rest-api/management-apis">
+    View all management operations.
+  </Card>
+</CardGroup>

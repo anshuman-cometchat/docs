@@ -1,13 +1,25 @@
 ---
 title: "Overview"
+description: "Manage user blocking to control who can communicate with whom in your CometChat app."
 ---
 
-A user can block another user if the user doesn't wish to receive any messages or notifications from the blocked user.\
-Once any user is blocked, all the communication to and from the respective user will be completely blocked.\
-Once the user is unblocked, the newly sent messages will start to receive. However the messages that was sent during the blocked period won't be visible.
+The **Blocked Users** API lets a user block or unblock other users. When User A blocks User B, User A will no longer be able to send messages to User B. User B can still send messages, but those messages will be silently dropped and will not be delivered to User A.
 
-The following table lists the properties that the Blocked User API supports.
+### Key behaviors
 
-| Parameters  | Type             | Description                                                       |
-| ----------- | ---------------- | ----------------------------------------------------------------- |
-| blockedUids | array of strings | (*optional*) Indicates the list of uids that needs to be blocked. |
+- When A blocks B, **A cannot send messages to B**, and **messages sent by B to A are silently dropped** — B is not notified that they have been blocked and can still send messages as usual from their perspective.
+- Blocking is **unidirectional** — if A blocks B, B can still independently block A. Both users must unblock the other separately to restore communication between them.
+- Blocking does not remove users from shared groups, but direct messages between the two users are affected as described above.
+
+### Relationships
+
+- **Users** — Blocking operates between two [Users](/rest-api/users). The `onBehalfOf` header specifies which user is performing the block action.
+- **Messages** — The blocker (A) cannot send messages to the blocked user (B). Messages sent by the blocked user (B) to the blocker (A) are silently dropped. B is not informed that their messages are not being delivered.
+
+### Error handling
+
+| Error Code | Description |
+| ---------- | ----------- |
+| `ERR_UID_NOT_FOUND` | The specified user does not exist |
+
+For the complete list of error codes, see [Error Guide](/articles/error-guide).

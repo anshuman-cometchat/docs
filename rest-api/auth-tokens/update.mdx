@@ -1,3 +1,26 @@
 ---
 openapi: put /users/{uid}/auth_tokens/{authToken}
 ---
+
+## Common errors
+
+| Error Code | HTTP Status | Cause |
+| ---------- | ----------- | ----- |
+| `AUTH_ERR_EMPTY_APIKEY` | 401 | The `apikey` header is missing from the request |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | 401 | The provided API key is invalid or does not exist |
+| `AUTH_ERR_NO_ACCESS` | 403 | The API key doesn't have the required scope for this operation |
+| `ERR_UID_NOT_FOUND` | 404 | No user exists with the specified UID |
+| `ERR_AUTH_TOKEN_NOT_FOUND` | 404 | The specified auth token does not exist |
+
+For the complete error reference, see [Error Guide](/articles/error-guide).
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Get Auth Token" href="/rest-api/auth-tokens/get">
+    Retrieve details of a specific token.
+  </Card>
+  <Card title="List Auth Tokens" href="/rest-api/auth-tokens/list">
+    View all tokens for the user.
+  </Card>
+</CardGroup>

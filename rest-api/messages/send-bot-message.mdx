@@ -1,3 +1,25 @@
 ---
 openapi: post /bots/{uid}/messages
 ---
+
+## Common errors
+
+| Error Code                  | HTTP Status | Cause                                                          |
+| --------------------------- | ----------- | -------------------------------------------------------------- |
+| `AUTH_ERR_EMPTY_APIKEY`     | 401         | The `apikey` header is missing from the request                |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | 401         | The provided API key is invalid or does not exist              |
+| `AUTH_ERR_NO_ACCESS`        | 403         | The API key doesn't have the required scope for this operation |
+| `ERR_BOT_NOT_FOUND`         | 404         | No bot exists with the specified UID                           |
+
+For the complete error reference, see [Error Guide](/articles/error-guide).
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Send Message" href="/rest-api/messages/send-message">
+    Send a regular user message.
+  </Card>
+  <Card title="Create User" href="/rest-api/users/create">
+    Create the bot user first.
+  </Card>
+</CardGroup>
