@@ -1,47 +1,77 @@
 ---
 title: "Overview"
+description: "Retrieve call logs and session details for audio and video calls in your CometChat app."
 ---
 
-The Calls API provides programmatic access to the logs. Below, we have mentioned the key properties.
+The **Calls** API provides access to call logs and session details. You can retrieve information about call duration, participants, recordings, and status for both audio and video calls.
 
-| Parameters                 | Type             | Description                                                                                                               |
-| -------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| **sessionId**              | string           | Specifies the call's unique ID.                                                                                           |
-| **receiverType**           | string           | Specifies the receiver type of the call. Possible values: users/groups.                                                   |
-| **totalAudioMinutes**      | float            | Indicates the total audio minutes of the call.                                                                            |
-| **totalVideoMinutes**      | float            | Indicates the total video minutes of the call.                                                                            |
-| **totalDurationInMinutes** | float            | Indicates the total call minutes. Basically addition of audio & video minutes.                                            |
-| **totalDuration**          | string           | Representation of total call minutes in timer format.                                                                     |
-| **hasRecording**           | boolean          | Indicates if the call has recording in it.                                                                                |
-| **mode**                   | string           | It represents the mode of the call. Possible values: call/meet/presenter                                                  |
-| **startedAt**              | integer          | 10-digit unix timestamp indicating when the call was initiated.                                                           |
-| **status**                 | string           | It represents the current status of the call. Possible values: initiated, ongoing, ended, unanswered, rejected, canceled. |
-| **type**                   | string           | Indicating the type of the call. Possible values: audio/video                                                             |
-| **totalParticipants**      | integer          | Indicating the participants count of the call. If a user joins from multiple devices, it would be accounted separately.   |
-| **endedAt**                | integer          | 10-digit unix timestamp indicating when the call was ended.                                                               |
-| **participants**           | array of objects | It includes details of individual participants who were a part of the call.                                               |
-|                            |                  |                                                                                                                           |
+### Key behaviors
 
-Participants:
+- A call can have up to **50 participants**.
+- Video calls support resolutions from **180p to 720p**, depending on layout and bandwidth.
+- Media is encrypted using **SRTP**. Audio uses the **OPUS** codec; video uses **H.264**.
+- If a participant joins from multiple devices, each device is counted separately in `totalParticipants`.
 
-| Parameters                 | Type    | description                                                                      |
-| -------------------------- | ------- | -------------------------------------------------------------------------------- |
-| **uid**                    | string  | Indicates unique identifier of an user.                                          |
-| **totalAudioMinutes**      | float   | Indicates the total audio minutes that the user was a part of the call.          |
-| **totalVideoMinutes**      | float   | Indicates the total video minutes that the user was a part of the call.          |
-| **totalDurationInMinutes** | float   | Indicates the total call minutes that the user was a part of.                    |
-| **deviceId**               | string  | Unique identifier of the device from where the user joined the call.             |
-| **isJoined**               | boolean | Indicates if the user joined the call.                                           |
-| **joinedAt**               | integer | 10-digit Unix timestamp indicating the joining time of the user.                 |
-| **state**                  | string  | Current state of the user. Possible values: ongoing, ended, unanswered, rejected |
-| **leftAt**                 | integer | 10-digit Unix timestamp indicating the leaving time of the user from the call.   |
+### How calls connect to other resources
 
-Recordings:
+- **Users** — Calls are initiated by and delivered to [Users](/rest-api/users). Each participant is identified by their UID.
+- **Groups** — Calls can target a [Group](/rest-api/groups) when `receiverType` is `groups`.
 
-| Parameters         | Type    | description                                                        |
-| ------------------ | ------- | ------------------------------------------------------------------ |
-| **rid**            | string  | Indicates unique identifier of the recording.                      |
-| **duration**       | float   | Indicates total recording time of the call.                        |
-| **startTime**      | integer | 10-digit Unix timestamp indicating when the recording was started. |
-| **endTime**        | integer | 10-digit Unix timestamp indicating when the recording was ended.   |
-| **recording\_url** | string  | Indicates the S3 URL of the call recording.                        |
+### Available operations
+
+| Operation                          | Method | Endpoint           | Description                         |
+| ---------------------------------- | ------ | ------------------ | ----------------------------------- |
+| [List Calls](/rest-api/list-calls) | `GET`  | `/calls`           | Retrieve a paginated list of calls  |
+| [Get Call](/rest-api/get-call)     | `GET`  | `/calls/{session}` | Retrieve details of a specific call |
+
+### Call properties
+
+| Property                   | Type             | Description                                                                               |
+| -------------------------- | ---------------- | ----------------------------------------------------------------------------------------- |
+| **sessionId**              | string           | Unique call identifier.                                                                   |
+| **type**                   | string           | Call type: `audio` or `video`.                                                            |
+| **mode**                   | string           | Call mode: `call`, `meet`, or `presenter`.                                                |
+| **receiverType**           | string           | Receiver type: `users` or `groups`.                                                       |
+| **status**                 | string           | Current status: `initiated`, `ongoing`, `ended`, `unanswered`, `rejected`, or `canceled`. |
+| **totalAudioMinutes**      | float            | Total audio minutes across all participants.                                              |
+| **totalVideoMinutes**      | float            | Total video minutes across all participants.                                              |
+| **totalDurationInMinutes** | float            | Total call duration (audio + video minutes).                                              |
+| **totalDuration**          | string           | Total call duration in timer format (e.g., `00:05:30`).                                   |
+| **totalParticipants**      | integer          | Number of participant entries. Multi-device joins are counted separately.                 |
+| **hasRecording**           | boolean          | Whether the call has a recording.                                                         |
+| **startedAt**              | integer          | UNIX timestamp of when the call was initiated.                                            |
+| **endedAt**                | integer          | UNIX timestamp of when the call ended.                                                    |
+| **participants**           | array of objects | Details of individual participants (see below).                                           |
+
+### Participant properties
+
+| Property                   | Type    | Description                                                         |
+| -------------------------- | ------- | ------------------------------------------------------------------- |
+| **uid**                    | string  | User's unique identifier.                                           |
+| **totalAudioMinutes**      | float   | Audio minutes for this participant.                                 |
+| **totalVideoMinutes**      | float   | Video minutes for this participant.                                 |
+| **totalDurationInMinutes** | float   | Total call duration for this participant.                           |
+| **deviceId**               | string  | Unique identifier of the device used to join.                       |
+| **isJoined**               | boolean | Whether the user joined the call.                                   |
+| **joinedAt**               | integer | UNIX timestamp of when the user joined.                             |
+| **leftAt**                 | integer | UNIX timestamp of when the user left the call.                      |
+| **state**                  | string  | Participant state: `ongoing`, `ended`, `unanswered`, or `rejected`. |
+
+### Recording properties
+
+| Property          | Type    | Description                                   |
+| ----------------- | ------- | --------------------------------------------- |
+| **rid**           | string  | Unique recording identifier.                  |
+| **duration**      | float   | Total recording duration in minutes.          |
+| **startTime**     | integer | UNIX timestamp of when the recording started. |
+| **endTime**       | integer | UNIX timestamp of when the recording ended.   |
+| **recording_url** | string  | URL to the call recording file.               |
+
+### Error handling
+
+| Error Code                  | Description                                 |
+| --------------------------- | ------------------------------------------- |
+| `AUTH_ERR_EMPTY_APIKEY`     | API key is missing from the request headers |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | The provided API key is invalid             |
+
+For the complete list of error codes, see [Error Guide](/articles/error-guide).

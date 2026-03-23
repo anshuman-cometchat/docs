@@ -1,60 +1,39 @@
 ---
 title: "Overview"
+description: "Import users, groups, members, and message history from a previous chat system into CometChat."
 ---
 
-The CometChat Data Import REST API provides an efficient way to import users, groups, group members, and messages from your previous chat system to CometChat. This API allows you to seamlessly transition from your previous chat system with minimal disruption to your users.
+The **Data Import** API provides an efficient way to migrate data from your previous chat system to CometChat. You can import users, groups, group members, and full message history in bulk.
 
-### Key Features
+### Key capabilities
 
-* **Import Users:** Create multiple users at once in your CometChat app by importing them from an existing data source.
+- **Import Users** — Create multiple users at once from an existing data source.
+- **Import Groups** — Migrate all existing groups into your CometChat app.
+- **Import Members** — Add members to specific groups during migration.
+- **Import Messages** — Migrate chat history including 1-on-1 and group messages.
 
-* **Import Groups:** Easily migrate all your existing groups into your CometChat app.
+### Getting started
 
-* **Import Members:** Import members to join specific groups in your CometChat app.
+All Data Import API requests require your `appId`, `apiKey`, and `region`, available from the [CometChat Dashboard](https://app.cometchat.com/). Requests must be made over HTTPS.
 
-* **Import Messages:** Migrate your existing chat history, including one-on-one messages and group messages into your CometChat app.
+Base URL:
 
-### Getting Started
-
-To start using the CometChat Import REST API, you'll need your AppID, API Key and region, which can be obtained from your CometChat [Dashboard](https://app.cometchat.com/). All API requests must be made over HTTPS.
-
-The base URL for all CometChat Pro REST API requests is `https://<appId>.api-<region>.cometchat.com/v3.0/data_import`.
-
-Be sure to replace `'appId'` and `'region'` with your actual App ID and region respectively in the API endpoint.
-
-<Frame>
-  <img src="/images/953d4518-8c4acc3-cometchat_dashboard_credentials.png" />
-</Frame>
-
-## Authentication
-
-Authentication is a crucial aspect of utilizing CometChat's REST API securely. All API requests must be accompanied by an API key to authenticate the incoming requests. CometChat employs industry-standard authentication mechanisms to ensure the security and integrity of your data.
-
-## Endpoints
-
-CometChat's Data Import APIs are designed to be intuitive and easy to integrate into your application's backend infrastructure.\
-Example of a Import Users API request in curl command syntax:
-
-<CodeGroup>
-
-```swift cURL
-curl -X POST \
--H "Content-Type: application/json" \
--H "apiKey: YOUR_APIKEY_HERE" \
--d '{
-   "users": {
-        "test_uid": {
-            "uid": "test_uid",
-            "name": "Atlas"
-        },
-        "test_uid2": {
-            "uid": "test_uid2",
-            "name": "Apollo"
-        }
-    }
-}' "http://<appId>.api-<region>.cometchat.io/v3.0/data_import/users"
+```
+https://<appId>.api-<region>.cometchat.io/v3.0/data_import
 ```
 
-</CodeGroup>
+Replace `<appId>` and `<region>` with your actual App ID and region.
 
-*Replace appId, apiKey and region in the curl request.*
+### Rate limits
+
+Data import operations are rate-limited to **60 requests per minute**. See [Rate Limits](/rest-api/rate-limits) for details.
+
+### Error handling
+
+| Error Code                  | Description                                          |
+| --------------------------- | ---------------------------------------------------- |
+| `AUTH_ERR_EMPTY_APIKEY`     | API key is missing from the request headers          |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | The provided API key is invalid                      |
+| `ERR_TOO_MANY_REQUESTS`     | Rate limit exceeded — retry after the specified time |
+
+For the complete list of error codes, see [Error Guide](/articles/error-guide).

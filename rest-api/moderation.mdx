@@ -1,38 +1,55 @@
 ---
 title: "Overview"
+description: "Create and manage content moderation rules to maintain a safe environment across your CometChat app."
 ---
 
-The Moderation Service API provides endpoints for managing and enforcing content moderation rules across various types of messages. This API enables you to create, read, update, and delete (CRUD) rules and keyword lists, ensuring your platform maintains a safe and compliant environment for users.
+The **Moderation** API provides endpoints for managing content moderation rules and keyword lists. You can define rules that automatically detect and block inappropriate content in messages, including text profanity, AI-based image/video moderation, and custom keyword filters.
 
+### Key behaviors
 
+- Default rules cover text profanity, AI-based image/video moderation, custom profanity, contact details, and email content.
+- Text and custom profanity filters scan for words (including regex patterns) and drop the message if a violation is detected.
+- AI-based image/video moderation scans attachments and discards the message if a violation is found.
+- When a rule is violated, the message is blocked. Optionally, the sender can be kicked or banned (in groups) or blocked (in 1-on-1 conversations).
 
-Below is an overview of the key functionalities provided by the Moderation Service API:
+### How moderation connects to other resources
 
-1. The Rules Management endpoints allow you to define and manage moderation rules to handle inappropriate content based on various conditions
-2. The Keywords Management endpoints allow you to create and manage lists of keywords or regex patterns used for content moderation.
-3. The list blocked messages endpoint allows you to fetch all the violated messages.
-4. Fetches the historical revisions of a rule, detailing all updates made over time.
+- **Messages** — Moderation rules are evaluated against [Messages](/rest-api/messages) in real time before delivery.
+- **Groups** — Violations in group messages can trigger member kicks or bans via [Group Members](/rest-api/group-members) and [Banned Users](/rest-api/banned-users).
+- **Blocked Users** — Violations in 1-on-1 messages can trigger a [block](/rest-api/blocked-users) on the sender.
 
+### AI image and video moderation labels
 
+The following labels can be attached to a rule to moderate specific categories of images and videos:
 
-The default rules include text profanity, AI-based moderation for images and videos, custom profanity (custom messages), contact details, and email content, ensuring comprehensive content moderation.
+| Label                 | Description                                                                                      |
+| --------------------- | ------------------------------------------------------------------------------------------------ |
+| Violence              | Instruments or devices used to cause harm — firearms, sharp weapons, explosives, and ammunition. |
+| Alcohol               | Drinking alcoholic beverages from bottles or glasses.                                            |
+| Gambling              | Participating in games of chance — cards, roulette, slot machines.                               |
+| Drugs & Tobacco       | Tablets, capsules, or the act of smoking cigarettes, cigars, e-cigarettes, hookah, or joints.    |
+| Rude gestures         | Hand gesture with the middle finger extended.                                                    |
+| Explicit Nudity       | Visible human genitalia.                                                                         |
+| Non-Explicit Nudity   | Exposed human back from neck to spine without full occlusion.                                    |
+| Swimwear or underwear | Swimwear or undergarments — bikinis, swim trunks, swim briefs, etc.                              |
+| Visually Disturbing   | Extremely thin, undernourished human bodies with severe physical wasting.                        |
+| Hate symbols          | Symbols, flags, or gestures associated with extremist or terrorist groups.                       |
 
-The text profanity and custom profanity filters scan for words, including those matching regex patterns, and drop the message if a violation is detected.
+### Available operations
 
-The AI-based image and video moderation system scans for violations in images and videos and discards the message if a violation is detected. It allows the attachment of the following labels to a rule, enabling moderation for specific categories of images and videos.\
-Following are the labels that are available for Image/Video moderation:
+| Operation             | Description                                                                               |
+| --------------------- | ----------------------------------------------------------------------------------------- |
+| Rules Management      | Create, read, update, and delete moderation rules that define how content is evaluated.   |
+| Keywords Management   | Create and manage keyword lists or regex patterns used for text-based content moderation. |
+| List Blocked Messages | Retrieve all messages that violated moderation rules.                                     |
+| Rule Revision History | Fetch historical revisions of a rule, showing all updates made over time.                 |
 
-| Labels                | Definitions                                                                                                                                                                                                                                                                  |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Violence              | Instruments or devices used to cause harm or damage to living beings, structures, or systems. This includes firearms (e.g., guns, rifles, machine guns, etc.), sharp weapons (e.g., swords, knives, etc.), explosives and ammunition (e.g., missiles, bombs, bullets, etc.). |
-| Alcohol               | The act of drinking alcoholic beverages from bottles or glasses of alcohol or liquor.                                                                                                                                                                                        |
-| Gambling              | The act of participating in games of chance for a chance to win a prize in casinos, e.g., playing cards, blackjacks, roulette, slot machines at casinos, etc.                                                                                                                |
-| Drugs & Tobacco       | Small, solid, often round or oval-shaped tables or capsules. The act of inhaling, exhaling, and lighting up burning substances including cigarettes, cigars, e-cigarettes, hookah, or joint.                                                                                 |
-| Rude gestures         | Visual depiction of a hand gesture with middle finger is extended upward while the other fingers are folded down.                                                                                                                                                            |
-| Explicit Nudity       | Human male/female genitalia, including the penis (whether erect or flaccid), the scrotum, and any discernible pubic hair.                                                                                                                                                    |
-| Non-Explicit Nudity   | Human posterior part where the majority of the skin is visible from the neck to the end of the spine. This term does not apply when the individual's back is partially or fully occluded.                                                                                    |
-| Swimwear or underwear | Human clothing for female/male swimwear (e.g., one-piece swimsuits, bikinis, tankinis, swim trunks, boardshorts, swim briefs, etc)                                                                                                                                           |
-| Visually Disturbing   | Human bodies that are extremely thin and undernourished with severe physical wasting and depletion of muscle and fat tissue.                                                                                                                                                 |
-| Hate symbols          | Visual depiction of symbols, flags, or gestures associated with Nazi Party. Images containing extremist and terrorist group flags.                                                                                                                                           |
+### Error handling
 
-When a rule is violated, the message will be blocked, and there is an option to either kick or ban the user in groups, or block the user in one-on-one interactions.
+| Error Code                  | Description                                 |
+| --------------------------- | ------------------------------------------- |
+| `AUTH_ERR_EMPTY_APIKEY`     | API key is missing from the request headers |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | The provided API key is invalid             |
+| `AUTH_ERR_NO_ACCESS`        | The API key doesn't have the required scope |
+
+For the complete list of error codes, see [Error Guide](/articles/error-guide).
