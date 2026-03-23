@@ -96,7 +96,7 @@
         ]
       },
       {
-        "product": "Chat & Calling",
+        "product": "Chat & Messaging",
         "tabs": [
           {
             "tab": "Chat & Calling",
@@ -457,7 +457,8 @@
                                   "ui-kit/react/astro-one-to-one-chat",
                                   "ui-kit/react/astro-tab-based-chat"
                                 ]
-                              }
+                              },
+                              "ui-kit/react/calling-integration"
                             ]
                           },
                           {
@@ -884,7 +885,29 @@
                         "group": " ",
                         "pages": [
                           "ui-kit/react-native/overview",
-                          "ui-kit/react-native/getting-started",
+                          {
+                            "group": "Getting Started",
+                            "pages": [
+                              {
+                                "group": "React Native CLI",
+                                "pages": [
+                                  "ui-kit/react-native/react-native-cli-integration",
+                                  "ui-kit/react-native/react-native-conversation",
+                                  "ui-kit/react-native/react-native-one-to-one-chat",
+                                  "ui-kit/react-native/react-native-tab-based-chat"
+                                ]
+                              },
+                              {
+                                "group": "Expo",
+                                "pages": [
+                                  "ui-kit/react-native/expo-integration",
+                                  "ui-kit/react-native/expo-conversation",
+                                  "ui-kit/react-native/expo-one-to-one-chat",
+                                  "ui-kit/react-native/expo-tab-based-chat"
+                                ]
+                              }
+                            ]
+                          },
                           {
                             "group": "Features",
                             "pages": [
@@ -929,33 +952,36 @@
                             ]
                           },
                           {
-                            "group": "References",
+                            "group": "Reference",
                             "pages": [
                               "ui-kit/react-native/methods",
                               "ui-kit/react-native/events"
                             ]
                           },
                           {
-                            "group": "Advanced",
-                            "pages": [
-                              "ui-kit/react-native/multi-tab-chat-ui-guide",
-                              "ui-kit/react-native/expo-integration-guide",
-                              "ui-kit/react-native/apple-privacy-manifest-guide",
-                              "ui-kit/react-native/mentions-formatter-guide",
-                              "ui-kit/react-native/shortcut-formatter-guide"
-                            ]
-                          },
-                          {
                             "group": "Guides",
-                            "pages": ["ui-kit/react-native/guide-ai-agent"]
+                            "pages": [
+                              "ui-kit/react-native/guide-overview",
+                              "ui-kit/react-native/guide-ai-agent",
+                              "ui-kit/react-native/guide-new-chat",
+                              "ui-kit/react-native/guide-group-chat",
+                              "ui-kit/react-native/guide-threaded-messages",
+                              "ui-kit/react-native/guide-search-messages",
+                              "ui-kit/react-native/guide-block-unblock-user",
+                              "ui-kit/react-native/custom-text-formatter-guide",
+                              "ui-kit/react-native/mentions-formatter-guide",
+                              "ui-kit/react-native/url-formatter-guide",
+                              "ui-kit/react-native/shortcut-formatter-guide",
+                              "ui-kit/react-native/apple-privacy-manifest-guide"
+                            ]
                           },
                           {
                             "group": "Migration Guide",
                             "pages": [
-                              "ui-kit/react-native/upgrading-from-v4",
-                              "ui-kit/react-native/property-changes"
+                              "ui-kit/react-native/upgrading-from-v4" 
                             ]
-                          },
+                          }, 
+                          "ui-kit/react-native/troubleshooting",
                           "ui-kit/react-native/link/sample",
                           "ui-kit/react-native/link/changelog"
                         ]
@@ -1188,7 +1214,8 @@
                               "ui-kit/ios/getting-started",
                               "ui-kit/ios/ios-conversation",
                               "ui-kit/ios/ios-one-to-one-chat",
-                              "ui-kit/ios/ios-tab-based-chat"
+                              "ui-kit/ios/ios-tab-based-chat",
+                              "ui-kit/ios/calling-integration"
                             ]
                           },
                           {
@@ -1504,7 +1531,8 @@
                               "ui-kit/android/getting-started",
                               "ui-kit/android/android-conversation",
                               "ui-kit/android/android-one-to-one-chat",
-                              "ui-kit/android/android-tab-based-chat"
+                              "ui-kit/android/android-tab-based-chat",
+                              "ui-kit/android/calling-integration"
                             ]
                           },
                           {
@@ -1833,7 +1861,8 @@
                               "ui-kit/flutter/getting-started",
                               "ui-kit/flutter/flutter-conversation",
                               "ui-kit/flutter/flutter-one-to-one-chat",
-                              "ui-kit/flutter/flutter-tab-based-chat"
+                              "ui-kit/flutter/flutter-tab-based-chat",
+                              "ui-kit/flutter/calling-integration"
                             ]
                           },
                           {
@@ -1912,8 +1941,7 @@
                           {
                             "group": "Migration Guide",
                             "pages": [
-                              "ui-kit/flutter/upgrading-from-v4",
-                              "ui-kit/flutter/property-changes"
+                              "ui-kit/flutter/upgrading-from-v4"
                             ]
                           },
                           "ui-kit/flutter/link/sample",
@@ -2949,7 +2977,14 @@
                             "pages": [
                               "sdk/react-native/resources-overview",
                               "sdk/react-native/real-time-listeners",
-                              "sdk/react-native/push-notification-setup",
+                              {
+                                "group": "Push Notifications",
+                                "pages": [
+                                  "notifications/react-native-push-notifications-android",
+                                  "notifications/react-native-push-notifications-ios"
+                                ]
+                              },
+                              "sdk/react-native/push-notification-html-stripping",
                               "sdk/react-native/upgrading-from-v3"
                             ]
                           },
@@ -4890,6 +4925,325 @@
         ]
       },
       {
+        "product": "Voice & Video Calling",
+        "tabs": [
+          {
+            "tab": "Calling",
+            "pages": [
+              "calls"
+            ]
+          },
+          {
+            "tab": "Platform",
+            "pages": [
+              "calls/platform/overview",
+              "calls/platform/features",
+              "calls/platform/compatibility",
+              "calls/platform/user-sync"
+            ]
+          },
+          {
+            "tab": "SDK",
+            "tab-id": "calls-sdk",
+            "dropdowns": [
+              {
+                "dropdown": "JavaScript",
+                "icon": "/images/icons/js.svg",
+                "pages": [
+                  {
+                    "group": "Overview",
+                    "pages": [
+                      "calls/javascript/overview"
+                    ]
+                  },
+                  {
+                    "group": "Integrations",
+                    "pages": [
+                      "calls/javascript/react-integration",
+                      "calls/javascript/vue-integration",
+                      "calls/javascript/angular-integration",
+                      "calls/javascript/nextjs-integration",
+                      "calls/javascript/ionic-integration"
+                    ]
+                  },
+                  {
+                    "group": "Getting Started",
+                    "pages": [
+                      "calls/javascript/setup",
+                      "calls/javascript/authentication"
+                    ]
+                  },
+                  {
+                    "group": "Call Session",
+                    "pages": [
+                      "calls/javascript/session-settings",
+                      "calls/javascript/join-session",
+                      "calls/javascript/actions",
+                      "calls/javascript/events"
+                    ]
+                  },
+                  {
+                    "group": "Features",
+                    "pages": [
+                      "calls/javascript/ringing",
+                      "calls/javascript/call-layouts",
+                      "calls/javascript/recording",
+                      "calls/javascript/call-logs",
+                      "calls/javascript/participant-management",
+                      "calls/javascript/screen-sharing",
+                      "calls/javascript/virtual-background",
+                      "calls/javascript/picture-in-picture",
+                      "calls/javascript/raise-hand",
+                      "calls/javascript/idle-timeout"
+                    ]
+                  },
+                  {
+                    "group": "Advanced",
+                    "pages": [
+                      "calls/javascript/custom-control-panel",
+                      "calls/javascript/device-management",
+                      "calls/javascript/permissions-handling",
+                      "calls/javascript/in-call-chat",
+                      "calls/javascript/share-invite"
+                    ]
+                  }
+                ]
+              },
+              {
+                "dropdown": "React Native",
+                "icon": "/images/icons/react.svg",
+                "pages": [
+                  {
+                    "group": "Overview",
+                    "pages": [
+                      "calls/react-native/overview"
+                    ]
+                  },
+                  {
+                    "group": "Getting Started",
+                    "pages": [
+                      "calls/react-native/setup",
+                      "calls/react-native/authentication",
+                      "calls/react-native/session-settings"
+                    ]
+                  },
+                  {
+                    "group": "Call Session",
+                    "pages": [
+                      "calls/react-native/join-session",
+                      "calls/react-native/actions",
+                      "calls/react-native/events"
+                    ]
+                  },
+                  {
+                    "group": "Features",
+                    "pages": [
+                      "calls/react-native/call-layouts",
+                      "calls/react-native/call-logs",
+                      "calls/react-native/recording",
+                      "calls/react-native/participant-management",
+                      "calls/react-native/screen-sharing",
+                      "calls/react-native/audio-modes",
+                      "calls/react-native/raise-hand",
+                      "calls/react-native/idle-timeout",
+                      "calls/react-native/ringing"
+                    ]
+                  },
+                  {
+                    "group": "Advanced",
+                    "pages": [
+                      "calls/react-native/picture-in-picture",
+                      "calls/react-native/voip-calling",
+                      "calls/react-native/background-handling",
+                      "calls/react-native/custom-control-panel",
+                      "calls/react-native/custom-participant-list",
+                      "calls/react-native/in-call-chat",
+                      "calls/react-native/share-invite"
+                    ]
+                  }
+                ]
+              },
+              {
+                "dropdown": "iOS",
+                "icon": "/images/icons/swift.svg",
+                "pages": [
+                  {
+                    "group": "Overview",
+                    "pages": [
+                      "calls/ios/overview"
+                    ]
+                  },
+                  {
+                    "group": "Getting Started",
+                    "pages": [
+                      "calls/ios/setup",
+                      "calls/ios/authentication"
+                    ]
+                  },
+                  {
+                    "group": "Call Session",
+                    "pages": [
+                      "calls/ios/session-settings",
+                      "calls/ios/join-session",
+                      "calls/ios/actions",
+                      "calls/ios/events"
+                    ]
+                  },
+                  {
+                    "group": "Features",
+                    "pages": [
+                      "calls/ios/ringing",
+                      "calls/ios/call-layouts",
+                      "calls/ios/audio-modes",
+                      "calls/ios/recording",
+                      "calls/ios/call-logs",
+                      "calls/ios/participant-management",
+                      "calls/ios/screen-sharing",
+                      "calls/ios/picture-in-picture",
+                      "calls/ios/raise-hand",
+                      "calls/ios/idle-timeout"
+                    ]
+                  },
+                  {
+                    "group": "Advanced",
+                    "pages": [
+                      "calls/ios/custom-control-panel",
+                      "calls/ios/custom-participant-list",
+                      "calls/ios/voip-calling",
+                      "calls/ios/background-handling",
+                      "calls/ios/in-call-chat",
+                      "calls/ios/share-invite"
+                    ]
+                  }
+                ]
+              },
+              {
+                "dropdown": "Android",
+                "icon": "/images/icons/android.svg",
+                "pages": [
+                  {
+                    "group": "Overview",
+                    "pages": [
+                      "calls/android/overview"
+                    ]
+                  },
+                  {
+                    "group": "Getting Started",
+                    "pages": [
+                      "calls/android/setup",
+                      "calls/android/authentication"
+                    ]
+                  },
+                  {
+                    "group": "Call Session",
+                    "pages": [
+                      "calls/android/session-settings",
+                      "calls/android/join-session",
+                      "calls/android/actions",
+                      "calls/android/events"
+                    ]
+                  },
+                  {
+                    "group": "Features",
+                    "pages": [
+                      "calls/android/ringing",
+                      "calls/android/call-layouts",
+                      "calls/android/audio-modes",
+                      "calls/android/recording",
+                      "calls/android/call-logs",
+                      "calls/android/participant-management",
+                      "calls/android/screen-sharing",
+                      "calls/android/picture-in-picture",
+                      "calls/android/raise-hand",
+                      "calls/android/idle-timeout"
+                    ]
+                  },
+                  {
+                    "group": "Advanced",
+                    "pages": [
+                      "calls/android/custom-control-panel",
+                      "calls/android/custom-participant-list",
+                      "calls/android/voip-calling",
+                      "calls/android/background-handling",
+                      "calls/android/in-call-chat",
+                      "calls/android/share-invite"
+                    ]
+                  }
+                ]
+              },
+              {
+                "dropdown": "Flutter",
+                "icon": "/images/icons/flutter.svg",
+                "pages": [
+                  {
+                    "group": "Overview",
+                    "pages": [
+                      "calls/flutter/overview"
+                    ]
+                  },
+                  {
+                    "group": "Getting Started",
+                    "pages": [
+                      "calls/flutter/setup",
+                      "calls/flutter/authentication"
+                    ]
+                  },
+                  {
+                    "group": "Call Session",
+                    "pages": [
+                      "calls/flutter/session-settings",
+                      "calls/flutter/join-session",
+                      "calls/flutter/actions",
+                      "calls/flutter/events"
+                    ]
+                  },
+                  {
+                    "group": "Features",
+                    "pages": [
+                      "calls/flutter/ringing",
+                      "calls/flutter/call-layouts",
+                      "calls/flutter/audio-modes",
+                      "calls/flutter/recording",
+                      "calls/flutter/call-logs",
+                      "calls/flutter/participant-management",
+                      "calls/flutter/screen-sharing",
+                      "calls/flutter/picture-in-picture",
+                      "calls/flutter/raise-hand",
+                      "calls/flutter/idle-timeout"
+                    ]
+                  },
+                  {
+                    "group": "Advanced",
+                    "pages": [
+                      "calls/flutter/custom-control-panel",
+                      "calls/flutter/custom-participant-list",
+                      "calls/flutter/voip-calling",
+                      "calls/flutter/background-handling",
+                      "calls/flutter/in-call-chat",
+                      "calls/flutter/share-invite"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "API",
+            "tab-id": "calls-api",
+            "pages": [
+              {
+                "group": "Calls",
+                "pages": [
+                  "calls/api/overview",
+                  "calls/api/list-calls",
+                  "calls/api/get-call"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
         "product": "AI Agents",
         "tabs": [
           {
@@ -5221,12 +5575,20 @@
   },
   "redirects": [
     {
+      "source": "/react-native/getting-started",
+      "destination": "/react-native/react-native-cli-integration"
+    },
+    {
       "source": "/ui-kit/react/property-changes",
       "destination": "/ui-kit/react/upgrading-from-v5"
     },
     {
       "source": "/ui-kit/android/property-changes",
       "destination": "/ui-kit/android/upgrading-from-v4"
+    },
+    {
+      "source": "/ui-kit/react-native/property-changes",
+      "destination": "/ui-kit/react-native/upgrading-from-v4"
     },
     {
       "source": "/ai/overview",
@@ -5921,8 +6283,8 @@
       "destination": "/notifications/sms-notifications-extension-legacy"
     },
     {
-        "source": "/notifications/react-native-push-notifications",
-        "destination": "/notifications/react-native-push-notifications-android" 
+      "source": "/notifications/react-native-push-notifications",
+      "destination": "/notifications/react-native-push-notifications-android" 
     },
     {
       "source": "/sdk/ionic/overview",
