@@ -59,12 +59,12 @@ This creates a new Angular project with CSS styling and no server-side rendering
 <Tabs>
 <Tab title="npm">
 ```bash
-npm install @cometchat/chat-uikit-angular @cometchat/chat-sdk-javascript
+npm install @cometchat/chat-uikit-angular@5.0.0-beta1 @cometchat/chat-sdk-javascript
 ```
 </Tab>
 <Tab title="yarn">
 ```bash
-yarn add @cometchat/chat-uikit-angular @cometchat/chat-sdk-javascript
+yarn add @cometchat/chat-uikit-angular@5.0.0-beta1 @cometchat/chat-sdk-javascript
 ```
 </Tab>
 </Tabs>
@@ -231,6 +231,36 @@ If the `@import` doesn't resolve, use the full `node_modules` path instead:
 </Tabs>
 
 Without this import, components will render with broken or missing styles.
+
+### Register UIKit Assets
+
+The UIKit ships icons, images, and audio files that Angular's build system won't serve automatically. Add the assets path to your `angular.json` so they are copied to the build output:
+
+```json title="angular.json" expandable
+{
+  "projects": {
+    "my-app": {
+      "architect": {
+        "build": {
+          "options": {
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "node_modules/@cometchat/chat-uikit-angular/src/lib/assets",
+                "output": "assets"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+<Warning>
+  Skipping this step will cause all UIKit icons, empty-state images, and notification sounds to fail with 404 errors.
+</Warning>
 
 ---
 
