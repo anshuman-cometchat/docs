@@ -63,7 +63,7 @@ let GUID: string = "GUID";
 let UID: string = "UID";
 
 CometChat.kickGroupMember(GUID, UID).then(
-  (response: Object) => {
+  (response: boolean) => {
       console.log("Group member kicked successfully", response);
   }, (error: CometChat.CometChatException) => {
       console.log("Group member kicking failed with error", error);
@@ -84,7 +84,7 @@ The `kickGroupMember()` takes following parameters
 
 The kicked user will be no longer part of the group and can not perform any actions in the group, but the kicked user can rejoin the group.
 
-On success, the method resolves with a success message string confirming the operation.
+On success, the method resolves with a `boolean` value (`true`) confirming the operation.
 
 ## Ban a Group Member
 
@@ -113,7 +113,7 @@ let GUID: string = "GUID";
 let UID: string = "UID";
 
 CometChat.banGroupMember(GUID, UID).then(
-  (response: Object) => {
+  (response: boolean) => {
       console.log("Group member banned successfully", response);
   }, (error: CometChat.CometChatException) => {
       console.log("Group member banning failed with error", error);
@@ -134,7 +134,7 @@ The `banGroupMember()` method takes the following parameters:
 
 The banned user will be no longer part of the group and can not perform any actions in the group. A banned user cannot rejoin the same group without being unbanned.
 
-On success, the method resolves with a success message string confirming the operation.
+On success, the method resolves with a `boolean` value (`true`) confirming the operation.
 
 ## Unban a Banned Group Member from a Group
 
@@ -163,7 +163,7 @@ let GUID: string = "GUID";
 let UID: string = "UID";
 
 CometChat.unbanGroupMember(GUID, UID).then(
-  (response: Object) => {
+  (response: boolean) => {
       console.log("Group member unbanned successfully", response);
   }, (error: CometChat.CometChatException) => {
       console.log("Group member unbanning failed with error", error);
@@ -183,6 +183,8 @@ The `unbanGroupMember()` method takes the following parameters
 | `GUID`    | The UID of the group from which user is to be banned |
 
 The unbanned user can now rejoin the group.
+
+On success, the method resolves with a `boolean` value (`true`) confirming the operation.
 
 ## Get List of Banned Members for a Group
 
@@ -298,6 +300,8 @@ bannedGroupMembersRequest.fetchNext().then(
 </Tab>
 
 </Tabs>
+
+The `fetchNext()` method returns an array of [`GroupMember`](/sdk/reference/entities#groupmember) objects representing the banned members of the group.
 
 ## Real-Time Group Member Kicked/Banned Events
 

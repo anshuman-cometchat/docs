@@ -34,6 +34,8 @@ The `GroupMembersRequestBuilder` class allows you to set the below parameters:
 
 The GUID of the group for which the members are to be fetched must be specified in the constructor of the `GroupMembersRequestBuilder` class.
 
+Fetching using this builder will return [`GroupMember`](/sdk/reference/entities#groupmember) objects. `GroupMember` extends `User` and adds group-specific fields.
+
 ### Set Limit
 
 This method sets the limit i.e. the number of members that should be fetched in a single iteration.
@@ -129,6 +131,12 @@ let groupMembersRequest: CometChat.GroupMembersRequest = new CometChat.GroupMemb
 
 </Tabs>
 
+Relevant fields to access on returned members:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| scope | `getScope()` | `string` | Scope of the member in the group (`"admin"`, `"moderator"`, or `"participant"`) |
+
 ### Set Status
 
 The status based on which the group members are to be fetched. The status parameter can contain one of the below two values:
@@ -164,6 +172,12 @@ let groupMembersRequest: CometChat.GroupMembersRequest = new CometChat.GroupMemb
 </Tab>
 
 </Tabs>
+
+Relevant fields to access on returned members:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| status | `getStatus()` | `string` | Online status of the member (`"online"` or `"offline"`) |
 
 Finally, once all the parameters are set to the builder class, you need to call the build() method to get the object of the `GroupMembersRequest` class.
 
@@ -210,15 +224,7 @@ groupMembersRequest.fetchNext().then(
 
 </Tabs>
 
-The `fetchNext()` method returns an array of [`GroupMember`](/sdk/reference/entities#groupmember) objects. `GroupMember` extends `User` and adds group-specific fields. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| uid | `getUid()` | `string` | Unique user ID |
-| name | `getName()` | `string` | Display name of the member |
-| scope | `getScope()` | `string` | Scope in the group (`"admin"`, `"moderator"`, or `"participant"`) |
-| joinedAt | `getJoinedAt()` | `number` | Timestamp when the member joined the group |
-| guid | `getGuid()` | `string` | GUID of the group this member belongs to |
+The `fetchNext()` method returns an array of [`GroupMember`](/sdk/reference/entities#groupmember) objects. `GroupMember` extends `User` and adds group-specific fields.
 
 <Accordion title="Best Practices">
 - **Paginate results** — Always use `fetchNext()` in a loop or on-scroll. Set a reasonable limit (10–30) per request to avoid large payloads.

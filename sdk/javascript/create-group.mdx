@@ -112,18 +112,8 @@ The createGroup() method takes the following parameters:
 | --------- | ---------------------------- |
 | `group`   | An instance of `Group` class |
 
-After successful creation of the group, you will receive an instance of `Group` class which contains all the information about the particular group.
+After successful creation of the group, you will receive an instance of [`Group`](/sdk/reference/entities#group) class which contains all the information about the particular group.
 
-The method returns a [`Group`](/sdk/reference/entities#group) object. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| guid | `getGuid()` | `string` | Unique group ID |
-| name | `getName()` | `string` | Display name of the group |
-| type | `getType()` | `string` | Group type (`"public"`, `"private"`, or `"password"`) |
-| owner | `getOwner()` | `string` | UID of the group owner |
-| membersCount | `getMembersCount()` | `number` | Total number of members in the group |
-| createdAt | `getCreatedAt()` | `number` | Timestamp when the group was created |
 
 <Warning>
 
@@ -224,7 +214,7 @@ try {
 
 </Tabs>
 
-This method returns an Object which has two keys: `group` & `members` . The group key has the Group Object which contains all the information of the group which is created. The members key has the `UID` of the users and the value will either be `success` or an `error` message describing why the operation to add/ban the user failed.
+This method returns an Object which has two keys: `group` & `members` . The group key has the [`Group`](/sdk/reference/entities#group) Object which contains all the information of the group which is created. The members key has the `UID` of the users and the value will either be `success` or an `error` message describing why the operation to add/ban the user failed.
 
 ## Group Class
 

@@ -34,6 +34,8 @@ const count = await CometChat.getOnlineGroupMemberCount(["GUID"]);
 
 In order to fetch the list of groups, you can use the `GroupsRequest` class. To use this class i.e to create an object of the `GroupsRequest` class, you need to use the `GroupsRequestBuilder` class. The `GroupsRequestBuilder` class allows you to set the parameters based on which the groups are to be fetched.
 
+Fetching using this builder will return [`Group`](/sdk/reference/entities#group) objects
+
 The `GroupsRequestBuilder` class allows you to set the below parameters:
 
 ### Set Limit
@@ -183,6 +185,12 @@ let groupsRequest: CometChat.GroupsRequest = new CometChat.GroupsRequestBuilder(
 
 </Tabs>
 
+Relevant fields to access on returned groups:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| tags | `getTags()` | `string[]` | Tags associated with the group |
+
 Finally, once all the parameters are set to the builder class, you need to call the build() method to get the object of the `GroupsRequest` class.
 
 Once you have the object of the `GroupsRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of `Group` objects containing n number of groups where n is the limit set in the builder class.
@@ -228,16 +236,7 @@ groupsRequest.fetchNext().then(
 
 </Tabs>
 
-The `fetchNext()` method returns an array of [`Group`](/sdk/reference/entities#group) objects. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| guid | `getGuid()` | `string` | Unique group ID |
-| name | `getName()` | `string` | Display name of the group |
-| type | `getType()` | `string` | Group type (`"public"`, `"private"`, or `"password"`) |
-| membersCount | `getMembersCount()` | `number` | Total number of members in the group |
-| owner | `getOwner()` | `string` | UID of the group owner |
-| hasJoined | `getHasJoined()` | `boolean` | Whether the logged-in user has joined this group |
+The `fetchNext()` method returns an array of [`Group`](/sdk/reference/entities#group) objects.
 
 ## Retrieve Particular Group Details
 
@@ -280,18 +279,7 @@ CometChat.getGroup(GUID).then(
 | --------- | ------------------------------------------------------------ |
 | `GUID`    | The GUID of the group for whom the details are to be fetched |
 
-It returns `Group` object containing the details of the group.
-
-The method returns a [`Group`](/sdk/reference/entities#group) object. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| guid | `getGuid()` | `string` | Unique group ID |
-| name | `getName()` | `string` | Display name of the group |
-| type | `getType()` | `string` | Group type (`"public"`, `"private"`, or `"password"`) |
-| membersCount | `getMembersCount()` | `number` | Total number of members in the group |
-| owner | `getOwner()` | `string` | UID of the group owner |
-| hasJoined | `getHasJoined()` | `boolean` | Whether the logged-in user has joined this group |
+It returns a [`Group`](/sdk/reference/entities#group) object containing the details of the group.
 
 ## Get online group member count
 
@@ -329,6 +317,8 @@ CometChat.getOnlineGroupMemberCount(guids).then(
 </Tabs>
 
 This method returns a JSON Object with the GUID as the key and the online member count for that group as the value.
+
+`getOnlineGroupMemberCount()` resolves with a `{ guid: count }` object where each key is a group GUID and its value is the number of currently online members in that group.
 
 <Accordion title="Best Practices">
 - **Use pagination** — Always call `fetchNext()` in a loop or on-scroll rather than fetching all groups at once. Set a reasonable limit (10–30) per page.
