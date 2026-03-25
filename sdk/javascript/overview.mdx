@@ -35,26 +35,16 @@ if (!existing) {
 **SSR:** SDK requires browser APIs — initialize client-side only (`useEffect` / `mounted`)
 </Accordion>
 
-The CometChat JavaScript SDK enables you to add real-time messaging, voice, and video calling capabilities to any JavaScript application — whether it's a web app built with React, Angular, Vue, or vanilla JavaScript.
-
-## What You Can Build
-
-- One-on-one and group messaging
-- Voice and video calling
-- Typing indicators and read receipts
-- User presence (online/offline status)
-- Message reactions and threads
-- File and media sharing
-- Push notifications
+The CometChat JavaScript SDK lets you add real-time messaging, voice, and video calling to any JavaScript application — React, Angular, Vue, Next.js, Nuxt, or vanilla JS.
 
 ## Requirements
 
-| Requirement | Version |
-|-------------|---------|
-| npm | 8.x or above |
-| Node.js | 16 or above |
+| Requirement | Minimum Version |
+|-------------|-----------------|
+| npm | 8.x |
+| Node.js | 16 |
 
-The SDK works in all modern browsers (Chrome, Firefox, Safari, Edge) and can be used with SSR frameworks like Next.js and Nuxt.
+Works in all modern browsers (Chrome, Firefox, Safari, Edge) and SSR frameworks (Next.js, Nuxt) with [client-side initialization](/sdk/javascript/setup-sdk#ssr-compatibility).
 
 ## Getting Started
 
@@ -68,10 +58,27 @@ The SDK works in all modern browsers (Chrome, Firefox, Safari, Edge) and can be 
   <Step title="Authenticate users">
     Log in users with Auth Key (development) or Auth Token (production). See [Authentication](/sdk/javascript/authentication-overview).
   </Step>
-  <Step title="Start messaging">
-    Send and receive messages in real-time. See [Send Messages](/sdk/javascript/send-message).
+  <Step title="Start building">
+    Send your first message, make a call, or manage users and groups.
   </Step>
 </Steps>
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Messaging" icon="comments" href="/sdk/javascript/send-message">
+    1:1 and group chat, threads, reactions, typing indicators, read receipts, file sharing, and interactive messages.
+  </Card>
+  <Card title="Voice & Video Calling" icon="phone" href="/sdk/javascript/calling-overview">
+    Ringing flows, direct call sessions, standalone calling, recording, virtual backgrounds, and screen sharing.
+  </Card>
+  <Card title="Users" icon="user" href="/sdk/javascript/users-overview">
+    Create, retrieve, and manage users. Track online/offline presence and block/unblock users.
+  </Card>
+  <Card title="Groups" icon="users" href="/sdk/javascript/groups-overview">
+    Public, private, and password-protected groups with member management, roles, and ownership transfer.
+  </Card>
+</CardGroup>
 
 ## Sample Apps
 
@@ -91,32 +98,30 @@ Explore working examples with full source code:
 
 ## UI Kits
 
-Skip the UI work and use our pre-built components:
+Skip the UI work — use pre-built, customizable components:
 
 <CardGroup cols={3}>
-  <Card title="React UI Kit" icon="react" href="/ui-kit/react/overview">
-    Ready-to-use React components
+  <Card title="React" icon="react" href="/ui-kit/react/overview">
+    React UI Kit
   </Card>
-  <Card title="Angular UI Kit" icon="angular" href="/ui-kit/angular/overview">
-    Ready-to-use Angular components
+  <Card title="Angular" icon="angular" href="/ui-kit/angular/overview">
+    Angular UI Kit
   </Card>
-  <Card title="Vue UI Kit" icon="vuejs" href="/ui-kit/vue/overview">
-    Ready-to-use Vue components
+  <Card title="Vue" icon="vuejs" href="/ui-kit/vue/overview">
+    Vue UI Kit
   </Card>
 </CardGroup>
 
-## Chat Widget
-
-For the fastest integration, embed our [Chat Widget](/widget/html/overview) with just a few lines of code — no SDK knowledge required.
+For the fastest integration, embed the [Chat Widget](/widget/html/overview) with just a few lines of code.
 
 ## Resources
 
 <CardGroup cols={2}>
   <Card title="Key Concepts" icon="lightbulb" href="/sdk/javascript/key-concepts">
-    Understand UIDs, GUIDs, auth tokens, and core concepts
+    UIDs, GUIDs, auth tokens, and core SDK concepts
   </Card>
   <Card title="Changelog" icon="clock-rotate-left" href="/sdk/javascript/changelog">
-    See what's new in the latest SDK version
+    Latest SDK version and release notes
   </Card>
   <Card title="Upgrading from V3" icon="arrow-up" href="/sdk/javascript/upgrading-from-v3">
     Migration guide for V3 users
