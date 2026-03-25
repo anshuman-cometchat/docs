@@ -25,6 +25,8 @@ const count = await CometChat.getOnlineGroupMemberCount(["GUID"]);
 ```
 </Accordion>
 
+Fetch the list of [`Group`](/sdk/reference/entities#group) objects the logged-in user can see, get details for a specific group, or check online member counts.
+
 ## Retrieve List of Groups
 
 Use `GroupsRequestBuilder` to fetch groups with filtering, searching, and pagination.
@@ -270,8 +272,6 @@ group => {
 | Parameter | Description |
 | --------- | ----------- |
 | `GUID` | The GUID of the group to fetch |
-
-Returns a [`Group`](/sdk/reference/entities#group) object with the group's details.
 
 The method returns a [`Group`](/sdk/reference/entities#group) object. Access the response data using getter methods:
 
