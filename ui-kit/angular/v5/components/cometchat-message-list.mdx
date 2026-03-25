@@ -41,67 +41,6 @@ The component follows a **Hybrid Approach** architecture where:
   allow="clipboard-write"
 ></iframe>
 
-## Installation
-
-### Prerequisites
-
-Before using the CometChatMessageList component, ensure you have:
-
-1. **CometChat SDK** initialized in your application
-2. **CometChat UIKit** installed and configured
-3. **Angular 21+** project setup
-
-### Install the Package
-
-```bash
-npm install @cometchat/chat-uikit-angular
-```
-
-### Initialize CometChat
-
-Initialize CometChat in your application's entry point (`main.ts`):
-
-```typescript expandable
-import { CometChatUIKit, UIKitSettingsBuilder } from '@cometchat/chat-uikit-angular';
-
-const UIKitSettings = new UIKitSettingsBuilder()
-  .setAppId('YOUR_APP_ID')
-  .setRegion('YOUR_REGION')
-  .setAuthKey('YOUR_AUTH_KEY')
-  .subscribePresenceForAllUsers()
-  .build();
-
-CometChatUIKit.init(UIKitSettings).then(
-  () => {
-    console.log('CometChat UIKit initialized successfully');
-  },
-  (error) => {
-    console.error('CometChat UIKit initialization failed:', error);
-  }
-);
-```
-
-### Login User
-
-Ensure a user is logged in before using the component:
-
-```typescript expandable
-import { CometChatUIKit } from '@cometchat/chat-uikit-angular';
-
-CometChatUIKit.getLoggedinUser().then((user) => {
-  if (!user) {
-    CometChatUIKit.login('USER_UID').then(
-      (user) => {
-        console.log('Login successful:', user);
-      },
-      (error) => {
-        console.error('Login failed:', error);
-      }
-    );
-  }
-});
-```
-
 ## Basic Usage
 
 ### Simple Implementation
