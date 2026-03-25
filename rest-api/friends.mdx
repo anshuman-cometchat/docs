@@ -1,25 +1,22 @@
 ---
 title: "Overview"
-description: "Manage friend relationships between users in your CometChat app."
 ---
 
-The **Friends** API manages bidirectional friend relationships between users. When User A adds User B as a friend, both users become friends with each other automatically.
+If you want to associate friends with your users, you must handle friend management in your app.\
+Once two users are friends (i.e. they have accepted each other as friends), then you can associate them as friends in CometChat.
 
-### Key behaviors
+## Endpoints
 
-- Friendships are **bidirectional** — adding a friend creates the relationship for both users and counts toward both users' friend limits.
-- A user can have up to **1,000 friends**.
-- Friends lists can be used to filter users in chat UIs or show online friends.
+| Method | Endpoint               | Description                |
+| ------ | ---------------------- | -------------------------- |
+| POST   | `/users/{uid}/friends` | Add friends for a user     |
+| GET    | `/users/{uid}/friends` | List all friends of a user |
+| DELETE | `/users/{uid}/friends` | Remove friends from a user |
 
-### Relationships
+## Properties
 
-- **Users** — Friends are [Users](/rest-api/users). The `onBehalfOf` header or path UID specifies which user's friend list to manage.
+The following table lists the properties that the Friends API supports
 
-### Error handling
-
-| Error Code            | Description                       |
-| --------------------- | --------------------------------- |
-| `ERR_UID_NOT_FOUND`   | The specified user does not exist |
-| `ERR_ALREADY_FRIENDS` | The users are already friends     |
-
-For the complete list of error codes, see [Error Guide](/articles/error-guide).
+| Parameters | Type             | Description                                                                                                                   |
+| ---------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| accepted   | array of strings | (_optional_) Indicates an array of UIDs that are to be made friends. Maximum of 25 users can be passed in the accepted array. |
