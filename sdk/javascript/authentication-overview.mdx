@@ -12,7 +12,7 @@ description: "Create users, log in with Auth Key or Auth Token, check login stat
 const user = await CometChat.getLoggedinUser();
 
 // Login with Auth Key (development only)
-CometChat.login("UID", "AUTH_KEY").then(user => console.log("Logged in:", user));
+CometChat.login("cometchat-uid-1", "AUTH_KEY").then(user => console.log("Logged in:", user));
 
 // Login with Auth Token (production)
 CometChat.login("AUTH_TOKEN").then(user => console.log("Logged in:", user));
@@ -54,7 +54,7 @@ sequenceDiagram
 
 <Note>
 
-We have setup 5 users for testing having UIDs: `cometchat-uid-1`, `cometchat-uid-2`, `cometchat-uid-3`, `cometchat-uid-4` and `cometchat-uid-5`.
+We have set up 5 users for testing having UIDs: `cometchat-uid-1`, `cometchat-uid-2`, `cometchat-uid-3`, `cometchat-uid-4` and `cometchat-uid-5`.
 
 </Note>
 
@@ -131,7 +131,7 @@ CometChat.getLoggedinUser().then(
 
 <Tab title="Async/Await">
 ```javascript
-const UID = "UID";
+const UID = "cometchat-uid-1";
 const authKey = "AUTH_KEY";
 
 try {
@@ -208,7 +208,7 @@ CometChat.getLoggedinUser().then(
     }
   },
   (error) => {
-    console.log("Something went wrong", error);
+    console.log("Some Error Occurred", { error });
   }
 );
 ```
