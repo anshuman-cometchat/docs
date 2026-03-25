@@ -1,10 +1,32 @@
 ---
 title: "Setup"
-sidebarTitle: "Overview"
+sidebarTitle: "Setup"
 description: "Install, configure, and initialize the CometChat JavaScript SDK in your application."
 ---
 
-This section covers everything you need to get the CometChat JavaScript SDK running in your application.
+{/* TL;DR for Agents and Quick Reference */}
+<Accordion title="AI Integration Quick Reference">
+
+```bash
+npm install @cometchat/chat-sdk-javascript
+```
+
+```typescript
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+
+const appSettings: CometChat.AppSettings = new CometChat.AppSettingsBuilder()
+  .setRegion("APP_REGION")
+  .subscribePresenceForAllUsers()
+  .autoEstablishSocketConnection(true)
+  .build();
+
+await CometChat.init("APP_ID", appSettings);
+await CometChat.login("UID", "AUTH_KEY"); // dev only
+```
+
+**Prerequisites:** npm 8+, Node.js 16+, credentials from [CometChat Dashboard](https://app.cometchat.com)
+**SSR:** SDK requires browser APIs — initialize client-side only (useEffect / mounted)
+</Accordion>
 
 ## Prerequisites
 
@@ -13,80 +35,264 @@ This section covers everything you need to get the CometChat JavaScript SDK runn
 | npm | 8.x or above |
 | Node.js | 16 or above |
 
-You'll also need your credentials from the [CometChat Dashboard](https://app.cometchat.com):
+Get your credentials from the [CometChat Dashboard](https://app.cometchat.com):
 - App ID
 - Region
 - Auth Key (for development)
 
-## Setup Steps
+<Warning>
+**Auth Key** is for development/testing only. In production, generate **Auth Tokens** on your server using the REST API. Never expose Auth Keys in production client code.
+</Warning>
 
-<Steps>
-  <Step title="Install the SDK">
-    Add the CometChat SDK to your project via npm or CDN. See [Installation](/sdk/javascript/installation).
-  </Step>
-  <Step title="Initialize CometChat">
-    Configure and initialize the SDK with your App ID and Region. See [Initialization](/sdk/javascript/initialization).
-  </Step>
-  <Step title="Authenticate users">
-    Log in users to start sending and receiving messages. See [Authentication](/sdk/javascript/authentication-overview).
-  </Step>
-</Steps>
+## Installation
 
-## Framework Guides
-
-Using an SSR framework? The SDK requires browser APIs and needs client-side initialization:
-
-<CardGroup cols={3}>
-  <Card title="Next.js" icon="react" href="/sdk/javascript/ssr-compatibility#nextjs">
-    Dynamic imports with useEffect
-  </Card>
-  <Card title="NuxtJS" icon="vuejs" href="/sdk/javascript/ssr-compatibility#nuxtjs">
-    Client-side mounted hook
-  </Card>
-  <Card title="Ionic/Cordova" icon="mobile" href="/sdk/javascript/ssr-compatibility#ioniccordova">
-    Direct SDK usage
-  </Card>
-</CardGroup>
-
-<Note>
-Migrating from V3 to V4? Your existing app can be migrated — no need to create a new one. See [Upgrading from V3](/sdk/javascript/upgrading-from-v3).
-</Note>
-
-## Quick Reference
+### Package Manager
 
 ```bash
-# Install
 npm install @cometchat/chat-sdk-javascript
 ```
 
+Then import wherever needed:
+
 ```javascript
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-
-// Initialize
-const appSettings = new CometChat.AppSettingsBuilder()
-  .setRegion("REGION")
-  .subscribePresenceForAllUsers()
-  .build();
-
-await CometChat.init("APP_ID", appSettings);
-
-// Login
-await CometChat.login("UID", "AUTH_KEY");
 ```
 
-## Pages in This Section
+### CDN
+
+```html
+<script
+  type="text/javascript"
+  src="https://unpkg.com/@cometchat/chat-sdk-javascript/CometChat.js"
+></script>
+```
+
+When using the CDN, `CometChat` is available as a global variable.
+
+## Initialization
+
+The `init()` method initializes the SDK and must be called before any other CometChat method. Call it once at app startup, typically in your entry file (`index.js`, `main.js`, or `App.js`).
+
+
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+let appID: string = "APP_ID";
+let region: string = "APP_REGION";
+
+let appSetting: CometChat.AppSettings = new CometChat.AppSettingsBuilder()
+  .subscribePresenceForAllUsers()
+  .setRegion(region)
+  .autoEstablishSocketConnection(true)
+  .build();
+
+CometChat.init(appID, appSetting).then(
+  (initialized: boolean) => {
+    console.log("Initialization completed successfully", initialized);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Initialization failed with error:", error);
+  }
+);
+```
+
+</Tab>
+
+<Tab title="JavaScript">
+```javascript
+let appID = "APP_ID";
+let region = "APP_REGION";
+
+let appSetting = new CometChat.AppSettingsBuilder()
+  .subscribePresenceForAllUsers()
+  .setRegion(region)
+  .autoEstablishSocketConnection(true)
+  .build();
+
+CometChat.init(appID, appSetting).then(
+  () => {
+    console.log("Initialization completed successfully");
+  },
+  (error) => {
+    console.log("Initialization failed with error:", error);
+  }
+);
+```
+
+</Tab>
+
+<Tab title="Async/Await">
+```javascript
+let appID = "APP_ID";
+let region = "APP_REGION";
+
+let appSetting = new CometChat.AppSettingsBuilder()
+  .subscribePresenceForAllUsers()
+  .setRegion(region)
+  .autoEstablishSocketConnection(true)
+  .build();
+
+try {
+  await CometChat.init(appID, appSetting);
+  console.log("Initialization completed successfully");
+} catch (error) {
+  console.log("Initialization failed with error:", error);
+}
+```
+
+</Tab>
+
+</Tabs>
+
+Replace `APP_ID` and `APP_REGION` with your credentials from the [Dashboard](https://app.cometchat.com).
+
+<Warning>
+`CometChat.init()` must be called before any other SDK method. Calling `login()`, `sendMessage()`, or registering listeners before `init()` will fail.
+</Warning>
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| appID | string | Your CometChat App ID |
+| appSetting | AppSettings | Configuration object built with AppSettingsBuilder |
+
+### AppSettings Options
+
+| Method | Description | Default |
+|--------|-------------|---------|
+| `setRegion(region)` | Region where your app was created (`us`, `eu`, `in`, `in-private`) | Required |
+| `subscribePresenceForAllUsers()` | Subscribe to presence events for all users | — |
+| `subscribePresenceForRoles(roles)` | Subscribe to presence for specific roles | — |
+| `subscribePresenceForFriends()` | Subscribe to presence for friends only | — |
+| `autoEstablishSocketConnection(bool)` | Let SDK manage WebSocket connections | `true` |
+| `overrideAdminHost(adminHost)` | Custom admin URL (dedicated deployment) | — |
+| `overrideClientHost(clientHost)` | Custom client URL (dedicated deployment) | — |
+| `setStorageMode(storageMode)` | Local storage mode (`CometChat.StorageMode.SESSION` for session storage) | — |
+
+### Presence Subscription
+
+Choose how to subscribe to user presence (online/offline status):
+
+```javascript
+// All users
+new CometChat.AppSettingsBuilder()
+  .subscribePresenceForAllUsers()
+  .setRegion(region)
+  .build();
+
+// Specific roles
+new CometChat.AppSettingsBuilder()
+  .subscribePresenceForRoles(["admin", "moderator"])
+  .setRegion(region)
+  .build();
+
+// Friends only
+new CometChat.AppSettingsBuilder()
+  .subscribePresenceForFriends()
+  .setRegion(region)
+  .build();
+```
+
+See [User Presence](/sdk/javascript/user-presence) for more details.
+
+### WebSocket Connection
+
+By default, the SDK manages WebSocket connections automatically. To manage them manually:
+
+```javascript
+let appSetting = new CometChat.AppSettingsBuilder()
+  .setRegion(region)
+  .autoEstablishSocketConnection(false)
+  .build();
+```
+
+See [Managing WebSocket Connections](/sdk/javascript/managing-web-sockets-connections-manually) for manual control.
+
+### Session Storage
+
+Use session storage instead of local storage (data clears when browser closes):
+
+```javascript
+let appSetting = new CometChat.AppSettingsBuilder()
+  .setRegion(region)
+  .setStorageMode(CometChat.StorageMode.SESSION)
+  .build();
+```
+
+## SSR Compatibility
+
+The CometChat SDK requires browser APIs (`window`, `WebSocket`) and cannot run on the server. For SSR frameworks, initialize the SDK only on the client side.
+
+### Next.js
+
+Import the SDK dynamically in `useEffect`:
+
+```javascript
+import React from "react";
+
+export default function Home() {
+  let [ready, setReady] = React.useState(false);
+
+  React.useEffect(() => {
+    window.CometChat = require("@cometchat/chat-sdk-javascript").CometChat;
+    setReady(true);
+  }, []);
+
+  return ready ? <Chat /> : <p>Loading...</p>;
+}
+```
+
+### NuxtJS
+
+Import the SDK in the `mounted` lifecycle hook:
+
+```javascript
+export default {
+  data() {
+    return { ready: false };
+  },
+  mounted() {
+    window.CometChat = require("@cometchat/chat-sdk-javascript").CometChat;
+    this.ready = true;
+  }
+};
+```
+
+### Ionic/Cordova
+
+Use the JavaScript SDK directly. Import and initialize in your root component:
+
+```typescript
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+
+ngOnInit() {
+  const appSetting = new CometChat.AppSettingsBuilder()
+    .subscribePresenceForAllUsers()
+    .setRegion("APP_REGION")
+    .autoEstablishSocketConnection(true)
+    .build();
+
+  CometChat.init("APP_ID", appSetting).then(
+    () => console.log("CometChat initialized successfully"),
+    (error) => console.log("CometChat initialization failed:", error)
+  );
+}
+```
+
+<Note>
+The dedicated Ionic Cordova SDK has been deprecated. For new Ionic/Cordova applications, use the JavaScript SDK as shown above.
+</Note>
+
+---
+
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Installation" icon="download" href="/sdk/javascript/installation">
-    Add the SDK via npm or CDN
-  </Card>
-  <Card title="Initialization" icon="play" href="/sdk/javascript/initialization">
-    Configure and initialize the SDK
-  </Card>
-  <Card title="SSR Compatibility" icon="server" href="/sdk/javascript/ssr-compatibility">
-    Next.js, Nuxt, and Ionic setup
-  </Card>
   <Card title="Authentication" icon="lock" href="/sdk/javascript/authentication-overview">
-    Log in users with Auth Key or Token
+    Log in users with Auth Key or Auth Token
+  </Card>
+  <Card title="Send Messages" icon="paper-plane" href="/sdk/javascript/send-message">
+    Send your first message
   </Card>
 </CardGroup>

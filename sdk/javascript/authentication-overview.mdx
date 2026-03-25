@@ -289,19 +289,110 @@ try {
 
 ---
 
+## Login Listener
+
+The CometChat SDK provides real-time updates for `login` and `logout` events via the `LoginListener` class.
+
+| Delegate Method | Description |
+| --- | --- |
+| `loginSuccess(event)` | User logged in successfully. Provides the `User` object. |
+| `loginFailure(event)` | Login failed. Provides a `CometChatException`. |
+| `logoutSuccess()` | User logged out successfully. |
+| `logoutFailure(event)` | Logout failed. Provides a `CometChatException`. |
+
+### Add Login Listener
+
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+const listenerID: string = "UNIQUE_LISTENER_ID";
+CometChat.addLoginListener(
+    listenerID,
+    new CometChat.LoginListener({
+        loginSuccess: (user: CometChat.User) => {
+            console.log("LoginListener :: loginSuccess", user);
+        },
+        loginFailure: (error: CometChat.CometChatException) => {
+            console.log("LoginListener :: loginFailure", error);
+        },
+        logoutSuccess: () => {
+            console.log("LoginListener :: logoutSuccess");
+        },
+        logoutFailure: (error: CometChat.CometChatException) => {
+            console.log("LoginListener :: logoutFailure", error);
+        }
+    })
+);
+```
+
+</Tab>
+
+<Tab title="JavaScript">
+```js
+let listenerID = "UNIQUE_LISTENER_ID";
+CometChat.addLoginListener(
+    listenerID,
+    new CometChat.LoginListener({
+        loginSuccess: (e) => {
+            console.log("LoginListener :: loginSuccess", e);
+        },
+        loginFailure: (e) => {
+            console.log("LoginListener :: loginFailure", e);
+        },
+        logoutSuccess: () => {
+            console.log("LoginListener :: logoutSuccess");
+        },
+        logoutFailure: (e) => {
+            console.log("LoginListener :: logoutFailure", e);
+        }
+    })
+);
+```
+
+</Tab>
+
+</Tabs>
+
+### Remove Login Listener
+
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+const listenerID: string = "UNIQUE_LISTENER_ID";
+CometChat.removeLoginListener(listenerID);
+```
+
+</Tab>
+
+<Tab title="JavaScript">
+```js
+const listenerID = "UNIQUE_LISTENER_ID";
+CometChat.removeLoginListener(listenerID);
+```
+
+</Tab>
+
+</Tabs>
+
+<Warning>
+Always remove login listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
+
+---
+
 ## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Send Messages" icon="paper-plane" href="/sdk/javascript/send-message">
     Send your first text, media, or custom message
   </Card>
-  <Card title="Setup SDK" icon="gear" href="/sdk/javascript/setup-sdk">
-    Install and initialize the CometChat SDK
-  </Card>
   <Card title="User Management" icon="users-gear" href="/sdk/javascript/user-management">
     Create, update, and delete users programmatically
   </Card>
-  <Card title="Login Listener" icon="right-to-bracket" href="/sdk/javascript/login-listener">
-    Listen for login and logout events in real-time
+  <Card title="Connection Status" icon="signal" href="/sdk/javascript/connection-status">
+    Monitor the SDK connection state in real time
+  </Card>
+  <Card title="All Real-Time Listeners" icon="tower-broadcast" href="/sdk/javascript/all-real-time-listeners">
+    Complete reference for all SDK event listeners
   </Card>
 </CardGroup>

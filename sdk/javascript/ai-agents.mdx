@@ -1,11 +1,17 @@
 ---
 title: "AI Agents"
 sidebarTitle: "AI Agents"
-description: "Integrate AI Agents into your app to enable intelligent, automated conversations with real-time streaming events and tool invocations."
+description: "Integrate AI Agents, AI Moderation, and AI User Copilot into your app using the CometChat JavaScript SDK."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
 <Accordion title="AI Integration Quick Reference">
+
+| Feature | Description |
+| --- | --- |
+| [AI Agents](#agent-run-lifecycle-and-message-flow) | Intelligent automated conversations with real-time streaming |
+| [AI Moderation](/sdk/javascript/ai-moderation) | Automatic content moderation with `PENDING` → `APPROVED` / `DISAPPROVED` flow |
+| [AI User Copilot](/fundamentals/ai-user-copilot/overview) | Smart Replies, Conversation Starter, Conversation Summary (Dashboard-enabled) |
 
 ```javascript
 // Listen for real-time AI Agent events (streaming)
@@ -25,6 +31,7 @@ CometChat.removeAIAssistantListener("LISTENER_ID");
 CometChat.removeMessageListener("LISTENER_ID");
 ```
 
+**Prerequisites:** `CometChat.init()` + `CometChat.login()` completed, AI features enabled in [Dashboard](https://app.cometchat.com)
 **Event flow:** Run Start → Tool Call(s) → Text Message Stream → Run Finished
 </Accordion>
 
