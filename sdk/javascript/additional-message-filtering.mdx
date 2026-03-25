@@ -58,19 +58,19 @@ Messages are paginated with a maximum of 100 per request. Call `fetchPrevious()`
 Set the number of messages to fetch per request using `setLimit()`. Maximum is 100.
 
 <Tabs>
+<Tab title="TypeScript">
+```typescript
+let messagesRequest: CometChat.MessagesRequest =
+  new CometChat.MessagesRequestBuilder().setLimit(50).build();
+```
+
+</Tab>
+
 <Tab title="JavaScript">
 ```js
 let messagesRequest = new CometChat.MessagesRequestBuilder()
   .setLimit(50)
   .build();
-```
-
-</Tab>
-
-<Tab title="TypeScript">
-```typescript
-let messagesRequest: CometChat.MessagesRequest =
-  new CometChat.MessagesRequestBuilder().setLimit(50).build();
 ```
 
 </Tab>

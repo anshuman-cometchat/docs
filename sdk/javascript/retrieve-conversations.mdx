@@ -130,18 +130,6 @@ When conversations are fetched successfully, the response includes `tags` arrays
 Fetch user conversations where the user has specific tags.
 
 <Tabs>
-<Tab title="JavaScript">
-```js
-let limit = 30;
-let userTags = ["tag1"];
-let conversationRequest = new CometChat.ConversationsRequestBuilder()
-  .setLimit(limit)
-  .setUserTags(userTags)
-  .build();   
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
 let limit: number = 30,
@@ -150,6 +138,18 @@ let limit: number = 30,
     .setLimit(limit)
     .setUserTags(userTags)
     .build();  
+```
+
+</Tab>
+
+<Tab title="JavaScript">
+```js
+let limit = 30;
+let userTags = ["tag1"];
+let conversationRequest = new CometChat.ConversationsRequestBuilder()
+  .setLimit(limit)
+  .setUserTags(userTags)
+  .build();   
 ```
 
 </Tab>
@@ -163,18 +163,6 @@ When conversations are fetched successfully, the response includes only user con
 Fetch group conversations where the group has specific tags.
 
 <Tabs>
-<Tab title="JavaScript">
-```js
-let limit = 30;
-let groupTags = ["tag1"];
-let conversationRequest = new CometChat.ConversationsRequestBuilder()
-  .setLimit(limit)
-  .setGroupTags(groupTags)
-  .build();
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
 let limit: number = 30,
@@ -183,6 +171,18 @@ let limit: number = 30,
     .setLimit(limit)
     .setGroupTags(groupTags)
     .build();
+```
+
+</Tab>
+
+<Tab title="JavaScript">
+```js
+let limit = 30;
+let groupTags = ["tag1"];
+let conversationRequest = new CometChat.ConversationsRequestBuilder()
+  .setLimit(limit)
+  .setGroupTags(groupTags)
+  .build();
 ```
 
 </Tab>
@@ -254,17 +254,6 @@ let limit: number = 30,
 Use `setIncludeBlockedUsers(true)` to include conversations with users you've blocked.
 
 <Tabs>
-<Tab title="JavaScript">
-```js
-let limit = 30;
-let conversationRequest = new CometChat.ConversationsRequestBuilder()
-  .setLimit(limit)
-  .setIncludeBlockedUsers(true)
-  .build();
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
 let limit: number = 30,
@@ -272,6 +261,17 @@ let limit: number = 30,
     .setLimit(limit)
     .setIncludeBlockedUsers(true)
     .build();  
+```
+
+</Tab>
+
+<Tab title="JavaScript">
+```js
+let limit = 30;
+let conversationRequest = new CometChat.ConversationsRequestBuilder()
+  .setLimit(limit)
+  .setIncludeBlockedUsers(true)
+  .build();
 ```
 
 </Tab>
@@ -285,17 +285,6 @@ When conversations are fetched successfully, the response includes conversations
 Use `setWithBlockedInfo(true)` to include blocked user information in the response.
 
 <Tabs>
-<Tab title="JavaScript">
-```js
-let limit = 30;
-let conversationRequest = new CometChat.ConversationsRequestBuilder()
-  .setLimit(limit)
-  .setWithBlockedInfo(true)
-  .build();
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
 let limit: number = 30,
@@ -303,6 +292,17 @@ let limit: number = 30,
   .setLimit(limit)
   .setWithBlockedInfo(true)
   .build();     
+```
+
+</Tab>
+
+<Tab title="JavaScript">
+```js
+let limit = 30;
+let conversationRequest = new CometChat.ConversationsRequestBuilder()
+  .setLimit(limit)
+  .setWithBlockedInfo(true)
+  .build();
 ```
 
 </Tab>
@@ -319,17 +319,6 @@ This feature is only available with `Conversation & Advanced Search`. The `Conve
 </Note>
 
 <Tabs>
-<Tab title="JavaScript">
-```js
-let limit = 30;
-let conversationRequest = new CometChat.ConversationsRequestBuilder()
-  .setLimit(limit)
-  .setSearchKeyword("Hiking")
-  .build();
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
 let limit: number = 30,
@@ -337,6 +326,17 @@ let limit: number = 30,
     .setLimit(limit)
     .setSearchKeyword("Hiking")
     .build();  
+```
+
+</Tab>
+
+<Tab title="JavaScript">
+```js
+let limit = 30;
+let conversationRequest = new CometChat.ConversationsRequestBuilder()
+  .setLimit(limit)
+  .setSearchKeyword("Hiking")
+  .build();
 ```
 
 </Tab>
@@ -356,17 +356,6 @@ This feature is only available with `Conversation & Advanced Search`. The `Conve
 </Note>
 
 <Tabs>
-<Tab title="JavaScript">
-```js
-let limit = 30;
-let conversationRequest = new CometChat.ConversationsRequestBuilder()
-  .setLimit(limit)
-  .setUnread(true)
-  .build();
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
 let limit: number = 30,
@@ -374,6 +363,17 @@ let limit: number = 30,
     .setLimit(limit)
     .setUnread(true)
     .build();  
+```
+
+</Tab>
+
+<Tab title="JavaScript">
+```js
+let limit = 30;
+let conversationRequest = new CometChat.ConversationsRequestBuilder()
+  .setLimit(limit)
+  .setUnread(true)
+  .build();
 ```
 
 </Tab>
@@ -387,17 +387,6 @@ When conversations are fetched successfully, the response includes only conversa
 Use `setHideAgentic(true)` to exclude AI agent conversations from the list.
 
 <Tabs>
-<Tab title="JavaScript">
-```js
-let limit = 30;
-let conversationRequest = new CometChat.ConversationsRequestBuilder()
-  .setLimit(limit)
-  .setHideAgentic(true)
-  .build();
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
 let limit: number = 30,
@@ -409,23 +398,23 @@ let limit: number = 30,
 
 </Tab>
 
+<Tab title="JavaScript">
+```js
+let limit = 30;
+let conversationRequest = new CometChat.ConversationsRequestBuilder()
+  .setLimit(limit)
+  .setHideAgentic(true)
+  .build();
+```
+
+</Tab>
+
 </Tabs>
 ### Only Agentic Conversations
 
 Use `setOnlyAgentic(true)` to fetch only AI agent conversations.
 
 <Tabs>
-<Tab title="JavaScript">
-```js
-let limit = 30;
-let conversationRequest = new CometChat.ConversationsRequestBuilder()
-  .setLimit(limit)
-  .setOnlyAgentic(true)
-  .build();
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
 let limit: number = 30,
@@ -433,6 +422,17 @@ let limit: number = 30,
     .setLimit(limit)
     .setOnlyAgentic(true)
     .build();  
+```
+
+</Tab>
+
+<Tab title="JavaScript">
+```js
+let limit = 30;
+let conversationRequest = new CometChat.ConversationsRequestBuilder()
+  .setLimit(limit)
+  .setOnlyAgentic(true)
+  .build();
 ```
 
 </Tab>
