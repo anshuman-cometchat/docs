@@ -345,7 +345,9 @@ The `TextMessage` class constructor takes the following parameters:
 | **messageText**  | The text message                                                                             | Required |
 | **receiverType** | The type of the receiver - `CometChat.RECEIVER_TYPE.USER` or `CometChat.RECEIVER_TYPE.GROUP` | Required |
 
-When a text message is sent successfully, the response will include a `TextMessage` object which includes all information related to the sent message.
+
+The `sendMessage()` method returns a [`TextMessage`](/sdk/reference/messages#textmessage) | [`MediaMessage`](/sdk/reference/messages#mediamessage) | [`CustomMessage`](/sdk/reference/messages#custommessage) | [`BaseMessage`](/sdk/reference/messages#basemessage) object depending on the input message type.
+
 ## Media Message
 
 *In other words, as a sender, how do I send a media message like photos, videos & files?*
@@ -860,7 +862,9 @@ CometChat.sendMediaMessage(mediaMessage).then(
 
 </Tabs>
 
-When a media message is sent successfully, the response will include a `MediaMessage` object which includes all information related to the sent message.
+
+The `sendMediaMessage()` method returns a [`MediaMessage`](/sdk/reference/messages#mediamessage) object.
+
 ## Multiple Attachments in a Media Message
 
 Starting version 3.0.9 & above the SDK supports sending multiple attachments in a single media message. As in the case of a single attachment in a media message, there are two ways you can send Media Messages using the CometChat SDK:
@@ -1764,7 +1768,9 @@ CometChat.sendCustomMessage(customMessage).then(
 
 </Tabs>
 
-When a custom message is sent successfully, the response will include a `CustomMessage` object which includes all information related to the sent message.
+
+The `sendCustomMessage()` method returns a [`CustomMessage`](/sdk/reference/messages#custommessage) object.
+
 <Note>
 
 It is also possible to send interactive messages from CometChat, to know more [click here](/sdk/javascript/interactive-messages)

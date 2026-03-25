@@ -708,6 +708,8 @@ CometChat.getUnreadMessageCountForUser(UID).then(
 
 </Tabs>
 
+The `getUnreadMessageCountForUser()` method returns a count object where the key is the UID and the value is the unread message count (e.g., `{ "UID": 5 }`).
+
 It will return an object which will contain the UID as the key and the unread message count as the value.
 
 ### Fetch Unread Message Count of a particular group conversation
@@ -792,6 +794,8 @@ CometChat.getUnreadMessageCountForGroup(GUID).then(
 
 </Tabs>
 
+The `getUnreadMessageCountForGroup()` method returns a count object where the key is the GUID and the value is the unread message count (e.g., `{ "GUID": 12 }`).
+
 It will return an object which will contain the GUID as the key and the unread message count as the value.
 
 ### Fetch Unread Message Count of all one-on-one & group conversations
@@ -869,6 +873,8 @@ CometChat.getUnreadMessageCount().then(
 </Tab>
 
 </Tabs>
+
+The `getUnreadMessageCount()` method returns a count object with two keys: `users` (a map of `{ UID: count }`) and `groups` (a map of `{ GUID: count }`), representing unread message counts across all conversations.
 
 It returns an object having two keys:
 

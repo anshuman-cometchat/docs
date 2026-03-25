@@ -146,6 +146,13 @@ By default, the SDK will fetch all the messages irrespective of the fact that th
 
 To get a list of messages in a conversation where users are mentioned along with the user tags of the mentioned users.
 
+Relevant fields to access on returned messages and their mentioned users:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| mentionedUsers | `getMentionedUsers()` | [`User[]`](/sdk/reference/entities#user) | Array of users mentioned in the message |
+| tags (on each mentioned user) | `getTags()` | `string[]` | Tags associated with the mentioned user |
+
 <Tabs>
 <Tab title="User">
 ```javascript
@@ -264,6 +271,14 @@ messagesRequest.fetchPrevious().then(
 ## Mentions With Blocked Info
 
 To get a list of messages in a conversation where users are mentioned along with the blocked relationship of the mentioned users with the logged-in user.
+
+Relevant fields to access on returned messages and their mentioned users:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| mentionedUsers | `getMentionedUsers()` | [`User[]`](/sdk/reference/entities#user) | Array of users mentioned in the message |
+| blockedByMe (on each mentioned user) | `getBlockedByMe()` | `boolean` | Whether the logged-in user has blocked this mentioned user |
+| hasBlockedMe (on each mentioned user) | `getHasBlockedMe()` | `boolean` | Whether this mentioned user has blocked the logged-in user |
 
 <Tabs>
 <Tab title="User">
@@ -392,12 +407,8 @@ To retrieve the list of users mentioned in the particular message, you can use t
 message.getMentionedUsers()
 ```
 
-Messages containing mentions are returned as [`BaseMessage`](/sdk/reference/messages#basemessage) objects with mention-related fields populated. Access the mention data using getter methods:
 
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| mentionedUsers | `getMentionedUsers()` | [`User[]`](/sdk/reference/entities#user) | Array of users mentioned in the message |
-| hasMentionedMe | `hasMentionedMe()` | `boolean` | Whether the logged-in user is mentioned in the message |
+The getMentionedUsers() method returns an array of [`User`](/sdk/reference/entities#user) objects.
 
 <Accordion title="Best Practices">
 - **Use correct format**: Always use `<@uid:UID>` format for mentions in message text

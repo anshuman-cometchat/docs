@@ -147,13 +147,12 @@ try {
 
 The object of the edited message will be returned in the `onSuccess()` callback method of the listener. The message object will contain the `editedAt` field set with the timestamp of the time the message was edited. This will help you identify if the message was edited while iterating through the list of messages. The `editedBy` field is also set to the UID of the user who edited the message.
 
-The `editMessage()` method returns a [`BaseMessage`](/sdk/reference/messages#basemessage) object (or a subclass like [`TextMessage`](/sdk/reference/messages#textmessage)). Access the response data using getter methods:
+The `editMessage()` method returns a [`BaseMessage`](/sdk/reference/messages#basemessage) object (or a subclass like [`TextMessage`](/sdk/reference/messages#textmessage)).
+
+Relevant fields to access on the returned message:
 
 | Field | Getter | Return Type | Description |
 |-------|--------|-------------|-------------|
-| id | `getId()` | `number` | Unique message ID |
-| text | `getText()` | `string` | Updated text content (TextMessage only) |
-| sender | `getSender()` | [`User`](/sdk/reference/entities#user) | The user who sent the message |
 | editedAt | `getEditedAt()` | `number` | Timestamp when the message was edited |
 | editedBy | `getEditedBy()` | `string` | UID of the user who edited the message |
 
@@ -215,12 +214,12 @@ CometChat.removeMessageListener("UNIQUE_LISTENER_ID");
 ```
 </Warning>
 
-The `onMessageEdited` callback receives a [`BaseMessage`](/sdk/reference/messages#basemessage) object with the `editedAt` and `editedBy` fields set. Access the data using getter methods:
+The `onMessageEdited` callback receives a [`BaseMessage`](/sdk/reference/messages#basemessage) object with the `editedAt` and `editedBy` fields set.
+
+Relevant fields to access on the returned message:
 
 | Field | Getter | Return Type | Description |
 |-------|--------|-------------|-------------|
-| id | `getId()` | `number` | Unique message ID |
-| sender | `getSender()` | [`User`](/sdk/reference/entities#user) | The user who sent the message |
 | editedAt | `getEditedAt()` | `number` | Timestamp when the message was edited |
 | editedBy | `getEditedBy()` | `string` | UID of the user who edited the message |
 

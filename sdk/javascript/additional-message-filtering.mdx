@@ -652,6 +652,13 @@ let GUID: string = "GUID",
 </Tabs>
 
 The above snippet will help you get only the messages belonging to the `message` and `custom` category. This can also be used to disable certain categories of messages like `call` and `action`.
+
+Relevant fields to access on returned messages:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| category | `getCategory()` | `string` | Category of the message (`"message"`, `"custom"`, `"action"`, `"call"`) |
+
 ## Messages for multiple types
 
 *In other words, how do I fetch messages belonging to multiple types*
@@ -730,6 +737,13 @@ let GUID: string = "GUID",
 </Tabs>
 
 Using the above code snippet, you can fetch all the media messages.
+
+Relevant fields to access on returned messages:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| type | `getType()` | `string` | Type of the message (`"text"`, `"image"`, `"video"`, `"audio"`, `"file"`, or custom types) |
+
 ## Messages for a specific thread
 
 *In other words, how do I fetch messages that are a part of a thread and not directly a user/group conversations*
