@@ -24,7 +24,7 @@ const conversation = await CometChat.CometChatHelper.getConversationFromMessage(
 ```
 </Accordion>
 
-Conversations provide the last message for every one-on-one and group conversation the logged-in user is part of. Use this to build a Recent Chats list.
+Conversations provide the last message for every one-on-one and group conversation the logged-in user is part of. Each [`Conversation`](/sdk/reference/entities#conversation) object includes the other participant (user or group), the last message, unread counts, and optional tags. Use this to build a Recent Chats list.
 
 ## Retrieve List of Conversations
 
@@ -447,7 +447,7 @@ When conversations are fetched successfully, the response includes only AI agent
 
 ### Fetch Conversations
 
-Call `build()` to create the request, then `fetchNext()` to retrieve conversations. Maximum 50 per request.
+After configuring the builder, call `build()` to create the request, then `fetchNext()` to retrieve conversations. Maximum 50 per request. Call `fetchNext()` repeatedly on the same object to paginate.
 
 <Tabs>
 <Tab title="TypeScript">
@@ -489,20 +489,6 @@ conversationsRequest.fetchNext().then(
 </Tab>
 
 </Tabs>
-
-The [`Conversation`](/sdk/reference/entities#conversation) object contains:
-
-| Field | Description |
-| --- | --- |
-| conversationId | ID of the conversation |
-| conversationType | Type of conversation (`user`/`group`) |
-| lastMessage | Last message in the conversation |
-| conversationWith | User or Group object |
-| unreadMessageCount | Unread message count |
-| unreadMentionsCount | Count of unread mentions |
-| lastReadMessageId | ID of the last read message |
-| latestMessageId | ID of the latest message |
-| tags | Tags associated with the conversation (when using `withTags`) |
 
 The `fetchNext()` method returns an array of [`Conversation`](/sdk/reference/entities#conversation) objects. Access the response data using getter methods:
 
