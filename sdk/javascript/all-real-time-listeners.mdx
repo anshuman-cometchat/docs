@@ -58,6 +58,24 @@ The `UserListener` class provides you with live events related to users. Below a
 To add the `UserListener`, you need to use the `addUserListener()` method provided by the `CometChat` class.
 
 <Tabs>
+<Tab title="JavaScript">
+```js
+const listenerID = "UNIQUE_LISTENER_ID";
+CometChat.addUserListener(
+  listenerID,
+  new CometChat.UserListener({
+    onUserOnline: (onlineUser) => {
+      console.log("On User Online:", { onlineUser });
+    },
+    onUserOffline: (offlineUser) => {
+      console.log("On User Offline:", { offlineUser });
+    },
+  })
+);
+```
+
+</Tab>
+
 <Tab title="TypeScript">
 ```typescript
 const listenerID: string = "UNIQUE_LISTENER_ID";
@@ -78,24 +96,6 @@ CometChat.addUserListener(
 
 </Tab>
 
-<Tab title="JavaScript">
-```js
-const listenerID = "UNIQUE_LISTENER_ID";
-CometChat.addUserListener(
-  listenerID,
-  new CometChat.UserListener({
-    onUserOnline: (onlineUser) => {
-      console.log("On User Online:", { onlineUser });
-    },
-    onUserOffline: (offlineUser) => {
-      console.log("On User Offline:", { offlineUser });
-    },
-  })
-);
-```
-
-</Tab>
-
 </Tabs>
 
 where `UNIQUE_LISTENER_ID` is the unique identifier for the listener. Please make sure that no two listeners are added with the same listener id as this could lead to unexpected behavior resulting in loss of events.
@@ -103,17 +103,17 @@ where `UNIQUE_LISTENER_ID` is the unique identifier for the listener. Please mak
 Once the `UserListener` is not in use, you need to remove the listener using the `removeUserListener()` method which takes the id of the listener to be removed as the parameter.
 
 <Tabs>
-<Tab title="TypeScript">
-```typescript
-let listenerID: string = "UNIQUE_LISTENER_ID";
-CometChat.removeUserListener(listenerID);
+<Tab title="JavaScript">
+```js
+CometChat.removeUserListener(UNIQUE_LISTENER_ID);
 ```
 
 </Tab>
 
-<Tab title="JavaScript">
-```js
-CometChat.removeUserListener(UNIQUE_LISTENER_ID);
+<Tab title="TypeScript">
+```typescript
+let listenerID: string = "UNIQUE_LISTENER_ID";
+CometChat.removeUserListener(listenerID);
 ```
 
 </Tab>
@@ -137,6 +137,75 @@ The `GroupListener` class provides you with all the real-time events related to 
 To add the `GroupListener`, you need to use the `addGroupListener()` method provided by the `CometChat` class.
 
 <Tabs>
+<Tab title="JavaScript">
+```js
+CometChat.addGroupListener(
+  "UNIQUE_LISTENER_ID",
+  new CometChat.GroupListener({
+    onGroupMemberJoined: (message, joinedUser, joinedGroup) => {
+      console.log("onGroupMemberJoined", { message, joinedUser, joinedGroup });
+    },
+    onGroupMemberLeft: (message, leftUser, leftGroup) => {
+      console.log("onGroupMemberLeft", { message, leftUser, leftGroup });
+    },
+    onGroupMemberKicked: (message, kickedUser, kickedBy, kickedFrom) => {
+      console.log("onGroupMemberKicked", {
+        message,
+        kickedUser,
+        kickedBy,
+        kickedFrom,
+      });
+    },
+    onGroupMemberBanned: (message, bannedUser, bannedBy, bannedFrom) => {
+      console.log("onGroupMemberBanned", {
+        message,
+        bannedUser,
+        bannedBy,
+        bannedFrom,
+      });
+    },
+    onGroupMemberUnbanned: (
+      message,
+      unbannedUser,
+      unbannedBy,
+      unbannedFrom
+    ) => {
+      console.log("onGroupMemberUnbanned", {
+        message,
+        unbannedUser,
+        unbannedBy,
+        unbannedFrom,
+      });
+    },
+    onGroupMemberScopeChanged: (
+      message,
+      changedUser,
+      newScope,
+      oldScope,
+      changedGroup
+    ) => {
+      console.log("onGroupMemberScopeChanged", {
+        message,
+        changedUser,
+        newScope,
+        oldScope,
+        changedGroup,
+      });
+    },
+    onMemberAddedToGroup: (message, userAdded, addedby, addedTo) => {
+      console.log("onMemberAddedToGroup", {
+        message,
+        userAdded,
+        addedby,
+        addedTo,
+      });
+    },
+  })
+);
+```
+
+</Tab>
+
 <Tab title="TypeScript">
 ```typescript
 CometChat.addGroupListener(
@@ -229,75 +298,6 @@ CometChat.addGroupListener(
 
 </Tab>
 
-<Tab title="JavaScript">
-```js
-CometChat.addGroupListener(
-  "UNIQUE_LISTENER_ID",
-  new CometChat.GroupListener({
-    onGroupMemberJoined: (message, joinedUser, joinedGroup) => {
-      console.log("onGroupMemberJoined", { message, joinedUser, joinedGroup });
-    },
-    onGroupMemberLeft: (message, leftUser, leftGroup) => {
-      console.log("onGroupMemberLeft", { message, leftUser, leftGroup });
-    },
-    onGroupMemberKicked: (message, kickedUser, kickedBy, kickedFrom) => {
-      console.log("onGroupMemberKicked", {
-        message,
-        kickedUser,
-        kickedBy,
-        kickedFrom,
-      });
-    },
-    onGroupMemberBanned: (message, bannedUser, bannedBy, bannedFrom) => {
-      console.log("onGroupMemberBanned", {
-        message,
-        bannedUser,
-        bannedBy,
-        bannedFrom,
-      });
-    },
-    onGroupMemberUnbanned: (
-      message,
-      unbannedUser,
-      unbannedBy,
-      unbannedFrom
-    ) => {
-      console.log("onGroupMemberUnbanned", {
-        message,
-        unbannedUser,
-        unbannedBy,
-        unbannedFrom,
-      });
-    },
-    onGroupMemberScopeChanged: (
-      message,
-      changedUser,
-      newScope,
-      oldScope,
-      changedGroup
-    ) => {
-      console.log("onGroupMemberScopeChanged", {
-        message,
-        changedUser,
-        newScope,
-        oldScope,
-        changedGroup,
-      });
-    },
-    onMemberAddedToGroup: (message, userAdded, addedby, addedTo) => {
-      console.log("onMemberAddedToGroup", {
-        message,
-        userAdded,
-        addedby,
-        addedTo,
-      });
-    },
-  })
-);
-```
-
-</Tab>
-
 </Tabs>
 
 where `UNIQUE_LISTENER_ID` is the unique identifier for the listener. Please make sure that no two listeners are added with the same listener id as this could lead to unexpected behavior resulting in loss of events.
@@ -305,17 +305,17 @@ where `UNIQUE_LISTENER_ID` is the unique identifier for the listener. Please mak
 Once the `GroupListener` is not in use, you need to remove the listener using the `removeGroupListener()` method which takes the id of the listener to be removed as the parameter.
 
 <Tabs>
-<Tab title="TypeScript">
-```typescript
-let listenerID: string = "UNIQUE_LISTENER_ID";
-CometChat.removeGroupListener(listenerID);
+<Tab title="JavaScript">
+```js
+CometChat.removeGroupListener(UNIQUE_LISTENER_ID);
 ```
 
 </Tab>
 
-<Tab title="JavaScript">
-```js
-CometChat.removeGroupListener(UNIQUE_LISTENER_ID);
+<Tab title="TypeScript">
+```typescript
+let listenerID: string = "UNIQUE_LISTENER_ID";
+CometChat.removeGroupListener(listenerID);
 ```
 
 </Tab>
@@ -346,62 +346,6 @@ The `MessageListener` class provides you with live events related to messages. B
 To add the `MessageListener`, you need to use the `addMessageListener()` method provided by the `CometChat` class.
 
 <Tabs>
-<Tab title="TypeScript">
-```typescript
-CometChat.addMessageListener(
-  "UNIQUE_LISTENER_ID",
-  new CometChat.MessageListener({
-    onTextMessageReceived: (textMessage: CometChat.TextMessage) => {
-      console.log("Text message received successfully", textMessage);
-    },
-    onMediaMessageReceived: (mediaMessage: CometChat.MediaMessage) => {
-      console.log("Media message received successfully", mediaMessage);
-    },
-    onCustomMessageReceived: (customMessage: CometChat.CustomMessage) => {
-      console.log("Custom message received successfully", customMessage);
-    },
-    onMessagesDelivered: (messageReceipt: CometChat.MessageReceipt) => {
-      console.log("Message Delivered", messageReceipt);
-    },
-    onMessagesRead: (messageReceipt: CometChat.MessageReceipt) => {
-      console.log("Message Read", messageReceipt);
-    },
-    onTypingStarted: (typingIndicator: CometChat.TypingIndicator) => {
-      console.log("Typing Started", typingIndicator);
-    },
-    onTypingEnded: (typingIndicator: CometChat.TypingIndicator) => {
-      console.log("Typing Ended", typingIndicator);
-    },
-    onMessageDeleted: (message: CometChat.BaseMessage) => {
-      console.log("Message Delted", message);
-    },
-    onMessageEdited: (message: CometChat.BaseMessage) => {
-      console.log("Message Edited", message);
-    },
-    onInteractiveMessageReceived: (message: CometChat.InteractiveMessage) => {
-      console.log("interactive Message received", message);
-    },
-    onInteractionGoalCompleted: (receipt: CometChat.InteractionReceipt) => {
-      console.log("Message interaction goal completed", message);
-    },
-    onTransientMessageReceived: (message: CometChat.TransientMessage) => {
-      console.log("Transient Message received", message);
-    },
-    onMessageReactionAdded: (reaction: CometChat.ReactionEvent) => {
-      console.log("Message Reaction added", reaction);
-    },
-    onMessageReactionRemoved: (reaction: CometChat.ReactionEvent) => {
-      console.log("Message Reaction removed", reaction);
-    },
-    onMessageModerated: (message: CometChat.BaseMessage) => {
-      console.log("Message Moderated", message);
-    },
-  })
-);
-```
-
-</Tab>
-
 <Tab title="JavaScript">
 ```js
 CometChat.addMessageListener(
@@ -458,6 +402,62 @@ CometChat.addMessageListener(
 
 </Tab>
 
+<Tab title="TypeScript">
+```typescript
+CometChat.addMessageListener(
+  "UNIQUE_LISTENER_ID",
+  new CometChat.MessageListener({
+    onTextMessageReceived: (textMessage: CometChat.TextMessage) => {
+      console.log("Text message received successfully", textMessage);
+    },
+    onMediaMessageReceived: (mediaMessage: CometChat.MediaMessage) => {
+      console.log("Media message received successfully", mediaMessage);
+    },
+    onCustomMessageReceived: (customMessage: CometChat.CustomMessage) => {
+      console.log("Custom message received successfully", customMessage);
+    },
+    onMessagesDelivered: (messageReceipt: CometChat.MessageReceipt) => {
+      console.log("Message Delivered", messageReceipt);
+    },
+    onMessagesRead: (messageReceipt: CometChat.MessageReceipt) => {
+      console.log("Message Read", messageReceipt);
+    },
+    onTypingStarted: (typingIndicator: CometChat.TypingIndicator) => {
+      console.log("Typing Started", typingIndicator);
+    },
+    onTypingEnded: (typingIndicator: CometChat.TypingIndicator) => {
+      console.log("Typing Ended", typingIndicator);
+    },
+    onMessageDeleted: (message: CometChat.BaseMessage) => {
+      console.log("Message Delted", message);
+    },
+    onMessageEdited: (message: CometChat.BaseMessage) => {
+      console.log("Message Edited", message);
+    },
+    onInteractiveMessageReceived: (message: CometChat.InteractiveMessage) => {
+      console.log("interactive Message received", message);
+    },
+    onInteractionGoalCompleted: (receipt: CometChat.InteractionReceipt) => {
+      console.log("Message interaction goal completed", message);
+    },
+    onTransientMessageReceived: (message: CometChat.TransientMessage) => {
+      console.log("Transient Message received", message);
+    },
+    onMessageReactionAdded: (reaction: CometChat.ReactionEvent) => {
+      console.log("Message Reaction added", reaction);
+    },
+    onMessageReactionRemoved: (reaction: CometChat.ReactionEvent) => {
+      console.log("Message Reaction removed", reaction);
+    },
+    onMessageModerated: (message: CometChat.BaseMessage) => {
+      console.log("Message Moderated", message);
+    },
+  })
+);
+```
+
+</Tab>
+
 </Tabs>
 
 where `UNIQUE_LISTENER_ID` is the unique identifier for the listener. Please make sure that no two listeners are added with the same listener id as this could lead to unexpected behavior resulting in loss of events.
@@ -465,17 +465,17 @@ where `UNIQUE_LISTENER_ID` is the unique identifier for the listener. Please mak
 Once the `MessageListener` is not in use, you need to remove the listener using the `removeMessageListener()` method which takes the id of the listener to be removed as the parameter.
 
 <Tabs>
-<Tab title="TypeScript">
-```typescript
-let listenerID: string = "UNIQUE_LISTENER_ID";
-CometChat.removeMessageListener(listenerID);
+<Tab title="JavaScript">
+```js
+CometChat.removeMessageListener(UNIQUE_LISTENER_ID);
 ```
 
 </Tab>
 
-<Tab title="JavaScript">
-```js
-CometChat.removeMessageListener(UNIQUE_LISTENER_ID);
+<Tab title="TypeScript">
+```typescript
+let listenerID: string = "UNIQUE_LISTENER_ID";
+CometChat.removeMessageListener(listenerID);
 ```
 
 </Tab>
@@ -496,29 +496,6 @@ The `CallListener` class provides you with live events related to calls. Below a
 To add the `CallListener`, you need to use the `addCallListener()` method provided by the `CometChat` class.
 
 <Tabs>
-<Tab title="TypeScript">
-```typescript
-CometChat.addCallListener(
-  "UNIQUE_LISTENER_ID",
-  new CometChat.CallListener({
-    onIncomingCallReceived: (call: CometChat.Call) => {
-      console.log("Incoming call:", call);
-    },
-    onOutgoingCallAccepted: (call: CometChat.Call) => {
-      console.log("Outgoing call accepted:", call);
-    },
-    onOutgoingCallRejected: (call: CometChat.Call) => {
-      console.log("Outgoing call rejected:", call);
-    },
-    onIncomingCallCancelled: (call: CometChat.Call) => {
-      console.log("Incoming call canceled:", call);
-    },
-  })
-);
-```
-
-</Tab>
-
 <Tab title="JavaScript">
 ```js
 CometChat.addCallListener(
@@ -542,6 +519,29 @@ CometChat.addCallListener(
 
 </Tab>
 
+<Tab title="TypeScript">
+```typescript
+CometChat.addCallListener(
+  "UNIQUE_LISTENER_ID",
+  new CometChat.CallListener({
+    onIncomingCallReceived: (call: CometChat.Call) => {
+      console.log("Incoming call:", call);
+    },
+    onOutgoingCallAccepted: (call: CometChat.Call) => {
+      console.log("Outgoing call accepted:", call);
+    },
+    onOutgoingCallRejected: (call: CometChat.Call) => {
+      console.log("Outgoing call rejected:", call);
+    },
+    onIncomingCallCancelled: (call: CometChat.Call) => {
+      console.log("Incoming call canceled:", call);
+    },
+  })
+);
+```
+
+</Tab>
+
 </Tabs>
 
 where `UNIQUE_LISTENER_ID` is the unique identifier for the listener. Please make sure that no two listeners are added with the same listener id as this could lead to unexpected behavior resulting in loss of events.
@@ -549,17 +549,17 @@ where `UNIQUE_LISTENER_ID` is the unique identifier for the listener. Please mak
 Once the `CallListener` is not in use, you need to remove the listener using the `removeCallListener()` method which takes the id of the listener to be removed as the parameter.
 
 <Tabs>
-<Tab title="TypeScript">
-```typescript
-let listenerID: string = "UNIQUE_LISTENER_ID";
-CometChat.removeCallListener(listenerID);
+<Tab title="JavaScript">
+```js
+CometChat.removeCallListener(UNIQUE_LISTENER_ID);
 ```
 
 </Tab>
 
-<Tab title="JavaScript">
-```js
-CometChat.removeCallListener(UNIQUE_LISTENER_ID);
+<Tab title="TypeScript">
+```typescript
+let listenerID: string = "UNIQUE_LISTENER_ID";
+CometChat.removeCallListener(listenerID);
 ```
 
 </Tab>

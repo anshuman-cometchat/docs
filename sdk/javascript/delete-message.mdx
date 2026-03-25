@@ -37,21 +37,6 @@ Deleting a message is straightforward. Receiving delete events has two parts:
 Use `deleteMessage()` with the message ID.
 
 <Tabs>
-<Tab title="TypeScript">
-```typescript
-let messageId: number = 1;
-
-CometChat.deleteMessage(messageId).then(
-  (message: CometChat.BaseMessage) => {
-      console.log("Message deleted", message);
-  }, (error: CometChat.CometChatException) => {
-      console.log("Message delete failed with error:", error);
-  }
-);
-```
-
-</Tab>
-
 <Tab title="JavaScript">
 ```javascript
 let messageId = "ID_OF_THE_MESSAGE_YOU_WANT_TO_DELETE";
@@ -63,6 +48,21 @@ message => {
   console.log("Message delete failed with error:", error);
 }
 ); 
+```
+
+</Tab>
+
+<Tab title="TypeScript">
+```typescript
+let messageId: number = 1;
+
+CometChat.deleteMessage(messageId).then(
+  (message: CometChat.BaseMessage) => {
+      console.log("Message deleted", message);
+  }, (error: CometChat.CometChatException) => {
+      console.log("Message delete failed with error:", error);
+  }
+);
 ```
 
 </Tab>

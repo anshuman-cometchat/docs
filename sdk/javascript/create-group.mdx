@@ -35,26 +35,6 @@ Group types:
 - `CometChat.GROUP_TYPE.PRIVATE`
 
 <Tabs>
-<Tab title="TypeScript">
-```typescript
-const GUID: string = "GUID";
-const groupName: string = "Hello Group!";
-const groupType: string = CometChat.GROUP_TYPE.PUBLIC;
-const password: string = "";
-
-const group: CometChat.Group = new CometChat.Group(GUID, groupName, groupType, password);
-
-CometChat.createGroup(group).then(
-  (group: CometChat.Group) => {
-      console.log("Group created successfully:", group);
-  }, (error: CometChat.CometChatException) => {
-      console.log("Group creation failed with exception:", error);
-  }
-);
-```
-
-</Tab>
-
 <Tab title="JavaScript">
 ```javascript
 const GUID = "GUID";
@@ -69,6 +49,26 @@ CometChat.createGroup(group).then(
   	console.log("Group created successfully:", group);
   }, error => {
   	console.log("Group creation failed with exception:", error);
+  }
+);
+```
+
+</Tab>
+
+<Tab title="TypeScript">
+```typescript
+const GUID: string = "GUID";
+const groupName: string = "Hello Group!";
+const groupType: string = CometChat.GROUP_TYPE.PUBLIC;
+const password: string = "";
+
+const group: CometChat.Group = new CometChat.Group(GUID, groupName, groupType, password);
+
+CometChat.createGroup(group).then(
+  (group: CometChat.Group) => {
+      console.log("Group created successfully:", group);
+  }, (error: CometChat.CometChatException) => {
+      console.log("Group creation failed with exception:", error);
   }
 );
 ```
@@ -131,30 +131,6 @@ Parameters:
 Create a `GroupMember` with: `new CometChat.GroupMember(UID, scope)`
 
 <Tabs>
-<Tab title="TypeScript">
-```typescript
-let GUID: string = "cometchat-guid-11";
-let UID: string = "cometchat-uid-1";
-let groupName: string = "Hello Group!";
-let groupType: string = CometChat.GROUP_TYPE.PUBLIC;
-
-let group: CometChat.Group = new CometChat.Group(GUID, groupName, groupType);
-let members: Array<CometChat.GroupMember> = [
-new CometChat.GroupMember(UID, CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT)
-];
-let banMembers: Array<String> = ["cometchat-uid-2"];
-
-CometChat.createGroupWithMembers(group, members, banMembers).then(
-  (response: Object) => {
-  	console.log("Group created successfully", response);
-  }, (error: CometChat.CometChatException) => {
-  	console.log("Some error occured while creating group", error)
-  }
-);
-```
-
-</Tab>
-
 <Tab title="JavaScript">
 ```js
 let GUID = "cometchat-guid-11";
@@ -172,6 +148,30 @@ CometChat.createGroupWithMembers(group, members, banMembers).then(
   response => {
   	console.log("Group created successfully", response);
   }, error => {
+  	console.log("Some error occured while creating group", error)
+  }
+);
+```
+
+</Tab>
+
+<Tab title="TypeScript">
+```typescript
+let GUID: string = "cometchat-guid-11";
+let UID: string = "cometchat-uid-1";
+let groupName: string = "Hello Group!";
+let groupType: string = CometChat.GROUP_TYPE.PUBLIC;
+
+let group: CometChat.Group = new CometChat.Group(GUID, groupName, groupType);
+let members: Array<CometChat.GroupMember> = [
+new CometChat.GroupMember(UID, CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT)
+];
+let banMembers: Array<String> = ["cometchat-uid-2"];
+
+CometChat.createGroupWithMembers(group, members, banMembers).then(
+  (response: Object) => {
+  	console.log("Group created successfully", response);
+  }, (error: CometChat.CometChatException) => {
   	console.log("Some error occured while creating group", error)
   }
 );

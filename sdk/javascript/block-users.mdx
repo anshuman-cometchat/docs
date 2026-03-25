@@ -27,21 +27,6 @@ let blockedUsers = await request.fetchNext();
 Block users to prevent all communication with them. Use `blockUsers()` with an array of UIDs.
 
 <Tabs>
-<Tab title="TypeScript">
-```typescript
-const usersList: String[] = ["UID1", "UID2", "UID3"];
-
-CometChat.blockUsers(usersList).then(
-  (list: Object) => {
-      console.log("users list blocked", { list });
-  }, (error: CometChat.CometChatException) => {
-      console.log("Blocking user fails with error", error);
-  }
-);
-```
-
-</Tab>
-
 <Tab title="JavaScript">
 ```javascript
 const usersList = ["UID1", "UID2", "UID3"];
@@ -52,6 +37,21 @@ list => {
 }, error => {
   console.log("Blocking user fails with error", error);
 }
+);
+```
+
+</Tab>
+
+<Tab title="TypeScript">
+```typescript
+const usersList: String[] = ["UID1", "UID2", "UID3"];
+
+CometChat.blockUsers(usersList).then(
+  (list: Object) => {
+      console.log("users list blocked", { list });
+  }, (error: CometChat.CometChatException) => {
+      console.log("Blocking user fails with error", error);
+  }
 );
 ```
 
@@ -89,21 +89,6 @@ The method returns an array of [`User`](/sdk/reference/entities#user) objects wi
 Unblock previously blocked users using `unblockUsers()` with an array of UIDs.
 
 <Tabs>
-<Tab title="TypeScript">
-```typescript
-const usersList: String[] = ["UID1", "UID2", "UID3"];
-
-CometChat.unblockUsers(usersList).then(
-  (list: Object) => {
-      console.log("users list blocked", { list });
-  }, (error: CometChat.CometChatException) => {
-      console.log("Blocking user fails with error", error);
-  }
-); 
-```
-
-</Tab>
-
 <Tab title="JavaScript">
 ```javascript
 const usersList = ["UID1", "UID2", "UID3"];
@@ -115,6 +100,21 @@ list => {
   console.log("unblocking user fails with error", error);
 }
 );
+```
+
+</Tab>
+
+<Tab title="TypeScript">
+```typescript
+const usersList: String[] = ["UID1", "UID2", "UID3"];
+
+CometChat.unblockUsers(usersList).then(
+  (list: Object) => {
+      console.log("users list blocked", { list });
+  }, (error: CometChat.CometChatException) => {
+      console.log("Blocking user fails with error", error);
+  }
+); 
 ```
 
 </Tab>
@@ -244,6 +244,23 @@ let blockedUsersRequest: CometChat.BlockedUsersRequest = new CometChat.BlockedUs
 After configuring the builder, call `build()` to get the `BlockedUsersRequest` object, then call `fetchNext()` to retrieve blocked users.
 
 <Tabs>
+<Tab title="JavaScript">
+```javascript
+const limit = 30;
+const blockedUsersRequest = new CometChat.BlockedUsersRequestBuilder()
+                  				.setLimit(limit)
+                  				.build();
+blockedUsersRequest.fetchNext().then(
+userList => {
+  console.log("Blocked user list received:", userList);
+}, error => {
+  console.log("Blocked user list fetching failed with error:", error);
+}
+);
+```
+
+</Tab>
+
 <Tab title="TypeScript">
 ```typescript
 let limit: number = 30;
@@ -257,23 +274,6 @@ blockedUsersRequest.fetchNext().then(
   }, (error: CometChat.CometChatException) => {
       console.log("Blocked user list fetching failed with error:", error);
   }
-);
-```
-
-</Tab>
-
-<Tab title="JavaScript">
-```javascript
-const limit = 30;
-const blockedUsersRequest = new CometChat.BlockedUsersRequestBuilder()
-                  				.setLimit(limit)
-                  				.build();
-blockedUsersRequest.fetchNext().then(
-userList => {
-  console.log("Blocked user list received:", userList);
-}, error => {
-  console.log("Blocked user list fetching failed with error:", error);
-}
 );
 ```
 
