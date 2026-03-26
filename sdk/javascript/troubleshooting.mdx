@@ -60,7 +60,7 @@ Find solutions to common issues when building with the CometChat JavaScript SDK.
 | Cannot kick/ban members | Insufficient scope | Only admins and moderators can kick/ban |
 | Can't join private group | Requires invite | Private groups require admin to add you |
 | Owner can't leave | Ownership not transferred | Call `transferGroupOwnership()` first |
-| Password join fails | Wrong password | Pass correct password as second parameter |
+| Password join fails | Wrong password | Pass correct password as third parameter |
 | `fetchNext()` returns same results | New request object | Reuse the same `GroupsRequest` instance |
 | Scope filter returns nothing | Invalid strings | Use `"admin"`, `"moderator"`, `"participant"` |
 | Status filter not working | Wrong constant | Use `CometChat.USER_STATUS.ONLINE`/`OFFLINE` |
@@ -169,7 +169,7 @@ For the complete SDK error code reference, see [Error Codes](/sdk/javascript/err
 | `USER_NOT_LOGGED_IN` | No active session | Call `login()` first |
 | `ERR_GUID_NOT_FOUND` | Group doesn't exist | Create group or verify GUID |
 | `ERR_NOT_A_MEMBER` | Not a group member | Join group first |
-| `ERR_TOO_MANY_REQUESTS` | Rate limit exceeded | See [Rate Limits](/sdk/javascript/rate-limits) |
+| `TOO_MANY_REQUEST` | Rate limit exceeded | See [Rate Limits](/sdk/javascript/rate-limits) |
 | `FAILED_TO_FETCH` | Network issue | Check internet connection and API endpoint |
 | `NO_WEBSOCKET_CONNECTION` | WebSocket disconnected | Check connection status, wait for reconnect |
 

@@ -32,7 +32,10 @@ Use `joinGroup()` to join a group.
 ```typescript
 const GUID: string = "GUID";
 
-CometChat.joinGroup(GUID, CometChat.GroupType.Public).then(
+const password: string = "";
+const groupType: string = CometChat.GroupType.Public;
+
+CometChat.joinGroup(GUID, groupType, password).then(
   (group: CometChat.Group) => {
       console.log("Group joined successfully:", group);
   }, (error: CometChat.CometChatException) => {
@@ -80,7 +83,7 @@ Register a `GroupListener` to receive events when members join.
 <Tab title="TypeScript">
 ```typescript
 CometChat.addGroupListener(
-  "UNIQUE_LISTNER_ID",
+  "UNIQUE_LISTENER_ID",
   new CometChat.GroupListener({
       onGroupMemberJoined: (message: CometChat.Action, joinedUser: CometChat.User, joinedGroup: CometChat.Group) => {
           console.log("User joined", { message, joinedUser, joinedGroup });
@@ -94,7 +97,7 @@ CometChat.addGroupListener(
 <Tab title="JavaScript">
 ```javascript
 CometChat.addGroupListener(
-  "UNIQUE_LISTNER_ID",
+  "UNIQUE_LISTENER_ID",
   new CometChat.GroupListener({
       onGroupMemberJoined: (message, joinedUser, joinedGroup) => {
           console.log("User joined", { message, joinedUser, joinedGroup });
@@ -111,7 +114,7 @@ CometChat.addGroupListener(
 Always remove group listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
 
 ```javascript
-CometChat.removeGroupListener("UNIQUE_LISTNER_ID");
+CometChat.removeGroupListener("UNIQUE_LISTENER_ID");
 ```
 </Warning>
 

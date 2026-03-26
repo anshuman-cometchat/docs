@@ -33,9 +33,9 @@ let UID: string = "UID";
 
 CometChat.updateGroupMemberScope(GUID, UID, CometChat.GroupMemberScope.Admin).then(
   (response: boolean) => {
-      console.log("Group member scopped changed", response);
+      console.log("Group member scope changed", response);
   }, (error: CometChat.CometChatException) => {
-      console.log("Group member scopped changed failed", error);
+      console.log("Group member scope change failed", error);
   }
 );
 ```
@@ -50,9 +50,9 @@ let scope = CometChat.GROUP_MEMBER_SCOPE.ADMIN;
 
 CometChat.updateGroupMemberScope(GUID, UID, scope).then(
 response => {
-  console.log("Group member scopped changed", response);
+  console.log("Group member scope changed", response);
 }, error => {
-  console.log("Group member scopped changed failed", error);
+  console.log("Group member scope change failed", error);
 }
 );
 ```
@@ -67,11 +67,11 @@ This method takes the below parameters:
 | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `UID`     | The UID of the member whose scope you want to change                                                                                                        |
 | `GUID`    | The GUID of the group                                                                                                                                       |
-| `scope`   | The new scope: `CometChat.SCOPE.ADMIN`, `CometChat.SCOPE.MODERATOR`, or `CometChat.SCOPE.PARTICIPANT` |
+| `scope`   | The new scope: `CometChat.GROUP_MEMBER_SCOPE.ADMIN`, `CometChat.GROUP_MEMBER_SCOPE.MODERATOR`, or `CometChat.GROUP_MEMBER_SCOPE.PARTICIPANT` |
 
 The default scope is `participant`. Only Admins can change member scopes.
 
-On success, the method resolves with a success message string.
+On success, the method resolves with `true` (boolean).
 
 ## Real-Time Group Member Scope Changed Events
 

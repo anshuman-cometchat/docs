@@ -82,10 +82,10 @@ CometChat.sendMessage(textMessage).then(
 
 <Tab title="TypeScript (User)">
 ```typescript
-let receiverID: string = "UID",
-  messageText: string = "Hello <@uid:cometchat-uid-1>";
-  receiverType: string = CometChat.RECEIVER_TYPE.USER,
-  textMessage: CometChat.TextMessage = new CometChat.TextMessage(receiverID, messageText, receiverType);
+let receiverID: string = "UID";
+let messageText: string = "Hello <@uid:cometchat-uid-1>";
+let receiverType: string = CometChat.RECEIVER_TYPE.USER;
+let textMessage: CometChat.TextMessage = new CometChat.TextMessage(receiverID, messageText, receiverType);
 
 CometChat.sendMessage(textMessage).then(
   (message: CometChat.TextMessage) => {

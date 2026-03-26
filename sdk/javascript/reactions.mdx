@@ -19,10 +19,10 @@ const request = new CometChat.ReactionRequestBuilder()
 const reactions = await request.fetchNext();
 
 // Listen for reaction events
-CometChat.addMessageListener("LISTENER_ID", {
+CometChat.addMessageListener("LISTENER_ID", new CometChat.MessageListener({
   onMessageReactionAdded: (reaction) => {},
   onMessageReactionRemoved: (reaction) => {}
-});
+}));
 ```
 </Accordion>
 
@@ -400,13 +400,13 @@ action
 
 <Tab title="TypeScript">
 ```typescript
-// The message to which the reaction is related
-let message: CometChat.BaseMessage = ...;
+// The message to which the reaction is related (obtained from fetchPrevious/fetchNext or a listener)
+let message!: CometChat.BaseMessage;
 
-// The reaction event data received in real-time
-let messageReaction: CometChat.MessageReaction = ...;
+// The reaction event data received in real-time (obtained from onMessageReactionAdded/onMessageReactionRemoved)
+let messageReaction!: CometChat.MessageReaction;
 
-// The recieved reaction event real-time action type. Can be CometChatConstants.REACTION_ADDED or CometChatConstants.REACTION_REMOVED
+// The received reaction event real-time action type. Can be CometChatConstants.REACTION_ADDED or CometChatConstants.REACTION_REMOVED
 let action: CometChat.REACTION_ACTION = CometChat.REACTION_ACTION.REACTION_ADDED;
 
 let modifiedBaseMessage = CometChat.CometChatHelper.updateMessageWithReactionInfo(

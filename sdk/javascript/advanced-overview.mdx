@@ -19,8 +19,8 @@ CometChat.addConnectionListener("LISTENER_ID", new CometChat.ConnectionListener(
 
 // Listen for login events
 CometChat.addLoginListener("LISTENER_ID", new CometChat.LoginListener({
-  onLoginSuccess: (user) => console.log("Logged in:", user),
-  onLogoutSuccess: () => console.log("Logged out")
+  loginSuccess: (user) => console.log("Logged in:", user),
+  logoutSuccess: () => console.log("Logged out")
 }));
 ```
 </Accordion>

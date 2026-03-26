@@ -50,7 +50,7 @@ async function callWithRetry<T>(
     try {
       return await apiCall();
     } catch (error: any) {
-      if (error.code === "ERR_TOO_MANY_REQUESTS" && attempt < maxRetries - 1) {
+      if (error.code === "TOO_MANY_REQUEST" && attempt < maxRetries - 1) {
         const waitTime = Math.pow(2, attempt) * 1000;
         console.log(`Rate limited. Retrying in ${waitTime / 1000}s...`);
         await new Promise((resolve) => setTimeout(resolve, waitTime));
@@ -75,7 +75,7 @@ async function callWithRetry(apiCall, maxRetries = 3) {
     try {
       return await apiCall();
     } catch (error) {
-      if (error.code === "ERR_TOO_MANY_REQUESTS" && attempt < maxRetries - 1) {
+      if (error.code === "TOO_MANY_REQUEST" && attempt < maxRetries - 1) {
         const waitTime = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s
         console.log(`Rate limited. Retrying in ${waitTime / 1000}s...`);
         await new Promise((resolve) => setTimeout(resolve, waitTime));
