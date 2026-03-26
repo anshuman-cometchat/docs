@@ -4,7 +4,6 @@ sidebarTitle: "Retrieve Users"
 description: "Fetch, filter, search, and sort users using the CometChat JavaScript SDK. Includes pagination, role-based filtering, tag support, and online user counts."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
@@ -24,9 +23,22 @@ const count = await CometChat.getOnlineUserCount();
 ```
 </Accordion>
 
-## Retrieve Logged In User Details
+The CometChat SDK provides methods to retrieve the logged-in user, fetch filtered user lists, look up individual users by UID, and get online user counts. All user methods return [`User`](/sdk/reference/entities#user) objects.
 
-Use `getLoggedInUser()` to get the current user's details. This method also verifies if a user is logged in — a rejected promise indicates no user is logged in.
+### User Object Fields
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| uid | `getUid()` | `string` | Unique user ID |
+| name | `getName()` | `string` | Display name of the user |
+| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
+| status | `getStatus()` | `string` | Online status of the user |
+| lastActiveAt | `getLastActiveAt()` | `number` | Timestamp when the user was last active |
+| role | `getRole()` | `string` | Role assigned to the user |
+
+## Get the Logged-In User
+
+Use `getLoggedinUser()` to get the current user's details. A rejected promise indicates no user is logged in.
 
 <Tabs>
 
@@ -58,18 +70,7 @@ user => {
 
 </Tabs>
 
-This method returns a [`User`](/sdk/reference/entities#user) object with the logged-in user's information.
-
-The method returns a [`User`](/sdk/reference/entities#user) object. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| uid | `getUid()` | `string` | Unique user ID |
-| name | `getName()` | `string` | Display name of the user |
-| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
-| status | `getStatus()` | `string` | Online status of the user |
-| lastActiveAt | `getLastActiveAt()` | `number` | Timestamp when the user was last active |
-| role | `getRole()` | `string` | Role assigned to the user |
+Returns a [`User`](/sdk/reference/entities#user) object with the logged-in user's information.
 
 ## Retrieve List of Users
 
@@ -490,18 +491,9 @@ userList => {
 
 </Tabs>
 
-The `fetchNext()` method returns an array of [`User`](/sdk/reference/entities#user) objects. Access the response data using getter methods:
+The `fetchNext()` method returns an array of [`User`](/sdk/reference/entities#user) objects. Call `fetchNext()` repeatedly on the same request object to paginate.
 
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| uid | `getUid()` | `string` | Unique user ID |
-| name | `getName()` | `string` | Display name of the user |
-| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
-| status | `getStatus()` | `string` | Online status of the user |
-| lastActiveAt | `getLastActiveAt()` | `number` | Timestamp when the user was last active |
-| role | `getRole()` | `string` | Role assigned to the user |
-
-## Retrieve Particular User Details
+## Get a User by UID
 
 Use `getUser()` to fetch a specific user's details by UID.
 
@@ -540,18 +532,7 @@ user => {
 | --------- | ----------- |
 | UID | The UID of the user to fetch |
 
-Returns a [`User`](/sdk/reference/entities#user) object with the user's details.
-
-The method returns a [`User`](/sdk/reference/entities#user) object. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| uid | `getUid()` | `string` | Unique user ID |
-| name | `getName()` | `string` | Display name of the user |
-| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
-| status | `getStatus()` | `string` | Online status of the user |
-| lastActiveAt | `getLastActiveAt()` | `number` | Timestamp when the user was last active |
-| role | `getRole()` | `string` | Role assigned to the user |
+Returns a [`User`](/sdk/reference/entities#user) object.
 
 ## Get Online User Count
 
