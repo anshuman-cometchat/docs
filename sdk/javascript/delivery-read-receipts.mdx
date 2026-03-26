@@ -614,6 +614,41 @@ The following features require **Enhanced Messaging Status** to be enabled for y
 - `markMessageAsUnread()` method
 </Note>
 
+## Mark as Unread
+
+Use `markAsUnread()` to mark a message as unread. This is useful for "mark as unread" functionality in conversation lists. Pass a message object (`TextMessage`, `MediaMessage`, or `CustomMessage`).
+
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+CometChat.markAsUnread(message).then(
+  (response: string) => {
+    console.log("Message marked as unread:", response);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Error marking as unread:", error);
+  }
+);
+```
+</Tab>
+<Tab title="JavaScript">
+```javascript
+CometChat.markAsUnread(message).then(
+  (response) => {
+    console.log("Message marked as unread:", response);
+  },
+  (error) => {
+    console.log("Error marking as unread:", error);
+  }
+);
+```
+</Tab>
+</Tabs>
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `message` | `BaseMessage` | The message object to mark as unread |
+
 ---
 
 ## Next Steps

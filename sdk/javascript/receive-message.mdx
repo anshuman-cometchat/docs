@@ -565,6 +565,47 @@ CometChat.getUnreadMessageCountForAllUsers(true);
 CometChat.getUnreadMessageCountForAllGroups(true);
 ```
 
+## Get Message Details
+
+Use `getMessageDetails()` to fetch a specific message by its ID. Returns the full message object (`TextMessage`, `MediaMessage`, `CustomMessage`, or `InteractiveMessage`).
+
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+let messageId: string = "MESSAGE_ID";
+
+CometChat.getMessageDetails(messageId).then(
+  (message: CometChat.BaseMessage) => {
+    console.log("Message details:", message);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Error fetching message details:", error);
+  }
+);
+```
+</Tab>
+<Tab title="JavaScript">
+```javascript
+let messageId = "MESSAGE_ID";
+
+CometChat.getMessageDetails(messageId).then(
+  (message) => {
+    console.log("Message details:", message);
+  },
+  (error) => {
+    console.log("Error fetching message details:", error);
+  }
+);
+```
+</Tab>
+</Tabs>
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `messageId` | `string` | The ID of the message to fetch |
+
+Returns a [`BaseMessage`](/sdk/reference/messages#basemessage) object (which may be a `TextMessage`, `MediaMessage`, `CustomMessage`, or `InteractiveMessage`).
+
 ---
 
 ## Next Steps

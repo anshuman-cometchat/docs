@@ -879,6 +879,136 @@ CometChatCalls.removeCallEventListener(listenerId);
 
 ---
 
+## Login Listener
+
+Receive events when the user's authentication state changes — login success/failure and logout success/failure.
+
+| Method | Description |
+| ------ | ----------- |
+| `loginSuccess(user)` | User logged in successfully. Provides the `User` object. |
+| `loginFailure(error)` | Login failed. Provides a `CometChatException`. |
+| `logoutSuccess()` | User logged out successfully. |
+| `logoutFailure(error)` | Logout failed. Provides a `CometChatException`. |
+
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+const listenerID: string = "UNIQUE_LISTENER_ID";
+CometChat.addLoginListener(
+  listenerID,
+  new CometChat.LoginListener({
+    loginSuccess: (user: CometChat.User) => {
+      console.log("LoginListener :: loginSuccess", user);
+    },
+    loginFailure: (error: CometChat.CometChatException) => {
+      console.log("LoginListener :: loginFailure", error);
+    },
+    logoutSuccess: () => {
+      console.log("LoginListener :: logoutSuccess");
+    },
+    logoutFailure: (error: CometChat.CometChatException) => {
+      console.log("LoginListener :: logoutFailure", error);
+    }
+  })
+);
+```
+</Tab>
+<Tab title="JavaScript">
+```js
+const listenerID = "UNIQUE_LISTENER_ID";
+CometChat.addLoginListener(
+  listenerID,
+  new CometChat.LoginListener({
+    loginSuccess: (user) => {
+      console.log("LoginListener :: loginSuccess", user);
+    },
+    loginFailure: (error) => {
+      console.log("LoginListener :: loginFailure", error);
+    },
+    logoutSuccess: () => {
+      console.log("LoginListener :: logoutSuccess");
+    },
+    logoutFailure: (error) => {
+      console.log("LoginListener :: logoutFailure", error);
+    }
+  })
+);
+```
+</Tab>
+</Tabs>
+
+Remove the listener when no longer needed:
+
+```javascript
+CometChat.removeLoginListener("UNIQUE_LISTENER_ID");
+```
+
+## Connection Listener
+
+Receive events when the WebSocket connection state changes.
+
+| Method | Description |
+| ------ | ----------- |
+| `onConnected()` | SDK has an active connection to CometChat servers. |
+| `inConnecting()` | SDK is attempting to establish or re-establish a connection. |
+| `onDisconnected()` | SDK is disconnected due to network issues or other errors. |
+| `onFeatureThrottled()` | A feature has been throttled due to rate limiting. |
+
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+const listenerID: string = "UNIQUE_LISTENER_ID";
+CometChat.addConnectionListener(
+  listenerID,
+  new CometChat.ConnectionListener({
+    onConnected: () => {
+      console.log("ConnectionListener :: connected");
+    },
+    inConnecting: () => {
+      console.log("ConnectionListener :: connecting");
+    },
+    onDisconnected: () => {
+      console.log("ConnectionListener :: disconnected");
+    },
+    onFeatureThrottled: () => {
+      console.log("ConnectionListener :: feature throttled");
+    }
+  })
+);
+```
+</Tab>
+<Tab title="JavaScript">
+```js
+const listenerID = "UNIQUE_LISTENER_ID";
+CometChat.addConnectionListener(
+  listenerID,
+  new CometChat.ConnectionListener({
+    onConnected: () => {
+      console.log("ConnectionListener :: connected");
+    },
+    inConnecting: () => {
+      console.log("ConnectionListener :: connecting");
+    },
+    onDisconnected: () => {
+      console.log("ConnectionListener :: disconnected");
+    },
+    onFeatureThrottled: () => {
+      console.log("ConnectionListener :: feature throttled");
+    }
+  })
+);
+```
+</Tab>
+</Tabs>
+
+Remove the listener when no longer needed:
+
+```javascript
+CometChat.removeConnectionListener("UNIQUE_LISTENER_ID");
+```
+
+---
+
 ## Next Steps
 
 <CardGroup cols={2}>
