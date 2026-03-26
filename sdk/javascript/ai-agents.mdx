@@ -66,6 +66,29 @@ Events arrive via `onAIAssistantEventReceived` in this order:
 `Run Start` and `Run Finished` are always emitted. Tool Call events only appear when tools are invoked — there can be multiple tool call cycles in a single run. Text Message events are always emitted and carry the assistant's reply incrementally.
 </Note>
 
+### Event Object Properties
+
+Every event is an `AIAssistantBaseEvent` with these common properties:
+
+| Getter | Return Type | Description |
+|--------|-------------|-------------|
+| `getType()` | `string` | Event type (e.g., `run_started`, `text_message_content`) |
+| `getConversationId()` | `string` | The conversation this event belongs to |
+| `getMessageId()` | `string` | The message ID associated with the event |
+| `getParentMessageId()` | `string` | Parent message ID (for threaded messages) |
+| `getRunId()` | `string` | The run ID for this agent execution |
+| `getThreadId()` | `string` | The thread ID for this agent execution |
+| `getTimestamp()` | `number` | Timestamp of the event |
+| `getData()` | `object` | Full event data payload |
+
+Some events carry additional data:
+
+| Event | Extra Getter | Description |
+|-------|-------------|-------------|
+| Text Message Content | `getDelta()` | The streaming text chunk for progressive rendering |
+| Tool Call Arguments | `getToolCallId()`, `getDelta()` | Tool call ID and argument chunk |
+| Tool Call Result | `getToolCallId()`, `getContent()`, `getRole()` | Tool call ID, result content, and role |
+
 <Tabs>
     <Tab title="TypeScript">
         ```ts
@@ -108,6 +131,24 @@ After the run completes, these messages arrive via `MessageListener`:
 | `AIAssistantMessage` | The full assistant reply |
 | `AIToolResultMessage` | The final output of a tool call |
 | `AIToolArgumentMessage` | The arguments passed to a tool |
+
+Each message type extends `BaseMessage` and has a typed data accessor:
+
+| Message Type | Data Getter | Data Properties |
+|--------------|-------------|-----------------|
+| `AIAssistantMessage` | `getAssistantMessageData()` | `getRunId()`, `getThreadId()`, `getText()` |
+| `AIToolResultMessage` | `getToolResultMessageData()` | `getRunId()`, `getThreadId()`, `getText()`, `getToolCallId()` |
+| `AIToolArgumentMessage` | `getToolArgumentMessageData()` | `getRunId()`, `getThreadId()`, `getToolCalls()` |
+
+The `getToolCalls()` method on `AIToolArgumentMessage` returns an array of `AIToolCall` objects, each with:
+
+| Getter | Return Type | Description |
+|--------|-------------|-------------|
+| `getId()` | `string` | Unique tool call ID |
+| `getType()` | `string` | Tool call type |
+| `getFunction()` | `AIToolCallFunction` | Function object with `getName()` and `getArguments()` |
+| `getDisplayName()` | `string` | Display name of the tool |
+| `getExecutionText()` | `string` | Execution description text |
 
 <Tabs>
     <Tab title="TypeScript">
