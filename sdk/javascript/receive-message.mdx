@@ -86,7 +86,9 @@ CometChat.removeMessageListener("UNIQUE_LISTENER_ID");
 Always remove listeners when they're no longer needed (e.g., on component unmount). Failing to do so can cause memory leaks and duplicate event handling.
 </Warning>
 
-Each listener callback receives the specific message subclass — [`TextMessage`](/sdk/reference/messages#textmessage), [`MediaMessage`](/sdk/reference/messages#mediamessage), or [`CustomMessage`](/sdk/reference/messages#custommessage) — depending on the message type.
+<Warning>
+As a sender, you will not receive your own message in a real-time event. However, if a user is logged in on multiple devices, they will receive the event on the other devices.
+</Warning>
 
 ## Missed Messages
 
@@ -250,8 +252,6 @@ messagesRequest.fetchPrevious().then(
 </Tab>
 </Tabs>
 
-Calling the `fetchPrevious()` method on the same object repeatedly allows you to fetch the entire conversation for the group. This can be implemented with upward scrolling to display the entire conversation.
-
 The `fetchPrevious()` method returns an array of [`BaseMessage`](/sdk/reference/messages#basemessage) objects (which may be [`TextMessage`](/sdk/reference/messages#textmessage), [`MediaMessage`](/sdk/reference/messages#mediamessage), or other subclasses).
 
 ## Search Messages
@@ -340,7 +340,7 @@ Each method accepts an optional boolean parameter to exclude messages from block
 ### Single Conversation
 
 <Tabs>
-  <Tab title="TypeScript">
+<Tab title="TypeScript">
 ```typescript
 // One-on-one
 let UID: string = "UID";
@@ -349,200 +349,45 @@ CometChat.getUnreadMessageCountForUser(UID).then(
   (error: CometChat.CometChatException) => console.log("Error:", error)
 );
 
-</Tab>
-
-<Tab title="TypeScript">
-```typescript
-let UID: string = "UID";
-
-CometChat.getUnreadMessageCountForUser(UID).then(
-  (unreadMessageCount: Object) => {
-    console.log("Unread message count fetched", unreadMessageCount);
-  },
-  (error: CometChat.CometChatException) => {
-    console.log("Error in getting unread message count", error);
-  }
-);
-```
-
-</Tab>
-
-</Tabs>
-
-The `getUnreadMessageCountForUser()` method returns a count object where the key is the UID and the value is the unread message count (e.g., `{ "UID": 5 }`).
-
-It will return an object which will contain the UID as the key and the unread message count as the value.
-
-### Fetch Unread Message Count of a particular group conversation
-
-*In other words, how do I find out the number of unread messages I have in a single group?*
-
-In order to get the unread message count for a particular group, you can use the `getUnreadMessageCountForGroup()`.
-
-This method has the below two variants:
-
-<Tabs>
-<Tab title="Group">
-```javascript
-CometChat.getUnreadMessageCountForGroup(GUID);
-```
-
-</Tab>
-
-<Tab title="TypeScript">
-```typescript
+// Group
 let GUID: string = "GUID";
 CometChat.getUnreadMessageCountForGroup(GUID).then(
   (count: Object) => console.log("Unread count:", count),
   (error: CometChat.CometChatException) => console.log("Error:", error)
 );
 ```
+</Tab>
+<Tab title="JavaScript">
+```javascript
+// One-on-one
+let UID = "UID";
+CometChat.getUnreadMessageCountForUser(UID).then(
+  (count) => console.log("Unread count:", count),
+  (error) => console.log("Error:", error)
+);
+
+// Group
+let GUID = "GUID";
+CometChat.getUnreadMessageCountForGroup(GUID).then(
+  (count) => console.log("Unread count:", count),
+  (error) => console.log("Error:", error)
+);
+```
+</Tab>
+</Tabs>
 
 ### All Conversations
 
-```typescript
-let GUID: string = "GUID";
-
-CometChat.getUnreadMessageCountForGroup(GUID).then(
-  (unreadMessageCount: Object) => {
-    console.log("Unread message count fetched", unreadMessageCount);
-  },
-  (error: CometChat.CometChatException) => {
-    console.log("Error in getting unread message count", error);
-  }
-);
-```
-
-</Tab>
-
-</Tabs>
-
-The `getUnreadMessageCountForGroup()` method returns a count object where the key is the GUID and the value is the unread message count (e.g., `{ "GUID": 12 }`).
-
-It will return an object which will contain the GUID as the key and the unread message count as the value.
-
-### Fetch Unread Message Count of all one-on-one & group conversations
-
-*In other words, how do I find out the number of unread messages for every one-on-one and group conversation?*
-
-In order to get all the unread message count combined i.e unread message counts for all the users and groups, you can use the `getUnreadMessageCount()` method.
-
-This method has two variants:
-
 <Tabs>
-<Tab title="All Conversation">
-```javascript
-CometChat.getUnreadMessageCount();
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
-CometChat.getUnreadMessageCount();
-```
-
-</Tab>
-
-</Tabs>
-
-If you wish to ignore the messages from blocked users you can use the below syntax setting the boolean parameter to true:
-
-<Tabs>
-<Tab title="All Conversation">
-```javascript
-CometChat.getUnreadMessageCount(hideMessagesFromBlockedUsers);
-```
-
-</Tab>
-
-<Tab title="TypeScript">
-```typescript
-let hideMessagesFromBlockedUsers: boolean = true;
-CometChat.getUnreadMessageCount(hideMessagesFromBlockedUsers);
-```
-
-</Tab>
-
-</Tabs>
-
-<Tabs>
-<Tab title="Get Unread Count For All Conversation">
-```javascript
+// All users and groups combined
 CometChat.getUnreadMessageCount().then(
   (count: Object) => console.log("Unread count:", count),
   (error: CometChat.CometChatException) => console.log("Error:", error)
 );
 
-</Tab>
-
-<Tab title="TypeScript">
-```typescript
-CometChat.getUnreadMessageCount().then(
-  (unreadMessageCount: Object) => {
-    console.log("Unread message count fetched", unreadMessageCount);
-  },
-  (error: CometChat.CometChatException) => {
-    console.log("Error in getting unread message count", error);
-  }
-);
-```
-
-</Tab>
-
-</Tabs>
-
-The `getUnreadMessageCount()` method returns a count object with two keys: `users` (a map of `{ UID: count }`) and `groups` (a map of `{ GUID: count }`), representing unread message counts across all conversations.
-
-It returns an object having two keys:
-
-1. users - The value for this key holds another object that holds the UID as key and their corresponding unread message count as value.
-2. groups - The value for this key holds another object that holds the GUID as key and their corresponding unread message count as value.
-
-### Fetch Unread Message Count of all one-on-one conversations
-
-In order to fetch the unread message counts for just the users, you can use the `getUnreadMessageCountForAllUsers()` method. This method just like others has two variants:
-
-<Tabs>
-<Tab title="For All User Conversation">
-```javascript
-CometChat.getUnreadMessageCountForAllUsers();
-```
-
-</Tab>
-
-<Tab title="TypeScript">
-```typescript
-CometChat.getUnreadMessageCountForAllUsers();
-```
-
-</Tab>
-
-</Tabs>
-
-If you wish to ignore the messages from blocked users you can use the below syntax setting the boolean parameter to true:
-
-<Tabs>
-<Tab title="For All User Conversation">
-```javascript
-CometChat.getUnreadMessageCountForAllUsers(hideMessagesFromBlockedUsers);
-```
-
-</Tab>
-
-<Tab title="TypeScript">
-```typescript
-let hideMessagesFromBlockedUsers: boolean = true;
-CometChat.getUnreadMessageCountForAllUsers(hideMessagesFromBlockedUsers);
-```
-
-</Tab>
-
-</Tabs>
-
-<Tabs>
-<Tab title="Get Unread Count For All User Conversation">
-```javascript
+// All user conversations only
 CometChat.getUnreadMessageCountForAllUsers().then(
   (count: Object) => console.log("Unread count:", count),
   (error: CometChat.CometChatException) => console.log("Error:", error)
@@ -554,6 +399,29 @@ CometChat.getUnreadMessageCountForAllGroups().then(
   (error: CometChat.CometChatException) => console.log("Error:", error)
 );
 ```
+</Tab>
+<Tab title="JavaScript">
+```javascript
+// All users and groups combined
+CometChat.getUnreadMessageCount().then(
+  (count) => console.log("Unread count:", count),
+  (error) => console.log("Error:", error)
+);
+
+// All user conversations only
+CometChat.getUnreadMessageCountForAllUsers().then(
+  (count) => console.log("Unread count:", count),
+  (error) => console.log("Error:", error)
+);
+
+// All group conversations only
+CometChat.getUnreadMessageCountForAllGroups().then(
+  (count) => console.log("Unread count:", count),
+  (error) => console.log("Error:", error)
+);
+```
+</Tab>
+</Tabs>
 
 ### Excluding Blocked Users
 
