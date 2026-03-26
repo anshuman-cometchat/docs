@@ -211,6 +211,13 @@ let blockedUsersRequest: CometChat.BlockedUsersRequest = new CometChat.BlockedUs
 
 </Tab>
 
+</Tabs>
+
+Finally, once all the parameters are set to the builder class, you need to call the build() method to get the object of the `BlockedUsersRequest` class.
+
+Once you have the object of the `BlockedUsersRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of [`User`](/sdk/reference/entities#user) objects containing n number of blocked users where N is the limit set in the builder class.
+
+<Tabs>
 <Tab title="JavaScript">
 ```javascript
 let limit = 30;
@@ -265,6 +272,13 @@ userList => {
 </Tabs>
 
 The `fetchNext()` method returns an array of [`User`](/sdk/reference/entities#user) objects representing blocked users.
+
+Relevant fields to access on returned users:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| blockedByMe | `getBlockedByMe()` | `boolean` | Whether the logged-in user has blocked this user |
+| hasBlockedMe | `getHasBlockedMe()` | `boolean` | Whether this user has blocked the logged-in user |
 
 ---
 

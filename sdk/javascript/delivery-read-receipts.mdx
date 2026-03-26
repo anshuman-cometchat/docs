@@ -152,6 +152,8 @@ CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId).then(
 
 Use `markConversationAsDelivered()` to mark all messages in a conversation as delivered.
 
+`markConversationAsDelivered()` resolves with a `string` on success.
+
 <Tabs>
 <Tab title="User">
 ```javascript
@@ -410,6 +412,12 @@ CometChat.markMessageAsUnread(message).then(
 );
 ```
 </Tab>
+
+</Tabs>
+
+In case you would like to be notified of an error if the receipts fail to go through you can use `.then(successCallback, failureCallback).` On success, this method returns an updated [`Conversation`](/sdk/reference/entities#conversation) object with the updated unread message count and other conversation data.
+
+<Tabs>
 <Tab title="JavaScript">
 ```javascript
 CometChat.markMessageAsUnread(message).then(
@@ -462,6 +470,34 @@ CometChat.addMessageListener(
 );
 ```
 </Tab>
+
+</Tabs>
+
+You will receive events in the form of [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) objects. The message receipt contains the below parameters:
+
+| Parameter      | Information                                                                                                                               |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `messageId`    | The Id of the message prior to which all the messages for that particular conversation have been marked as read.                          |
+| `sender`       | User object containing the details of the user who has marked the message as read. System User for `deliveredToAll` & `readByAll` events. |
+| `receiverId`   | Id of the receiver whose conversation has been marked as read.                                                                            |
+| `receiverType` | type of the receiver (user/group)                                                                                                         |
+| `receiptType`  | Type of the receipt (read/delivered)                                                                                                      |
+| `deliveredAt`  | The timestamp of the time when the message was delivered. This will only be present if the receiptType is delivered.                      |
+| `readAt`       | The timestamp of the time when the message was read. This will only be present when the receiptType is read.                              |
+
+The `markAsDelivered()` and `markAsRead()` methods are fire-and-forget — they do not return a `MessageReceipt` object. Use the listener callbacks above to receive delivery and read confirmations.
+
+### Missed Receipts
+
+You will receive message receipts when you load offline messages. While fetching messages in bulk, the message object will have two fields i.e. `deliveredAt` and `readAt` which hold the timestamp for the time the message was delivered and read respectively. Using these two variables, the delivery and read status for a message can be obtained.
+
+However, for a group message, if you wish to fetch the `deliveredAt` and `readAt` fields of individual member of the group you can use the below-described method.
+
+### Receipt History for a Single Message
+
+To fetch the message receipts, you can use the `getMessageReceipts()` method.
+
+<Tabs>
 <Tab title="JavaScript">
 ```javascript
 let listenerID = "UNIQUE_LISTENER_ID";
@@ -486,6 +522,20 @@ CometChat.addMessageListener(
 ```
 </Tab>
 </Tabs>
+
+You will receive a list of [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) objects.
+
+<Info>
+
+The following features will be available only if the **Enhanced Messaging Status** feature is enabled for your app.
+
+* `onMessagesDeliveredToAll` event,
+* `onMessagesReadByAll` event,
+* `deliveredAt` field in a group message,
+* `readAt` field in a group message.
+* `markMessageAsUnread` method.
+
+</Info>
 
 <Warning>
 Always remove listeners when no longer needed to prevent memory leaks.

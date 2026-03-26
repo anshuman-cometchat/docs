@@ -163,6 +163,55 @@ const htmlElement = document.getElementById("call-container") as HTMLElement;
 CometChatCalls.startSession(callToken, callSettings, htmlElement);
 ```
 </Tab>
+</Tabs>
+
+| Parameter      | Description                                              |
+| -------------- | -------------------------------------------------------- |
+| `callToken`    | The token received from `generateToken()` onSuccess |
+| `callSettings` | Object of `CallSettings` class configured via `CallSettingsBuilder` |
+| `htmlElement`  | DOM element where the call UI will be rendered |
+
+`startSession()` renders the call UI inside the provided HTML element and joins the user into the active call session.
+
+### Call Settings
+
+Configure the call experience using the following `CallSettingsBuilder` methods:
+
+| Method | Description |
+| ------ | ----------- |
+| `enableDefaultLayout(boolean)` | Enables or disables the default call UI layout with built-in controls. `true` shows the default layout. `false` hides the button layout. Default: `true` |
+| `setIsAudioOnlyCall(boolean)` | Sets whether the call is audio-only or audio-video. `true` for audio-only, `false` for audio-video. Default: `false` |
+| `setCallListener(OngoingCallListener)` | Sets the listener to receive call events. See [Call Listeners](#call-listeners). |
+| `setMode(string)` | Sets the call UI layout mode. Available: `CometChat.CALL_MODE.DEFAULT`, `CometChat.CALL_MODE.SPOTLIGHT`. Default: `DEFAULT` |
+| `startWithAudioMuted(boolean)` | Starts the call with the microphone muted. Default: `false` |
+| `startWithVideoMuted(boolean)` | Starts the call with the camera turned off. Default: `false` |
+| `showEndCallButton(boolean)` | Shows or hides the end call button in the default layout. Default: `true` |
+| `showMuteAudioButton(boolean)` | Shows or hides the mute audio button. Default: `true` |
+| `showPauseVideoButton(boolean)` | Shows or hides the pause video button. Default: `true` |
+| `showScreenShareButton(boolean)` | Shows or hides the screen share button. Default: `true` |
+| `showModeButton(boolean)` | Shows or hides the mode toggle button (switch between DEFAULT and SPOTLIGHT). Default: `true` |
+| `showSwitchToVideoCallButton(boolean)` | Shows or hides the button to upgrade an audio call to video. Default: `true` |
+| `setMainVideoContainerSetting(MainVideoContainerSetting)` | Customizes the main video container. See [Video View Customization](/sdk/javascript/video-view-customisation). |
+| `setIdleTimeoutPeriod(number)` | Sets idle timeout in seconds. Warning appears 60 seconds before auto-termination. Default: `180` seconds. *v4.1.0+* |
+
+## Call Listeners
+
+The `OngoingCallListener` provides real-time callbacks for call session events, including participant changes, call state updates, and error conditions.
+
+<Warning>
+Always remove listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
+
+You can register listeners in two ways:
+
+1. **Via CallSettingsBuilder:** Use `.setCallListener(listener)` when building call settings
+2. **Via addCallEventListener:** Use `CometChatCalls.addCallEventListener(listenerId, listener)` to add multiple listeners
+
+Each listener requires a unique `listenerId` string. This ID is used to:
+- **Prevent duplicate registrations** — Re-registering with the same ID replaces the existing listener
+- **Enable targeted removal** — Remove specific listeners without affecting others
+
+<Tabs>
 <Tab title="JavaScript">
 ```javascript
 const callListener = new CometChatCalls.OngoingCallListener({
@@ -394,20 +443,7 @@ CometChatCalls.removeCallEventListener(listenerId);
 
 ### Events
 
-| Event | Description |
-| ----- | ----------- |
-| `onCallEnded()` | Invoked when the call session terminates for a 1:1 call. Both participants receive this callback. Only fires for calls with exactly 2 participants. |
-| `onSessionTimeout()` | Invoked when the call is auto-terminated due to inactivity (default: 180 seconds). Warning appears 60 seconds before. *v4.1.0+* |
-| `onCallEndButtonPressed()` | Invoked when the local user clicks the end call button. Call `CometChatCalls.endSession()` to leave the session. |
-| `onUserJoined(user)` | Invoked when a remote participant joins. The `user` contains UID, name, and avatar. |
-| `onUserLeft(user)` | Invoked when a remote participant leaves the call session. |
-| `onUserListUpdated(userList)` | Invoked whenever the participant list changes (join or leave events). |
-| `onMediaDeviceListUpdated(deviceList)` | Invoked when available audio/video devices change (e.g., new microphone connected). |
-| `onUserMuted(event)` | Invoked when a participant's mute state changes. Contains `muted` and `mutedBy` properties. |
-| `onScreenShareStarted()` | Invoked when the local user starts sharing their screen. |
-| `onScreenShareStopped()` | Invoked when the local user stops sharing their screen. |
-| `onCallSwitchedToVideo(event)` | Invoked when an audio call is upgraded to a video call. Contains `sessionId`, `initiator`, and `responder`. |
-| `onError(error)` | Invoked when an error occurs during the call session. |
+For the full list of callbacks, their descriptions, and parameter shapes, see the [`OngoingCallListener`](/sdk/javascript/all-real-time-listeners#ongoing-call-listener-calls-sdk) reference.
 
 ## In-Call Methods
 

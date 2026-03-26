@@ -76,6 +76,8 @@ CometChat.startTyping(typingNotification);
 
 </Tabs>
 
+`startTyping()` returns `void` — the typing indicator is sent as a fire-and-forget operation.
+
 ### Stop Typing
 
 Use `endTyping()` to notify the receiver that you've stopped typing.
@@ -127,6 +129,8 @@ CometChat.endTyping(typingNotification);
 
 </Tabs>
 
+`endTyping()` returns `void` — the typing indicator is sent as a fire-and-forget operation.
+
 <Note>
 Use `setMetadata()` on `TypingIndicator` to pass additional custom data. Retrieve it with `getMetadata()` on the receiver side.
 </Note>
@@ -176,23 +180,7 @@ new CometChat.MessageListener({
 
 </Tabs>
 
-The [`TypingIndicator`](/sdk/reference/auxiliary#typingindicator) object contains:
-
-| Parameter | Description |
-| --- | --- |
-| sender | User object of the person typing |
-| receiverId | UID or GUID of the receiver |
-| receiverType | `CometChat.RECEIVER_TYPE.USER` or `GROUP` |
-| metadata | Additional custom data |
-
-The `onTypingStarted` and `onTypingEnded` listener callbacks receive a [`TypingIndicator`](/sdk/reference/auxiliary#typingindicator) object. Access the data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| receiverId | `getReceiverId()` | `string` | UID or GUID of the typing indicator recipient |
-| receiverType | `getReceiverType()` | `string` | Type of receiver (`"user"` or `"group"`) |
-| sender | `getSender()` | `User` | The user who is typing |
-| metadata | `getMetadata()` | `Object` | Additional custom data sent with the indicator |
+The received object is a [`TypingIndicator`](/sdk/reference/auxiliary#typingindicator).
 
 ---
 

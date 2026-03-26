@@ -76,6 +76,8 @@ CometChat.sendTransientMessage(transientMessage);
 
 </Tabs>
 
+`sendTransientMessage()` returns `void` — the message is sent as a fire-and-forget operation with no response.
+
 ## Real-time Transient Messages
 
 <Warning>
@@ -119,23 +121,7 @@ new CometChat.MessageListener({
 
 </Tabs>
 
-The [`TransientMessage`](/sdk/reference/auxiliary#transientmessage) class consists of the below parameters:
-
-| Parameter        | Information                                                                                              |
-| ---------------- | -------------------------------------------------------------------------------------------------------- |
-| **sender**       | An object of the User class holding all the information. related to the sender of the transient message. |
-| **receiverId**   | Unique Id of the receiver. This can be the Id of the group or the user the transient message is sent to. |
-| **receiverType** | The type of the receiver - `CometChat.RECEIVER_TYPE.USER` or `CometChat.RECEIVER_TYPE.GROUP`             |
-| **data**         | A JSONObject to provide data.                                                                            |
-
-The listener callback receives a [`TransientMessage`](/sdk/reference/auxiliary#transientmessage) object. Access the data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| sender | `getSender()` | [`User`](/sdk/reference/entities#user) | The user who sent the transient message |
-| receiverId | `getReceiverId()` | `string` | UID or GUID of the receiver |
-| receiverType | `getReceiverType()` | `string` | Type of receiver (`user` or `group`) |
-| data | `getData()` | `Object` | Custom JSON data payload |
+The received object is a [`TransientMessage`](/sdk/reference/auxiliary#transientmessage).
 
 ---
 

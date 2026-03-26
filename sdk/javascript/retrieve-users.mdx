@@ -70,11 +70,15 @@ user => {
 
 </Tabs>
 
-Returns a [`User`](/sdk/reference/entities#user) object with the logged-in user's information.
+This method returns a [`User`](/sdk/reference/entities#user) object with the logged-in user's information
 
 ## Retrieve List of Users
 
-Use `UsersRequestBuilder` to fetch users with filtering, searching, and pagination.
+In order to fetch the list of users, you can use the `UsersRequest` class. To use this class i.e to create an object of the `UsersRequest` class, you need to use the `UsersRequestBuilder` class. The `UsersRequestBuilder` class allows you to set the parameters based on which the users are to be fetched.
+
+Fetching using this builder will return [`User`](/sdk/reference/entities#user) objects
+
+The `UsersRequestBuilder` class allows you to set the below parameters:
 
 ### Set Limit
 
@@ -194,6 +198,19 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 
 </Tab>
 
+</Tabs>
+
+Relevant fields to access on returned users:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| status | `getStatus()` | `string` | Online status of the user (`"online"` or `"offline"`) |
+
+### Hide Blocked Users
+
+This method is used to determine if the blocked users should be returned as a part of the user list. If set to true, the user list will not contain the users blocked by the logged in user.
+
+<Tabs>
 <Tab title="JavaScript">
 ```javascript
 let limit = 30;
@@ -253,6 +270,19 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 
 </Tab>
 
+</Tabs>
+
+Relevant fields to access on returned users:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| role | `getRole()` | `string` | Role assigned to the user |
+
+### Friends Only
+
+This property when set to true will return only the friends of the logged-in user.
+
+<Tabs>
 <Tab title="JavaScript">
 ```javascript
 let limit = 30;
@@ -313,6 +343,19 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 
 </Tab>
 
+</Tabs>
+
+Relevant fields to access on returned users:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| tags | `getTags()` | `string[]` | Tags associated with the user |
+
+### With Tags
+
+This property when set to true will fetch tags data along with the list of users.
+
+<Tabs>
 <Tab title="JavaScript">
 ```javascript
 let limit = 30;
@@ -343,6 +386,19 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
 
 </Tab>
 
+</Tabs>
+
+Relevant fields to access on returned users:
+
+| Field | Getter | Return Type | Description |
+|-------|--------|-------------|-------------|
+| tags | `getTags()` | `string[]` | Tags associated with the user |
+
+### Set UIDs
+
+This method accepts a list of UIDs based on which the list of users is fetched. A maximum of `25` users can be fetched.
+
+<Tabs>
 <Tab title="JavaScript">
 ```javascript
 let limit = 30;
@@ -491,9 +547,9 @@ userList => {
 
 </Tabs>
 
-The `fetchNext()` method returns an array of [`User`](/sdk/reference/entities#user) objects. Call `fetchNext()` repeatedly on the same request object to paginate.
+The `fetchNext()` method returns an array of [`User`](/sdk/reference/entities#user) objects.
 
-## Get a User by UID
+## Retrieve Particular User Details
 
 Use `getUser()` to fetch a specific user's details by UID.
 
@@ -532,7 +588,11 @@ user => {
 | --------- | ----------- |
 | UID | The UID of the user to fetch |
 
-Returns a [`User`](/sdk/reference/entities#user) object.
+| Parameter | Description                                                |
+| --------- | ---------------------------------------------------------- |
+| UID       | The UID of the user for whom the details are to be fetched |
+
+It returns the [`User`](/sdk/reference/entities#user) object containing the details of the user.
 
 ## Get Online User Count
 
@@ -568,6 +628,8 @@ userCount => {
 </Tabs>
 
 Returns the total online user count as a number.
+
+`getOnlineUserCount()` resolves with a `number` representing the total count of currently online users in your app.
 
 ---
 

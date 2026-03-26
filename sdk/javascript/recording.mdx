@@ -17,7 +17,7 @@ CometChatCalls.stopRecording();
 // Listen for recording events (in CallSettings)
 const callListener = new CometChatCalls.OngoingCallListener({
   onRecordingStarted: (event) => console.log("Recording started", event.user),
-  onRecordingStopped: (event) => console.log("Recording stopped", event.user),
+  onRecordingStopped: () => console.log("Recording stopped"),
 });
 ```
 
@@ -64,8 +64,8 @@ const audioOnly = false;
 const callListener = new CometChatCalls.OngoingCallListener({
   onRecordingStarted: (event) =>
     console.log("Listener => onRecordingStarted", event.user),
-  onRecordingStopped: (event) =>
-    console.log("Listener => onRecordingStopped", event.user),
+  onRecordingStopped: () =>
+    console.log("Listener => onRecordingStopped"),
 });
 
 const callSettings = new CometChatCalls.CallSettingsBuilder()
@@ -78,11 +78,43 @@ const htmlElement = document.getElementById("ELEMENT_ID");
 CometChatCalls.startSession(callToken, callSettings, htmlElement);
 ```
 </Tab>
+
+<Tab title="TypeScript">
+```typescript
+// Add listeners onRecordingStarted and onRecordingStopped to the startCall method
+const defaultLayout = true;
+const audioOnly = false;
+
+const callListener = new CometChatCalls.OngoingCallListener({
+  onRecordingStarted: (event) =>
+    console.log("Listener => onRecordingStarted", event.user),
+  onRecordingStopped: () =>
+    console.log("Listener => onRecordingStopped"),
+});
+
+const callSettings = new CometChatCalls.CallSettingsBuilder()
+  .enableDefaultLayout(defaultLayout)
+  .setIsAudioOnlyCall(audioOnly)
+  .setCallListener(callListener)
+  .build();
+
+const htmlElement = document.getElementById("ELEMENT_ID");
+CometChatCalls.startSession(callToken, callSettings, htmlElement);
+```
+
+</Tab>
+
 </Tabs>
+
+The `onRecordingStarted` callback receives an event object — see the [`OngoingCallListener`](/sdk/javascript/all-real-time-listeners#ongoing-call-listener-calls-sdk) reference for the full shape.
+
+The `onRecordingStopped` callback receives no arguments.
 
 <Warning>
 Always remove listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
 </Warning>
+
+## Settings for call recording
 
 ## CallSettings Options
 

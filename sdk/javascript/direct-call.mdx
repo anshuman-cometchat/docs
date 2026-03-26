@@ -448,32 +448,9 @@ CometChatCalls.removeCallEventListener("UNIQUE_LISTENER_ID");
 
 ### Events
 
-| Event | Description |
-| ----- | ----------- |
-| `onCallEnded()` | Invoked when the call session terminates for a 1:1 call. Both participants receive this callback. Only fires for calls with exactly 2 participants. |
-| `onSessionTimeout()` | Invoked when the call is auto-terminated due to inactivity (default: 180 seconds). Warning appears 60 seconds before. *v4.1.0+* |
-| `onCallEndButtonPressed()` | Invoked when the local user clicks the end call button. For ringing flow, call `CometChat.endCall()`. For standalone, call `CometChatCalls.endSession()`. |
-| `onUserJoined(user)` | Invoked when a remote participant joins. The `user` contains UID, name, and avatar. |
-| `onUserLeft(user)` | Invoked when a remote participant leaves the call session. |
-| `onUserListUpdated(userList)` | Invoked whenever the participant list changes (join or leave events). |
-| `onMediaDeviceListUpdated(deviceList)` | Invoked when available audio/video devices change (e.g., new microphone connected). |
-| `onUserMuted(event)` | Invoked when a participant's mute state changes. Contains `muted` and `mutedBy` properties. |
-| `onScreenShareStarted()` | Invoked when the local user starts sharing their screen. |
-| `onScreenShareStopped()` | Invoked when the local user stops sharing their screen. |
-| `onCallSwitchedToVideo(event)` | Invoked when an audio call is upgraded to a video call. Contains `sessionId`, `initiator`, and `responder`. |
-| `onError(error)` | Invoked when an error occurs during the call session. |
+For the full list of callbacks, their descriptions, and parameter shapes, see the [`OngoingCallListener`](/sdk/javascript/all-real-time-listeners#ongoing-call-listener-calls-sdk) reference.
 
-### Ringing Flow Return Types
-
-The ringing flow methods (`initiateCall()`, `acceptCall()`, `rejectCall()`, `endCall()`) return [`Call`](/sdk/reference/messages#call) objects. Access the data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| sessionId | `getSessionId()` | `string` | Unique session ID for the call |
-| callInitiator | `getCallInitiator()` | [`User`](/sdk/reference/entities#user) | The user who initiated the call |
-| callReceiver | `getCallReceiver()` | [`User`](/sdk/reference/entities#user) \| [`Group`](/sdk/reference/entities#group) | The user or group receiving the call |
-| action | `getAction()` | `string` | Current call action/status |
-| initiatedAt | `getInitiatedAt()` | `number` | Timestamp when the call was initiated |
+The ringing flow methods (`initiateCall()`, `acceptCall()`, `rejectCall()`, `endCall()`) return [`Call`](/sdk/reference/messages#call) objects.
 
 ## In-Call Methods
 
@@ -601,7 +578,7 @@ CometChatCalls.setMode(CometChat.CALL_MODE.SPOTLIGHT);
 
 ### Get Audio Input Devices
 
-Returns a list of available audio input devices (microphones).
+Returns a list of available audio input devices (microphones) as [`MediaDeviceInfo[]`](/sdk/reference/calls#mediadeviceinfo).
 
 <Tabs>
 <Tab title="TypeScript">
@@ -620,7 +597,7 @@ console.log("Available microphones:", audioInputDevices);
 
 ### Get Audio Output Devices
 
-Returns a list of available audio output devices (speakers/headphones).
+Returns a list of available audio output devices (speakers/headphones) as [`MediaDeviceInfo[]`](/sdk/reference/calls#mediadeviceinfo).
 
 <Tabs>
 <Tab title="TypeScript">
@@ -639,7 +616,7 @@ console.log("Available speakers:", audioOutputDevices);
 
 ### Get Video Input Devices
 
-Returns a list of available video input devices (cameras).
+Returns a list of available video input devices (cameras) as [`MediaDeviceInfo[]`](/sdk/reference/calls#mediadeviceinfo).
 
 <Tabs>
 <Tab title="TypeScript">

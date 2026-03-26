@@ -88,9 +88,6 @@ useEffect(() => {
     onError: error => {
         console.log('Call Error: ', error);
     },
-    onAudioModesUpdated: (audioModes) => {
-        console.log("audio modes:", audioModes);
-    },
     onUserMuted: (event) => {
         console.log("user muted:", event);
     }
@@ -103,20 +100,7 @@ useEffect(() => {
 
 </Tabs>
 
-### Events
-
-| Callback Method                                 | Description                                                                                                                  |
-| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| onCallEnded()                                   | This method is called when the call is successfully ended. The call details can be obtained from the `Call` object provided. |
-| onCallEndButtonPressed()                        | This method is called when the user press end call button.                                                                   |
-| onUserJoined(user: RTCUser)                     | This method is called when any other user joins the call. The user details can be obtained from the `User` object provided.  |
-| onUserLeft(user: RTCUser)                       | This method is called when a user leaves the call. The details of the user can be obtained from the provided `User` object.  |
-| onUserListUpdated(users: Array\<RTCUser>)       | This method is triggered every time a participant joins or leaves the call providing the list of users active in the call    |
-| onAudioModesUpdated(devices: Array\<AudioMode>) | This callback is triggered if any new audio output source is available or becomes unavailable.                               |
-| onUserMuted(muteObj: RTCMutedUser)              | This method is triggered when a user is muted in the ongoing call.                                                           |
-| onRecordingStarted(user: RTCUser)               | This method is triggered when a recording starts.                                                                            |
-| onRecordingStopped(user: RTCUser)               | This method is triggered when a recording stops.                                                                             |
-| onError(e: CometChatException)                  | This method is called when there is some error in establishing the call.                                                     |
+The `OngoingCallListener` provides the same callbacks as in [Call Session](/sdk/javascript/direct-call) and [Standalone Calling](/sdk/javascript/standalone-calling). For the full list of callbacks and their parameter shapes, see the [`OngoingCallListener`](/sdk/javascript/all-real-time-listeners#ongoing-call-listener-calls-sdk) reference.
 
 ## Settings
 

@@ -85,12 +85,12 @@ try {
 
 The deleted message object is returned with `deletedAt` (timestamp) and `deletedBy` (UID of deleter) fields set.
 
-The `deleteMessage()` method returns a [`BaseMessage`](/sdk/reference/messages#basemessage) object. Access the response data using getter methods:
+The `deleteMessage()` method returns a [`BaseMessage`](/sdk/reference/messages#basemessage) object.
+
+Relevant fields to access on the returned message:
 
 | Field | Getter | Return Type | Description |
 |-------|--------|-------------|-------------|
-| id | `getId()` | `number` | Unique message ID |
-| sender | `getSender()` | [`User`](/sdk/reference/entities#user) | The user who sent the message |
 | deletedAt | `getDeletedAt()` | `number` | Timestamp when the message was deleted |
 | deletedBy | `getDeletedBy()` | `string` | UID of the user who deleted the message |
 
@@ -142,12 +142,12 @@ new CometChat.MessageListener({
 
 </Tabs>
 
-The `onMessageDeleted` callback receives a [`BaseMessage`](/sdk/reference/messages#basemessage) object with the `deletedAt` and `deletedBy` fields set. Access the data using getter methods:
+The `onMessageDeleted` callback receives a [`BaseMessage`](/sdk/reference/messages#basemessage) object with the `deletedAt` and `deletedBy` fields set.
+
+Relevant fields to access on the returned message:
 
 | Field | Getter | Return Type | Description |
 |-------|--------|-------------|-------------|
-| id | `getId()` | `number` | Unique message ID |
-| sender | `getSender()` | [`User`](/sdk/reference/entities#user) | The user who sent the message |
 | deletedAt | `getDeletedAt()` | `number` | Timestamp when the message was deleted |
 | deletedBy | `getDeletedBy()` | `string` | UID of the user who deleted the message |
 

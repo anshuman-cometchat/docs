@@ -93,16 +93,7 @@ callLogRequestBuilder.fetchPrevious()
   });
 ```
 
-The `fetchNext()` and `fetchPrevious()` methods return an array of [`Call`](/sdk/reference/messages#call) log objects. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| sessionId | `getSessionId()` | `string` | Unique session ID for the call |
-| callInitiator | `getCallInitiator()` | [`User`](/sdk/reference/entities#user) | The user who initiated the call |
-| callReceiver | `getCallReceiver()` | [`User`](/sdk/reference/entities#user) \| [`Group`](/sdk/reference/entities#group) | The user or group that received the call |
-| action | `getAction()` | `string` | Call action/status |
-| initiatedAt | `getInitiatedAt()` | `number` | Timestamp when the call was initiated |
-| joinedAt | `getJoinedAt()` | `number` | Timestamp when the user joined the call |
+The `fetchNext()` and `fetchPrevious()` methods return an array of [`CallLog`](/sdk/reference/calls#calllog) objects.
 
 ## Get Call Details
 

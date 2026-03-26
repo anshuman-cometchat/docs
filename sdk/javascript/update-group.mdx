@@ -64,17 +64,7 @@ group => {
 
 On success, returns a [`Group`](/sdk/reference/entities#group) object with the updated details.
 
-The method returns a [`Group`](/sdk/reference/entities#group) object. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| guid | `getGuid()` | `string` | Unique group ID |
-| name | `getName()` | `string` | Display name of the group |
-| type | `getType()` | `string` | Group type (`"public"`, `"private"`, or `"password"`) |
-| description | `getDescription()` | `string` | Description of the group |
-| icon | `getIcon()` | `string` | URL of the group icon |
-| owner | `getOwner()` | `string` | UID of the group owner |
-| updatedAt | `getUpdatedAt()` | `number` | Timestamp when the group was last updated |
+The method returns a [`Group`](/sdk/reference/entities#group) object.
 
 <Note>
 There is no real-time event listener available to receive updated group details when the `updateGroup()` method is called. To get the latest group information, you need to fetch the group details again using the appropriate method.
