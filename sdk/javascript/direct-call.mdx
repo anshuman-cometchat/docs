@@ -4,7 +4,6 @@ sidebarTitle: "Call Session"
 description: "Learn how to generate call tokens, start and manage call sessions, configure call settings, and handle call events using the CometChat JavaScript Calls SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
@@ -26,17 +25,9 @@ CometChatCalls.endSession();
 ```
 </Accordion>
 
-## Overview
+A call session is the active media connection between participants — camera, microphone, screen sharing, and the call UI. Whether you arrive here from the [Ringing flow](/sdk/javascript/default-call), your own custom UI, or [Standalone Calling](/sdk/javascript/standalone-calling), this page covers how to manage the session itself.
 
-This section demonstrates how to start a call session in a web application. Previously known as **Direct Calling**.
-
-Before you begin, we strongly recommend you read the [calling setup guide](/sdk/javascript/calling-setup).
-
-<Note>
-
-If you want to implement a complete calling experience with ringing functionality (incoming/outgoing call UI), follow the [Ringing](/sdk/javascript/default-call) guide first. Once the call is accepted, return here to start the call session.
-
-</Note>
+Before you begin, make sure you've completed the [Calls SDK Setup](/sdk/javascript/calling-setup).
 
 ## Generate Call Token
 
@@ -44,7 +35,8 @@ A call token is required for secure access to a call session. Each token is uniq
 
 You can generate the token just before starting the call, or generate and store it ahead of time based on your use case.
 
-Use the `generateToken()` method to create a call token:
+- In the Ringing flow, the session ID comes from the [`Call`](/sdk/reference/messages#call) object after the call is accepted.
+- For direct sessions, generate your own unique session ID.
 
 <Tabs>
 <Tab title="TypeScript">
@@ -87,6 +79,8 @@ CometChatCalls.generateToken(sessionId, authToken).then(
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `sessionId` | The unique random session ID. In case you are using the ringing flow, the session ID is available in the `Call` object.                 |
 | `authToken` | The user auth token is the logged-in user auth token which you can get by calling `CometChat.getLoggedinUser().getAuthToken()` |
+
+The `Promise` resolves with an object containing a `token` property (string) that you pass to `startSession()`.
 
 ## Start Call Session
 
@@ -229,6 +223,111 @@ Configure the call experience using the following `CallSettingsBuilder` methods:
 | `setMainVideoContainerSetting(MainVideoContainerSetting)` | Customizes the main video container. See [Video View Customization](/sdk/javascript/video-view-customisation). |
 | `setIdleTimeoutPeriod(number)` | Sets idle timeout in seconds. Warning appears 60 seconds before auto-termination. Default: `180` seconds. *v4.1.0+* |
 
+## End Call Session
+
+How you end a call depends on whether you're using the Ringing flow or a direct session.
+
+### Ringing Flow
+
+When using the [Ringing](/sdk/javascript/default-call) flow, you must coordinate between the CometChat Chat SDK and the Calls SDK to properly terminate the call and notify all participants.
+
+<Note>
+The Ringing flow requires calling methods from both the Chat SDK (`CometChat.endCall()`) and the Calls SDK (`CometChatCalls.endSession()`) to ensure proper call termination and participant notification.
+</Note>
+
+<Frame>
+  <img src="/images/22060a6c-4jua6sn4v37xgj21a54xi9caseroy4zjrjhomm3j7msdhjr8zafnu94wunzdpanx-043bca5ffdac6dc4eaf03741cbe0bf93.png" />
+</Frame>
+
+**User who initiates the end call:**
+
+When the user clicks the end call button in the UI, the `onCallEndButtonPressed()` callback is triggered. You must call `CometChat.endCall()` inside this callback to properly terminate the call and notify other participants. On success, call `CometChat.clearActiveCall()` and `CometChatCalls.endSession()` to release resources.
+
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+onCallEndButtonPressed: () => {
+  CometChat.endCall(sessionId).then(
+    (call: CometChat.Call) => {
+      console.log("Call ended successfully");
+      CometChat.clearActiveCall();
+      CometChatCalls.endSession();
+      // Close the calling screen
+    },
+    (error: CometChat.CometChatException) => {
+      console.log("End call failed:", error);
+    }
+  );
+}
+```
+</Tab>
+<Tab title="JavaScript">
+```javascript
+onCallEndButtonPressed: () => {
+  CometChat.endCall(sessionId).then(
+    (call) => {
+      console.log("Call ended successfully");
+      CometChat.clearActiveCall();
+      CometChatCalls.endSession();
+      // Close the calling screen
+    },
+    (error) => {
+      console.log("End call failed:", error);
+    }
+  );
+}
+```
+</Tab>
+</Tabs>
+
+**Remote participant** (receives the `onCallEnded()` callback):
+
+Call `CometChat.clearActiveCall()` to clear the local call state, then call `CometChatCalls.endSession()` to release media resources.
+
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+onCallEnded: () => {
+  CometChat.clearActiveCall();
+  CometChatCalls.endSession();
+  // Close the calling screen
+}
+```
+</Tab>
+<Tab title="JavaScript">
+```javascript
+onCallEnded: () => {
+  CometChat.clearActiveCall();
+  CometChatCalls.endSession();
+  // Close the calling screen
+}
+```
+</Tab>
+</Tabs>
+
+### Session Only Flow
+
+When using the Session Only flow (direct call without ringing), you only need to call the Calls SDK method to end the session. There's no need to notify the Chat SDK since no call signaling was involved.
+
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+onCallEndButtonPressed: () => {
+  CometChatCalls.endSession();
+  // Close the calling screen
+}
+```
+</Tab>
+<Tab title="JavaScript">
+```javascript
+onCallEndButtonPressed: () => {
+  CometChatCalls.endSession();
+  // Close the calling screen
+}
+```
+</Tab>
+</Tabs>
+
 ## Call Listeners
 
 The `OngoingCallListener` provides real-time callbacks for call session events, including participant changes, call state updates, and error conditions.
@@ -339,6 +438,14 @@ CometChatCalls.removeCallEventListener(listenerId);
 </Tab>
 </Tabs>
 
+<Warning>
+Always remove call event listeners when they're no longer needed (e.g., on component unmount or when the call screen is closed). Failing to remove listeners can cause memory leaks and duplicate event handling.
+
+```javascript
+CometChatCalls.removeCallEventListener("UNIQUE_LISTENER_ID");
+```
+</Warning>
+
 ### Events
 
 | Event | Description |
@@ -356,126 +463,19 @@ CometChatCalls.removeCallEventListener(listenerId);
 | `onCallSwitchedToVideo(event)` | Invoked when an audio call is upgraded to a video call. Contains `sessionId`, `initiator`, and `responder`. |
 | `onError(error)` | Invoked when an error occurs during the call session. |
 
+### Ringing Flow Return Types
+
 The ringing flow methods (`initiateCall()`, `acceptCall()`, `rejectCall()`, `endCall()`) return [`Call`](/sdk/reference/messages#call) objects. Access the data using getter methods:
 
 | Field | Getter | Return Type | Description |
 |-------|--------|-------------|-------------|
 | sessionId | `getSessionId()` | `string` | Unique session ID for the call |
-| callInitiator | `getCallInitiator()` | `User` | The user who initiated the call |
-| callReceiver | `getCallReceiver()` | `User` \| `Group` | The user or group receiving the call |
+| callInitiator | `getCallInitiator()` | [`User`](/sdk/reference/entities#user) | The user who initiated the call |
+| callReceiver | `getCallReceiver()` | [`User`](/sdk/reference/entities#user) \| [`Group`](/sdk/reference/entities#group) | The user or group receiving the call |
 | action | `getAction()` | `string` | Current call action/status |
 | initiatedAt | `getInitiatedAt()` | `number` | Timestamp when the call was initiated |
 
-## End Call Session
-
-Ending a call session properly is essential to release media resources (camera, microphone, network connections) and update call state across all participants. The termination process differs based on whether you're using the Ringing flow or Session Only flow.
-
-### Ringing Flow
-
-When using the [Ringing](/sdk/javascript/default-call) flow, you must coordinate between the CometChat Chat SDK and the Calls SDK to properly terminate the call and notify all participants.
-
-<Note>
-
-The Ringing flow requires calling methods from both the Chat SDK (`CometChat.endCall()`) and the Calls SDK (`CometChatCalls.endSession()`) to ensure proper call termination and participant notification.
-
-</Note>
-
-<Frame>
-  <img src="/images/22060a6c-4jua6sn4v37xgj21a54xi9caseroy4zjrjhomm3j7msdhjr8zafnu94wunzdpanx-043bca5ffdac6dc4eaf03741cbe0bf93.png" />
-</Frame>
-
-**User who initiates the end call:**
-
-When the user clicks the end call button in the UI, the `onCallEndButtonPressed()` callback is triggered. You must call `CometChat.endCall()` inside this callback to properly terminate the call and notify other participants. On success, call `CometChat.clearActiveCall()` and `CometChatCalls.endSession()` to release resources.
-
-<Tabs>
-<Tab title="TypeScript">
-```typescript
-onCallEndButtonPressed: () => {
-  CometChat.endCall(sessionId).then(
-    (call: CometChat.Call) => {
-      console.log("Call ended successfully");
-      CometChat.clearActiveCall();
-      CometChatCalls.endSession();
-      // Close the calling screen
-    },
-    (error: CometChat.CometChatException) => {
-      console.log("End call failed:", error);
-    }
-  );
-}
-```
-</Tab>
-<Tab title="JavaScript">
-```javascript
-onCallEndButtonPressed: () => {
-  CometChat.endCall(sessionId).then(
-    (call) => {
-      console.log("Call ended successfully");
-      CometChat.clearActiveCall();
-      CometChatCalls.endSession();
-      // Close the calling screen
-    },
-    (error) => {
-      console.log("End call failed:", error);
-    }
-  );
-}
-```
-</Tab>
-</Tabs>
-
-**Remote participant** (receives the `onCallEnded()` callback):
-
-Call `CometChat.clearActiveCall()` to clear the local call state, then call `CometChatCalls.endSession()` to release media resources.
-
-<Tabs>
-<Tab title="TypeScript">
-```typescript
-onCallEnded: () => {
-  CometChat.clearActiveCall();
-  CometChatCalls.endSession();
-  // Close the calling screen
-}
-```
-</Tab>
-<Tab title="JavaScript">
-```javascript
-onCallEnded: () => {
-  CometChat.clearActiveCall();
-  CometChatCalls.endSession();
-  // Close the calling screen
-}
-```
-</Tab>
-</Tabs>
-
-### Session Only Flow
-
-When using the Session Only flow (direct call without ringing), you only need to call the Calls SDK method to end the session. There's no need to notify the Chat SDK since no call signaling was involved.
-
-Call `CometChatCalls.endSession()` in the `onCallEndButtonPressed()` callback to release all media resources and disconnect from the call session.
-
-<Tabs>
-<Tab title="TypeScript">
-```typescript
-onCallEndButtonPressed: () => {
-  CometChatCalls.endSession();
-  // Close the calling screen
-}
-```
-</Tab>
-<Tab title="JavaScript">
-```javascript
-onCallEndButtonPressed: () => {
-  CometChatCalls.endSession();
-  // Close the calling screen
-}
-```
-</Tab>
-</Tabs>
-
-## Methods
+## In-Call Methods
 
 These methods are available for performing custom actions during an active call session. Use them to build custom UI controls or implement specific behaviors based on your use case.
 
@@ -735,14 +735,6 @@ CometChatCalls.endSession();
 ```
 </Tab>
 </Tabs>
-
-<Warning>
-Always remove call event listeners when they're no longer needed (e.g., on component unmount or when the call screen is closed). Failing to remove listeners can cause memory leaks and duplicate event handling.
-
-```javascript
-CometChatCalls.removeCallEventListener("UNIQUE_LISTENER_ID");
-```
-</Warning>
 
 ---
 
