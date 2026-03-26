@@ -11,7 +11,7 @@ description: "Understand CometChat REST API rate limits, response headers, and h
 - Monitor usage via `X-Rate-Limit` and `X-Rate-Limit-Remaining` response headers
 </Accordion>
 
-CometChat applies rate limits to ensure fair usage and platform stability. Understanding these limits helps you build applications that handle high traffic gracefully.
+CometChat applies rate limits to REST API requests to ensure fair usage and platform stability. SDK methods that call the REST API under the hood (like fetching users, sending messages, or creating groups) are subject to these limits. Understanding them helps you build applications that handle high traffic gracefully.
 
 ## Rate Limit Tiers
 
