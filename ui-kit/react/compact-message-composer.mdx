@@ -1,5 +1,5 @@
 ---
-title: "Single Line Message Composer"
+title: "Compact Message Composer"
 description: "A compact, single-line message input component with rich text formatting, attachments, mentions, and voice recording support."
 ---
 
@@ -8,16 +8,16 @@ description: "A compact, single-line message input component with rich text form
 **Quick Reference for AI Agents & Developers**
 
 ```tsx
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
 // Minimal usage
-<CometChatSingleLineMessageComposer user={chatUser} />
+<CometChatCompactMessageComposer user={chatUser} />
 
 // With common props
-<CometChatSingleLineMessageComposer
+<CometChatCompactMessageComposer
   user={chatUser}
   enableRichTextEditor={true}
-  showToolbarToggle={true}
+  showToolbarOnSelection={true}
   placeholderText="Type a message..."
 />
 ```
@@ -25,7 +25,7 @@ import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react"
 
 ## Overview
 
-CometChatSingleLineMessageComposer is a compact, single-line message input component designed for chat applications. It provides a streamlined interface with optional rich text formatting capabilities powered by TipTap/ProseMirror, supporting bold, italic, strikethrough, code, links, lists, and blockquotes — similar to messaging experiences in Slack.
+CometChatCompactMessageComposer is a compact, single-line message input component designed for chat applications. It provides a streamlined interface with optional rich text formatting capabilities, supporting bold, italic, underline, strikethrough, code, links, lists, and blockquotes — similar to messaging experiences in Slack.
 
 Features such as **Rich Text Formatting**, **Attachments**, **Message Editing**, **Mentions**, **Link Previews**, and **Voice Recording** are supported.
 
@@ -42,16 +42,16 @@ Features such as **Rich Text Formatting**, **Attachments**, **Message Editing**,
 
 ### Integration
 
-The following code snippet illustrates how you can directly incorporate the SingleLineMessageComposer component into your app.
+The following code snippet illustrates how you can directly incorporate the CompactMessageComposer component into your app.
 
 <Tabs>
 <Tab title="TypeScript">
 ```tsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
-export function SingleLineComposerDemo() {
+export function CompactComposerDemo() {
   const [chatUser, setChatUser] = React.useState<CometChat.User>();
   React.useEffect(() => {
     CometChat.getUser("uid").then((user) => {
@@ -61,7 +61,7 @@ export function SingleLineComposerDemo() {
 
   return chatUser ? (
     <div>
-      <CometChatSingleLineMessageComposer user={chatUser} />
+      <CometChatCompactMessageComposer user={chatUser} />
     </div>
   ) : null;
 }
@@ -73,9 +73,9 @@ export function SingleLineComposerDemo() {
 ```jsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
-export function SingleLineComposerDemo() {
+export function CompactComposerDemo() {
   const [chatUser, setChatUser] = React.useState(null);
   React.useEffect(() => {
     CometChat.getUser("uid").then((user) => {
@@ -85,7 +85,7 @@ export function SingleLineComposerDemo() {
 
   return chatUser ? (
     <div>
-      <CometChatSingleLineMessageComposer user={chatUser} />
+      <CometChatCompactMessageComposer user={chatUser} />
     </div>
   ) : null;
 }
@@ -108,9 +108,9 @@ The `OnSendButtonClick` event gets activated when the send message button is cli
 ```tsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
-export function SingleLineComposerDemo() {
+export function CompactComposerDemo() {
   const [chatUser, setChatUser] = React.useState<CometChat.User>();
 
   React.useEffect(() => {
@@ -125,7 +125,7 @@ export function SingleLineComposerDemo() {
 
   return chatUser ? (
     <div>
-      <CometChatSingleLineMessageComposer
+      <CometChatCompactMessageComposer
         user={chatUser}
         onSendButtonClick={handleSendButtonClick}
       />
@@ -140,9 +140,9 @@ export function SingleLineComposerDemo() {
 ```jsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
-export function SingleLineComposerDemo() {
+export function CompactComposerDemo() {
   const [chatUser, setChatUser] = React.useState(null);
 
   React.useEffect(() => {
@@ -157,7 +157,7 @@ export function SingleLineComposerDemo() {
 
   return chatUser ? (
     <div>
-      <CometChatSingleLineMessageComposer
+      <CometChatCompactMessageComposer
         user={chatUser}
         onSendButtonClick={handleSendButtonClick}
       />
@@ -172,16 +172,16 @@ export function SingleLineComposerDemo() {
 
 ##### 2. onError
 
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the SingleLineMessageComposer component.
+This action doesn't change the behavior of the component but rather listens for any errors that occur in the CompactMessageComposer component.
 
 <Tabs>
 <Tab title="TypeScript">
 ```tsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
-export function SingleLineComposerDemo() {
+export function CompactComposerDemo() {
   const [chatUser, setChatUser] = React.useState<CometChat.User>();
 
   React.useEffect(() => {
@@ -196,7 +196,7 @@ export function SingleLineComposerDemo() {
 
   return chatUser ? (
     <div>
-      <CometChatSingleLineMessageComposer user={chatUser} onError={handleError} />
+      <CometChatCompactMessageComposer user={chatUser} onError={handleError} />
     </div>
   ) : null;
 }
@@ -208,9 +208,9 @@ export function SingleLineComposerDemo() {
 ```jsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
-export function SingleLineComposerDemo() {
+export function CompactComposerDemo() {
   const [chatUser, setChatUser] = React.useState(null);
 
   React.useEffect(() => {
@@ -225,7 +225,7 @@ export function SingleLineComposerDemo() {
 
   return chatUser ? (
     <div>
-      <CometChatSingleLineMessageComposer user={chatUser} onError={handleError} />
+      <CometChatCompactMessageComposer user={chatUser} onError={handleError} />
     </div>
   ) : null;
 }
@@ -237,16 +237,16 @@ export function SingleLineComposerDemo() {
 
 ##### 3. onTextChange
 
-This event is triggered as the user starts typing in the SingleLineMessageComposer.
+This event is triggered as the user starts typing in the CompactMessageComposer.
 
 <Tabs>
 <Tab title="TypeScript">
 ```tsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
-export function SingleLineComposerDemo() {
+export function CompactComposerDemo() {
   const [chatUser, setChatUser] = React.useState<CometChat.User>();
 
   React.useEffect(() => {
@@ -261,7 +261,7 @@ export function SingleLineComposerDemo() {
 
   return chatUser ? (
     <div>
-      <CometChatSingleLineMessageComposer
+      <CometChatCompactMessageComposer
         user={chatUser}
         onTextChange={handleTextChange}
       />
@@ -276,9 +276,9 @@ export function SingleLineComposerDemo() {
 ```jsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
-export function SingleLineComposerDemo() {
+export function CompactComposerDemo() {
   const [chatUser, setChatUser] = React.useState(null);
 
   React.useEffect(() => {
@@ -293,7 +293,7 @@ export function SingleLineComposerDemo() {
 
   return chatUser ? (
     <div>
-      <CometChatSingleLineMessageComposer
+      <CometChatCompactMessageComposer
         user={chatUser}
         onTextChange={handleTextChange}
       />
@@ -315,9 +315,9 @@ You can customize how mentioned users and group members are fetched by providing
 ```tsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
-export function SingleLineComposerDemo() {
+export function CompactComposerDemo() {
   const [chatUser, setChatUser] = React.useState<CometChat.User>();
   const [chatGroup, setChatGroup] = React.useState<CometChat.Group>();
 
@@ -345,14 +345,14 @@ export function SingleLineComposerDemo() {
   return chatUser ? (
     <div>
       {/* For user chat with custom users mentions */}
-      <CometChatSingleLineMessageComposer
+      <CometChatCompactMessageComposer
         user={chatUser}
         mentionsUsersRequestBuilder={mentionsUsersRequestBuilder}
       />
 
       {/* For group chat with custom group members mentions */}
       {chatGroup && (
-        <CometChatSingleLineMessageComposer
+        <CometChatCompactMessageComposer
           group={chatGroup}
           mentionsGroupMembersRequestBuilder={mentionsGroupMembersRequestBuilder}
         />
@@ -368,9 +368,9 @@ export function SingleLineComposerDemo() {
 ```jsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
-export function SingleLineComposerDemo() {
+export function CompactComposerDemo() {
   const [chatUser, setChatUser] = React.useState(null);
   const [chatGroup, setChatGroup] = React.useState(null);
 
@@ -398,14 +398,14 @@ export function SingleLineComposerDemo() {
   return chatUser ? (
     <div>
       {/* For user chat with custom users mentions */}
-      <CometChatSingleLineMessageComposer
+      <CometChatCompactMessageComposer
         user={chatUser}
         mentionsUsersRequestBuilder={mentionsUsersRequestBuilder}
       />
 
       {/* For group chat with custom group members mentions */}
       {chatGroup && (
-        <CometChatSingleLineMessageComposer
+        <CometChatCompactMessageComposer
           group={chatGroup}
           mentionsGroupMembersRequestBuilder={mentionsGroupMembersRequestBuilder}
         />
@@ -423,7 +423,7 @@ export function SingleLineComposerDemo() {
 
 ### Filters
 
-SingleLineMessageComposer component does not have any available filters.
+CompactMessageComposer component does not have any available filters.
 
 ***
 
@@ -431,7 +431,7 @@ SingleLineMessageComposer component does not have any available filters.
 
 [Events](/ui-kit/react/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
 
-The list of events emitted by the SingleLineMessageComposer component is as follows.
+The list of events emitted by the CompactMessageComposer component is as follows.
 
 | Event               | Description                                                                                                                                      |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -483,11 +483,11 @@ ccMessageSent?.unsubscribe();
 
 ## Customization
 
-To fit your app's design requirements, you can customize the appearance of the SingleLineMessageComposer component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+To fit your app's design requirements, you can customize the appearance of the CompactMessageComposer component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
 ### Style
 
-To modify the styling, you can customize the CSS of the SingleLineMessageComposer Component.
+To modify the styling, you can customize the CSS of the CompactMessageComposer Component.
 
 **Example**
 
@@ -500,24 +500,24 @@ To modify the styling, you can customize the CSS of the SingleLineMessageCompose
 ```tsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
-<CometChatSingleLineMessageComposer user={chatUser} />;
+<CometChatCompactMessageComposer user={chatUser} />;
 ```
 
 </Tab>
 
 <Tab title="css">
 ```css
-.cometchat-single-line-composer .cometchat-single-line-composer__input {
+.cometchat-compact-message-composer .cometchat-compact-message-composer__input {
   font-family: "SF Pro";
 }
 
-.cometchat-single-line-composer .cometchat-button .cometchat-button__icon {
+.cometchat-compact-message-composer .cometchat-button .cometchat-button__icon {
   background: #f19fa1;
 }
 
-.cometchat-single-line-composer .cometchat-single-line-composer__send-button {
+.cometchat-compact-message-composer .cometchat-compact-message-composer__send-button {
   background: #e5484d;
 }
 ```
@@ -537,9 +537,9 @@ These are a set of small functional customizations that allow you to fine-tune t
 ```tsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
-<CometChatSingleLineMessageComposer user={chatUser} disableTypingEvents={true} />;
+<CometChatCompactMessageComposer user={chatUser} disableTypingEvents={true} />;
 ```
 
 </Tab>
@@ -557,11 +557,9 @@ Below is a list of customizations along with corresponding code snippets
 | **Mention All Label**             | Allows setting a custom alias label for group mentions (@channel, @everyone, etc.).     | `mentionAllLabel="all"`                           |
 | **Mentions Users Request Builder** | Provides a custom UsersRequestBuilder to control how the mentioned users list is fetched. | `mentionsUsersRequestBuilder={usersRequestBuilder}` |
 | **Mentions Group Members Request Builder** | Provides a custom GroupMembersRequestBuilder to customize how mentioned group members are retrieved. | `mentionsGroupMembersRequestBuilder={groupMembersRequestBuilder}` |
-| **Enable Rich Text Editor**       | Master switch to enable rich text formatting with TipTap. When false, the composer works as plain text only. | `enableRichTextEditor={true}`                     |
+| **Enable Rich Text Editor**       | Master switch to enable rich text formatting. When false, the composer works as plain text only. | `enableRichTextEditor={true}`                     |
 | **Show Toolbar On Selection**     | Shows a floating toolbar when text is selected (Slack-style). Ignored on mobile devices. | `showToolbarOnSelection={true}`                   |
 | **Hide Rich Text Formatting Options** | Hides the rich text formatting toolbar. Keyboard shortcuts still work.               | `hideRichTextFormattingOptions={true}`             |
-| **Show Toolbar Toggle**           | Shows the Aa toggle button to manually show/hide the formatting toolbar.                | `showToolbarToggle={true}`                        |
-| **Transition Duration**           | Animation duration for button transitions in milliseconds.                              | `transitionDuration={250}`                        |
 | **Hide Image Attachment Option**  | Hides the image attachment option in the message composer.                              | `hideImageAttachmentOption={true}`                |
 | **Hide Video Attachment Option**  | Hides the video attachment option in the message composer.                              | `hideVideoAttachmentOption={true}`                |
 | **Hide Audio Attachment Option**  | Hides the audio attachment option in the message composer.                              | `hideAudioAttachmentOption={true}`                |
@@ -587,7 +585,7 @@ Below is a list of customizations along with corresponding code snippets
 
 ## Rich Text Formatting
 
-The SingleLineMessageComposer includes a built-in rich text editor powered by TipTap/ProseMirror. Rich text is enabled by default (`enableRichTextEditor={true}`).
+The CompactMessageComposer includes a built-in rich text editor. Rich text must be explicitly enabled via `enableRichTextEditor={true}` (defaults to `false`).
 
 ### Formatting Toolbar
 
@@ -597,6 +595,7 @@ The toolbar provides the following formatting tools in a fixed order:
 |------|------|----------|-------------|
 | Bold | B | Cmd/Ctrl+B | Bold text |
 | Italic | I | Cmd/Ctrl+I | Italic text |
+| Underline | U | Cmd/Ctrl+U | Underline text |
 | Strikethrough | S | Cmd/Ctrl+Shift+S | Strikethrough text |
 | Inline Code | `</>` | Cmd/Ctrl+E | Inline code |
 | Code Block | ``` | Cmd/Ctrl+Shift+C | Multi-line code block |
@@ -605,8 +604,6 @@ The toolbar provides the following formatting tools in a fixed order:
 | Ordered List | 1. | Cmd/Ctrl+Shift+7 | Numbered list |
 | Blockquote | ❝ | Cmd/Ctrl+Shift+9 | Quote block |
 
-An additional keyboard shortcut, Cmd/Ctrl+Shift+F, toggles the formatting toolbar visibility when `showToolbarToggle` is enabled.
-
 ### Toolbar Visibility Modes
 
 The toolbar supports multiple display modes controlled via props. When multiple props are set, they follow this priority order:
@@ -614,19 +611,17 @@ The toolbar supports multiple display modes controlled via props. When multiple 
 1. `enableRichTextEditor={false}` — Highest priority, disables all rich text features (plain text only)
 2. `hideRichTextFormattingOptions={true}` — Toolbar visible by default above input
 3. `showToolbarOnSelection={true}` — Floating toolbar appears on text selection (desktop only)
-4. `showToolbarToggle={true}` — Toggle button (Aa) to show/hide toolbar (default behavior)
 
 If none of the toolbar props are enabled, the toolbar is hidden but keyboard shortcuts still work.
 
 ### Behavior Matrix
 
-| `enableRichTextEditor` | `hideRichTextFormattingOptions` | `showToolbarOnSelection` | `showToolbarToggle` | Result |
-|------------------------|-------------------------------|--------------------------|---------------------|--------|
-| `false` | - | - | - | Plain text, no formatting UI |
-| `true` | `false` | `false` | `true` | Toggle button visible, toolbar hidden until clicked |
-| `true` | `false` | `true` | `false` | Floating toolbar appears on text selection (desktop) |
-| `true` | `true` | `false` | `false` | Toolbar visible by default above input |
-| `true` | `false` | `false` | `false` | No toolbar UI, only keyboard shortcuts work |
+| `enableRichTextEditor` | `hideRichTextFormattingOptions` | `showToolbarOnSelection` | Result |
+|------------------------|-------------------------------|--------------------------|--------|
+| `false` | - | - | Plain text, no formatting UI |
+| `true` | `false` | `true` | Floating toolbar appears on text selection (desktop) |
+| `true` | `true` | `false` | Toolbar visible by default above input |
+| `true` | `false` | `false` | No toolbar UI, only keyboard shortcuts work |
 
 ### Mobile Behavior
 
@@ -634,33 +629,19 @@ On mobile devices, only the fixed toolbar is supported. The floating selection t
 
 | Props | Mobile Behavior |
 |-------|-----------------|
-| `showToolbarOnSelection={true}` | **Ignored on mobile** — Falls back to fixed toolbar with toggle button |
-| `showToolbarToggle={true}` | Toggle button visible, fixed toolbar appears when tapped |
+| `showToolbarOnSelection={true}` | **Ignored on mobile** — Falls back to fixed toolbar |
 | `hideRichTextFormattingOptions={true}` | Fixed toolbar visible by default above input |
 
 ### Toolbar Configuration Examples
 
 <Tabs>
-<Tab title="Toggle Button (Default)">
-```tsx
-// Default: Toggle button (Aa) to show/hide toolbar
-<CometChatSingleLineMessageComposer
-  user={chatUser}
-  enableRichTextEditor={true}
-  showToolbarToggle={true}
-/>
-```
-
-</Tab>
-
 <Tab title="Selection Toolbar (Slack-style)">
 ```tsx
 // Floating toolbar appears on text selection (desktop only)
-<CometChatSingleLineMessageComposer
+<CometChatCompactMessageComposer
   user={chatUser}
   enableRichTextEditor={true}
   showToolbarOnSelection={true}
-  showToolbarToggle={false}
 />
 ```
 
@@ -669,7 +650,7 @@ On mobile devices, only the fixed toolbar is supported. The floating selection t
 <Tab title="Toolbar Always Visible">
 ```tsx
 // Toolbar visible by default above input
-<CometChatSingleLineMessageComposer
+<CometChatCompactMessageComposer
   user={chatUser}
   enableRichTextEditor={true}
   hideRichTextFormattingOptions={true}
@@ -681,10 +662,9 @@ On mobile devices, only the fixed toolbar is supported. The floating selection t
 <Tab title="Keyboard Shortcuts Only">
 ```tsx
 // Rich text enabled but no toolbar (keyboard shortcuts only)
-<CometChatSingleLineMessageComposer
+<CometChatCompactMessageComposer
   user={chatUser}
   enableRichTextEditor={true}
-  showToolbarToggle={false}
 />
 ```
 
@@ -692,12 +672,12 @@ On mobile devices, only the fixed toolbar is supported. The floating selection t
 
 <Tab title="Combined Modes">
 ```tsx
-// Toggle button + selection toolbar
-<CometChatSingleLineMessageComposer
+// Selection toolbar + always-visible toolbar
+<CometChatCompactMessageComposer
   user={chatUser}
   enableRichTextEditor={true}
-  showToolbarToggle={true}
   showToolbarOnSelection={true}
+  hideRichTextFormattingOptions={true}
 />
 ```
 
@@ -715,7 +695,7 @@ For advanced-level customization, you can set custom views to the component. Thi
 
 #### AttachmentOptions
 
-By using `attachmentOptions`, you can set a list of custom `MessageComposerActions` for the SingleLineMessageComposer Component. This will override the existing list of `MessageComposerActions`.
+By using `attachmentOptions`, you can set a list of custom `MessageComposerActions` for the CompactMessageComposer Component. This will override the existing list of `MessageComposerActions`.
 
 Shown below is the default chat interface.
 
@@ -737,7 +717,7 @@ Use the following code to achieve the customization shown above.
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
-  CometChatSingleLineMessageComposer,
+  CometChatCompactMessageComposer,
   CometChatMessageComposerAction,
 } from "@cometchat/chat-uikit-react";
 
@@ -766,7 +746,7 @@ function getAttachments() {
   ];
 }
 
-<CometChatSingleLineMessageComposer
+<CometChatCompactMessageComposer
   attachmentOptions={getAttachments()}
   user={userObj}
 />;
@@ -776,7 +756,7 @@ function getAttachments() {
 
 <Tab title="css">
 ```css
-.cometchat-single-line-composer__secondary-button-view-attachment-button
+.cometchat-compact-message-composer__secondary-button-view-attachment-button
   .cometchat-action-sheet {
   border: none;
   border-radius: inherit;
@@ -785,18 +765,18 @@ function getAttachments() {
   width: 100%;
 }
 
-.cometchat-single-line-composer__secondary-button-view-attachment-button
+.cometchat-compact-message-composer__secondary-button-view-attachment-button
   .cometchat-popover__content
   > .cometchat {
   border-radius: inherit;
 }
 
-.cometchat-single-line-composer__secondary-button-view-attachment-button
+.cometchat-compact-message-composer__secondary-button-view-attachment-button
   .cometchat-popover__content {
   height: 240px;
 }
 
-.cometchat-single-line-composer__secondary-button-view-attachment-button
+.cometchat-compact-message-composer__secondary-button-view-attachment-button
   .cometchat-action-sheet__item-icon {
   background: #141414;
 }
@@ -810,9 +790,9 @@ function getAttachments() {
 
 #### AuxiliaryButtonView
 
-You can insert a custom view into the SingleLineMessageComposer component to add additional functionality using the following method.
+You can insert a custom view into the CompactMessageComposer component to add additional functionality using the following method.
 
-Please note that the SingleLineMessageComposer Component utilizes the AuxiliaryButton to provide sticker and AI functionality. Overriding the AuxiliaryButton will subsequently replace the sticker functionality.
+Please note that the CompactMessageComposer Component utilizes the AuxiliaryButton to provide sticker and AI functionality. Overriding the AuxiliaryButton will subsequently replace the sticker functionality.
 
 <Tabs>
 <Tab title="TypeScript">
@@ -820,7 +800,7 @@ Please note that the SingleLineMessageComposer Component utilizes the AuxiliaryB
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
-  CometChatSingleLineMessageComposer,
+  CometChatCompactMessageComposer,
   CometChatButton,
 } from "@cometchat/chat-uikit-react";
 
@@ -833,7 +813,7 @@ const auxiliaryButtonView = (
   />
 );
 
-<CometChatSingleLineMessageComposer
+<CometChatCompactMessageComposer
   auxiliaryButtonView={auxiliaryButtonView}
   user={userObj}
 />;
@@ -855,7 +835,7 @@ You can set a custom view in place of the already existing send button view.
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
 import {
-  CometChatSingleLineMessageComposer,
+  CometChatCompactMessageComposer,
   CometChatButton,
 } from "@cometchat/chat-uikit-react";
 
@@ -868,23 +848,23 @@ const sendButtonView = (
   />
 );
 
-<CometChatSingleLineMessageComposer sendButtonView={sendButtonView} user={userObj} />;
+<CometChatCompactMessageComposer sendButtonView={sendButtonView} user={userObj} />;
 ```
 
 </Tab>
 
 <Tab title="css">
 ```css
-.cometchat-single-line-composer
+.cometchat-compact-message-composer
   div:not([class])
-  .cometchat-single-line-composer__send-button
+  .cometchat-compact-message-composer__send-button
   .cometchat-button {
   background: #edeafa;
 }
 
-.cometchat-single-line-composer
+.cometchat-compact-message-composer
   div:not([class])
-  .cometchat-single-line-composer__send-button
+  .cometchat-compact-message-composer__send-button
   .cometchat-button__icon {
   background: #6852d6;
 }
@@ -898,34 +878,34 @@ const sendButtonView = (
 
 #### HeaderView
 
-You can set custom headerView to the SingleLineMessageComposer component using the following method.
+You can set custom headerView to the CompactMessageComposer component using the following method.
 
 <Tabs>
 <Tab title="TypeScript">
 ```tsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
 const getHeaderView = () => {
   return (
-    <div className="single-line-composer__header-view">
-      <div className="single-line-composer__header-view-icon"></div>
-      <div className="single-line-composer__header-view-text">
+    <div className="compact-composer__header-view">
+      <div className="compact-composer__header-view-icon"></div>
+      <div className="compact-composer__header-view-text">
         User has paused their notifications
       </div>
     </div>
   );
 };
 
-<CometChatSingleLineMessageComposer user={chatUser} headerView={getHeaderView()} />;
+<CometChatCompactMessageComposer user={chatUser} headerView={getHeaderView()} />;
 ```
 
 </Tab>
 
 <Tab title="css">
 ```css
-.cometchat-single-line-composer .single-line-composer__header-view {
+.cometchat-compact-message-composer .compact-composer__header-view {
   display: flex;
   align-items: center;
   align-content: center;
@@ -935,24 +915,24 @@ const getHeaderView = () => {
   width: 100%;
 }
 
-.cometchat-single-line-composer__header {
+.cometchat-compact-message-composer__header {
   background: #dcd7f6;
   border-radius: var(--cometchat-radius-max, 1000px);
   padding: var(--cometchat-padding-2, 8px) var(--cometchat-padding-5, 20px);
 }
 
-.cometchat-single-line-composer
-  .single-line-composer__header-view
-  .single-line-composer__header-view-text {
+.cometchat-compact-message-composer
+  .compact-composer__header-view
+  .compact-composer__header-view-text {
   overflow: hidden;
   color: var(--cometchat-text-color-primary, #141414);
   text-overflow: ellipsis;
   font: var(--cometchat-font-body-regular);
 }
 
-.cometchat-single-line-composer
-  .single-line-composer__header-view
-  .single-line-composer__header-view-icon {
+.cometchat-compact-message-composer
+  .compact-composer__header-view
+  .compact-composer__header-view-icon {
   display: flex;
   width: 24px;
   height: 24px;
@@ -1093,10 +1073,10 @@ export default ShortcutFormatter;
 ```tsx
 import React from "react";
 import { CometChat } from "@cometchat/chat-sdk-javascript";
-import { CometChatSingleLineMessageComposer } from "@cometchat/chat-uikit-react";
+import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 import ShortcutFormatter from "./ShortCutFormatter";
 
-export function SingleLineComposerDemo() {
+export function CompactComposerDemo() {
   const [chatUser, setChatUser] = React.useState<CometChat.User>();
   React.useEffect(() => {
     CometChat.getUser("uid").then((user) => {
@@ -1106,7 +1086,7 @@ export function SingleLineComposerDemo() {
 
   return chatUser ? (
     <div>
-      <CometChatSingleLineMessageComposer
+      <CometChatCompactMessageComposer
         user={chatUser}
         textFormatters={[new ShortcutFormatter()]}
       />
