@@ -28,6 +28,8 @@ CometChat.addMessageListener("MOD_LISTENER", new CometChat.MessageListener({
 
 AI Moderation automatically reviews messages for inappropriate content in real-time. When a user sends a text, image, or video message, it's held in a `PENDING` state while the moderation service analyzes it, then marked as `APPROVED` or `DISAPPROVED` via the `onMessageModerated` event.
 
+`getModerationStatus()` is available on [`TextMessage`](/sdk/reference/messages#textmessage) and [`MediaMessage`](/sdk/reference/messages#mediamessage) objects. Custom messages are not subject to moderation.
+
 <Note>
 For configuring moderation rules and managing flagged messages from the dashboard, see the [Moderation Overview](/moderation/overview).
 </Note>
@@ -146,7 +148,7 @@ When you send a text, image, or video message, check the initial moderation stat
 
 ### Step 2: Listen for Moderation Results
 
-Register a message listener to receive moderation results in real-time:
+Register a message listener to receive moderation results in real-time. The `onMessageModerated` callback receives a [`BaseMessage`](/sdk/reference/messages#basemessage) object:
 
 <Tabs>
   <Tab title="TypeScript">

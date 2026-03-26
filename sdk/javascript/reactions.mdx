@@ -106,7 +106,7 @@ Any [`BaseMessage`](/sdk/reference/messages#basemessage) exposes reaction data t
 
 ### Get All Reactions
 
-Use `getReactions()` to retrieve the list of reactions on a message. Returns an empty array if no one has reacted.
+Use `getReactions()` to retrieve the list of reactions on a message. Returns an array of [`ReactionCount`](/sdk/reference/auxiliary#reactioncount) objects, or an empty array if no one has reacted.
 
 <Tabs>
 <Tab title="TypeScript">
@@ -124,7 +124,7 @@ message.getReactions()
 
 ### Check if the Logged-in User Has Reacted
 
-Call `getReactedByMe()` on any [`ReactionCount`](/sdk/reference/auxiliary#reactioncount) object to check whether the logged-in user has reacted with that particular emoji.
+Call `getReactedByMe()` on any [`ReactionCount`](/sdk/reference/auxiliary#reactioncount) object to check whether the logged-in user has reacted with that particular emoji. Returns `true` if they have, `false` otherwise.
 
 <Tabs>
 <Tab title="TypeScript">
