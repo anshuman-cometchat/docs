@@ -4,7 +4,6 @@ sidebarTitle: "Block Users"
 description: "Block and unblock users, and retrieve the list of blocked users using the CometChat JavaScript SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
@@ -21,6 +20,8 @@ let blockedUsers = await request.fetchNext();
 
 **Directions:** `BLOCKED_BY_ME` | `HAS_BLOCKED_ME` | `BOTH` (default)
 </Accordion>
+
+Blocking a user prevents all communication between them and the logged-in user — messages, calls, and presence updates are all suppressed. You can block and unblock users by UID, and fetch the blocked users list with filtering and pagination.
 
 ## Block Users
 
@@ -74,6 +75,8 @@ try {
 </Tabs>
 
 Returns an object with UIDs as keys and `"success"` or `"fail"` as values. Each [`User`](/sdk/reference/entities#user) in the request is processed independently.
+
+## Unblock Users
 
 Unblock previously blocked users using `unblockUsers()` with an array of UIDs.
 
