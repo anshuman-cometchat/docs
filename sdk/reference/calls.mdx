@@ -1,0 +1,104 @@
+---
+title: "Calls"
+description: "Class reference for objects returned by the CometChat Calls SDK. Covers CallLog, CallUser, CallGroup, Participant, and Recording."
+---
+
+This page documents the classes used in the CometChat Calls SDK. These objects are returned by call log queries and call session methods.
+
+All properties on proper classes are accessed via getter methods. Listener event objects are plain objects accessed via dot notation.
+
+---
+
+## CallLog
+
+`CallLog` represents a call history entry. It is returned by `CallLogRequestBuilder.fetchNext()` and `CallLogRequestBuilder.fetchPrevious()`.
+
+### Properties
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| sessionId | `getSessionID()` | `string` | Unique session ID of the call |
+| totalAudioMinutes | `getTotalAudioMinutes()` | `number` | Total audio minutes in the call |
+| totalVideoMinutes | `getTotalVideoMinutes()` | `number` | Total video minutes in the call |
+| totalDuration | `getTotalDuration()` | `string` | Total duration of the call as a formatted string |
+| totalDurationInMinutes | `getTotalDurationInMinutes()` | `number` | Total duration in minutes |
+| hasRecording | `getHasRecording()` | `boolean` | Whether the call has a recording |
+| initiatedAt | `getInitiatedAt()` | `number` | Timestamp when the call was initiated |
+| endedAt | `getEndedAt()` | `number` | Timestamp when the call ended |
+| callCategory | `getCallCategory()` | `string` | Category of the call (`"call"` or `"meet"`) |
+| type | `getType()` | `string` | Type of the call (`"audio"` or `"video"`) |
+| status | `getStatus()` | `string` | Status of the call (`"ongoing"`, `"ended"`, `"cancelled"`, etc.) |
+| receiverType | `getReceiverType()` | `string` | Receiver type (`"user"` or `"group"`) |
+| totalParticipants | `getTotalParticipants()` | `number` | Total number of participants |
+| mid | `getMid()` | `string` | Message ID associated with the call |
+| initiator | `getInitiator()` | [`CallUser`](#calluser) | The user who initiated the call |
+| receiver | `getReceiver()` | [`CallUser`](#calluser) \| [`CallGroup`](#callgroup) | The user or group that received the call |
+| participants | `getParticipants()` | [`Participant[]`](#participant) | Array of call participants |
+| recordings | `getRecordings()` | [`Recording[]`](#recording) | Array of call recordings |
+
+---
+
+## CallUser
+
+`CallUser` represents a user within the Calls SDK context (used in `CallLog` as initiator/receiver).
+
+### Properties
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| uid | `getUid()` | `string` | Unique user ID |
+| name | `getName()` | `string` | Display name of the user |
+| avatar | `getAvatar()` | `string` | URL of the user's avatar |
+
+---
+
+## CallGroup
+
+`CallGroup` represents a group within the Calls SDK context (used in `CallLog` as receiver for group calls).
+
+### Properties
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| guid | `getGuid()` | `string` | Unique group ID |
+| name | `getName()` | `string` | Display name of the group |
+| icon | `getIcon()` | `string` | URL of the group icon |
+
+---
+
+## Participant
+
+`Participant` represents a user who participated in a call. It is available via `getParticipants()` on a [`CallLog`](#calllog) object.
+
+### Properties
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| uid | `getUid()` | `string` | Unique user ID |
+| name | `getName()` | `string` | Display name of the participant |
+| avatar | `getAvatar()` | `string` | URL of the participant's avatar |
+| totalAudioMinutes | `getTotalAudioMinutes()` | `number` | Audio minutes for this participant |
+| totalVideoMinutes | `getTotalVideoMinutes()` | `number` | Video minutes for this participant |
+| totalDurationInMinutes | `getTotalDurationInMinutes()` | `number` | Total duration in minutes for this participant |
+| deviceID | `getDeviceID()` | `string` | Device ID of the participant |
+| hasJoined | `getHasJoined()` | `boolean` | Whether the participant joined the call |
+| joinedAt | `getJoinedAt()` | `number` | Timestamp when the participant joined |
+| leftAt | `getLeftAt()` | `number` | Timestamp when the participant left |
+| mid | `getMid()` | `string` | Media ID of the participant |
+| state | `getState()` | `string` | State of the participant |
+
+---
+
+## Recording
+
+`Recording` represents a call recording. It is available via `getRecordings()` on a [`CallLog`](#calllog) object.
+
+### Properties
+
+| Property | Getter | Return Type | Description |
+|----------|--------|-------------|-------------|
+| rid | `getRid()` | `string` | Unique recording ID |
+| recordingUrl | `getRecordingURL()` | `string` | URL to download the recording |
+| startTime | `getStartTime()` | `number` | Timestamp when the recording started |
+| endTime | `getEndTime()` | `number` | Timestamp when the recording ended |
+| duration | `getDuration()` | `number` | Duration of the recording in seconds |

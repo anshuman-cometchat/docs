@@ -17,7 +17,7 @@ CometChatCalls.stopRecording();
 // Listen for recording events (in CallSettings)
 const callListener = new CometChatCalls.OngoingCallListener({
   onRecordingStarted: (event) => console.log("Recording started", event.user),
-  onRecordingStopped: (event) => console.log("Recording stopped", event.user),
+  onRecordingStopped: () => console.log("Recording stopped"),
 });
 ```
 
@@ -52,8 +52,8 @@ const audioOnly = false;
 const callListener = new CometChatCalls.OngoingCallListener({
   onRecordingStarted: (event) =>
     console.log("Listener => onRecordingStarted", event.user),
-  onRecordingStopped: (event) =>
-    console.log("Listener => onRecordingStopped", event.user),
+  onRecordingStopped: () =>
+    console.log("Listener => onRecordingStopped"),
 });
 
 const callSettings = new CometChatCalls.CallSettingsBuilder()
@@ -77,8 +77,8 @@ const audioOnly = false;
 const callListener = new CometChatCalls.OngoingCallListener({
   onRecordingStarted: (event) =>
     console.log("Listener => onRecordingStarted", event.user),
-  onRecordingStopped: (event) =>
-    console.log("Listener => onRecordingStopped", event.user),
+  onRecordingStopped: () =>
+    console.log("Listener => onRecordingStopped"),
 });
 
 const callSettings = new CometChatCalls.CallSettingsBuilder()
@@ -94,6 +94,16 @@ CometChatCalls.startSession(callToken, callSettings, htmlElement);
 </Tab>
 
 </Tabs>
+
+The `onRecordingStarted` callback receives an event object:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `event.user` | `object` | The user who started the recording |
+| `event.user.name` | `string` | Display name of the user |
+| `event.user.uid` | `string` | UID of the user |
+
+The `onRecordingStopped` callback receives no arguments.
 
 ## Settings for call recording
 
