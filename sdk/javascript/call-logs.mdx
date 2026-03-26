@@ -4,7 +4,6 @@ sidebarTitle: "Call Logs"
 description: "Fetch, filter, and retrieve call history including duration, participants, and recording status using the CometChat Calls SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
@@ -24,13 +23,13 @@ let details = await CometChatCalls.getCallDetails("SESSION_ID", authToken);
 **Filters:** `setCallType()`, `setCallStatus()`, `setCallCategory()`, `setCallDirection()`, `setHasRecording()`, `setUid()`, `setGuid()`
 </Accordion>
 
-## Overview
+Call logs let you retrieve and display call history — who called whom, when, how long, and whether it was recorded. Use `CallLogRequestBuilder` to fetch and filter logs, and `getCallDetails()` to get details for a specific session.
 
-Retrieve and display call history including duration, participants, status, and recording information.
+Before you begin, make sure you've completed the [Calls SDK Setup](/sdk/javascript/calling-setup).
 
-## Fetching Call Logs
+## Fetch Call Logs
 
-Use `CallLogRequestBuilder` to fetch and filter call logs:
+Build a request with `CallLogRequestBuilder`, then call `fetchNext()` or `fetchPrevious()` to retrieve logs. Call either method repeatedly on the same builder instance to paginate through results.
 
 ```javascript
 let callLogRequestBuilder = new CometChatCalls.CallLogRequestBuilder()
