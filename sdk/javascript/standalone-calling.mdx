@@ -98,6 +98,8 @@ CometChatCalls.generateToken(sessionId, userAuthToken).then(
 | `sessionId`     | A unique session ID for the call. Generate this yourself or use a shared ID for participants to join the same call. |
 | `userAuthToken` | The user auth token obtained from the CometChat REST API.                  |
 
+The `Promise` resolves with an object containing a `token` property (string) that you pass to `startSession()`.
+
 ## Start Call Session
 
 Use the `startSession()` method to join a call session. This method requires:
@@ -533,7 +535,7 @@ CometChatCalls.setMode(CometChat.CALL_MODE.SPOTLIGHT);
 
 ### Get Audio Input Devices
 
-Returns a list of available audio input devices (microphones).
+Returns a list of available audio input devices (microphones). Each item is a [`MediaDeviceInfo`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) object with `deviceId`, `label`, and `kind` properties.
 
 <Tabs>
 <Tab title="TypeScript">
@@ -552,7 +554,7 @@ console.log("Available microphones:", audioInputDevices);
 
 ### Get Audio Output Devices
 
-Returns a list of available audio output devices (speakers/headphones).
+Returns a list of available audio output devices (speakers/headphones). Each item is a [`MediaDeviceInfo`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) object.
 
 <Tabs>
 <Tab title="TypeScript">
@@ -571,7 +573,7 @@ console.log("Available speakers:", audioOutputDevices);
 
 ### Get Video Input Devices
 
-Returns a list of available video input devices (cameras).
+Returns a list of available video input devices (cameras). Each item is a [`MediaDeviceInfo`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDeviceInfo) object.
 
 <Tabs>
 <Tab title="TypeScript">

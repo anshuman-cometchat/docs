@@ -73,18 +73,7 @@ try {
 
 </Tabs>
 
-Returns an object with UIDs as keys and `"success"` or `"fail"` as values.
-
-The method returns an array of [`User`](/sdk/reference/entities#user) objects with the `blockedByMe` field set to `true`. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| uid | `getUid()` | `string` | Unique user ID |
-| name | `getName()` | `string` | Display name of the user |
-| blockedByMe | `getBlockedByMe()` | `boolean` | Whether the logged-in user has blocked this user |
-| hasBlockedMe | `getHasBlockedMe()` | `boolean` | Whether this user has blocked the logged-in user |
-
-## Unblock Users
+Returns an object with UIDs as keys and `"success"` or `"fail"` as values. Each [`User`](/sdk/reference/entities#user) in the request is processed independently.
 
 Unblock previously blocked users using `unblockUsers()` with an array of UIDs.
 
@@ -135,16 +124,7 @@ try {
 
 </Tabs>
 
-Returns an object with UIDs as keys and `"success"` or `"fail"` as values.
-
-The method returns an array of [`User`](/sdk/reference/entities#user) objects with the `blockedByMe` field set to `false`. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| uid | `getUid()` | `string` | Unique user ID |
-| name | `getName()` | `string` | Display name of the user |
-| blockedByMe | `getBlockedByMe()` | `boolean` | Whether the logged-in user has blocked this user |
-| hasBlockedMe | `getHasBlockedMe()` | `boolean` | Whether this user has blocked the logged-in user |
+Returns an object with UIDs as keys and `"success"` or `"fail"` as values. Each [`User`](/sdk/reference/entities#user) in the request is processed independently.
 
 ## Get List of Blocked Users
 
@@ -280,6 +260,8 @@ userList => {
 </Tab>
 
 </Tabs>
+
+The `fetchNext()` method returns an array of [`User`](/sdk/reference/entities#user) objects representing blocked users.
 
 ---
 
