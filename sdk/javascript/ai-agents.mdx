@@ -4,7 +4,6 @@ sidebarTitle: "AI Agents"
 description: "Integrate AI Agents, AI Moderation, and AI User Copilot into your app using the CometChat JavaScript SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
 <Accordion title="AI Integration Quick Reference">
 
 | Feature | Description |
@@ -35,8 +34,6 @@ CometChat.removeMessageListener("LISTENER_ID");
 **Event flow:** Run Start → Tool Call(s) → Text Message Stream → Run Finished
 </Accordion>
 
-# AI Agents Overview
-
 AI Agents enable intelligent, automated interactions within your application. They process user messages, trigger tools, and respond with contextually relevant information. For a broader introduction, see the [AI Agents section](/ai-agents).
 
 <Note>
@@ -66,7 +63,7 @@ Events arrive via `onAIAssistantEventReceived` in this order:
 | 9 | Run Finished | Run finalized; persisted messages follow |
 
 <Note>
-`Run Start` and `Run Finished` are always emitted. Tool Call events only appear when tools are invoked.
+`Run Start` and `Run Finished` are always emitted. Tool Call events only appear when tools are invoked — there can be multiple tool call cycles in a single run. Text Message events are always emitted and carry the assistant's reply incrementally.
 </Note>
 
 <Tabs>
