@@ -4,7 +4,6 @@ sidebarTitle: "Custom CSS"
 description: "Customize the CometChat calling UI with custom CSS classes for buttons, video containers, name labels, and grid layouts."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
 <Accordion title="AI Integration Quick Reference">
 
 ```css
@@ -22,37 +21,43 @@ description: "Customize the CometChat calling UI with custom CSS classes for but
 **Modes:** `DEFAULT` | `TILE` | `SPOTLIGHT`
 </Accordion>
 
-Style the calling UI with custom CSS to match your application's design.
+The CometChat calling UI exposes CSS classes you can target to style buttons, video containers, labels, and layouts. Your CSS is applied globally — any styles you write for these classes will affect the call UI across all modes (DEFAULT, TILE, SPOTLIGHT).
 
-## Common CSS Classes
+Before you begin, make sure you've set up [Ringing](/sdk/javascript/default-call) or [Call Session](/sdk/javascript/direct-call).
 
-These classes are available across all call modes:
+<Warning>
+Only use CSS classes documented here — targeting undocumented classes may cause UI issues. Avoid resizing the grid container to prevent layout distortions.
+</Warning>
+
+## CSS Class Reference
+
+### Layout Containers
 
 | Class | Description |
 | ----- | ----------- |
 | `cc-main-container` | Outermost container for the calling component |
-| `cc-bottom-buttons-container` | Bottom bar containing action buttons (mute, end call, etc.) |
-| `cc-name-label` | User name text container |
 | `cc-video-container` | Video feed container |
+| `cc-name-label` | User name text container |
 
-## Bottom Buttons
+### Action Buttons
 
 | Class | Description |
 | ----- | ----------- |
-| `cc-bottom-buttons-container` | Container for all action buttons |
+| `cc-bottom-buttons-container` | Bottom bar containing action buttons (mute, end call, etc.) |
 | `cc-bottom-buttons-icon-container` | Individual button wrapper |
+| `cc-audio-icon-container` | Audio toggle button |
+| `cc-audio-icon-container-muted` | Audio button (muted state) |
+| `cc-video-icon-container` | Video toggle button |
+| `cc-video-icon-container-muted` | Video button (muted state) |
+| `cc-screen-share-icon-container` | Screen share button |
+| `cc-switch-video-icon-container` | Switch camera button |
+| `cc-end-call-icon-container` | End call button |
 
-### Individual Button Classes
+## Examples
 
-- `cc-audio-icon-container` — Audio toggle button
-- `cc-audio-icon-container-muted` — Audio button (muted state)
-- `cc-video-icon-container` — Video toggle button
-- `cc-video-icon-container-muted` — Video button (muted state)
-- `cc-screen-share-icon-container` — Screen share button
-- `cc-switch-video-icon-container` — Switch camera button
-- `cc-end-call-icon-container` — End call button
+### Basic Styling
 
-### Example
+This example applies colored backgrounds to buttons and dotted borders to containers to visualize the layout structure:
 
 <Tabs>
 <Tab title="CSS">
@@ -96,7 +101,7 @@ These classes are available across all call modes:
 
 </Tabs>
 
-The above example results in the below output:-
+Here's how it looks across the three call modes:
 
 **Mode: `DEFAULT`**
 
@@ -172,16 +177,13 @@ The above example results in the below output:-
 
 </Tabs>
 
-The above example results in the below output:-
+### Polished UI
+
+This example shows a more refined customization with rounded buttons, custom spacing, and a patterned video background:
 
 <Frame>
   <img src="/images/97410b02-98nyrur1z95e78wy4t0k4pz8c9zcbyhyimrv0db07w4g2eqmf8haza2lb2kyfnb1-458156083bf242abfa2ee89a0cf795fb.png" />
 </Frame>
-### Guidelines
-
-- Only use CSS classes documented here — custom classes may cause UI issues
-- Avoid resizing the grid container to prevent layout distortions
-
 ---
 
 ## Next Steps
