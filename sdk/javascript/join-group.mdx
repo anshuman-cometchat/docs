@@ -4,7 +4,6 @@ sidebarTitle: "Join Group"
 description: "Learn how to join public, password-protected, and private groups, and receive real-time join events using the CometChat JavaScript SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
@@ -21,7 +20,7 @@ CometChat.addGroupListener("listener", new CometChat.GroupListener({
 ```
 </Accordion>
 
-Join groups to participate in group conversations and receive real-time events when members join.
+Join a group to start sending and receiving messages in it. Public groups can be joined freely, password groups require the correct password, and private groups require an admin to add you (no direct join).
 
 ## Join a Group
 
@@ -33,7 +32,7 @@ Use `joinGroup()` to join a group.
 const GUID: string = "GUID";
 
 const password: string = "";
-const groupType: string = CometChat.GroupType.Public;
+const groupType: string = CometChat.GROUP_TYPE.PUBLIC;
 
 CometChat.joinGroup(GUID, groupType, password).then(
   (group: CometChat.Group) => {
