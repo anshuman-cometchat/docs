@@ -1,6 +1,6 @@
 ---
 title: "Auxiliary"
-description: "Class reference for auxiliary objects returned by CometChat SDK methods. Covers MessageReceipt, Reaction, ReactionCount, ReactionEvent, TypingIndicator, TransientMessage, and Attachment."
+description: "Class reference for auxiliary objects returned by CometChat SDK methods. Covers MessageReceipt, Reaction, ReactionCount, ReactionEvent, TypingIndicator, TransientMessage, Attachment, and CometChatException."
 ---
 
 This page documents the auxiliary classes used across all CometChat SDKs. These objects are returned by listener callbacks and specific SDK methods.
@@ -118,3 +118,18 @@ All properties are accessed via getter methods.
 | mimeType | `getMimeType()` | `string` | MIME type of the file (e.g., `"image/png"`) |
 | size | `getSize()` | `number` | Size of the file in bytes |
 | url | `getUrl()` | `string` | URL to download the file |
+
+---
+
+## CometChatException
+
+`CometChatException` represents an error from the Chat SDK. It is received in rejection callbacks of promise-based SDK methods (e.g., `sendMessage`, `login`, `getGroup`).
+
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `code` | `string` \| `number` | Error code identifying the type of error |
+| `name` | `string` | Name/category of the error |
+| `message` | `string` | Human-readable error description |
+| `details` | `string` | Additional error details |
