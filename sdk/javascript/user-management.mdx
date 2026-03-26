@@ -4,7 +4,6 @@ sidebarTitle: "User Management"
 description: "Create, update, and manage CometChat users programmatically using the JavaScript SDK. Includes user creation, profile updates, and the User class reference."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
@@ -24,10 +23,15 @@ await CometChat.updateCurrentUserDetails(user);
 **Note:** User creation/deletion should ideally happen on your backend via the [REST API](https://api-explorer.cometchat.com).
 </Accordion>
 
-Users must exist in CometChat before they can log in. Typically:
+Users must exist in CometChat before they can log in. This page covers creating, updating, and deleting users. All methods that return user data return a [`User`](/sdk/reference/entities#user) object.
 
+The typical flow:
 1. User registers in your app → Create user in CometChat
 2. User logs into your app → [Log user into CometChat](/sdk/javascript/authentication-overview)
+
+<Note>
+User deletion is only available via the [REST API](https://api-explorer.cometchat.com/reference/delete-user) — there is no client-side SDK method for it.
+</Note>
 
 ## Creating a User
 
@@ -80,15 +84,7 @@ CometChat.createUser(user, authKey).then(
 </Tab>
 </Tabs>
 
-The method returns a [`User`](/sdk/reference/entities#user) object. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| uid | `getUid()` | `string` | Unique user ID |
-| name | `getName()` | `string` | Display name of the user |
-| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
-| role | `getRole()` | `string` | Role assigned to the user |
-| status | `getStatus()` | `string` | Online status of the user |
+Returns a [`User`](/sdk/reference/entities#user) object. See [User Class](#user-class) for all available fields.
 
 <Warning>
 
@@ -145,15 +141,7 @@ CometChat.updateUser(user, authKey).then(
 
 Ensure the `User` object has the correct `UID` set.
 
-The method returns a [`User`](/sdk/reference/entities#user) object. Access the response data using getter methods:
-
-| Field | Getter | Return Type | Description |
-|-------|--------|-------------|-------------|
-| uid | `getUid()` | `string` | Unique user ID |
-| name | `getName()` | `string` | Display name of the user |
-| avatar | `getAvatar()` | `string` | URL of the user's avatar image |
-| role | `getRole()` | `string` | Role assigned to the user |
-| metadata | `getMetadata()` | `Object` | Custom metadata attached to the user |
+Returns a [`User`](/sdk/reference/entities#user) object. See [User Class](#user-class) for all available fields.
 
 ## Updating Logged-in User
 
@@ -198,9 +186,7 @@ CometChat.updateCurrentUserDetails(user).then(
 </Tab>
 </Tabs>
 
-## Deleting a User
-
-User deletion is only available via the [REST API](https://api-explorer.cometchat.com/reference/delete-user).
+Returns a [`User`](/sdk/reference/entities#user) object. See [User Class](#user-class) for all available fields.
 
 ## User Class
 
