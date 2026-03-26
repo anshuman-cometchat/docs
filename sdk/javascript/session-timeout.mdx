@@ -1,64 +1,71 @@
 ---
-title: "Session Timeout Flow"
+title: "Session Timeout"
+sidebarTitle: "Session Timeout"
 description: "Handle idle session timeouts in CometChat calls, including automatic termination, user prompts, and the onSessionTimeout event."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
+
+```javascript
+// Set custom timeout (in seconds)
+const callSettings = new CometChatCalls.CallSettingsBuilder()
+  .setIdleTimeoutPeriod(300) // 5 minutes
+  .setCallListener(new CometChatCalls.OngoingCallListener({
+    onSessionTimeout: () => {
+      console.log("Session timed out");
+      CometChatCalls.endSession();
+    }
+  }))
+  .build();
+```
 
 - Default idle timeout: 180 seconds (3 minutes) alone in a session
-- Warning dialog appears at 120 seconds with stay/leave options
-- Auto-terminates after 60 more seconds if no action taken
-- Listen for `onSessionTimeout` event to handle auto-termination
-- Customize timeout with `setIdleTimeoutPeriod(seconds)` in CallSettings (v4.1.0+)
-</Info>
+- Warning dialog appears 60 seconds before auto-termination
+- Listen for `onSessionTimeout` to handle auto-termination
+- Customize with `setIdleTimeoutPeriod(seconds)` in CallSettings (v4.1.0+)
+</Accordion>
 
-Available since v4.1.0
+*Available since v4.1.0*
 
-## Overview
+The Calls SDK automatically terminates call sessions when a participant is alone for too long, preventing abandoned calls from consuming resources. You can customize the timeout duration and handle the termination event.
 
-CometChat Calls SDK provides a mechanism to handle session timeouts for idle participants. By default, if a participant is alone in a call session for 180 seconds (3 minutes), the following sequence is triggered:
+## How It Works
 
-1. After 120 seconds of being alone in the session, the participant will see a dialog box
+When a participant is alone in a session:
 
-2. This dialog provides options to either:
+1. A warning dialog appears 60 seconds before the timeout, with "Stay" or "Leave" options
+2. If no action is taken, the call auto-terminates and the `onSessionTimeout` event fires
 
-   * Stay in the call
-   * Leave immediately
+The default timeout is 180 seconds (3 minutes).
 
-3. If no action is taken within the next 60 seconds, the call will automatically end
+## Configuration
 
-This feature helps manage inactive call sessions and prevents unnecessary resource usage. The idle timeout period ensures that participants don't accidentally remain in abandoned call sessions.
+Set a custom timeout period using `setIdleTimeoutPeriod()` in `CallSettingsBuilder`. The warning dialog will always appear 60 seconds before the configured timeout.
 
-### Session Timeout Flow
+```javascript
+const callSettings = new CometChatCalls.CallSettingsBuilder()
+  .setIdleTimeoutPeriod(300) // 5 minutes
+  .enableDefaultLayout(true)
+  .setCallListener(callListener)
+  .build();
+```
 
-<Frame>
-  <img src="/images/d75ea5ed-diagram-afa10cae2acad94dee0d7c69275fd544.svg" />
-</Frame>
+## Handling the Timeout Event
 
-<Tip>
+Listen for `onSessionTimeout` in your `OngoingCallListener` to clean up when the call auto-terminates:
 
-The `onSessionTimeout` event is triggered when the call automatically terminates due to session timeout, as illustrated in the diagram above.
+```javascript
+const callListener = new CometChatCalls.OngoingCallListener({
+  onSessionTimeout: () => {
+    console.log("Session timed out due to inactivity");
+    CometChatCalls.endSession();
+    // Close the calling screen
+  },
+  // ... other listeners
+});
+```
 
-</Tip>
-
----
-
-<AccordionGroup>
-  <Accordion title="Best Practices">
-    - **Customize timeout for your use case** — Use `setIdleTimeoutPeriod()` to adjust the timeout based on your application's needs. Longer timeouts for waiting rooms, shorter for quick calls.
-    - **Handle the warning dialog** — The 60-second warning gives users time to decide. Ensure your UI doesn't block or hide this dialog.
-    - **Implement onSessionTimeout** — Always handle the `onSessionTimeout` event to properly clean up resources and update your UI when auto-termination occurs.
-    - **Consider disabling for specific scenarios** — For use cases like webinars or waiting rooms where users may be alone for extended periods, consider increasing or disabling the timeout.
-  </Accordion>
-  <Accordion title="Troubleshooting">
-    - **Timeout happening too quickly** — The default is 180 seconds (3 minutes). Use `setIdleTimeoutPeriod()` to increase if needed.
-    - **Warning dialog not appearing** — The dialog appears at 120 seconds of being alone. If using a custom layout (`enableDefaultLayout(false)`), you need to implement your own warning UI.
-    - **onSessionTimeout not firing** — Ensure you've registered the listener before starting the session. This event only fires on auto-termination, not manual end.
-    - **Timeout not resetting** — The timer resets when another participant joins. If it's not resetting, verify the other participant successfully joined the session.
-  </Accordion>
-</AccordionGroup>
+See [Call Session — Call Listeners](/sdk/javascript/direct-call#call-listeners) for the full list of events.
 
 ---
 

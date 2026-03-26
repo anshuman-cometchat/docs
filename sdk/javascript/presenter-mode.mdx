@@ -1,11 +1,10 @@
 ---
 title: "Presenter Mode"
+sidebarTitle: "Presenter Mode"
 description: "Learn how to implement Presenter Mode for webinars, keynotes, and online classes using the CometChat JavaScript Calls SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```javascript
 // Start a presentation session
@@ -20,40 +19,20 @@ CometChatCalls.joinPresentation(callToken, settings, htmlElement);
 
 - **Presenter** (max 5): Can share video, audio, and screen
 - **Viewer** (up to 100 total): Passive consumers, no outgoing streams
-</Info>
+</Accordion>
 
-## Overview
+Presenter Mode enables broadcast-style calling — up to 5 presenters share content with passive viewers (up to 100 total participants). Use it for webinars, keynotes, all-hands meetings, online classes, or talk shows.
 
-The Presenter Mode feature allows developers to create a calling service experience in which:
+| Role | Capabilities | Max Count |
+| ---- | ------------ | --------- |
+| Presenter | Video, audio, screen sharing, mute controls, recording | 5 |
+| Viewer | Watch and listen only (no outgoing streams) | Up to 100 total |
 
-1. There are one or more users who are presenting their video, audio and/or screen (Maximum 5)
-2. Viewers who are consumers of that presentation. (They cannot send their audio, video or screen streams out).
-3. The total number of presenters and viewers can go up to 100.
-4. Features such as mute/unmute audio, show/hide camera capture, recording, etc. will be enabled only for the Presenter in this mode.
-5. Other call participants will not get these features. Hence they act like passive viewers in the call.
+Before starting a presentation, generate a call token using `generateToken()` as described in [Call Session](/sdk/javascript/direct-call#generate-call-token).
 
-Using this feature developers can create experiences such as:
+## Start a Presentation Session
 
-1. All hands calls
-2. Keynote speeches
-3. Webinars
-4. Talk shows
-5. Online classes
-6. and many more...
-
-### About this guide
-
-This guide demonstrates how to start a presentation into an React Native application. Before you begin, we strongly recommend you read the calling setup guide.
-
-Before starting a call session you have to generate a call token using the generateToken() method of the CometChatCalls SDK as mentioned [here](/sdk/javascript/direct-call#generate-call-token).
-
-### Start Presentation Session
-
-The most important class that will be used in the implementation is the `PresentationSettings` class. This class allows you to set the various parameters for the Presentation Mode. In order to set the various parameters of the `PresentationSettings` class, you need to use the `PresentationSettingsBuilder` class. Below are the various options available with the `PresentationSettings` class.
-
-You will need to set the User Type, There are 2 type of users in Presenter Mode, `Presenter` & `Participant` , You can set this `PresentationSettingsBuilder` by using the following method `setIsPresenter(true/false)`
-
-A basic example of how to start a Presentation:
+Configure the presentation using `PresentationSettingsBuilder`. Set `setIsPresenter(true)` for presenters or `setIsPresenter(false)` for viewers.
 
 <Tabs>
 <Tab title="JavaScript">
@@ -76,9 +55,15 @@ CometChatCalls.joinPresentation(
 
 </Tabs>
 
-## **Listeners**
+## Listeners
 
-Listeners can be added in two ways the first one is to use `.setCallEventListener(listeners : OngoingCallListener)` method in `CallSettingsBuilder` or `PresenterSettingsBuilder` class. The second way is to use `CometChatCalls.addCallEventListener(name: string, callListener: OngoingCallListener)` by this you can add multiple listeners and remove the specific listener by their name `CometChatCalls.removeCallEventListener(name: string)`
+Add listeners in two ways:
+1. Use `.setCallEventListener()` in `PresentationSettingsBuilder`
+2. Use `CometChatCalls.addCallEventListener(name, listener)` for multiple listeners
+
+<Warning>
+Always remove listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
 
 <Tabs>
 <Tab title="JavaScript">
@@ -119,58 +104,25 @@ The `OngoingCallListener` provides the same callbacks as in [Call Session](/sdk/
 
 ## Settings
 
-The `PresentationSettings` class is the most important class when it comes to the implementation of the Calling feature. This is the class that allows you to customize the overall calling experience. The properties for the call/conference can be set using the `PresentationSettingsBuilder` class. This will eventually give you and object of the `PresentationSettings` class which you can pass to the `joinPresentation()` method to start the call.
+Configure the presentation experience using `PresentationSettingsBuilder`:
 
-The **mandatory** parameters that are required to be present for any call/conference to work are:
+| Method | Description | Default |
+| ------ | ----------- | ------- |
+| `setIsPresenter(isPresenter: boolean)` | If `true`, user joins as presenter. If `false`, user joins as viewer. | — |
+| `enableDefaultLayout(defaultLayout: boolean)` | Show/hide the default button layout. If `false`, only the call view is displayed. | `true` |
+| `showEndCallButton(showEndCallButton: boolean)` | Show/hide the end call button. | `true` |
+| `showPauseVideoButton(showPauseVideoButton: boolean)` | Show/hide the pause video button. | `true` |
+| `showMuteAudioButton(showMuteAudioButton: boolean)` | Show/hide the mute audio button. | `true` |
+| `showSwitchCameraButton(showSwitchCameraButton: boolean)` | Show/hide the switch camera button. | `true` |
+| `showAudioModeButton(showAudioModeButton: boolean)` | Show/hide the audio mode button. | `true` |
+| `showRecordingButton(showRecordingButton: boolean)` | Show/hide the recording button. | `false` |
+| `setIsAudioOnlyCall(audioOnly: boolean)` | If `true`, the call is audio-only. If `false`, audio-video. | `false` |
+| `startWithAudioMuted(audioMuted: boolean)` | Start the call with the microphone muted. | `false` |
+| `startWithVideoMuted(videoMuted: boolean)` | Start the call with the camera off. | `false` |
+| `setDefaultAudioMode(audioMode: string)` | Start with a specific audio output. Values: `CometChatCalls.AUDIO_MODE.SPEAKER`, `EARPIECE`, `BLUETOOTH`, `HEADPHONES` | — |
+| `setCallEventListener(listener)` | Set the event listener for call callbacks. | — |
 
-1. Context - context of the activity/application
-2. RelativeLayout - A RelativeLayout object in which the calling UI is loaded.
-
-The options available for customization of calls are:
-
-| Parameter                                                     | Description                                                                                                                                                                                                                                                                                                                     |
-| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `setIsPresenter(isPresenter: boolean)`                        | If set to `true` user will join as the presenter. If set to `false` user will join as the viewer.                                                                                                                                                                                                                               |
-| `enableDefaultLayout(defaultLayout: boolean)`                 | If set to `true` enables the default layout for handling the call operations. If set to `false` it hides the button layout and just displays the Call View. **Default value = true**                                                                                                                                            |
-| `showEndCallButton(showEndCallButton: boolean)`               | If set to `true` it displays the EndCallButton in Button Layout. If set to `false` it hides the EndCallButton in Button Layout. **Default value = true**                                                                                                                                                                        |
-| `showPauseVideoButton(showPauseVideoButton: boolean)`         | If set to `true` it displays the PauseVideoButton in Button Layout. If set to `false` it hides the PauseVideoButton in Button Layout. **Default value = true**                                                                                                                                                                  |
-| `showMuteAudioButton`(showMuteAudioButton: boolean)\`\`       | If set to `true` it displays the MuteAudioButton in Button Layout. If set to `false` it hides the MuteAudioButton in Button Layout. **Default value = true**                                                                                                                                                                    |
-| `showSwitchCameraButton`(showSwitchCameraButton: boolean)\`\` | If set to `true` it displays the SwitchCameraButton in Button Layout. If set to `false` it hides the SwitchCameraButton in Button Layout. **Default value = true**                                                                                                                                                              |
-| `showAudioModeButton`(showAudioModeButton: boolean)\`\`       | If set to `true` it displays the AudioModeButton in Button Layout. If set to `false` it hides the AudioModeButton in Button Layout. **Default value = true**                                                                                                                                                                    |
-| `setIsAudioOnlyCall(audioOnly: boolean)`                      | If set to `true`, the call will be strictly an audio call. If set to `false`, the call will be an audio-video call.**Default value = false**                                                                                                                                                                                    |
-| `startWithAudioMuted(audioMuted: boolean)`                    | This ensures the call is started with the audio muted if set to true. **Default value = false**                                                                                                                                                                                                                                 |
-| `startWithVideoMuted(videoMuted: boolean)`                    | This ensures the call is started with the video paused if set to true. **Default value = false**                                                                                                                                                                                                                                |
-| `startWithVideoMuted(videoMuted: boolean)`                    | If set to true it displays the Recording in Button Layout. if set to false it hides the Recording in Button Layout. **Default value = false**                                                                                                                                                                                   |
-| `setDefaultAudioMode(audioMode: string)`                      | This method can be used if you wish to start the call with a specific audio mode. The available options are 1. CometChatCalls.AUDIO\_MODE.SPEAKER = "SPEAKER" 2. CometChatCalls.AUDIO\_MODE.EARPIECE = "EARPIECE" 3. CometChatCalls.AUDIO\_MODE.BLUETOOTH = "BLUETOOTH" 4. CometChatCalls.AUDIO\_MODE.HEADPHONES = "HEADPHONES" |
-| `setEventListener(new CometChatCallsEventsListener())`        | The `CometChatCallsEventsListener` listener provides you callbacks                                                                                                                                                                                                                                                              |
-
-In case you wish to achieve a completely customised UI for the Calling experience, you can do so by embedding default android buttons to the screen as per your requirement and then use the below methods to achieve different functionalities for the embedded buttons.
-
-For the use case where you wish to align your own custom buttons and not use the default layout provided by CometChat you can embed the buttons in your layout and use the below methods to perform the corresponding operations:
-
-<Warning>
-Always remove call event listeners when they're no longer needed (e.g., on component unmount or when the presentation screen is closed). Failing to remove listeners can cause memory leaks and duplicate event handling.
-
-```javascript
-CometChatCalls.removeCallEventListener("UNIQUE_ID");
-```
-</Warning>
-
-<Accordion title="Best Practices">
-- **Generate a fresh call token** — Always generate a new call token using `generateToken()` before starting a presentation. Reusing expired tokens will fail.
-- **Set presenter role explicitly** — Use `setIsPresenter(true)` for presenters and `setIsPresenter(false)` for viewers. The default is viewer.
-- **Limit presenters to 5** — The maximum number of presenters is 5. Additional users should join as viewers.
-- **Remove listeners on cleanup** — Always call `CometChatCalls.removeCallEventListener()` when the component unmounts or the presentation ends.
-- **Handle `onCallEnded` and `onCallEndButtonPressed`** — These are different events. `onCallEnded` fires when the call ends server-side, while `onCallEndButtonPressed` fires when the user clicks the end button locally.
-</Accordion>
-
-<Accordion title="Troubleshooting">
-- **Presentation doesn't start** — Ensure you've generated a valid call token and the HTML element exists in the DOM before calling `joinPresentation()`.
-- **Viewer can send audio/video** — Verify `setIsPresenter(false)` is set for viewers. Viewers should not have outgoing streams.
-- **`onUserJoined` not firing** — Ensure the call event listener is registered before joining the presentation.
-- **Black screen after joining** — Check that the HTML element passed to `joinPresentation()` is visible and has proper dimensions (width/height).
-- **More than 5 presenters needed** — Presenter Mode supports a maximum of 5 presenters. Consider using a standard group call for more active participants.
-</Accordion>
+For custom UI, embed your own buttons and use the call control methods described in [Call Session Methods](/sdk/javascript/direct-call#methods).
 
 ---
 

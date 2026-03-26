@@ -1,11 +1,11 @@
 ---
 title: "Typing Indicators"
-description: "Send and receive real-time typing indicators for users and groups using the CometChat JavaScript SDK."
+sidebarTitle: "Typing Indicators"
+description: "Send and receive real-time typing indicators using the CometChat JavaScript SDK."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```javascript
 // Start typing indicator
@@ -21,18 +21,13 @@ CometChat.addMessageListener("LISTENER_ID", new CometChat.MessageListener({
   onTypingEnded: (indicator) => console.log("Typing ended:", indicator)
 }));
 ```
-</Info>
+</Accordion>
 
-<Note>
-**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/react/overview)
-</Note>
 ## Send a Typing Indicator
-
-*In other words, as a sender, how do I let the recipient(s) know that I'm typing?*
 
 ### Start Typing
 
-You can use the `startTyping()` method to inform the receiver that the logged in user has started typing. The receiver will receive this information in the `onTypingStarted()` method of the `MessageListener` class. In order to send the typing indicator, you need to use the `TypingIndicator` class.
+Use `startTyping()` with a [`TypingIndicator`](/sdk/reference/auxiliary#typingindicator) object to notify the receiver that you're typing.
 
 <Tabs>
 <Tab title="Start Typing (User)">
@@ -85,7 +80,7 @@ CometChat.startTyping(typingNotification);
 
 ### Stop Typing
 
-You can use the `endTyping()` method to inform the receiver that the logged in user has stopped typing. The receiver will receive this information in the `onTypingEnded()` method of the `MessageListener` class. In order to send the typing indicator, you need to use the `TypingIndicator` class.
+Use `endTyping()` to notify the receiver that you've stopped typing.
 
 <Tabs>
 <Tab title="Stop Typing (User)">
@@ -137,45 +132,17 @@ CometChat.endTyping(typingNotification);
 `endTyping()` returns `void` — the typing indicator is sent as a fire-and-forget operation.
 
 <Note>
-Custom Data
-
-You can use the `metadata` field of the `TypingIndicator` class to pass additional data along with the typing indicators. The metadata field is a JSONObject and can be set using the `setMetadata()` method of the `TypingIndicator` class. This data will be received at the receiver end and can be obtained using the `getMetadata()` method.
-
+Use `setMetadata()` on `TypingIndicator` to pass additional custom data. Retrieve it with `getMetadata()` on the receiver side.
 </Note>
 
 ## Real-time Typing Indicators
 
-*In other words, as a recipient, how do I know when someone is typing?*
-
-<Warning>
-Always remove listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
-</Warning>
-
-You will receive the typing indicators in the `onTypingStarted()` and the `onTypingEnded()` method of the registered `MessageListener` class.
+Use `onTypingStarted` and `onTypingEnded` in `MessageListener` to receive typing events.
 
 <Tabs>
-<Tab title="Message Listener">
-```javascript
-let listenerId = "UNIQUE_LITENER_ID";
-
-CometChat.addMessageListener(
-listenerId,
-new CometChat.MessageListener({
-  onTypingStarted: typingIndicator => {
-    console.log("Typing started :", typingIndicator);
-  },
-  onTypingEnded: typingIndicator => {
-    console.log("Typing ended :", typingIndicator);
-  }
-})
-);
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
-let listenerId: string = "UNIQUE_LITENER_ID";
+let listenerId: string = "UNIQUE_LISTENER_ID";
 
 CometChat.addMessageListener(
   listenerId,
@@ -192,24 +159,28 @@ CometChat.addMessageListener(
 
 </Tab>
 
+<Tab title="JavaScript">
+```javascript
+let listenerId = "UNIQUE_LISTENER_ID";
+
+CometChat.addMessageListener(
+listenerId,
+new CometChat.MessageListener({
+  onTypingStarted: typingIndicator => {
+    console.log("Typing started :", typingIndicator);
+  },
+  onTypingEnded: typingIndicator => {
+    console.log("Typing ended :", typingIndicator);
+  }
+})
+);
+```
+
+</Tab>
+
 </Tabs>
 
 The received object is a [`TypingIndicator`](/sdk/reference/auxiliary#typingindicator).
-
-<Accordion title="Best Practices">
-- **Debounce typing events**: Don't call `startTyping()` on every keystroke - debounce to ~300ms intervals
-- **Auto-stop typing**: Call `endTyping()` after a period of inactivity (e.g., 3-5 seconds)
-- **Stop on send**: Always call `endTyping()` when the user sends a message
-- **Use unique listener IDs**: Prevent duplicate events by using component-specific listener IDs
-- **Remove listeners on unmount**: Clean up listeners when leaving a conversation view
-</Accordion>
-
-<Accordion title="Troubleshooting">
-- **Typing indicator not showing** — Verify `addMessageListener()` is called before typing starts. The listener must be registered first.
-- **Indicator stuck on "typing"** — Ensure `endTyping()` is called on message send, input blur, or after a timeout (3-5 seconds of inactivity).
-- **Multiple typing events firing** — Use unique listener IDs and remove listeners on component unmount to prevent duplicates.
-- **Wrong user shown typing** — Verify the `receiverId` matches the current conversation's UID or GUID.
-</Accordion>
 
 ---
 

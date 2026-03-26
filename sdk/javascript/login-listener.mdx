@@ -4,8 +4,7 @@ description: "Listen for real-time login and logout events using the CometChat J
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```javascript
 // Add login listener
@@ -19,7 +18,7 @@ CometChat.addLoginListener("LISTENER_ID", new CometChat.LoginListener({
 // Remove login listener
 CometChat.removeLoginListener("LISTENER_ID");
 ```
-</Info>
+</Accordion>
 
 The CometChat SDK provides you with real-time updates for the `login` and `logout` events. This can be achieved using the `LoginListener` class provided. LoginListener consists of 4 events that can be triggered. These are as follows:
 
@@ -33,30 +32,6 @@ The CometChat SDK provides you with real-time updates for the `login` and `logou
 To add the `LoginListener`, you need to use the `addLoginListener()` method provided by the SDK which takes a unique identifier for the listener and of the the `LoginListener` class itself.
 
 <Tabs>
-<Tab title="JavaScript">
-```js
-  let listenerID = "UNIQUE_LISTENER_ID";
-  CometChat.addLoginListener(
-      listenerID,
-      new CometChat.LoginListener({
-          loginSuccess: (e) => {
-              console.log("LoginListener :: loginSuccess", e);
-          },
-          loginFailure: (e) => {
-              console.log("LoginListener :: loginFailure", e);
-          },
-          logoutSuccess: () => {
-              console.log("LoginListener :: logoutSuccess");
-          },
-          logoutFailure: (e) => {
-              console.log("LoginListener :: logoutFailure", e);
-          }
-      })
-  );
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
   const listenerID: string = "UNIQUE_LISTENER_ID";
@@ -81,6 +56,30 @@ To add the `LoginListener`, you need to use the `addLoginListener()` method prov
 
 </Tab>
 
+<Tab title="JavaScript">
+```js
+  let listenerID = "UNIQUE_LISTENER_ID";
+  CometChat.addLoginListener(
+      listenerID,
+      new CometChat.LoginListener({
+          loginSuccess: (e) => {
+              console.log("LoginListener :: loginSuccess", e);
+          },
+          loginFailure: (e) => {
+              console.log("LoginListener :: loginFailure", e);
+          },
+          logoutSuccess: () => {
+              console.log("LoginListener :: logoutSuccess");
+          },
+          logoutFailure: (e) => {
+              console.log("LoginListener :: logoutFailure", e);
+          }
+      })
+  );
+```
+
+</Tab>
+
 </Tabs>
 
 ### React Example
@@ -88,6 +87,39 @@ To add the `LoginListener`, you need to use the `addLoginListener()` method prov
 If you're using React, register the listener inside a `useEffect` hook and clean it up on unmount:
 
 <Tabs>
+<Tab title="TypeScript">
+```typescript
+import { useEffect } from "react";
+import { CometChat } from "@cometchat/chat-sdk-javascript";
+
+function useLoginListener(): void {
+  useEffect(() => {
+    const listenerID: string = "LOGIN_LISTENER";
+    CometChat.addLoginListener(
+      listenerID,
+      new CometChat.LoginListener({
+        loginSuccess: (user: CometChat.User) => {
+          console.log("User logged in:", user);
+        },
+        loginFailure: (error: CometChat.CometChatException) => {
+          console.log("Login failed:", error);
+        },
+        logoutSuccess: () => {
+          console.log("User logged out");
+        },
+        logoutFailure: (error: CometChat.CometChatException) => {
+          console.log("Logout failed:", error);
+        },
+      })
+    );
+
+    return () => {
+      CometChat.removeLoginListener(listenerID);
+    };
+  }, []);
+}
+```
+</Tab>
 <Tab title="JavaScript">
 ```javascript
 import { useEffect } from "react";
@@ -122,55 +154,22 @@ function useLoginListener() {
 }
 ```
 </Tab>
-<Tab title="TypeScript">
-```typescript
-import { useEffect } from "react";
-import { CometChat } from "@cometchat/chat-sdk-javascript";
-
-function useLoginListener(): void {
-  useEffect(() => {
-    const listenerID: string = "LOGIN_LISTENER";
-    CometChat.addLoginListener(
-      listenerID,
-      new CometChat.LoginListener({
-        loginSuccess: (user: CometChat.User) => {
-          console.log("User logged in:", user);
-        },
-        loginFailure: (error: CometChat.CometChatException) => {
-          console.log("Login failed:", error);
-        },
-        logoutSuccess: () => {
-          console.log("User logged out");
-        },
-        logoutFailure: (error: CometChat.CometChatException) => {
-          console.log("Logout failed:", error);
-        },
-      })
-    );
-
-    return () => {
-      CometChat.removeLoginListener(listenerID);
-    };
-  }, []);
-}
-```
-</Tab>
 </Tabs>
 
 In order to stop receiving events related to login and logout you need to use the removeLoginListener() method provided by the SDK and pass the ID of the listener that needs to be removed.
 
 <Tabs>
-<Tab title="JavaScript">
-```js
-  const listenerID = "UNIQUE_LISTENER_ID";
+<Tab title="TypeScript">
+```typescript
+  const listenerID: string = "UNIQUE_LISTENER_ID";
   CometChat.removeLoginListener(listenerID);
 ```
 
 </Tab>
 
-<Tab title="TypeScript">
-```typescript
-  const listenerID: string = "UNIQUE_LISTENER_ID";
+<Tab title="JavaScript">
+```js
+  const listenerID = "UNIQUE_LISTENER_ID";
   CometChat.removeLoginListener(listenerID);
 ```
 
@@ -181,20 +180,6 @@ In order to stop receiving events related to login and logout you need to use th
 <Warning>
 Always remove login listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
 </Warning>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Use unique listener IDs">
-    Each listener must have a unique ID string. If you register a new listener with the same ID, it will replace the previous one. Use descriptive IDs like `"LOGIN_LISTENER_MAIN"` or `"LOGIN_LISTENER_AUTH_SCREEN"` to avoid accidental overwrites.
-  </Accordion>
-  <Accordion title="Handle logoutSuccess for session management">
-    Use the `logoutSuccess` callback to clear your app's local state, redirect to the login screen, and clean up any other SDK listeners. This ensures a clean state when the user logs out.
-  </Accordion>
-  <Accordion title="Register early, remove on cleanup">
-    Register login listeners as early as possible in your app lifecycle (e.g., right after `init()`). Remove them only when the component or page that registered them is destroyed.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

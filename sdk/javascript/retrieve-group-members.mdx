@@ -1,11 +1,11 @@
 ---
 title: "Retrieve Group Members"
+sidebarTitle: "Retrieve Members"
 description: "Fetch and filter group members by scope, status, and search keyword using the CometChat JavaScript SDK with pagination support."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```javascript
 // Fetch group members
@@ -21,37 +21,19 @@ const request = new CometChat.GroupMembersRequestBuilder("GUID")
 const request = new CometChat.GroupMembersRequestBuilder("GUID")
   .setLimit(30).setSearchKeyword("john").build();
 ```
-</Info>
+</Accordion>
 
-<Note>
-**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/react/overview)
-</Note>
 ## Retrieve the List of Group Members
 
-In order to fetch the list of groups members for a group, you can use the `GroupMembersRequest` class. To use this class i.e to create an object of the GroupMembersRequest class, you need to use the `GroupMembersRequestBuilder` class. The `GroupMembersRequestBuilder` class allows you to set the parameters based on which the groups are to be fetched.
-
-The `GroupMembersRequestBuilder` class allows you to set the below parameters:
-
-The GUID of the group for which the members are to be fetched must be specified in the constructor of the `GroupMembersRequestBuilder` class.
+Use `GroupMembersRequestBuilder` to fetch members of a [Group](/sdk/reference/entities#group). The GUID must be specified in the constructor.
 
 Fetching using this builder will return [`GroupMember`](/sdk/reference/entities#groupmember) objects. `GroupMember` extends [`User`](/sdk/reference/entities#user) and adds group-specific fields.
 
 ### Set Limit
 
-This method sets the limit i.e. the number of members that should be fetched in a single iteration.
+Sets the number of members to fetch per request.
 
 <Tabs>
-<Tab title="Set Limit">
-```javascript
-let GUID = "GUID";
-let limit = 30;
-let groupMembersRequest = new CometChat.GroupMembersRequestBuilder(GUID)
-  												.setLimit(limit)
-  												.build();   
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
 let GUID: string = "GUID";
@@ -63,26 +45,24 @@ let groupMembersRequest: CometChat.GroupMembersRequest = new CometChat.GroupMemb
 
 </Tab>
 
-</Tabs>
-
-### Set Search Keyword
-
-This method allows you to set the search string based on which the group members are to be fetched.
-
-<Tabs>
-<Tab title="Set Search Keyword">
+<Tab title="JavaScript">
 ```javascript
 let GUID = "GUID";
 let limit = 30;
-let searchKeyword = "super";
 let groupMembersRequest = new CometChat.GroupMembersRequestBuilder(GUID)
   												.setLimit(limit)
-  												.setSearchKeyword(searchKeyword)
-  												.build();
+  												.build();   
 ```
 
 </Tab>
 
+</Tabs>
+
+### Set Search Keyword
+
+Filters members by a search string.
+
+<Tabs>
 <Tab title="TypeScript">
 ```typescript
 let GUID: string = "GUID";
@@ -96,26 +76,26 @@ let groupMembersRequest: CometChat.GroupMembersRequest = new CometChat.GroupMemb
 
 </Tab>
 
-</Tabs>
-
-### Set Scopes
-
-This method allows you to fetch group members based on multiple scopes.
-
-<Tabs>
-<Tab title="Set Scopes">
+<Tab title="JavaScript">
 ```javascript
 let GUID = "GUID";
 let limit = 30;
-let scopes = ["admin", "moderator"];
+let searchKeyword = "super";
 let groupMembersRequest = new CometChat.GroupMembersRequestBuilder(GUID)
   												.setLimit(limit)
-  												.setScopes(scopes)
+  												.setSearchKeyword(searchKeyword)
   												.build();
 ```
 
 </Tab>
 
+</Tabs>
+
+### Set Scopes
+
+Filters members by one or more scopes (`admin`, `moderator`, `participant`).
+
+<Tabs>
 <Tab title="TypeScript">
 ```typescript
 let GUID: string = "GUID";
@@ -147,18 +127,33 @@ The status based on which the group members are to be fetched. The status parame
 If this parameter is not set, will return all the group members regardless of their status.
 
 <Tabs>
-<Tab title="Set Status">
+<Tab title="JavaScript">
 ```javascript
 let GUID = "GUID";
 let limit = 30;
+let scopes = ["admin", "moderator"];
 let groupMembersRequest = new CometChat.GroupMembersRequestBuilder(GUID)
   												.setLimit(limit)
-  												.setStatus(CometChat.USER_STATUS.ONLINE)
+  												.setScopes(scopes)
   												.build();
 ```
 
 </Tab>
 
+</Tabs>
+
+### Set Status
+
+Filters members by online status:
+
+| Value | Description |
+|-------|-------------|
+| `CometChat.USER_STATUS.ONLINE` | Only online members |
+| `CometChat.USER_STATUS.OFFLINE` | Only offline members |
+
+If not set, returns all members regardless of status.
+
+<Tabs>
 <Tab title="TypeScript">
 ```typescript
 let GUID: string = "GUID";
@@ -184,25 +179,23 @@ Finally, once all the parameters are set to the builder class, you need to call 
 Once you have the object of the `GroupMembersRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of `GroupMember` objects containing n number of members where n is the limit set in the builder class.
 
 <Tabs>
-<Tab title="Group Members Request">
+<Tab title="JavaScript">
 ```javascript
 let GUID = "GUID";
 let limit = 30;
-let groupMemberRequest = new CometChat.GroupMembersRequestBuilder(GUID)
+let groupMembersRequest = new CometChat.GroupMembersRequestBuilder(GUID)
   												.setLimit(limit)
+  												.setStatus(CometChat.USER_STATUS.ONLINE)
   												.build();
-
-groupMemberRequest.fetchNext().then(
-groupMembers => {
-  console.log("Group Member list fetched successfully:", groupMembers);
-}, error => {
-  console.log("Group Member list fetching failed with exception:", error);
-}
-);  
 ```
 
 </Tab>
 
+</Tabs>
+
+Once configured, call `build()` to create the request, then `fetchNext()` to retrieve members.
+
+<Tabs>
 <Tab title="TypeScript">
 ```typescript
 let GUID: string = "GUID";
@@ -222,25 +215,28 @@ groupMembersRequest.fetchNext().then(
 
 </Tab>
 
+<Tab title="JavaScript">
+```javascript
+let GUID = "GUID";
+let limit = 30;
+let groupMemberRequest = new CometChat.GroupMembersRequestBuilder(GUID)
+  												.setLimit(limit)
+  												.build();
+
+groupMemberRequest.fetchNext().then(
+groupMembers => {
+  console.log("Group Member list fetched successfully:", groupMembers);
+}, error => {
+  console.log("Group Member list fetching failed with exception:", error);
+}
+);  
+```
+
+</Tab>
+
 </Tabs>
 
 The `fetchNext()` method returns an array of [`GroupMember`](/sdk/reference/entities#groupmember) objects. `GroupMember` extends [`User`](/sdk/reference/entities#user) and adds group-specific fields.
-
-<Accordion title="Best Practices">
-- **Paginate results** — Always use `fetchNext()` in a loop or on-scroll. Set a reasonable limit (10–30) per request to avoid large payloads.
-- **Reuse the request object** — Create the `GroupMembersRequest` once and call `fetchNext()` repeatedly. Creating a new builder each time resets pagination.
-- **Filter by scope for admin panels** — Use `setScopes(["admin", "moderator"])` when building admin views to show only privileged members.
-- **Use status filter for presence** — Filter by `CometChat.USER_STATUS.ONLINE` to show active members in real-time collaboration features.
-- **Combine filters** — You can chain `setSearchKeyword()`, `setScopes()`, and `setStatus()` on the same builder for precise results.
-</Accordion>
-
-<Accordion title="Troubleshooting">
-- **Empty member list returned** — Verify the GUID is correct and the logged-in user is a member of the group. Non-members cannot fetch member lists.
-- **`fetchNext()` returns the same results** — You're likely creating a new `GroupMembersRequest` each time. Reuse the same instance for pagination.
-- **Search not finding members** — `setSearchKeyword()` matches against member names. Ensure the keyword is correct and partially matches.
-- **Scope filter returns no results** — Double-check the scope strings. Valid values are `"admin"`, `"moderator"`, and `"participant"`.
-- **Status filter not working** — Use `CometChat.USER_STATUS.ONLINE` or `CometChat.USER_STATUS.OFFLINE` constants, not raw strings.
-</Accordion>
 
 ---
 

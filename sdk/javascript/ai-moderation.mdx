@@ -1,11 +1,11 @@
 ---
 title: "AI Moderation"
+sidebarTitle: "AI Moderation"
 description: "Automatically moderate chat messages using AI to detect and block inappropriate content in real-time."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```javascript
 // Send message — check moderation status
@@ -25,15 +25,11 @@ CometChat.addMessageListener("MOD_LISTENER", new CometChat.MessageListener({
 
 **Supported types:** Text, Image, Video messages only
 **Statuses:** `PENDING` → `APPROVED` or `DISAPPROVED`
-</Info>
-
-<Note>
-**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/react/overview) | [Dashboard](https://app.cometchat.com)
-</Note>
+</Accordion>
 
 ## Overview
 
-AI Moderation in the CometChat SDK helps ensure that your chat application remains safe and compliant by automatically reviewing messages for inappropriate content. This feature leverages AI to moderate messages in real-time, reducing manual intervention and improving user experience.
+AI Moderation automatically reviews messages for inappropriate content in real-time, reducing manual intervention and improving user experience.
 
 <Note>
 For a broader understanding of moderation features, configuring rules, and managing flagged messages, see the [Moderation Overview](/moderation/overview).
@@ -41,11 +37,9 @@ For a broader understanding of moderation features, configuring rules, and manag
 
 ## Prerequisites
 
-Before using AI Moderation, ensure the following:
-
-1. Moderation is enabled for your app in the [CometChat Dashboard](https://app.cometchat.com)
-2. Moderation rules are configured under **Moderation > Rules**
-3. You're using CometChat SDK version that supports moderation
+1. Moderation enabled in the [CometChat Dashboard](https://app.cometchat.com)
+2. Moderation rules configured under **Moderation > Rules**
+3. CometChat SDK version that supports moderation
 
 ## How It Works
 
@@ -102,30 +96,6 @@ The `getModerationStatus()` method returns one of the following values:
 When you send a text, image, or video message, check the initial moderation status:
 
 <Tabs>
-  <Tab title="JavaScript">
-    ```javascript
-    const textMessage = new CometChat.TextMessage(
-      receiverUID,
-      "Hello, how are you?",
-      CometChat.RECEIVER_TYPE.USER
-    );
-
-    CometChat.sendMessage(textMessage).then(
-      (message) => {
-        // Check moderation status
-        const status = message.getModerationStatus();
-        
-        if (status === CometChat.ModerationStatus.PENDING) {
-          console.log("Message is under moderation review");
-          // Show pending indicator in UI
-        }
-      },
-      (error) => {
-        console.log("Message sending failed:", error);
-      }
-    );
-    ```
-  </Tab>
   <Tab title="TypeScript">
     ```typescript
     const textMessage = new CometChat.TextMessage(
@@ -150,6 +120,30 @@ When you send a text, image, or video message, check the initial moderation stat
     );
     ```
   </Tab>
+  <Tab title="JavaScript">
+    ```javascript
+    const textMessage = new CometChat.TextMessage(
+      receiverUID,
+      "Hello, how are you?",
+      CometChat.RECEIVER_TYPE.USER
+    );
+
+    CometChat.sendMessage(textMessage).then(
+      (message) => {
+        // Check moderation status
+        const status = message.getModerationStatus();
+        
+        if (status === CometChat.ModerationStatus.PENDING) {
+          console.log("Message is under moderation review");
+          // Show pending indicator in UI
+        }
+      },
+      (error) => {
+        console.log("Message sending failed:", error);
+      }
+    );
+    ```
+  </Tab>
 </Tabs>
 
 ### Step 2: Listen for Moderation Results
@@ -157,20 +151,20 @@ When you send a text, image, or video message, check the initial moderation stat
 Register a message listener to receive moderation results in real-time:
 
 <Tabs>
-  <Tab title="JavaScript">
-    ```javascript
-    const listenerID = "MODERATION_LISTENER";
+  <Tab title="TypeScript">
+    ```typescript
+    const listenerID: string = "MODERATION_LISTENER";
 
     CometChat.addMessageListener(
       listenerID,
       new CometChat.MessageListener({
-        onMessageModerated: (message) => {
+        onMessageModerated: (message: CometChat.BaseMessage) => {
           if (
             message instanceof CometChat.TextMessage ||
             message instanceof CometChat.MediaMessage
           ) {
-            const status = message.getModerationStatus();
-            const messageId = message.getId();
+            const status: string = message.getModerationStatus();
+            const messageId: number = message.getId();
 
             switch (status) {
               case CometChat.ModerationStatus.APPROVED:
@@ -193,20 +187,20 @@ Register a message listener to receive moderation results in real-time:
     // CometChat.removeMessageListener(listenerID);
     ```
   </Tab>
-  <Tab title="TypeScript">
-    ```typescript
-    const listenerID: string = "MODERATION_LISTENER";
+  <Tab title="JavaScript">
+    ```javascript
+    const listenerID = "MODERATION_LISTENER";
 
     CometChat.addMessageListener(
       listenerID,
       new CometChat.MessageListener({
-        onMessageModerated: (message: CometChat.BaseMessage) => {
+        onMessageModerated: (message) => {
           if (
             message instanceof CometChat.TextMessage ||
             message instanceof CometChat.MediaMessage
           ) {
-            const status: string = message.getModerationStatus();
-            const messageId: number = message.getId();
+            const status = message.getModerationStatus();
+            const messageId = message.getId();
 
             switch (status) {
               case CometChat.ModerationStatus.APPROVED:
@@ -332,22 +326,6 @@ Here's a complete implementation showing the full moderation flow:
 <Warning>
 Always remove listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
 </Warning>
-
-<Accordion title="Best Practices">
-- **Show pending state in UI** — When `getModerationStatus()` returns `PENDING`, display a visual indicator (spinner, dimmed message) so users know the message is being reviewed.
-- **Handle disapproved messages gracefully** — Don't just hide blocked messages silently. Show a placeholder or notification so the sender understands what happened.
-- **Register the listener early** — Add the `onMessageModerated` listener before sending messages so you don't miss any moderation results.
-- **Track pending messages** — Maintain a local map of pending message IDs so you can update the UI when moderation results arrive.
-- **Test with moderation rules** — Configure moderation rules in the Dashboard before testing. Without rules, messages won't be moderated.
-</Accordion>
-
-<Accordion title="Troubleshooting">
-- **`onMessageModerated` never fires** — Ensure moderation is enabled in the CometChat Dashboard and rules are configured under Moderation > Rules.
-- **All messages show `PENDING` but never resolve** — Check that your moderation rules are properly configured and the moderation service is active in your plan.
-- **Custom messages not being moderated** — AI Moderation only supports Text, Image, and Video messages. Custom messages are not subject to moderation.
-- **Moderation status is `undefined`** — You may be using an older SDK version that doesn't support moderation. Update to the latest version.
-- **Disapproved messages still visible to recipients** — The SDK handles this automatically. If recipients still see blocked messages, verify your `onMessageModerated` handler is updating the UI correctly.
-</Accordion>
 
 ## Next Steps
 

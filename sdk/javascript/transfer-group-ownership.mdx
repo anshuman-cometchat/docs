@@ -1,11 +1,11 @@
 ---
 title: "Transfer Group Ownership"
+sidebarTitle: "Transfer Ownership"
 description: "Transfer ownership of a CometChat group to another member using the JavaScript SDK."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```javascript
 // Transfer group ownership
@@ -13,34 +13,13 @@ await CometChat.transferGroupOwnership("GUID", "NEW_OWNER_UID");
 ```
 
 **Note:** Only the current group owner can transfer ownership. The owner must transfer ownership before leaving the group.
-</Info>
+</Accordion>
 
-*In other words, as a logged-in user, how do I transfer the ownership of any group if I am the owner of the group?*
+Only the owner of a [Group](/sdk/reference/entities#group) can transfer ownership. Since owners cannot leave their group, you must transfer ownership first if you want to leave.
 
-<Note>
-**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/react/overview)
-</Note>
-
-In order to transfer the ownership of any group, the first condition is that you must be the owner of the group. In case you are the owner of the group, you can use the `transferGroupOwnership()` method provided by the `CometChat` class.
-
-This will be helpful as the owner is not allowed to leave the group. In case, you as the owner would like to leave the group, you will have to use this method and transfer your ownership first to any other member of the group and only then you will be allowed to leave the group.
+Use `transferGroupOwnership()` to transfer ownership to another member.
 
 <Tabs>
-<Tab title="Transfer Ownership">
-```javascript
-let GUID = "GUID";
-let UID = "UID";
-CometChat.transferGroupOwnership(GUID, UID).then(
-  () => {
-      console.log("Successfully transferred ownership of the group.");
-  }, error => {
-      console.log("Could not transfer ownership of the group: ", error);
-  }
-)
-```
-
-</Tab>
-
 <Tab title="TypeScript">
 ```typescript
 let GUID: string = "GUID";
@@ -56,23 +35,24 @@ CometChat.transferGroupOwnership(GUID, UID).then(
 
 </Tab>
 
+<Tab title="JavaScript">
+```javascript
+let GUID = "GUID";
+let UID = "UID";
+CometChat.transferGroupOwnership(GUID, UID).then(
+  () => {
+      console.log("Successfully transferred ownership of the group.");
+  }, error => {
+      console.log("Could not transfer ownership of the group: ", error);
+  }
+)
+```
+
+</Tab>
+
 </Tabs>
 
 On success, the method resolves with a success message string confirming the operation.
-
-<Accordion title="Best Practices">
-- **Transfer before leaving** — The owner cannot leave a group without first transferring ownership. Always call `transferGroupOwnership()` before `leaveGroup()`.
-- **Choose a trusted member** — Transfer ownership to an active admin or moderator who can manage the group responsibly.
-- **Confirm in UI** — Ownership transfer is irreversible. Add a confirmation dialog before calling the method.
-- **Update local state** — After a successful transfer, update your local group data to reflect the new owner.
-</Accordion>
-
-<Accordion title="Troubleshooting">
-- **"ERR_NOT_A_MEMBER" or permission error** — Only the current group owner can transfer ownership. Verify the logged-in user is the owner.
-- **Transfer fails with "User not found"** — The target UID must be an existing member of the group. Verify the UID and their membership status.
-- **Owner still can't leave after transfer** — Ensure the `transferGroupOwnership()` promise resolved successfully before calling `leaveGroup()`.
-- **New owner doesn't have admin privileges** — After ownership transfer, the new owner automatically gets the owner role. If the UI doesn't reflect this, re-fetch the group details.
-</Accordion>
 
 ---
 

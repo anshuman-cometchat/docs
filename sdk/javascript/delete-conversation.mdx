@@ -1,11 +1,11 @@
 ---
-title: "Delete A Conversation"
-description: "Delete user or group conversations for the logged-in user using the CometChat JavaScript SDK."
+title: "Delete Conversation"
+sidebarTitle: "Delete Conversation"
+description: "Delete user or group conversations using the CometChat JavaScript SDK."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```javascript
 // Delete user conversation
@@ -16,19 +16,13 @@ await CometChat.deleteConversation("GUID", "group");
 ```
 
 **Note:** Deletes only for the logged-in user. Use [REST API](https://api-explorer.cometchat.com/reference/resets-user-conversation) to delete for all participants.
-</Info>
-
-<Note>
-**Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/react/overview)
-</Note>
+</Accordion>
 
 <Warning>
 This operation is irreversible. Deleted conversations cannot be recovered for the logged-in user.
 </Warning>
 
-In case you want to delete a conversation, you can use the `deleteConversation()` method.
-
-This method takes two parameters. The unique id (UID/GUID) of the conversation to be deleted & the type (user/group) of conversation to be deleted.
+Use `deleteConversation()` to delete a conversation for the logged-in user.
 
 <Tabs>
 <Tab title="Delete User Conversation">
@@ -61,7 +55,7 @@ CometChat.deleteConversation(GUID, type).then(
 
 </Tab>
 
-<Tab title="Delete User Conversation (Typescript">
+<Tab title="Delete User Conversation (TypeScript)">
 ```typescript
 let UID: string = "UID";
 let type: string = "user";
@@ -93,30 +87,14 @@ CometChat.deleteConversation(GUID, type).then(
 
 </Tabs>
 
-This method deletes the conversation only for the logged-in user. To delete a conversation for all the users of the conversation, please refer to our REST API documentation [here](https://api-explorer.cometchat.com/reference/resets-user-conversation).
+This deletes the conversation only for the logged-in user. To delete for all participants, use the [REST API](https://api-explorer.cometchat.com/reference/resets-user-conversation).
 
-The `deleteConversation()` method takes the following parameters:
+| Parameter | Description | Required |
+| --- | --- | --- |
+| conversationWith | UID or GUID of the conversation to delete | Yes |
+| conversationType | `user` or `group` | Yes |
 
-| Parameter        | Description                                                                       | Required |
-| ---------------- | --------------------------------------------------------------------------------- | -------- |
-| conversationWith | `UID` of the user or `GUID` of the group whose conversation you want to delete.   | YES      |
-| conversationType | The type of conversation you want to delete . It can be either `user` or `group`. | YES      |
-
-On success, the `deleteConversation()` method resolves with a success message string confirming the operation.
-
-<Accordion title="Best Practices">
-- **Confirm before deleting**: Always show a confirmation dialog before deleting conversations
-- **Update UI immediately**: Remove the conversation from the list optimistically, then handle errors
-- **Handle errors gracefully**: If deletion fails, restore the conversation in the UI
-- **Clear local cache**: If you cache conversations locally, remove them after successful deletion
-</Accordion>
-
-<Accordion title="Troubleshooting">
-- **Conversation still visible after deletion** — Refresh the conversation list after deletion. Update your UI immediately on success.
-- **Delete fails** — Verify the UID or GUID exists and is correct.
-- **Other user still sees messages** — The SDK deletes for the logged-in user only. Use the REST API to delete for all participants.
-- **"Conversation not found" error** — The conversation may already be deleted, or the `conversationType` doesn't match. Ensure it's `user` or `group` as appropriate.
-</Accordion>
+On success, returns a confirmation message string.
 
 ---
 

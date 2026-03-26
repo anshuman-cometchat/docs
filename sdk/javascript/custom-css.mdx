@@ -1,11 +1,10 @@
 ---
 title: "Custom CSS"
+sidebarTitle: "Custom CSS"
 description: "Customize the CometChat calling UI with custom CSS classes for buttons, video containers, name labels, and grid layouts."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```css
 /* Key CSS classes for call UI customization */
@@ -20,38 +19,45 @@ description: "Customize the CometChat calling UI with custom CSS classes for but
 ```
 
 **Modes:** `DEFAULT` | `TILE` | `SPOTLIGHT`
-</Info>
+</Accordion>
 
-Passing custom CSS allows you to personalize and enhance the user interface of the call screen.
+The CometChat calling UI exposes CSS classes you can target to style buttons, video containers, labels, and layouts. Your CSS is applied globally — any styles you write for these classes will affect the call UI across all modes (DEFAULT, TILE, SPOTLIGHT).
 
-## Common CSS Classes
+Before you begin, make sure you've set up [Ringing](/sdk/javascript/default-call) or [Call Session](/sdk/javascript/direct-call).
 
-There are a few common classes used for different modes in the call screen
+<Warning>
+Only use CSS classes documented here — targeting undocumented classes may cause UI issues. Avoid resizing the grid container to prevent layout distortions.
+</Warning>
 
-1. **cc-main-container** - The outermost component of the calling component is represented by a white border in the screenshots above, indicating that it acts as a container for other components.
+## CSS Class Reference
 
-2. **cc-bottom-buttons-container** - The container located at the very bottom of the interface houses various action buttons, such as the mute/unmute audio and video, end call, settings icon, and participants icon, among others. It is represented by the red border in above screenshot.
+### Layout Containers
 
-3. **cc-name-label** - This class is passed in user name text container in all modes. It is represented by green border in the above screenshots.
+| Class | Description |
+| ----- | ----------- |
+| `cc-main-container` | Outermost container for the calling component |
+| `cc-video-container` | Video feed container |
+| `cc-name-label` | User name text container |
 
-4. **cc-video-container** - This class is passed to the video container in all modes. It is represented by orange border in the above screenshots.
+### Action Buttons
 
-## Bottom Buttons
+| Class | Description |
+| ----- | ----------- |
+| `cc-bottom-buttons-container` | Bottom bar containing action buttons (mute, end call, etc.) |
+| `cc-bottom-buttons-icon-container` | Individual button wrapper |
+| `cc-audio-icon-container` | Audio toggle button |
+| `cc-audio-icon-container-muted` | Audio button (muted state) |
+| `cc-video-icon-container` | Video toggle button |
+| `cc-video-icon-container-muted` | Video button (muted state) |
+| `cc-screen-share-icon-container` | Screen share button |
+| `cc-switch-video-icon-container` | Switch camera button |
+| `cc-end-call-icon-container` | End call button |
 
-1. **cc-bottom-buttons-container** - This is the container of all the buttons in calling.
-2. **cc-bottom-buttons-icon-container** - This is the div of every button in the button bar.
+## Examples
 
-### Individual bottom buttons CSS classes
+### Basic Styling
 
-* `cc-audio-icon-container`
-* `cc-audio-icon-container-muted`
-* `cc-video-icon-container`
-* `cc-video-icon-container-muted`
-* `cc-screen-share-icon-container`
-* `cc-switch-video-icon-container`
-* `cc-end-call-icon-container`
-
-### **Example**
+This example applies colored backgrounds to buttons and dotted borders to containers to visualize the layout structure:
 
 <Tabs>
 <Tab title="CSS">
@@ -95,7 +101,7 @@ There are a few common classes used for different modes in the call screen
 
 </Tabs>
 
-The above example results in the below output:-
+Here's how it looks across the three call modes:
 
 **Mode: `DEFAULT`**
 
@@ -171,41 +177,13 @@ The above example results in the below output:-
 
 </Tabs>
 
-The above example results in the below output:-
+### Polished UI
+
+This example shows a more refined customization with rounded buttons, custom spacing, and a patterned video background:
 
 <Frame>
   <img src="/images/97410b02-98nyrur1z95e78wy4t0k4pz8c9zcbyhyimrv0db07w4g2eqmf8haza2lb2kyfnb1-458156083bf242abfa2ee89a0cf795fb.png" />
 </Frame>
-
-### Guidelines for Customizing the Grid Layout
-
-* **CSS Classes:**
-
-  * Please ensure that you only apply CSS classes specified in this documentation. Introducing CSS classes not covered here may cause unexpected UI issues.
-
-* **Grid Container Resizing:**
-
-  * Avoid resizing the grid container. Altering the grid container’s dimensions can negatively impact the grid layout, leading to undesirable visual distortions.
-
-By following these recommendations, you can maintain a stable and visually consistent grid layout.
-
-<Accordion title="Best Practices">
-- **Only use documented CSS classes** — Applying styles to undocumented internal classes may break with SDK updates. Stick to the classes listed in this guide.
-- **Don't resize the grid container** — Altering the grid container dimensions can break the layout. Only customize colors, borders, and visibility.
-- **Use `!important` sparingly** — Some SDK styles may need `!important` to override, but overusing it makes maintenance harder.
-- **Test across modes** — CSS changes may look different in `DEFAULT`, `TILE`, and `SPOTLIGHT` modes. Test all three.
-- **Keep button sizes accessible** — When customizing button dimensions, ensure they remain large enough for easy interaction (minimum 44x44px for touch targets).
-</Accordion>
-
-<Accordion title="Troubleshooting">
-- **CSS changes not applying** — The SDK may use inline styles or higher-specificity selectors. Try adding `!important` to your rules.
-- **Layout breaks after customization** — You may have resized the grid container or applied conflicting `display` or `position` properties. Revert and apply changes incrementally.
-- **Styles only work in one mode** — Some CSS classes are mode-specific. Test in `DEFAULT`, `TILE`, and `SPOTLIGHT` modes to ensure consistency.
-- **Muted button styles not showing** — Use the `-muted` variant classes (e.g., `cc-audio-icon-container-muted`) for muted state styling.
-- **Custom styles disappear on SDK update** — If the SDK updates internal class names, your custom CSS may stop working. Pin your SDK version and test after updates.
-</Accordion>
-
-
 ---
 
 ## Next Steps

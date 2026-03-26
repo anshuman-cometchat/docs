@@ -1,5 +1,6 @@
 ---
 title: "Messages"
+sidebarTitle: "Messages"
 description: "Class reference for message objects returned by CometChat SDK methods. Covers BaseMessage and its subclasses like TextMessage."
 ---
 
@@ -208,8 +209,8 @@ It inherits all properties from `BaseMessage` and adds the following.
 | Property | Getter | Return Type | Description |
 |----------|--------|-------------|-------------|
 | sessionId | `getSessionId()` | `string` | Unique session ID of the call |
-| callInitiator | `getCallInitiator()` | `User` | The user who initiated the call |
-| callReceiver | `getCallReceiver()` | `User` \| `Group` | The user or group receiving the call |
+| callInitiator | `getCallInitiator()` | [`User`](/sdk/reference/entities#user) | The user who initiated the call |
+| callReceiver | `getCallReceiver()` | [`User`](/sdk/reference/entities#user) \| [`Group`](/sdk/reference/entities#group) | The user or group receiving the call |
 | action | `getAction()` | `string` | The call action (e.g., `"initiated"`, `"ongoing"`, `"ended"`, `"cancelled"`, `"rejected"`) |
 | initiatedAt | `getInitiatedAt()` | `number` | Timestamp when the call was initiated |
 | joinedAt | `getJoinedAt()` | `number` | Timestamp when the call was joined |
