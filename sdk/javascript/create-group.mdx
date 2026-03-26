@@ -4,7 +4,6 @@ sidebarTitle: "Create Group"
 description: "Create public, private, or password-protected groups and optionally add members during creation using the CometChat JavaScript SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
@@ -21,18 +20,17 @@ let result = await CometChat.createGroupWithMembers(group, members, []);
 **Member scopes:** `ADMIN` | `MODERATOR` | `PARTICIPANT`
 </Accordion>
 
+Create groups for multi-user conversations. You can create a group on its own with `createGroup()`, or create one and add members in a single call with `createGroupWithMembers()`. See the [Group Class](#group-class) reference at the bottom for all available fields.
+
 ## Create a Group
 
 Use `createGroup()` to create a new group. Pass a [`Group`](/sdk/reference/entities#group) object with the group details.
 
-Group constructors:
-- `new Group(GUID, name, groupType, password)`
-- `new Group(GUID, name, groupType, password, icon, description)`
-
-Group types:
-- `CometChat.GROUP_TYPE.PUBLIC`
-- `CometChat.GROUP_TYPE.PASSWORD`
-- `CometChat.GROUP_TYPE.PRIVATE`
+| Group Type | Constant | Description |
+| --- | --- | --- |
+| Public | `CometChat.GROUP_TYPE.PUBLIC` | Any user can join |
+| Password | `CometChat.GROUP_TYPE.PASSWORD` | Users must provide the correct password |
+| Private | `CometChat.GROUP_TYPE.PRIVATE` | Users must be added by an admin/moderator |
 
 <Tabs>
 <Tab title="TypeScript">
@@ -145,7 +143,7 @@ CometChat.createGroupWithMembers(group, members, banMembers).then(
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let GUID = "cometchat-guid-11";
 let UID = "cometchat-uid-1";
 let groupName = "Hello Group!";
@@ -198,6 +196,8 @@ Returns an object with two keys:
 - `members` — Object with UIDs as keys and `"success"` or error message as values
 
 ## Group Class
+
+The [`Group`](/sdk/reference/entities#group) object has the following fields. Fields marked "Yes" in the Editable column can be modified after creation using `updateGroup()`.
 
 | Field        | Editable                                                        | Information                                                               |
 | ------------ | --------------------------------------------------------------- | ------------------------------------------------------------------------- |
