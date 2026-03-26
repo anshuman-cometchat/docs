@@ -4,7 +4,6 @@ sidebarTitle: "Update Group"
 description: "Update group details such as name, type, icon, and description using the CometChat JavaScript SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
@@ -13,6 +12,8 @@ const group = new CometChat.Group("GUID", "New Name", CometChat.GROUP_TYPE.PUBLI
 const updated = await CometChat.updateGroup(group);
 ```
 </Accordion>
+
+Update a group's name, icon, description, or metadata. The GUID and group type cannot be changed after creation. See the [Group Class](/sdk/javascript/create-group#group-class) reference for all editable fields.
 
 ## Update Group
 
@@ -64,13 +65,9 @@ group => {
 
 On success, returns a [`Group`](/sdk/reference/entities#group) object with the updated details.
 
-The method returns a [`Group`](/sdk/reference/entities#group) object.
-
 <Note>
-There is no real-time event listener available to receive updated group details when the `updateGroup()` method is called. To get the latest group information, you need to fetch the group details again using the appropriate method.
+There is no real-time event listener for group updates. To get the latest group information after calling `updateGroup()`, fetch the group details again using `getGroup()`.
 </Note>
-
-For more information on the [`Group`](/sdk/reference/entities#group) class, please check [here](/sdk/javascript/create-group#create-a-group).
 
 ---
 
