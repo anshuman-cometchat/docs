@@ -86,7 +86,7 @@ let limit: number = 30,
 The default value for `setLimit` is 30 and the max value is 50.
 </Note>
 
-When conversations are fetched successfully, the response will include an array of `Conversation` objects filtered by the specified type.
+When conversations are fetched successfully, the response will include an array of [`Conversation`](/sdk/reference/entities#conversation) objects filtered by the specified type.
 
 Relevant fields to access on returned conversations:
 
@@ -651,7 +651,7 @@ The tags for conversations are one-way. This means that if user A tags a convers
 
 </Note>
 
-When the conversation is tagged successfully, the response will return a single `Conversation` object (not an array) with the `tags` field included.
+When the conversation is tagged successfully, the response will return a single [`Conversation`](/sdk/reference/entities#conversation) object (not an array) with the `tags` field included.
 
 The `tagConversation()` method returns a [`Conversation`](/sdk/reference/entities#conversation) object with the `tags` field populated.
 
@@ -731,13 +731,13 @@ CometChat.getConversation(conversationWith, conversationType).then(
 
 </Tabs>
 
-When the conversation is fetched successfully, the response will return a single `Conversation` object (not an array).
+When the conversation is fetched successfully, the response will return a single [`Conversation`](/sdk/reference/entities#conversation) object (not an array).
 
 The `getConversation()` method returns a single [`Conversation`](/sdk/reference/entities#conversation) object.
 
 ## Convert Messages to Conversations
 
-As per our [receive messages](/sdk/javascript/receive-message) guide, for real-time messages, you will always receive `Message` objects and not `Conversation` objects. Thus, you will need a mechanism to convert the Message object to the `Conversation` object. You can use the `getConversationFromMessage(BaseMessage message)` of the `CometChatHelper` class.
+As per our [receive messages](/sdk/javascript/receive-message) guide, for real-time messages, you will always receive `Message` objects and not [`Conversation`](/sdk/reference/entities#conversation) objects. Thus, you will need a mechanism to convert the Message object to the `Conversation` object. You can use the `getConversationFromMessage(BaseMessage message)` of the `CometChatHelper` class.
 
 <Tabs>
 <Tab title="JavaScript">
