@@ -4,95 +4,86 @@ title: "Properties and Constraints"
 
 This page lists the properties and constraints applicable to various CometChat systems.
 
-## Chat Widgets
-
-| **Property**                                     | **Constraint**                                 | **Notes**                      |
-| ------------------------------------------------ | ---------------------------------------------- | ------------------------------ |
-| Number of widgets that can be created for an app | Maximum 25                                     |                                |
-| Widget name                                      | 100 characters, UTF8mb4, no newline characters |                                |
-| Widget version                                   | v2                                             | Cannot be set programmatically |
-| Docked layout icon                               | PNG, JPG, GIF, SVG                             |                                |
-
 ## Webhooks
 
-| **Property**                         | **Constraint**                                | **Notes** |
-| ------------------------------------ | --------------------------------------------- | --------- |
-| Maximum number of webhooks in an app | Maximum 25                                    |           |
-| Webhook URL                          | Valid URL, maximum 255 characters             |           |
-| Webhook ID                           | 50 characters, alphanumeric (without spaces)  |           |
-| Webhook authentication username      | 50 characters, alphanumeric (without spaces)  |           |
-| Webhook authentication password      | 100 characters, alphanumeric (without spaces) |           |
+| **Property**                       | **Constraints**                                  |
+| ---------------------------------- | ------------------------------------------------ |
+| Maximum number of webhooks per app | 25                                               |
+| Webhook URL                        | Valid URL, max 255 characters                    |
+| Webhook ID                         | Max 50 characters, alphanumeric only, no spaces  |
+| Webhook authentication username    | Max 50 characters, alphanumeric only, no spaces  |
+| Webhook authentication password    | Max 100 characters, alphanumeric only, no spaces |
 
 ## Management APIs
 
-| **Property**                                                  | **Constraint**              | **Notes**                         |
-| ------------------------------------------------------------- | --------------------------- | --------------------------------- |
-| App name length                                               | 100 characters, UTF8mb4 set |                                   |
-| App version                                                   | v3                          | This is the only option available |
-| Number of collaborators that can be created (team management) | Maximum 25                  |                                   |
+| **Property**                                    | **Constraints**                                                 |
+| ----------------------------------------------- | --------------------------------------------------------------- |
+| App name                                        | Max 100 characters, UTF8mb4 (supports all languages and emojis) |
+| App version                                     | `v3` only                                                       |
+| Maximum collaborators per app (team management) | 25                                                              |
 
 ## REST APIs
 
-| **Property**                                      | **Constraint**                      | **Notes**                                                                 |
-| ------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------- |
-| Number of bot users that can be created           | Maximum 25                          |                                                                           |
-| API keys                                          | 100 characters (UTF8mb4 characters) | This covers all languages and even emojis. One emoji uses two characters. |
-| Number of API keys that can be created for an app | Maximum 25                          |                                                                           |
+| **Property**              | **Constraints**                                                                           |
+| ------------------------- | ----------------------------------------------------------------------------------------- |
+| Maximum bot users per app | 25                                                                                        |
+| API key name              | Max 100 characters, UTF8mb4 (supports all languages and emojis; one emoji = 2 characters) |
+| Maximum API keys per app  | 25                                                                                        |
 
 ## Users and Groups
 
-| **Property**                                                                    | **Constraint**                                                                                                                                                                                                        | **Notes**                                                                                                                     |
-| ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| Maximum users in a group (all features enabled)                                 | 300                                                                                                                                                                                                                   | Groups with delivery/read receipts and typing indicators enabled                                                              |
-| Maximum users in a group (without delivery/read receipts and typing indicators) | 100,000                                                                                                                                                                                                               |                                                                                                                               |
-| Maximum groups a user can be a part of                                          | 2,000                                                                                                                                                                                                                 |                                                                                                                               |
-| Maximum number of friends for a user                                            | 1,000                                                                                                                                                                                                                 |                                                                                                                               |
-| Maximum tokens for a user                                                       | 100 active (rolling retention — oldest tokens are archived when limit is exceeded)                                                                                                                                    |                                                                                                                               |
-| Maximum number of groups                                                        | No limit                                                                                                                                                                                                              |                                                                                                                               |
-| Maximum number of unread messages per user                                      | No limit                                                                                                                                                                                                              |                                                                                                                               |
-| Maximum number of users that can be created for an app                          | No limit                                                                                                                                                                                                              |                                                                                                                               |
-| User and Group ID                                                               | 100 characters, alpha-dash (a-z, 0-9 with - and \_) without spaces                                                                                                                                                    | CometChat forces the UID to all lowercase                                                                                     |
-| User and Group name                                                             | 100 characters, UTF8mb4 set                                                                                                                                                                                           | This covers all languages and even emojis                                                                                     |
-| User and Group avatar                                                           | Must be a URL, limit of 3,000 characters                                                                                                                                                                              | CometChat doesn't save the image on its servers. There is no limit on the image resolution. It depends on the implementation. |
-| User profile                                                                    | Must be a URL, limit of 3,000 characters                                                                                                                                                                              | Same as above                                                                                                                 |
-| User and Group metadata                                                         | 5 KB max (within the 10 KB POST request limit).                                                                                                                                                                       |                                                                                                                               |
-| User and Group tags                                                             | Up to 25 tags with 100 characters per tag. The tags can be in any language. The character set must be UTF8mb4.                                                                                                        |                                                                                                                               |
-| Group password                                                                  | String up to 100 characters                                                                                                                                                                                           |                                                                                                                               |
-| Group description                                                               | 255 characters, UTF8mb4 set                                                                                                                                                                                           |                                                                                                                               |
-| Maximum active presence subscriptions                                           | The presence subscription will be active until 1,000 users are online for a single app. If more than 1,000 users go online, the presence notification starting from the 1,001st user will not be sent to other users. | This is the upper limit applicable across subscription for friends, users with certain roles, and all users                   |
-| Typing indicators for groups                                                    | Typing indicators will be sent for a group of up to 1,000 online users.                                                                                                                                               |                                                                                                                               |
-| Unread message counts for groups                                                | For a group with more than 300 members, the conversations and unread message counts are not updated.                                                                                                                  |                                                                                                                               |
-| Delivery and read receipts for groups                                           | Delivery and read receipts will be sent for a group of up to 300 online users.                                                                                                                                        |                                                                                                                               |
+| **Property**                                                       | **Constraints**                                                                                                                                                            |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Maximum members per group (all features enabled)                   | 300 (with delivery/read receipts and typing indicators)                                                                                                                    |
+| Maximum members per group (without receipts and typing indicators) | 100,000                                                                                                                                                                    |
+| Maximum groups per user                                            | 2,000                                                                                                                                                                      |
+| Maximum friends per user                                           | 1,000                                                                                                                                                                      |
+| Maximum auth tokens per user                                       | 100 active (rolling retention — oldest tokens archived when limit exceeded)                                                                                                |
+| Maximum groups per app                                             | No limit                                                                                                                                                                   |
+| Maximum unread messages per user                                   | No limit                                                                                                                                                                   |
+| Maximum users per app                                              | No limit                                                                                                                                                                   |
+| User/Group ID (`uid`, `guid`)                                      | Max 100 characters, alpha-dash (`a-z`, `0-9`, `-`, `_`), no spaces. Automatically lowercased.                                                                              |
+| User/Group name                                                    | Max 100 characters, UTF8mb4 (supports all languages and emojis)                                                                                                            |
+| User/Group avatar                                                  | Must be a valid URL, max 3,000 characters. Image is not stored by CometChat — URL must remain accessible.                                                                  |
+| User profile link                                                  | Must be a valid URL, max 3,000 characters                                                                                                                                  |
+| User/Group metadata                                                | Max 5 KB (within the 10 KB POST request body limit)                                                                                                                        |
+| User/Group tags                                                    | Max 25 tags, each up to 100 characters, UTF8mb4                                                                                                                            |
+| Group password                                                     | Max 100 characters                                                                                                                                                         |
+| Group description                                                  | Max 255 characters, UTF8mb4                                                                                                                                                |
+| Presence subscriptions                                             | Active for up to 1,000 concurrent online users per app. Beyond 1,000, presence notifications are not sent. Applies across friends, role-based, and all-user subscriptions. |
+| Typing indicators (groups)                                         | Sent for groups with up to 1,000 online members                                                                                                                            |
+| Unread message counts (groups)                                     | Not updated for groups with more than 300 members                                                                                                                          |
+| Delivery/read receipts (groups)                                    | Sent for groups with up to 300 online members                                                                                                                              |
 
 ## Roles
 
-| **Property**                                | **Constraint**                                                     | **Notes**                                 |
-| ------------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------- |
-| Maximum number of roles that can be created | Maximum 25                                                         |                                           |
-| Role ID                                     | 100 characters, alpha-dash (a-z, 0-9 with - and \_) without spaces | CometChat forces the Role ID to lowercase |
-| Role name                                   | 100 characters, UTF8mb4                                            | This covers all languages and even emojis |
-| Role description                            | 255 characters, UTF8mb4 set, any language                          |                                           |
-| Metadata                                    | No limit                                                           |                                           |
+| **Property**          | **Constraints**                                                                               |
+| --------------------- | --------------------------------------------------------------------------------------------- |
+| Maximum roles per app | 25                                                                                            |
+| Role ID               | Max 100 characters, alpha-dash (`a-z`, `0-9`, `-`, `_`), no spaces. Automatically lowercased. |
+| Role name             | Max 100 characters, UTF8mb4 (supports all languages and emojis)                               |
+| Role description      | Max 255 characters, UTF8mb4                                                                   |
+| Role metadata         | No limit                                                                                      |
 
 ## Messages
 
-| **Property**                                                               | **Constraint**                                                                                                                                                                                                                                                                                                                                                              | **Notes**                                                                 |
-| -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| Maximum file upload size                                                   | 100 MB per message                                                                                                                                                                                                                                                                                                                                                          | Includes the file and the entire POST body (chat text, custom data, etc.) |
-| Maximum message size (including metadata)                                  | 65,536 characters (~65 KB)                                                                                                                                                                                                                                                                                                                                                  | Applies to the message JSON payload, not file uploads                     |
-| Message data (applicable for API calls)                                    | Data is an arbitrary JSON structure. It accepts UTF8mb4. It can have any user-defined properties, but the following properties have meaning for CometChat: text, attachments, custom_data, metadata. The attachment size is separate. Here, the attachment is only the attachment properties (such as URL, size, etc.). The size must not exceed 10 KB for the data object. |                                                                           |
-| Message tags                                                               | Up to 25 tags with 100 characters per tag. The tags can be in any language. The character set must be UTF8mb4.                                                                                                                                                                                                                                                              |                                                                           |
-| User and Group conversation tags                                           | Up to 25 tags with 100 characters per tag. The tags can be in any language. The character set must be UTF8mb4.                                                                                                                                                                                                                                                              |                                                                           |
-| Does CometChat keep soft-deleted messages in its database?                 | Yes                                                                                                                                                                                                                                                                                                                                                                         |                                                                           |
-| Does CometChat keep permanently deleted messages (by API) in its database? | No                                                                                                                                                                                                                                                                                                                                                                          |                                                                           |
+| **Property**                                    | **Constraints**                                                                                                                                                        |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Maximum file upload size                        | 100 MB per message (includes file + entire POST body)                                                                                                                  |
+| Maximum message size (including metadata)       | 65,536 characters (~65 KB). Applies to the message JSON payload, not file uploads.                                                                                     |
+| Message `data` object                           | Arbitrary JSON, UTF8mb4. Reserved keys: `text`, `attachments`, `custom_data`, `metadata`. Max 10 KB for the `data` object. Attachment file size is counted separately. |
+| Message tags                                    | Max 25 tags, each up to 100 characters, UTF8mb4                                                                                                                        |
+| Conversation tags                               | Max 25 tags, each up to 100 characters, UTF8mb4                                                                                                                        |
+| Soft-deleted messages retained                  | Yes                                                                                                                                                                    |
+| Permanently deleted messages (via API) retained | No                                                                                                                                                                     |
 
 ## Calling
 
-| **Property**                       | **Constraint**             | **Notes**                                                                         |
-| ---------------------------------- | -------------------------- | --------------------------------------------------------------------------------- |
-| Maximum users in a call            | 50                         |                                                                                   |
-| Default frame rate for video calls | 30 FPS                     |                                                                                   |
-| Resolution for video calls         | Maximum 720p, Minimum 180p | This depends on the layout selected and the bandwidth available at the user's end |
-| Media encryption used              | SRTP                       |                                                                                   |
-| Audio codec used                   | OPUS                       |                                                                                   |
-| Video codec used                   | H.264                      |                                                                                   |
+| **Property**             | **Constraints**                                          |
+| ------------------------ | -------------------------------------------------------- |
+| Maximum users per call   | 50                                                       |
+| Default video frame rate | 30 FPS                                                   |
+| Video resolution         | Min 180p, max 720p (varies by layout and user bandwidth) |
+| Media encryption         | SRTP                                                     |
+| Audio codec              | OPUS                                                     |
+| Video codec              | H.264                                                    |

@@ -16,13 +16,13 @@ Use the type-specific endpoints instead:
 
 ```bash
 # Old (deprecated):
-curl -X DELETE "https://appid.api-us.cometchat.io/v3/conversations/user_superhero1_user_superhero2" \
+curl -X DELETE "https://appid.api-us.cometchat.io/v3/conversations/user_cometchat-uid-1_user_cometchat-uid-2" \
   -H "apikey: YOUR_API_KEY"
 
 # New (recommended) — for a user conversation:
-curl -X DELETE "https://appid.api-us.cometchat.io/v3/users/superhero1/conversation" \
+curl -X DELETE "https://appid.api-us.cometchat.io/v3/users/cometchat-uid-1/conversation" \
   -H "apikey: YOUR_API_KEY" \
-  -H "onBehalfOf: superhero1"
+  -H "onBehalfOf: cometchat-uid-1"
 ```
 
 </Warning>
