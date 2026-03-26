@@ -14,7 +14,7 @@ Message categories and types:
 - **call** → `audio`, `video`
 </Accordion>
 
-Every message in CometChat belongs to a category and has a specific type. Understanding this hierarchy helps you handle different message types correctly in your application.
+Every message in CometChat belongs to a category (`message`, `custom`, `interactive`, `action`, `call`) and has a specific type within that category. On the SDK side, all messages extend [`BaseMessage`](/sdk/reference/messages#basemessage), with subclasses like [`TextMessage`](/sdk/reference/messages#textmessage), [`MediaMessage`](/sdk/reference/messages#mediamessage), [`CustomMessage`](/sdk/reference/messages#custommessage), [`Action`](/sdk/reference/messages#action), and [`Call`](/sdk/reference/messages#call). Understanding this hierarchy helps you handle different message types correctly.
 
 ## Message Hierarchy
 
@@ -94,7 +94,7 @@ switch (category) {
 </Tab>
 </Tabs>
 
-## Message Category
+## Standard Messages (`message` Category)
 
 Messages with category `message` are standard user-sent messages:
 
@@ -106,7 +106,7 @@ Messages with category `message` are standard user-sent messages:
 | `audio` | Audio attachment |
 | `file` | File attachment |
 
-## Custom Category
+## Custom Messages (`custom` Category)
 
 Custom messages allow you to send data that doesn't fit the default categories. You define your own type to identify the message (e.g., `location`, `poll`, `sticker`).
 
@@ -122,7 +122,7 @@ const customMessage = new CometChat.CustomMessage(
 
 See [Send Message → Custom Messages](/sdk/javascript/send-message#custom-message) for details.
 
-## Interactive Category
+## Interactive Messages (`interactive` Category)
 
 Interactive messages contain actionable UI elements that users can interact with directly in the chat:
 
@@ -134,7 +134,7 @@ Interactive messages contain actionable UI elements that users can interact with
 
 See [Interactive Messages](/sdk/javascript/interactive-messages) for implementation details.
 
-## Action Category
+## Action Messages (`action` Category)
 
 Action messages are system-generated events. They have a `type` and an `action` property:
 
@@ -151,7 +151,7 @@ Action messages are system-generated events. They have a `type` and an `action` 
 - `edited` — Message was edited
 - `deleted` — Message was deleted
 
-## Call Category
+## Call Messages (`call` Category)
 
 Call messages track call events with types `audio` or `video`. The `status` property indicates the call state:
 
