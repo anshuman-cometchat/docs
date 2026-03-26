@@ -24,17 +24,11 @@ const callListener = new CometChatCalls.OngoingCallListener({
 **Recordings are available on the [CometChat Dashboard](https://app.cometchat.com) → Calls section.**
 </Accordion>
 
-Record voice and video calls for playback, compliance, or archival purposes.
+Record voice and video calls for playback, compliance, or archival purposes. Recording is built on top of the [Call Session](/sdk/javascript/direct-call) — you add recording listeners to your call settings and optionally control recording programmatically.
 
-## Implementation
+## Setup
 
-After setting up [Ringing](/sdk/javascript/default-call) or [Call Session](/sdk/javascript/direct-call), add recording listeners and methods to your call settings.
-
-Basic example:
-
-<Warning>
-Always remove listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
-</Warning>
+Add `onRecordingStarted` and `onRecordingStopped` callbacks to your `OngoingCallListener` when building call settings. These fire for all participants when any user starts or stops recording.
 
 <Tabs>
 <Tab title="TypeScript">
@@ -59,7 +53,6 @@ const callSettings = new CometChatCalls.CallSettingsBuilder()
 const htmlElement = document.getElementById("ELEMENT_ID");
 CometChatCalls.startSession(callToken, callSettings, htmlElement);
 ```
-
 </Tab>
 
 <Tab title="JavaScript">
@@ -84,21 +77,23 @@ const callSettings = new CometChatCalls.CallSettingsBuilder()
 const htmlElement = document.getElementById("ELEMENT_ID");
 CometChatCalls.startSession(callToken, callSettings, htmlElement);
 ```
-
 </Tab>
-
 </Tabs>
 
-## Settings
+<Warning>
+Always remove listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
 
-Configure recording options using `CallSettingsBuilder`:
+## CallSettings Options
 
-| Setting                                                         | Description                                                                                                                                                                          |
-| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `showRecordingButton(showRecordingButton: boolean)`             | If set to `true` it displays the Recording button in the button Layout. if set to `false` it hides the Recording button in the button Layout. **Default value = false**              |
+| Setting | Description |
+| ------- | ----------- |
+| `showRecordingButton(showRecordingButton: boolean)` | If set to `true` it displays the Recording button in the button Layout. if set to `false` it hides the Recording button in the button Layout. **Default value = false** |
 | `startRecordingOnCallStart(startRecordingOnCallStart: boolean)` | If set to `true` call recording will start as soon as the call is started. if set to `false` call recording will not start as soon as the call is started. **Default value = false** |
 
-For custom UI without the default layout, use these methods to control recording:
+## Programmatic Control
+
+If you're building a custom UI without the default layout, use these methods to control recording during an active call.
 
 ### Start Recording
 
