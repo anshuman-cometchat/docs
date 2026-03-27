@@ -12,19 +12,40 @@ openapi: delete /users/{uid}
 | `ERR_UID_NOT_FOUND`         | 404         | No user exists with the specified UID                                         |
 
 <Warning>
-  **Deactivate vs permanent delete:** By default, this deactivates the user —
-  the user's message history is preserved but they can no longer log in. Use the
-  `permanent` flag for complete removal of all user data, which cannot be
-  undone.
+**Deactivate vs permanent delete:**
+
+By default (`permanent: false`), this endpoint only **deactivates** the user. The user's data and message history are preserved, but they can no longer log in.
+
+**Deactivated users still count toward your Build plan user limit.** To free up the slot, you must permanently delete the user.
+
+To permanently delete a user and all their data, pass `{ "permanent": true }` in the request body. This action **cannot be undone**.
+
 </Warning>
+
+<CodeGroup>
+
+```bash Deactivate only (default)
+curl -X DELETE "https://<appId>.api-<region>.cometchat.io/v3/users/<uid>" \
+  -H "apikey: <apiKey>"
+```
+
+```bash Permanent delete
+curl -X DELETE "https://<appId>.api-<region>.cometchat.io/v3/users/<uid>" \
+  -H "apikey: <apiKey>" \
+  -H "Content-Type: application/json" \
+  -d '{ "permanent": true }'
+```
+
+</CodeGroup>
 
 For the complete error reference, see [Error Guide](/articles/error-guide).
 
 ## Related
 
 <CardGroup cols={2}>
-  <Card title="Deactivate Users" href="/rest-api/users/deactivate">
-    Temporarily disable users instead of deleting them.
+  <Card title="Deactivate Users (Bulk)" href="/rest-api/users/deactivate">
+    Deactivate multiple users at once via `DELETE /users` with a list of UIDs in
+    the request body.
   </Card>
   <Card title="Reactivate Users" href="/rest-api/users/reactivate">
     Restore previously deactivated users.

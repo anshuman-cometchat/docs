@@ -14,7 +14,11 @@
           "description": "(Required) App ID"
         },
         "region": {
-          "enum": ["us", "eu", "in"],
+          "enum": [
+            "us",
+            "eu",
+            "in"
+          ],
           "default": "us",
           "description": "Select Region"
         }
@@ -24,7 +28,9 @@
   "paths": {
     "/apikeys": {
       "post": {
-        "tags": ["API Keys"],
+        "tags": [
+          "API Keys"
+        ],
         "summary": "Create",
         "description": "Creates a new API key",
         "operationId": "create-apikey",
@@ -32,7 +38,10 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["name", "scope"],
+                "required": [
+                  "name",
+                  "scope"
+                ],
                 "properties": {
                   "name": {
                     "description": "Friendly name for the API key.",
@@ -42,7 +51,10 @@
                     "description": "Scope for the API key.",
                     "type": "string",
                     "default": "authOnly",
-                    "enum": ["authOnly", "fullAccess"]
+                    "enum": [
+                      "authOnly",
+                      "fullAccess"
+                    ]
                   }
                 },
                 "type": "object"
@@ -82,7 +94,9 @@
         ]
       },
       "get": {
-        "tags": ["API Keys"],
+        "tags": [
+          "API Keys"
+        ],
         "summary": "List",
         "description": "Lists API keys",
         "operationId": "list-apikeys",
@@ -93,7 +107,10 @@
             "description": "Scope of the apikey. Available values: fullAccess, authOnly",
             "schema": {
               "type": "string",
-              "enum": ["fullAccess", "authOnly"]
+              "enum": [
+                "fullAccess",
+                "authOnly"
+              ]
             }
           },
           {
@@ -166,7 +183,9 @@
     },
     "/apikeys/{apiKey}": {
       "get": {
-        "tags": ["API Keys"],
+        "tags": [
+          "API Keys"
+        ],
         "summary": "Get",
         "description": "Retrieves API key",
         "operationId": "get-apikey",
@@ -213,7 +232,9 @@
         ]
       },
       "put": {
-        "tags": ["API Keys"],
+        "tags": [
+          "API Keys"
+        ],
         "summary": "Update",
         "description": "Updates an API key",
         "operationId": "update-apikey",
@@ -240,7 +261,10 @@
                   "scope": {
                     "description": "Scope for the API key.",
                     "type": "string",
-                    "enum": ["authOnly", "fullAccess"]
+                    "enum": [
+                      "authOnly",
+                      "fullAccess"
+                    ]
                   }
                 },
                 "type": "object"
@@ -280,7 +304,9 @@
         ]
       },
       "delete": {
-        "tags": ["API Keys"],
+        "tags": [
+          "API Keys"
+        ],
         "summary": "Delete",
         "description": "Deletes an API key",
         "operationId": "delete-apikey",
@@ -333,7 +359,9 @@
     },
     "/users": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Create",
         "description": "Creates a new user",
         "operationId": "creates-user",
@@ -341,7 +369,10 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["uid", "name"],
+                "required": [
+                  "uid",
+                  "name"
+                ],
                 "properties": {
                   "uid": {
                     "description": "Unique identifier of the user. Please refer to https://prodocs.cometchat.com/docs/concepts#uid",
@@ -433,7 +464,10 @@
                     "status": "offline",
                     "role": "manager",
                     "createdAt": 1638354015,
-                    "tags": ["Engineer", "manager"],
+                    "tags": [
+                      "Engineer",
+                      "manager"
+                    ],
                     "authToken": "cometchat-uid-6_16383540156641d37a023c75d26f4c22a21ff126"
                   }
                 }
@@ -448,7 +482,9 @@
         ]
       },
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "List",
         "description": "Lists all the users of an app",
         "operationId": "list-users",
@@ -469,7 +505,10 @@
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": ["name", "uid"]
+                "enum": [
+                  "name",
+                  "uid"
+                ]
               }
             }
           },
@@ -479,7 +518,10 @@
             "description": "User list can be fetched depending on the user status. (available,offline).",
             "schema": {
               "type": "string",
-              "enum": ["available", "offline"]
+              "enum": [
+                "available",
+                "offline"
+              ]
             }
           },
           {
@@ -652,7 +694,9 @@
         ]
       },
       "put": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Reactivate",
         "description": "Reactivates users for the specified UIDs",
         "operationId": "reactivate-users",
@@ -667,7 +711,9 @@
                     "items": {
                       "type": "string"
                     },
-                    "default": ["tag1"]
+                    "default": [
+                      "tag1"
+                    ]
                   }
                 },
                 "type": "object"
@@ -696,7 +742,10 @@
                 },
                 "example": {
                   "data": {
-                    "nonDeactivatedUids": ["cometchat-uid-2", "cometchat-uid-3"]
+                    "nonDeactivatedUids": [
+                      "cometchat-uid-2",
+                      "cometchat-uid-3"
+                    ]
                   }
                 }
               }
@@ -710,7 +759,9 @@
         ]
       },
       "delete": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Deactivate",
         "description": "Deactivates users for the specified UIDs",
         "operationId": "deactivate-users",
@@ -753,7 +804,10 @@
                 },
                 "example": {
                   "data": {
-                    "deactivatedUids": ["cometchat-uid-2", "cometchat-uid-3"]
+                    "deactivatedUids": [
+                      "cometchat-uid-2",
+                      "cometchat-uid-3"
+                    ]
                   }
                 }
               }
@@ -769,7 +823,9 @@
     },
     "/users/{uid}": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get",
         "description": "Retrieves user details for a specified UID.",
         "operationId": "get-user",
@@ -828,7 +884,9 @@
         ]
       },
       "put": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Update",
         "description": "Updates a user with the provided UID",
         "operationId": "update-user",
@@ -903,16 +961,24 @@
                     "items": {
                       "type": "string"
                     },
-                    "default": ["tag1"]
+                    "default": [
+                      "tag1"
+                    ]
                   },
                   "unset": {
                     "description": "The unsettable user attributes are avatar, link and metadata.",
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "enum": ["avatar", "link", "metadata"]
+                      "enum": [
+                        "avatar",
+                        "link",
+                        "metadata"
+                      ]
                     },
-                    "default": ["avatar"]
+                    "default": [
+                      "avatar"
+                    ]
                   }
                 },
                 "type": "object"
@@ -947,7 +1013,9 @@
                     "role": "manager",
                     "createdAt": 1638354015,
                     "updatedAt": 1638354799,
-                    "tags": ["cometchat-guid-1"]
+                    "tags": [
+                      "cometchat-guid-1"
+                    ]
                   }
                 }
               }
@@ -961,7 +1029,9 @@
         ]
       },
       "delete": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Delete",
         "description": "Deletes a user for the specified UID",
         "operationId": "delete-user",
@@ -1030,7 +1100,9 @@
     },
     "/groups": {
       "post": {
-        "tags": ["Groups"],
+        "tags": [
+          "Groups"
+        ],
         "summary": "Create",
         "description": "Creates a group.",
         "operationId": "create-group",
@@ -1043,7 +1115,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["guid", "name", "type"],
+                "required": [
+                  "guid",
+                  "name",
+                  "type"
+                ],
                 "properties": {
                   "guid": {
                     "description": "A unique identifier for a group.",
@@ -1056,7 +1132,11 @@
                   "type": {
                     "description": "Type of the group. Can be public, password or private.",
                     "type": "string",
-                    "enum": ["public", "password", "private"]
+                    "enum": [
+                      "public",
+                      "password",
+                      "private"
+                    ]
                   },
                   "password": {
                     "description": "A password required to join the the group with type password",
@@ -1084,7 +1164,9 @@
                     "items": {
                       "type": "string"
                     },
-                    "default": ["tag1"]
+                    "default": [
+                      "tag1"
+                    ]
                   },
                   "members": {
                     "description": "Add members to a group with scope admins,moderators and participants.",
@@ -1157,7 +1239,10 @@
                     "hasJoined": true,
                     "createdAt": 1638440784,
                     "owner": "cometchat-uid-4",
-                    "tags": ["friends", "project"]
+                    "tags": [
+                      "friends",
+                      "project"
+                    ]
                   }
                 }
               }
@@ -1171,7 +1256,9 @@
         ]
       },
       "get": {
-        "tags": ["Groups"],
+        "tags": [
+          "Groups"
+        ],
         "summary": "List",
         "description": "Lists the groups.",
         "operationId": "list-groups",
@@ -1204,7 +1291,11 @@
             "description": "Sorts the group list by either Name,Guid or Created at . Available values: name, guid, createdAt",
             "schema": {
               "type": "string",
-              "enum": ["name", "guid", "createdAt"]
+              "enum": [
+                "name",
+                "guid",
+                "createdAt"
+              ]
             }
           },
           {
@@ -1213,7 +1304,10 @@
             "description": "Sorts the group list in ascending or descending order. Available values: asc, desc",
             "schema": {
               "type": "string",
-              "enum": ["asc", "desc"]
+              "enum": [
+                "asc",
+                "desc"
+              ]
             }
           },
           {
@@ -1231,7 +1325,10 @@
             "description": "Determines whether to fetch the groups either before or after createdAt/updatedAt timestamp. Possible values are append(after) and prepend(before).",
             "schema": {
               "type": "string",
-              "enum": ["append", "prepend"]
+              "enum": [
+                "append",
+                "prepend"
+              ]
             }
           },
           {
@@ -1269,7 +1366,11 @@
             "description": "Fetches groups based on group type(public, protected, password).",
             "schema": {
               "type": "string",
-              "enum": ["public", "private", "password"]
+              "enum": [
+                "public",
+                "private",
+                "password"
+              ]
             }
           },
           {
@@ -1346,7 +1447,10 @@
                         "hasJoined": true,
                         "createdAt": 1638440784,
                         "owner": "cometchat-uid-4",
-                        "tags": ["friends", "project"]
+                        "tags": [
+                          "friends",
+                          "project"
+                        ]
                       },
                       "guid": "project-group",
                       "name": "Project Group",
@@ -1360,7 +1464,10 @@
                       "hasJoined": true,
                       "createdAt": 1638440784,
                       "owner": "cometchat-uid-4",
-                      "tags": ["friends", "project"]
+                      "tags": [
+                        "friends",
+                        "project"
+                      ]
                     },
                     "meta": {
                       "pagination": {
@@ -1390,7 +1497,9 @@
     },
     "/groups/{guid}": {
       "get": {
-        "tags": ["Groups"],
+        "tags": [
+          "Groups"
+        ],
         "summary": "Get",
         "description": "Retrieves details of a group for a given GUID.",
         "operationId": "get-group",
@@ -1429,7 +1538,10 @@
                     "hasJoined": true,
                     "createdAt": 1638440784,
                     "owner": "cometchat-uid-4",
-                    "tags": ["friends", "project"]
+                    "tags": [
+                      "friends",
+                      "project"
+                    ]
                   }
                 }
               }
@@ -1443,7 +1555,9 @@
         ]
       },
       "put": {
-        "tags": ["Groups"],
+        "tags": [
+          "Groups"
+        ],
         "summary": "Update",
         "description": "Updates the group details for a given GUID.",
         "operationId": "update-group",
@@ -1467,7 +1581,11 @@
                   "type": {
                     "description": "The type of the group. The available values are: public, password and private.",
                     "type": "string",
-                    "enum": ["public", "password", "private"]
+                    "enum": [
+                      "public",
+                      "password",
+                      "private"
+                    ]
                   },
                   "password": {
                     "description": "A password required to join the the group with type password",
@@ -1495,14 +1613,20 @@
                     "items": {
                       "type": "string"
                     },
-                    "default": ["tag1"]
+                    "default": [
+                      "tag1"
+                    ]
                   },
                   "unset": {
                     "description": "The unsettable user attributes are icon, description and metadata.",
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "enum": ["icon", "description", "metadata"]
+                      "enum": [
+                        "icon",
+                        "description",
+                        "metadata"
+                      ]
                     }
                   }
                 },
@@ -1538,7 +1662,10 @@
                     "hasJoined": true,
                     "createdAt": 1638440784,
                     "owner": "cometchat-uid-4",
-                    "tags": ["friends", "project"]
+                    "tags": [
+                      "friends",
+                      "project"
+                    ]
                   }
                 }
               }
@@ -1552,7 +1679,9 @@
         ]
       },
       "delete": {
-        "tags": ["Groups"],
+        "tags": [
+          "Groups"
+        ],
         "summary": "Delete",
         "description": "Deletes a group with a given GUID.",
         "operationId": "delete-group",
@@ -1596,7 +1725,9 @@
     },
     "/messages": {
       "post": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "Send Message",
         "description": "Sends Message on behalf of a user.",
         "operationId": "send-message",
@@ -1640,7 +1771,9 @@
                     "data": {
                       "interactionGoal": {
                         "type": "allOf",
-                        "elementIds": ["element8"]
+                        "elementIds": [
+                          "element8"
+                        ]
                       },
                       "allowSenderInteraction": true,
                       "interactiveData": {
@@ -1707,7 +1840,10 @@
                                 "label": "Lift"
                               }
                             ],
-                            "defaultValue": ["option1", "option2"]
+                            "defaultValue": [
+                              "option1",
+                              "option2"
+                            ]
                           },
                           {
                             "elementType": "singleSelect",
@@ -1786,7 +1922,9 @@
                     "category": "interactive",
                     "type": "form",
                     "receiver": "cometchat-uid-1",
-                    "tags": ["tag1"]
+                    "tags": [
+                      "tag1"
+                    ]
                   }
                 },
                 "card-interactive": {
@@ -1872,7 +2010,9 @@
                     "category": "interactive",
                     "type": "card",
                     "receiver": "cometchat-uid-1",
-                    "tags": ["tag1"]
+                    "tags": [
+                      "tag1"
+                    ]
                   }
                 },
                 "scheduler-interactive": {
@@ -2044,7 +2184,9 @@
         ]
       },
       "get": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "List Messages",
         "description": "Fetches the messages list.",
         "operationId": "list-all-messages",
@@ -2082,7 +2224,12 @@
             "description": "Displays messages according to the type of attachment. Supported types include: image, video, audio, and file.",
             "schema": {
               "type": "string",
-              "enum": ["image", "video", "audio", "file"]
+              "enum": [
+                "image",
+                "video",
+                "audio",
+                "file"
+              ]
             }
           },
           {
@@ -2123,7 +2270,10 @@
             "description": "Displays messages based on receiverType (user/group)",
             "schema": {
               "type": "string",
-              "enum": ["user", "group"]
+              "enum": [
+                "user",
+                "group"
+              ]
             }
           },
           {
@@ -2148,7 +2298,11 @@
             "description": "Filters messages by category. Possible values: message, action and custom.",
             "schema": {
               "type": "string",
-              "enum": ["message", "action", "custom"]
+              "enum": [
+                "message",
+                "action",
+                "custom"
+              ]
             }
           },
           {
@@ -2395,7 +2549,9 @@
     },
     "/messages/{id}": {
       "get": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "Get Message",
         "description": "Fetches the details of a message.",
         "operationId": "get-message-details",
@@ -2487,7 +2643,9 @@
         ]
       },
       "put": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "Update Message",
         "description": "Edits the message on behalf of a user.",
         "operationId": "update-message",
@@ -2534,7 +2692,9 @@
                     "items": {
                       "type": "string"
                     },
-                    "default": ["tag1"]
+                    "default": [
+                      "tag1"
+                    ]
                   }
                 },
                 "type": "object"
@@ -2630,7 +2790,9 @@
                             "editedAt": 1641477338,
                             "editedBy": "app_system",
                             "updatedAt": 1641477338,
-                            "tags": ["t6"]
+                            "tags": [
+                              "t6"
+                            ]
                           },
                           "entityType": "message"
                         }
@@ -2651,7 +2813,9 @@
         ]
       },
       "delete": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "Delete Message",
         "description": "Deletes the message.",
         "operationId": "deletes-message",
@@ -2777,7 +2941,9 @@
                             "editedAt": 1641477338,
                             "editedBy": "app_system",
                             "updatedAt": 1641477338,
-                            "tags": ["t6"]
+                            "tags": [
+                              "t6"
+                            ]
                           },
                           "entityType": "message"
                         }
@@ -2800,7 +2966,9 @@
     },
     "/messages/{id}/reactions": {
       "get": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "List all reactions",
         "description": "Lists all the reactions for a message",
         "operationId": "list-all-reactions",
@@ -2923,7 +3091,9 @@
     },
     "/messages/{id}/reactions/{reaction}": {
       "get": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "List reactions with a specific emoji/unicodes",
         "description": "List reactions with a specific emoji/unicodes for a message",
         "operationId": "get-message-reactions",
@@ -3032,7 +3202,9 @@
         ]
       },
       "post": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "Add reaction",
         "description": "Adds a reaction to a message.",
         "operationId": "add-message-reactions",
@@ -3157,7 +3329,9 @@
         ]
       },
       "delete": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "Remove reaction",
         "description": "Removes a reaction from a message",
         "operationId": "remove-message-reactions",
@@ -3279,7 +3453,9 @@
     },
     "/conversations": {
       "get": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "List conversations",
         "description": "Fetching all the conversations",
         "operationId": "list-all-conversations",
@@ -3473,7 +3649,9 @@
                         "sentAt": 1630305562,
                         "updatedAt": 1630305562,
                         "receipts": {
-                          "data": [[]]
+                          "data": [
+                            []
+                          ]
                         }
                       },
                       "conversationWith": {
@@ -3517,7 +3695,9 @@
     },
     "/conversations/{conversationId}": {
       "get": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Get conversation",
         "description": "This API is deprecated please use Get User/Group ConversationAPI",
         "operationId": "get-conversation",
@@ -3613,7 +3793,9 @@
                         "sentAt": 1630305562,
                         "updatedAt": 1630305562,
                         "receipts": {
-                          "data": [[]]
+                          "data": [
+                            []
+                          ]
                         }
                       },
                       "conversationWith": {
@@ -3647,7 +3829,9 @@
         ]
       },
       "delete": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Delete Conversation",
         "description": "This API is deprecated please use Reset User/GroupConversation API",
         "operationId": "deletes-conversation",
@@ -3698,7 +3882,9 @@
     },
     "/users/{uid}/conversation": {
       "get": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Get User Conversation",
         "description": "Getting user conversation",
         "operationId": "get-user-conversations",
@@ -3824,7 +4010,9 @@
         ]
       },
       "put": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Update User Conversation",
         "description": "Updating User Conversation",
         "operationId": "updates-user-conversation",
@@ -3938,7 +4126,9 @@
                         "sentAt": 1630305562,
                         "updatedAt": 1630305562,
                         "receipts": {
-                          "data": [[]]
+                          "data": [
+                            []
+                          ]
                         }
                       },
                       "conversationWith": {
@@ -3971,7 +4161,9 @@
         ]
       },
       "delete": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Reset User Conversation",
         "description": "Resetting User Conversation",
         "operationId": "resets-user-conversation",
@@ -4040,7 +4232,9 @@
     },
     "/users/{uid}/conversation/delivered": {
       "post": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Mark User Conversation As Delivered",
         "description": "This API will mark the user conversation as delivered.",
         "operationId": "mark-conversation-as-delivered",
@@ -4105,7 +4299,9 @@
     },
     "/users/{uid}/conversation/read": {
       "post": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Mark User Conversation As Read",
         "description": "This API will mark the user conversation as read.",
         "operationId": "mark-conversation-as-read",
@@ -4168,7 +4364,9 @@
         ]
       },
       "delete": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Mark Conversation Messages As Unread",
         "description": "Allows you to mark messages within a conversation as unread",
         "operationId": "mark-conversation-as-unread",
@@ -4233,7 +4431,9 @@
     },
     "/groups/{guid}/conversation": {
       "get": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Get Group Conversation",
         "description": "Getting group conversation",
         "operationId": "get-group-conversations",
@@ -4359,7 +4559,9 @@
         ]
       },
       "put": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Update Group Conversation",
         "description": "Updating Group Conversation",
         "operationId": "updates-group-conversation",
@@ -4473,7 +4675,9 @@
                         "sentAt": 1630305562,
                         "updatedAt": 1630305562,
                         "receipts": {
-                          "data": [[]]
+                          "data": [
+                            []
+                          ]
                         }
                       },
                       "conversationWith": {
@@ -4506,7 +4710,9 @@
         ]
       },
       "delete": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Reset Group Conversation",
         "description": "Resetting Group Conversation",
         "operationId": "resets-group-conversation",
@@ -4556,7 +4762,9 @@
     },
     "/groups/{guid}/conversation/delivered": {
       "post": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Mark Group Conversation As Delivered",
         "description": "This API will mark the group conversation as delivered.",
         "operationId": "mark-group-conversation-as-delivered",
@@ -4621,7 +4829,9 @@
     },
     "/groups/{guid}/conversation/read": {
       "post": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Mark Group Conversation As Read",
         "description": "This API will mark the group conversation as read.",
         "operationId": "mark-group-conversation-as-read",
@@ -4684,7 +4894,9 @@
         ]
       },
       "delete": {
-        "tags": ["Conversations"],
+        "tags": [
+          "Conversations"
+        ],
         "summary": "Mark Group Conversation As Unread",
         "description": "This API will mark the group conversation as unread.",
         "operationId": "mark-group-conversation-as-unread",
@@ -4740,7 +4952,9 @@
     },
     "/users/{uid}/auth_tokens": {
       "post": {
-        "tags": ["Auth Tokens"],
+        "tags": [
+          "Auth Tokens"
+        ],
         "summary": "Create",
         "description": "Creates auth token for a user with the specified UID.",
         "operationId": "create-authtoken",
@@ -4802,7 +5016,9 @@
         ]
       },
       "get": {
-        "tags": ["Auth Tokens"],
+        "tags": [
+          "Auth Tokens"
+        ],
         "summary": "List",
         "description": "Lists auth tokens for a user with the specified UID.",
         "operationId": "list-authtokens",
@@ -4887,7 +5103,9 @@
         ]
       },
       "delete": {
-        "tags": ["Auth Tokens"],
+        "tags": [
+          "Auth Tokens"
+        ],
         "summary": "Flush",
         "description": "Deletes all the auth tokens for the specified UID.",
         "operationId": "flush-authtokens",
@@ -4940,7 +5158,9 @@
     },
     "/users/{uid}/auth_tokens/{authToken}": {
       "get": {
-        "tags": ["Auth Tokens"],
+        "tags": [
+          "Auth Tokens"
+        ],
         "summary": "Get",
         "description": "Retrieves details of an auth token for the specified UID andauth token.",
         "operationId": "get-authtoken",
@@ -4995,7 +5215,9 @@
         ]
       },
       "put": {
-        "tags": ["Auth Tokens"],
+        "tags": [
+          "Auth Tokens"
+        ],
         "summary": "Update",
         "description": "Updates the details of an auth token for the specified UID andauth token.",
         "operationId": "update-authtoken",
@@ -5086,7 +5308,9 @@
         ]
       },
       "delete": {
-        "tags": ["Auth Tokens"],
+        "tags": [
+          "Auth Tokens"
+        ],
         "summary": "Delete",
         "description": "Deletes an auth token for the specified UID.",
         "operationId": "delete-authtoken",
@@ -5154,7 +5378,9 @@
     },
     "/groups/{guid}/members": {
       "post": {
-        "tags": ["Group Members"],
+        "tags": [
+          "Group Members"
+        ],
         "summary": "Add members",
         "description": "Adds multiple users as per the scope.",
         "operationId": "add-group-members",
@@ -5269,7 +5495,10 @@
                                   "guid": "project-group",
                                   "icon": "https://cometchat.com/120x120&text=image1",
                                   "name": "Project Group",
-                                  "tags": ["friends", "project"],
+                                  "tags": [
+                                    "friends",
+                                    "project"
+                                  ],
                                   "type": "public",
                                   "owner": "cometchat-uid-2",
                                   "createdAt": 1625460947,
@@ -5327,7 +5556,10 @@
                                   "guid": "project-group",
                                   "icon": "https://cometchat.com/120x120&text=image1",
                                   "name": "Project Group",
-                                  "tags": ["friends", "project"],
+                                  "tags": [
+                                    "friends",
+                                    "project"
+                                  ],
                                   "type": "public",
                                   "owner": "cometchat-uid-2",
                                   "createdAt": 1625460947,
@@ -5385,7 +5617,10 @@
                                   "guid": "project-group",
                                   "icon": "https://cometchat.com/120x120&text=image1",
                                   "name": "Project Group",
-                                  "tags": ["friends", "project"],
+                                  "tags": [
+                                    "friends",
+                                    "project"
+                                  ],
                                   "type": "public",
                                   "owner": "cometchat-uid-2",
                                   "createdAt": 1625460947,
@@ -5441,7 +5676,10 @@
                                   "guid": "project-group",
                                   "icon": "https://cometchat.com/120x120&text=image1",
                                   "name": "Project Group",
-                                  "tags": ["friends", "project"],
+                                  "tags": [
+                                    "friends",
+                                    "project"
+                                  ],
                                   "type": "public",
                                   "owner": "cometchat-uid-2",
                                   "createdAt": 1625460947,
@@ -5472,7 +5710,9 @@
         ]
       },
       "get": {
-        "tags": ["Group Members"],
+        "tags": [
+          "Group Members"
+        ],
         "summary": "List",
         "description": "List the members of a group for a given GUID",
         "operationId": "list-group-members",
@@ -5495,7 +5735,10 @@
             "description": "Group members list can be fetched depending on the user status. (available,offline).",
             "schema": {
               "type": "string",
-              "enum": ["available", "offline"]
+              "enum": [
+                "available",
+                "offline"
+              ]
             }
           },
           {
@@ -5611,7 +5854,9 @@
     },
     "/groups/{guid}/members/{uid}": {
       "put": {
-        "tags": ["Group Members"],
+        "tags": [
+          "Group Members"
+        ],
         "summary": "Change Scope",
         "description": "Change scope of a member to the group for a given GUID and UID",
         "operationId": "change-group-member-scope",
@@ -5688,7 +5933,9 @@
         ]
       },
       "delete": {
-        "tags": ["Group Members"],
+        "tags": [
+          "Group Members"
+        ],
         "summary": "Kick",
         "description": "Removes a member with given UID from a group for a given GUID.",
         "operationId": "kick-group-member",
@@ -5735,7 +5982,9 @@
     },
     "/groups/{guid}/bannedusers/{uid}": {
       "post": {
-        "tags": ["Banned Users"],
+        "tags": [
+          "Banned Users"
+        ],
         "summary": "Ban",
         "description": "Bans a member from a group for a given GUID and UID.",
         "operationId": "ban-group-user",
@@ -5780,7 +6029,9 @@
         ]
       },
       "delete": {
-        "tags": ["Banned Users"],
+        "tags": [
+          "Banned Users"
+        ],
         "summary": "Unban",
         "description": "Unban a member with given UID from a group for a given GUID.",
         "operationId": "unban-group-user",
@@ -5827,7 +6078,9 @@
     },
     "/groups/{guid}/bannedusers": {
       "get": {
-        "tags": ["Banned Users"],
+        "tags": [
+          "Banned Users"
+        ],
         "summary": "List",
         "description": "Lists banned users from a group for a given GUID.",
         "operationId": "list-banned-group-users",
@@ -5949,7 +6202,9 @@
     },
     "/users/{uid}/friends": {
       "post": {
-        "tags": ["Friends"],
+        "tags": [
+          "Friends"
+        ],
         "summary": "Add Friends",
         "description": "The API allows to add multiple friends for a given UID.",
         "operationId": "add-friend",
@@ -6022,7 +6277,9 @@
         ]
       },
       "get": {
-        "tags": ["Friends"],
+        "tags": [
+          "Friends"
+        ],
         "summary": "List Friends",
         "description": "The API allows to fetch friends for a given UID.",
         "operationId": "list-all-friends",
@@ -6144,7 +6401,9 @@
         ]
       },
       "delete": {
-        "tags": ["Friends"],
+        "tags": [
+          "Friends"
+        ],
         "summary": "Remove Friends",
         "description": "The API removes friends for a given UID.",
         "operationId": "remove-friend",
@@ -6203,7 +6462,9 @@
     },
     "/users/{uid}/blockedusers": {
       "post": {
-        "tags": ["Blocked Users"],
+        "tags": [
+          "Blocked Users"
+        ],
         "summary": "Block User",
         "description": "Blocks the specified user",
         "parameters": [
@@ -6227,7 +6488,9 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["blockedUids"],
+                "required": [
+                  "blockedUids"
+                ],
                 "properties": {
                   "blockedUids": {
                     "description": "UIDs of the users to be blocked",
@@ -6279,7 +6542,9 @@
         ]
       },
       "delete": {
-        "tags": ["Blocked Users"],
+        "tags": [
+          "Blocked Users"
+        ],
         "summary": "Unblock User",
         "description": "Unblocks the specified user",
         "parameters": [
@@ -6303,7 +6568,9 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["blockedUids"],
+                "required": [
+                  "blockedUids"
+                ],
                 "properties": {
                   "blockedUids": {
                     "description": "UIDs of the users to be unblock",
@@ -6355,7 +6622,9 @@
         ]
       },
       "get": {
-        "tags": ["Blocked Users"],
+        "tags": [
+          "Blocked Users"
+        ],
         "summary": "List Blocked Users",
         "description": "Retrieves the blocked users",
         "parameters": [
@@ -6483,7 +6752,9 @@
     },
     "/roles": {
       "post": {
-        "tags": ["Roles"],
+        "tags": [
+          "Roles"
+        ],
         "summary": "Create",
         "description": "Creates a new user role",
         "operationId": "create-role",
@@ -6491,7 +6762,10 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["role", "name"],
+                "required": [
+                  "role",
+                  "name"
+                ],
                 "properties": {
                   "role": {
                     "description": "A unique identifier for the role.",
@@ -6561,7 +6835,9 @@
         ]
       },
       "get": {
-        "tags": ["Roles"],
+        "tags": [
+          "Roles"
+        ],
         "summary": "List",
         "description": "Lists the user roles",
         "operationId": "list-roles",
@@ -6648,7 +6924,9 @@
     },
     "/roles/{role}": {
       "get": {
-        "tags": ["Roles"],
+        "tags": [
+          "Roles"
+        ],
         "summary": "Get",
         "description": "Retrieves role details for a given role.",
         "operationId": "get-role",
@@ -6708,7 +6986,9 @@
         ]
       },
       "put": {
-        "tags": ["Roles"],
+        "tags": [
+          "Roles"
+        ],
         "summary": "Update",
         "description": "Updates a given role.",
         "operationId": "update-role",
@@ -6756,7 +7036,11 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "enum": ["settings", "description", "metadata"]
+                      "enum": [
+                        "settings",
+                        "description",
+                        "metadata"
+                      ]
                     },
                     "default": []
                   },
@@ -6810,7 +7094,9 @@
         ]
       },
       "delete": {
-        "tags": ["Roles"],
+        "tags": [
+          "Roles"
+        ],
         "summary": "Delete",
         "description": "Deletes a role.",
         "operationId": "delete-role",
@@ -6863,7 +7149,9 @@
     },
     "/roles/{role}/restrictedfeatures": {
       "post": {
-        "tags": ["Restrict Features"],
+        "tags": [
+          "Restrict Features"
+        ],
         "summary": "Restrict Features",
         "description": "Restrict Features for a given role.",
         "operationId": "restrict-features",
@@ -6888,7 +7176,9 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["featuresToRestrict"],
+                "required": [
+                  "featuresToRestrict"
+                ],
                 "properties": {
                   "featuresToRestrict": {
                     "description": "Keys of the features to be restricted.",
@@ -6941,7 +7231,9 @@
         ]
       },
       "get": {
-        "tags": ["Restrict Features"],
+        "tags": [
+          "Restrict Features"
+        ],
         "summary": "List Restricted Features",
         "description": "List all restricted features for a given role.",
         "operationId": "get-restrictedfeatures",
@@ -7036,7 +7328,9 @@
         ]
       },
       "delete": {
-        "tags": ["Restrict Features"],
+        "tags": [
+          "Restrict Features"
+        ],
         "summary": "Allow Features",
         "description": "Allow features access for a given role.",
         "operationId": "allow-features",
@@ -7113,7 +7407,9 @@
     },
     "/messages/{id}/thread": {
       "post": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "Send Threaded Message",
         "description": "Sends Threaded Message on behalf of a user.",
         "operationId": "send-thread-message",
@@ -7149,19 +7445,31 @@
                   "receiverType": {
                     "description": "The receiverType of the message. either user or group",
                     "type": "string",
-                    "enum": ["user", "group"]
+                    "enum": [
+                      "user",
+                      "group"
+                    ]
                   },
                   "category": {
                     "description": "Category of the message. The available categories are message and custom.",
                     "type": "string",
                     "default": "message",
-                    "enum": ["message", "custom"]
+                    "enum": [
+                      "message",
+                      "custom"
+                    ]
                   },
                   "type": {
                     "description": "Type of the message. The available values are text, image, file, audio, video.",
                     "type": "string",
                     "default": "text",
-                    "enum": ["text", "image", "file", "audio", "video"]
+                    "enum": [
+                      "text",
+                      "image",
+                      "file",
+                      "audio",
+                      "video"
+                    ]
                   },
                   "data": {
                     "description": "JSON containing message attributes.",
@@ -7178,8 +7486,13 @@
                     "description": "JSON containing array of UIDs and GUID for whom the message must be sent. Format for multiple receivers - {\"uids\": [\"uid1\",\"uid2\"], \"guids\":[\"guid1\"]}",
                     "type": "object",
                     "default": {
-                      "uids": ["uid1", "uid2"],
-                      "guids": ["guid1"]
+                      "uids": [
+                        "uid1",
+                        "uid2"
+                      ],
+                      "guids": [
+                        "guid1"
+                      ]
                     }
                   },
                   "tags": {
@@ -7188,7 +7501,9 @@
                     "items": {
                       "type": "string"
                     },
-                    "default": ["tag1"]
+                    "default": [
+                      "tag1"
+                    ]
                   }
                 },
                 "type": "object"
@@ -7278,7 +7593,9 @@
         ]
       },
       "get": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "List Threaded Messages",
         "description": "Fetches the messages list of a thread.",
         "operationId": "list-all-thread-messages",
@@ -7422,7 +7739,9 @@
     },
     "/users/{uid}/messages": {
       "get": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "List User Messages",
         "description": "Fetches messages between onBehalfOfuid and an uid from path param.",
         "operationId": "user-list-user-messages",
@@ -7455,7 +7774,12 @@
             "description": "Displays messages according to the type of attachment. Supported types include: image, video, audio, and file.",
             "schema": {
               "type": "string",
-              "enum": ["image", "video", "audio", "file"]
+              "enum": [
+                "image",
+                "video",
+                "audio",
+                "file"
+              ]
             }
           },
           {
@@ -7520,7 +7844,10 @@
             "description": "Determines whether to pull the messages either before or after any message id. Possible values are append(after) and prepend(before).",
             "schema": {
               "type": "string",
-              "enum": ["append", "prepend"]
+              "enum": [
+                "append",
+                "prepend"
+              ]
             }
           },
           {
@@ -7883,7 +8210,9 @@
     },
     "/groups/{guid}/messages": {
       "get": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "List Group Messages",
         "description": "Fetches the group message list for a user.",
         "operationId": "user-list-group-messages",
@@ -7916,7 +8245,12 @@
             "description": "Displays messages according to the type of attachment. Supported types include: image, video, audio, and file.",
             "schema": {
               "type": "string",
-              "enum": ["image", "video", "audio", "file"]
+              "enum": [
+                "image",
+                "video",
+                "audio",
+                "file"
+              ]
             }
           },
           {
@@ -7989,7 +8323,10 @@
             "description": "Determines whether to pull the messages either before or after any message id. Possible values are append(after) and prepend(before).",
             "schema": {
               "type": "string",
-              "enum": ["append", "prepend"]
+              "enum": [
+                "append",
+                "prepend"
+              ]
             }
           },
           {
@@ -8210,7 +8547,9 @@
     },
     "/bots/{uid}/messages": {
       "post": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "Send Bot Message",
         "description": "Sends Message from a Bot.",
         "operationId": "sends-bot-message",
@@ -8266,7 +8605,9 @@
                     "data": {
                       "interactionGoal": {
                         "type": "allOf",
-                        "elementIds": ["element8"]
+                        "elementIds": [
+                          "element8"
+                        ]
                       },
                       "allowSenderInteraction": true,
                       "interactiveData": {
@@ -8333,7 +8674,10 @@
                                 "label": "Lift"
                               }
                             ],
-                            "defaultValue": ["option1", "option2"]
+                            "defaultValue": [
+                              "option1",
+                              "option2"
+                            ]
                           },
                           {
                             "elementType": "singleSelect",
@@ -8395,7 +8739,9 @@
                     "category": "interactive",
                     "type": "form",
                     "receiver": "cometchat-uid-1",
-                    "tags": ["tag1"]
+                    "tags": [
+                      "tag1"
+                    ]
                   }
                 },
                 "card-interactive": {
@@ -8481,7 +8827,9 @@
                     "category": "interactive",
                     "type": "card",
                     "receiver": "cometchat-uid-1",
-                    "tags": ["tag1"]
+                    "tags": [
+                      "tag1"
+                    ]
                   }
                 },
                 "scheduler-interactive": {
@@ -8655,7 +9003,9 @@
     },
     "/notifications/v1/settings": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "List Settings",
         "description": "List preferences, templates and sounds for the given app.",
         "operationId": "notifications-push-list-settings",
@@ -8911,7 +9261,9 @@
         ]
       },
       "patch": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Update Settings",
         "description": "Update preferences, templates and sounds for the given app.",
         "operationId": "notifications-push-update-settings",
@@ -8954,7 +9306,9 @@
         ]
       },
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Reset Settings",
         "description": "Reset preferences, templates and sounds to default values for the given app.",
         "operationId": "notifications-push-reset-settings",
@@ -8990,7 +9344,9 @@
     },
     "/notifications/push/v1/providers/fcm": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "List FCM Providers",
         "description": "List the configured FCM providers for the given app.",
         "operationId": "notifications-push-list-fcm-providers",
@@ -9027,7 +9383,9 @@
         ]
       },
       "post": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Add FCM Provider",
         "description": "Add new FCM provider for the given app.",
         "operationId": "notifications-push-add-fcm-provider",
@@ -9073,7 +9431,9 @@
         ]
       },
       "put": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Update FCM Provider",
         "description": "Update existing FCM provider for the given app.",
         "operationId": "notifications-push-update-fcm-provider",
@@ -9133,7 +9493,9 @@
     },
     "/notifications/push/v1/providers/fcm/{providerId}": {
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Delete FCM Provider",
         "description": "Delete an FCM provider for the given app.",
         "operationId": "notifications-push-delete-fcm-provider",
@@ -9177,7 +9539,9 @@
     },
     "/notifications/push/v1/providers/fcm/default/{providerId}": {
       "put": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Change default FCM Provider",
         "description": "Change the default FCM provider for the given app.",
         "operationId": "notifications-push-default-fcm-provider",
@@ -9221,7 +9585,9 @@
     },
     "/notifications/push/v1/providers/apns": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "List APNS Providers",
         "description": "List the configured APNS providers for the given app.",
         "operationId": "notifications-push-list-apns-providers",
@@ -9252,7 +9618,9 @@
         ]
       },
       "put": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Update APNS Providers",
         "description": "Update existing APNS provider for the given app.",
         "operationId": "notifications-push-update-apns-provider",
@@ -9304,7 +9672,9 @@
         ]
       },
       "post": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Add APNS Provider",
         "description": "Add new APNS provider for the given app.",
         "operationId": "notifications-push-add-apns-provider",
@@ -9346,7 +9716,9 @@
     },
     "/notifications/push/v1/providers/apns/{providerId}": {
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Delete APNS Providers",
         "description": "Delete an APNS provider for the given app.",
         "operationId": "notifications-push-delete-apns-provider",
@@ -9384,7 +9756,9 @@
     },
     "/notifications/push/v1/providers/apns/default/{providerId}": {
       "put": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Change default APNS Provider",
         "description": "Change the default APNS provider for the given app.",
         "operationId": "notifications-push-default-apns-provider",
@@ -9422,7 +9796,9 @@
     },
     "/notifications/v1/preferences": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "List Preferences",
         "description": "List the configured preferences for the given user.",
         "operationId": "notifications-push-list-preferences",
@@ -9624,7 +10000,9 @@
         ]
       },
       "patch": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Update Preferences",
         "description": "Update the preference for the given user.",
         "operationId": "notifications-push-update-preferences",
@@ -9835,7 +10213,9 @@
         ]
       },
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Reset Preferences",
         "description": "Reset the preferences for the given user.",
         "operationId": "notifications-push-reset-preferences",
@@ -9936,7 +10316,9 @@
     },
     "/notifications/push/v1/tokens": {
       "post": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Register push token",
         "description": "Register a push token for the given auth token.",
         "operationId": "notifications-push-register-token",
@@ -9982,7 +10364,9 @@
         ]
       },
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "List push tokens",
         "description": "List push tokens for the given auth token.",
         "operationId": "notifications-push-list-tokens",
@@ -10049,7 +10433,9 @@
         ]
       },
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Unregister push tokens for authToken",
         "description": "Unregister push token(s) registered for the given auth token.",
         "operationId": "notifications-push-unregister-tokens",
@@ -10118,7 +10504,9 @@
     },
     "/notifications/push/v1/tokens/{pushToken}": {
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Delete the given push token",
         "description": "Deletes the given push token",
         "operationId": "notifications-push-delete-token",
@@ -10182,7 +10570,9 @@
     },
     "/notifications/v1/preferences/mute": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "List muted conversations",
         "description": "List the conversations where notifications have been muted on behalf of the user.",
         "operationId": "notifications-push-list-muted",
@@ -10224,7 +10614,9 @@
         ]
       },
       "put": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Mute notifications for conversations",
         "description": "Mute notifications for the conversations on behalf of the given user.",
         "operationId": "notifications-push-mute-conversations",
@@ -10285,7 +10677,9 @@
         ]
       },
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Unmute notifications for conversations",
         "description": "Unmute notifications for the conversations on behalf of the given user.",
         "operationId": "notifications-push-unmute-conversations",
@@ -10348,7 +10742,9 @@
     },
     "/notifications/v1/preferences/timezone": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Get timezone",
         "description": "Get the timezone on behalf of the user.",
         "operationId": "notifications-get-timezone",
@@ -10390,7 +10786,9 @@
         ]
       },
       "patch": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Update timezone",
         "description": "Update the timezone on behalf of the user.",
         "operationId": "notifications-update-timezone",
@@ -10451,7 +10849,9 @@
     },
     "/notifications/v1/contact-details": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Get contact details",
         "description": "Fetches the contact details like Email ID and Phone number for a given user.",
         "operationId": "notifications-get-contact-details",
@@ -10494,7 +10894,9 @@
         ]
       },
       "patch": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Update contact details",
         "description": "Updates the contact details like Email ID and Phone number for a given user.",
         "operationId": "notifications-update-contact-details",
@@ -10559,7 +10961,9 @@
         ]
       },
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Delete contact details",
         "description": "Deletes the stored contact details for a given user.",
         "operationId": "notifications-delete-contact-details",
@@ -10603,7 +11007,9 @@
     },
     "/notifications/sms/v1/providers/twilio": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Get Twilio credentials",
         "description": "Fetches the Twilio credentials stored for the app.",
         "operationId": "notifications-sms-list-twilio-details",
@@ -10642,7 +11048,9 @@
         ]
       },
       "post": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Save Twilio credentials",
         "description": "Store the Twilio credentials for the given app.",
         "operationId": "notifications-sms-save-twilio-details",
@@ -10717,7 +11125,9 @@
         ]
       },
       "put": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Update Twilio credentials",
         "description": "Updates the Twilio credentials for the given app.",
         "operationId": "notifications-sms-update-twilio-details",
@@ -10786,7 +11196,9 @@
         ]
       },
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Delete Twilio credentials",
         "description": "Deletes the stored Twilio credentials for the given app.",
         "operationId": "notifications-sms-delete-twilio-details",
@@ -10825,7 +11237,9 @@
     },
     "/notifications/email/v1/providers/sendgrid": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Get SendGrid credentials",
         "description": "Fetches the SendGrid credentials stored for the app.",
         "operationId": "notifications-email-list-sendgrid-details",
@@ -10866,7 +11280,9 @@
         ]
       },
       "post": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Save SendGrid credentials",
         "description": "Store the SendGrid credentials for the given app.",
         "operationId": "notifications-email-save-sendgrid-details",
@@ -10969,7 +11385,9 @@
         ]
       },
       "put": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Update SendGrid credentials",
         "description": "Updates the SendGrid credentials for the given app.",
         "operationId": "notifications-email-update-sendgrid-details",
@@ -11063,7 +11481,9 @@
         ]
       },
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Delete SendGrid credentials",
         "description": "Deletes the stored SendGrid credentials for the given app.",
         "operationId": "notifications-email-delete-sendgrid-details",
@@ -11102,7 +11522,9 @@
     },
     "/notifications/push/v1/providers/custom": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Get Custom Provider for Push Notifications",
         "description": "Fetches the custom provider for Push Notifications for a given app.",
         "operationId": "notifications-list-push-custom-provider",
@@ -11138,7 +11560,9 @@
         ]
       },
       "post": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Save Custom Provider for Push Notifications",
         "description": "Saves the custom provider for Push Notifications for a given app.",
         "operationId": "notifications-save-push-custom-provider",
@@ -11212,7 +11636,9 @@
         ]
       },
       "put": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Update Custom Provider for Push Notifications",
         "description": "Updates the custom provider for Push Notifications for a given app.",
         "operationId": "notifications-update-push-custom-provider",
@@ -11279,7 +11705,9 @@
         ]
       },
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Delete the Custom Provider for Push Notifications",
         "description": "Deletes the custom provider for Push Notifications for a given app.",
         "operationId": "notifications-delete-push-custom-provider",
@@ -11309,7 +11737,9 @@
     },
     "/notifications/sms/v1/providers/custom": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Get Custom Provider for SMS Notifications",
         "description": "Fetches the custom provider for SMS Notifications for a given app.",
         "operationId": "notifications-list-sms-custom-provider",
@@ -11342,7 +11772,9 @@
         ]
       },
       "post": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Save Custom Provider for SMS Notifications",
         "description": "Saves the custom provider for SMS Notifications for a given app.",
         "operationId": "notifications-save-sms-custom-provider",
@@ -11407,7 +11839,9 @@
         ]
       },
       "put": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Update Custom Provider for SMS Notifications",
         "description": "Updates the custom provider for SMS Notifications for a given app.",
         "operationId": "notifications-update-sms-custom-provider",
@@ -11449,7 +11883,9 @@
         ]
       },
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Delete the Custom Provider for SMS Notifications",
         "description": "Deletes the custom provider for SMS Notifications for a given app.",
         "operationId": "notifications-delete-sms-custom-provider",
@@ -11479,7 +11915,9 @@
     },
     "/notifications/email/v1/providers/custom": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Get Custom Provider for Email Notifications",
         "description": "Fetches the custom provider for Email Notifications for a given app.",
         "operationId": "notifications-list-email-custom-provider",
@@ -11512,7 +11950,9 @@
         ]
       },
       "post": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Save Custom Provider for Email Notifications",
         "description": "Saves the custom provider for Email Notifications for a given app.",
         "operationId": "notifications-save-email-custom-provider",
@@ -11569,7 +12009,9 @@
         ]
       },
       "put": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Update Custom Provider for Email Notifications",
         "description": "Updates the custom provider for Email Notifications for a given app.",
         "operationId": "notifications-update-email-custom-provider",
@@ -11611,7 +12053,9 @@
         ]
       },
       "delete": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Delete the Custom Provider for Email Notifications",
         "description": "Deletes the custom provider for Email Notifications for a given app.",
         "operationId": "notifications-delete-email-custom-provider",
@@ -11641,7 +12085,9 @@
     },
     "/notifications/v1/logs": {
       "get": {
-        "tags": ["Notifications"],
+        "tags": [
+          "Notifications"
+        ],
         "summary": "Notifications logs",
         "description": "Paginated API to fetch logs for notifications",
         "operationId": "notifications-logs",
@@ -11691,7 +12137,10 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["message", "interactive"]
+              "enum": [
+                "message",
+                "interactive"
+              ]
             }
           },
           {
@@ -11763,7 +12212,10 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["user", "group"]
+              "enum": [
+                "user",
+                "group"
+              ]
             }
           },
           {
@@ -11791,7 +12243,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["push", "email", "sms"]
+              "enum": [
+                "push",
+                "email",
+                "sms"
+              ]
             }
           },
           {
@@ -11801,7 +12257,13 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["fcm", "apns", "sendgrid", "twilio", "custom"]
+              "enum": [
+                "fcm",
+                "apns",
+                "sendgrid",
+                "twilio",
+                "custom"
+              ]
             }
           },
           {
@@ -11856,7 +12318,10 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["prepend", "append"]
+              "enum": [
+                "prepend",
+                "append"
+              ]
             }
           },
           {
@@ -11963,7 +12428,9 @@
     },
     "/stats": {
       "get": {
-        "tags": ["Metrics"],
+        "tags": [
+          "Metrics"
+        ],
         "summary": "Usage Metrics",
         "description": "Usage metrics of an app.",
         "operationId": "usage-metrics",
@@ -12028,7 +12495,9 @@
     },
     "/stats/messages": {
       "get": {
-        "tags": ["Metrics"],
+        "tags": [
+          "Metrics"
+        ],
         "summary": "Message Metrics",
         "description": "Gives the number of messages sent and receipts received in an interval of five minutes.",
         "operationId": "message-receipt-metrics",
@@ -12067,6 +12536,657 @@
                       }
                     ],
                     "appId": "235391c94852dc7d"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/roles/{role}/permissions": {
+      "get": {
+        "tags": [
+          "RBAC"
+        ],
+        "summary": "List Role Permissions",
+        "description": "Lists role permissions",
+        "operationId": "list-role-permissions",
+        "responses": {
+          "200": {
+            "description": "Lists role permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "meta": {
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "createGroup",
+                      "type": "role",
+                      "title": "Allows/Denies creating groups",
+                      "description": "Allows/Denies creating groups",
+                      "dataType": "string",
+                      "availableValues": [
+                        "allow",
+                        "deny"
+                      ],
+                      "defaultValue": "allow",
+                      "createdAt": 1765962204,
+                      "updatedAt": 1765962204
+                    },
+                    {
+                      "id": "sendMessage",
+                      "type": "role",
+                      "title": "Allows/Denies sending messages",
+                      "description": "Allows/Denies sending messages",
+                      "dataType": "string",
+                      "availableValues": [
+                        "allow",
+                        "deny"
+                      ],
+                      "defaultValue": "allow",
+                      "createdAt": 1765962204,
+                      "updatedAt": 1765962204
+                    },
+                    {
+                      "id": "sendMessage.allowedMessageTypes",
+                      "type": "role",
+                      "title": "Allows sending messages of the specified types",
+                      "description": "Allows sending messages of the specified types",
+                      "dataType": "stringArray",
+                      "availableValues": [
+                        "text",
+                        "image",
+                        "audio",
+                        "video",
+                        "file"
+                      ],
+                      "createdAt": 1765962204,
+                      "updatedAt": 1765962204,
+                      "defaultValue": []
+                    }
+                  ],
+                  "meta": {
+                    "pagination": {
+                      "total": 28,
+                      "count": 28,
+                      "per_page": 100,
+                      "current_page": 1,
+                      "total_pages": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "role",
+            "in": "path",
+            "description": "The role identifier to update permissions for",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "default"
+            }
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "RBAC"
+        ],
+        "summary": "Set Role Permissions",
+        "description": "Sets or updates permissions for a specific role",
+        "operationId": "set-role-permissions",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "path",
+            "description": "The role identifier to update permissions for",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "default"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "permissions"
+                ],
+                "properties": {
+                  "permissions": {
+                    "description": "Permissions object containing key-value pairs for role permissions",
+                    "type": "object",
+                    "example": {
+                      "createGroup": "allow",
+                      "listUsers.mode": "friends",
+                      "createGroup.allowedGroupTypes": [
+                        "public"
+                      ]
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Role permissions updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "example": {
+                  "data": {
+                    "sendMessage": {
+                      "success": true,
+                      "message": "Permission with id sendMessage have been mapped successfully to role default."
+                    },
+                    "permissions": {
+                      "listUsers": "allow",
+                      "listUsers.mode": "all",
+                      "listUsers.allowedRoles": [
+                        "new_role"
+                      ],
+                      "getUserDetails.mode": "friends",
+                      "getUserDetails.allowedRoles": [
+                        "default"
+                      ],
+                      "sendMessage": "allow",
+                      "sendMessage.mode": "all",
+                      "sendMessage.allowedReceiverTypes": [
+                        "group"
+                      ],
+                      "sendMessage.allowedReceiverRoles": [
+                        "new_role",
+                        "default"
+                      ],
+                      "sendMessage.allowedMessageTypes": [
+                        "file",
+                        "audio",
+                        "video",
+                        "image",
+                        "text"
+                      ],
+                      "sendMessage.allowedMessageCategories": [
+                        "message",
+                        "custom"
+                      ],
+                      "editMessage": "deny",
+                      "deleteMessage": "deny",
+                      "sendMessage.allowedMimeTypes": [
+                        "image/png"
+                      ],
+                      "initiateCall": "allow",
+                      "initiateCall.mode": "all",
+                      "initiateCall.allowedReceiverRoles": [
+                        "new_role"
+                      ],
+                      "createGroup": "allow",
+                      "createGroup.allowedGroupTypes": [
+                        "private"
+                      ],
+                      "listGroups": "allow",
+                      "listGroups.allowedGroupTypes": [
+                        "password"
+                      ],
+                      "joinGroup": "allow",
+                      "joinGroup.allowedGroupTypes": [
+                        "public"
+                      ],
+                      "listMessages.allowedMessageCategories": [
+                        "message"
+                      ],
+                      "listMessages.allowedMessageTypes": [
+                        "audio"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/roles/{role}/permissions/{permission}": {
+      "delete": {
+        "tags": [
+          "RBAC"
+        ],
+        "summary": "Unset Role Permissions",
+        "description": "Removes a specific permission from a role",
+        "operationId": "unset-role-permissions",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "path",
+            "description": "The role identifier to remove permission from",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "default"
+            }
+          },
+          {
+            "name": "permission",
+            "in": "path",
+            "description": "The permission key to unset (e.g., listUsers.mode, createGroup, etc.)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "listUsers.mode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role permission unset successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "example": {
+                  "data": {
+                    "permissions": {
+                      "listUsers": "allow",
+                      "listUsers.mode": "all",
+                      "listUsers.allowedRoles": [
+                        "new_role"
+                      ],
+                      "getUserDetails.mode": "friends",
+                      "getUserDetails.allowedRoles": [
+                        "default"
+                      ],
+                      "sendMessage": "allow",
+                      "sendMessage.mode": "all",
+                      "sendMessage.allowedReceiverTypes": [
+                        "group"
+                      ],
+                      "sendMessage.allowedReceiverRoles": [
+                        "new_role",
+                        "default"
+                      ],
+                      "sendMessage.allowedMessageTypes": [
+                        "file",
+                        "audio",
+                        "video",
+                        "image",
+                        "text"
+                      ],
+                      "sendMessage.allowedMessageCategories": [
+                        "message",
+                        "custom"
+                      ],
+                      "editMessage": "deny",
+                      "editMessage.denyForScopes": [],
+                      "deleteMessage": "deny",
+                      "deleteMessage.denyForScopes": [],
+                      "sendMessage.allowedCustomTypes": [],
+                      "sendMessage.allowedMimeTypes": [
+                        "image/png"
+                      ],
+                      "initiateCall": "allow",
+                      "initiateCall.mode": "all",
+                      "initiateCall.allowedReceiverRoles": [
+                        "new_role"
+                      ],
+                      "createGroup": "allow",
+                      "createGroup.allowedGroupTypes": [
+                        "private"
+                      ],
+                      "listGroups": "allow",
+                      "listGroups.allowedGroupTypes": [
+                        "password"
+                      ],
+                      "joinGroup": "allow",
+                      "joinGroup.allowedGroupTypes": [
+                        "public"
+                      ],
+                      "listMessages.allowedMessageCategories": [
+                        "message"
+                      ],
+                      "listMessages.allowedMessageTypes": [
+                        "audio"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/groups/{guid}/scopes/{scope}/permissions": {
+      "get": {
+        "tags": [
+          "RBAC"
+        ],
+        "summary": "List Scope Permissions",
+        "description": "Lists scope permissions",
+        "operationId": "list-scope-permissions",
+        "responses": {
+          "200": {
+            "description": "Lists scope permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "meta": {
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "addReaction",
+                      "type": "scope",
+                      "title": "Allows member to list the members with specified scope",
+                      "description": "Allows member to list the members with specified scope",
+                      "dataType": "string",
+                      "availableValues": [
+                        "allow",
+                        "deny"
+                      ],
+                      "defaultValue": "allow",
+                      "createdAt": 1765962204,
+                      "updatedAt": 1765962204
+                    },
+                    {
+                      "id": "sendMessage",
+                      "type": "scope",
+                      "title": "Allows/Denies sending messages",
+                      "description": "Allows/Denies sending messages",
+                      "dataType": "string",
+                      "availableValues": [
+                        "allow",
+                        "deny"
+                      ],
+                      "defaultValue": "allow",
+                      "createdAt": 1765962204,
+                      "updatedAt": 1765962204
+                    },
+                    {
+                      "id": "initiateCall.allowedType",
+                      "type": "scope",
+                      "title": "Allows members to initiate call with the specified types",
+                      "description": "Allows members to initiate call with the specified types",
+                      "dataType": "stringArray",
+                      "availableValues": [
+                        "audio",
+                        "video"
+                      ],
+                      "createdAt": 1765962204,
+                      "updatedAt": 1765962204,
+                      "defaultValue": []
+                    }
+                  ],
+                  "meta": {
+                    "pagination": {
+                      "total": 11,
+                      "count": 11,
+                      "per_page": 100,
+                      "current_page": 1,
+                      "total_pages": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "guid",
+            "in": "path",
+            "description": "The group GUID to update scope permissions for",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "supergroup"
+            }
+          },
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope identifier (e.g., admin, moderator, participant)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "admin"
+            }
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "RBAC"
+        ],
+        "summary": "Set Scope Permissions",
+        "description": "Sets or updates permissions for a specific group scope",
+        "operationId": "set-scope-permissions",
+        "parameters": [
+          {
+            "name": "guid",
+            "in": "path",
+            "description": "The group GUID to update scope permissions for",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "supergroup"
+            }
+          },
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope identifier (e.g., admin, moderator, participant)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "admin"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "permissions"
+                ],
+                "properties": {
+                  "permissions": {
+                    "description": "Permissions object containing key-value pairs for scope permissions",
+                    "type": "object",
+                    "example": {
+                      "sendMessage": "deny",
+                      "initiateCall": "friends"
+                    },
+                    "additionalProperties": true
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Scope permissions updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "example": {
+                  "data": {
+                    "sendMessage": {
+                      "success": true,
+                      "message": "Permission with id sendMessage have been mapped successfully to scope admin on group cometchat-guid-1."
+                    },
+                    "permissions": {
+                      "sendMessage": "allow",
+                      "listMembers": "allow",
+                      "listMembers.allowedScopes": "participant",
+                      "addReaction": "deny",
+                      "listReactions.allowedScopes": "moderator",
+                      "listReactions": "deny",
+                      "sendThreadedMessage": "allow",
+                      "initiateCall": "deny",
+                      "initiateCall.allowedScopes": "participant",
+                      "initiateCall.allowedType": "audio",
+                      "editMessage": "allow"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/groups/{guid}/scopes/{scope}/permissions/{permission}": {
+      "delete": {
+        "tags": [
+          "RBAC"
+        ],
+        "summary": "Unset Scope Permissions",
+        "description": "Removes a specific permission from a group scope",
+        "operationId": "unset-scope-permissions",
+        "parameters": [
+          {
+            "name": "guid",
+            "in": "path",
+            "description": "The group GUID to remove scope permission from",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "supergroup"
+            }
+          },
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope identifier (e.g., admin, moderator, participant)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "admin"
+            }
+          },
+          {
+            "name": "permission",
+            "in": "path",
+            "description": "The permission key to unset (e.g., sendMessage, initiateCall, etc.)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "sendMessage"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Scope permission unset successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "example": {
+                  "data": {
+                    "permissions": {
+                      "sendMessage": "allow",
+                      "listMembers": "allow",
+                      "listMembers.allowedScopes": "participant",
+                      "addReaction": "deny",
+                      "listReactions.allowedScopes": "moderator",
+                      "listReactions": "deny",
+                      "sendThreadedMessage": "allow",
+                      "initiateCall": "deny",
+                      "initiateCall.allowedScopes": "participant",
+                      "initiateCall.allowedType": "audio",
+                      "editMessage": "allow"
+                    }
                   }
                 }
               }
@@ -12197,7 +13317,11 @@
           "messagesSetting": {
             "description": "1: Don't notify\n2: Notify for all messages\n3: Notify for messages with mentions",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "messagesOverride": {
             "type": "boolean"
@@ -12205,7 +13329,11 @@
           "repliesSetting": {
             "description": "1: Don't notify\n2: Notify for all replies\n3: Notify for replies with mentions",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "repliesOverride": {
             "type": "boolean"
@@ -12213,7 +13341,11 @@
           "reactionsSetting": {
             "description": "1: Don't notify\n2: Notify for reactions received on own messages\n3: Notify for reactions received on all messages",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "reactionsOverride": {
             "type": "boolean"
@@ -12221,7 +13353,10 @@
           "memberLeftSetting": {
             "description": "1: Don't notify\n2: Notify",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberLeftOverride": {
             "type": "boolean"
@@ -12229,7 +13364,10 @@
           "memberAddedSetting": {
             "description": "1: Don't notify\n2: Notify",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberAddedOverride": {
             "type": "boolean"
@@ -12237,7 +13375,10 @@
           "memberJoinedSetting": {
             "description": "1: Don't notify\n2: Notify",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberJoinedOverride": {
             "type": "boolean"
@@ -12245,7 +13386,10 @@
           "memberKickedSetting": {
             "description": "1: Don't notify\n2: Notify",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberKickedOverride": {
             "type": "boolean"
@@ -12253,7 +13397,10 @@
           "memberBannedSetting": {
             "description": "1: Don't notify\n2: Notify",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberBannedOverride": {
             "type": "boolean"
@@ -12261,7 +13408,10 @@
           "memberUnbannedSetting": {
             "description": "1: Don't notify\n2: Notify",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberUnbannedOverride": {
             "type": "boolean"
@@ -12269,7 +13419,10 @@
           "memberScopeChangedSetting": {
             "description": "1: Don't notify\n2: Notify",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberScopeChangedOverride": {
             "type": "boolean"
@@ -12277,12 +13430,18 @@
           "messageEditedSetting": {
             "description": "1: Don't notify\n2: Notify",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "messageDeletedSetting": {
             "description": "1: Don't notify\n2: Notify",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           }
         },
         "type": "object"
@@ -12364,7 +13523,10 @@
           "dnd": {
             "description": "1: Disable DND\n2: Enable DND",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "schedule": {
             "$ref": "#/components/schemas/Schedule"
@@ -12505,43 +13667,64 @@
               "initiatedSetting": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2],
+                "enum": [
+                  1,
+                  2
+                ],
                 "example": 2
               },
               "ongoingSetting": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2],
+                "enum": [
+                  1,
+                  2
+                ],
                 "example": 2
               },
               "cancelledSetting": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2],
+                "enum": [
+                  1,
+                  2
+                ],
                 "example": 2
               },
               "busySetting": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2],
+                "enum": [
+                  1,
+                  2
+                ],
                 "example": 2
               },
               "rejectedSetting": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2],
+                "enum": [
+                  1,
+                  2
+                ],
                 "example": 2
               },
               "unansweredSetting": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2],
+                "enum": [
+                  1,
+                  2
+                ],
                 "example": 2
               },
               "endedSetting": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2],
+                "enum": [
+                  1,
+                  2
+                ],
                 "example": 2
               }
             },
@@ -12602,11 +13785,19 @@
         ],
         "properties": {
           "interactionGoal": {
-            "required": ["type", "elementIds"],
+            "required": [
+              "type",
+              "elementIds"
+            ],
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["anyAction", "allOf", "oneOf", "none"]
+                "enum": [
+                  "anyAction",
+                  "allOf",
+                  "oneOf",
+                  "none"
+                ]
               },
               "elementIds": {
                 "type": "array",
@@ -12815,7 +14006,11 @@
           "usePrivacyTemplate": {
             "description": "1: Use default templates\n2: Use privacy templates\n3: Use default templates with end-user privacy override",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "textMessageTemplateDefault": {
             "$ref": "#/components/schemas/Template"
@@ -12939,7 +14134,10 @@
         "type": "object"
       },
       "TimeRange": {
-        "required": ["from", "to"],
+        "required": [
+          "from",
+          "to"
+        ],
         "properties": {
           "from": {
             "type": "string"
@@ -13193,13 +14391,18 @@
           "receiverType": {
             "description": "The receiverType of the message. either user or group",
             "type": "string",
-            "enum": ["user", "group"]
+            "enum": [
+              "user",
+              "group"
+            ]
           },
           "category": {
             "description": "Category of the message. The available categories is custom.",
             "type": "string",
             "default": "custom",
-            "enum": ["custom"]
+            "enum": [
+              "custom"
+            ]
           },
           "type": {
             "description": "Type of the message.",
@@ -13656,7 +14859,12 @@
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["anyOf", "allOf", "oneOf", "none"]
+                "enum": [
+                  "anyOf",
+                  "allOf",
+                  "oneOf",
+                  "none"
+                ]
               },
               "elementIds": {
                 "type": "array",
@@ -13760,7 +14968,12 @@
             "properties": {
               "type": {
                 "type": "string",
-                "enum": ["anyOf", "allOf", "oneOf", "none"]
+                "enum": [
+                  "anyOf",
+                  "allOf",
+                  "oneOf",
+                  "none"
+                ]
               },
               "elementIds": {
                 "type": "array",
@@ -13870,19 +15083,29 @@
           "receiverType": {
             "description": "The receiverType of the message. either user or group",
             "type": "string",
-            "enum": ["user", "group"]
+            "enum": [
+              "user",
+              "group"
+            ]
           },
           "category": {
             "description": "Category of the message. The available categories is interactive.",
             "type": "string",
             "default": "interactive",
-            "enum": ["interactive"]
+            "enum": [
+              "interactive"
+            ]
           },
           "type": {
             "description": "Type of the message. The available values are card, form and customInteractive.",
             "type": "string",
             "default": "card",
-            "enum": ["card", "form", "customInteractive", "scheduler"]
+            "enum": [
+              "card",
+              "form",
+              "customInteractive",
+              "scheduler"
+            ]
           },
           "data": {
             "description": "JSON containing message attributes. Please select the appropriate schema based on the type property.",
@@ -13934,7 +15157,9 @@
           "data": {
             "interactionGoal": {
               "type": "allOf",
-              "elementIds": ["element8"]
+              "elementIds": [
+                "element8"
+              ]
             },
             "allowSenderInteraction": true,
             "interactiveData": {
@@ -14001,7 +15226,10 @@
                       "label": "Lift"
                     }
                   ],
-                  "defaultValue": ["option1", "option2"]
+                  "defaultValue": [
+                    "option1",
+                    "option2"
+                  ]
                 },
                 {
                   "elementType": "singleSelect",
@@ -14063,7 +15291,9 @@
           "category": "interactive",
           "type": "form",
           "receiver": "cometchat-uid-1",
-          "tags": ["tag1"]
+          "tags": [
+            "tag1"
+          ]
         }
       },
       "interactiveMessageSchema": {
@@ -14109,19 +15339,30 @@
           "receiverType": {
             "description": "The receiverType of the message. either user or group",
             "type": "string",
-            "enum": ["user", "group"]
+            "enum": [
+              "user",
+              "group"
+            ]
           },
           "category": {
             "description": "Category of the message. The available categories are message and custom.",
             "type": "string",
             "default": "message",
-            "enum": ["message"]
+            "enum": [
+              "message"
+            ]
           },
           "type": {
             "description": "Type of the message. The available values are text, image, file, audio, video.",
             "type": "string",
             "default": "text",
-            "enum": ["text", "image", "file", "audio", "video"]
+            "enum": [
+              "text",
+              "image",
+              "file",
+              "audio",
+              "video"
+            ]
           },
           "data": {
             "description": "JSON containing message attributes.",
@@ -14507,7 +15748,10 @@
           "type": {
             "description": "oneOnOne or group",
             "type": "string",
-            "enum": ["oneOnOne", "group"]
+            "enum": [
+              "oneOnOne",
+              "group"
+            ]
           },
           "until": {
             "description": "This is a valid timestamp from the future, E.g: 1710696964705",
@@ -14646,7 +15890,11 @@
           "messagesSetting": {
             "description": "1: Don't notify\n2: Notify for all messages\n3: Notify for messages with mentions",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "messagesOverride": {
             "type": "boolean"
@@ -14654,7 +15902,11 @@
           "repliesSetting": {
             "description": "1: Don't notify\n2: Notify for all replies\n3: Notify for replies with mentions",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "repliesOverride": {
             "type": "boolean"
@@ -14662,7 +15914,11 @@
           "reactionsSetting": {
             "description": "1: Don't notify\n2: Notify for reactions received on own messages\n3: Notify for reactions received on all messages",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "reactionsOverride": {
             "type": "boolean"
@@ -14670,12 +15926,18 @@
           "messageEditedSetting": {
             "description": "1: Don't notify\n2: Notify",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "messageDeletedSetting": {
             "description": "1: Don't notify\n2: Notify",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           }
         },
         "type": "object"
@@ -14720,52 +15982,85 @@
               "groupMessages": {
                 "description": "1: Don't notify\n2: Notify for all messages\n3: Notify for messages with mentions",
                 "type": "integer",
-                "enum": [1, 2, 3]
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
               },
               "groupReplies": {
                 "description": "1: Don't notify\n2: Notify for all replies\n3: Notify for replies with mentions",
                 "type": "integer",
-                "enum": [1, 2, 3]
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
               },
               "groupReactions": {
                 "description": "1: Don't notify\n2: Notify for reactions received on own messages\n3: Notify for reactions received on all messages",
                 "type": "integer",
-                "enum": [1, 2, 3]
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
               },
               "groupMemberLeft": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               },
               "groupMemberAdded": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               },
               "groupMemberJoined": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               },
               "groupMemberKicked": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               },
               "groupMemberBanned": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               },
               "groupMemberUnbanned": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               },
               "groupMemberScopeChanged": {
                 "description": "1: Don't notify\n2: Notify",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               }
             },
             "type": "object"
@@ -14775,17 +16070,29 @@
               "oneOnOneMessages": {
                 "description": "1: Don't notify\n2: Notify for all messages\n3: Notify for messages with mentions",
                 "type": "integer",
-                "enum": [1, 2, 3]
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
               },
               "oneOnOneReplies": {
                 "description": "1: Don't notify\n2: Notify for all replies\n3: Notify for replies with mentions",
                 "type": "integer",
-                "enum": [1, 2, 3]
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
               },
               "oneOnOneReactions": {
                 "description": "1: Don't notify\n2: Notify for reactions received on own messages\n3: Notify for reactions received on all messages",
                 "type": "integer",
-                "enum": [1, 2, 3]
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
               }
             },
             "type": "object"
@@ -14936,13 +16243,18 @@
           "type": {
             "description": "oneOnOne or group",
             "type": "string",
-            "enum": ["oneOnOne", "group"]
+            "enum": [
+              "oneOnOne",
+              "group"
+            ]
           }
         },
         "type": "object"
       },
       "unregisterpnToken": {
-        "required": ["authToken"],
+        "required": [
+          "authToken"
+        ],
         "properties": {
           "authToken": {
             "type": "string"

@@ -4,31 +4,14 @@ title: "Properties and Constraints"
 
 This page lists the properties and constraints applicable to various CometChat systems.
 
-## Webhooks
+## API Keys
 
-| **Property**                       | **Constraints**                                  |
-| ---------------------------------- | ------------------------------------------------ |
-| Maximum number of webhooks per app | 25                                               |
-| Webhook URL                        | Valid URL, max 255 characters                    |
-| Webhook ID                         | Max 50 characters, alphanumeric only, no spaces  |
-| Webhook authentication username    | Max 50 characters, alphanumeric only, no spaces  |
-| Webhook authentication password    | Max 100 characters, alphanumeric only, no spaces |
-
-## Management APIs
-
-| **Property**                                    | **Constraints**                                                 |
-| ----------------------------------------------- | --------------------------------------------------------------- |
-| App name                                        | Max 100 characters, UTF8mb4 (supports all languages and emojis) |
-| App version                                     | `v3` only                                                       |
-| Maximum collaborators per app (team management) | 25                                                              |
-
-## REST APIs
-
-| **Property**              | **Constraints**                                                                           |
-| ------------------------- | ----------------------------------------------------------------------------------------- |
-| Maximum bot users per app | 25                                                                                        |
-| API key name              | Max 100 characters, UTF8mb4 (supports all languages and emojis; one emoji = 2 characters) |
-| Maximum API keys per app  | 25                                                                                        |
+| **Property**             | **Constraints**                                                                                                                                                                                                                                                            |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| API key value            | System-generated, 40-character hexadecimal string                                                                                                                                                                                                                          |
+| API key name             | Max 100 characters, UTF8mb4 (supports all languages and emojis; one emoji = 2 characters)                                                                                                                                                                                  |
+| API key scope            | `authOnly` — can only create auth tokens for users. Referred to as "Auth Key" in the dashboard and docs. `fullAccess` — can perform all REST API operations (create/update/delete users, groups, messages, etc.). Referred to as "REST API Key" in the dashboard and docs. |
+| Maximum API keys per app | 25                                                                                                                                                                                                                                                                         |
 
 ## Users and Groups
 
@@ -42,6 +25,7 @@ This page lists the properties and constraints applicable to various CometChat s
 | Maximum groups per app                                             | No limit                                                                                                                                                                   |
 | Maximum unread messages per user                                   | No limit                                                                                                                                                                   |
 | Maximum users per app                                              | No limit                                                                                                                                                                   |
+| Maximum bot users per app                                          | 25                                                                                                                                                                         |
 | User/Group ID (`uid`, `guid`)                                      | Max 100 characters, alpha-dash (`a-z`, `0-9`, `-`, `_`), no spaces. Automatically lowercased.                                                                              |
 | User/Group name                                                    | Max 100 characters, UTF8mb4 (supports all languages and emojis)                                                                                                            |
 | User/Group avatar                                                  | Must be a valid URL, max 3,000 characters. Image is not stored by CometChat — URL must remain accessible.                                                                  |
