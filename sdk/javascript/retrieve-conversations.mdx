@@ -20,6 +20,7 @@ const conversation = await CometChat.getConversation("UID", "user");
 await CometChat.tagConversation("UID", "user", ["archived"]);
 
 // Convert message to conversation
+let message = {}; // obtained from MessageListener or fetchPrevious/fetchNext
 const conv = await CometChat.CometChatHelper.getConversationFromMessage(message);
 ```
 </Accordion>
@@ -96,7 +97,7 @@ Relevant fields to access on returned conversations:
 
 ### With User and Group Tags
 
-This method can be used to fetch the user/group tags in the [`Conversation`](/sdk/reference/entities#conversation) Object. By default the value is `false`.
+This method can be used to fetch the user/group tags in the `Conversation` Object. By default the value is `false`.
 
 <Tabs>
 <Tab title="JavaScript">
@@ -198,7 +199,7 @@ This method fetches group conversations that have the specified tags.
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```javascript
 let limit = 30;
 let userTags = ["tag1"];
 let conversationRequest = new CometChat.ConversationsRequestBuilder()
@@ -362,7 +363,7 @@ let limit: number = 30,
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let limit = 30;
 let conversationRequest = new CometChat.ConversationsRequestBuilder()
   .setLimit(limit)
@@ -393,7 +394,7 @@ let limit: number = 30,
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let limit = 30;
 let conversationRequest = new CometChat.ConversationsRequestBuilder()
   .setLimit(limit)
@@ -437,7 +438,7 @@ let limit: number = 30,
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let limit = 30;
 let conversationRequest = new CometChat.ConversationsRequestBuilder()
   .setLimit(limit)
@@ -474,7 +475,7 @@ let limit: number = 30,
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let limit = 30;
 let conversationRequest = new CometChat.ConversationsRequestBuilder()
   .setLimit(limit)
@@ -505,7 +506,7 @@ let limit: number = 30,
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let limit = 30;
 let conversationRequest = new CometChat.ConversationsRequestBuilder()
   .setLimit(limit)

@@ -7,6 +7,8 @@ description: "Add, remove, and fetch message reactions in real-time using the Co
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
+let messageId = "MESSAGE_ID";
+
 // Add a reaction
 await CometChat.addReaction(messageId, "😊");
 
@@ -50,7 +52,7 @@ CometChat.addReaction(messageId, emoji)
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let messageId = "1";
 let emoji = "😊";
 
@@ -84,7 +86,7 @@ CometChat.removeReaction(messageId, emoji)
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let messageId = "1";
 let emoji = "😊";
 
@@ -116,7 +118,7 @@ message.getReactions()
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 message.getReactions()    
 ```
 </Tab>
@@ -137,7 +139,7 @@ reaction.getReactedByMe(); //Return true is logged-in user reacted on that messa
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let reactions = message.getReactions();
 reactions.forEach((reaction) => {
 reaction.getReactedByMe(); //Return true is logged-in user reacted on that message, otherwise false
@@ -188,7 +190,7 @@ Fetch Previous The `fetchPrevious()` method fetches the previous set of reaction
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```javascript
 let limit = 10;
 let messageId = 1;
 
@@ -234,7 +236,7 @@ reactionRequest.fetchPrevious().then(
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let limit = 10;
 let messageId = 1;
 
@@ -276,7 +278,7 @@ CometChat.addMessageListener(listenerID, new CometChat.MessageListener({
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let listenerID = "UNIQUE_LISTENER_ID";
 
 CometChat.addMessageListener(listenerID, new CometChat.MessageListener({
@@ -305,7 +307,7 @@ CometChat.removeMessageListener(listenerID);
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let listenerID = "UNIQUE_LISTENER_ID";
 
 CometChat.removeMessageListener(listenerID);
@@ -323,7 +325,7 @@ When you receive a real-time reaction event, you'll want to update the correspon
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```javascript
 message.getReactions()    
 ```
 
@@ -342,11 +344,11 @@ The `getReactions()` method returns an array of [`ReactionCount`](/sdk/reference
 
 ## Check if Logged-in User has Reacted on Message
 
-To check if the logged-in user has reacted on a particular message or not, You can use the `getReactedByMe()` method on any [`ReactionCount`](/sdk/reference/auxiliary#reactioncount) object instance. This method will return a boolean value, true if the logged-in user has reacted on that message, otherwise false.
+To check if the logged-in user has reacted on a particular message or not, You can use the `getReactedByMe()` method on any `ReactionCount` object instance. This method will return a boolean value, true if the logged-in user has reacted on that message, otherwise false.
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```javascript
 let reactions = message.getReactions();
 reactions.forEach((reaction) => {
 reaction.getReactedByMe(); //Return true is logged-in user reacted on that message, otherwise false
@@ -373,13 +375,13 @@ The `getReactedByMe()` method on a [`ReactionCount`](/sdk/reference/auxiliary#re
 
 When a user adds or removes a reaction, you will receive a real-time event. Once you receive the real time event you would want to update the message with the latest reaction information. To do so you can use the `updateMessageWithReactionInfo()` method.
 
-The `updateMessageWithReactionInfo()` method provides a seamless way to update the reactions on a message instance ([`BaseMessage`](/sdk/reference/messages#basemessage)) in real-time. This method ensures that when a reaction is added or removed from a message, the BaseMessage object's `getReactions()` property reflects this change immediately.
+The `updateMessageWithReactionInfo()` method provides a seamless way to update the reactions on a message instance (`BaseMessage`) in real-time. This method ensures that when a reaction is added or removed from a message, the BaseMessage object's `getReactions()` property reflects this change immediately.
 
 When you receive a real-time reaction event (`MessageReaction`), call the `updateMessageWithReactionInfo()` method, passing the BaseMessage instance (`message`), event data (`MessageReaction`) and reaction event action type (`CometChat.REACTION_ACTION.REACTION_ADDED` or `CometChat.REACTION_ACTION.REACTION_REMOVED`) that corresponds to the message being reacted to.
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```javascript
 // The message to which the reaction is related
 let message = ...;
 
@@ -418,7 +420,7 @@ action
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 // The message to which the reaction is related
 let message = ...;
 

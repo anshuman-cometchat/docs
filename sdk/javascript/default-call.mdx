@@ -8,6 +8,8 @@ description: "Implement a complete calling workflow with ringing, incoming/outgo
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
+let sessionId = "SESSION_ID";
+
 // Initiate a call
 const call = new CometChat.Call("UID", CometChat.CALL_TYPE.VIDEO, CometChat.RECEIVER_TYPE.USER);
 await CometChat.initiateCall(call);

@@ -8,6 +8,10 @@ description: "Edit text and custom messages using the CometChat JavaScript SDK."
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
+let receiverID = "UID";
+let receiverType = CometChat.RECEIVER_TYPE.USER;
+let messageId = "MESSAGE_ID";
+
 // Edit a text message
 const textMessage = new CometChat.TextMessage(receiverID, "Updated text", receiverType);
 textMessage.setId(messageId);

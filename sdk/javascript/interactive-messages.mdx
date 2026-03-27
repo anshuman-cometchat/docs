@@ -13,6 +13,10 @@ description: "Send and receive interactive messages with embedded forms, buttons
 | `Interaction` | Represents a single user action on an interactive element |
 
 ```javascript
+let receiverId = "UID";
+let receiverType = CometChat.RECEIVER_TYPE.USER;
+let interactiveData = {};
+
 // Create and send an interactive form
 const interactiveMessage = new CometChat.InteractiveMessage(
   receiverId,

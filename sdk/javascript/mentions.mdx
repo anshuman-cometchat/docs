@@ -9,6 +9,8 @@ description: "Send messages with user mentions, retrieve mentioned users, and fi
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
+let message = {}; // obtained from MessageListener or fetchPrevious/fetchNext
+
 // Send a message with a mention (use <@uid:UID> format)
 const msg = new CometChat.TextMessage("receiverUID", "Hello <@uid:cometchat-uid-1>", CometChat.RECEIVER_TYPE.USER);
 await CometChat.sendMessage(msg);

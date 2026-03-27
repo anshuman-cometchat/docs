@@ -8,6 +8,8 @@ description: "Advanced filtering options for fetching messages using MessagesReq
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
+let parentId = 100;
+
 // Filter by category and type
 let mediaRequest = new CometChat.MessagesRequestBuilder()
   .setUID("UID")
@@ -31,8 +33,8 @@ let threadRequest = new CometChat.MessagesRequestBuilder()
   .build();
 
 // Fetch with pagination
-messagesRequest.fetchPrevious().then(messages => { });
-messagesRequest.fetchNext().then(messages => { });
+mediaRequest.fetchPrevious().then(messages => { });
+mediaRequest.fetchNext().then(messages => { });
 ```
 
 **Key methods:** `setUID()`, `setGUID()`, `setLimit()`, `setCategories()`, `setTypes()`, `setTags()`, `setUnread()`, `setParentMessageId()`, `setMessageId()`, `setTimestamp()`, `hideReplies()`, `hideDeletedMessages()`
@@ -69,7 +71,7 @@ let messagesRequest: CometChat.MessagesRequest =
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let messagesRequest = new CometChat.MessagesRequestBuilder()
   .setLimit(50)
   .build();

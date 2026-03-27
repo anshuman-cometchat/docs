@@ -7,6 +7,15 @@ description: "Learn how to generate call tokens, start and manage call sessions,
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
+let sessionId = "SESSION_ID";
+let authToken = "AUTH_TOKEN";
+let htmlElement = document.getElementById("call-screen");
+let callListener = {
+  onCallEnded: () => console.log("Call ended"),
+  onUserJoined: (user) => console.log("User joined:", user),
+  onUserLeft: (user) => console.log("User left:", user),
+};
+
 // Generate call token
 const callToken = await CometChatCalls.generateToken(sessionId, authToken);
 

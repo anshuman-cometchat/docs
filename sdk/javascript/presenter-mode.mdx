@@ -7,6 +7,14 @@ description: "Learn how to implement Presenter Mode for webinars, keynotes, and 
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
+let callToken = "CALL_TOKEN";
+let htmlElement = document.getElementById("call-screen");
+let callListener = {
+  onCallEnded: () => console.log("Call ended"),
+  onUserJoined: (user) => console.log("User joined:", user),
+  onUserLeft: (user) => console.log("User left:", user),
+};
+
 // Start a presentation session
 const settings = new CometChatCalls.PresenterSettingsBuilder()
   .setIsPresenter(true)
@@ -36,7 +44,7 @@ Configure the presentation using `PresentationSettingsBuilder`. Set `setIsPresen
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```javascript
 let presenterSettings = new CometChatCalls.PresenterSettingsBuilder()
   										.setIsPresenter(isPresenter)
                   	.enableDefaultLayout(defaultLayout)
@@ -67,7 +75,7 @@ Always remove listeners when they're no longer needed (e.g., on component unmoun
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```javascript
 useEffect(() => {
   CometChatCalls.addCallEventListener('UNIQUE_ID', {
     onUserJoined: user => {

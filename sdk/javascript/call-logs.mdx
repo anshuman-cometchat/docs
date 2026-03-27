@@ -7,10 +7,13 @@ description: "Fetch, filter, and retrieve call history including duration, parti
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
+let loggedInUser = await CometChat.getLoggedinUser();
+let authToken = loggedInUser.getAuthToken();
+
 // Fetch call logs
 let request = new CometChatCalls.CallLogRequestBuilder()
   .setLimit(30)
-  .setAuthToken(loggedInUser.getAuthToken())
+  .setAuthToken(authToken)
   .setCallCategory("call")
   .build();
 

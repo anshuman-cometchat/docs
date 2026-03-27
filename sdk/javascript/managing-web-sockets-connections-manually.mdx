@@ -58,7 +58,7 @@ CometChat.init(appID, appSetting).then(
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let appID = "APP_ID";
 let region = "APP_REGION";
 let appSetting = new CometChat.AppSettingsBuilder()
@@ -84,7 +84,7 @@ Once initialized with manual mode, use `connect()` and `disconnect()` to control
 
 ### Connect
 
-Establishes the WebSocket connection. The user must be logged in first (check with `CometChat.getLoggedinUser()`). Once connected, real-time events start flowing.
+Establishes the WebSocket connection. The user must be logged in first (check with `CometChat.getLoggedinUser()`). Once connected, real-time events start flowing. Returns `void`.
 
 <Tabs>
 <Tab title="Connect">
@@ -98,7 +98,7 @@ CometChat.connect();
 
 ### Disconnect
 
-Breaks the WebSocket connection. Real-time events stop until you call `connect()` again.
+Breaks the WebSocket connection. Real-time events stop until you call `connect()` again. Returns `void`.
 
 <Tabs>
 <Tab title="Disconnect">

@@ -182,6 +182,14 @@ new CometChat.MessageListener({
 
 The received object is a [`TypingIndicator`](/sdk/reference/auxiliary#typingindicator).
 
+<Warning>
+Always remove message listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
+
+```javascript
+CometChat.removeMessageListener("UNIQUE_LISTENER_ID");
+```
+</Warning>
+
 ---
 
 ## Next Steps
