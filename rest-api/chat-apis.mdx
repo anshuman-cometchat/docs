@@ -27,6 +27,10 @@ To get started with CometChat's REST API, you'll need to obtain your App ID, API
 
 Authentication is a crucial aspect of utilizing CometChat's REST API securely. All API requests must be accompanied by an API key to authenticate the incoming requests. CometChat employs industry-standard authentication mechanisms to ensure the security and integrity of your data.
 
+<Note>
+The HTTP header name for authentication is **`apikey`** (all lowercase). In JSON response bodies, the API key property is returned as **`apiKey`** (camelCase). This distinction is intentional — HTTP headers are case-insensitive by specification, while JSON properties are case-sensitive.
+</Note>
+
 ## Endpoints
 
 CometChat's REST API offers a variety of endpoints catering to different aspects of chat functionality, including user management, messaging, groups, and many more. These endpoints are designed to be intuitive and easy to integrate into your application's backend infrastructure.
