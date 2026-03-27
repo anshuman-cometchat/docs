@@ -21,10 +21,16 @@ CometChat.addMessageListener("ID", new CometChat.MessageListener({
 }));
 
 // Group Listener — member join/leave/kick/ban/scope changes
-CometChat.addGroupListener("ID", new CometChat.GroupListener({ ... }));
+CometChat.addGroupListener("ID", new CometChat.GroupListener({
+  onGroupMemberJoined: (action, joinedUser, joinedGroup) => { },
+  onGroupMemberLeft: (action, leftUser, leftGroup) => { }
+}));
 
 // Call Listener — incoming/outgoing call events
-CometChat.addCallListener("ID", new CometChat.CallListener({ ... }));
+CometChat.addCallListener("ID", new CometChat.CallListener({
+  onIncomingCallReceived: (call) => { },
+  onOutgoingCallAccepted: (call) => { }
+}));
 
 // Always clean up
 CometChat.removeUserListener("ID");
@@ -88,7 +94,7 @@ CometChat.addUserListener(
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 const listenerID = "UNIQUE_LISTENER_ID";
 CometChat.addUserListener(
   listenerID,
@@ -119,7 +125,7 @@ CometChat.removeUserListener(listenerID);
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let listenerID = "UNIQUE_LISTENER_ID";
 CometChat.removeUserListener(listenerID);
 ```
@@ -238,7 +244,7 @@ CometChat.addGroupListener(
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 CometChat.addGroupListener(
   "UNIQUE_LISTENER_ID",
   new CometChat.GroupListener({
@@ -320,7 +326,7 @@ CometChat.removeGroupListener(listenerID);
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let listenerID = "UNIQUE_LISTENER_ID";
 CometChat.removeGroupListener(listenerID);
 ```
@@ -359,7 +365,7 @@ To add the `MessageListener`, you need to use the `addMessageListener()` method 
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```javascript
 CometChat.addMessageListener(
   "UNIQUE_LISTENER_ID",
   new CometChat.MessageListener({
@@ -384,7 +390,7 @@ CometChat.addMessageListener(
     onTypingEnded: (typingIndicator) => {
       console.log("Typing Ended", typingIndicator);
     },
-    onMessagesDeleted: (message) => {
+    onMessageDeleted: (message) => {
       console.log("Message Deleted", message);
     },
     onMessageEdited: (message) => {
@@ -501,7 +507,7 @@ CometChat.addMessageListener(
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 CometChat.addMessageListener(
   "UNIQUE_LISTENER_ID",
   new CometChat.MessageListener({
@@ -526,7 +532,7 @@ CometChat.addMessageListener(
     onTypingEnded: (typingIndicator) => {
       console.log("Typing Ended", typingIndicator);
     },
-    onMessagesDeleted: (message) => {
+    onMessageDeleted: (message) => {
       console.log("Message Deleted", message);
     },
     onMessageEdited: (message) => {
@@ -550,6 +556,21 @@ CometChat.addMessageListener(
     onMessageModerated: (message) => {
       console.log("Message Moderated", message);
     },
+    onMessagesDeliveredToAll: (messageReceipt) => {
+      console.log("Message Delivered to All", messageReceipt);
+    },
+    onMessagesReadByAll: (messageReceipt) => {
+      console.log("Message Read by All", messageReceipt);
+    },
+    onAIAssistantMessageReceived: (message) => {
+      console.log("AI Assistant message received", message);
+    },
+    onAIToolResultReceived: (message) => {
+      console.log("AI Tool result received", message);
+    },
+    onAIToolArgumentsReceived: (message) => {
+      console.log("AI Tool arguments received", message);
+    },
   })
 );
 ```
@@ -570,7 +591,7 @@ CometChat.removeMessageListener(listenerID);
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let listenerID = "UNIQUE_LISTENER_ID";
 CometChat.removeMessageListener(listenerID);
 ```
@@ -595,7 +616,7 @@ To add the `CallListener`:
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```javascript
 CometChat.addCallListener(
   "UNIQUE_LISTENER_ID",
   new CometChat.CallListener({
@@ -647,7 +668,7 @@ CometChat.addCallListener(
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 CometChat.addCallListener(
   "UNIQUE_LISTENER_ID",
   new CometChat.CallListener({
@@ -662,6 +683,9 @@ CometChat.addCallListener(
     },
     onIncomingCallCancelled(call) {
       console.log("Incoming call canceled:", call);
+    },
+    onCallEndedMessageReceived(call) {
+      console.log("Call ended message:", call);
     },
   })
 );
@@ -683,7 +707,7 @@ CometChat.removeCallListener(listenerID);
 </Tab>
 
 <Tab title="JavaScript">
-```js
+```javascript
 let listenerID = "UNIQUE_LISTENER_ID";
 CometChat.removeCallListener(listenerID);
 ```
@@ -705,15 +729,15 @@ The `AIAssistantListener` provides real-time streaming events from AI Agent runs
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```javascript
 const listenerID = "UNIQUE_LISTENER_ID";
 CometChat.addAIAssistantListener(
   listenerID,
-  {
+  new CometChat.AIAssistantListener({
     onAIAssistantEventReceived: (event) => {
       console.log("AI Assistant event:", event.getType(), event);
     },
-  }
+  })
 );
 ```
 </Tab>
@@ -722,11 +746,11 @@ CometChat.addAIAssistantListener(
 const listenerID: string = "UNIQUE_LISTENER_ID";
 CometChat.addAIAssistantListener(
   listenerID,
-  {
+  new CometChat.AIAssistantListener({
     onAIAssistantEventReceived: (event: CometChat.AIAssistantBaseEvent) => {
       console.log("AI Assistant event:", event.getType(), event);
     },
-  }
+  })
 );
 ```
 </Tab>
@@ -736,7 +760,7 @@ To remove the listener:
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```javascript
 CometChat.removeAIAssistantListener("UNIQUE_LISTENER_ID");
 ```
 </Tab>
@@ -824,7 +848,7 @@ All three calling flows — [Call Session](/sdk/javascript/direct-call), [Standa
 
 <Tabs>
 <Tab title="JavaScript">
-```js
+```javascript
 const listenerId = "UNIQUE_LISTENER_ID";
 
 CometChatCalls.addCallEventListener(listenerId, {
@@ -914,7 +938,7 @@ CometChat.addLoginListener(
 ```
 </Tab>
 <Tab title="JavaScript">
-```js
+```javascript
 const listenerID = "UNIQUE_LISTENER_ID";
 CometChat.addLoginListener(
   listenerID,
@@ -978,7 +1002,7 @@ CometChat.addConnectionListener(
 ```
 </Tab>
 <Tab title="JavaScript">
-```js
+```javascript
 const listenerID = "UNIQUE_LISTENER_ID";
 CometChat.addConnectionListener(
   listenerID,

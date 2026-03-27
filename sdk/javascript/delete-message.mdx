@@ -8,6 +8,8 @@ description: "Delete messages using the CometChat JavaScript SDK."
 <Accordion title="AI Integration Quick Reference">
 
 ```javascript
+let messageId = "MESSAGE_ID";
+
 // Delete a message
 await CometChat.deleteMessage(messageId);
 
@@ -39,7 +41,7 @@ Use `deleteMessage()` with the message ID.
 <Tabs>
 <Tab title="TypeScript">
 ```typescript
-let messageId: number = 1;
+let messageId: string = "1";
 
 CometChat.deleteMessage(messageId).then(
   (message: CometChat.BaseMessage) => {

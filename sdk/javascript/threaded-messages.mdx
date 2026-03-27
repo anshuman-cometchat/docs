@@ -14,12 +14,12 @@ msg.setParentMessageId(100);
 await CometChat.sendMessage(msg);
 
 // Fetch thread messages
-const request = new CometChat.MessagesRequestBuilder()
+const threadRequest = new CometChat.MessagesRequestBuilder()
   .setParentMessageId(100).setLimit(30).build();
-const messages = await request.fetchPrevious();
+const messages = await threadRequest.fetchPrevious();
 
 // Exclude thread replies from main conversation
-const request = new CometChat.MessagesRequestBuilder()
+const mainRequest = new CometChat.MessagesRequestBuilder()
   .setUID("UID").setLimit(30).hideReplies(true).build();
 ```
 </Accordion>
@@ -278,6 +278,14 @@ messagesRequest.fetchPrevious().then(
 </Tabs>
 
 The response is an array of [`BaseMessage`](/sdk/reference/messages#basemessage) objects, excluding any messages that are replies within a thread. Only top-level messages in the conversation are returned.
+
+<Warning>
+Always remove message listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.
+
+```javascript
+CometChat.removeMessageListener("UNIQUE_LISTENER_ID");
+```
+</Warning>
 
 ---
 
