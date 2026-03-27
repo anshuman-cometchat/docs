@@ -1,34 +1,34 @@
 ---
-title: "Single Line Composer"
+title: "Compact Message Composer"
 description: "A compact, single-line message input component with rich text formatting, attachments, mentions, and voice recording support."
 ---
 
 ## Overview
 
-CometChatSingleLineComposer is a [Component](/ui-kit/android/components-overview#components) that provides a compact, single-line message input designed for chat applications. It offers a streamlined interface with optional rich text formatting capabilities, supporting bold, italic, strikethrough, code, links, lists, and blockquotes.
+CometChatCompactMessageComposer is a [Component](/ui-kit/android/components-overview#components) that provides a compact, single-line message input designed for chat applications. It offers a streamlined interface with optional rich text formatting capabilities, supporting bold, italic, strikethrough, code, links, lists, and blockquotes.
 
 Features such as **Rich Text Formatting**, **Attachments**, **Message Editing**, **Mentions**, **Stickers**, and **Voice Recording** are supported.
 
 <Frame>
-  <img src="/images/single-line-composer-overview-android.png" />
+  <img src="/images/compact-message-composer-overview-android.png" />
 </Frame>
 
 ## Usage
 
 ### Integration
 
-The following code snippet illustrates how you can directly incorporate the SingleLineComposer component into your `layout.xml` file.
+The following code snippet illustrates how you can directly incorporate the CompactMessageComposer component into your `layout.xml` file.
 
 ```xml
-<com.cometchat.chatuikit.singlelinecomposer.CometChatSingleLineComposer
-    android:id="@+id/single_line_composer"
+<com.cometchat.chatuikit.compactmessagecomposer.CometChatCompactMessageComposer
+    android:id="@+id/compact_message_composer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
 ```
 
 <Warning>
 
-The SingleLineComposer is responsible for managing runtime permissions. To ensure the **ActivityResultLauncher** is properly initialized, its object should be created in the **onCreate** state of an activity. To ensure that the composer is loaded within the fragment, it is important to make sure that the fragment is loaded in the `onCreate` state of the activity.
+The CompactMessageComposer is responsible for managing runtime permissions. To ensure the **ActivityResultLauncher** is properly initialized, its object should be created in the **onCreate** state of an activity. To ensure that the composer is loaded within the fragment, it is important to make sure that the fragment is loaded in the `onCreate` state of the activity.
 
 </Warning>
 
@@ -43,7 +43,7 @@ The `setOnSendClickListener` event gets activated when the send message button i
 <Tabs>
 <Tab title="Java">
 ```java
-singleLineComposer.setOnSendClickListener(new CometChatSingleLineComposer.SendButtonClickListener() {
+compactMessageComposer.setOnSendClickListener(new CometChatCompactMessageComposer.SendButtonClickListener() {
     @Override
     public void onSendClick(Context context, BaseMessage baseMessage) {
         Toast.makeText(context, "OnSendButtonClicked ..", Toast.LENGTH_SHORT).show();
@@ -55,8 +55,8 @@ singleLineComposer.setOnSendClickListener(new CometChatSingleLineComposer.SendBu
 
 <Tab title="Kotlin">
 ```kotlin
-singleLineComposer.setOnSendClickListener(
-    CometChatSingleLineComposer.SendButtonClickListener { context, baseMessage ->
+compactMessageComposer.setOnSendClickListener(
+    CometChatCompactMessageComposer.SendButtonClickListener { context, baseMessage ->
         Toast.makeText(context, "OnSendButtonClicked ..", Toast.LENGTH_SHORT).show()
     }
 )
@@ -68,12 +68,12 @@ singleLineComposer.setOnSendClickListener(
 
 ##### setOnErrorListener
 
-This action doesn't change the behavior of the component but rather listens for any errors that occur in the SingleLineComposer component.
+This action doesn't change the behavior of the component but rather listens for any errors that occur in the CompactMessageComposer component.
 
 <Tabs>
 <Tab title="Java">
 ```java
-singleLineComposer.setOnErrorListener(new CometChatSingleLineComposer.OnErrorListener() {
+compactMessageComposer.setOnErrorListener(new CometChatCompactMessageComposer.OnErrorListener() {
     @Override
     public void onError(Exception e) {
         // Your Exception Handling code.
@@ -85,8 +85,8 @@ singleLineComposer.setOnErrorListener(new CometChatSingleLineComposer.OnErrorLis
 
 <Tab title="Kotlin">
 ```kotlin
-singleLineComposer.setOnErrorListener(
-    CometChatSingleLineComposer.OnErrorListener { e ->
+compactMessageComposer.setOnErrorListener(
+    CometChatCompactMessageComposer.OnErrorListener { e ->
         // Your Exception Handling code.
     }
 )
@@ -104,7 +104,7 @@ Function triggered whenever the message input's text value changes, enabling dyn
 <Tabs>
 <Tab title="Java">
 ```java
-singleLineComposer.setOnTextChangeListener(new CometChatSingleLineComposer.OnTextChangeListener() {
+compactMessageComposer.setOnTextChangeListener(new CometChatCompactMessageComposer.OnTextChangeListener() {
     @Override
     public void onTextChange(String text) {
         // Handle text change
@@ -116,8 +116,8 @@ singleLineComposer.setOnTextChangeListener(new CometChatSingleLineComposer.OnTex
 
 <Tab title="Kotlin">
 ```kotlin
-singleLineComposer.setOnTextChangeListener(
-    CometChatSingleLineComposer.OnTextChangeListener { text ->
+compactMessageComposer.setOnTextChangeListener(
+    CometChatCompactMessageComposer.OnTextChangeListener { text ->
         // Handle text change
     }
 )
@@ -134,7 +134,7 @@ This action is triggered when the attachment button is clicked. You can override
 <Tabs>
 <Tab title="Java">
 ```java
-singleLineComposer.setOnAttachmentClickListener(new CometChatSingleLineComposer.OnAttachmentClickListener() {
+compactMessageComposer.setOnAttachmentClickListener(new CometChatCompactMessageComposer.OnAttachmentClickListener() {
     @Override
     public void onAttachmentClick() {
         // Your custom attachment handling
@@ -146,8 +146,8 @@ singleLineComposer.setOnAttachmentClickListener(new CometChatSingleLineComposer.
 
 <Tab title="Kotlin">
 ```kotlin
-singleLineComposer.setOnAttachmentClickListener(
-    CometChatSingleLineComposer.OnAttachmentClickListener {
+compactMessageComposer.setOnAttachmentClickListener(
+    CometChatCompactMessageComposer.OnAttachmentClickListener {
         // Your custom attachment handling
     }
 )
@@ -161,7 +161,7 @@ singleLineComposer.setOnAttachmentClickListener(
 
 ### Filters
 
-SingleLineComposer component does not have any available filters.
+CompactMessageComposer component does not have any available filters.
 
 ***
 
@@ -169,20 +169,20 @@ SingleLineComposer component does not have any available filters.
 
 [Events](/ui-kit/android/components-overview#events) are emitted by a `Component`. By using event you can extend existing functionality. Being global events, they can be applied in Multiple Locations and are capable of being Added or Removed.
 
-The SingleLineComposer Component does not emit any events of its own.
+The CompactMessageComposer Component does not emit any events of its own.
 
 ***
 
 ## Customization
 
-To fit your app's design requirements, you can customize the appearance of the SingleLineComposer component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
+To fit your app's design requirements, you can customize the appearance of the CompactMessageComposer component. We provide exposed methods that allow you to modify the experience and behavior according to your specific needs.
 
 ### Style
 
 Using Style you can customize the look and feel of the component in your app. These parameters typically control elements such as the color, size, shape, and fonts used within the component.
 
 <Frame>
-  <img src="/images/single-line-composer-styling-android.png" />
+  <img src="/images/compact-message-composer-styling-android.png" />
 </Frame>
 
 ```html
@@ -206,12 +206,12 @@ Using Style you can customize the look and feel of the component in your app. Th
 
 ```xml
 <!-- themes.xml -->
-<style name="CustomSingleLineComposerStyle" parent="CometChatSingleLineComposerStyle">
-    <item name="cometchatSingleLineComposerAttachmentIconTint">#F76808</item>
-    <item name="cometchatSingleLineComposerVoiceRecordingIconTint">#F76808</item>
-    <item name="cometchatSingleLineComposerStickerIconTint">#F76808</item>
-    <item name="cometchatSingleLineComposerAIIconTint">#F76808</item>
-    <item name="cometchatSingleLineComposerActiveSendButtonDrawable">
+<style name="CustomCompactMessageComposerStyle" parent="CometChatCompactMessageComposerStyle">
+    <item name="cometchatCompactMessageComposerAttachmentIconTint">#F76808</item>
+    <item name="cometchatCompactMessageComposerVoiceRecordingIconTint">#F76808</item>
+    <item name="cometchatCompactMessageComposerStickerIconTint">#F76808</item>
+    <item name="cometchatCompactMessageComposerAIIconTint">#F76808</item>
+    <item name="cometchatCompactMessageComposerActiveSendButtonDrawable">
         @drawable/active_send_button
     </item>
 </style>
@@ -220,14 +220,14 @@ Using Style you can customize the look and feel of the component in your app. Th
 <Tabs>
 <Tab title="Java">
 ```java
-singleLineComposer.setStyle(R.style.CustomSingleLineComposerStyle);
+compactMessageComposer.setStyle(R.style.CustomCompactMessageComposerStyle);
 ```
 
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin
-singleLineComposer.setStyle(R.style.CustomSingleLineComposerStyle)
+compactMessageComposer.setStyle(R.style.CustomCompactMessageComposerStyle)
 ```
 
 </Tab>
@@ -289,11 +289,11 @@ Assigns the list of text formatters. If the provided list is not null, it sets t
 **Example**
 
 <Frame>
-  <img src="/images/single-line-composer-mentions-android.png" />
+  <img src="/images/compact-message-composer-mentions-android.png" />
 </Frame>
 
 ```xml themes.xml
-<style name="CustomSingleLineComposerMentionsStyle" parent="CometChatMessageComposerMentionsStyle">
+<style name="CustomCompactMessageComposerMentionsStyle" parent="CometChatMessageComposerMentionsStyle">
     <item name="cometchatMentionTextAppearance">?attr/cometchatTextAppearanceBodyRegular</item>
     <item name="cometchatMentionTextColor">#000000</item>
     <item name="cometchatMentionBackgroundColor">#000000</item>
@@ -310,12 +310,12 @@ Assigns the list of text formatters. If the provided list is not null, it sets t
 CometChatMentionsFormatter mentionFormatter = new CometChatMentionsFormatter(context);
 
 // set style to customize composer mention text
-mentionFormatter.setMessageComposerMentionTextStyle(context, R.style.CustomSingleLineComposerMentionsStyle);
+mentionFormatter.setMessageComposerMentionTextStyle(context, R.style.CustomCompactMessageComposerMentionsStyle);
 
-// This can be passed as an array of formatter in CometChatSingleLineComposer by using setTextFormatters method.
+// This can be passed as an array of formatter in CometChatCompactMessageComposer by using setTextFormatters method.
 List<CometChatTextFormatter> textFormatters = new ArrayList<>();
 textFormatters.add(mentionFormatter);
-singleLineComposer.setTextFormatters(textFormatters);
+compactMessageComposer.setTextFormatters(textFormatters);
 ```
 
 </Tab>
@@ -325,12 +325,12 @@ singleLineComposer.setTextFormatters(textFormatters);
 // Initialize CometChatMentionsFormatter
 val mentionFormatter = CometChatMentionsFormatter(context)
 // set style to customize composer mention text
-mentionFormatter.setMessageComposerMentionTextStyle(context, R.style.CustomSingleLineComposerMentionsStyle)
+mentionFormatter.setMessageComposerMentionTextStyle(context, R.style.CustomCompactMessageComposerMentionsStyle)
 
-// This can be passed as an array of formatter in CometChatSingleLineComposer by using setTextFormatters method.
+// This can be passed as an array of formatter in CometChatCompactMessageComposer by using setTextFormatters method.
 val textFormatters: MutableList<CometChatTextFormatter> = ArrayList()
 textFormatters.add(mentionFormatter)
-singleLineComposer.setTextFormatters(textFormatters)
+compactMessageComposer.setTextFormatters(textFormatters)
 ```
 
 </Tab>
@@ -339,19 +339,19 @@ singleLineComposer.setTextFormatters(textFormatters)
 
 #### setAttachmentOptions
 
-By using `setAttachmentOptions()`, you can set a list of custom `MessageComposerActions` for the SingleLineComposer Component. This will override the existing list of `MessageComposerActions`.
+By using `setAttachmentOptions()`, you can set a list of custom `MessageComposerActions` for the CompactMessageComposer Component. This will override the existing list of `MessageComposerActions`.
 
 <Tabs>
 <Tab title="Java">
 ```java
-singleLineComposer.setAttachmentOptions(actionList);
+compactMessageComposer.setAttachmentOptions(actionList);
 ```
 
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin
-singleLineComposer.setAttachmentOptions(actionList)
+compactMessageComposer.setAttachmentOptions(actionList)
 ```
 
 </Tab>
@@ -361,7 +361,7 @@ singleLineComposer.setAttachmentOptions(actionList)
 **Example**
 
 <Frame>
-  <img src="/images/single-line-composer-attachment-options-android.png" />
+  <img src="/images/compact-message-composer-attachment-options-android.png" />
 </Frame>
 
 In this example, we are overriding the existing MessageComposerActions List with custom actions.
@@ -393,7 +393,7 @@ action2.setOnClick(new OnClick() {
 });
 actionList.add(action2);
 
-singleLineComposer.setAttachmentOptions(actionList);
+compactMessageComposer.setAttachmentOptions(actionList);
 ```
 
 </Tab>
@@ -418,7 +418,7 @@ action2.onClick = {
 }
 actionList.add(action2)
 
-singleLineComposer.setAttachmentOptions(actionList)
+compactMessageComposer.setAttachmentOptions(actionList)
 ```
 
 </Tab>
@@ -429,31 +429,31 @@ singleLineComposer.setAttachmentOptions(actionList)
 
 #### setAuxiliaryButtonView
 
-You can insert a custom view into the SingleLineComposer component to add additional functionality using the following method.
+You can insert a custom view into the CompactMessageComposer component to add additional functionality using the following method.
 
 <Tabs>
 <Tab title="Java">
 ```java
-singleLineComposer.setAuxiliaryButtonView(view);
+compactMessageComposer.setAuxiliaryButtonView(view);
 ```
 
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin
-singleLineComposer.setAuxiliaryButtonView(view)
+compactMessageComposer.setAuxiliaryButtonView(view)
 ```
 
 </Tab>
 
 </Tabs>
 
-Please note that the SingleLineComposer Component utilizes the AuxiliaryButton to provide sticker functionality. Overriding the AuxiliaryButton will subsequently replace the sticker functionality.
+Please note that the CompactMessageComposer Component utilizes the AuxiliaryButton to provide sticker functionality. Overriding the AuxiliaryButton will subsequently replace the sticker functionality.
 
 **Example**
 
 <Frame>
-  <img src="/images/single-line-composer-auxiliary-button-android.png" />
+  <img src="/images/compact-message-composer-auxiliary-button-android.png" />
 </Frame>
 
 In this example, we'll be adding a custom button with click functionality. You'll first need to create a layout file and then inflate it inside the `.setAuxiliaryButtonView()` function.
@@ -467,7 +467,7 @@ LinearLayout linearLayout = new LinearLayout(this);
 linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
 linearLayout.addView(imageView);
-singleLineComposer.setAuxiliaryButtonView(linearLayout);
+compactMessageComposer.setAuxiliaryButtonView(linearLayout);
 ```
 
 </Tab>
@@ -480,7 +480,7 @@ val linearLayout = LinearLayout(this)
 linearLayout.orientation = LinearLayout.HORIZONTAL
 
 linearLayout.addView(imageView)
-singleLineComposer.setAuxiliaryButtonView(linearLayout)
+compactMessageComposer.setAuxiliaryButtonView(linearLayout)
 ```
 
 </Tab>
@@ -496,14 +496,14 @@ You can set a custom view in place of the already existing send button view usin
 <Tabs>
 <Tab title="Java">
 ```java
-singleLineComposer.setSendButtonView(view);
+compactMessageComposer.setSendButtonView(view);
 ```
 
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin
-singleLineComposer.setSendButtonView(view)
+compactMessageComposer.setSendButtonView(view)
 ```
 
 </Tab>
@@ -513,7 +513,7 @@ singleLineComposer.setSendButtonView(view)
 **Example**
 
 <Frame>
-  <img src="/images/single-line-composer-send-button-android.png" />
+  <img src="/images/compact-message-composer-send-button-android.png" />
 </Frame>
 
 ```xml drawable/custom_send_button.xml
@@ -542,7 +542,7 @@ imageView.setOnClickListener(new View.OnClickListener() {
         Toast.makeText(YourActivity.this, "Custom Send Button Clicked !!!", Toast.LENGTH_SHORT).show();
     }
 });
-singleLineComposer.setSendButtonView(imageView);
+compactMessageComposer.setSendButtonView(imageView);
 ```
 
 </Tab>
@@ -556,7 +556,7 @@ imageView.setOnClickListener {
         .makeText(this@YourActivity, "Custom Send Button Clicked !!!", Toast.LENGTH_SHORT)
         .show()
 }
-singleLineComposer.setSendButtonView(imageView)
+compactMessageComposer.setSendButtonView(imageView)
 ```
 
 </Tab>
@@ -567,19 +567,19 @@ singleLineComposer.setSendButtonView(imageView)
 
 #### setHeaderView
 
-You can set custom headerView to the SingleLineComposer component using the following method.
+You can set custom headerView to the CompactMessageComposer component using the following method.
 
 <Tabs>
 <Tab title="Java">
 ```java
-singleLineComposer.setHeaderView(view);
+compactMessageComposer.setHeaderView(view);
 ```
 
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin
-singleLineComposer.setHeaderView(view)
+compactMessageComposer.setHeaderView(view)
 ```
 
 </Tab>
@@ -589,10 +589,10 @@ singleLineComposer.setHeaderView(view)
 **Example**
 
 <Frame>
-  <img src="/images/single-line-composer-header-view-android.png" />
+  <img src="/images/compact-message-composer-header-view-android.png" />
 </Frame>
 
-In the following example, we're going to apply a mock smart reply view to the SingleLineComposer Component using the `.setHeaderView()` method.
+In the following example, we're going to apply a mock smart reply view to the CompactMessageComposer Component using the `.setHeaderView()` method.
 
 ```xml custom_header_layout.xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -647,7 +647,7 @@ In the following example, we're going to apply a mock smart reply view to the Si
 <Tab title="Java">
 ```java
 View view = getLayoutInflater().inflate(R.layout.custom_header_layout, null);
-singleLineComposer.setHeaderView(view);
+compactMessageComposer.setHeaderView(view);
 ```
 
 </Tab>
@@ -655,7 +655,7 @@ singleLineComposer.setHeaderView(view);
 <Tab title="Kotlin">
 ```kotlin
 val view: View = LayoutInflater.from(context).inflate(R.layout.custom_header_layout, null)
-singleLineComposer.setHeaderView(view)
+compactMessageComposer.setHeaderView(view)
 ```
 
 </Tab>
@@ -666,19 +666,19 @@ singleLineComposer.setHeaderView(view)
 
 #### setFooterView
 
-You can set a custom footer view to the SingleLineComposer component using the following method.
+You can set a custom footer view to the CompactMessageComposer component using the following method.
 
 <Tabs>
 <Tab title="Java">
 ```java
-singleLineComposer.setFooterView(view);
+compactMessageComposer.setFooterView(view);
 ```
 
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin
-singleLineComposer.setFooterView(view)
+compactMessageComposer.setFooterView(view)
 ```
 
 </Tab>
