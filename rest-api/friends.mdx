@@ -1,11 +1,12 @@
 ---
 title: "Overview"
+description: "Manage friend relationships between users."
 ---
 
 If you want to associate friends with your users, you must handle friend management in your app.\
 Once two users are friends (i.e. they have accepted each other as friends), then you can associate them as friends in CometChat.
 
-## Endpoints
+### Available operations
 
 | Method | Endpoint               | Description                |
 | ------ | ---------------------- | -------------------------- |
@@ -13,10 +14,20 @@ Once two users are friends (i.e. they have accepted each other as friends), then
 | GET    | `/users/{uid}/friends` | List all friends of a user |
 | DELETE | `/users/{uid}/friends` | Remove friends from a user |
 
-## Properties
+### Friend properties
 
 The following table lists the properties that the Friends API supports
 
 | Parameters | Type             | Description                                                                                                                   |
 | ---------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | accepted   | array of strings | (_optional_) Indicates an array of UIDs that are to be made friends. Maximum of 25 users can be passed in the accepted array. |
+
+### Error handling
+
+| Error Code | Description |
+| --- | --- |
+| `AUTH_ERR_EMPTY_APIKEY` | API key is missing from the request headers |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | The provided API key is invalid |
+| `ERR_UID_NOT_FOUND` | The specified user UID does not exist |
+
+For the complete list of error codes, see [Error Guide](/articles/error-guide).

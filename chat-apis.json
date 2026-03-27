@@ -364,7 +364,7 @@
         ],
         "summary": "Create",
         "description": "Creates a new user",
-        "operationId": "creates-user",
+        "operationId": "create-user",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2027,7 +2027,7 @@
                       "receiver": "cometchat-uid-2",
                       "muid": "16Jan3:41423PM",
                       "interactionGoal": {
-                        "type": "anyAction",
+                        "type": "anyOf",
                         "elementIds": []
                       },
                       "allowSenderInteraction": false,
@@ -2818,7 +2818,7 @@
         ],
         "summary": "Delete Message",
         "description": "Deletes the message.",
-        "operationId": "deletes-message",
+        "operationId": "delete-message",
         "parameters": [
           {
             "$ref": "#/components/parameters/onBehalfOf"
@@ -3834,7 +3834,7 @@
         ],
         "summary": "Delete Conversation",
         "description": "This API is deprecated please use Reset User/GroupConversation API",
-        "operationId": "deletes-conversation",
+        "operationId": "delete-conversation",
         "parameters": [
           {
             "name": "onBehalfOf",
@@ -4015,7 +4015,7 @@
         ],
         "summary": "Update User Conversation",
         "description": "Updating User Conversation",
-        "operationId": "updates-user-conversation",
+        "operationId": "update-user-conversation",
         "parameters": [
           {
             "$ref": "#/components/parameters/uid--conversation"
@@ -4166,7 +4166,7 @@
         ],
         "summary": "Reset User Conversation",
         "description": "Resetting User Conversation",
-        "operationId": "resets-user-conversation",
+        "operationId": "reset-user-conversation",
         "parameters": [
           {
             "name": "onBehalfOf",
@@ -4564,7 +4564,7 @@
         ],
         "summary": "Update Group Conversation",
         "description": "Updating Group Conversation",
-        "operationId": "updates-group-conversation",
+        "operationId": "update-group-conversation",
         "parameters": [
           {
             "$ref": "#/components/parameters/guid--conversation"
@@ -4715,7 +4715,7 @@
         ],
         "summary": "Reset Group Conversation",
         "description": "Resetting Group Conversation",
-        "operationId": "resets-group-conversation",
+        "operationId": "reset-group-conversation",
         "parameters": [
           {
             "name": "onBehalfOf",
@@ -5770,7 +5770,7 @@
                 "schema": {
                   "properties": {
                     "data": {
-                      "type": "object"
+                      "type": "array"
                     }
                   },
                   "type": "object"
@@ -6466,6 +6466,7 @@
           "Blocked Users"
         ],
         "summary": "Block User",
+        "operationId": "block-users",
         "description": "Blocks the specified user",
         "parameters": [
           {
@@ -6546,6 +6547,7 @@
           "Blocked Users"
         ],
         "summary": "Unblock User",
+        "operationId": "unblock-users",
         "description": "Unblocks the specified user",
         "parameters": [
           {
@@ -6626,6 +6628,7 @@
           "Blocked Users"
         ],
         "summary": "List Blocked Users",
+        "operationId": "list-blocked-users",
         "description": "Retrieves the blocked users",
         "parameters": [
           {
@@ -8552,7 +8555,7 @@
         ],
         "summary": "Send Bot Message",
         "description": "Sends Message from a Bot.",
-        "operationId": "sends-bot-message",
+        "operationId": "send-bot-message",
         "parameters": [
           {
             "name": "uid",
@@ -8844,7 +8847,7 @@
                       "receiver": "cometchat-uid-2",
                       "muid": "16Jan3:41423PM",
                       "interactionGoal": {
-                        "type": "anyAction",
+                        "type": "anyOf",
                         "elementIds": []
                       },
                       "allowSenderInteraction": false,
@@ -13793,7 +13796,7 @@
               "type": {
                 "type": "string",
                 "enum": [
-                  "anyAction",
+                  "anyOf",
                   "allOf",
                   "oneOf",
                   "none"
@@ -16407,7 +16410,7 @@
                                             "type": "string"
                                           },
                                           "createdAt": {
-                                            "type": "string"
+                                            "type": "integer"
                                           }
                                         },
                                         "type": "object"
@@ -16438,7 +16441,7 @@
                                             "type": "string"
                                           },
                                           "createdAt": {
-                                            "type": "string"
+                                            "type": "integer"
                                           },
                                           "conversationId": {
                                             "type": "string"

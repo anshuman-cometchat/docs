@@ -17,6 +17,7 @@
                     "App"
                 ],
                 "summary": "Create",
+                "operationId": "create-app",
                 "description": "Creates an app in the account. It returns all the app related information.",
                 "parameters": [
                     {
@@ -128,6 +129,7 @@
                     "App"
                 ],
                 "summary": "List",
+                "operationId": "list-apps",
                 "description": "Lists all the apps for an account.",
                 "parameters": [
                     {
@@ -239,6 +241,7 @@
                     "App"
                 ],
                 "summary": "Delete",
+                "operationId": "delete-app",
                 "description": "Schedule a specific app for deletion.",
                 "parameters": [
                     {
@@ -357,6 +360,7 @@
                     "Extensions"
                 ],
                 "summary": "Enable/Disable",
+                "operationId": "enable-extension",
                 "description": "Enables or disables the extension for an app.",
                 "parameters": [
                     {
@@ -442,6 +446,7 @@
                     "Extensions"
                 ],
                 "summary": "List Extensions",
+                "operationId": "list-extensions",
                 "description": "List the Extensions.",
                 "parameters": [
                     {
@@ -1715,7 +1720,7 @@
                         }
                     }
                 },
-                "operationId": "create-chat-widget"
+                "operationId": "store-chat-widget"
             },
             "put": {
                 "tags": [
@@ -2169,7 +2174,7 @@
                         }
                     }
                 },
-                "operationId": "delete-settings-for-giphy-gifs-giphy"
+                "operationId": "delete-settings-giphy"
             }
         },
         "/apps/{appId}/extensions/xss-filter/v1/settings": {
@@ -8030,6 +8035,7 @@
                     "Team Management"
                 ],
                 "summary": "Adds/Remove collaborators",
+                "operationId": "add-collaborator",
                 "description": "Adds or removes collaborators for an app.",
                 "parameters": [
                     {
@@ -8121,6 +8127,7 @@
                     "Team Management"
                 ],
                 "summary": "List collaborators",
+                "operationId": "list-collaborators",
                 "description": "Lists all the collaborators of an app.",
                 "parameters": [
                     {
@@ -8626,7 +8633,7 @@
                         }
                     }
                 },
-                "operationId": "adds-settings-profanity-filter"
+                "operationId": "store-settings-profanity-filter"
             },
             "get": {
                 "tags": [
@@ -11339,9 +11346,9 @@
                         "type": "string",
                         "enum": [
                             "equals",
-                            "not equals",
+                            "notEquals",
                             "in",
-                            "not in",
+                            "notIn",
                             "startsWith"
                         ],
                         "example": "equals"
