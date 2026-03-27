@@ -14,16 +14,16 @@ description: "Integrate AI Agents, AI Moderation, and AI User Copilot into your 
 
 ```javascript
 // Listen for real-time AI Agent events (streaming)
-CometChat.addAIAssistantListener("LISTENER_ID", {
+CometChat.addAIAssistantListener("LISTENER_ID", new CometChat.AIAssistantListener({
   onAIAssistantEventReceived: (event) => console.log("Event:", event)
-});
+}));
 
 // Listen for persisted agentic messages
-CometChat.addMessageListener("LISTENER_ID", {
+CometChat.addMessageListener("LISTENER_ID", new CometChat.MessageListener({
   onAIAssistantMessageReceived: (msg) => console.log("Assistant reply:", msg),
   onAIToolResultReceived: (msg) => console.log("Tool result:", msg),
   onAIToolArgumentsReceived: (msg) => console.log("Tool args:", msg)
-});
+}));
 
 // Cleanup
 CometChat.removeAIAssistantListener("LISTENER_ID");
@@ -154,7 +154,7 @@ After the run completes, these messages arrive via `MessageListener`:
 | `AIToolResultMessage` | The final output of a tool call |
 | `AIToolArgumentMessage` | The arguments passed to a tool |
 
-Each message type extends `BaseMessage` and has a typed data accessor:
+Each message type extends [`BaseMessage`](/sdk/reference/messages#basemessage) and has a typed data accessor:
 
 | Message Type | Data Getter | Data Properties |
 |--------------|-------------|-----------------|
