@@ -30,7 +30,6 @@ description: "A compact message input component with rich text formatting, auto-
       "onVoiceRecordingStart": "() => void",
       "onVoiceRecordingEnd": "(recordedFile: string) => void",
       "onAttachmentClick": "() => void",
-      "onToolbarVisibilityChange": "(visible: boolean) => void",
       "onMentionLimitReached": "() => void"
     },
     "visibility": {
@@ -50,7 +49,6 @@ description: "A compact message input component with rich text formatting, auto-
     },
     "richText": {
       "enableRichTextEditor": { "type": "boolean", "default": true },
-      "showToolbarToggle": { "type": "boolean", "default": true },
       "hideRichTextFormattingOptions": { "type": "boolean", "default": false },
       "showTextSelectionMenuItems": { "type": "boolean", "default": true },
       "enterKeyBehavior": { "type": "EnterKeyBehavior", "default": "EnterKeyBehavior.NewLine", "note": "Android only" }
@@ -227,30 +225,6 @@ function CompactComposerWithTextTracking() {
 }
 ```
 
-#### onToolbarVisibilityChange
-
-Fires when the rich text formatting toolbar visibility changes.
-
-```tsx lines
-onToolbarVisibilityChange?: (visible: boolean) => void
-```
-
-```tsx lines
-import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react-native";
-
-function CompactComposerWithToolbarTracking() {
-  return (
-    <CometChatCompactMessageComposer
-      user={chatUser}
-      enableRichTextEditor={true}
-      onToolbarVisibilityChange={(visible: boolean) => {
-        console.log("Toolbar visible:", visible);
-      }}
-    />
-  );
-}
-```
-
 #### onMentionLimitReached
 
 Fires when the maximum mention limit per message is reached.
@@ -337,11 +311,11 @@ The toolbar provides the following formatting tools:
 
 The toolbar supports multiple display modes controlled via props:
 
-| `enableRichTextEditor` | `hideRichTextFormattingOptions` | `showToolbarToggle` | Result |
-|------------------------|-------------------------------|---------------------|--------|
-| `false` | - | - | Plain text, no formatting UI |
-| `true` | `true` | `false` | Toolbar always visible above input |
-| `true` | `false` | `false` | No toolbar UI, only text selection menu items work |
+| `enableRichTextEditor` | `hideRichTextFormattingOptions` | Result |
+|------------------------|-------------------------------|--------|
+| `false` | - | Plain text, no formatting UI |
+| `true` | `true` | Toolbar always visible above input |
+| `true` | `false` | No toolbar UI, only text selection menu items work |
 
 ### Text Selection Menu Items
 
@@ -383,7 +357,6 @@ import { CometChatCompactMessageComposer, EnterKeyBehavior } from "@cometchat/ch
 <CometChatCompactMessageComposer
   user={chatUser}
   enableRichTextEditor={true}
-  showToolbarToggle={false}
   showTextSelectionMenuItems={true}
 />
 ```
@@ -765,7 +738,6 @@ Using the `style` prop you can customize the look and feel of the component in y
 | `imageQuality` | Image quality for camera (1-100) | `imageQuality={50}` |
 | `auxiliaryButtonsAlignment` | Alignment of auxiliary buttons | `auxiliaryButtonsAlignment="right"` |
 | `enableRichTextEditor` | Enable/disable rich text formatting | `enableRichTextEditor={true}` |
-| `showToolbarToggle` | Show Aa toggle button for toolbar | `showToolbarToggle={true}` |
 | `hideRichTextFormattingOptions` | Always-visible toolbar mode | `hideRichTextFormattingOptions={true}` |
 | `showTextSelectionMenuItems` | Formatting in native text selection menu | `showTextSelectionMenuItems={true}` |
 | `enterKeyBehavior` | Android Enter key behavior | `enterKeyBehavior={EnterKeyBehavior.SendMessage}` |
