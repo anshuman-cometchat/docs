@@ -29,3 +29,13 @@ The **Settings** API lets you customize how conversations behave in your CometCh
 - **Conversations** — These settings directly control how [Conversations](/rest-api/conversations) display the last message and calculate unread counts.
 - **Messages** — Settings determine which [Message](/rest-api/messages) types affect conversation previews.
 - **Management APIs** — Use the [Map Settings API](/rest-api/management-apis/settings/maps-settings) to toggle these features.
+
+## Error Handling
+
+| Error Code | Description |
+| --- | --- |
+| `AUTH_ERR_EMPTY_APIKEY` | The `apikey` header is missing from the request |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | The provided API key is invalid |
+| `AUTH_ERR_NO_ACCESS` | The API key doesn't have the required scope |
+
+For the complete error reference, see [Error Guide](/articles/error-guide).

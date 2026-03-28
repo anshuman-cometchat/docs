@@ -63,3 +63,13 @@ The following table lists the properties that the Restrict feature API supports.
 | Parameters         | Type             | Description                                                      |
 | :----------------- | :--------------- | :--------------------------------------------------------------- |
 | featuresToRestrict | array of strings | (_optional_) Indicates the features that needs to be restricted. |
+
+## Error Handling
+
+| Error Code | Description |
+| --- | --- |
+| `AUTH_ERR_EMPTY_APIKEY` | The `apikey` header is missing from the request |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | The provided API key is invalid |
+| `AUTH_ERR_NO_ACCESS` | The API key doesn't have the required scope |
+
+For the complete error reference, see [Error Guide](/articles/error-guide).

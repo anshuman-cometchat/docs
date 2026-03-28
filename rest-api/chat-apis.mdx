@@ -7,27 +7,27 @@ Welcome to CometChat's REST API documentation! This documentation provides detai
 
 ## API Resources
 
-| Resource | Description |
-| -------- | ----------- |
-| [Users](/rest-api/users) | Create, list, update, and delete users |
-| [Auth Tokens](/rest-api/auth-tokens) | Create, list, and manage user authentication tokens |
-| [Groups](/rest-api/groups) | Create, list, update, and delete groups |
-| [Group Members](/rest-api/group-members) | Add, remove, list, and manage group membership |
-| [Messages](/rest-api/messages) | Send, list, update, and delete messages |
-| [Conversations](/rest-api/conversations) | List and manage user conversations |
-| [Friends](/rest-api/friends) | Manage friend relationships between users |
-| [Blocked Users](/rest-api/blocked-users) | Block and unblock users |
-| [Banned Users](/rest-api/banned-users) | Ban and unban users from groups |
-| [Roles](/rest-api/roles) | Create and manage user roles |
-| [API Keys](/rest-api/api-keys) | Create and manage API keys |
-| [Calls](/rest-api/get-call) | Retrieve and list call records |
-| [RBAC](/rest-api/rbac-overview) | Configure role-based and scope-based access control |
-| [Restrict Features](/rest-api/restrict-features) | Restrict features per role |
-| [Notifications](/rest-api/notifications-apis) | Manage push and other notifications |
-| [Moderation](/rest-api/moderation-apis) | Moderate content and users |
-| [AI Agents](/rest-api/ai-agents-apis) | Configure and manage AI agents |
-| [Data Import](/rest-api/data-import) | Import users, groups, members, and messages in bulk |
-| [Metrics](/rest-api/metrics) | Retrieve app usage metrics |
+| Resource                                         | Description                                         |
+| ------------------------------------------------ | --------------------------------------------------- |
+| [Users](/rest-api/users)                         | Create, list, update, and delete users              |
+| [Auth Tokens](/rest-api/auth-tokens)             | Create, list, and manage user authentication tokens |
+| [Groups](/rest-api/groups)                       | Create, list, update, and delete groups             |
+| [Group Members](/rest-api/group-members)         | Add, remove, list, and manage group membership      |
+| [Messages](/rest-api/messages)                   | Send, list, update, and delete messages             |
+| [Conversations](/rest-api/conversations)         | List and manage user conversations                  |
+| [Friends](/rest-api/friends)                     | Manage friend relationships between users           |
+| [Blocked Users](/rest-api/blocked-users)         | Block and unblock users                             |
+| [Banned Users](/rest-api/banned-users)           | Ban and unban users from groups                     |
+| [Roles](/rest-api/roles)                         | Create and manage user roles                        |
+| [API Keys](/rest-api/api-keys)                   | Create and manage API keys                          |
+| [Calls](/rest-api/get-call)                      | Retrieve and list call records                      |
+| [RBAC](/rest-api/rbac-overview)                  | Configure role-based and scope-based access control |
+| [Restrict Features](/rest-api/restrict-features) | Restrict features per role                          |
+| [Notifications](/rest-api/notifications-apis)    | Manage push and other notifications                 |
+| [Moderation](/rest-api/moderation-apis)          | Moderate content and users                          |
+| [AI Agents](/rest-api/ai-agents-apis)            | Configure and manage AI agents                      |
+| [Data Import](/rest-api/data-import)             | Import users, groups, members, and messages in bulk |
+| [Metrics](/rest-api/metrics)                     | Retrieve app usage metrics                          |
 
 ## Introduction
 
@@ -45,12 +45,31 @@ To get started with CometChat's REST API, you'll need to obtain your App ID, API
   <img src="/images/cb897cc3-ddeeda4-cometchat_dashboard_credentials.png" />
 </Frame>
 
+## API Resources
+
+| Resource                                 | Description                                          |
+| ---------------------------------------- | ---------------------------------------------------- |
+| [API Keys](/rest-api/api-keys)           | Manage API keys for authenticating REST API requests |
+| [Auth Tokens](/rest-api/auth-tokens)     | Create and manage user authentication tokens         |
+| [Roles](/rest-api/roles)                 | Define and manage user roles and permissions         |
+| [Users](/rest-api/users)                 | Create, update, delete, and list users               |
+| [Groups](/rest-api/groups)               | Create and manage groups                             |
+| [Group Members](/rest-api/group-members) | Add, remove, and manage group members                |
+| [Messages](/rest-api/messages)           | Send, receive, and manage messages                   |
+| [Conversations](/rest-api/conversations) | Manage user and group conversations                  |
+| [Blocked Users](/rest-api/blocked-users) | Block and unblock users                              |
+| [Friends](/rest-api/friends)             | Manage friend relationships                          |
+| [Banned Users](/rest-api/banned-users)   | Ban and unban users from groups                      |
+
 ## Authentication
 
 Authentication is a crucial aspect of utilizing CometChat's REST API securely. All API requests must be accompanied by an API key to authenticate the incoming requests. CometChat employs industry-standard authentication mechanisms to ensure the security and integrity of your data.
 
 <Note>
-The HTTP header name for authentication is **`apikey`** (all lowercase). In JSON response bodies, the API key property is returned as **`apiKey`** (camelCase). This distinction is intentional — HTTP headers are case-insensitive by specification, while JSON properties are case-sensitive.
+  The HTTP header name for authentication is **`apikey`** (all lowercase). In
+  JSON response bodies, the API key property is returned as **`apiKey`**
+  (camelCase). This distinction is intentional — HTTP headers are
+  case-insensitive by specification, while JSON properties are case-sensitive.
 </Note>
 
 ## Endpoints
