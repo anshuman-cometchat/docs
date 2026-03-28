@@ -5066,7 +5066,35 @@
                   "properties": {
                     "data": {
                       "type": "array",
-                      "items": {}
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "authToken": {
+                            "type": "string",
+                            "description": "The authentication token string"
+                          },
+                          "uid": {
+                            "type": "string",
+                            "description": "UID of the user this token belongs to"
+                          },
+                          "createdAt": {
+                            "type": "integer",
+                            "description": "Unix timestamp of token creation"
+                          },
+                          "platform": {
+                            "type": "string",
+                            "description": "Platform the token was created for"
+                          },
+                          "userAgent": {
+                            "type": "string",
+                            "description": "User agent string of the client"
+                          },
+                          "appInfo": {
+                            "type": "string",
+                            "description": "Application information"
+                          }
+                        }
+                      }
                     },
                     "meta": {
                       "type": "object"

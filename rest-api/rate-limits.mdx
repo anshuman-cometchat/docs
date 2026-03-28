@@ -39,3 +39,25 @@ To handle rate limits gracefully:
 1. Implement exponential backoff when retrying failed requests
 2. Monitor your API usage to stay within limits
 3. Contact support if you need higher limits for your use case
+
+## Rate Limit Response Headers
+
+When rate limited, the API returns HTTP 429 with these headers:
+
+| Header                  | Description                                      |
+| ----------------------- | ------------------------------------------------ |
+| `X-RateLimit-Limit`     | Maximum requests allowed in the current window   |
+| `X-RateLimit-Remaining` | Requests remaining in the current window         |
+| `X-RateLimit-Reset`     | Unix timestamp when the rate limit window resets |
+| `Retry-After`           | Seconds to wait before retrying                  |
+
+## Retry Strategy
+
+```
+if response.status == 429:
+    wait = response.headers['Retry-After'] or 60
+    sleep(wait)
+    retry()
+```
+
+Use exponential backoff with jitter for production implementations. Start with the `Retry-After` value, then double the wait on each subsequent 429 response, up to a maximum of 5 minutes.

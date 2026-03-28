@@ -47,7 +47,9 @@ To get started with CometChat's REST API, you'll need to obtain your App ID, API
 
 ## Authentication
 
-Authentication is a crucial aspect of utilizing CometChat's REST API securely. All API requests must be accompanied by an API key to authenticate the incoming requests. CometChat employs industry-standard authentication mechanisms to ensure the security and integrity of your data.
+Authentication is a crucial aspect of utilizing CometChat's REST API securely. All API requests must be accompanied by an API key to authenticate the incoming requests.
+
+For a complete guide on API key scopes, auth tokens, the `onBehalfOf` header, and security best practices, see the [Authentication Guide](/rest-api/authentication).
 
 <Note>
   The HTTP header name for authentication is **`apikey`** (all lowercase). In
@@ -109,3 +111,13 @@ https://<appId>.api-us.cometchat.io/v3
 https://<appId>.api-eu.cometchat.io/v3
 https://<appId>.api-in.cometchat.io/v3
 ```
+
+## API Versioning
+
+The current API version is `v3`. All endpoints use the `/v3/` path prefix. When breaking changes are introduced, CometChat will release a new version while maintaining the previous version for a deprecation period.
+
+Deprecated endpoints are marked with a `deprecated` badge in the sidebar and include migration guidance with replacement endpoints.
+
+## Support
+
+If you encounter any issues, create a [support ticket](https://help.cometchat.com/hc/en-us/requests/new) or reach out via the [CometChat Dashboard](https://app.cometchat.com/). Check the [API Status Page](https://status.cometchat.com/) for service availability.
