@@ -110,7 +110,8 @@
               "enum": [
                 "fullAccess",
                 "authOnly"
-              ]
+              ],
+              "description": "API key scope. fullAccess: all operations. authOnly: user auth only."
             }
           },
           {
@@ -508,7 +509,8 @@
                 "enum": [
                   "name",
                   "uid"
-                ]
+                ],
+                "description": "Search field."
               }
             }
           },
@@ -521,7 +523,8 @@
               "enum": [
                 "available",
                 "offline"
-              ]
+              ],
+              "description": "User status filter."
             }
           },
           {
@@ -974,7 +977,8 @@
                         "avatar",
                         "link",
                         "metadata"
-                      ]
+                      ],
+                      "description": "User attributes that can be unset."
                     },
                     "default": [
                       "avatar"
@@ -1295,7 +1299,8 @@
                 "name",
                 "guid",
                 "createdAt"
-              ]
+              ],
+              "description": "Sort field for listing groups."
             }
           },
           {
@@ -1307,7 +1312,8 @@
               "enum": [
                 "asc",
                 "desc"
-              ]
+              ],
+              "description": "Sort order."
             }
           },
           {
@@ -1328,7 +1334,8 @@
               "enum": [
                 "append",
                 "prepend"
-              ]
+              ],
+              "description": "Cursor pagination direction."
             }
           },
           {
@@ -1370,7 +1377,8 @@
                 "public",
                 "private",
                 "password"
-              ]
+              ],
+              "description": "Group type. public: anyone can join. password: requires password. private: invitation only."
             }
           },
           {
@@ -1626,7 +1634,8 @@
                         "icon",
                         "description",
                         "metadata"
-                      ]
+                      ],
+                      "description": "Group attributes that can be unset."
                     }
                   }
                 },
@@ -1744,7 +1753,6 @@
                   "propertyName": "category",
                   "mapping": {
                     "message": "#/components/schemas/messageCategorySchema",
-                    "interactive": "#/components/schemas/interactiveCategorySchema",
                     "custom": "#/components/schemas/customCategorySchema"
                   }
                 },
@@ -1756,363 +1764,10 @@
                   {
                     "title": "Custom",
                     "$ref": "#/components/schemas/customCategorySchema"
-                  },
-                  {
-                    "title": "Interactive",
-                    "$ref": "#/components/schemas/interactiveCategorySchema"
                   }
                 ]
               },
-              "examples": {
-                "form-interactive": {
-                  "summary": "Interactive form example",
-                  "value": {
-                    "receiverType": "user",
-                    "data": {
-                      "interactionGoal": {
-                        "type": "allOf",
-                        "elementIds": [
-                          "element8"
-                        ]
-                      },
-                      "allowSenderInteraction": true,
-                      "interactiveData": {
-                        "title": "Form Title",
-                        "formFields": [
-                          {
-                            "elementType": "textInput",
-                            "elementId": "element1",
-                            "defaultValue": "vivek",
-                            "label": "Name",
-                            "optional": false,
-                            "maxLines": 1,
-                            "placeholder": {
-                              "text": "write your name here"
-                            }
-                          },
-                          {
-                            "elementType": "textInput",
-                            "elementId": "element2",
-                            "label": "Last Name",
-                            "optional": false,
-                            "maxLines": 1
-                          },
-                          {
-                            "elementType": "textInput",
-                            "elementId": "element3",
-                            "label": "Address",
-                            "optional": false,
-                            "maxLines": 5
-                          },
-                          {
-                            "elementType": "dropdown",
-                            "elementId": "element4",
-                            "label": "Country",
-                            "optional": false,
-                            "defaultValue": "option1",
-                            "options": [
-                              {
-                                "value": "option1",
-                                "label": "INDIA"
-                              },
-                              {
-                                "value": "option2",
-                                "label": "AUSTRALIA"
-                              }
-                            ]
-                          },
-                          {
-                            "elementType": "checkbox",
-                            "elementId": "element5",
-                            "optional": true,
-                            "label": "Services",
-                            "options": [
-                              {
-                                "value": "option1",
-                                "label": "Garbage"
-                              },
-                              {
-                                "value": "option2",
-                                "label": "Electricity Bill"
-                              },
-                              {
-                                "value": "option3",
-                                "label": "Lift"
-                              }
-                            ],
-                            "defaultValue": [
-                              "option1",
-                              "option2"
-                            ]
-                          },
-                          {
-                            "elementType": "singleSelect",
-                            "elementId": "element6",
-                            "optional": false,
-                            "label": "Wing",
-                            "defaultValue": "option1",
-                            "options": [
-                              {
-                                "value": "option1",
-                                "label": "A Wing"
-                              },
-                              {
-                                "value": "option2",
-                                "label": "B Wing"
-                              }
-                            ]
-                          },
-                          {
-                            "elementType": "button",
-                            "elementId": "element9",
-                            "buttonText": "About us",
-                            "disableAfterInteracted": true,
-                            "action": {
-                              "actionType": "urlNavigation",
-                              "url": "https://www.cometchat.com"
-                            }
-                          },
-                          {
-                            "elementType": "dateTime",
-                            "elementId": "element11",
-                            "defaultValue": false,
-                            "label": "Contact Number",
-                            "optional": false,
-                            "mode": "date",
-                            "dateTimeFormat": "Y-m-d H:i:ss",
-                            "timezoneCode": "Asia/Kolkata",
-                            "from1": "2024-02-23T14:30",
-                            "from": "2024-06-23",
-                            "to": "2024-06-24",
-                            "maxLines": 1,
-                            "placeholder": {
-                              "text": "Enter contact number"
-                            }
-                          }
-                        ],
-                        "submitElement": {
-                          "elementType": "button",
-                          "elementId": "element8",
-                          "buttonText": "Submit",
-                          "disableAfterInteracted": true,
-                          "action": {
-                            "actionType": "apiAction",
-                            "url": "https://<appId>.api-<region>.cometchat.io/v3/messages",
-                            "method": "POST",
-                            "payload": {
-                              "category": "message",
-                              "type": "text",
-                              "data": {
-                                "text": "Thanks For filling the Form!"
-                              },
-                              "receiver": "cometchat-uid-2",
-                              "receiverType": "user"
-                            },
-                            "headers": {
-                              "appId": "10893f2ae68f59",
-                              "Content-Type": "application/json",
-                              "apiKey": "5797f2d3d103d7d78f085eb46bfd14d5c45ddfdf",
-                              "onBehalfOf": "cometchat-uid-1"
-                            },
-                            "dataKey": "CometChatData"
-                          }
-                        }
-                      }
-                    },
-                    "category": "interactive",
-                    "type": "form",
-                    "receiver": "cometchat-uid-1",
-                    "tags": [
-                      "tag1"
-                    ]
-                  }
-                },
-                "card-interactive": {
-                  "summary": "Interactive card example",
-                  "value": {
-                    "receiverType": "user",
-                    "data": {
-                      "interactionGoal": {
-                        "type": "none"
-                      },
-                      "allowSenderInteraction": true,
-                      "interactiveData": {
-                        "imageUrl": "https://upload.wikimedia.org/wikipedia/en/e/e1/Thomas_D._Baird_%28low-resolution%29.jpg",
-                        "text": "Thanks For filling the Form!.\n\nWant to make your gifts more special? Now its easy with our personalized card messages!\n\nOur new feature lets you add a custom message on a beautifully designed card, making your gift-giving extra personal and memorable.\nWhether its for a birthday , anniversary , or just because , our card messages will express your feelings perfectly.\n\nTo start creating your own card message:\nChoose the gift\nWrite your heartfelt message\nWell print it on a high-quality card and include it with your gift\nAdd a touch of your own sentiments with our personalized card messages. Make every gift unforgettable. Start creating your card message today!\nVisit our website Website Link or download our app App Link.\n\nExpress more than just words with our Personalized Card Messages.Because its not just a gift, its your feelings.\n",
-                        "cardActions": [
-                          {
-                            "elementType": "button",
-                            "elementId": "element8",
-                            "buttonText": "Buy now",
-                            "disableAfterInteracted": true,
-                            "action": {
-                              "actionType": "apiAction",
-                              "url": "https://<appId>.api-<region>.cometchat.io/v3/messages",
-                              "method": "POST",
-                              "payload": {
-                                "category": "message",
-                                "type": "text",
-                                "data": {
-                                  "text": "Thanks For filling the Form!"
-                                },
-                                "receiver": "group_1695921003310",
-                                "receiverType": "group"
-                              },
-                              "headers": {
-                                "appId": "10893f2ae68f59",
-                                "Content-Type": "application\\/json",
-                                "apiKey": "5797f2d3d103d7d78f085eb46bfd14d5c45ddfdf",
-                                "onBehalfOf": "cometchat-uid-1"
-                              },
-                              "dataKey": "CometChatData"
-                            }
-                          },
-                          {
-                            "elementType": "button",
-                            "elementId": "element9",
-                            "buttonText": "Navigate",
-                            "disableAfterInteracted": true,
-                            "action": {
-                              "actionType": "urlNavigation",
-                              "url": "https://www.cometchat.com"
-                            }
-                          },
-                          {
-                            "elementType": "button",
-                            "elementId": "element10",
-                            "buttonText": "Submit",
-                            "disableAfterInteracted": true,
-                            "action": {
-                              "actionType": "apiAction",
-                              "url": "https://<appId>.api-<region>.cometchat.io/v3/messages",
-                              "method": "POST",
-                              "payload": {
-                                "category": "message",
-                                "type": "text",
-                                "data": {
-                                  "text": "Thanks For filling the Form!"
-                                },
-                                "receiver": "group_1695921003310",
-                                "receiverType": "group"
-                              },
-                              "headers": {
-                                "appId": "10893f2ae68f59",
-                                "Content-Type": "application/json",
-                                "apiKey": "5797f2d3d103d7d78f085eb46bfd14d5c45ddfdf",
-                                "onBehalfOf": "cometchat-uid-1"
-                              },
-                              "dataKey": "CometChatData"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    "category": "interactive",
-                    "type": "card",
-                    "receiver": "cometchat-uid-1",
-                    "tags": [
-                      "tag1"
-                    ]
-                  }
-                },
-                "scheduler-interactive": {
-                  "summary": "Interactive scheduler example",
-                  "value": {
-                    "receiverType": "user",
-                    "receiver": "cometchat-uid-2",
-                    "category": "interactive",
-                    "type": "scheduler",
-                    "data": {
-                      "receiverType": "user",
-                      "receiver": "cometchat-uid-2",
-                      "muid": "16Jan3:41423PM",
-                      "interactionGoal": {
-                        "type": "anyOf",
-                        "elementIds": []
-                      },
-                      "allowSenderInteraction": false,
-                      "interactiveData": {
-                        "title": "Meet with Dr. Jacob",
-                        "avatarUrl": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-1.webp",
-                        "bufferTime": 15,
-                        "icsFileUrl": "https://data-us.cometchat.io/23965108c9b89ad2/media/1704380186_864562419_ab59586ed5ab5f89d2c960457ceee249.ics",
-                        "availability": {
-                          "friday": [
-                            {
-                              "to": "2359",
-                              "from": "0000"
-                            }
-                          ],
-                          "monday": [
-                            {
-                              "to": "1700",
-                              "from": "0600"
-                            }
-                          ],
-                          "tuesday": [
-                            {
-                              "to": "1400",
-                              "from": "1000"
-                            },
-                            {
-                              "to": "2000",
-                              "from": "1700"
-                            }
-                          ],
-                          "thursday": [
-                            {
-                              "to": "2359",
-                              "from": "0000"
-                            }
-                          ],
-                          "wednesday": [
-                            {
-                              "to": "0800",
-                              "from": "0600"
-                            },
-                            {
-                              "to": "1700",
-                              "from": "1200"
-                            }
-                          ]
-                        },
-                        "timezoneCode": "Asia/Kolkata",
-                        "duration": 60,
-                        "scheduleElement": {
-                          "action": {
-                            "url": "https://<appId>.api-<region>.cometchat.io/v3/messages",
-                            "actionType": "apiAction",
-                            "method": "post",
-                            "dataKey": "",
-                            "headers": {
-                              "accept": "application/json",
-                              "apiKey": "62a32b5140e6b630dab38e2e690d88de9c69d416",
-                              "onBehalfOf": "suryansh1",
-                              "content-type": "application/json"
-                            },
-                            "payload": {
-                              "data": {
-                                "text": "Meeting Scheduled Successfully!"
-                              },
-                              "type": "text",
-                              "category": "message",
-                              "receiver": "demo1",
-                              "receiverType": "group"
-                            }
-                          },
-                          "elementId": "1",
-                          "buttonText": "Schedule",
-                          "elementType": "button",
-                          "disableAfterInteracted": true
-                        },
-                        "goalCompletionText": "Your meeting has been Scheduled",
-                        "dateRangeStart": "2024-06-09",
-                        "dateRangeEnd": "2024-06-09"
-                      }
-                    }
-                  }
-                }
-              }
+              "examples": {}
             }
           }
         },
@@ -2229,7 +1884,8 @@
                 "video",
                 "audio",
                 "file"
-              ]
+              ],
+              "description": "Media message type."
             }
           },
           {
@@ -2273,7 +1929,8 @@
               "enum": [
                 "user",
                 "group"
-              ]
+              ],
+              "description": "Receiver type. user: one-on-one. group: group conversation."
             }
           },
           {
@@ -2302,7 +1959,8 @@
                 "message",
                 "action",
                 "custom"
-              ]
+              ],
+              "description": "Message category filter."
             }
           },
           {
@@ -5766,7 +5424,8 @@
               "enum": [
                 "available",
                 "offline"
-              ]
+              ],
+              "description": "User status filter."
             }
           },
           {
@@ -7075,7 +6734,8 @@
                         "settings",
                         "description",
                         "metadata"
-                      ]
+                      ],
+                      "description": "Group attributes that can be unset."
                     },
                     "default": []
                   },
@@ -7814,7 +7474,8 @@
                 "video",
                 "audio",
                 "file"
-              ]
+              ],
+              "description": "Media message type."
             }
           },
           {
@@ -7882,7 +7543,8 @@
               "enum": [
                 "append",
                 "prepend"
-              ]
+              ],
+              "description": "Cursor pagination direction."
             }
           },
           {
@@ -8285,7 +7947,8 @@
                 "video",
                 "audio",
                 "file"
-              ]
+              ],
+              "description": "Media message type."
             }
           },
           {
@@ -8361,7 +8024,8 @@
               "enum": [
                 "append",
                 "prepend"
-              ]
+              ],
+              "description": "Cursor pagination direction."
             }
           },
           {
@@ -8613,7 +8277,6 @@
                   "propertyName": "category",
                   "mapping": {
                     "message": "#/components/schemas/messageCategorySchema",
-                    "interactive": "#/components/schemas/interactiveCategorySchema",
                     "custom": "#/components/schemas/customCategorySchema"
                   }
                 },
@@ -8625,346 +8288,10 @@
                   {
                     "title": "Custom",
                     "$ref": "#/components/schemas/customCategorySchema"
-                  },
-                  {
-                    "title": "Interactive",
-                    "$ref": "#/components/schemas/interactiveCategorySchema"
                   }
                 ]
               },
-              "examples": {
-                "form-interactive": {
-                  "summary": "Interactive form example",
-                  "value": {
-                    "receiverType": "user",
-                    "data": {
-                      "interactionGoal": {
-                        "type": "allOf",
-                        "elementIds": [
-                          "element8"
-                        ]
-                      },
-                      "allowSenderInteraction": true,
-                      "interactiveData": {
-                        "title": "Form Title",
-                        "formFields": [
-                          {
-                            "elementType": "textInput",
-                            "elementId": "element1",
-                            "defaultValue": "vivek",
-                            "label": "Name",
-                            "optional": false,
-                            "maxLines": 1,
-                            "placeholder": {
-                              "text": "write your name here"
-                            }
-                          },
-                          {
-                            "elementType": "textInput",
-                            "elementId": "element2",
-                            "label": "Last Name",
-                            "optional": false,
-                            "maxLines": 1
-                          },
-                          {
-                            "elementType": "textInput",
-                            "elementId": "element3",
-                            "label": "Address",
-                            "optional": false,
-                            "maxLines": 5
-                          },
-                          {
-                            "elementType": "dropdown",
-                            "elementId": "element4",
-                            "label": "Country",
-                            "optional": false,
-                            "defaultValue": "option1",
-                            "options": [
-                              {
-                                "value": "option1",
-                                "label": "INDIA"
-                              },
-                              {
-                                "value": "option2",
-                                "label": "AUSTRALIA"
-                              }
-                            ]
-                          },
-                          {
-                            "elementType": "checkbox",
-                            "elementId": "element5",
-                            "optional": true,
-                            "label": "Services",
-                            "options": [
-                              {
-                                "value": "option1",
-                                "label": "Garbage"
-                              },
-                              {
-                                "value": "option2",
-                                "label": "Electricity Bill"
-                              },
-                              {
-                                "value": "option3",
-                                "label": "Lift"
-                              }
-                            ],
-                            "defaultValue": [
-                              "option1",
-                              "option2"
-                            ]
-                          },
-                          {
-                            "elementType": "singleSelect",
-                            "elementId": "element6",
-                            "optional": false,
-                            "label": "Wing",
-                            "defaultValue": "option1",
-                            "options": [
-                              {
-                                "value": "option1",
-                                "label": "A Wing"
-                              },
-                              {
-                                "value": "option2",
-                                "label": "B Wing"
-                              }
-                            ]
-                          },
-                          {
-                            "elementType": "button",
-                            "elementId": "element9",
-                            "buttonText": "About us",
-                            "disableAfterInteracted": true,
-                            "action": {
-                              "actionType": "urlNavigation",
-                              "url": "https://www.cometchat.com"
-                            }
-                          }
-                        ],
-                        "submitElement": {
-                          "elementType": "button",
-                          "elementId": "element8",
-                          "buttonText": "Submit",
-                          "disableAfterInteracted": true,
-                          "action": {
-                            "actionType": "apiAction",
-                            "url": "https://<appId>.api-<region>.cometchat.io/v3/messages",
-                            "method": "POST",
-                            "payload": {
-                              "category": "message",
-                              "type": "text",
-                              "data": {
-                                "text": "Thanks For filling the Form!"
-                              },
-                              "receiver": "cometchat-uid-2",
-                              "receiverType": "user"
-                            },
-                            "headers": {
-                              "appId": "10893f2ae68f59",
-                              "Content-Type": "application/json",
-                              "apiKey": "5797f2d3d103d7d78f085eb46bfd14d5c45ddfdf",
-                              "onBehalfOf": "cometchat-uid-1"
-                            },
-                            "dataKey": "CometChatData"
-                          }
-                        }
-                      }
-                    },
-                    "category": "interactive",
-                    "type": "form",
-                    "receiver": "cometchat-uid-1",
-                    "tags": [
-                      "tag1"
-                    ]
-                  }
-                },
-                "card-interactive": {
-                  "summary": "Interactive card example",
-                  "value": {
-                    "receiverType": "user",
-                    "data": {
-                      "interactionGoal": {
-                        "type": "none"
-                      },
-                      "allowSenderInteraction": true,
-                      "interactiveData": {
-                        "imageUrl": "https://upload.wikimedia.org/wikipedia/en/e/e1/Thomas_D._Baird_%28low-resolution%29.jpg",
-                        "text": "Thanks For filling the Form!.\n\nWant to make your gifts more special? Now its easy with our personalized card messages!\n\nOur new feature lets you add a custom message on a beautifully designed card, making your gift-giving extra personal and memorable.\nWhether its for a birthday , anniversary , or just because , our card messages will express your feelings perfectly.\n\nTo start creating your own card message:\nChoose the gift\nWrite your heartfelt message\nWell print it on a high-quality card and include it with your gift\nAdd a touch of your own sentiments with our personalized card messages. Make every gift unforgettable. Start creating your card message today!\nVisit our website Website Link or download our app App Link.\n\nExpress more than just words with our Personalized Card Messages.Because its not just a gift, its your feelings.\n",
-                        "cardActions": [
-                          {
-                            "elementType": "button",
-                            "elementId": "element8",
-                            "buttonText": "Buy now",
-                            "disableAfterInteracted": true,
-                            "action": {
-                              "actionType": "apiAction",
-                              "url": "https://<appId>.api-<region>.cometchat.io/v3/messages",
-                              "method": "POST",
-                              "payload": {
-                                "category": "message",
-                                "type": "text",
-                                "data": {
-                                  "text": "Thanks For filling the Form!"
-                                },
-                                "receiver": "group_1695921003310",
-                                "receiverType": "group"
-                              },
-                              "headers": {
-                                "appId": "10893f2ae68f59",
-                                "Content-Type": "application\\/json",
-                                "apiKey": "5797f2d3d103d7d78f085eb46bfd14d5c45ddfdf",
-                                "onBehalfOf": "cometchat-uid-1"
-                              },
-                              "dataKey": "CometChatData"
-                            }
-                          },
-                          {
-                            "elementType": "button",
-                            "elementId": "element9",
-                            "buttonText": "Navigate",
-                            "disableAfterInteracted": true,
-                            "action": {
-                              "actionType": "urlNavigation",
-                              "url": "https://www.cometchat.com"
-                            }
-                          },
-                          {
-                            "elementType": "button",
-                            "elementId": "element10",
-                            "buttonText": "Submit",
-                            "disableAfterInteracted": true,
-                            "action": {
-                              "actionType": "apiAction",
-                              "url": "https://<appId>.api-<region>.cometchat.io/v3/messages",
-                              "method": "POST",
-                              "payload": {
-                                "category": "message",
-                                "type": "text",
-                                "data": {
-                                  "text": "Thanks For filling the Form!"
-                                },
-                                "receiver": "group_1695921003310",
-                                "receiverType": "group"
-                              },
-                              "headers": {
-                                "appId": "10893f2ae68f59",
-                                "Content-Type": "application/json",
-                                "apiKey": "5797f2d3d103d7d78f085eb46bfd14d5c45ddfdf",
-                                "onBehalfOf": "cometchat-uid-1"
-                              },
-                              "dataKey": "CometChatData"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    "category": "interactive",
-                    "type": "card",
-                    "receiver": "cometchat-uid-1",
-                    "tags": [
-                      "tag1"
-                    ]
-                  }
-                },
-                "scheduler-interactive": {
-                  "summary": "Interactive scheduler example",
-                  "value": {
-                    "receiverType": "user",
-                    "receiver": "cometchat-uid-2",
-                    "category": "interactive",
-                    "type": "scheduler",
-                    "data": {
-                      "receiverType": "user",
-                      "receiver": "cometchat-uid-2",
-                      "muid": "16Jan3:41423PM",
-                      "interactionGoal": {
-                        "type": "anyOf",
-                        "elementIds": []
-                      },
-                      "allowSenderInteraction": false,
-                      "interactiveData": {
-                        "title": "Meet with Dr. Jacob",
-                        "avatarUrl": "https://assets.cometchat.io/sampleapp/v2/users/cometchat-uid-1.webp",
-                        "bufferTime": 15,
-                        "icsFileUrl": "https://data-us.cometchat.io/23965108c9b89ad2/media/1704380186_864562419_ab59586ed5ab5f89d2c960457ceee249.ics",
-                        "availability": {
-                          "friday": [
-                            {
-                              "to": "2359",
-                              "from": "0000"
-                            }
-                          ],
-                          "monday": [
-                            {
-                              "to": "1700",
-                              "from": "0600"
-                            }
-                          ],
-                          "tuesday": [
-                            {
-                              "to": "1400",
-                              "from": "1000"
-                            },
-                            {
-                              "to": "2000",
-                              "from": "1700"
-                            }
-                          ],
-                          "thursday": [
-                            {
-                              "to": "2359",
-                              "from": "0000"
-                            }
-                          ],
-                          "wednesday": [
-                            {
-                              "to": "0800",
-                              "from": "0600"
-                            },
-                            {
-                              "to": "1700",
-                              "from": "1200"
-                            }
-                          ]
-                        },
-                        "timezoneCode": "Asia/Kolkata",
-                        "duration": 60,
-                        "scheduleElement": {
-                          "action": {
-                            "url": "https://<appId>.api-<region>.cometchat.io/v3/messages",
-                            "actionType": "apiAction",
-                            "method": "post",
-                            "dataKey": "",
-                            "headers": {
-                              "accept": "application/json",
-                              "apiKey": "62a32b5140e6b630dab38e2e690d88de9c69d416",
-                              "onBehalfOf": "suryansh1",
-                              "content-type": "application/json"
-                            },
-                            "payload": {
-                              "data": {
-                                "text": "Meeting Scheduled Successfully!"
-                              },
-                              "type": "text",
-                              "category": "message",
-                              "receiver": "demo1",
-                              "receiverType": "group"
-                            }
-                          },
-                          "elementId": "1",
-                          "buttonText": "Schedule",
-                          "elementType": "button",
-                          "disableAfterInteracted": true
-                        },
-                        "goalCompletionText": "Your meeting has been Scheduled",
-                        "dateRangeStart": "2024-06-09",
-                        "dateRangeEnd": "2024-06-09"
-                      }
-                    }
-                  }
-                }
-              }
+              "examples": {}
             }
           }
         },
@@ -9225,46 +8552,6 @@
                         "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
                         "body": "New message",
                         "body_fallback": "New message"
-                      },
-                      "interactiveFormTemplateDefault": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "{{message.data.interactiveData.title}}"
-                      },
-                      "interactiveFormTemplatePrivacy": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New message"
-                      },
-                      "interactiveCardTemplateDefault": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "{{message.data.interactiveData.text}}"
-                      },
-                      "interactiveCardTemplatePrivacy": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}}",
-                        "body": "New message"
-                      },
-                      "interactiveSchedulerTemplateDefault": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New invite"
-                      },
-                      "interactiveSchedulerTemplatePrivacy": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New invite"
-                      },
-                      "interactiveCustomTemplateDefault": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New message"
-                      },
-                      "interactiveCustomTemplatePrivacy": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New message"
                       },
                       "emailSubjectTemplateDefault": {
                         "subjectGroup": "New messages in {{groupDetails.name}}",
@@ -9983,46 +9270,6 @@
                         "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
                         "body": "{{message.data.text}}",
                         "body_fallback": "New message"
-                      },
-                      "interactiveFormTemplateDefault": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "{{data.interactiveData.title}}"
-                      },
-                      "interactiveFormTemplatePrivacy": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New message"
-                      },
-                      "interactiveCardTemplateDefault": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "{{data.interactiveData.text}}"
-                      },
-                      "interactiveCardTemplatePrivacy": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}}",
-                        "body": "New message"
-                      },
-                      "interactiveSchedulerTemplateDefault": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New invite"
-                      },
-                      "interactiveSchedulerTemplatePrivacy": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New invite"
-                      },
-                      "interactiveCustomTemplateDefault": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New message"
-                      },
-                      "interactiveCustomTemplatePrivacy": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New message"
                       }
                     }
                   }
@@ -10196,46 +9443,6 @@
                         "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
                         "body": "{{message.data.text}}",
                         "body_fallback": "New message"
-                      },
-                      "interactiveFormTemplateDefault": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "{{data.interactiveData.title}}"
-                      },
-                      "interactiveFormTemplatePrivacy": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New message"
-                      },
-                      "interactiveCardTemplateDefault": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "{{data.interactiveData.text}}"
-                      },
-                      "interactiveCardTemplatePrivacy": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}}",
-                        "body": "New message"
-                      },
-                      "interactiveSchedulerTemplateDefault": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New invite"
-                      },
-                      "interactiveSchedulerTemplatePrivacy": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New invite"
-                      },
-                      "interactiveCustomTemplateDefault": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New message"
-                      },
-                      "interactiveCustomTemplatePrivacy": {
-                        "titleOneOnOne": "{{message.data.entities.sender.entity.name}}",
-                        "titleGroup": "{{message.data.entities.sender.entity.name}} @ {{message.data.entities.receiver.entity.name}}",
-                        "body": "New message"
                       }
                     }
                   }
@@ -12171,14 +11378,14 @@
           {
             "name": "messageCategory",
             "in": "query",
-            "description": "To filter logs based on the category of the message or reply. Values can be message, interactive.",
+            "description": "To filter logs based on the category of the message or reply. Values can be message.",
             "required": false,
             "schema": {
               "type": "string",
               "enum": [
-                "message",
-                "interactive"
-              ]
+                "message"
+              ],
+              "description": "Message category filter."
             }
           },
           {
@@ -12213,7 +11420,8 @@
                 "after_group_members_banned",
                 "after_group_members_unbanned",
                 "after_scope_changed"
-              ]
+              ],
+              "description": "Webhook event trigger type."
             }
           },
           {
@@ -12253,7 +11461,8 @@
               "enum": [
                 "user",
                 "group"
-              ]
+              ],
+              "description": "Receiver type. user: one-on-one. group: group conversation."
             }
           },
           {
@@ -12285,7 +11494,8 @@
                 "push",
                 "email",
                 "sms"
-              ]
+              ],
+              "description": "Notification channel type."
             }
           },
           {
@@ -12301,7 +11511,8 @@
                 "sendgrid",
                 "twilio",
                 "custom"
-              ]
+              ],
+              "description": "Notification provider type."
             }
           },
           {
@@ -12337,7 +11548,8 @@
                 "TIMED_OUT",
                 "NOT_FOUND",
                 "TWILIO_CREATE_ERROR"
-              ]
+              ],
+              "description": "Notification log status or reason code."
             }
           },
           {
@@ -12359,7 +11571,8 @@
               "enum": [
                 "prepend",
                 "append"
-              ]
+              ],
+              "description": "Cursor pagination direction."
             }
           },
           {
@@ -13591,7 +12804,8 @@
                   "apns_flutter_device",
                   "apns_react_native_device",
                   "apns_ionic_cordova_device"
-                ]
+                ],
+                "description": "APNS device push token platform."
               },
               "providerId": {
                 "type": "string",
@@ -13624,7 +12838,8 @@
                   "fcm_react_native_ios",
                   "fcm_ionic_cordova_android",
                   "fcm_ionic_cordova_ios"
-                ]
+                ],
+                "description": "FCM push token platform."
               },
               "providerId": {
                 "type": "string",
@@ -13652,7 +12867,8 @@
                   "apns_flutter_voip",
                   "apns_ionic_cordova_voip",
                   "apns_react_native_voip"
-                ]
+                ],
+                "description": "APNS VoIP push token platform."
               },
               "providerId": {
                 "type": "string",
@@ -13815,174 +13031,6 @@
         },
         "type": "object"
       },
-      "SchedulerSchema": {
-        "required": [
-          "interactionGoal",
-          "allowSenderInteraction",
-          "interactiveData"
-        ],
-        "properties": {
-          "interactionGoal": {
-            "required": [
-              "type",
-              "elementIds"
-            ],
-            "properties": {
-              "type": {
-                "type": "string",
-                "enum": [
-                  "anyOf",
-                  "allOf",
-                  "oneOf",
-                  "none"
-                ]
-              },
-              "elementIds": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            },
-            "type": "object"
-          },
-          "allowSenderInteraction": {
-            "type": "boolean"
-          },
-          "interactiveData": {
-            "required": [
-              "title",
-              "avatarUrl",
-              "bufferTime",
-              "icsFileUrl",
-              "availability",
-              "timezoneCode",
-              "duration",
-              "scheduleElement",
-              "goalCompletionText",
-              "dateRangeStart",
-              "dateRangeEnd"
-            ],
-            "properties": {
-              "title": {
-                "type": "string"
-              },
-              "avatarUrl": {
-                "type": "string"
-              },
-              "bufferTime": {
-                "type": "integer"
-              },
-              "icsFileUrl": {
-                "type": "string"
-              },
-              "timezoneCode": {
-                "type": "string"
-              },
-              "duration": {
-                "type": "integer"
-              },
-              "scheduleElement": {
-                "required": [
-                  "action",
-                  "elementId",
-                  "buttonText",
-                  "elementType",
-                  "disableAfterInteracted"
-                ],
-                "properties": {
-                  "action": {
-                    "required": [
-                      "url",
-                      "actionType",
-                      "method",
-                      "dataKey",
-                      "headers",
-                      "payload"
-                    ],
-                    "properties": {
-                      "url": {
-                        "type": "string"
-                      },
-                      "actionType": {
-                        "type": "string"
-                      },
-                      "method": {
-                        "type": "string"
-                      },
-                      "dataKey": {
-                        "type": "string"
-                      },
-                      "headers": {
-                        "type": "object"
-                      },
-                      "payload": {
-                        "required": [
-                          "data",
-                          "type",
-                          "category",
-                          "receiver",
-                          "receiverType"
-                        ],
-                        "properties": {
-                          "data": {
-                            "properties": {
-                              "text": {
-                                "type": "string"
-                              }
-                            },
-                            "type": "object"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "category": {
-                            "type": "string"
-                          },
-                          "receiver": {
-                            "type": "string"
-                          },
-                          "receiverType": {
-                            "type": "string"
-                          }
-                        },
-                        "type": "object"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "elementId": {
-                    "type": "string"
-                  },
-                  "buttonText": {
-                    "type": "string"
-                  },
-                  "elementType": {
-                    "type": "string"
-                  },
-                  "disableAfterInteracted": {
-                    "type": "boolean"
-                  }
-                },
-                "type": "object"
-              },
-              "goalCompletionText": {
-                "type": "string"
-              },
-              "dateRangeStart": {
-                "type": "string",
-                "format": "date"
-              },
-              "dateRangeEnd": {
-                "type": "string",
-                "format": "date"
-              }
-            },
-            "type": "object"
-          }
-        },
-        "type": "object"
-      },
       "ServiceAccountCreds": {
         "properties": {
           "project_id": {
@@ -14091,30 +13139,6 @@
                 "$ref": "#/components/schemas/Template"
               }
             ]
-          },
-          "interactiveFormTemplateDefault": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveFormTemplatePrivacy": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveCardTemplateDefault": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveCardTemplatePrivacy": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveSchedulerTemplateDefault": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveSchedulerTemplatePrivacy": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveCustomTemplateDefault": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveCustomTemplatePrivacy": {
-            "$ref": "#/components/schemas/Template"
           },
           "emailSubjectTemplateDefault": {
             "properties": {
@@ -14480,15 +13504,6 @@
             "items": {
               "type": "string"
             }
-          }
-        },
-        "type": "object"
-      },
-      "customInteractiveSchema": {
-        "title": "Custom Interactive Schema",
-        "properties": {
-          "data": {
-            "type": "object"
           }
         },
         "type": "object"
@@ -14892,476 +13907,12 @@
       },
       "interactionCardSchema": {
         "title": "Card Schema",
-        "properties": {
-          "interactionGoal": {
-            "properties": {
-              "type": {
-                "type": "string",
-                "enum": [
-                  "anyOf",
-                  "allOf",
-                  "oneOf",
-                  "none"
-                ]
-              },
-              "elementIds": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            },
-            "type": "object"
-          },
-          "allowSenderInteraction": {
-            "type": "boolean"
-          },
-          "interactiveData": {
-            "properties": {
-              "text": {
-                "type": "string"
-              },
-              "cardActions": {
-                "type": "array",
-                "items": {
-                  "properties": {
-                    "elementType": {
-                      "type": "string"
-                    },
-                    "elementId": {
-                      "type": "string"
-                    },
-                    "defaultValue": {
-                      "type": "string"
-                    },
-                    "label": {
-                      "type": "string"
-                    },
-                    "optional": {
-                      "type": "boolean"
-                    },
-                    "maxLines": {
-                      "type": "integer"
-                    },
-                    "placeholder": {
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              },
-              "submitElement": {
-                "properties": {
-                  "elementType": {
-                    "type": "string"
-                  },
-                  "elementId": {
-                    "type": "string"
-                  },
-                  "buttonText": {
-                    "type": "string"
-                  },
-                  "disableAfterInteracted": {
-                    "type": "boolean"
-                  },
-                  "optional": {
-                    "type": "boolean"
-                  },
-                  "action": {
-                    "properties": {
-                      "url": {
-                        "type": "string"
-                      },
-                      "method": {
-                        "type": "string"
-                      },
-                      "payload": {
-                        "type": "object"
-                      },
-                      "headers": {
-                        "type": "object"
-                      },
-                      "dataKey": {
-                        "type": "string"
-                      },
-                      "actionType": {
-                        "type": "string"
-                      }
-                    },
-                    "type": "object"
-                  }
-                },
-                "type": "object"
-              }
-            },
-            "type": "object"
-          }
-        },
+        "properties": {},
         "type": "object"
       },
       "interactionFormSchema": {
         "title": "Form Schema",
-        "properties": {
-          "interactionGoal": {
-            "properties": {
-              "type": {
-                "type": "string",
-                "enum": [
-                  "anyOf",
-                  "allOf",
-                  "oneOf",
-                  "none"
-                ]
-              },
-              "elementIds": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            },
-            "type": "object"
-          },
-          "allowSenderInteraction": {
-            "type": "boolean"
-          },
-          "interactiveData": {
-            "properties": {
-              "text": {
-                "type": "string"
-              },
-              "formFields": {
-                "type": "array",
-                "items": {
-                  "properties": {
-                    "elementType": {
-                      "type": "string"
-                    },
-                    "elementId": {
-                      "type": "string"
-                    },
-                    "defaultValue": {
-                      "type": "string"
-                    },
-                    "label": {
-                      "type": "string"
-                    },
-                    "optional": {
-                      "type": "boolean"
-                    },
-                    "maxLines": {
-                      "type": "integer"
-                    },
-                    "placeholder": {
-                      "type": "object"
-                    }
-                  },
-                  "type": "object"
-                }
-              },
-              "submitElement": {
-                "properties": {
-                  "elementType": {
-                    "type": "string"
-                  },
-                  "elementId": {
-                    "type": "string"
-                  },
-                  "buttonText": {
-                    "type": "string"
-                  },
-                  "disableAfterInteracted": {
-                    "type": "boolean"
-                  },
-                  "optional": {
-                    "type": "boolean"
-                  },
-                  "action": {
-                    "properties": {
-                      "url": {
-                        "type": "string"
-                      },
-                      "method": {
-                        "type": "string"
-                      },
-                      "payload": {
-                        "type": "object"
-                      },
-                      "headers": {
-                        "type": "object"
-                      },
-                      "dataKey": {
-                        "type": "string"
-                      },
-                      "actionType": {
-                        "type": "string"
-                      }
-                    },
-                    "type": "object"
-                  }
-                },
-                "type": "object"
-              }
-            },
-            "type": "object"
-          }
-        },
-        "type": "object"
-      },
-      "interactiveCategorySchema": {
-        "properties": {
-          "receiver": {
-            "description": "The receiver of the message.",
-            "type": "string"
-          },
-          "muid": {
-            "description": "The muid will be a unique Identifier of the message.",
-            "type": "string"
-          },
-          "receiverType": {
-            "description": "The receiverType of the message. either user or group",
-            "type": "string",
-            "enum": [
-              "user",
-              "group"
-            ]
-          },
-          "category": {
-            "description": "Category of the message. The available categories is interactive.",
-            "type": "string",
-            "default": "interactive",
-            "enum": [
-              "interactive"
-            ]
-          },
-          "type": {
-            "description": "Type of the message. The available values are card, form and customInteractive.",
-            "type": "string",
-            "default": "card",
-            "enum": [
-              "card",
-              "form",
-              "customInteractive",
-              "scheduler"
-            ]
-          },
-          "data": {
-            "description": "JSON containing message attributes. Please select the appropriate schema based on the type property.",
-            "type": "object",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/interactionFormSchema"
-              },
-              {
-                "$ref": "#/components/schemas/interactionCardSchema"
-              },
-              {
-                "$ref": "#/components/schemas/SchedulerSchema"
-              },
-              {
-                "$ref": "#/components/schemas/customInteractiveSchema"
-              }
-            ]
-          },
-          "multipleReceivers": {
-            "description": "JSON containing array of UIDs and GUID for whom the message must be sent. Format for multiple receivers - {\"uids\": [\"uid1\",\"uid2\"], \"guids\":[\"guid1\"]}",
-            "properties": {
-              "uids": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "guids": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            },
-            "type": "object"
-          },
-          "tags": {
-            "description": "A list of tags to identify specific messages.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "type": "object",
-        "example": {
-          "receiverType": "user",
-          "data": {
-            "interactionGoal": {
-              "type": "allOf",
-              "elementIds": [
-                "element8"
-              ]
-            },
-            "allowSenderInteraction": true,
-            "interactiveData": {
-              "title": "Form Title",
-              "formFields": [
-                {
-                  "elementType": "textInput",
-                  "elementId": "element1",
-                  "defaultValue": "vivek",
-                  "label": "Name",
-                  "optional": false,
-                  "maxLines": 1,
-                  "placeholder": {
-                    "text": "write your name here"
-                  }
-                },
-                {
-                  "elementType": "textInput",
-                  "elementId": "element2",
-                  "label": "Last Name",
-                  "optional": false,
-                  "maxLines": 1
-                },
-                {
-                  "elementType": "textInput",
-                  "elementId": "element3",
-                  "label": "Address",
-                  "optional": false,
-                  "maxLines": 5
-                },
-                {
-                  "elementType": "dropdown",
-                  "elementId": "element4",
-                  "label": "Country",
-                  "optional": false,
-                  "defaultValue": "option1",
-                  "options": [
-                    {
-                      "value": "option1",
-                      "label": "INDIA"
-                    },
-                    {
-                      "value": "option2",
-                      "label": "AUSTRALIA"
-                    }
-                  ]
-                },
-                {
-                  "elementType": "checkbox",
-                  "elementId": "element5",
-                  "optional": true,
-                  "label": "Services",
-                  "options": [
-                    {
-                      "value": "option1",
-                      "label": "Garbage"
-                    },
-                    {
-                      "value": "option2",
-                      "label": "Electricity Bill"
-                    },
-                    {
-                      "value": "option3",
-                      "label": "Lift"
-                    }
-                  ],
-                  "defaultValue": [
-                    "option1",
-                    "option2"
-                  ]
-                },
-                {
-                  "elementType": "singleSelect",
-                  "elementId": "element6",
-                  "optional": false,
-                  "label": "Wing",
-                  "defaultValue": "option1",
-                  "options": [
-                    {
-                      "value": "option1",
-                      "label": "A Wing"
-                    },
-                    {
-                      "value": "option2",
-                      "label": "B Wing"
-                    }
-                  ]
-                },
-                {
-                  "elementType": "button",
-                  "elementId": "element9",
-                  "buttonText": "About us",
-                  "disableAfterInteracted": true,
-                  "action": {
-                    "actionType": "urlNavigation",
-                    "url": "https://www.cometchat.com"
-                  }
-                }
-              ],
-              "submitElement": {
-                "elementType": "button",
-                "elementId": "element8",
-                "buttonText": "Submit",
-                "disableAfterInteracted": true,
-                "action": {
-                  "actionType": "apiAction",
-                  "url": "https://<appId>.api-<region>.cometchat.io/v3/messages",
-                  "method": "POST",
-                  "payload": {
-                    "category": "message",
-                    "type": "text",
-                    "data": {
-                      "text": "Thanks For filling the Form!"
-                    },
-                    "receiver": "cometchat-uid-2",
-                    "receiverType": "user"
-                  },
-                  "headers": {
-                    "appId": "10893f2ae68f59",
-                    "Content-Type": "application/json",
-                    "apiKey": "5797f2d3d103d7d78f085eb46bfd14d5c45ddfdf",
-                    "onBehalfOf": "cometchat-uid-1"
-                  },
-                  "dataKey": "CometChatData"
-                }
-              }
-            }
-          },
-          "category": "interactive",
-          "type": "form",
-          "receiver": "cometchat-uid-1",
-          "tags": [
-            "tag1"
-          ]
-        }
-      },
-      "interactiveMessageSchema": {
-        "properties": {
-          "current": {
-            "properties": {
-              "limit": {
-                "type": "integer"
-              },
-              "count": {
-                "type": "integer"
-              }
-            },
-            "type": "object"
-          },
-          "next": {
-            "properties": {
-              "affix": {
-                "type": "string"
-              },
-              "sentAt": {
-                "type": "integer"
-              },
-              "id": {
-                "type": "string"
-              }
-            },
-            "type": "object"
-          }
-        },
+        "properties": {},
         "type": "object"
       },
       "messageCategorySchema": {

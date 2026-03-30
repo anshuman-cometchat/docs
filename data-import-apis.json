@@ -14,7 +14,11 @@
           "description": "(Required) App ID"
         },
         "region": {
-          "enum": ["us", "eu", "in"],
+          "enum": [
+            "us",
+            "eu",
+            "in"
+          ],
           "default": "us",
           "description": "Select Region"
         }
@@ -24,7 +28,9 @@
   "paths": {
     "/data_import/messages": {
       "post": {
-        "tags": ["Messages"],
+        "tags": [
+          "Messages"
+        ],
         "summary": "Import Messages",
         "description": "The CometChat message import API allows customers to import their messages’ data into the CometChat systems.",
         "operationId": "import-messages",
@@ -32,11 +38,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": ["guid", "name", "type"],
+                "required": [
+                  "guid",
+                  "name",
+                  "type"
+                ],
                 "properties": {
                   "messages": {
                     "description": "Wrapper for the messages.",
-                    "required": ["muid"],
+                    "required": [
+                      "muid"
+                    ],
                     "properties": {
                       "<muid>": {
                         "description": "Wraps a single message object. The <b>&lt;muid&gt;</b> will be a primary key/unique Identifier of the message.",
@@ -59,7 +71,10 @@
                           "receiverType": {
                             "description": "The receiverType of the message. either user or group",
                             "type": "string",
-                            "enum": ["user", "group"]
+                            "enum": [
+                              "user",
+                              "group"
+                            ]
                           },
                           "receiver": {
                             "description": "If the receiverType == “user” the UID of a user receiving the message. else GUID of the group.",
@@ -68,12 +83,21 @@
                           "category": {
                             "description": "Category of the message. The available categories are message and custom.",
                             "type": "string",
-                            "enum": ["message", "custom"]
+                            "enum": [
+                              "message",
+                              "custom"
+                            ]
                           },
                           "type": {
                             "description": "If category==”message” then the allowed values for the type are: text: for a plain text message. image: for an image message audio: for an audio message video: for a video message file: for any file if category==”custom” the customized type can be used. The developer can send the type as any random string and can use it in the implementation at the UI",
                             "type": "string",
-                            "enum": ["text", "image", "file", "audio", "video"]
+                            "enum": [
+                              "text",
+                              "image",
+                              "file",
+                              "audio",
+                              "video"
+                            ]
                           },
                           "data": {
                             "description": "Can contain any additional properties except for the key properties.",
@@ -148,7 +172,10 @@
                           },
                           "senderUserDetails": {
                             "description": "If all the users are imported before importing the messages. The JSON object contains the user details of the sender.",
-                            "required": ["uid", "name"],
+                            "required": [
+                              "uid",
+                              "name"
+                            ],
                             "properties": {
                               "uid": {
                                 "description": "The primary-key/ unique identifier of the sender.",
@@ -199,7 +226,10 @@
                           },
                           "receiverUserDetails": {
                             "description": "If all the users are imported before importing the messages or else required if receiverType==”user”. The JSON object contains the user details of the receiver.",
-                            "required": ["uid", "name"],
+                            "required": [
+                              "uid",
+                              "name"
+                            ],
                             "properties": {
                               "uid": {
                                 "description": "The primary-key/ unique identifier of the user receiving the message.",
@@ -250,7 +280,11 @@
                           },
                           "receiverGroupDetails": {
                             "description": "The JSON object contains the group details of the receiver.",
-                            "required": ["guid", "name", "type"],
+                            "required": [
+                              "guid",
+                              "name",
+                              "type"
+                            ],
                             "properties": {
                               "guid": {
                                 "description": "The primary-key/ unique identifier of the group.",
@@ -267,7 +301,11 @@
                               "type": {
                                 "description": "Type of the group. Can be public, password or private.",
                                 "type": "string",
-                                "enum": ["public", "password", "private"]
+                                "enum": [
+                                  "public",
+                                  "password",
+                                  "private"
+                                ]
                               },
                               "password": {
                                 "description": "A password required to join the the group with type password",
@@ -298,7 +336,10 @@
                           },
                           "receiverGroupOwnerDetails": {
                             "description": "The JSON object contains the user details of the owner.",
-                            "required": ["uid", "name"],
+                            "required": [
+                              "uid",
+                              "name"
+                            ],
                             "properties": {
                               "uid": {
                                 "description": "The primary-key/ unique identifier of the owner.",
@@ -403,7 +444,9 @@
                             "key": "value"
                           }
                         },
-                        "tags": ["tag1"]
+                        "tags": [
+                          "tag1"
+                        ]
                       }
                     }
                   }
@@ -427,9 +470,18 @@
                           "allOf": [
                             {
                               "properties": {
-                                "sentAt": {"type": "integer", "description": "Unix timestamp"},
-                                "deliveredAt": {"type": "integer", "description": "Unix timestamp"},
-                                "readAt": {"type": "integer", "description": "Unix timestamp"}
+                                "sentAt": {
+                                  "type": "integer",
+                                  "description": "Unix timestamp"
+                                },
+                                "deliveredAt": {
+                                  "type": "integer",
+                                  "description": "Unix timestamp"
+                                },
+                                "readAt": {
+                                  "type": "integer",
+                                  "description": "Unix timestamp"
+                                }
                               },
                               "type": "object"
                             },
@@ -512,7 +564,9 @@
                         "deliveredAt": 1674224684,
                         "readAt": 1674224684,
                         "updatedAt": 1674104348,
-                        "tags": ["tag1"]
+                        "tags": [
+                          "tag1"
+                        ]
                       }
                     }
                   }
@@ -530,7 +584,9 @@
     },
     "/data_import/users": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Import Users",
         "description": "The CometChat user import API allows customers to import their users’ data into the CometChat systems.",
         "operationId": "import-users",
@@ -541,11 +597,16 @@
                 "properties": {
                   "users": {
                     "description": "Wrapper for the users.",
-                    "required": ["uid"],
+                    "required": [
+                      "uid"
+                    ],
                     "properties": {
                       "<uid>": {
                         "description": "Wraps a user object. The <b>&lt;uid&gt;</b> will be a primary key/unique Identifier of the user.",
-                        "required": ["uid", "name"],
+                        "required": [
+                          "uid",
+                          "name"
+                        ],
                         "properties": {
                           "uid": {
                             "description": "The value should be the same as value of the placeholder <b>&lt;uid&gt;</b> which wraps the user object.",
@@ -629,8 +690,14 @@
                           "allOf": [
                             {
                               "properties": {
-                                "lastActiveAt": {"type": "integer", "description": "Unix timestamp"},
-                                "deactivatedAt": {"type": "integer", "description": "Unix timestamp"}
+                                "lastActiveAt": {
+                                  "type": "integer",
+                                  "description": "Unix timestamp"
+                                },
+                                "deactivatedAt": {
+                                  "type": "integer",
+                                  "description": "Unix timestamp"
+                                }
                               },
                               "type": "object"
                             },
@@ -677,7 +744,9 @@
     },
     "/data_import/groups": {
       "post": {
-        "tags": ["Groups"],
+        "tags": [
+          "Groups"
+        ],
         "summary": "Import Groups",
         "description": "The CometChat group import API allows customers to import their groups’ data into the CometChat systems.",
         "operationId": "import-groups",
@@ -688,11 +757,17 @@
                 "properties": {
                   "groups": {
                     "description": "Wrapper for the groups.",
-                    "required": ["guid"],
+                    "required": [
+                      "guid"
+                    ],
                     "properties": {
                       "<guid>": {
                         "description": "Wraps a group object. The <b>&lt;guid&gt;</b> will be a primary key/unique Identifier of the group.",
-                        "required": ["guid", "name", "type"],
+                        "required": [
+                          "guid",
+                          "name",
+                          "type"
+                        ],
                         "properties": {
                           "guid": {
                             "description": "The value should be the same as value of the placeholder <b>&lt;guid&gt;</b> which wraps the group object.",
@@ -709,7 +784,11 @@
                           "type": {
                             "description": "Type of the group. Can be public, password or private.",
                             "type": "string",
-                            "enum": ["public", "password", "private"]
+                            "enum": [
+                              "public",
+                              "password",
+                              "private"
+                            ]
                           },
                           "password": {
                             "description": "A password required to join the the group with type password",
@@ -737,7 +816,10 @@
                           },
                           "groupOwnerDetails": {
                             "description": "The JSON object contains the user details of the owner.",
-                            "required": ["uid", "name"],
+                            "required": [
+                              "uid",
+                              "name"
+                            ],
                             "properties": {
                               "uid": {
                                 "description": "The primary-key/ unique identifier of the owner.",
@@ -862,7 +944,9 @@
     },
     "/data_import/members": {
       "post": {
-        "tags": ["Groups"],
+        "tags": [
+          "Groups"
+        ],
         "summary": "Import Group Members",
         "description": "The CometChat group member import API allows customers to import their group members’ data into the CometChat systems.",
         "operationId": "import-members",
@@ -873,11 +957,17 @@
                 "properties": {
                   "members": {
                     "description": "Wrapper for the members.",
-                    "required": ["memberId"],
+                    "required": [
+                      "memberId"
+                    ],
                     "properties": {
                       "<guid>_member_<uid>": {
                         "description": "Wraps a single member object. The <b>&lt;guid&gt;&#95member&#95&lt;uid&gt;</b> will will be a primary key/unique Identifier of the member.",
-                        "required": ["memberId", "guid", "uid"],
+                        "required": [
+                          "memberId",
+                          "guid",
+                          "uid"
+                        ],
                         "properties": {
                           "memberId": {
                             "description": "The value should be the same as value of the placeholder <b>&lt;guid&gt;&#95member&#95&lt;uid&gt;</b> which wraps the member object.",
@@ -905,7 +995,11 @@
                           },
                           "groupDetails": {
                             "description": "The JSON object contains the group details of the member.",
-                            "required": ["guid", "name", "type"],
+                            "required": [
+                              "guid",
+                              "name",
+                              "type"
+                            ],
                             "properties": {
                               "guid": {
                                 "description": "The primary-key/ unique identifier of the group.",
@@ -922,7 +1016,11 @@
                               "type": {
                                 "description": "Type of the group. Can be public, password or private.",
                                 "type": "string",
-                                "enum": ["public", "password", "private"]
+                                "enum": [
+                                  "public",
+                                  "password",
+                                  "private"
+                                ]
                               },
                               "password": {
                                 "description": "A password required to join the the group with type password",
@@ -953,7 +1051,10 @@
                           },
                           "userDetails": {
                             "description": "The JSON object contains the user details of the member.",
-                            "required": ["uid", "name"],
+                            "required": [
+                              "uid",
+                              "name"
+                            ],
                             "properties": {
                               "uid": {
                                 "description": "The primary-key/ unique identifier of the member.",
@@ -1140,7 +1241,11 @@
           "messagesSetting": {
             "description": "1: Don't subscribe\n2: Subscribe to all messages\n3: Subscribe to messages with mentions",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "messagesOverride": {
             "type": "boolean"
@@ -1148,7 +1253,11 @@
           "repliesSetting": {
             "description": "1: Don't subscribe\n2: Subscribe to all replies\n3: Subscribe to replies with mentions",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "repliesOverride": {
             "type": "boolean"
@@ -1156,7 +1265,11 @@
           "reactionsSetting": {
             "description": "1: Don't subscribe\n2: Subscribe to reactions for own messages\n3: Subscribe to reactions for all messages",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "reactionsOverride": {
             "type": "boolean"
@@ -1164,7 +1277,10 @@
           "memberLeftSetting": {
             "description": "1: Don't subscribe\n2: Subscribe",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberLeftOverride": {
             "type": "boolean"
@@ -1172,7 +1288,10 @@
           "memberAddedSetting": {
             "description": "1: Don't subscribe\n2: Subscribe",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberAddedOverride": {
             "type": "boolean"
@@ -1180,7 +1299,10 @@
           "memberJoinedSetting": {
             "description": "1: Don't subscribe\n2: Subscribe",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberJoinedOverride": {
             "type": "boolean"
@@ -1188,7 +1310,10 @@
           "memberKickedSetting": {
             "description": "1: Don't subscribe\n2: Subscribe",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberKickedOverride": {
             "type": "boolean"
@@ -1196,7 +1321,10 @@
           "memberBannedSetting": {
             "description": "1: Don't subscribe\n2: Subscribe",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberBannedOverride": {
             "type": "boolean"
@@ -1204,7 +1332,10 @@
           "memberUnbannedSetting": {
             "description": "1: Don't subscribe\n2: Subscribe",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberUnbannedOverride": {
             "type": "boolean"
@@ -1212,7 +1343,10 @@
           "memberScopeChangedSetting": {
             "description": "1: Don't subscribe\n2: Subscribe",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "memberScopeChangedOverride": {
             "type": "boolean"
@@ -1297,7 +1431,10 @@
           "dnd": {
             "description": "1: Disable DND\n2: Enable DND",
             "type": "integer",
-            "enum": [1, 2]
+            "enum": [
+              1,
+              2
+            ]
           },
           "schedule": {
             "$ref": "#/components/schemas/Schedule"
@@ -1324,7 +1461,8 @@
                   "apns_flutter_device",
                   "apns_react_native_device",
                   "apns_ionic_cordova_device"
-                ]
+                ],
+                "description": "Allowed values: apns_ios_device, apns_flutter_device, apns_react_native_device, apns_ionic_cordova_device"
               },
               "providerId": {
                 "type": "string",
@@ -1357,7 +1495,8 @@
                   "fcm_react_native_ios",
                   "fcm_ionic_cordova_android",
                   "fcm_ionic_cordova_ios"
-                ]
+                ],
+                "description": "Allowed values: fcm_android, fcm_ios, fcm_web, fcm_flutter_android, fcm_flutter_ios, fcm_react_native_android, fcm_react_native_ios, fcm_ionic_cordova_android, fcm_ionic_cordova_ios"
               },
               "providerId": {
                 "type": "string",
@@ -1385,7 +1524,8 @@
                   "apns_flutter_voip",
                   "apns_ionic_cordova_voip",
                   "apns_react_native_voip"
-                ]
+                ],
+                "description": "Allowed values: apns_ios_voip, apns_flutter_voip, apns_ionic_cordova_voip, apns_react_native_voip"
               },
               "providerId": {
                 "type": "string",
@@ -1503,7 +1643,11 @@
           "usePrivacyTemplate": {
             "description": "1: Use default templates\n2: Use privacy templates\n3: Use default templates with end-user privacy override",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "textMessageTemplateDefault": {
             "$ref": "#/components/schemas/Template"
@@ -1546,30 +1690,6 @@
                 "$ref": "#/components/schemas/Template"
               }
             ]
-          },
-          "interactiveFormTemplateDefault": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveFormTemplatePrivacy": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveCardTemplateDefault": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveCardTemplatePrivacy": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveSchedulerTemplateDefault": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveSchedulerTemplatePrivacy": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveCustomTemplateDefault": {
-            "$ref": "#/components/schemas/Template"
-          },
-          "interactiveCustomTemplatePrivacy": {
-            "$ref": "#/components/schemas/Template"
           }
         },
         "type": "object"
@@ -1817,13 +1937,18 @@
           "receiverType": {
             "description": "The receiverType of the message. either user or group",
             "type": "string",
-            "enum": ["user", "group"]
+            "enum": [
+              "user",
+              "group"
+            ]
           },
           "category": {
             "description": "Category of the message. The available categories is custom.",
             "type": "string",
             "default": "custom",
-            "enum": ["custom"]
+            "enum": [
+              "custom"
+            ]
           },
           "type": {
             "description": "Type of the message.",
@@ -2246,337 +2371,6 @@
         },
         "type": "object"
       },
-      "interactiveCategorySchema": {
-        "properties": {
-          "receiver": {
-            "description": "The receiver of the message.",
-            "type": "string"
-          },
-          "muid": {
-            "description": "The muid will be a unique Identifier of the message.",
-            "type": "string"
-          },
-          "receiverType": {
-            "description": "The receiverType of the message. either user or group",
-            "type": "string",
-            "enum": ["user", "group"]
-          },
-          "category": {
-            "description": "Category of the message. The available categories is interactive.",
-            "type": "string",
-            "default": "interactive",
-            "enum": ["interactive"]
-          },
-          "type": {
-            "description": "Type of the message. The available values are card, form and customInteractive.",
-            "type": "string",
-            "default": "card",
-            "enum": ["card", "form", "customInteractive", "scheduler"]
-          },
-          "data": {
-            "description": "JSON containing message attributes.",
-            "properties": {
-              "text": {
-                "type": "string"
-              },
-              "interactionGoal": {
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "enum": ["anyOf", "allOf", "oneOf", "none"]
-                  },
-                  "elementIds": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "type": "object"
-              },
-              "allowSenderInteraction": {
-                "type": "boolean"
-              },
-              "interactiveData": {
-                "properties": {
-                  "title": {
-                    "type": "string"
-                  },
-                  "formFields": {
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "elementType": {
-                          "type": "string"
-                        },
-                        "elementId": {
-                          "type": "string"
-                        },
-                        "defaultValue": {
-                          "type": "string"
-                        },
-                        "label": {
-                          "type": "string"
-                        },
-                        "optional": {
-                          "type": "boolean"
-                        },
-                        "maxLines": {
-                          "type": "integer"
-                        },
-                        "placeholder": {
-                          "type": "object"
-                        }
-                      },
-                      "type": "object"
-                    }
-                  },
-                  "submitElement": {
-                    "properties": {
-                      "elementType": {
-                        "type": "string"
-                      },
-                      "elementId": {
-                        "type": "string"
-                      },
-                      "buttonText": {
-                        "type": "string"
-                      },
-                      "disableAfterInteracted": {
-                        "type": "boolean"
-                      },
-                      "optional": {
-                        "type": "boolean"
-                      },
-                      "action": {
-                        "properties": {
-                          "url": {
-                            "type": "string"
-                          },
-                          "method": {
-                            "type": "string"
-                          },
-                          "payload": {
-                            "type": "object"
-                          },
-                          "headers": {
-                            "type": "object"
-                          },
-                          "dataKey": {
-                            "type": "string"
-                          },
-                          "actionType": {
-                            "type": "string"
-                          }
-                        },
-                        "type": "object"
-                      }
-                    },
-                    "type": "object"
-                  },
-                  "metadata": {
-                    "type": "object"
-                  }
-                },
-                "type": "object"
-              },
-              "multipleReceivers": {
-                "description": "JSON containing array of UIDs and GUID for whom the message must be sent. Format for multiple receivers - {\"uids\": [\"uid1\",\"uid2\"], \"guids\":[\"guid1\"]}",
-                "properties": {
-                  "uids": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "guids": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "type": "object"
-              },
-              "tags": {
-                "description": "A list of tags to identify specific messages.",
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            },
-            "type": "object"
-          }
-        },
-        "type": "object",
-        "example": {
-          "receiverType": "user",
-          "data": {
-            "interactionGoal": {
-              "type": "allOf",
-              "elementIds": ["element8"]
-            },
-            "allowSenderInteraction": true,
-            "interactiveData": {
-              "title": "Form Title",
-              "formFields": [
-                {
-                  "elementType": "textInput",
-                  "elementId": "element1",
-                  "defaultValue": "vivek",
-                  "label": "Name",
-                  "optional": false,
-                  "maxLines": 1,
-                  "placeholder": {
-                    "text": "write your name here"
-                  }
-                },
-                {
-                  "elementType": "textInput",
-                  "elementId": "element2",
-                  "label": "Last Name",
-                  "optional": false,
-                  "maxLines": 1
-                },
-                {
-                  "elementType": "textInput",
-                  "elementId": "element3",
-                  "label": "Address",
-                  "optional": false,
-                  "maxLines": 5
-                },
-                {
-                  "elementType": "dropdown",
-                  "elementId": "element4",
-                  "label": "Country",
-                  "optional": false,
-                  "defaultValue": "option1",
-                  "options": [
-                    {
-                      "value": "option1",
-                      "label": "INDIA"
-                    },
-                    {
-                      "value": "option2",
-                      "label": "AUSTRALIA"
-                    }
-                  ]
-                },
-                {
-                  "elementType": "checkbox",
-                  "elementId": "element5",
-                  "optional": true,
-                  "label": "Services",
-                  "options": [
-                    {
-                      "value": "option1",
-                      "label": "Garbage"
-                    },
-                    {
-                      "value": "option2",
-                      "label": "Electricity Bill"
-                    },
-                    {
-                      "value": "option3",
-                      "label": "Lift"
-                    }
-                  ],
-                  "defaultValue": ["option1", "option2"]
-                },
-                {
-                  "elementType": "singleSelect",
-                  "elementId": "element6",
-                  "optional": false,
-                  "label": "Wing",
-                  "defaultValue": "option1",
-                  "options": [
-                    {
-                      "value": "option1",
-                      "label": "A Wing"
-                    },
-                    {
-                      "value": "option2",
-                      "label": "B Wing"
-                    }
-                  ]
-                },
-                {
-                  "elementType": "button",
-                  "elementId": "element9",
-                  "buttonText": "About us",
-                  "disableAfterInteracted": true,
-                  "action": {
-                    "actionType": "urlNavigation",
-                    "url": "https://www.cometchat.com"
-                  }
-                }
-              ],
-              "submitElement": {
-                "elementType": "button",
-                "elementId": "element8",
-                "buttonText": "Submit",
-                "disableAfterInteracted": true,
-                "action": {
-                  "actionType": "apiAction",
-                  "url": "https://<appId>.api-<region>.cometchat.io/v3/messages",
-                  "method": "POST",
-                  "payload": {
-                    "category": "message",
-                    "type": "text",
-                    "data": {
-                      "text": "Thanks For filling the Form!"
-                    },
-                    "receiver": "cometchat-uid-2",
-                    "receiverType": "user"
-                  },
-                  "headers": {
-                    "appId": "10893f2ae68f59",
-                    "Content-Type": "application/json",
-                    "apiKey": "5797f2d3d103d7d78f085eb46bfd14d5c45ddfdf",
-                    "onBehalfOf": "cometchat-uid-1"
-                  },
-                  "dataKey": "CometChatData"
-                }
-              }
-            }
-          },
-          "category": "interactive",
-          "type": "form",
-          "receiver": "cometchat-uid-1",
-          "tags": ["tag1"]
-        }
-      },
-      "interactiveMessageSchema": {
-        "properties": {
-          "current": {
-            "properties": {
-              "limit": {
-                "type": "integer"
-              },
-              "count": {
-                "type": "integer"
-              }
-            },
-            "type": "object"
-          },
-          "next": {
-            "properties": {
-              "affix": {
-                "type": "string"
-              },
-              "sentAt": {
-                "type": "integer"
-              },
-              "id": {
-                "type": "string"
-              }
-            },
-            "type": "object"
-          }
-        },
-        "type": "object"
-      },
       "messageCategorySchema": {
         "properties": {
           "receiver": {
@@ -2590,19 +2384,30 @@
           "receiverType": {
             "description": "The receiverType of the message. either user or group",
             "type": "string",
-            "enum": ["user", "group"]
+            "enum": [
+              "user",
+              "group"
+            ]
           },
           "category": {
             "description": "Category of the message. The available categories are message and custom.",
             "type": "string",
             "default": "message",
-            "enum": ["message"]
+            "enum": [
+              "message"
+            ]
           },
           "type": {
             "description": "Type of the message. The available values are text, image, file, audio, video.",
             "type": "string",
             "default": "text",
-            "enum": ["text", "image", "file", "audio", "video"]
+            "enum": [
+              "text",
+              "image",
+              "file",
+              "audio",
+              "video"
+            ]
           },
           "data": {
             "description": "JSON containing message attributes.",
@@ -2988,7 +2793,10 @@
           "type": {
             "description": "oneOnOne or group",
             "type": "string",
-            "enum": ["oneOnOne", "group"]
+            "enum": [
+              "oneOnOne",
+              "group"
+            ]
           },
           "until": {
             "description": "This is a valid timestamp from the future, E.g: 1710696964705",
@@ -3127,7 +2935,11 @@
           "messagesSetting": {
             "description": "1: Don't subscribe\n2: Subscribe to all messages\n3: Subscribe to messages with mentions",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "messagesOverride": {
             "type": "boolean"
@@ -3135,7 +2947,11 @@
           "repliesSetting": {
             "description": "1: Don't subscribe\n2: Subscribe to all replies\n3: Subscribe to replies with mentions",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "repliesOverride": {
             "type": "boolean"
@@ -3143,7 +2959,11 @@
           "reactionsSetting": {
             "description": "1: Don't subscribe\n2: Subscribe to reactions for own messages\n3: Subscribe to reactions for all messages",
             "type": "integer",
-            "enum": [1, 2, 3]
+            "enum": [
+              1,
+              2,
+              3
+            ]
           },
           "reactionsOverride": {
             "type": "boolean"
@@ -3188,52 +3008,85 @@
               "groupMessages": {
                 "description": "1: Don't subscribe\n2: Subscribe to all messages\n3: Subscribe to messages with mentions",
                 "type": "integer",
-                "enum": [1, 2, 3]
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
               },
               "groupReplies": {
                 "description": "1: Don't subscribe\n2: Subscribe to all replies\n3: Subscribe to replies with mentions",
                 "type": "integer",
-                "enum": [1, 2, 3]
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
               },
               "groupReactions": {
                 "description": "1: Don't subscribe\n2: Subscribe to reactions for own messages\n3: Subscribe to reactions for all messages",
                 "type": "integer",
-                "enum": [1, 2, 3]
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
               },
               "groupMemberLeft": {
                 "description": "1: Don't subscribe\n2: Subscribe",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               },
               "groupMemberAdded": {
                 "description": "1: Don't subscribe\n2: Subscribe",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               },
               "groupMemberJoined": {
                 "description": "1: Don't subscribe\n2: Subscribe",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               },
               "groupMemberKicked": {
                 "description": "1: Don't subscribe\n2: Subscribe",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               },
               "groupMemberBanned": {
                 "description": "1: Don't subscribe\n2: Subscribe",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               },
               "groupMemberUnbanned": {
                 "description": "1: Don't subscribe\n2: Subscribe",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               },
               "groupMemberScopeChanged": {
                 "description": "1: Don't subscribe\n2: Subscribe",
                 "type": "integer",
-                "enum": [1, 2]
+                "enum": [
+                  1,
+                  2
+                ]
               }
             },
             "type": "object"
@@ -3243,17 +3096,29 @@
               "oneOnOneMessages": {
                 "description": "1: Don't subscribe\n2: Subscribe to all messages\n3: Subscribe to messages with mentions",
                 "type": "integer",
-                "enum": [1, 2, 3]
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
               },
               "oneOnOneReplies": {
                 "description": "1: Don't subscribe\n2: Subscribe to all replies\n3: Subscribe to replies with mentions",
                 "type": "integer",
-                "enum": [1, 2, 3]
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
               },
               "oneOnOneReactions": {
                 "description": "1: Don't subscribe\n2: Subscribe to reactions for own messages\n3: Subscribe to reactions for all messages",
                 "type": "integer",
-                "enum": [1, 2, 3]
+                "enum": [
+                  1,
+                  2,
+                  3
+                ]
               }
             },
             "type": "object"
@@ -3386,13 +3251,18 @@
           "type": {
             "description": "oneOnOne or group",
             "type": "string",
-            "enum": ["oneOnOne", "group"]
+            "enum": [
+              "oneOnOne",
+              "group"
+            ]
           }
         },
         "type": "object"
       },
       "unregisterpnToken": {
-        "required": ["authToken"],
+        "required": [
+          "authToken"
+        ],
         "properties": {
           "authToken": {
             "type": "string"
