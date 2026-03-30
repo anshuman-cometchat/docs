@@ -137,6 +137,18 @@ Rich Text Formatting allows users to style their messages with bold, italic, str
   <img src="/images/android-rich-text-formatting.png" />
 </Frame>
 
+<Warning>
+
+Rich text formatting is disabled by default in the [CompactMessageComposer](/ui-kit/android/compact-message-composer). To enable it, you must set `setEnableRichTextFormatting(true)`. Without this, even manually typed markdown syntax (e.g., `**bold**`) will be sent as plain text. To show the formatting toolbar, also set `setRichTextFormattingOptionsVisibility(View.VISIBLE)`. See the [CompactMessageComposer Rich Text Formatting](/ui-kit/android/compact-message-composer#rich-text-formatting) section for full configuration details.
+
+</Warning>
+
+<Note>
+
+Rich text formatting in message bubbles (rendering formatted text in the [MessageList](/ui-kit/android/message-list)) is supported from UI Kit version 5.2.11 onwards. Earlier versions will display the raw markdown syntax instead of formatted text.
+
+</Note>
+
 | Components                                                                        | Functionality                                                                                                                                                                                                                                                  |
 | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [CompactMessageComposer](/ui-kit/android/compact-message-composer) | [CompactMessageComposer](/ui-kit/android/compact-message-composer) provides a built-in rich text editor with formatting toolbar and text selection menu items for bold, italic, strikethrough, code, links, lists, blockquotes, and code blocks. |

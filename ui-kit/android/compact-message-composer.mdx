@@ -274,7 +274,19 @@ Below is a list of customizations along with corresponding code snippets
 
 ### Rich Text Formatting
 
-The CompactMessageComposer includes a built-in rich text editor. Enable it using `setEnableRichTextFormatting(true)` and show the toolbar with `setRichTextFormattingOptionsVisibility(View.VISIBLE)`.
+The CompactMessageComposer includes a built-in rich text editor. However, rich text formatting is disabled by default. Both the formatting toolbar and markdown syntax parsing (e.g., typing `**bold**`) are inactive until explicitly enabled.
+
+To fully leverage rich text formatting, you need to enable the following properties:
+
+- `setEnableRichTextFormatting(true)` — Master switch that activates formatting. Without this, even manually typed markdown syntax like `**text**` will be sent as plain text.
+- `setRichTextFormattingOptionsVisibility(View.VISIBLE)` — Shows the formatting toolbar above the input field.
+- `setShowTextSelectionMenuItems(true)` — Adds formatting options (Bold, Italic, Strikethrough, Code) to the text selection context menu.
+
+<Warning>
+
+If `enableRichTextFormatting` is set to `false` (the default), all formatting is disabled. Markdown syntax typed in the composer will be sent as plain text, and the toolbar will not appear regardless of other settings.
+
+</Warning>
 
 #### Supported Format Types
 
