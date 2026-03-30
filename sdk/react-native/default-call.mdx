@@ -7,9 +7,12 @@ description: "Implement a complete calling workflow with ringing, incoming/outgo
 **Quick Reference** - Initiate a call and listen for events:
 
 ```javascript
-// Initiate a video call
+// Initiate a video call (default 45s no-answer timeout)
 const call = new CometChat.Call("RECEIVER_ID", CometChat.CALL_TYPE.VIDEO, CometChat.RECEIVER_TYPE.USER);
 await CometChat.initiateCall(call);
+
+// Initiate with custom timeout (90 seconds)
+await CometChat.initiateCall(call, 90);
 
 // Accept an incoming call
 await CometChat.acceptCall(sessionId);
@@ -45,6 +48,8 @@ After the call is accepted, you need to start the call session. See the [Call Se
 
 The `initiateCall()` method sends a call request to a user or a group. On success, the receiver gets an `onIncomingCallReceived()` callback.
 
+An optional `timeout` parameter (in seconds) controls how long the SDK waits for the receiver to answer before automatically cancelling the call. If omitted or invalid, the default timeout of 45 seconds is used. The value must be a positive integer — decimals are floored, and non-positive or non-numeric values fall back to the default.
+
 <Tabs>
 <Tab title="User Call (JavaScript)">
 ```javascript
@@ -59,6 +64,16 @@ CometChat.initiateCall(call).then(
     console.log("Call initiated:", outgoingCall);
     // Show outgoing call UI
     // Store outgoingCall.getSessionId() for later use
+  },
+  (error) => {
+    console.log("Call initiation failed:", error);
+  }
+);
+
+// With custom timeout (90 seconds)
+CometChat.initiateCall(call, 90).then(
+  (outgoingCall) => {
+    console.log("Call initiated with 90s timeout:", outgoingCall);
   },
   (error) => {
     console.log("Call initiation failed:", error);
@@ -83,6 +98,16 @@ CometChat.initiateCall(call).then(
     console.log("Call initiation failed:", error);
   }
 );
+
+// With custom timeout (90 seconds)
+CometChat.initiateCall(call, 90).then(
+  (outgoingCall) => {
+    console.log("Call initiated with 90s timeout:", outgoingCall);
+  },
+  (error) => {
+    console.log("Call initiation failed:", error);
+  }
+);
 ```
 </Tab>
 <Tab title="User Call (TypeScript)">
@@ -96,6 +121,16 @@ const call: CometChat.Call = new CometChat.Call(receiverID, callType, receiverTy
 CometChat.initiateCall(call).then(
   (outgoingCall: CometChat.Call) => {
     console.log("Call initiated:", outgoingCall);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Call initiation failed:", error);
+  }
+);
+
+// With custom timeout (90 seconds)
+CometChat.initiateCall(call, 90).then(
+  (outgoingCall: CometChat.Call) => {
+    console.log("Call initiated with 90s timeout:", outgoingCall);
   },
   (error: CometChat.CometChatException) => {
     console.log("Call initiation failed:", error);
@@ -119,6 +154,16 @@ CometChat.initiateCall(call).then(
     console.log("Call initiation failed:", error);
   }
 );
+
+// With custom timeout (90 seconds)
+CometChat.initiateCall(call, 90).then(
+  (outgoingCall: CometChat.Call) => {
+    console.log("Call initiated with 90s timeout:", outgoingCall);
+  },
+  (error: CometChat.CometChatException) => {
+    console.log("Call initiation failed:", error);
+  }
+);
 ```
 </Tab>
 </Tabs>
@@ -128,6 +173,7 @@ CometChat.initiateCall(call).then(
 | `receiverID`   | The UID or GUID of the recipient                                            |
 | `receiverType` | `CometChat.RECEIVER_TYPE.USER` or `CometChat.RECEIVER_TYPE.GROUP`           |
 | `callType`     | `CometChat.CALL_TYPE.AUDIO` or `CometChat.CALL_TYPE.VIDEO`                  |
+| `timeout`      | Optional. No-answer timeout in seconds. Must be a positive integer. Default: `45` |
 
 On success, a `Call` object is returned containing the call details including a unique `sessionId` required for starting the call session.
 
