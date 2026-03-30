@@ -136,7 +136,7 @@ import { CometChatCompactMessageComposer } from "@cometchat/chat-uikit-react";
 
 ## Overview
 
-`CometChatCompactMessageComposer` is a [Component](/ui-kit/react/components-overview#components) that provides a compact, single-line message input with optional rich text formatting capabilities. It supports bold, italic, underline, strikethrough, code, links, lists, and blockquotes — similar to messaging experiences in Slack.
+`CometChatCompactMessageComposer` is a [Component](/ui-kit/react/components-overview#components) that provides a compact, single-line message input with optional rich text formatting capabilities. It supports bold, italic, underline, strikethrough, code, links, lists, and blockquotes.
 
 This is a compact variant of [CometChatMessageComposer](/ui-kit/react/message-composer). It shares a similar props API but provides a streamlined, single-line interface with rich text formatting controls.
 
@@ -764,7 +764,7 @@ Below is a list of customizations along with corresponding code snippets
 | **mentionsUsersRequestBuilder** | `CometChat.UsersRequestBuilder` | `undefined` | Provides a custom UsersRequestBuilder to control how the mentioned users list is fetched. | `mentionsUsersRequestBuilder={usersRequestBuilder}` |
 | **mentionsGroupMembersRequestBuilder** | `CometChat.GroupMembersRequestBuilder` | `undefined` | Provides a custom GroupMembersRequestBuilder to customize how mentioned group members are retrieved. | `mentionsGroupMembersRequestBuilder={groupMembersRequestBuilder}` |
 | **enableRichTextEditor** | `boolean` | `false` | Master switch to enable rich text formatting. When false, the composer works as plain text only. | `enableRichTextEditor={true}` |
-| **showToolbarOnSelection** | `boolean` | `false` | Shows a floating toolbar when text is selected (Slack-style). Ignored on mobile devices. | `showToolbarOnSelection={true}` |
+| **showToolbarOnSelection** | `boolean` | `false` | Shows a floating toolbar when text is selected. Ignored on mobile devices. | `showToolbarOnSelection={true}` |
 | **hideRichTextFormattingOptions** | `boolean` | `false` | Hides the rich text formatting toolbar. Keyboard shortcuts still work. | `hideRichTextFormattingOptions={true}` |
 | **hideImageAttachmentOption** | `boolean` | `false` | Hides the image attachment option in the message composer. | `hideImageAttachmentOption={true}` |
 | **hideVideoAttachmentOption** | `boolean` | `false` | Hides the video attachment option in the message composer. | `hideVideoAttachmentOption={true}` |
@@ -837,7 +837,7 @@ On mobile devices, only the fixed toolbar is supported. The floating selection t
 ### Toolbar Configuration Examples
 
 <Tabs>
-<Tab title="Selection Toolbar (Slack-style)">
+<Tab title="Selection Toolbar">
 ```tsx
 // Floating toolbar appears on text selection (desktop only)
 <CometChatCompactMessageComposer
