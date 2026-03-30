@@ -77,13 +77,7 @@ async function initiateCall(receiverUid, callType = "video") {
 }
 ```
 
-### Initiate Call With Timeout
-
-By default, an unanswered 1:1 call automatically cancels after 45 seconds. You can customize this duration by passing an optional `timeout` parameter (in seconds) as the second argument to `initiateCall()`.
-
-<Note>
-The `timeout` parameter only applies to 1:1 user calls. Group calls are not affected by this setting.
-</Note>
+By default, an unanswered call automatically cancels after 45 seconds. You can customize this duration by passing an optional `timeout` parameter (in seconds) as the second argument to `initiateCall()`.
 
 <Tabs>
 <Tab title="JavaScript">
