@@ -1,11 +1,10 @@
 ---
 title: "Call Logs"
+sidebarTitle: "Call Logs"
 description: "Learn how to fetch and manage call logs in your Flutter application using CometChat's Call SDK, including filtering by call type, status, and direction."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```dart
 // Build call log request
@@ -29,7 +28,9 @@ CometChatCalls.getCallDetails(sessionID, userAuthToken, onSuccess: (List<CallLog
   debugPrint("Error: ${e.message}");
 });
 ```
-</Info>
+
+**Filters:** `callType`, `callStatus`, `callCategory`, `callDirection`, `hasRecording`, `uid`, `guid`
+</Accordion>
 
 ## Overview
 

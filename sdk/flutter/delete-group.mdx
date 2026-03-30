@@ -1,40 +1,49 @@
 ---
 title: "Delete A Group"
-description: "Learn how to permanently delete a group in CometChat using the Flutter SDK. Only group admins can delete groups."
+sidebarTitle: "Delete Group"
+description: "Delete a group permanently using the CometChat Flutter SDK. Only the group owner can perform this operation."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```dart
-// Delete a group (admin only)
+// Delete a group (owner only)
 String guid = "GROUP_ID";
 
-await CometChat.deleteGroup(guid, 
+CometChat.deleteGroup(guid,
   onSuccess: (String message) {
     debugPrint("Deleted: $message");
-  }, 
+  },
   onError: (CometChatException e) {
     debugPrint("Error: ${e.message}");
   },
 );
 ```
-</Info>
 
-Only group admins can delete a group. Deleting a group removes all messages, members, and associated data permanently.
+**Requirement:** Logged-in user must be the owner of the group.
+</Accordion>
+
+Permanently delete a group and all its messages. Only the group owner can perform this operation.
+
+<Warning>
+This operation is irreversible. Deleted groups and their messages cannot be recovered.
+</Warning>
+
+## Delete a Group
+
+Use `deleteGroup()` with the group's GUID.
 
 <Note>
 **Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/flutter/overview)
 </Note>
 
-## Delete Group
+### Parameters
 
-<Warning>
-This operation is irreversible. Deleted groups cannot be recovered. All messages and member data will be permanently lost.
-</Warning>
-
-To delete a group you need to use the `deleteGroup()` method. The user must be an **Admin** of the group they are trying to delete.
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `guid` | `String` | The GUID of the group you would like to delete |
+| `onSuccess` | `Function(String message)?` | Callback triggered on successful deletion |
+| `onError` | `Function(CometChatException excep)?` | Callback triggered on error |
 
 <Tabs>
 <Tab title="Dart">
@@ -75,21 +84,21 @@ debugPrint("Delete Group failed with exception: ${e.message}");
 
 </Accordion>
 
-The `deleteGroup()` method takes the following parameters:
-
-| Parameter | Description                                    |
-| --------- | ---------------------------------------------- |
-| `GUID`    | The GUID of the group you would like to delete |
-
 ---
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Create Group" icon="plus" href="/sdk/flutter/create-group">
-    Create new public, private, or password-protected groups
+  <Card title="Update a Group" icon="pen-to-square" href="/sdk/flutter/update-group">
+    Update group name, icon, description, and metadata
   </Card>
-  <Card title="Leave Group" icon="right-from-bracket" href="/sdk/flutter/leave-group">
-    Leave groups without deleting them
+  <Card title="Leave a Group" icon="right-from-bracket" href="/sdk/flutter/leave-group">
+    Leave a group you are a member of
+  </Card>
+  <Card title="Create a Group" icon="plus" href="/sdk/flutter/create-group">
+    Create public, private, or password-protected groups
+  </Card>
+  <Card title="Groups Overview" icon="users" href="/sdk/flutter/groups-overview">
+    Overview of all group management features
   </Card>
 </CardGroup>

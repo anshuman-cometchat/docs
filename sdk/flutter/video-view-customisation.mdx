@@ -1,39 +1,21 @@
 ---
 title: "Video View Customisation"
+sidebarTitle: "Video View Customisation"
 description: "Learn how to customize the main video container appearance and controls in CometChat Flutter calling."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
-```dart
-// Create video container settings
-MainVideoContainerSetting videoSettings = MainVideoContainerSetting();
+- **Class:** `MainVideoContainerSetting`
+- **Apply via:** `CallSettingsBuilder..setMainVideoContainerSetting(videoSettings)`
+- **Customizable elements:** Aspect ratio, full screen button, name label, zoom button, user list button
+- **Position constants:** `POSITION_TOP_LEFT`, `POSITION_TOP_RIGHT`, `POSITION_BOTTOM_LEFT`, `POSITION_BOTTOM_RIGHT`
+- **Requires:** [Default Calling](/sdk/flutter/default-call) or [Direct Calling](/sdk/flutter/direct-call) setup
+</Accordion>
 
-// Set aspect ratio
-videoSettings.setMainVideoAspectRatio(VideoStreamsMode.ASPECT_RATIO_CONTAIN);
+Customize the main video container in your call UI — aspect ratio, button positions, and label visibility. Create a `MainVideoContainerSetting` instance, configure it, and pass it to `CallSettingsBuilder..setMainVideoContainerSetting()`.
 
-// Configure UI element positions and visibility
-videoSettings.setNameLabelParams(VideoStreamsPosition.POSITION_TOP_LEFT, true, "#000");
-videoSettings.setZoomButtonParams(VideoStreamsPosition.POSITION_TOP_RIGHT, true);
-videoSettings.setUserListButtonParams(VideoStreamsPosition.POSITION_TOP_LEFT, true);
-videoSettings.setFullScreenButtonParams(VideoStreamsPosition.POSITION_TOP_RIGHT, true);
-
-// Apply to CallSettings
-CallSettings callSettings = (CallSettingsBuilder()
-  ..setMainVideoContainerSetting(videoSettings)
-).build();
-```
-</Info>
-
-This section will guide you to customise the main video container.
-
-## Implementation
-
-Once you have decided to implement [Default Calling](/sdk/flutter/default-call) or [Direct Calling](/sdk/flutter/direct-call) calling and followed the steps to implement them. Just few additional methods will help you quickly customize the main video container.
-
-Please make sure your callSettings is configured accordingly for [Default Calling](/sdk/flutter/default-call) or [Direct Calling](/sdk/flutter/direct-call).
+Before you begin, make sure you've set up [Ringing](/sdk/flutter/default-call) or [Call Session](/sdk/flutter/direct-call).
 
 ## Main Video Container Setting
 
@@ -69,16 +51,16 @@ videoSettings.setFullScreenButtonParams(VideoStreamsPosition.POSITION_TOP_RIGHT,
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Direct Calling" icon="phone-arrow-right" href="/sdk/flutter/direct-call">
-    Implement direct calls without a ringing flow
+  <Card title="Default Calling" icon="phone" href="/sdk/flutter/default-call">
+    Implement default audio/video calling
+  </Card>
+  <Card title="Direct Calling" icon="video" href="/sdk/flutter/direct-call">
+    Implement direct calling without call events
   </Card>
   <Card title="Presenter Mode" icon="presentation-screen" href="/sdk/flutter/presenter-mode">
     Enable screen sharing and presenter features
   </Card>
-  <Card title="Default Calling" icon="phone" href="/sdk/flutter/default-call">
-    Implement calls with a complete ringing flow
-  </Card>
-  <Card title="Calling Setup" icon="gear" href="/sdk/flutter/calling-setup">
-    Configure the CometChat Calling SDK
+  <Card title="Recording" icon="circle-dot" href="/sdk/flutter/recording">
+    Record calls for playback
   </Card>
 </CardGroup>

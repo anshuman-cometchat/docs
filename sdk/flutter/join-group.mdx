@@ -1,11 +1,10 @@
 ---
 title: "Join A Group"
+sidebarTitle: "Join Group"
 description: "Learn how to join public and password-protected groups using the CometChat Flutter SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```dart
 // Join a public group
@@ -21,15 +20,29 @@ CometChat.joinGroup("GROUP_GUID", CometChatGroupType.password,
   onError: (CometChatException e) => debugPrint("Error: ${e.message}"),
 );
 ```
-</Info>
+
+**Group types:** `CometChatGroupType.public` | `CometChatGroupType.password` | `CometChatGroupType.private`
+</Accordion>
+
+Join a group to start sending and receiving messages in it. Public groups can be joined freely, password groups require the correct password, and private groups require an admin to add you (no direct join).
 
 ## Join a Group
 
-In order to start participating in group conversations, you will have to join a group. You can do so using the `joinGroup()` method.
+Use `joinGroup()` to join a group.
 
 <Note>
 **Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/flutter/overview)
 </Note>
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `guid` | `String` | The GUID of the group to join |
+| `groupType` | `String` | `CometChatGroupType.public`, `CometChatGroupType.password`, or `CometChatGroupType.private` |
+| `password` | `String` | Required for password-protected groups (defaults to empty string) |
+| `onSuccess` | `Function(Group group)?` | Callback triggered on successful join |
+| `onError` | `Function(CometChatException excep)?` | Callback triggered on error |
 
 <Tabs>
 <Tab title="Dart">
@@ -88,19 +101,7 @@ CometChat.joinGroup(GUID, groupType, password: password,
 
 </Accordion>
 
-The `joinGroup()` method takes the below parameters
-
-| Parameter   | Description                                                                                                                                                                              |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `GUID`      | The GUID of the group you would like to join                                                                                                                                             |
-| `groupType` | Type of the group. CometChat provides 3 types of groups viz. 1.CometChatGroupType.*public* (public). 2.CometChatGroupType.*password* (password) 3.CometChatGroupType.*private* (private) |
-| `password`  | Password is mandatory in case of a password protected group.                                                                                                                             |
-
-Once you have joined a group successfully, you can send and receive messages in that group.
-
-CometChat keeps a track of the groups joined and you do not need to join the group everytime you want to communicate in the group.
-
-You can identify if a group is joined using the `hasJoined` parameter in the `Group` object.
+Once joined, you can send and receive messages in the group. CometChat tracks joined groups — you don't need to rejoin each session. Check `hasJoined` on the [`Group`](/sdk/reference/entities#group) object to verify membership.
 
 ## Real-time Group Member Joined Events
 
@@ -124,6 +125,14 @@ void onGroupMemberJoined(Action action, User joinedUser, Group joinedGroup) {
 
 </Tabs>
 
+<Warning>
+Always remove group listeners when they're no longer needed (e.g., in `dispose()`). Failing to remove listeners can cause memory leaks and duplicate event handling.
+
+```dart
+CometChat.removeGroupListener("group_Listener_id");
+```
+</Warning>
+
 ## Missed Group Member Joined Events
 
 *In other words, as a member of a group, how do I know if someone joins the group when my app is not running?*
@@ -141,10 +150,16 @@ For the group member joined event, in the `Action` object received, the followin
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Leave Group" icon="right-from-bracket" href="/sdk/flutter/leave-group">
-    Leave groups you're a member of
+  <Card title="Leave a Group" icon="right-from-bracket" href="/sdk/flutter/leave-group">
+    Allow members to leave a group
   </Card>
-  <Card title="Retrieve Members" icon="users" href="/sdk/flutter/retrieve-group-members">
-    Get the list of group members
+  <Card title="Retrieve Group Members" icon="users" href="/sdk/flutter/retrieve-group-members">
+    Fetch the list of members in a group
+  </Card>
+  <Card title="Send Messages" icon="paper-plane" href="/sdk/flutter/send-message">
+    Send messages to group conversations
+  </Card>
+  <Card title="Add Members" icon="user-plus" href="/sdk/flutter/group-add-members">
+    Programmatically add members to a group
   </Card>
 </CardGroup>

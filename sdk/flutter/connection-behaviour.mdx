@@ -1,11 +1,10 @@
 ---
 title: "Connection Behaviour"
+sidebarTitle: "Connection Behaviour"
 description: "Understand how CometChat SDK manages WebSocket connections in auto and manual modes, including background behavior and reconnection handling."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```dart
 // Auto Mode (default) - SDK manages connection automatically
@@ -31,7 +30,7 @@ CometChat.ping(onSuccess: () {}, onError: (e) {});  // Keep alive in background
 **Connection Modes:**
 - **Auto Mode:** SDK manages WebSocket automatically (foreground=connected, background=disconnected)
 - **Manual Mode:** You control connect/disconnect; call `ping()` every 30s to keep background connection alive
-</Info>
+</Accordion>
 
 ## Default SDK behaviour on login
 
@@ -46,6 +45,8 @@ This makes sure that the logged in user starts receiving real-time messages sent
 When the app is reopened, and the init() method is called, the web-socket connection to the server is established automatically.
 
 This is the default behaviour of the CometChat SDKs. However, if you wish to take control of the web-socket connection i.e if you wish to connect and disconnect to the web-socket server manually, you can refer to the Managing Web-socket Connection section.
+
+You'd want manual control when you need to conserve resources by connecting only when the user is actively chatting, or when you need precise control over when real-time events start flowing.
 
 ## Auto Mode
 
@@ -284,7 +285,7 @@ If manual mode is enabled and the app is in the foreground, the SDK will automat
   <Card title="Real-Time Listeners" icon="tower-broadcast" href="/sdk/flutter/real-time-listeners">
     Learn about all available real-time event listeners
   </Card>
-  <Card title="Authentication" icon="key" href="/sdk/flutter/authentication">
+  <Card title="Authentication" icon="key" href="/sdk/flutter/authentication-overview">
     Implement user login and logout functionality
   </Card>
 </CardGroup>

@@ -1,11 +1,11 @@
 ---
 title: "Flag Message"
+sidebarTitle: "Flag Message"
 description: "Learn how to flag and report inappropriate messages for moderation review in your Flutter application using CometChat SDK."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```dart
 // Get available flag reasons
@@ -19,9 +19,10 @@ CometChat.getFlagReasons(
 );
 
 // Flag a message
-FlagDetail flagDetail = FlagDetail()
-  ..reasonId = "spam"
-  ..remark = "Optional additional context";
+FlagDetail flagDetail = FlagDetail(
+  reasonId: "spam",
+  remark: "Optional additional context",
+);
 
 CometChat.flagMessage(messageId, flagDetail,
   onSuccess: (String response) {
@@ -32,7 +33,7 @@ CometChat.flagMessage(messageId, flagDetail,
   },
 );
 ```
-</Info>
+</Accordion>
 
 ## Overview
 
@@ -87,7 +88,7 @@ Before flagging a message, retrieve the list of available flag reasons configure
         print("Flag reasons fetched: $reasons");
         // Use reasons to populate your report dialog UI
         for (var reason in reasons) {
-          print("Reason ID: ${reason.id}, Title: ${reason.title}");
+          print("Reason ID: ${reason.id}, Name: ${reason.name}");
         }
       },
       onError: (CometChatException e) {
@@ -104,8 +105,21 @@ The response is a list of `FlagReason` objects containing:
 
 | Property | Type | Description |
 |----------|------|-------------|
-| id | String | Unique identifier for the reason |
-| title | String | Display text for the reason |
+| `id` | `String` | Unique identifier for the reason |
+| `name` | `String` | Display name for the reason |
+| `description` | `String?` | Optional description of the reason |
+| `createdAt` | `DateTime?` | Timestamp when the reason was created |
+| `updatedAt` | `DateTime?` | Timestamp when the reason was last updated |
+
+<Accordion title="Error">
+
+| Parameter | Type | Description | Sample Value |
+|-----------|------|-------------|--------------|
+| `code` | `String` | Error code identifier | `"ERR_CHAT_API_FAILURE"` |
+| `message` | `String` | Human-readable error message | `"Failed to fetch flag reasons."` |
+| `details` | `String` | Additional technical details | `"An unexpected error occurred while processing the request."` |
+
+</Accordion>
 
 ## Flag a Message
 
@@ -116,9 +130,10 @@ To flag a message, use the `flagMessage()` method with the message ID and a `Fla
     ```dart
     int messageId = 123;  // ID of the message to flag
 
-    FlagDetail flagDetail = FlagDetail()
-      ..reasonId = "spam"  // Required: ID from getFlagReasons()
-      ..remark = "This message contains promotional content";  // Optional
+    FlagDetail flagDetail = FlagDetail(
+      reasonId: "spam",  // Required: ID from getFlagReasons()
+      remark: "This message contains promotional content",  // Optional
+    );
 
     CometChat.flagMessage(
       messageId,
@@ -138,17 +153,17 @@ To flag a message, use the `flagMessage()` method with the message ID and a `Fla
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| messageId | int | Yes | The ID of the message to flag |
-| flagDetail | FlagDetail | Yes | Contains flagging details |
-| flagDetail.reasonId | String | Yes | ID of the flag reason (from `getFlagReasons()`) |
-| flagDetail.remark | String | No | Additional context or explanation from the user |
+| `messageId` | `int` | Yes | The ID of the message to flag |
+| `flagDetail` | `FlagDetail` | Yes | Contains flagging details |
+| `flagDetail.reasonId` | `String` | Yes | ID of the flag reason (from `getFlagReasons()`) |
+| `flagDetail.remark` | `String?` | No | Additional context or explanation from the user |
 
 <Accordion title="Response">
 **On Success** — A `String` message confirming the message has been flagged:
 
 | Parameter | Type | Description | Sample Value |
 |-----------|------|-------------|--------------|
-| `message` | string | Success confirmation message | `"Message 123 has been flagged successfully."` |
+| `message` | `String` | Success confirmation message | `"Message 123 has been flagged successfully."` |
 
 </Accordion>
 
@@ -156,9 +171,9 @@ To flag a message, use the `flagMessage()` method with the message ID and a `Fla
 
 | Parameter | Type | Description | Sample Value |
 |-----------|------|-------------|--------------|
-| `code` | string | Error code identifier | `"ERR_CHAT_API_FAILURE"` |
-| `message` | string | Human-readable error message | `"Failed to flag the message."` |
-| `details` | string | Additional technical details | `"An unexpected error occurred while processing the request."` |
+| `code` | `String` | Error code identifier | `"ERR_CHAT_API_FAILURE"` |
+| `message` | `String` | Human-readable error message | `"Failed to flag the message."` |
+| `details` | `String` | Additional technical details | `"An unexpected error occurred while processing the request."` |
 
 </Accordion>
 
@@ -201,12 +216,10 @@ Here's a complete implementation showing how to build a report message flow:
       }) async {
         final completer = Completer<bool>();
         
-        FlagDetail flagDetail = FlagDetail()
-          ..reasonId = reasonId;
-        
-        if (remark != null) {
-          flagDetail.remark = remark;
-        }
+        FlagDetail flagDetail = FlagDetail(
+          reasonId: reasonId,
+          remark: remark,
+        );
 
         CometChat.flagMessage(
           messageId,

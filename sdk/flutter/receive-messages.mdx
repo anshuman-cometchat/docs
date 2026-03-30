@@ -4,41 +4,16 @@ sidebarTitle: "Receive Messages"
 description: "Learn how to receive real-time messages and fetch missed or historical messages using the CometChat Flutter SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
-```dart
-// Add message listener for real-time messages
-CometChat.addMessageListener("UNIQUE_LISTENER_ID", MessageListener(
-  onTextMessageReceived: (TextMessage message) {
-    debugPrint("Text message: ${message.text}");
-  },
-  onMediaMessageReceived: (MediaMessage message) {
-    debugPrint("Media message: ${message.attachment?.fileUrl}");
-  },
-));
+| Field | Value |
+| --- | --- |
+| Key Classes | `MessageListener`, `MessagesRequest`, `MessagesRequestBuilder` |
+| Key Methods | `addMessageListener()`, `removeMessageListener()`, `fetchPrevious()`, `fetchNext()`, `getLastDeliveredMessageId()`, `getUnreadMessageCount()` |
+| Listener Events | `onTextMessageReceived`, `onMediaMessageReceived`, `onCustomMessageReceived`, `onTypingStarted`, `onTypingEnded`, `onMessagesDelivered`, `onMessagesRead`, `onMessageEdited`, `onMessageDeleted`, `onInteractiveMessageReceived`, `onMessageReactionAdded`, `onMessageReactionRemoved` |
+| Prerequisites | SDK initialized, user logged in |
 
-// Fetch missed messages (after last delivered message)
-int lastMessageId = await CometChat.getLastDeliveredMessageId() ?? 0;
-MessagesRequest request = (MessagesRequestBuilder()
-  ..uid = "USER_UID"
-  ..messageId = lastMessageId
-  ..limit = 50
-).build();
-List<BaseMessage> messages = await request.fetchNext();
-
-// Fetch message history
-MessagesRequest historyRequest = (MessagesRequestBuilder()
-  ..uid = "USER_UID"
-  ..limit = 30
-).build();
-List<BaseMessage> history = await historyRequest.fetchPrevious();
-
-// Remove listener when done
-CometChat.removeMessageListener("UNIQUE_LISTENER_ID");
-```
-</Info>
+</Accordion>
 
 Receiving messages with CometChat has two parts:
 
@@ -94,6 +69,33 @@ onInteractiveMessageReceived(InteractiveMessage message) {
 | Parameter  | Description                                                                                    |
 | ---------- | ---------------------------------------------------------------------------------------------- |
 | listenerID | An ID that uniquely identifies that listener. We recommend using the activity or fragment name |
+
+### MessageListener Events
+
+The `MessageListener` mixin provides the following event callbacks. All events are verified against the Flutter SDK source.
+
+| Event | Parameter Type | Description |
+| --- | --- | --- |
+| `onTextMessageReceived` | `TextMessage` | Triggered when a text message is received |
+| `onMediaMessageReceived` | `MediaMessage` | Triggered when a media message (image, video, audio, file) is received |
+| `onCustomMessageReceived` | `CustomMessage` | Triggered when a custom message is received |
+| `onTypingStarted` | `TypingIndicator` | Triggered when a user starts typing |
+| `onTypingEnded` | `TypingIndicator` | Triggered when a user stops typing |
+| `onMessagesDelivered` | `MessageReceipt` | Triggered when messages are delivered to the recipient |
+| `onMessagesRead` | `MessageReceipt` | Triggered when messages are read by the recipient |
+| `onMessagesDeliveredToAll` | `MessageReceipt` | Triggered when messages are delivered to all group members |
+| `onMessagesReadByAll` | `MessageReceipt` | Triggered when messages are read by all group members |
+| `onMessageEdited` | `BaseMessage` | Triggered when a message is edited |
+| `onMessageDeleted` | `BaseMessage` | Triggered when a message is deleted |
+| `onTransientMessageReceived` | `TransientMessage` | Triggered when a transient (non-persistent) message is received |
+| `onInteractiveMessageReceived` | `InteractiveMessage` | Triggered when an interactive message is received |
+| `onInteractionGoalCompleted` | `InteractionReceipt` | Triggered when an interaction goal is completed |
+| `onMessageReactionAdded` | `ReactionEvent` | Triggered when a reaction is added to a message |
+| `onMessageReactionRemoved` | `ReactionEvent` | Triggered when a reaction is removed from a message |
+| `onMessageModerated` | `BaseMessage` | Triggered when a message is moderated |
+| `onAIAssistantMessageReceived` | `AIAssistantMessage` | Triggered when an AI assistant message is received |
+| `onAIToolResultReceived` | `AIToolResultMessage` | Triggered when an AI tool result is received |
+| `onAIToolArgumentsReceived` | `AIToolArgumentMessage` | Triggered when AI tool arguments are received |
 
 We recommend you remove the listener once the activity or fragment is not in use. Typically, this can be added in the `dispose()` method.
 

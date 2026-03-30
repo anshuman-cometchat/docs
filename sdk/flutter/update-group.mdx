@@ -1,11 +1,10 @@
 ---
 title: "Update A Group"
-description: "Learn how to update group details such as name, description, icon, and metadata using the CometChat Flutter SDK."
+sidebarTitle: "Update Group"
+description: "Update group details such as name, description, icon, and metadata using the CometChat Flutter SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```dart
 // Update a group
@@ -19,17 +18,27 @@ await CometChat.updateGroup(
   onError: (CometChatException e) => debugPrint("Error: ${e.message}"),
 );
 ```
-</Info>
+</Accordion>
+
+Update a group's name, icon, description, or metadata. The GUID and group type cannot be changed after creation. See the [Group Class](/sdk/flutter/create-group#group-class) reference for all editable fields.
 
 ## Update Group
 
 *In other words, as a group owner, how can I update the group details?*
 
-You can update the existing details of the group using the `updateGroup()` method.
+You can update the existing details of the group using the `updateGroup()` method. Pass a [`Group`](/sdk/reference/entities#group) object with the updated values.
 
 <Note>
 **Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/flutter/overview)
 </Note>
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `group` | `Group` | An instance of the [`Group`](/sdk/reference/entities#group) class with updated values |
+| `onSuccess` | `Function(Group group)?` | Callback triggered on successful group update |
+| `onError` | `Function(CometChatException excep)?` | Callback triggered on error |
 
 <Tabs>
 <Tab title="Dart">
@@ -91,25 +100,29 @@ String GUID = "GUID";
 
 </Accordion>
 
-This method takes an instance of the `Group` class as a parameter which should contain the data that you wish to update.
-
-| Parameter | Description                  |
-| --------- | ---------------------------- |
-| `group`   | an instance of class `Group` |
-
 After the successful update of the group, you will receive an instance of `Group` class containing updated information of the group.
 
-For more information on the `Group` class, please check [here](/sdk/flutter/create-group#group-class)
+For more information on the `Group` class, please check [here](/sdk/flutter/create-group#group-class).
+
+<Note>
+There is no real-time event listener for group updates. To get the latest group information after calling `updateGroup()`, fetch the group details again using `getGroup()`.
+</Note>
 
 ---
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Retrieve Groups" icon="list" href="/sdk/flutter/retrieve-groups">
-    List and fetch groups with filtering options
+  <Card title="Delete Group" icon="trash" href="/sdk/flutter/delete-group">
+    Permanently delete a group
+  </Card>
+  <Card title="Retrieve Groups" icon="magnifying-glass" href="/sdk/flutter/retrieve-groups">
+    Fetch and filter groups with pagination
   </Card>
   <Card title="Create Group" icon="plus" href="/sdk/flutter/create-group">
     Create new public, private, or password-protected groups
+  </Card>
+  <Card title="Groups Overview" icon="users" href="/sdk/flutter/groups-overview">
+    Overview of all group management features
   </Card>
 </CardGroup>

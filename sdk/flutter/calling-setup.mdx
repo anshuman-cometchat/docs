@@ -4,9 +4,7 @@ sidebarTitle: "Calling Setup"
 description: "Learn how to install and initialize the CometChat Calls SDK for Flutter to enable voice and video calling in your application."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```yaml
 # pubspec.yaml
@@ -15,10 +13,8 @@ dependencies:
 ```
 
 ```dart
-// Import the SDK
 import 'package:cometchat_calls_sdk/cometchat_calls_sdk.dart';
 
-// Initialize Calls SDK
 CallAppSettings callAppSettings = (CallAppSettingBuilder()
   ..appId = "APP_ID"
   ..region = "REGION"
@@ -31,7 +27,7 @@ CometChatCalls.init(callAppSettings,
 ```
 
 **Required:** App ID, Region from [CometChat Dashboard](https://app.cometchat.com)
-</Info>
+</Accordion>
 
 ### Get your Application Keys
 
@@ -74,9 +70,9 @@ import 'package:cometchat_calls_sdk/cometchat_calls_sdk.dart';
 
 </Tabs>
 
-## Initialise CometChatCalls
+## Initialize CometChatCalls
 
-The `init()` method initialises the settings required for CometChatCalls. The `init()` method takes the below parameters:
+The `init()` method initializes the settings required for CometChatCalls. The `init()` method takes the below parameters:
 
 1. callAppSettings - An object of the CallAppSettings class can be created using the CallAppSettingBuilder class. The appId and region field is mandatory and can be set using the `setAppId()` and `setRegion()` method.
 
@@ -130,15 +126,53 @@ debugPrint("Initialization failed with exception: ${e.message}");
 
 </Accordion>
 
+<Warning>
+`CometChatCalls.init()` must be called before any other Calls SDK method. Calling `generateToken()`, `startSession()`, or registering listeners before `init()` will fail.
+</Warning>
+
+### Initialization Order
+
+If you're using both the Chat SDK and Calls SDK, initialize them in sequence:
+
+```dart
+// 1. Chat SDK first
+CometChat.init(appId, appSettings, onSuccess: (String successMessage) {
+  debugPrint("Chat SDK initialized");
+
+  // 2. Then Calls SDK
+  CallAppSettings callAppSettings = (CallAppSettingBuilder()
+    ..appId = "APP_ID"
+    ..region = "REGION"
+  ).build();
+
+  CometChatCalls.init(callAppSettings, onSuccess: (String message) {
+    debugPrint("Calls SDK initialized");
+    // 3. Now both SDKs are ready
+  }, onError: (CometChatCallsException e) {
+    debugPrint("Calls SDK init failed: ${e.message}");
+  });
+}, onError: (CometChatException e) {
+  debugPrint("Chat SDK init failed: ${e.message}");
+});
+```
+
+For [Standalone Calling](/sdk/flutter/standalone-calling), you only need `CometChatCalls.init()` — no Chat SDK required.
+
 ---
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Default Calling" icon="phone" href="/sdk/flutter/default-call">
-    Implement ringing calls with accept/reject functionality
+  <Card title="Default Calling" icon="phone-volume" href="/sdk/flutter/default-call">
+    Implement the complete ringing call flow
   </Card>
-  <Card title="Direct Calling" icon="video" href="/sdk/flutter/direct-call">
-    Start direct call sessions without ringing
+  <Card title="Call Session" icon="video" href="/sdk/flutter/direct-call">
+    Start and manage call sessions
+  </Card>
+  <Card title="Standalone Calling" icon="phone-flip" href="/sdk/flutter/standalone-calling">
+    Use Calls SDK without the Chat SDK
+  </Card>
+  <Card title="Calling Overview" icon="phone" href="/sdk/flutter/calling-overview">
+    Compare calling approaches and features
   </Card>
 </CardGroup>

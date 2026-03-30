@@ -1,17 +1,16 @@
 ---
 title: "Retrieve Conversations"
-description: "Learn how to retrieve, filter, and manage conversation lists in your Flutter app using the CometChat SDK."
+sidebarTitle: "Retrieve Conversations"
+description: "Fetch, filter, tag, and search conversations using the CometChat Flutter SDK."
 ---
 
 {/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```dart
-// Retrieve conversations with pagination
+// Fetch conversations list
 ConversationsRequest request = (ConversationsRequestBuilder()
   ..limit = 30
-  ..conversationType = CometChatConversationType.user
 ).build();
 
 await request.fetchNext(
@@ -23,13 +22,24 @@ await request.fetchNext(
   onError: (CometChatException e) => debugPrint("Error: ${e.message}"),
 );
 
-// Get single conversation
-CometChat.getConversation("user_uid", "user",
+// Get a specific conversation
+CometChat.getConversation("UID", "user",
   onSuccess: (Conversation conv) => debugPrint("Got: ${conv.conversationId}"),
   onError: (CometChatException e) => debugPrint("Error: ${e.message}"),
 );
+
+// Tag a conversation
+CometChat.tagConversation("UID", "user", ["archived"],
+  onSuccess: (Conversation conv) => debugPrint("Tagged: ${conv.conversationId}"),
+  onError: (CometChatException e) => debugPrint("Error: ${e.message}"),
+);
+
+// Convert message to conversation
+Conversation conversation = CometChat.getConversationFromMessage(message);
 ```
-</Info>
+</Accordion>
+
+Conversations provide the last message for every one-on-one and group conversation the logged-in user is part of. Each [`Conversation`](/sdk/reference/entities#conversation) object includes the other participant (user or group), the last message, unread counts, and optional tags. Use this to build a Recent Chats list.
 
 ## Retrieve List of Conversations
 
@@ -41,11 +51,32 @@ CometChat.getConversation("user_uid", "user",
 
 To fetch the list of conversations, you can use the `ConversationsRequest` class. To use this class i.e. to create an object of the `ConversationsRequest` class, you need to use the `ConversationsRequestBuilder` class. The `ConversationsRequestBuilder` class allows you to set the parameters based on which the conversations are to be fetched.
 
-The `ConversationsRequestBuilder` class allows you to set the below parameters:
+Fetching using this builder will return [`Conversation`](/sdk/reference/entities#conversation) objects.
+
+### ConversationsRequestBuilder Parameters
+
+The `ConversationsRequestBuilder` to fetch conversations with various filters.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `limit` | `int?` | Number of conversations to fetch per request. Default is 30, max is 50. |
+| `conversationType` | `String?` | Filter by `CometChatConversationType.user` or `CometChatConversationType.group`. If not set, both types are returned. |
+| `withUserAndGroupTags` | `bool?` | Include user/group tags in the response. Default is `false`. |
+| `withTags` | `bool?` | Include conversation tags in the response. Default is `false`. |
+| `tags` | `List<String>?` | Fetch only conversations matching the specified tags. |
+| `userTags` | `List<String>?` | Fetch only user conversations where the user has the specified tags. |
+| `groupTags` | `List<String>?` | Fetch only group conversations where the group has the specified tags. |
+| `includeBlockedUsers` | `bool?` | Include conversations with blocked users. Default is `false`. |
+| `withBlockedInfo` | `bool?` | Include blocked user information (`hasBlockedMe`, `blockedByMe`). Default is `false`. |
+| `searchKeyword` | `String?` | Search conversations by user or group name. Requires Conversation & Advanced Search. |
+| `unread` | `bool?` | Fetch only conversations with unread messages. Requires Conversation & Advanced Search. Default is `false`. |
+| `setPage` | `int?` | Fetch conversations from a particular page. |
+| `hideAgentic` | `bool?` | Exclude AI agent conversations from results. Default is `false`. |
+| `onlyAgentic` | `bool?` | Fetch only AI agent conversations. Default is `false`. |
 
 ### Set Limit
 
-This method sets the limit i.e. the number of conversations that should be fetched in a single iteration.
+Set the number of conversations to fetch per request.
 
 <Tabs>
 <Tab title="Dart">
@@ -54,19 +85,16 @@ ConversationsRequest conversationRequest = (ConversationsRequestBuilder()
   ..limit = 50
 ).build();
 ```
-
 </Tab>
-
 </Tabs>
+
+<Note>
+The default value for `limit` is 30 and the max value is 50.
+</Note>
 
 ### Set Conversation Type
 
-This method can be used to fetch user or group conversations specifically. The `conversationType` variable can hold one of the below two values:
-
-* user - Only fetches user conversation.
-* group - Only fetches group conversations.
-
-If none is set, the list of conversations will include both user and group conversations.
+Filter by conversation type: `user` for one-on-one or `group` for group conversations. If not set, both types are returned.
 
 <Tabs>
 <Tab title="Dart">
@@ -76,14 +104,14 @@ ConversationsRequest conversationRequest = (ConversationsRequestBuilder()
   ..conversationType = CometChatConversationType.user
 ).build();
 ```
-
 </Tab>
-
 </Tabs>
+
+When conversations are fetched successfully, the response will include an array of [`Conversation`](/sdk/reference/entities#conversation) objects filtered by the specified type.
 
 ### With User and Group Tags
 
-This method can be used to fetch the user/group tags in the `Conversation` Object. By default the value is false.
+Use `withUserAndGroupTags = true` to include user/group tags in the `Conversation` object. Default is `false`.
 
 <Tabs>
 <Tab title="Dart">
@@ -93,14 +121,48 @@ ConversationsRequest conversationRequest = (ConversationsRequestBuilder()
   ..withUserAndGroupTags  = true
 ).build();
 ```
-
 </Tab>
-
 </Tabs>
+
+When conversations are fetched successfully, the response will include `tags` arrays on the `conversationWith` objects (user or group).
+
+### Set User Tags
+
+Fetch user conversations where the user has specific tags.
+
+<Tabs>
+<Tab title="Dart">
+```dart
+ConversationsRequest conversationRequest = (ConversationsRequestBuilder()
+  ..limit = 50
+  ..userTags = ["tag1"]
+).build();
+```
+</Tab>
+</Tabs>
+
+When conversations are fetched successfully, the response will include only user conversations where the user has the specified tags.
+
+### Set Group Tags
+
+Fetch group conversations where the group has specific tags.
+
+<Tabs>
+<Tab title="Dart">
+```dart
+ConversationsRequest conversationRequest = (ConversationsRequestBuilder()
+  ..limit = 50
+  ..groupTags = ["tag1"]
+).build();
+```
+</Tab>
+</Tabs>
+
+When conversations are fetched successfully, the response will include only group conversations where the group has the specified tags.
 
 ### With Tags
 
-This method makes sure that the tags associated with the conversations are returned along with the other details of the conversations. The default value for this parameter is `false`
+Use `withTags = true` to include conversation tags in the response. Default is `false`.
 
 <Tabs>
 <Tab title="Dart">
@@ -110,14 +172,12 @@ ConversationsRequest conversationRequest = (ConversationsRequestBuilder()
   ..withTags = true
 ).build();
 ```
-
 </Tab>
-
 </Tabs>
 
 ### Set Tags
 
-This method helps you fetch the conversations based on the specified tags.
+Fetch conversations that have specific tags.
 
 <Tabs>
 <Tab title="Dart">
@@ -129,14 +189,12 @@ ConversationsRequest conversationRequest = (ConversationsRequestBuilder()
   ..tags = tags
 ).build();
 ```
-
 </Tab>
-
 </Tabs>
 
 ### Include Blocked Users
 
-This method helps you fetch the conversations of users whom the logged-in user has blocked.
+Use `includeBlockedUsers = true` to include conversations with users you've blocked.
 
 <Tabs>
 <Tab title="Dart">
@@ -146,14 +204,14 @@ ConversationsRequest conversationRequest = (ConversationsRequestBuilder()
   ..includeBlockedUsers = true
 ).build();
 ```
-
 </Tab>
-
 </Tabs>
+
+When conversations are fetched successfully, the response includes conversations with blocked users. To also get blocked info details (`blockedByMe`, `hasBlockedMe`), set `withBlockedInfo` to `true`.
 
 ### With Blocked Info
 
-This method can be used to fetch the blocked information of the blocked user in the `ConversationWith` object.
+Use `withBlockedInfo = true` to include blocked user information in the response.
 
 <Tabs>
 <Tab title="Dart">
@@ -163,14 +221,12 @@ ConversationsRequest conversationRequest = (ConversationsRequestBuilder()
   ..withBlockedInfo = true
 ).build();
 ```
-
 </Tab>
-
 </Tabs>
 
 ### Search Conversations
 
-This method helps you search a conversation based on User or Group name.
+Use `searchKeyword` to search conversations by user or group name.
 
 <Note>
 
@@ -186,14 +242,14 @@ This feature is only available with `Conversation & Advanced Search`. The `Conve
     ..searchKeyword = "Hiking"
   ).build();
 ```
-
 </Tab>
-
 </Tabs>
+
+When conversations are fetched successfully, the response includes conversations where the user or group name matches the search keyword.
 
 ### Unread Conversations
 
-This method helps you fetch unread conversations.
+Use `unread = true` to fetch only conversations with unread messages.
 
 <Note>
 
@@ -209,16 +265,50 @@ This feature is only available with `Conversation & Advanced Search`. The `Conve
     ..unread = true
   ).build();
 ```
-
 </Tab>
-
 </Tabs>
 
-Finally, once all the parameters are set to the builder class, you need to call the `build()` method to get the object of the `ConversationsRequest` class.
+When conversations are fetched successfully, the response includes only conversations with unread messages (`unreadMessageCount` > 0).
 
-Once you have the object of the `ConversationsRequest` class, you need to call the `fetchNext()` method. Calling this method will return a list of `Conversation` objects containing X number of conversations depending on the limit set.
+### Hide Agentic Conversations
 
-A Maximum of only 50 Conversations can be fetched at once.
+Use `hideAgentic = true` to exclude AI agent conversations from the list.
+
+<Tabs>
+<Tab title="Dart">
+```dart
+ConversationsRequest conversationRequest = (ConversationsRequestBuilder()
+  ..limit = 50
+  ..hideAgentic = true
+).build();
+```
+</Tab>
+</Tabs>
+
+### Only Agentic Conversations
+
+Use `onlyAgentic = true` to fetch only AI agent conversations.
+
+<Tabs>
+<Tab title="Dart">
+```dart
+ConversationsRequest conversationRequest = (ConversationsRequestBuilder()
+  ..limit = 50
+  ..onlyAgentic = true
+).build();
+```
+</Tab>
+</Tabs>
+
+<Note>
+`hideAgentic` and `onlyAgentic` are mutually exclusive — use only one per request.
+</Note>
+
+When conversations are fetched successfully, the response will include only conversations with AI agents. Agent users have `role: "@agentic"` and include agent-specific metadata.
+
+### Fetch Conversations
+
+After configuring the builder, call `build()` to create the request, then `fetchNext()` to retrieve conversations. Maximum 50 per request. Call `fetchNext()` repeatedly on the same object to paginate.
 
 <Tabs>
 <Tab title="Dart">
@@ -235,9 +325,7 @@ conversationRequest.fetchNext(
 
       }
 ```
-
 </Tab>
-
 </Tabs>
 
 <Accordion title="Response">
@@ -398,7 +486,7 @@ conversationRequest.fetchNext(
 
 </Accordion>
 
-The `Conversation`object consists of the below fields:
+The `Conversation` object consists of the below fields:
 
 | Field                 | Information                                                          |
 | --------------------- | -------------------------------------------------------------------- |
@@ -414,16 +502,13 @@ The `Conversation`object consists of the below fields:
 
 *In other words, as a logged-in user, how do I tag a conversation?*
 
-In order to tag a specific conversation, you can use the `tagConversation()` method. The `tagConversation()` method accepts three parameters.
+Use `tagConversation()` to add tags to a conversation.
 
-1. `conversationWith`: UID/GUID of the user/group whose conversation you want to fetch.
-
-2. `conversationType`: The `conversationType` variable can hold one of the below two values:
-
-   1. user - Only fetches user conversation.
-   2. group - Only fetches group conversations.
-
-3. `tags`: The `tags` variable will be a list of tags you want to add to a conversation.
+| Parameter | Description |
+| --- | --- |
+| `conversationWith` | UID or GUID of the user/group |
+| `conversationType` | `user` or `group` |
+| `tags` | Array of tags to add |
 
 <Tabs>
 <Tab title="Dart">
@@ -441,9 +526,7 @@ CometChat.tagConversation(conversationWith, conversationType, tags,
 	}
 );
 ```
-
 </Tab>
-
 </Tabs>
 
 <Accordion title="Response">
@@ -589,13 +672,12 @@ The tags for conversations are one-way. This means that if user A tags a convers
 
 *In other words, as a logged-in user, how do I retrieve a specific conversation?*
 
-In order to fetch a specific conversation, you can use the `getConversation` method. The `getConversation` method accepts two parameters.
+Use `getConversation()` to fetch a specific conversation.
 
-1. `conversationWith`: UID/GUID of the user/group whose conversation you want to fetch.
-2. `conversationType`: The `conversationType` variable can hold one of the below two values:
-
-* user - Only fetches user conversation.
-* group - Only fetches group conversations.
+| Parameter | Description |
+| --- | --- |
+| `conversationWith` | UID or GUID of the user/group |
+| `conversationType` | `user` or `group` |
 
 <Tabs>
 <Tab title="Dart">
@@ -610,9 +692,7 @@ CometChat.getConversation(conversationWith, conversationType,
 	}
 );
 ```
-
 </Tab>
-
 </Tabs>
 
 <Accordion title="Response">
@@ -757,16 +837,12 @@ As per our [Receive Messages](/sdk/flutter/receive-messages) guide, for real-tim
 ```dart
 Conversation conversation = CometChat.getConversationFromMessage(message);
 ```
-
 </Tab>
-
 </Tabs>
 
-<Info>
-
-While converting `Message` object to `Conversation` object, the `unreadMessageCount` & `tags` will not be available in the `Conversation` object. The unread message count needs to be managed in your client-side code.
-
-</Info>
+<Note>
+While converting a `Message` object to a `Conversation` object, the `unreadMessageCount` & `tags` will not be available in the `Conversation` object. The unread message count needs to be managed in your client-side code.
+</Note>
 
 ---
 
@@ -774,10 +850,10 @@ While converting `Message` object to `Conversation` object, the `unreadMessageCo
 
 <CardGroup cols={2}>
   <Card title="Delete Conversation" icon="trash" href="/sdk/flutter/delete-conversation">
-    Remove conversations from the list
+    Remove conversations from the logged-in user's list
   </Card>
   <Card title="Typing Indicators" icon="keyboard" href="/sdk/flutter/typing-indicators">
-    Show when users are typing
+    Show real-time typing status in conversations
   </Card>
   <Card title="Read Receipts" icon="check-double" href="/sdk/flutter/delivery-read-receipts">
     Track message delivery and read status

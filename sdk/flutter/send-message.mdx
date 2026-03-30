@@ -1,11 +1,18 @@
 ---
-title: "Send A Message"
-description: "Learn how to send text, media, and custom messages to users and groups using the CometChat Flutter SDK."
+title: "Send Messages"
+sidebarTitle: "Send Messages"
+description: "Send text, media, and custom messages to users and groups using the CometChat Flutter SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
+
+| Field | Value |
+| --- | --- |
+| Key Classes | `TextMessage`, `MediaMessage`, `CustomMessage` |
+| Key Methods | `CometChat.sendMessage()`, `CometChat.sendMediaMessage()`, `CometChat.sendCustomMessage()` |
+| Receiver Types | `CometChatReceiverType.user`, `CometChatReceiverType.group` |
+| Message Types | `CometChatMessageType.text`, `CometChatMessageType.image`, `CometChatMessageType.video`, `CometChatMessageType.audio`, `CometChatMessageType.file`, `CometChatMessageType.custom` |
+| Prerequisites | SDK initialized, user logged in |
 
 ```dart
 // Send text message to user
@@ -34,19 +41,32 @@ MediaMessage mediaMessage = MediaMessage(
   file: "path/to/image.jpg",
 );
 CometChat.sendMediaMessage(mediaMessage, onSuccess: (msg) {}, onError: (e) {});
-```
-</Info>
 
-Using CometChat, you can send three types of messages:
+// Send custom message
+CustomMessage customMessage = CustomMessage(
+  receiverUid: "UID",
+  receiverType: CometChatReceiverType.user,
+  type: "location",
+  customData: {"latitude": "50.6192", "longitude": "-72.6818"},
+);
+CometChat.sendCustomMessage(customMessage, onSuccess: (msg) {}, onError: (e) {});
+```
+
+</Accordion>
+
+CometChat supports three types of messages:
+
+| Type | Method | Use Case |
+| --- | --- | --- |
+| [Text](#text-message) | `CometChat.sendMessage()` | Plain text messages |
+| [Media](#media-message) | `CometChat.sendMediaMessage()` | Images, videos, audio, files |
+| [Custom](#custom-message) | `CometChat.sendCustomMessage()` | Location, polls, or any structured data |
+
+You can also send [Interactive Messages](/sdk/flutter/interactive-messages) for forms, cards, and custom UI elements.
 
 <Note>
 **Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/flutter/overview)
 </Note>
-
-1. A [Text Message](/sdk/flutter/send-message#text-message), the most common and standard message type.
-2. A [Media Message](/sdk/flutter/send-message#media-message), for sending photos, videos and files.
-3. A [Custom Message](/sdk/flutter/send-message#custom-message), for sending completely custom data using Map structures.
-4. A [Interactive Messages](/sdk/flutter/interactive-messages) , for sending end-user interactive messages of type form, card and custom Interactive
 
 You can also send metadata along with a text or media message. Think, for example, if you'd want to share the user's location with every message, you can use the metadata field.
 
@@ -261,42 +281,52 @@ Once the text message object is ready, you need to use the `sendMessage()` metho
 <Tab title="Dart (User)">
 ```dart
 String receiverID = "UID";
-  String messageText = "Hello CometChat!";
-  String receiverType = CometChatReceiverType.user;
+String messageText = "Hello CometChat!";
+String receiverType = CometChatReceiverType.user;
+String type = CometChatMessageType.text;
 
-  TextMessage textMessage =
-      TextMessage(receiverID, messageText, receiverType);
+TextMessage textMessage = TextMessage(
+  text: messageText,
+  receiverUid: receiverID,
+  receiverType: receiverType,
+  type: type,
+);
+textMessage.quotedMessageId = 10;
 
-  CometChat.sendMessage(
-    textMessage,
-    onSuccess: (TextMessage message) {
-      print("Message sent successfully: ${message.toString()}");
-    },
-    onError: (CometChatException e) {
-      print("Message sending failed with exception: ${e.message}");
-    },
-  );
+CometChat.sendMessage(textMessage,
+  onSuccess: (TextMessage message) {
+    debugPrint("Message sent successfully: ${message.toString()}");
+  },
+  onError: (CometChatException e) {
+    debugPrint("Message sending failed with exception: ${e.message}");
+  },
+);
 ```
 </Tab>
 
 <Tab title="Dart (Group)">
 ```dart
 String receiverID = "GUID";
-  String messageText = "Hello CometChat!";
-  String receiverType = CometChatReceiverType.group;
+String messageText = "Hello CometChat!";
+String receiverType = CometChatReceiverType.group;
+String type = CometChatMessageType.text;
 
-  TextMessage textMessage =
-      TextMessage(receiverID, messageText, receiverType);
+TextMessage textMessage = TextMessage(
+  text: messageText,
+  receiverUid: receiverID,
+  receiverType: receiverType,
+  type: type,
+);
+textMessage.quotedMessageId = 10;
 
-  CometChat.sendMessage(
-    textMessage,
-    onSuccess: (TextMessage message) {
-      print("Message sent successfully: ${message.toString()}");
-    },
-    onError: (CometChatException e) {
-      print("Message sending failed with exception: ${e.message}");
-    },
-  );
+CometChat.sendMessage(textMessage,
+  onSuccess: (TextMessage message) {
+    debugPrint("Message sent successfully: ${message.toString()}");
+  },
+  onError: (CometChatException e) {
+    debugPrint("Message sending failed with exception: ${e.message}");
+  },
+);
 ```
 
 </Tab>
@@ -309,7 +339,7 @@ The `TextMessage` class constructor takes the following parameters:
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------- |
 | `receiverID`   | `UID` of the user or `GUID` of the group receiving the message                                                               | Required |
 | `messageText`  | The text message                                                                                                             | Required |
-| `receiverType` | The type of the receiver- `CometChatConstants.RECEIVER_TYPE_USER` (user) or `CometChatConstants.RECEIVER_TYPE_GROUP` (group) | Required |
+| `receiverType` | The type of the receiver- `CometChatReceiverType.user` (user) or `CometChatReceiverType.group` (group) | Required |
 
 When a text message is sent successfully, the response will include a `TextMessage` object which includes all information related to the sent message.
 
@@ -457,26 +487,65 @@ mediaMessage.tags = tags;
 
 </Tabs>
 
+### Set Quoted Message
+
+To quote a message in a media message, use the `quotedMessageId` property of the MediaMessage class.
+
+<Tabs>
+<Tab title="Dart">
+```dart
+mediaMessage.quotedMessageId = 10;
+```
+
+</Tab>
+
+</Tabs>
+
 There are 2 ways you can send Media Messages using the CometChat SDK:
 
 1. **By providing the File :** You can directly share the file object while creating an object of the MediaMessage class. When the media message is sent using the sendMediaMessage() method, this file is then uploaded to CometChat servers and the URL of the file is sent in the success response of the sendMediaMessage() function.
 
 <Tabs>
-<Tab title="Dart">
+<Tab title="Dart (User)">
 ```dart
-String receiverID;
+String receiverID = "cometchat-uid-1";
 String messageType = CometChatMessageType.image;
-String receiverType = CometChatConversationType.user ;
+String receiverType = CometChatConversationType.user;
 String filePath = "storage/emulated/0/Download/46.jpg";
 MediaMessage mediaMessage = MediaMessage(
-receiverType: receiverType,
-type: messageType,
-receiverUid: receiverID,
-file: filePath);
+  receiverType: receiverType,
+  type: messageType,
+  receiverUid: receiverID,
+  file: filePath,
+);
 
 await CometChat.sendMediaMessage(mediaMessage, 
   onSuccess: (MediaMessage message) {
-  	debugPrint("Media message sent successfully:${mediaMessage.metadata}");
+  	debugPrint("Media message sent successfully: ${mediaMessage.metadata}");
+  }, onError: (e) {
+  	debugPrint("Media message sending failed with exception: ${e.message}");
+  }
+); 
+```
+
+</Tab>
+
+<Tab title="Dart (Group)">
+```dart
+String receiverID = "cometchat-guid-1";
+String messageType = CometChatMessageType.image;
+String receiverType = CometChatConversationType.group;
+String filePath = "storage/emulated/0/Download/46.jpg";
+MediaMessage mediaMessage = MediaMessage(
+  receiverType: receiverType,
+  type: messageType,
+  receiverUid: receiverID,
+  file: filePath,
+);
+
+await CometChat.sendMediaMessage(mediaMessage, 
+  onSuccess: (MediaMessage message) {
+  	debugPrint("Media message sent successfully: ${mediaMessage.metadata}");
   }, onError: (e) {
   	debugPrint("Media message sending failed with exception: ${e.message}");
   }
@@ -610,8 +679,12 @@ The `MediaMessage` class constructor takes the following parameters:
 2. **By providing the URL of the File:** The second way to send media messages using the CometChat SDK is to provide the SDK with the URL of any file that is hosted on your servers or any cloud storage. To achieve this you will have to make use of the Attachment class that is available in the MediaMessage class. For more information, you can refer to the below code snippet:
 
 <Tabs>
-<Tab title="Dart">
+<Tab title="Dart (User)">
 ```dart
+String receiverID = "cometchat-uid-1";
+String messageType = CometChatMessageType.image;
+String receiverType = CometChatConversationType.user;
+
 MediaMessage mediaMessage = MediaMessage(
                           receiverType: receiverType,
                           type: messageType,
@@ -623,12 +696,43 @@ String fileName   = "test";
 String fileExtension = "png";
 String fileMimeType = "image/png";
 
-Attachment attach =  Attachment(fileUrl,fileName,fileExtension,fileMimeType,null);
-mediaMessage.attachment= attach;
+Attachment attach = Attachment(fileUrl, fileName, fileExtension, fileMimeType, null);
+mediaMessage.attachment = attach;
 
 await CometChat.sendMediaMessage(mediaMessage,
   onSuccess: (MediaMessage message) {
-  	debugPrint( "Media message sent successfully: ${mediaMessage}");                            
+  	debugPrint("Media message sent successfully: ${mediaMessage}");                            
+  }, onError: (CometChatException e) {
+  	debugPrint("Media message sending failed with exception: ${e.message}");
+  }
+);   
+```
+
+</Tab>
+
+<Tab title="Dart (Group)">
+```dart
+String receiverID = "cometchat-guid-1";
+String messageType = CometChatMessageType.image;
+String receiverType = CometChatConversationType.group;
+
+MediaMessage mediaMessage = MediaMessage(
+                          receiverType: receiverType,
+                          type: messageType,
+                          receiverUid: receiverID,
+                          file: null);
+
+String fileUrl  = "https://pngimg.com/uploads/mario/mario_PNG125.png";
+String fileName   = "test";
+String fileExtension = "png";
+String fileMimeType = "image/png";
+
+Attachment attach = Attachment(fileUrl, fileName, fileExtension, fileMimeType, null);
+mediaMessage.attachment = attach;
+
+await CometChat.sendMediaMessage(mediaMessage,
+  onSuccess: (MediaMessage message) {
+  	debugPrint("Media message sent successfully: ${mediaMessage}");                            
   }, onError: (CometChatException e) {
   	debugPrint("Media message sending failed with exception: ${e.message}");
   }
@@ -781,14 +885,34 @@ CustomMessage customMessage = CustomMessage( receiverUid: UID,
 
 The above constructor, helps you create a custom message with the message type set to whatever is passed to the constructor and the category set to `custom`.
 
-The parameters involved are:
+The `CustomMessage` class constructor takes the following parameters:
 
-1. `receiverUid` - Unique id of the user or group to which the message is to be sent.
-2. `receiverType` - Type of the receiver i.e user or group
-3. `customType` - custom message type that you need to set
-4. `customData` - The data to be passed as the message in the form of a `Map`.
+| Parameter | Description | Required |
+| --- | --- | --- |
+| `receiverUid` | UID of the user or GUID of the group to which the message is to be sent | Yes |
+| `receiverType` | Type of the receiver — `CometChatConversationType.user` or `CometChatConversationType.group` | Yes |
+| `type` | Custom message type string (e.g., `"location"`, `"poll"`) | Yes |
+| `customData` | The data to be passed as the message in the form of a `Map` | Yes |
+| `subType` | Optional sub-type for the custom message | No |
 
 You can also use the subType field of the `CustomMessage` class to set a specific type for the custom message. This can be achieved using the `subtype` field.
+
+### Add Metadata
+
+To send custom data along with a custom message, you can use the `metadata` property and pass a `Map` to it.
+
+<Tabs>
+<Tab title="Dart">
+```dart
+Map<String, dynamic> metadata = {};
+metadata["priority"] = "high";
+metadata["source"] = "mobile";
+customMessage.metadata = metadata;
+```
+
+</Tab>
+
+</Tabs>
 
 ### Add Tags
 
@@ -800,6 +924,20 @@ To add a tag to a message you can assign value in `.tags` variable of the Custom
 List<String> tags = [];
 tags.add("pinned");
 textMessage.tags = tags;
+```
+
+</Tab>
+
+</Tabs>
+
+### Set Quoted Message
+
+To quote a message in a custom message, use the `quotedMessageId` property of the CustomMessage class.
+
+<Tabs>
+<Tab title="Dart">
+```dart
+customMessage.quotedMessageId = 10;
 ```
 
 </Tab>

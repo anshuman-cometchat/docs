@@ -1,11 +1,10 @@
 ---
 title: "Block Users"
+sidebarTitle: "Block Users"
 description: "Learn how to block and unblock users in your Flutter app using the CometChat SDK to manage user interactions and privacy."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```dart
 // Block users
@@ -27,7 +26,9 @@ CometChat.unblockUser(uids, onSuccess: (Map<String, dynamic> map) {
 BlockedUsersRequest request = (BlockedUsersRequestBuilder()..limit = 30).build();
 request.fetchNext(onSuccess: (List<User> users) { }, onError: (e) { });
 ```
-</Info>
+
+**Directions:** `directionBlockedByMe` | `directionHasBlockedMe` | `directionBoth` (default)
+</Accordion>
 
 Block users to prevent them from sending messages to the logged-in user. This feature helps users manage their privacy and control who can communicate with them.
 
@@ -39,7 +40,15 @@ Block users to prevent them from sending messages to the logged-in user. This fe
 
 *In other words, as a logged-in user, how do I block a user from sending me messages?*
 
-You can block users using the `blockUsers()` method. Once any user is blocked, all the communication to and from the respective user will be completely blocked. You can block multiple users in a single operation. The `blockUsers()` method takes a `List<String>` as a parameter which holds the list of `UIDs` to be blocked.
+You can block users using the `blockUser()` method. Once any user is blocked, all the communication to and from the respective user will be completely blocked. You can block multiple users in a single operation. The `blockUser()` method takes a `List<String>` as a parameter which holds the list of `UIDs` to be blocked.
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uids` | `List<String>?` | List of UIDs of users to block |
+| `onSuccess` | `Function(Map<String, dynamic> map)?` | Callback triggered on successful block operation |
+| `onError` | `Function(CometChatException excep)?` | Callback triggered on error |
 
 <Tabs>
 <Tab title="Dart">
@@ -90,7 +99,15 @@ In the `onSuccess()` callback, you receive a Map which contains `UIDs` as the ke
 
 *In other words, as a logged-in user, how do I unblock a user I previously blocked?*
 
-You can unblock the already blocked users using the `unblockUsers()` method. You can unblock multiple users in a single operation. The `unblockUsers()` method takes a `List<String>` as a parameter which holds the list of `UIDs` to be unblocked.
+You can unblock the already blocked users using the `unblockUser()` method. You can unblock multiple users in a single operation. The `unblockUser()` method takes a `List<String>` as a parameter which holds the list of `UIDs` to be unblocked.
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uids` | `List<String>?` | List of UIDs of users to unblock |
+| `onSuccess` | `Function(Map<String, dynamic> map)?` | Callback triggered on successful unblock operation |
+| `onError` | `Function(CometChatException excep)?` | Callback triggered on error |
 
 <Tabs>
 <Tab title="Dart">
@@ -146,6 +163,15 @@ In order to fetch the list of blocked users, you can use the `BlockedUsersReques
 
 The `BlockedUsersRequestBuilder` class allows you to set the below parameters:
 
+### BlockedUsersRequestBuilder
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `limit` | `int?` | Number of blocked users to fetch per request. Max: 100, Default: 30 |
+| `searchKeyword` | `String?` | Keyword to filter blocked users by name |
+| `direction` | `String?` | Direction of block — `directionBlockedByMe`, `directionHasBlockedMe`, or `directionBoth` (default) |
+| `setPage` | `int?` | Fetch blocked users from a particular page |
+
 ### Set Limit
 
 This method sets the limit i.e. the number of blocked users that should be fetched in a single iteration.
@@ -190,7 +216,7 @@ BlockedUsersRequest blockedUsersRequest =  (BlockedUsersRequestBuilder()
 ```dart
 BlockedUsersRequest blockedUsersRequest = (BlockedUsersRequestBuilder()
   ..limit = 50
-  .direction = CometChatBlockedUsersDirection.directionBlockedByMe
+  ..direction = CometChatBlockedUsersDirection.directionBlockedByMe
   ).build();  
 ```
 
@@ -253,6 +279,13 @@ blockedUsersRequest.fetchNext(onSuccess: (List<User> userList){
 | `details` | string | Additional technical details | `"Please verify the UID and try again."` |
 
 </Accordion>
+
+Relevant fields to access on returned [`User`](/sdk/reference/entities#user) objects:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `blockedByMe` | `bool` | Whether the logged-in user has blocked this user |
+| `hasBlockedMe` | `bool` | Whether this user has blocked the logged-in user |
 
 ---
 

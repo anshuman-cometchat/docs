@@ -1,11 +1,18 @@
 ---
 title: "Threaded Messages"
-description: "Learn how to send, receive, and fetch messages within a thread attached to a parent message in CometChat Flutter SDK."
+sidebarTitle: "Threaded Messages"
+description: "Send, receive, and fetch threaded messages using the CometChat Flutter SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
+
+| Field | Value |
+| --- | --- |
+| Key Classes | `TextMessage`, `MediaMessage`, `CustomMessage`, `MessagesRequest`, `MessagesRequestBuilder` |
+| Key Methods | `CometChat.sendMessage()`, `CometChat.sendMediaMessage()`, `CometChat.sendCustomMessage()`, `MessagesRequest.fetchPrevious()` |
+| Key Properties | `parentMessageId`, `hideReplies` |
+| Listener Events | `onTextMessageReceived`, `onMediaMessageReceived`, `onCustomMessageReceived` |
+| Prerequisites | SDK initialized, user logged in |
 
 ```dart
 // Send a message in a thread (attach to parent message)
@@ -31,14 +38,14 @@ MessagesRequest request = (MessagesRequestBuilder()
   ..hideReplies = true
   ..limit = 50).build();
 ```
-</Info>
 
-Messages that are started from a particular message are called Threaded messages or simply threads.
+</Accordion>
+
+Threaded messages (or threads) are messages started from a particular parent message. Each thread is attached to a parent message.
 
 <Note>
 **Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/flutter/overview)
 </Note>
-Each Thread is attached to a message which is the Parent message for that thread.
 
 ## Send Message in a Thread
 
@@ -48,17 +55,14 @@ A message can be categorized as:
 
 1. Text Message
 2. Media Message
-3. Custom Message.
+3. Custom Message
 4. Interactive Message
 
-Any of the above messages can be sent in a thread. As a thread is identified with a parent message, the `parentMessageId` must be set for the message. This will indicate that the message to be sent has to be a part of the thread of the message with the specified `parentMessageId`.
+Any of the above messages can be sent in a thread. Set the `parentMessageId` on the message object to indicate which thread the message belongs to. The id specified in the `parentMessageId` parameter maps the message sent to the particular thread.
 
-This can be achieved using the `parentMessageId` parameter provided by the object of the `TextMessage`, `MediaMessage` and `CustomMessage` class. The id specified in the `parentMessageId` parameter maps the message sent to the particular thread.
-
-**Example to Send a Text Message in a thread in a user conversation.**
 
 <Tabs>
-<Tab title="Dart">
+<Tab title="User">
 ```dart
 String receiverID = "UID";
 String messagesText = "Hello";
@@ -70,17 +74,50 @@ TextMessage textMessage = TextMessage(
                         receiverUid: receiverID,
                         receiverType: receiverType,
                         type: type);
-textMessage.parentMessageId = 103
+textMessage.parentMessageId = 103;
 
-CometChat.sendMessage(textMessage,onSuccess: (TextMessage message) {
-debugPrint("Message sent successfully:  $message");
+CometChat.sendMessage(textMessage, onSuccess: (TextMessage message) {
+  debugPrint("Message sent successfully:  $message");
 }, onError: (CometChatException e) {
-debugPrint("Message sending failed with exception:  ${e.message}");
+  debugPrint("Message sending failed with exception:  ${e.message}");
+});
+```
+
+</Tab>
+
+<Tab title="Group">
+```dart
+String receiverID = "GUID";
+String messagesText = "Hello";
+String receiverType = CometChatConversationType.group;
+String type = CometChatMessageType.text;
+
+TextMessage textMessage = TextMessage(
+                        text: messagesText,
+                        receiverUid: receiverID,
+                        receiverType: receiverType,
+                        type: type);
+textMessage.parentMessageId = 103;
+
+CometChat.sendMessage(textMessage, onSuccess: (TextMessage message) {
+  debugPrint("Message sent successfully:  $message");
+}, onError: (CometChatException e) {
+  debugPrint("Message sending failed with exception:  ${e.message}");
 });
 ```
 
 </Tab>
 </Tabs>
+
+`TextMessage` Parameters:
+
+| Parameter | Type | Description | Required |
+| --- | --- | --- | --- |
+| `text` | `String` | The text content of the message | Yes |
+| `receiverUid` | `String` | The `UID` of the user or `GUID` of the group to send the message to | Yes |
+| `receiverType` | `String` | The type of the receiver — `CometChatConversationType.user` or `CometChatConversationType.group` | Yes |
+| `type` | `String` | The type of the message — `CometChatMessageType.text` | Yes |
+| `parentMessageId` | `int` | The ID of the parent message to send this message as a thread reply | Yes (for threads) |
 
 <Accordion title="Response">
 **On Success** — A `TextMessage` object containing all details of the sent threaded message:
@@ -181,9 +218,15 @@ Similarly, using the `parentMessageId` parameter, Media and Custom Messages can 
 
 ### Receiving Real-Time Messages
 
-The procedure to receive real-time messages is exactly the same as mentioned in the [Receive Messages](receive-messages). This can be achieved using the `MessageListener` class provided by the SDK.
-To add a MessageListener, you can use the `addMessageListener()` method of the SDK.
-The only thing that needs to be checked is if the received message belongs to the active thread. This can be done using `parentMessageId` field of the message object.
+The procedure to receive real-time messages is exactly the same as mentioned in the [Receive Messages](receive-messages) section. Use the `MessageListener` class to listen for incoming thread messages. Check if the received message belongs to the active thread using the `parentMessageId` field.
+
+<Warning>
+Always remove message listeners when they're no longer needed (e.g., in the `dispose()` method). Failing to remove listeners can cause memory leaks and duplicate event handling.
+
+```dart
+CometChat.removeMessageListener("listenerId");
+```
+</Warning>
 
 <Tabs>
 <Tab title="Dart">
@@ -220,14 +263,17 @@ void onCustomMessageReceived(CustomMessage customMessage) {
 
 ### Fetch all the messages for any particular thread.
 
-You can fetch all the messages belonging to a particular thread by using the `MessagesRequest` class.
+Use `MessagesRequestBuilder` with `parentMessageId` to fetch messages belonging to a specific thread. Call `fetchPrevious()` to get messages (max 100 per request). Call `fetchPrevious()` again on the same object to get the next set.
 
-The `MessageRequestBuilder` builds the `MessageRequest` object using the following functions:
 
-1. parentMessageId: Takes the parentId of the message as argument whose thread needs to be requested.
-2. build(): returns the MessageRequest object.
+`MessagesRequestBuilder` Parameters:
 
-Once you have the `MessagesRequest` object, you can call the `fetchPrevious()` method to get the latest messages in the thread. In one iteration, a maximum of 100 messages can be fetched. If you wish to fetch the next set of messages, you need to call the fetchPrevious() method again on the same object.
+| Parameter | Type | Description | Required |
+| --- | --- | --- | --- |
+| `uid` | `String` | The `UID` of the user whose conversation thread messages are to be fetched | Yes (for user threads) |
+| `guid` | `String` | The `GUID` of the group whose conversation thread messages are to be fetched | Yes (for group threads) |
+| `parentMessageId` | `int` | The ID of the parent message whose thread messages are to be fetched | Yes |
+| `limit` | `int` | Number of messages to fetch in a single request (max 100) | No |
 
 <Tabs>
 <Tab title="Dart">
@@ -339,10 +385,10 @@ messageRequest.fetchPrevious(onSuccess: (List<BaseMessage> list) {
 
 ## Avoid Threaded Messages in User/Group Conversations
 
-While fetching messages for normal user/group conversations using the `MessagesRequest`, the threaded messages by default will be a part of the list of messages received. In order to exclude the threaded messages from the list of user/group messages, you need to use the `hideReplies` parameter of the `MessagesRequestBuilder` class. This method takes a boolean argument which when set to true excludes the messages belonging to threads from the list of messages.
+While fetching messages for normal user/group conversations using the `MessagesRequest`, the threaded messages by default will be a part of the list of messages received. Use `hideReplies = true` on the `MessagesRequestBuilder` to exclude threaded messages from the list.
 
 <Tabs>
-<Tab title="Dart">
+<Tab title="User">
 ```dart
 String UID = "cometchat-uid-1";
 
@@ -359,7 +405,26 @@ messageRequest.fetchNext(onSuccess: (List<BaseMessage> list) {
 ```
 
 </Tab>
+
+<Tab title="Group">
+```dart
+String GUID = "cometchat-guid-1";
+
+MessagesRequest messageRequest = (MessagesRequestBuilder()
+          ..guid = GUID
+          ..hideReplies = true
+          ..limit = 50).build();
+
+messageRequest.fetchNext(onSuccess: (List<BaseMessage> list) {
+         debugPrint("Message fetching Successful");
+      }, onError: (CometChatException e) {
+        debugPrint("Message fetching failed with exception: ${e.message}");
+      });
+```
+
+</Tab>
 </Tabs>
+
 
 <Accordion title="Response">
 **On Success** — A `List<BaseMessage>` containing the fetched messages excluding threaded replies (each item is a BaseMessage object):
@@ -449,7 +514,7 @@ messageRequest.fetchNext(onSuccess: (List<BaseMessage> list) {
 
 </Accordion>
 
-The above snippet will return messages between the logged in user and `cometchat-uid-1` excluding all the threaded messages belonging to the same conversation.
+The response is a list of `BaseMessage` objects, excluding any messages that are replies within a thread. Only top-level messages in the conversation are returned.
 
 ---
 

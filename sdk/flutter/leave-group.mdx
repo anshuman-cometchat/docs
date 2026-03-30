@@ -1,23 +1,16 @@
 ---
 title: "Leave A Group"
-description: "Learn how to leave a group and stop receiving updates and messages from that group using the CometChat Flutter SDK."
+sidebarTitle: "Leave Group"
+description: "Learn how to leave a group and receive real-time events when members leave using the CometChat Flutter SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```dart
 // Leave a group
-String GUID = "GROUP_ID";
-
-CometChat.leaveGroup(GUID, 
-  onSuccess: (String message) {
-    debugPrint("Left group: $message");
-  },
-  onError: (CometChatException e) {
-    debugPrint("Error: ${e.message}");
-  }
+CometChat.leaveGroup("GROUP_GUID",
+  onSuccess: (String message) => debugPrint("Left group: $message"),
+  onError: (CometChatException e) => debugPrint("Error: ${e.message}"),
 );
 
 // Listen for group member left events
@@ -27,15 +20,29 @@ CometChat.addGroupListener("listener_id", GroupListener(
   },
 ));
 ```
-</Info>
+</Accordion>
+
+Leave a group to stop receiving messages and updates from it. Once you leave, you'll need to rejoin to participate again.
+
+<Note>
+Group owners cannot leave without first transferring ownership to another member. See [Transfer Group Ownership](/sdk/flutter/transfer-group-ownership).
+</Note>
 
 ## Leave a Group
 
-In order to stop receiving updates and messages for any particular joined group, you will have to leave the group using the `leaveGroup()` method.
+Use `leaveGroup()` to leave a group.
 
 <Note>
 **Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/flutter/overview)
 </Note>
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `guid` | `String` | The GUID of the group you would like to leave |
+| `onSuccess` | `Function(String returnResponse)?` | Callback triggered on successful leave |
+| `onError` | `Function(CometChatException excep)?` | Callback triggered on error |
 
 <Tabs>
 <Tab title="Dart">
@@ -76,10 +83,6 @@ CometChat.leaveGroup(GUID, onSuccess: ( String message) {
 
 </Accordion>
 
-| Parameter | Description                                   |
-| --------- | --------------------------------------------- |
-| `GUID`    | The GUID of the group you would like to leave |
-
 Once a group is left, the user will no longer receive any updates or messages pertaining to the group.
 
 ## Real-time Group Member Left Events
@@ -106,6 +109,14 @@ void onGroupMemberLeft(Action action, User leftUser, Group leftGroup) {
 
 </Tabs>
 
+<Warning>
+Always remove group listeners when they're no longer needed (e.g., in `dispose()`). Failing to remove listeners can cause memory leaks and duplicate event handling.
+
+```dart
+CometChat.removeGroupListener("group_Listener_id");
+```
+</Warning>
+
 ## Missed Group Member Left Events
 
 *In other words, as a member of a group, how do I know if someone has left it when my app is not running?*
@@ -123,10 +134,16 @@ For the group member left event, in the `Action` object received, the following 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Join Group" icon="right-to-bracket" href="/sdk/flutter/join-group">
-    Join existing public or password-protected groups
+  <Card title="Join a Group" icon="right-to-bracket" href="/sdk/flutter/join-group">
+    Join public or password-protected groups
   </Card>
-  <Card title="Delete Group" icon="trash" href="/sdk/flutter/delete-group">
+  <Card title="Delete a Group" icon="trash" href="/sdk/flutter/delete-group">
     Permanently delete a group (admin only)
+  </Card>
+  <Card title="Kick & Ban Members" icon="user-slash" href="/sdk/flutter/group-kick-member">
+    Remove or ban members from a group
+  </Card>
+  <Card title="Retrieve Groups" icon="list" href="/sdk/flutter/retrieve-groups">
+    Fetch and filter the list of groups
   </Card>
 </CardGroup>

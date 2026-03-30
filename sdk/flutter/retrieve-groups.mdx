@@ -1,11 +1,10 @@
 ---
 title: "Retrieve Groups"
-description: "Learn how to retrieve groups and group details in your Flutter application using the CometChat SDK."
+sidebarTitle: "Retrieve Groups"
+description: "Fetch, filter, and search groups using the CometChat Flutter SDK. Includes pagination, tag-based filtering, joined-only groups, and online member counts."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```dart
 // Retrieve groups with pagination
@@ -29,8 +28,20 @@ await CometChat.getGroup(
   onSuccess: (Group group) => debugPrint("Group: ${group.name}"),
   onError: (CometChatException e) => debugPrint("Error: ${e.message}"),
 );
+
+// Fetch only joined groups
+GroupsRequest joinedRequest = (GroupsRequestBuilder()
+  ..limit = 30
+  ..joinedOnly = true
+).build();
+
+// Get online member count
+CometChat.getOnlineGroupMemberCount(["GUID"],
+  onSuccess: (Map<String, int> count) => debugPrint("Count: $count"),
+  onError: (CometChatException e) => debugPrint("Error: ${e.message}"),
+);
 ```
-</Info>
+</Accordion>
 
 Retrieve groups allows you to fetch the list of groups you've joined and groups that are available, as well as get details for a specific group.
 
@@ -44,9 +55,22 @@ Retrieve groups allows you to fetch the list of groups you've joined and groups 
 
 In order to fetch the list of groups, you can use the `GroupsRequest` class. To use this class i.e to create an object of the `GroupsRequest` class, you need to use the `GroupsRequestBuilder` class. The `GroupsRequestBuilder` class allows you to set the parameters based on which the groups are to be fetched.
 
+Use `GroupsRequestBuilder` to fetch groups with filtering, searching, and pagination.
+
+### GroupsRequestBuilder
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `limit` | `int?` | Maximum number of groups to fetch per request. Max `100`, default `30`. |
+| `searchKeyword` | `String?` | Search string to filter groups by name. |
+| `joinedOnly` | `bool?` | When `true`, returns only groups the logged-in user has joined. Default `false`. |
+| `tags` | `List<String>?` | List of tags to filter groups by. Only groups with the specified tags are returned. |
+| `withTags` | `bool?` | When `true`, includes tag data in the returned group objects. Default `false`. |
+| `setPage` | `int?` | Fetch groups from a particular page number. |
+
 ### Set Limit
 
-This method sets the limit i.e. the number of groups that should be fetched in a single iteration.
+Sets the number of groups to fetch per request.
 
 <Tabs>
 <Tab title="Dart">
@@ -62,7 +86,7 @@ GroupsRequest groupsRequest =  (GroupsRequestBuilder()
 
 ### Set Search Keyword
 
-This method allows you to set the search string based on which the groups are to be fetched.
+Filters groups by a search string.
 
 <Tabs>
 <Tab title="Dart">
@@ -79,7 +103,7 @@ GroupsRequest groupsRequest =  (GroupsRequestBuilder()
 
 ### Joined Only
 
-This method when used, will ask CometChat to only return the groups that the user has joined or is a part of.
+When `true`, returns only groups the logged-in user has joined or is a part of.
 
 <Tabs>
 <Tab title="Dart">
@@ -96,7 +120,7 @@ GroupsRequest groupsRequest =  (GroupsRequestBuilder()
 
 ### Set Tags
 
-This method accepts a list of tags based on which the list of groups is to be fetched. The list fetched will only contain the groups that have been tagged with the specified tags.
+Filters groups by specified tags. The list fetched will only contain the groups that have been tagged with the specified tags.
 
 <Tabs>
 <Tab title="Dart">
@@ -115,7 +139,7 @@ GroupsRequest groupsRequest =  (GroupsRequestBuilder()
 
 ### With Tags
 
-This property when set to true will fetch tags data along with the list of groups.
+When `true`, includes tag data in the returned group objects.
 
 <Tabs>
 <Tab title="Dart">

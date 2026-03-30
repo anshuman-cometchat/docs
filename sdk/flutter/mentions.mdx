@@ -1,36 +1,51 @@
 ---
 title: "Mentions"
-description: "Learn how to mention users in messages to notify and engage specific individuals in conversations using the CometChat Flutter SDK."
+sidebarTitle: "Mentions"
+description: "Send messages with user mentions, retrieve mentioned users, and filter messages by mention metadata using the CometChat Flutter SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
+
+| Field | Value |
+| --- | --- |
+| Key Classes | `TextMessage`, `BaseMessage`, `User`, `MessagesRequest`, `MessagesRequestBuilder` |
+| Key Properties | `mentionedUsers`, `hasMentionedMe` |
+| Builder Methods | `mentionsWithTagInfo()`, `mentionsWithBlockedInfo()` |
+| Mention Format | `<@uid:UID>` |
+| Prerequisites | SDK initialized, user logged in |
 
 ```dart
-// Send message with user mention
-String messageText = "Hello, <@uid:cometchat-uid-1>";
+// Send a message with a mention (use <@uid:UID> format)
 TextMessage textMessage = TextMessage(
-  text: messageText,
+  text: "Hello <@uid:cometchat-uid-1>",
   receiverUid: "UID",
   receiverType: CometChatReceiverType.user,
   type: CometChatMessageType.text,
 );
 CometChat.sendMessage(textMessage, onSuccess: (msg) {
-  print("Mentioned users: ${msg.mentionedUsers}");
+  debugPrint("Mentioned users: ${msg.mentionedUsers}");
 }, onError: (e) {});
 
-// Check if logged-in user was mentioned
-bool wasMentioned = message.hasMentionedMe;
-
-// Get all mentioned users from a message
+// Get mentioned users from a message
 List<User> mentionedUsers = message.mentionedUsers;
+
+// Check if logged-in user was mentioned
+bool wasMentioned = message.hasMentionedMe ?? false;
+
+// Fetch messages with mention tag info
+MessagesRequest request = (MessagesRequestBuilder()
+  ..uid = "UID"
+  ..limit = 30
+  ..mentionsWithTagInfo(true)
+).build();
+request.fetchPrevious(onSuccess: (messages) {}, onError: (e) {});
 ```
-</Info>
+
+</Accordion>
+
+Mentions in messages enable users to refer to specific individuals within a conversation. This is done by using the `<@uid:UID>` format, where `UID` represents the user's unique identification.
 
 Mentions are a powerful tool for enhancing communication in messaging platforms. They streamline interaction by allowing users to easily engage and collaborate with particular individuals, especially in group conversations.
-
-Mentions in messages enable users to refer to specific individuals within a conversation.
 
 <Note>
 **Available via:** SDK | [REST API](https://api-explorer.cometchat.com) | [UI Kits](/ui-kit/flutter/overview)
@@ -228,6 +243,13 @@ By default, the SDK will fetch all the messages irrespective of the fact that th
 
 To get a list of messages in a conversation where users are mentioned along with the tags of the mentioned users.
 
+Relevant fields to access on returned messages and their mentioned users:
+
+| Field | Property | Return Type | Description |
+|-------|----------|-------------|-------------|
+| mentionedUsers | `mentionedUsers` | [`List<User>`](/sdk/reference/entities#user) | Array of users mentioned in the message |
+| tags (on each mentioned user) | `tags` | `List<String>` | Tags associated with the mentioned user |
+
 <Tabs>
 <Tab title="Flutter (User)">
 ```dart
@@ -372,6 +394,14 @@ messagesRequest.fetchPrevious(onSuccess:(List<BaseMessage> messages) {
 ## Mentions With Blocked Info
 
 To get a list of messages in a conversation where users are mentioned along with the blocked relationship of the mentioned users with the logged-in user.
+
+Relevant fields to access on returned messages and their mentioned users:
+
+| Field | Property | Return Type | Description |
+|-------|----------|-------------|-------------|
+| mentionedUsers | `mentionedUsers` | [`List<User>`](/sdk/reference/entities#user) | Array of users mentioned in the message |
+| blockedByMe (on each mentioned user) | `blockedByMe` | `bool` | Whether the logged-in user has blocked this mentioned user |
+| hasBlockedMe (on each mentioned user) | `hasBlockedMe` | `bool` | Whether this mentioned user has blocked the logged-in user |
 
 <Tabs>
 <Tab title="Flutter (User)">
@@ -521,7 +551,7 @@ messagesRequest.fetchPrevious(onSuccess:(List<BaseMessage> messages) {
 To retrieve the list of users mentioned in the particular message, you can use the `mentionedUsers` property on any `BaseMessage`. This property will return an array containing User objects of the mentioned users, or an empty array if no users were mentioned in the message.
 
 <Tabs>
-<Tab title="Syntax">
+<Tab title="Dart">
 ```dart
 message.mentionedUsers
 ```
@@ -529,6 +559,8 @@ message.mentionedUsers
 </Tab>
 
 </Tabs>
+
+The `mentionedUsers` property returns a `List<`[`User`](/sdk/reference/entities#user)`>` objects.
 
 ## Check if Logged-in user has been mentioned
 
@@ -550,9 +582,15 @@ message.hasMentionedMe
 
 <CardGroup cols={2}>
   <Card title="Send Messages" icon="paper-plane" href="/sdk/flutter/send-message">
-    Learn how to send text, media, and custom messages
+    Send text, media, and custom messages
   </Card>
   <Card title="Receive Messages" icon="inbox" href="/sdk/flutter/receive-messages">
-    Handle incoming messages in real-time
+    Listen for incoming messages in real time
+  </Card>
+  <Card title="Reactions" icon="face-smile" href="/sdk/flutter/reactions">
+    Add emoji reactions to messages
+  </Card>
+  <Card title="Threaded Messages" icon="comments" href="/sdk/flutter/threaded-messages">
+    Organize conversations with message threads
   </Card>
 </CardGroup>

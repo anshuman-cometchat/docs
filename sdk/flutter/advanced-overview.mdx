@@ -4,16 +4,25 @@ sidebarTitle: "Overview"
 description: "Advanced SDK features including connection management, real-time listeners, and login state handling for Flutter applications."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
-Choose your path:
-- **Connection Status** → [connection-status](/sdk/flutter/connection-status) - Monitor SDK connection state
-- **Connection Behaviour** → [connection-behaviour](/sdk/flutter/connection-behaviour) - Understand connection lifecycle
-- **Login Listeners** → [login-listeners](/sdk/flutter/login-listeners) - Handle login state changes
-- **Real-Time Listeners** → [real-time-listeners](/sdk/flutter/real-time-listeners) - All event listeners reference
-</Info>
+```dart
+// Check connection status
+CometChat.getConnectionStatus(); // "connected" | "connecting" | "disconnected"
+
+// Listen for connection changes
+CometChat.addConnectionListener("LISTENER_ID", ConnectionListener(
+  onConnected: () => debugPrint("Connected"),
+  onDisconnected: () => debugPrint("Disconnected"),
+));
+
+// Listen for login events
+CometChat.addLoginListener("LISTENER_ID", LoginListener(
+  loginSuccess: (User user) => debugPrint("Logged in: ${user.name}"),
+  logoutSuccess: () => debugPrint("Logged out"),
+));
+```
+</Accordion>
 
 This section covers advanced SDK features for managing connections, monitoring real-time events, and handling login state changes in your Flutter application.
 
@@ -29,6 +38,9 @@ These features help you build robust applications that gracefully handle network
   </Card>
   <Card title="Real-Time Listeners" icon="tower-broadcast" href="/sdk/flutter/real-time-listeners">
     Complete reference for all event listeners
+  </Card>
+  <Card title="All Real-Time Listeners" icon="list" href="/sdk/flutter/all-real-time-listeners">
+    Consolidated reference for all 7 listener types
   </Card>
   <Card title="Login Listeners" icon="user-check" href="/sdk/flutter/login-listeners">
     Handle login and logout state changes

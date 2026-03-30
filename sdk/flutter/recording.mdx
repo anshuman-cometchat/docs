@@ -1,11 +1,10 @@
 ---
 title: "Recording"
+sidebarTitle: "Recording"
 description: "Learn how to implement call recording for voice and video calls in your Flutter application using the CometChat SDK."
 ---
 
-{/* TL;DR for Agents and Quick Reference */}
-<Info>
-**Quick Reference for AI Agents & Developers**
+<Accordion title="AI Integration Quick Reference">
 
 ```dart
 // Enable recording button in call settings
@@ -29,9 +28,11 @@ CometChatCalls.stopRecording(onSuccess: (success) {
   debugPrint("Error: $error");
 });
 ```
-</Info>
 
-This section will guide you to implement call recording feature for the voice and video calls.
+**Recordings are available on the [CometChat Dashboard](https://app.cometchat.com) → Calls section.**
+</Accordion>
+
+Record voice and video calls for playback, compliance, or archival purposes. Recording is built on top of the [Call Session](/sdk/flutter/direct-call) — you add recording listeners to your call settings and optionally control recording programmatically.
 
 <Note>
 **Available via:** SDK | [Dashboard](https://app.cometchat.com)
@@ -158,15 +159,25 @@ debugPrint("Error $error");
 
 </Accordion>
 
+## Downloading Recordings
+
+Call recordings are available on the [CometChat Dashboard](https://app.cometchat.com) under the Calls section. Click the three-dot menu and select "View Recordings".
+
 ---
 
 ## Next Steps
 
 <CardGroup cols={2}>
   <Card title="Default Calling" icon="phone" href="/sdk/flutter/default-call">
-    Implement voice and video calls with ringing functionality
+    Implement ringing call flows with accept/reject functionality
   </Card>
   <Card title="Call Logs" icon="list" href="/sdk/flutter/call-logs">
-    Retrieve and manage call history in your app
+    Retrieve and display call history for users and groups
+  </Card>
+  <Card title="Direct Calling" icon="video" href="/sdk/flutter/direct-call">
+    Start call sessions without the ringing flow
+  </Card>
+  <Card title="Calling Setup" icon="gear" href="/sdk/flutter/calling-setup">
+    Install and initialize the Calls SDK
   </Card>
 </CardGroup>
