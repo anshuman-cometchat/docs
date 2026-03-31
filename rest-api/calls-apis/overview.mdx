@@ -21,7 +21,7 @@ https://{appId}.call-{region}.cometchat.io/v3
 
 ## Authentication
 
-All API requests require authentication using your REST API Key in the `apikey` header. See the [Authentication Guide](/rest-api/authentication) for details on API key scopes and security best practices.
+All API requests require authentication using your REST API Key in the `apikey` header. The `onBehalfOf` header is supported on both List Calls and Get Call endpoints to retrieve calls scoped to a specific user. See the [Authentication Guide](/rest-api/authentication) for details on API key scopes and security best practices.
 
 ```bash
 curl -X GET "https://{appId}.call-{region}.cometchat.io/v3/calls" \
