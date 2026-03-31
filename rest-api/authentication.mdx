@@ -8,6 +8,18 @@ All CometChat REST API requests must be authenticated using an API key passed in
 
 <Note>
 **Management APIs** use a different authentication mechanism — HTTP Basic Auth with your management key and secret, not the `apikey` header. See the [Management APIs overview](/rest-api/management-apis) for details.
+
+```bash
+curl -X GET "https://api-us.cometchat.io/v3/apps" \
+  -u "YOUR_MANAGEMENT_KEY:YOUR_MANAGEMENT_SECRET"
+```
+
+</Note>
+
+<Note>
+  **Calls APIs** use a different base URL: `https://{appId}.call-{region}
+  .cometchat.io/v3` (note `call-` instead of `api-`). Authentication still uses
+  the `apikey` header.
 </Note>
 
 ## API Key Scopes

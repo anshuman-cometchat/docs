@@ -10,7 +10,7 @@ sidebarTitle: "Overview"
 Before you log in a user, you must add the user to CometChat.
 
 1. **For proof of concept/MVPs**: Create the user using the [CometChat Dashboard](https://app.cometchat.com).
-2. **For production apps**: Use the CometChat [Create User API](https://api-explorer.cometchat.com/reference/creates-user) to create the user when your user signs up in your app.
+2. **For production apps**: Use the CometChat [Create User API](/rest-api/chat-apis) to create the user when your user signs up in your app.
 
 <Note>
 Sample Users
@@ -88,8 +88,8 @@ After the user logs in, their information is returned in the `User` object.
 
 This advanced authentication procedure does not use the Auth Key directly in your client code thus ensuring safety.
 
-1. [Create a User](https://api-explorer.cometchat.com/reference/creates-user) via the CometChat API when the user signs up in your app.
-2. [Create an Auth Token](https://api-explorer.cometchat.com/reference/create-authtoken) via the CometChat API for the new user every time the user logs in to your app.
+1. [Create a User](/rest-api/chat-apis) via the CometChat API when the user signs up in your app.
+2. [Create an Auth Token](/rest-api/chat-apis) via the CometChat API for the new user every time the user logs in to your app.
 3. Pass the **Auth Token** to your client and use it in the `login()` method.
 
 <Tabs>
