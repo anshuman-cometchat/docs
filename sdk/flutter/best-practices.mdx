@@ -14,7 +14,7 @@ Follow these best practices to build reliable, performant, and secure applicatio
 | Use environment variables | Store App ID, Region, and Auth Key in a config file or environment variables rather than hardcoding them. |
 | Check for existing sessions | Before calling `login()`, use `CometChat.getLoggedInUser()` to check if a session already exists. |
 | Use Auth Tokens in production | Auth Keys are for development only. Generate Auth Tokens server-side using the [REST API](https://api-explorer.cometchat.com/reference/create-authtoken). |
-| Handle token expiry | Implement a mechanism to detect login failures due to expired tokens. Use the [Login Listener](/sdk/flutter/login-listeners) to detect session changes. |
+| Handle token expiry | Implement a mechanism to detect login failures due to expired tokens. Use the [Login Listener](/sdk/flutter/authentication-overview#login-listener) to detect session changes. |
 | Logout on sign-out | Always call `CometChat.logout()` when your user signs out to clear the SDK session and stop real-time events. |
 
 ## Listeners

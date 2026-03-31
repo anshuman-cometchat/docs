@@ -7,48 +7,51 @@ description: "Migrate your CometChat Flutter SDK integration from v3 to v4 with 
 <Accordion title="AI Integration Quick Reference">
 
 Key changes from v3 to v4:
-- Chat SDK Import: `import 'package:cometchat_sdk/cometchat_sdk.dart';`
-- Calls SDK Import: `import 'package:cometchat_calls_sdk/cometchat_calls_sdk.dart';`
-- Setup: Follow the updated [Setup Guide](/sdk/flutter/setup) for v4 installation
-- Migration: Update `pubspec.yaml`, replace imports, run `flutter pub get`
+- Chat SDK: `cometchat_sdk` (replaces `cometchat_pro_sdk`)
+- Calls SDK: `cometchat_calls_sdk` (replaces `cometchat_pro_calls_sdk`)
+- Import: `import 'package:cometchat_sdk/cometchat_sdk.dart'`
+- Import Calls: `import 'package:cometchat_calls_sdk/cometchat_calls_sdk.dart'`
 </Accordion>
 
-Upgrading from v3 to v4 is straightforward — the API surface is largely the same, only the package names and imports changed. Follow the [v4 setup instructions](/sdk/flutter/setup) first, then update your dependencies and imports as shown below.
+Upgrading from v3 to v4 is straightforward — the API surface is the same, only the package names and imports changed. Follow the [v4 setup instructions](/sdk/flutter/setup) first, then update your dependencies and imports as shown below.
 
 ## Update Dependencies
 
-Update your `pubspec.yaml` to use the v4 SDK packages. Follow the [Setup](/sdk/flutter/setup) instructions to install the latest v4 version.
+| SDK | v3 Package | v4 Package |
+| --- | --- | --- |
+| Chat SDK | `cometchat_pro_sdk` | `cometchat_sdk` |
+| Calls SDK | `cometchat_pro_calls_sdk` | `cometchat_calls_sdk` |
 
-## Chat Import Change
+Remove the v3 packages from `pubspec.yaml` and add the v4 packages:
 
-Remove all the imports of CometChat Flutter v3 SDK or replace it with a single import statement:
-
-<Tabs>
-<Tab title="Dart">
-```dart
-import 'package:cometchat_sdk/cometchat_sdk.dart';
+```yaml
+dependencies:
+  cometchat_sdk: ^4.0.33        # replaces cometchat_pro_sdk
+  cometchat_calls_sdk: ^4.0.0   # replaces cometchat_pro_calls_sdk
 ```
-</Tab>
-</Tabs>
 
-## Calling Import Change
+Then run:
 
-Remove all the imports of CometChat Flutter v3 Calls SDK or replace it with a single import statement:
+```bash
+flutter pub get
+```
 
-<Tabs>
-<Tab title="Dart">
+## Update Import Statements
+
+Find and replace all import statements across your project:
+
+| SDK | v3 Import | v4 Import |
+| --- | --- | --- |
+| Chat SDK | `import 'package:cometchat_pro_sdk/cometchat_pro_sdk.dart'` | `import 'package:cometchat_sdk/cometchat_sdk.dart'` |
+| Calls SDK | `import 'package:cometchat_pro_calls_sdk/cometchat_pro_calls_sdk.dart'` | `import 'package:cometchat_calls_sdk/cometchat_calls_sdk.dart'` |
+
 ```dart
+// v4 Chat SDK
+import 'package:cometchat_sdk/cometchat_sdk.dart';
+
+// v4 Calls SDK
 import 'package:cometchat_calls_sdk/cometchat_calls_sdk.dart';
 ```
-</Tab>
-</Tabs>
-
-## Migration Steps
-
-1. Update `pubspec.yaml` with v4 SDK versions
-2. Replace all v3 import statements with the new unified imports shown above
-3. Run `flutter pub get` to install updated dependencies
-4. Test your application for any breaking changes
 
 <Note>
 The API methods, class names, and listener interfaces are unchanged between v3 and v4. Once you update the packages and imports, your existing code should work without further modifications.
@@ -60,9 +63,9 @@ The API methods, class names, and listener interfaces are unchanged between v3 a
 
 <CardGroup cols={2}>
   <Card title="Setup SDK" icon="gear" href="/sdk/flutter/setup">
-    Complete installation and initialization guide for v4
+    Install and configure the CometChat Flutter SDK
   </Card>
   <Card title="Key Concepts" icon="book" href="/sdk/flutter/key-concepts">
-    Understand core SDK concepts and terminology
+    Learn the core concepts behind CometChat v4
   </Card>
 </CardGroup>
