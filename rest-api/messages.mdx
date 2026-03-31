@@ -34,11 +34,11 @@ A **Message** is the core unit of communication in CometChat. Users can send tex
 | [Get Message](/rest-api/messages/get-message)                       | `GET`    | `/messages/{id}`            | Retrieve a specific message by ID                |
 | [Update Message](/rest-api/messages/update-message)                 | `PUT`    | `/messages/{id}`            | Edit a sent message                              |
 | [Delete Message](/rest-api/messages/delete-message)                 | `DELETE` | `/messages/{id}`            | Soft-delete or permanently delete a message      |
-| [Send Threaded Message](/rest-api/messages/send-threaded-message)   | `POST`   | `/messages/{id}/replies`    | Reply to a message in a thread                   |
-| [List Threaded Messages](/rest-api/messages/list-threaded-messages) | `GET`    | `/messages/{id}/replies`    | Retrieve all replies in a thread                 |
+| [Send Threaded Message](/rest-api/messages/send-threaded-message)   | `POST`   | `/messages/{id}/thread`     | Reply to a message in a thread                   |
+| [List Threaded Messages](/rest-api/messages/list-threaded-messages) | `GET`    | `/messages/{id}/thread`     | Retrieve all replies in a thread                 |
 | [Send Bot Message](/rest-api/messages/send-bot-message)             | `POST`   | `/bots/{uid}/messages`      | Send a message as a bot user                     |
 | [Add Reaction](/rest-api/messages/add-reaction)                     | `POST`   | `/messages/{id}/reactions`  | Add an emoji reaction to a message               |
-| [Remove Reaction](/rest-api/messages/remove-reaction)               | `DELETE` | `/messages/{id}/reactions`  | Remove an emoji reaction from a message          |
+| [Remove Reaction](/rest-api/messages/remove-reaction)               | `DELETE` | `/messages/{id}/reactions/{reaction}` | Remove an emoji reaction from a message  |
 | [List All Reactions](/rest-api/messages/list-all-reactions)         | `GET`    | `/messages/{id}/reactions`  | List all reactions on a message                  |
 
 ### Message properties
