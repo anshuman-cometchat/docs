@@ -228,43 +228,15 @@ AppSettings appSettings = (AppSettingsBuilder()
 
 See [Connection Behaviour](/sdk/flutter/connection-behaviour) for manual control.
 
-## Auto Mode Connection
-
-<Note>
-Know more about auto mode connection [click here](/sdk/flutter/connection-behaviour)
-</Note>
-
-| App State         | Behaviour                               |
-| ----------------- | --------------------------------------- |
-| App in foreground | Connected with WebSocket                |
-| App in background | Immediately disconnected with WebSocket |
-
-## Manual Mode Connection
-
-<Note>
-Know more about manual mode connection [click here](/sdk/flutter/connection-behaviour)
-</Note>
-
-| App State         | Behaviour                                                                                                          |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------ |
-| App in foreground | Call `CometChat.connect()` to create the WebSocket connection                                                      |
-| App in background | Disconnect the WebSocket connection if no ping is received within 30 seconds after the app goes in the background. |
-
 ---
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Authentication" icon="key" href="/sdk/flutter/authentication-overview">
-    Learn how to authenticate users with Auth Keys and Auth Tokens
+  <Card title="Authentication" icon="lock" href="/sdk/flutter/authentication-overview">
+    Log in users with Auth Key or Auth Token
   </Card>
   <Card title="Send Messages" icon="paper-plane" href="/sdk/flutter/send-message">
-    Start sending text, media, and custom messages
-  </Card>
-  <Card title="User Presence" icon="circle-dot" href="/sdk/flutter/user-presence">
-    Subscribe to real-time online/offline status updates
-  </Card>
-  <Card title="Connection Behaviour" icon="wifi" href="/sdk/flutter/connection-behaviour">
-    Manage WebSocket connections and app lifecycle
+    Send your first message
   </Card>
 </CardGroup>
