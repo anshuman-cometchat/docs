@@ -29,9 +29,9 @@ val reactionRequest = ReactionRequest.ReactionRequestBuilder()
 reactionRequest.fetchNext(callback)
 
 // Listen for real-time reaction events
-CometChat.addMessageListener(listenerID, object : MessageReactionListener {
-    override fun onMessageReactionAdded(reaction: MessageReaction) { }
-    override fun onMessageReactionRemoved(reaction: MessageReaction) { }
+CometChat.addMessageListener(listenerID, object : CometChat.MessageListener() {
+    override fun onMessageReactionAdded(reactionEvent: ReactionEvent) { }
+    override fun onMessageReactionRemoved(reactionEvent: ReactionEvent) { }
 })
 ```
 </Tab>
@@ -61,11 +61,11 @@ ReactionRequest reactionRequest = new ReactionRequest.ReactionRequestBuilder()
 reactionRequest.fetchNext(callback);
 
 // Listen for real-time reaction events
-CometChat.addMessageListener(listenerID, new MessageReactionListener() {
+CometChat.addMessageListener(listenerID, new CometChat.MessageListener() {
     @Override
-    public void onMessageReactionAdded(MessageReaction reaction) { }
+    public void onMessageReactionAdded(ReactionEvent reactionEvent) { }
     @Override
-    public void onMessageReactionRemoved(MessageReaction reaction) { }
+    public void onMessageReactionRemoved(ReactionEvent reactionEvent) { }
 });
 ```
 </Tab>
@@ -194,11 +194,11 @@ ReactionRequest reactionRequest = new ReactionRequest.ReactionRequestBuilder()
       .setMessageId(1)
       .build();
 
-reactionRequest.fetchNext(new CometChat.CallbackListener<List<MessageReaction>>() {
+reactionRequest.fetchNext(new CometChat.CallbackListener<List<Reaction>>() {
   @Override
-  public void onSuccess(List<MessageReaction> reactions) {
+  public void onSuccess(List<Reaction> reactions) {
       Log.e(TAG, "Total Reactions: " + reactions.size());
-      for (MessageReaction reaction : reactions) {
+      for (Reaction reaction : reactions) {
           Log.e(TAG, "Reaction: " + reaction.getReaction());
       }
   }
@@ -222,8 +222,8 @@ val reactionRequest = ReactionRequest.ReactionRequestBuilder()
       .setMessageId(messageId)
       .build()
 
-reactionRequest.fetchNext(object : CometChat.CallbackListener<List<MessageReaction>>() {
-  override fun onSuccess(reactions: List<MessageReaction>?) {
+reactionRequest.fetchNext(object : CometChat.CallbackListener<List<Reaction>>() {
+  override fun onSuccess(reactions: List<Reaction>?) {
       Log.e(TAG, "Total Reactions: ${reactions?.size}")
       reactions?.forEach { reaction ->
           Log.e(TAG, "Reaction: ${reaction.reaction}")
@@ -255,11 +255,11 @@ ReactionRequest reactionRequest = new ReactionRequest.ReactionRequestBuilder()
       .setMessageId(1)
       .build();
 
-reactionRequest.fetchPrevious(new CometChat.CallbackListener<List<MessageReaction>>() {
+reactionRequest.fetchPrevious(new CometChat.CallbackListener<List<Reaction>>() {
   @Override
-  public void onSuccess(List<MessageReaction> reactions) {
+  public void onSuccess(List<Reaction> reactions) {
       Log.e(TAG, "Total Reactions: " + reactions.size());
-      for (MessageReaction reaction : reactions) {
+      for (Reaction reaction : reactions) {
           Log.e(TAG, "Reaction: " + reaction.getReaction());
       }
   }
@@ -283,8 +283,8 @@ val reactionRequest = ReactionRequest.ReactionRequestBuilder()
       .setMessageId(messageId)
       .build()
 
-reactionRequest.fetchPrevious(object : CometChat.CallbackListener<List<MessageReaction>>() {
-  override fun onSuccess(reactions: List<MessageReaction>?) {
+reactionRequest.fetchPrevious(object : CometChat.CallbackListener<List<Reaction>>() {
+  override fun onSuccess(reactions: List<Reaction>?) {
       Log.e(TAG, "Total Reactions: ${reactions?.size}")
       reactions?.forEach { reaction ->
           Log.e(TAG, "Reaction: ${reaction.reaction}")
@@ -310,14 +310,14 @@ Keep the chat interactive with real-time updates for reactions. Register a liste
 ```java
 private String listenerID = "UNIQUE_LISTENER_ID";
 
-CometChat.addMessageListener(listenerID, new CometChat.MessageReactionListener() {
+CometChat.addMessageListener(listenerID, new CometChat.MessageListener() {
   @Override
-  public void onMessageReactionAdded(MessageReaction reaction) {
+  public void onMessageReactionAdded(ReactionEvent reactionEvent) {
       Log.e(TAG, "Reaction added");
   }
 
   @Override
-  public void onMessageReactionRemoved(MessageReaction reaction) {
+  public void onMessageReactionRemoved(ReactionEvent reactionEvent) {
       Log.e(TAG, "Reaction removed");
   }
 });
@@ -329,12 +329,12 @@ CometChat.addMessageListener(listenerID, new CometChat.MessageReactionListener()
 ```kotlin
 val listenerID = "UNIQUE_LISTENER_ID"
 
-CometChat.addMessageListener(listenerID, object : CometChat.MessageReactionListener {
-  override fun onMessageReactionAdded(reaction: MessageReaction?) {
+CometChat.addMessageListener(listenerID, object : CometChat.MessageListener() {
+  override fun onMessageReactionAdded(reactionEvent: ReactionEvent?) {
       Log.e(TAG, "Reaction added")
   }
 
-  override fun onMessageReactionRemoved(reaction: MessageReaction?) {
+  override fun onMessageReactionRemoved(reactionEvent: ReactionEvent?) {
       Log.e(TAG, "Reaction removed")
   }
 })
@@ -425,7 +425,7 @@ When a user adds or removes a reaction, you will receive a real-time event. Once
 
 The `updateMessageWithReactionInfo()` method provides a seamless way to update the reactions on a message instance (`BaseMessage`) in real-time. This method ensures that when a reaction is added or removed from a message, the BaseMessage object's getReactions() property reflects this change immediately.
 
-When you receive a real-time reaction event (`MessageReaction`), call the `updateMessageWithReactionInfo()` method, passing the `BaseMessage` instance (message), event data (MessageReaction) and reaction event action type (`CometChatConstants.REACTION_ADDED` or `CometChatConstants.REACTION_REMOVED`) that corresponds to the message being reacted to.
+When you receive a real-time reaction event (`ReactionEvent`), call the `updateMessageWithReactionInfo()` method, passing the `BaseMessage` instance (message), the inner `Reaction` from the event (for example `reactionEvent.getReaction()`), and the reaction event action type (`CometChatConstants.REACTION_ADDED` or `CometChatConstants.REACTION_REMOVED`) that corresponds to the message being reacted to.
 
 <Tabs>
 <Tab title="Java">
@@ -434,9 +434,9 @@ When you receive a real-time reaction event (`MessageReaction`), call the `updat
 BaseMessage message = ...;
 
 // The reaction event data received in real-time
-MessageReaction messageReaction = ...;
+Reaction messageReaction = ...;
 
-// The recieved reaction event real-time action type. Can be CometChatConstants.REACTION_ADDED or CometChatConstants.REACTION_REMOVED
+// The received reaction event real-time action type. Can be CometChatConstants.REACTION_ADDED or CometChatConstants.REACTION_REMOVED
 String action = CometChatConstants.REACTION_ADDED;
 
 BaseMessage modifiedBaseMessage = CometChatHelper.updateMessageWithReactionInfo(
@@ -454,9 +454,9 @@ action
 val message: BaseMessage = ...
 
 // The reaction event data received in real-time
-val messageReaction: MessageReaction = ...
+val messageReaction: Reaction = ...
 
-// The recieved reaction event real-time action type. Can be CometChatConstants.REACTION_ADDED or CometChatConstants.REACTION_REMOVED
+// The received reaction event real-time action type. Can be CometChatConstants.REACTION_ADDED or CometChatConstants.REACTION_REMOVED
 val action = CometChatConstants.REACTION_ADDED
 
 // Update the BaseMessage instance with the new reaction information

@@ -356,6 +356,64 @@ val conversationsRequest = ConversationsRequestBuilder()
 
 </Tabs>
 
+### Hide Agentic Conversations
+
+Use `hideAgentic(true)` to exclude AI agent conversations from the list.
+
+<Tabs>
+<Tab title="Java">
+```java
+ConversationsRequest conversationsRequest = new ConversationsRequest.ConversationsRequestBuilder()
+  .setLimit(50)
+  .hideAgentic(true)
+  .build();
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin
+val conversationsRequest = ConversationsRequestBuilder()
+  .setLimit(50)
+  .hideAgentic(true)
+  .build()
+```
+
+</Tab>
+
+</Tabs>
+
+### Only Agentic Conversations
+
+Use `onlyAgentic(true)` to fetch only AI agent conversations.
+
+<Tabs>
+<Tab title="Java">
+```java
+ConversationsRequest conversationsRequest = new ConversationsRequest.ConversationsRequestBuilder()
+  .setLimit(50)
+  .onlyAgentic(true)
+  .build();
+```
+
+</Tab>
+
+<Tab title="Kotlin">
+```kotlin
+val conversationsRequest = ConversationsRequestBuilder()
+  .setLimit(50)
+  .onlyAgentic(true)
+  .build()
+```
+
+</Tab>
+
+</Tabs>
+
+<Note>
+`hideAgentic()` and `onlyAgentic()` are mutually exclusive — use only one per request.
+</Note>
+
 ### Fetch Conversations
 
 After configuring the builder, call `build()` to create the request, then `fetchNext()` to retrieve conversations. Maximum 50 per request. Call `fetchNext()` repeatedly on the same object to paginate.

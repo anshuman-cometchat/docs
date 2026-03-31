@@ -151,7 +151,7 @@ This advanced authentication procedure does not use the Auth Key directly in you
 ```java
 private String authToken = "AUTH_TOKEN";
 
-CometChat.login(authToken, new CometChat.CallbackListener<User>()
+CometChat.login(authToken, new CometChat.CallbackListener<User>() {
   @Override
   public void onSuccess(User user) {
     Log.d(TAG, "Login Successful : " + user.toString());
