@@ -1,10 +1,78 @@
 ---
 title: "Reactions"
+sidebarTitle: "Reactions"
+description: "Add, remove, and fetch message reactions in real-time using the CometChat Android SDK. Includes listener events and helper methods for updating UI."
 ---
 
+<Accordion title="AI Integration Quick Reference">
 
+<Tabs>
+<Tab title="Kotlin">
+```kotlin
+// Add reaction
+CometChat.addReaction(messageId, "😊", object : CallbackListener<BaseMessage>() {
+    override fun onSuccess(message: BaseMessage) { }
+    override fun onError(e: CometChatException) { }
+})
 
-Enhance user engagement in your chat application with message reactions. Users can express their emotions using reactions to messages. This feature allows users to add or remove reactions, and to fetch all reactions on a message. You can also listen to reaction events in real-time. Let's see how to work with reactions in CometChat's Android SDK.
+// Remove reaction
+CometChat.removeReaction(messageId, "😊", object : CallbackListener<BaseMessage>() {
+    override fun onSuccess(message: BaseMessage) { }
+    override fun onError(e: CometChatException) { }
+})
+
+// Fetch reactions for a message
+val reactionRequest = ReactionRequest.ReactionRequestBuilder()
+    .setMessageId(messageId)
+    .setLimit(30)
+    .build()
+reactionRequest.fetchNext(callback)
+
+// Listen for real-time reaction events
+CometChat.addMessageListener(listenerID, object : MessageReactionListener {
+    override fun onMessageReactionAdded(reaction: MessageReaction) { }
+    override fun onMessageReactionRemoved(reaction: MessageReaction) { }
+})
+```
+</Tab>
+<Tab title="Java">
+```java
+// Add reaction
+CometChat.addReaction(messageId, "😊", new CallbackListener<BaseMessage>() {
+    @Override
+    public void onSuccess(BaseMessage message) { }
+    @Override
+    public void onError(CometChatException e) { }
+});
+
+// Remove reaction
+CometChat.removeReaction(messageId, "😊", new CallbackListener<BaseMessage>() {
+    @Override
+    public void onSuccess(BaseMessage message) { }
+    @Override
+    public void onError(CometChatException e) { }
+});
+
+// Fetch reactions for a message
+ReactionRequest reactionRequest = new ReactionRequest.ReactionRequestBuilder()
+    .setMessageId(messageId)
+    .setLimit(30)
+    .build();
+reactionRequest.fetchNext(callback);
+
+// Listen for real-time reaction events
+CometChat.addMessageListener(listenerID, new MessageReactionListener() {
+    @Override
+    public void onMessageReactionAdded(MessageReaction reaction) { }
+    @Override
+    public void onMessageReactionRemoved(MessageReaction reaction) { }
+});
+```
+</Tab>
+</Tabs>
+</Accordion>
+
+Reactions let users respond to messages with emoji. You can add or remove reactions, fetch all reactions on a message, listen for reaction events in real time, and update your UI when reactions change.
 
 ## Add a Reaction
 
@@ -53,7 +121,7 @@ CometChat.addReaction(messageId, emoji, object : CometChat.CallbackListener<Base
 
 <Info>
 
-You can react on Text, Media and Custom messages.
+You can react on Text, Media and Custom messages. For more details on message types, see [Message Structure & Hierarchy](/sdk/android/message-structure-and-hierarchy).
 
 </Info>
 
@@ -111,7 +179,7 @@ To get all reactions for a specific message, first create a `ReactionRequest` us
 | `setMessageId(int value)`   | Specifies the unique identifier of the message for which you want to fetch reactions. This parameter is mandatory as it tells the SDK which message's reactions are being requested.                                 |
 | `setReaction(String value)` | Filters the reactions fetched by the specified reaction type (e.g., "😊", "😂", "👍"). When set, this method will cause the ReactionRequest to only retrieve details of the provided reaction for the given message. |
 
-## Fetch Next
+### Fetch Next
 
 The `fetchNext()` method fetches the next set of reactions for the message.
 
@@ -235,7 +303,7 @@ reactionRequest.fetchPrevious(object : CometChat.CallbackListener<List<MessageRe
 
 ## Real-time Reaction Events
 
-Keep the chat interactive with real-time updates for reactions. Register a listener for these events and make your UI responsive.
+Keep the chat interactive with real-time updates for reactions. Register a listener for these events and make your UI responsive. For more information on listeners, see [Real-Time Listeners](/sdk/android/real-time-listeners).
 
 <Tabs>
 <Tab title="Java">
@@ -285,7 +353,7 @@ To stop listening for reaction events, remove the listener as follows:
 ```java
 private String listenerID = "UNIQUE_LISTENER_ID";
 
-CometChat.removeMessageListener("reactionListener");
+CometChat.removeMessageListener(listenerID);
 ```
 
 </Tab>
@@ -294,12 +362,16 @@ CometChat.removeMessageListener("reactionListener");
 ```kotlin
 val listenerID = "UNIQUE_LISTENER_ID"
 
-CometChat.removeMessageListener("reactionListener")   
+CometChat.removeMessageListener(listenerID)   
 ```
 
 </Tab>
 
 </Tabs>
+
+<Warning>
+Always remove listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
 
 ## Get Reactions List
 
@@ -400,3 +472,120 @@ val modifiedBaseMessage: BaseMessage = CometChatHelper.updateMessageWithReaction
 </Tabs>
 
 After calling this method, the `message` instance's reactions are updated. You can then use `message.getReactions()` to get the latest reactions and refresh your UI accordingly.
+
+## Reaction Payload Structure
+
+<Accordion title="Reaction Object">
+
+When fetching reactions for a message, each `Reaction` object contains the following fields:
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `id` | String | Unique reaction identifier |
+| `messageId` | long | ID of the message that was reacted to |
+| `reaction` | String | The reaction emoji |
+| `uid` | String | UID of the user who reacted |
+| `reactedAt` | long | Unix timestamp when reaction was added |
+| `reactedBy` | [User](#user-object-reactions) | User who added the reaction |
+
+**Sample Reaction Object:**
+
+```json
+{
+  "id": "reaction_123",
+  "messageId": 12345,
+  "reaction": "👍",
+  "uid": "user_123",
+  "reactedAt": 1699900000,
+  "reactedBy": {
+    "uid": "user_123",
+    "name": "John Doe",
+    "avatar": "https://example.com/avatar.png",
+    "status": "online",
+    "role": "default",
+    "tags": ["premium", "verified"]
+  }
+}
+```
+
+</Accordion>
+
+<Accordion title="User Object (Reactions)">
+
+The nested `User` object in `reactedBy` contains:
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uid` | String | Unique identifier of the user |
+| `name` | String | Display name of the user |
+| `avatar` | String | URL to user's profile picture |
+| `link` | String | URL to user's profile page |
+| `role` | String | User role for access control |
+| `metadata` | JSONObject | Custom data set by developer |
+| `status` | String | User online status. Values: `"online"`, `"offline"` |
+| `statusMessage` | String | Custom status message |
+| `lastActiveAt` | long | Unix timestamp of last activity |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user |
+| `tags` | Array\<String\> | List of tags for user identification |
+| `deactivatedAt` | long | Unix timestamp when user was deactivated (0 if active) |
+
+</Accordion>
+
+<Accordion title="ReactionCount Object">
+
+When accessing reactions on a message via `message.getReactions()`, each `ReactionCount` object contains:
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `reaction` | String | The reaction emoji |
+| `count` | int | Total count of this reaction |
+| `reactedByMe` | boolean | Whether the logged-in user has reacted with this emoji |
+
+**Sample ReactionCount Object:**
+
+```json
+{
+  "reaction": "👍",
+  "count": 5,
+  "reactedByMe": true
+}
+```
+
+</Accordion>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Limit Reaction Types">
+    Define a specific set of allowed emoji reactions in your app to maintain consistency and prevent inappropriate reactions. Consider using a reaction picker UI component with predefined options.
+  </Accordion>
+  <Accordion title="Update UI Optimistically">
+    Update your UI immediately when a user adds or removes a reaction, then handle the server response. This provides instant feedback and improves perceived performance.
+  </Accordion>
+  <Accordion title="Use updateMessageWithReactionInfo()">
+    Always use `CometChatHelper.updateMessageWithReactionInfo()` when receiving real-time reaction events to keep your message objects synchronized with the latest reaction data.
+  </Accordion>
+  <Accordion title="Handle Reaction Limits">
+    Consider implementing limits on the number of reactions per message or per user to prevent spam and maintain a clean UI.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Send Messages" icon="paper-plane" href="/sdk/android/send-message">
+    Learn how to send text, media, and custom messages
+  </Card>
+  <Card title="Receive Messages" icon="envelope" href="/sdk/android/receive-messages">
+    Handle real-time message events with listeners
+  </Card>
+  <Card title="Threaded Messages" icon="comments" href="/sdk/android/threaded-messages">
+    Organize conversations with message threads
+  </Card>
+  <Card title="Mentions" icon="at" href="/sdk/android/mentions">
+    Tag users in messages with @mentions
+  </Card>
+</CardGroup>

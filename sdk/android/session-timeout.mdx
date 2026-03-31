@@ -1,27 +1,42 @@
 ---
-title: "Session Timeout Flow"
+title: "Session Timeout"
+sidebarTitle: "Session Timeout"
+description: "Configure idle timeout and auto-termination for inactive call sessions in Android"
 ---
 
+<Accordion title="AI Integration Quick Reference">
+
+```kotlin
+// Configure idle timeout (default: 180 seconds)
+val callSettings = CometChatCalls.CallSettingsBuilder(context, videoContainer)
+    .setIdleTimeoutPeriod(300)  // 300 seconds = 5 minutes
+    .setEventListener(object : CometChatCallsEventsListener {
+        override fun onSessionTimeout() {
+            // Handle auto-termination due to inactivity
+        }
+    })
+    .build()
+```
+
+**Available since:** v4.1.0  
+**Default timeout:** 180 seconds (3 minutes alone)  
+**Warning shown:** 60 seconds before auto-termination
+</Accordion>
 
 
-Available since v4.1.0
 
-## Overview
+*Available since v4.1.0*
 
-CometChat Calls SDK provides a mechanism to handle session timeouts for idle participants. By default, if a participant is alone in a call session for 180 seconds (3 minutes), the following sequence is triggered:
+The Calls SDK automatically terminates call sessions when a participant is alone for too long, preventing abandoned calls from consuming resources.
 
-1. After 120 seconds of being alone in the session, the participant will see a dialog box
+When a participant is alone in a session:
 
-2. This dialog provides options to either:
+1. After 120 seconds, a dialog appears with "Stay" or "Leave" options
+2. If no action is taken within 60 seconds, the call auto-terminates and `onSessionTimeout` fires
 
-   * Stay in the call
-   * Leave immediately
+The default timeout is 180 seconds (3 minutes).
 
-3. If no action is taken within the next 60 seconds, the call will automatically end
-
-This feature helps manage inactive call sessions and prevents unnecessary resource usage. The idle timeout period ensures that participants don't accidentally remain in abandoned call sessions.
-
-### Session Timeout Flow
+## Session Timeout Flow
 
 <Frame>
   <img src="/images/d75ea5ed-diagram-afa10cae2acad94dee0d7c69275fd544.svg" />
@@ -32,3 +47,66 @@ This feature helps manage inactive call sessions and prevents unnecessary resour
 The `onSessionTimeout` event is triggered when the call automatically terminates due to session timeout, as illustrated in the diagram above.
 
 </Tip>
+
+
+---
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Set Appropriate Timeout Duration">
+    Choose a timeout duration that balances resource management with user experience. 180 seconds (3 minutes) is suitable for most use cases, but consider longer durations for scenarios where users may step away briefly.
+  </Accordion>
+  <Accordion title="Handle onSessionTimeout Gracefully">
+    Implement the `onSessionTimeout()` callback to clean up resources and navigate users away from the call screen. Show a clear message explaining why the call ended.
+  </Accordion>
+  <Accordion title="Inform Users About Timeout Policy">
+    Display information about the idle timeout policy in your app's help section or during onboarding so users understand why calls may auto-terminate.
+  </Accordion>
+  <Accordion title="Test Timeout Behavior">
+    Test the timeout flow thoroughly, including the warning dialog and auto-termination, to ensure users have enough time to respond and the experience is smooth.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Timeout Occurs Too Quickly">
+    **Symptom:** Call terminates before the expected timeout period.
+    
+    **Cause:** The `setIdleTimeoutPeriod()` value may be set too low, or the timeout is being triggered by other factors.
+    
+    **Solution:** Verify the timeout value in your `CallSettingsBuilder`. Ensure you're setting the value in seconds (e.g., 300 for 5 minutes). Check that the call isn't ending due to other reasons like network issues.
+  </Accordion>
+  <Accordion title="Warning Dialog Not Appearing">
+    **Symptom:** Call terminates without showing the 60-second warning dialog.
+    
+    **Cause:** The default UI layout may be disabled, or the dialog is being blocked by custom UI elements.
+    
+    **Solution:** Ensure `setDefaultLayoutEnable(true)` is set in your call settings. Check that no custom views are overlaying the call UI and blocking the dialog.
+  </Accordion>
+  <Accordion title="onSessionTimeout Not Called">
+    **Symptom:** The `onSessionTimeout()` callback is not triggered when the call auto-terminates.
+    
+    **Cause:** Event listener may not be properly registered or the SDK version doesn't support this callback.
+    
+    **Solution:** Verify you're using SDK v4.1.0 or later. Ensure the event listener is registered using `setEventListener()` in your call settings before starting the session.
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Default Calling" icon="phone" href="/sdk/android/default-calling">
+    Implement one-on-one and group calling with default UI
+  </Card>
+  <Card title="Standalone Calling" icon="video" href="/sdk/android/standalone-calling">
+    Use Calls SDK without Chat SDK integration
+  </Card>
+  <Card title="Presenter Mode" icon="presentation" href="/sdk/android/presenter-mode">
+    Create webinar-style calling experiences
+  </Card>
+  <Card title="Call Logs" icon="list" href="/sdk/android/call-logs">
+    Retrieve and display call history
+  </Card>
+</CardGroup>

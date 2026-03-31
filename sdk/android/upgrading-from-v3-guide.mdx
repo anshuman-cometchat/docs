@@ -1,12 +1,28 @@
 ---
 title: "Upgrading From V3"
+sidebarTitle: "Upgrading from V3"
+description: "Migration guide for upgrading from CometChat Android SDK v3 to v4"
 ---
 
+<Accordion title="AI Integration Quick Reference">
+
+**Migration Steps:**
+1. Update Maven URL to `https://dl.cloudsmith.io/public/cometchat/cometchat/maven/`
+2. Update dependency to `com.cometchat:chat-sdk-android:4.1.7` (or latest v4)
+3. Change all imports from `com.cometchat.pro.*` to `com.cometchat.chat.*`
+4. Rebuild and test your application
+
+**Key Changes:**
+- Package name changed from `com.cometchat.pro` to `com.cometchat.chat`
+- Maven repository URL updated
+- API remains largely compatible with v3
+
+**Full guide:** Follow the [setup](/sdk/android/setup) instructions for detailed v4 setup.
+</Accordion>
 
 
-Upgrading from v3.x to v4 is fairly simple. Below are the major changes that are released as a part of CometChat v4:
 
-Please follow the [setup](/sdk/android/setup) instructions to upgrade to the latest V4 version.
+Upgrading from v3.x to v4 is straightforward. The API surface is the same — only the Maven URL, dependency artifact, and import package names changed.
 
 ## Maven URL Change
 
@@ -40,6 +56,78 @@ dependencies {
 
 </Tabs>
 
-## Change The Import Classes Packages
+## Change the Import Class Packages
 
-In v3 the import class package name start from `com.cometchat.pro.*` . Change it to `com.cometchat.chat.*` everywhere in the project and you are done with v3 to v4 migration
+In v3, the import class package name starts with `com.cometchat.pro.*`. Change it to `com.cometchat.chat.*` everywhere in the project and you are done with the v3 to v4 migration.
+
+---
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Test Thoroughly After Migration">
+    After updating imports and dependencies, thoroughly test all CometChat functionality in your app. Pay special attention to initialization, authentication, messaging, and calling features.
+  </Accordion>
+  <Accordion title="Update All Import Statements">
+    Use your IDE's find-and-replace feature to update all `com.cometchat.pro` imports to `com.cometchat.chat` across your entire project. Don't miss any files.
+  </Accordion>
+  <Accordion title="Review Breaking Changes">
+    While the API is largely compatible, review the v4 changelog for any breaking changes that might affect your specific use case. Test edge cases and error handling.
+  </Accordion>
+  <Accordion title="Update Gradle Configuration">
+    Ensure your project-level build.gradle includes the new Maven URL in the repositories section. Clean and rebuild your project after making changes.
+  </Accordion>
+  <Accordion title="Migrate in a Feature Branch">
+    Perform the migration in a separate git branch so you can easily revert if issues arise. Test thoroughly before merging to your main branch.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Build Fails After Dependency Update">
+    **Symptom:** Gradle sync or build fails with "Could not resolve com.cometchat:chat-sdk-android" error.
+    
+    **Cause:** Maven repository URL not updated in project-level build.gradle.
+    
+    **Solution:** Ensure the new Maven URL `https://dl.cloudsmith.io/public/cometchat/cometchat/maven/` is added to the `allprojects` repositories section in your project-level build.gradle. Clean and rebuild the project.
+  </Accordion>
+  <Accordion title="Import Errors After Package Change">
+    **Symptom:** IDE shows "Cannot resolve symbol" errors for CometChat classes.
+    
+    **Cause:** Not all import statements were updated from `com.cometchat.pro.*` to `com.cometchat.chat.*`.
+    
+    **Solution:** Use your IDE's find-and-replace feature to search for all occurrences of `com.cometchat.pro` and replace with `com.cometchat.chat`. Rebuild the project and resolve any remaining import errors manually.
+  </Accordion>
+  <Accordion title="Runtime Crashes After Migration">
+    **Symptom:** App builds successfully but crashes at runtime with ClassNotFoundException or similar errors.
+    
+    **Cause:** ProGuard/R8 rules may need updating, or some imports were missed.
+    
+    **Solution:** Update ProGuard rules to use the new package name `com.cometchat.chat.*`. Verify all imports are updated. Clean and rebuild the project. Check for any reflection-based code that might reference old package names.
+  </Accordion>
+  <Accordion title="Initialization Fails After Update">
+    **Symptom:** `CometChat.init()` fails with errors after migration.
+    
+    **Cause:** Incorrect App ID, Region, or Auth Key, or SDK not properly initialized.
+    
+    **Solution:** Verify your App ID and Region are correct in the initialization code. Ensure you're using the v4 initialization pattern. Check that the SDK dependency was properly updated to v4. Review initialization logs for specific error messages.
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Setup" icon="gear" href="/sdk/android/setup">
+    Review complete v4 setup instructions
+  </Card>
+  <Card title="Send Message" icon="paper-plane" href="/sdk/android/send-message">
+    Test messaging functionality after migration
+  </Card>
+  <Card title="Calling Setup" icon="phone" href="/sdk/android/calling-setup">
+    Update calling features to v4
+  </Card>
+  <Card title="Real-Time Listeners" icon="bell" href="/sdk/android/real-time-listeners">
+    Verify event listeners work correctly
+  </Card>
+</CardGroup>

@@ -1,10 +1,31 @@
 ---
 title: "Ringing"
+sidebarTitle: "Ringing"
+description: "Implement complete calling workflow with ringing, call acceptance, rejection, and cancellation in the Android SDK"
 ---
 
-## Overview
+<Accordion title="AI Integration Quick Reference">
 
-This section explains how to implement a complete calling workflow with ringing functionality, including incoming/outgoing call UI, call acceptance, rejection, and cancellation. Previously known as **Default Calling**.
+```kotlin
+// Initiate call
+val call = Call("UID", CometChatConstants.RECEIVER_TYPE_USER, CometChatConstants.CALL_TYPE_VIDEO)
+CometChat.initiateCall(call, object : CometChat.CallbackListener<Call>() {
+    override fun onSuccess(call: Call) { /* Show outgoing UI */ }
+    override fun onError(e: CometChatException) { }
+})
+
+// Accept call
+CometChat.acceptCall(sessionID, object : CometChat.CallbackListener<Call>() {
+    override fun onSuccess(call: Call) { /* Start session */ }
+    override fun onError(e: CometChatException) { }
+})
+
+// Reject/Cancel call
+CometChat.rejectCall(sessionID, CometChatConstants.CALL_STATUS_REJECTED, callback)
+```
+</Accordion>
+
+This page covers the complete calling workflow with ringing — incoming/outgoing call UI, accept/reject/cancel, and starting the call session. Previously known as **Default Calling**.
 
 <Note>
 After the call is accepted, you need to start the call session. See the [Call Session](/sdk/android/direct-calling#start-call-session) guide for details on starting and managing the actual call.
@@ -202,6 +223,10 @@ CometChat.removeCallListener(listenerId)
 </Tab>
 
 </Tabs>
+
+<Warning>
+Always remove call listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
 
 ### Events
 
@@ -561,3 +586,66 @@ CometChat.rejectCall(sessionID, status, object : CometChat.CallbackListener<Call
 </Tab>
 
 </Tabs>
+
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Always Remove Call Listeners">
+    Remove call listeners in `onDestroy()` or `onPause()` to prevent memory leaks and duplicate callbacks. Use unique listener IDs to manage multiple listeners effectively.
+  </Accordion>
+  <Accordion title="Handle All Call States">
+    Implement all call listener callbacks (`onIncomingCallReceived`, `onOutgoingCallAccepted`, `onOutgoingCallRejected`, `onIncomingCallCancelled`) to provide a complete user experience and handle edge cases.
+  </Accordion>
+  <Accordion title="Store Session ID">
+    Store the `sessionId` from the `Call` object after initiating a call. You'll need it for accepting, rejecting, canceling, and ending the call.
+  </Accordion>
+  <Accordion title="Show Appropriate UI States">
+    Display different UI for incoming calls (accept/reject buttons), outgoing calls (cancel button), and active calls (end call button) to match user expectations.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Call Initiation Failed">
+    **Symptom:** `initiateCall()` fails with "User not logged in" or "Invalid receiver" error.
+    
+    **Cause:** User not logged in or invalid receiver UID/GUID.
+    
+    **Solution:** Ensure `CometChat.login()` is called successfully before initiating calls. Verify the receiver UID or GUID exists using `CometChat.getUser()` or `CometChat.getGroup()`.
+  </Accordion>
+  <Accordion title="Listener Not Receiving Events">
+    **Symptom:** Call listener callbacks are not triggered when calls are received or accepted.
+    
+    **Cause:** Listener not registered or removed prematurely.
+    
+    **Solution:** Register the call listener in `onCreate()` or `onResume()` and ensure it's not removed until `onDestroy()` or `onPause()`. Verify the listener ID is unique.
+  </Accordion>
+  <Accordion title="Call Session Won't Start">
+    **Symptom:** After accepting a call, the call session doesn't start or shows a black screen.
+    
+    **Cause:** Missing token generation or incorrect call settings.
+    
+    **Solution:** Ensure you call `generateToken()` and `startSession()` in the `acceptCall()` success callback. Verify the video container layout exists in your XML. See [Call Session](/sdk/android/direct-calling#start-call-session) for details.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Call Session" icon="video" href="/sdk/android/direct-calling">
+    Start and manage call sessions with video and audio controls
+  </Card>
+  <Card title="Call Logs" icon="list" href="/sdk/android/call-logs">
+    Retrieve and display call history for users and groups
+  </Card>
+  <Card title="Recording" icon="record-vinyl" href="/sdk/android/recording">
+    Record calls and access recordings from the Dashboard
+  </Card>
+  <Card title="Calling Setup" icon="gear" href="/sdk/android/calling-setup">
+    Configure calling dependencies and initialization
+  </Card>
+</CardGroup>

@@ -1,14 +1,31 @@
 ---
 title: "Delivery & Read Receipts"
+sidebarTitle: "Delivery & Read Receipts"
+description: "Mark messages as delivered, read, or unread and receive real-time receipt events using the CometChat Android SDK."
 ---
 
+<Accordion title="AI Integration Quick Reference">
 
+```kotlin
+// Mark messages as delivered
+CometChat.markAsDelivered(message.id, message.receiverUid, 
+    CometChatConstants.RECEIVER_TYPE_USER, message.sender.uid)
+
+// Mark messages as read
+CometChat.markAsRead(message.id, message.sender.uid,
+    CometChatConstants.RECEIVER_TYPE_USER, message.sender.uid)
+
+// Listen for receipt events
+CometChat.addMessageListener("LISTENER_ID", object : MessageListener() {
+    override fun onMessagesDelivered(receipt: MessageReceipt) { }
+    override fun onMessagesRead(receipt: MessageReceipt) { }
+})
+```
+</Accordion>
 
 ## Mark Messages as Delivered
 
-*In other words, as a recipient, how do I inform the sender that I've received a message?*
-
-You can mark the messages for a particular conversation as read using the `markAsDelivered()` method. This method takes the below parameters as input:
+You can mark the messages for a particular conversation as read using the `markAsDelivered()` method. This method takes the following parameters as input:
 
 | Parameter      | Information                                                                                                                                                                         |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -126,19 +143,19 @@ CometChat.markAsDelivered(message.id, receiverUID, CometChatConstants.RECEIVER_T
 
 </Tabs>
 
-Another option the CometChat SDK provides is to pass the entire message object to the markAsDelivered() method.
+Another option the CometChat SDK provides is to pass the entire message object to the `markAsDelivered()` method.
 
 <Tabs>
 <Tab title="Java">
 ```java
-CometChat.markAsRead(baseMessage)
+CometChat.markAsDelivered(baseMessage)
 ```
 
 </Tab>
 
 <Tab title="Kotlin">
 ```kotlin
-CometChat.markAsRead(baseMessage)
+CometChat.markAsDelivered(baseMessage)
 ```
 
 </Tab>
@@ -190,9 +207,7 @@ Starting v3, the messages will not be marked delivered internally by the SDK. Yo
 
 ## Mark Messages as Read
 
-*In other words, as a recipient, how do I inform the sender I've read a message?*
-
-You can mark the messages for a particular conversation as read using the `markAsRead()` method. This method takes the below parameters as input:
+You can mark the messages for a particular conversation as read using the `markAsRead()` method. This method takes the following parameters as input:
 
 | Parameter      | Information                                                                                                                                                                           |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -380,8 +395,6 @@ The Mark as Unread feature allows users to designate specific messages or conver
 
 This feature is valuable for users who want to revisit and respond to important messages or conversations later, ensuring they don't forget or overlook them.
 
-In other words, how I can mark a message as unread?
-
 You can mark the messages for a particular conversation as unread using the `markAsUnread()` method. This method takes the below parameters as input:
 
 | Parameter | Information                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
@@ -466,9 +479,14 @@ CometChat.markAsUnread(message, object : CometChat.CallbackListener<Void>() {
 
 ## Receive Delivery & Read Receipts
 
-*In other words, as a recipient, how do I know when a message I sent has been delivered or read by someone?*
-
 ### Real-time events
+
+| Callback | Description |
+| --- | --- |
+| `onMessagesDelivered` | Message delivered to a user |
+| `onMessagesRead` | Message read by a user |
+| `onMessagesDeliveredToAll` | Group message delivered to all members |
+| `onMessagesReadByAll` | Group message read by all members |
 
 1. `onMessagesDelivered()` - This event is triggered when a message is delivered to a user.
 2. `onMessagesRead()` - This event is triggered when a message is read by a user.
@@ -602,3 +620,136 @@ The following features will be available only if the **Enhanced Messaging Status
 * `markAsUnread` method.
 
 </Info>
+
+<Warning>
+Always remove message listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
+
+## MessageReceipt Payload Structure
+
+<Accordion title="MessageReceipt Object">
+
+The `MessageReceipt` object contains information about message delivery and read status:
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `messageId` | long | ID of the message |
+| `sender` | [User](#user-object-receipts) | User who sent the receipt |
+| `receiverType` | String | Type of receiver. Values: `"user"`, `"group"` |
+| `receiverId` | String | ID of the receiver |
+| `timestamp` | long | Unix timestamp of the receipt |
+| `receiptType` | String | Type of receipt. Values: `"delivered"`, `"read"` |
+| `deliveredAt` | long | Unix timestamp when message was delivered |
+| `readAt` | long | Unix timestamp when message was read |
+| `messageSender` | String | UID of the message sender |
+
+**Sample MessageReceipt Object:**
+
+```json
+{
+  "messageId": 12345,
+  "sender": {
+    "uid": "user_123",
+    "name": "John Doe",
+    "avatar": "https://example.com/avatar.png",
+    "status": "online",
+    "role": "default"
+  },
+  "receiverType": "user",
+  "receiverId": "user_456",
+  "timestamp": 1699900000,
+  "receiptType": "read",
+  "deliveredAt": 1699900001,
+  "readAt": 1699900002,
+  "messageSender": "user_123"
+}
+```
+
+</Accordion>
+
+<Accordion title="User Object (Receipts)">
+
+The nested `User` object in `sender` contains:
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uid` | String | Unique identifier of the user |
+| `name` | String | Display name of the user |
+| `avatar` | String | URL to user's profile picture |
+| `link` | String | URL to user's profile page |
+| `role` | String | User role for access control |
+| `metadata` | JSONObject | Custom data set by developer |
+| `status` | String | User online status. Values: `"online"`, `"offline"` |
+| `statusMessage` | String | Custom status message |
+| `lastActiveAt` | long | Unix timestamp of last activity |
+| `hasBlockedMe` | boolean | Whether this user has blocked the logged-in user |
+| `blockedByMe` | boolean | Whether the logged-in user has blocked this user |
+| `tags` | Array\<String\> | List of tags for user identification |
+| `deactivatedAt` | long | Unix timestamp when user was deactivated (0 if active) |
+
+</Accordion>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Mark as Delivered on Message Fetch">
+    Call `markAsDelivered()` when fetching messages and when receiving real-time messages to ensure senders know their messages were received.
+  </Accordion>
+  <Accordion title="Mark as Read When Visible">
+    Call `markAsRead()` only when messages are actually visible to the user (e.g., when chat window is open and focused) for accurate read status.
+  </Accordion>
+  <Accordion title="Use Message Object Overload">
+    Use `markAsDelivered(message)` and `markAsRead(message)` overloads for simpler code when you have the message object available.
+  </Accordion>
+  <Accordion title="Handle Receipt Events for UI Updates">
+    Listen for receipt events to update your UI with delivery/read indicators (checkmarks) in real-time.
+  </Accordion>
+  <Accordion title="Enable Enhanced Messaging Status">
+    Enable "Enhanced Messaging Status" in Dashboard for group message receipts and advanced features like `markAsUnread`.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Receipts Not Sending">
+    **Symptom:** `markAsDelivered()` or `markAsRead()` fails silently.
+    
+    **Cause:** User not logged in, or incorrect parameters provided.
+    
+    **Solution:** Verify user is logged in using `CometChat.getLoggedInUser()`. Use the callback version of methods to catch errors.
+  </Accordion>
+  <Accordion title="Group Receipts Not Working">
+    **Symptom:** `onMessagesDeliveredToAll` or `onMessagesReadByAll` not triggered.
+    
+    **Cause:** "Enhanced Messaging Status" feature not enabled in Dashboard.
+    
+    **Solution:** Enable the feature in [CometChat Dashboard](https://app.cometchat.com) under your app settings.
+  </Accordion>
+  <Accordion title="Receipt Events Not Received">
+    **Symptom:** Receipt listener methods not being called.
+    
+    **Cause:** Message listener not registered or removed prematurely.
+    
+    **Solution:** Ensure `addMessageListener()` is called before messages are sent/received. Don't remove listeners while still needed.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Typing Indicators" icon="keyboard" href="/sdk/android/typing-indicators">
+    Show when users are typing
+  </Card>
+  <Card title="Receive Messages" icon="envelope" href="/sdk/android/receive-messages">
+    Handle incoming messages with listeners
+  </Card>
+  <Card title="Retrieve Conversations" icon="list" href="/sdk/android/retrieve-conversations">
+    Fetch conversation list with unread counts
+  </Card>
+  <Card title="Real-Time Listeners" icon="bell" href="/sdk/android/real-time-listeners">
+    Learn more about event listeners
+  </Card>
+</CardGroup>
