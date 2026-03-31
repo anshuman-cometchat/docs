@@ -274,6 +274,62 @@ CometChat.logout( onSuccess: ( successMessage) {
 
 ---
 
+## Login Listener
+
+You can listen for login and logout events in real time using `LoginListener`. This is useful for updating UI state or triggering side effects when the auth state changes.
+
+| Callback | Description |
+| --- | --- |
+| `loginSuccess(User user)` | User logged in successfully. Provides the `User` object. |
+| `loginFailure(CometChatException e)` | Login failed. Provides a `CometChatException`. |
+| `logoutSuccess()` | User logged out successfully. |
+| `logoutFailure(CometChatException e)` | Logout failed. Provides a `CometChatException`. |
+
+### Add a Listener
+
+<Tabs>
+<Tab title="Dart">
+```dart
+class Class_Name with LoginListener {
+
+  // CometChat.addLoginListener("UNIQUE_LISTENER_ID", this); // call this in initState
+
+  @override
+  void loginSuccess(User user) {
+    debugPrint("LoginListener loginSuccess: $user");
+  }
+
+  @override
+  void loginFailure(CometChatException e) {
+    debugPrint("LoginListener loginFailure: ${e.message}");
+  }
+
+  @override
+  void logoutSuccess() {
+    debugPrint("LoginListener logoutSuccess");
+  }
+
+  @override
+  void logoutFailure(CometChatException e) {
+    debugPrint("LoginListener logoutFailure: ${e.message}");
+  }
+}
+```
+</Tab>
+</Tabs>
+
+### Remove a Listener
+
+```dart
+CometChat.removeLoginListener("UNIQUE_LISTENER_ID");
+```
+
+<Warning>
+Always remove login listeners when they're no longer needed (e.g., on widget disposal or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
+</Warning>
+
+---
+
 ## Next Steps
 
 <CardGroup cols={2}>
@@ -286,7 +342,7 @@ CometChat.logout( onSuccess: ( successMessage) {
   <Card title="Connection Status" icon="signal" href="/sdk/flutter/connection-status">
     Monitor the SDK connection state in real time
   </Card>
-  <Card title="Login Listeners" icon="tower-broadcast" href="/sdk/flutter/login-listeners">
-    Listen for login and logout events in real time
+  <Card title="All Real-Time Listeners" icon="tower-broadcast" href="/sdk/flutter/real-time-listeners">
+    Complete reference for all SDK event listeners
   </Card>
 </CardGroup>
