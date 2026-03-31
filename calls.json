@@ -85,16 +85,18 @@
           {
             "name": "status",
             "in": "query",
-            "description": "It indicates the status of the call. Possible values are unanswered, rejected, ongoing, ended.",
+            "description": "It indicates the status of the call. Possible values are initiated, ongoing, ended, unanswered, rejected, canceled.",
             "schema": {
               "type": "string",
               "enum": [
+                "initiated",
+                "ongoing",
+                "ended",
                 "unanswered",
                 "rejected",
-                "ongoing",
-                "ended"
+                "canceled"
               ],
-              "description": "Allowed values: unanswered, rejected, ongoing, ended"
+              "description": "Allowed values: initiated, ongoing, ended, unanswered, rejected, canceled"
             }
           },
           {

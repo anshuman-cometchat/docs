@@ -1161,7 +1161,134 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 ```
 
-## 5. Testing checklist
+## 5. Unregister the token on logout
+
+Before logging the user out, unregister the push token so the device stops receiving notifications for that user.
+
+```swift lines
+CometChatNotifications.unregisterPushToken(
+    onSuccess: { success in
+        print("Push token unregistered: \(success)")
+        CometChatUIKit.logout(onSuccess: { _ in
+            print("Logout successful")
+        }, onError: { error in
+            print("Logout failed: \(error.errorDescription)")
+        })
+    },
+    onError: { error in
+        print("Token unregister failed: \(error.errorCode) - \(error.errorDescription)")
+    }
+)
+```
+
+Always call `CometChatNotifications.unregisterPushToken()` **before** `CometChatUIKit.logout()`. If you skip this step, the device may continue to receive pushes for the logged-out user.
+
+## 6. Badge count
+
+CometChat's Enhanced Push Notification payload includes an `unreadMessageCount` field (a string) representing the total unread messages across all conversations for the logged-in user. You can use this to set the app icon badge.
+
+### 6.1 Enable unread badge count on the CometChat Dashboard
+
+1. Go to **CometChat Dashboard → Notification Engine → Settings → Preferences → Push Notification Preferences**.
+2. Scroll to the bottom and enable the **Unread Badge Count** toggle.
+
+This ensures CometChat includes the `unreadMessageCount` field in every push payload sent to your app.
+
+### 6.2 Expected payload format
+
+CometChat sends APNs payloads with this structure (relevant fields):
+
+```json
+{
+  "unreadMessageCount": "5",
+  "title": "New Message",
+  "alert": "John: Hello!",
+  "conversationId": "user_abc123",
+  "receiverType": "user"
+}
+```
+
+`unreadMessageCount` is a string representing the total unread messages across all conversations for the logged-in user.
+
+### 6.3 Update the app badge from the push payload
+
+Inside your `UNUserNotificationCenterDelegate` method (for example `willPresent` or a Notification Service Extension), parse `unreadMessageCount` and update the badge:
+
+```swift lines
+// Inside userNotificationCenter(_:willPresent:) or a Notification Service Extension
+let userInfo = notification.request.content.userInfo
+
+if let unreadCountStr = userInfo["unreadMessageCount"] as? String,
+   let count = Int(unreadCountStr), count >= 0 {
+    DispatchQueue.main.async {
+        UIApplication.shared.applicationIconBadgeNumber = count
+    }
+} else {
+    print("No valid unreadMessageCount in payload")
+}
+```
+
+Setting `applicationIconBadgeNumber` to `0` clears the badge.
+
+### 6.4 Clear badge when the app opens
+
+Clear the badge count when the app launches and every time it returns to the foreground. In your `SceneDelegate` or `AppDelegate`:
+
+```swift lines
+func sceneDidBecomeActive(_ scene: UIScene) {
+    UIApplication.shared.applicationIconBadgeNumber = 0
+}
+```
+
+This keeps the badge in sync with the actual unread state.
+
+## 7. Navigation from notifications
+
+When the user taps a notification, use `userNotificationCenter(_:didReceive:withCompletionHandler:)` to extract conversation details and navigate to the correct screen.
+
+```swift lines
+func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse,
+    withCompletionHandler completionHandler: @escaping () -> Void
+) {
+    let userInfo = response.notification.request.content.userInfo
+
+    guard let receiverType = userInfo["receiverType"] as? String else {
+        completionHandler()
+        return
+    }
+
+    if receiverType == "user" {
+        guard let senderUid = userInfo["sender"] as? String,
+              let senderName = userInfo["senderName"] as? String else {
+            completionHandler()
+            return
+        }
+        let user = User(uid: senderUid, name: senderName)
+        let messagesVC = MessagesVC()
+        messagesVC.user = user
+        navigateToViewController(messagesVC)
+
+    } else if receiverType == "group" {
+        guard let groupId = userInfo["receiver"] as? String,
+              let groupName = userInfo["receiverName"] as? String else {
+            completionHandler()
+            return
+        }
+        let group = Group(guid: groupId, name: groupName, groupType: .public, password: nil)
+        let messagesVC = MessagesVC()
+        messagesVC.group = group
+        navigateToViewController(messagesVC)
+    }
+
+    completionHandler()
+}
+```
+
+The `navigateToViewController` helper (shown in `CometChatPNHelper.swift` above) pushes the `MessagesVC` onto the navigation stack. Ensure the root view controller is ready before navigation -- if the app was terminated, wait until login completes before routing.
+
+## 8. Testing checklist
 
 1. Install on a device; grant notification permission. Verify APNs device token logs.
 2. Log in, then confirm both device + VoIP tokens register with CometChat (success callbacks).
@@ -1171,7 +1298,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 4. Trigger an incoming call; CallKit UI should show caller info. Accept should join the call; Decline should reject via CometChat and end CallKit.
 5. Rotate tokens (reinstall or toggle VoIP) to ensure re-registration works.
 
-## 6. Troubleshooting
+## 9. Troubleshooting
 
 | Symptom | Quick checks |
 | --- | --- |
@@ -1180,3 +1307,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 | Taps do nothing | Verify notification center delegate and navigation readiness before routing. |
 | Call UI missing | Ensure PushKit delegate fires, CallKit capabilities enabled, VoIP provider ID set. |
 | Audio errors | Configure `AVAudioSession` for playAndRecord when reporting/accepting calls. |
+| Badge count not showing | Verify **Unread Badge Count** is enabled in CometChat Dashboard and that your app reads `unreadMessageCount` from the payload. |
+| Notification tap does not navigate | Ensure `UNUserNotificationCenterDelegate` is set, payload contains `receiverType`/`sender`/`receiver`, and root view controller is ready. |
