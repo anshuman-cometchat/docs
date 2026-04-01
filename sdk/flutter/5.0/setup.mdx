@@ -2,7 +2,9 @@
 title: "Setup"
 ---
 
-
+<Warning>
+This is a **beta release** of the CometChat Flutter Chat SDK v5. APIs and features may change before the stable release.
+</Warning>
 
 ### Get your Application Keys
 
@@ -23,17 +25,28 @@ Minimum Requirement
 
 ### Add the CometChat Dependency
 
-1. Add the following code in your `pubspec.yaml` file and run `pub get` command.
+### Cloudsmith (Current Beta)
 
-<Tabs>
-<Tab title="Dart">
-```dart
-cometchat_sdk: ^5.0.0
+For the current beta release, add the Cloudsmith hosted repository and dependency to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  cometchat_sdk:
+    hosted:
+      url: https://dart.cloudsmith.io/cometchat/cometchat/
+    version: 5.0.0-beta.1
 ```
 
-</Tab>
+Then run:
+```bash
+flutter pub get
+```
 
-</Tabs>
+<Warning>
+**Upgrading from v4?**
+
+If you're migrating an existing app from CometChat SDK v4, check out the [Upgrading from v4](/sdk/flutter/5.0/upgrading-from-v4-guide) guide for breaking changes, deprecated methods, and migration instructions.
+</Warning>
 
 2. Add following code to podfile inside iOS section of your app
 

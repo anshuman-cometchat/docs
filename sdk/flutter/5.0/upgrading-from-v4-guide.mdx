@@ -2,97 +2,40 @@
 title: "Upgrading from v4"
 ---
 
-This guide helps you migrate your Flutter application from CometChat SDK v4 to v5. It covers breaking changes, deprecations, and new features.
+This guide helps you migrate your Flutter application from CometChat SDK v4 to v5.
 
 ## Installation
 
-Update your `pubspec.yaml` to use the v5 SDK:
+### Cloudsmith (Current Beta)
 
-<Tabs>
-<Tab title="Dart">
+For the current beta release, add the Cloudsmith hosted repository and dependency to your `pubspec.yaml`:
+
 ```yaml
 dependencies:
-  cometchat_sdk: ^5.0.0
+  cometchat_sdk:
+    hosted:
+      url: https://dart.cloudsmith.io/cometchat/cometchat/
+    version: 5.0.0-beta.1
 ```
-</Tab>
-</Tabs>
 
 Then run:
 ```bash
 flutter pub get
 ```
 
-## Breaking Changes
+## What's Changed
 
-### Removed Deprecated Methods
+### New
 
-The following deprecated methods have been removed in v5. You must update your code to use the new methods:
+- All platform channel method calls have been replaced with native Dart implementations, resulting in significant speed and performance improvements.
+- The SDK now runs entirely on Dart by default, bringing cross-platform support to iOS, Android, and Web.
 
-| Removed Method | Replacement |
-|----------------|-------------|
-| `markAsUnread()` | `markMessageAsUnread()` |
-| `receaverUid` parameter | `receiverUid` (now required) |
-| `fetchPushPreferences()` | `fetchPreferences()` |
-| `updatePushPreferences()` | `updatePreferences()` |
-| `resetPushPreferences()` | `resetPreferences()` |
-| `PushPreferences` class | `NotificationPreferences` class |
+### Breaking Changes
 
-### Default Limit Change
-
-The default limit for fetching data in various request builders has changed from `50` to `30`. If your app relies on the default limit, you may need to explicitly set it:
-
-```dart
-MessagesRequest messageRequest = (MessagesRequestBuilder()
-  ..uid = UID
-  ..limit = 50  // Explicitly set if you need 50
-).build();
-```
-
-## Method Migrations
-
-### Mark as Unread
-
-The `markAsUnread()` method has been removed. Use `markMessageAsUnread()` instead.
+- `onTypingIndicator()` now returns `Stream<TypingIndicator>` instead of `Stream<String>`. Typing events include `sender`, `receiverId`, `receiverType`, `metadata`, `lastTimestamp`, and `typingStatus` fields. Use `TypingIndicator.typingStatus` ("started" or "ended") instead of checking `methodName`. No `EventChannel` dependency — works on all platforms including web. Existing `MessageListener` callbacks (`onTypingStarted` / `onTypingEnded`) continue to work unchanged.
 
 **Before (v4):**
 ```dart
-CometChat.markAsUnread(message, onSuccess: ..., onError: ...);
-```
-
-**After (v5):**
-```dart
-CometChat.markMessageAsUnread(message, onSuccess: ..., onError: ...);
-```
-
-### Typing Indicator Parameter
-
-The `receaverUid` parameter has been removed from `startTyping()` and `endTyping()` methods. Use `receiverUid` instead (now required).
-
-**Before (v4):**
-```dart
-CometChat.startTyping(receaverUid: "UID", receiverType: ...);
-```
-
-**After (v5):**
-```dart
-CometChat.startTyping(receiverUid: "UID", receiverType: ...);
-```
-
-### Typing Indicator Stream
-
-The `onTypingIndicator()` stream has been reworked in v5. In v4, typing events were serialized as `Map` objects and emitted through a shared `EventChannel('cometchat_message_stream')` via platform channels, returning a `Stream<String>`. In v5, the SDK uses a pure Dart WebSocket implementation with no platform channel dependency, returning a strongly-typed `Stream<TypingIndicator>`.
-
-Key differences:
-- Return type changed from `Stream<String>` to `Stream<TypingIndicator>`.
-- No need to check `methodName` for `"onTypingStarted"` / `"onTypingEnded"` — use `TypingIndicator.typingStatus` (`"started"` or `"ended"`) instead.
-- No `EventChannel` dependency — works on all platforms including web.
-- `MessageListener.onTypingStarted()` and `MessageListener.onTypingEnded()` callbacks continue to work unchanged.
-
-**Before (v4):**
-```dart
-// v4 returned a Stream<String> from a platform channel
-// Typing events came through the shared message stream as Maps
-// and required checking `methodName` to distinguish event types
 CometChat.onTypingIndicator().listen((String event) {
   final map = jsonDecode(event);
   if (map['methodName'] == 'onTypingStarted') {
@@ -105,7 +48,6 @@ CometChat.onTypingIndicator().listen((String event) {
 
 **After (v5):**
 ```dart
-// v5 returns a strongly-typed Stream<TypingIndicator>
 CometChat.onTypingIndicator().listen((TypingIndicator indicator) {
   print(indicator.sender);         // User object
   print(indicator.receiverId);     // receiver UID or group GUID
@@ -116,20 +58,33 @@ CometChat.onTypingIndicator().listen((TypingIndicator indicator) {
 });
 ```
 
-<Note>
-You can also continue using `MessageListener.onTypingStarted()` and `MessageListener.onTypingEnded()` callbacks — they work the same way in v5.
-</Note>
+### Removals
 
-### Push Notification Preferences
+- Removed deprecated `markAsUnread()` method. Use `markMessageAsUnread()` instead.
 
-The following methods and classes have been removed:
+**Before (v4):**
+```dart
+CometChat.markAsUnread(message, onSuccess: ..., onError: ...);
+```
 
-| Removed | Replacement |
-|---------|-------------|
-| `fetchPushPreferences()` | `fetchPreferences()` |
-| `updatePushPreferences()` | `updatePreferences()` |
-| `resetPushPreferences()` | `resetPreferences()` |
-| `PushPreferences` class | `NotificationPreferences` class |
+**After (v5):**
+```dart
+CometChat.markMessageAsUnread(message, onSuccess: ..., onError: ...);
+```
+
+- Removed deprecated `receaverUid` parameter from `startTyping()` and `endTyping()`. Use `receiverUid` instead.
+
+**Before (v4):**
+```dart
+CometChat.startTyping(receaverUid: "UID", receiverType: ...);
+```
+
+**After (v5):**
+```dart
+CometChat.startTyping(receiverUid: "UID", receiverType: ...);
+```
+
+- Removed deprecated `fetchPushPreferences()`, `updatePushPreferences()`, and `resetPushPreferences()` methods. Use `fetchPreferences()`, `updatePreferences()`, and `resetPreferences()` instead.
 
 **Before (v4):**
 ```dart
@@ -141,158 +96,4 @@ final prefs = await CometChatNotifications.fetchPushPreferences();
 final prefs = await CometChatNotifications.fetchPreferences();
 ```
 
-## New Features
-
-### Conversation Management
-
-New methods for managing conversation status:
-
-```dart
-// Mark entire conversation as delivered
-CometChat.markConversationAsDelivered(conversation, onSuccess: ..., onError: ...);
-
-// Mark entire conversation as read
-CometChat.markConversationAsRead(conversation, onSuccess: ..., onError: ...);
-```
-
-### Multiple Media Files
-
-Send multiple media files in a single message:
-
-```dart
-List<String> filePaths = ["path/to/image1.jpg", "path/to/image2.jpg"];
-
-MediaMessage mediaMessage = MediaMessage(
-  receiverType: receiverType,
-  type: messageType,
-  receiverUid: receiverID,
-  files: filePaths,
-);
-
-await CometChat.sendMediaMessage(mediaMessage, onSuccess: ..., onError: ...);
-```
-
-### Agentic Conversations
-
-Filter AI-driven conversations:
-
-```dart
-// Hide agentic conversations
-ConversationsRequest request = (ConversationsRequestBuilder()
-  ..hideAgentic = true
-).build();
-
-// Show only agentic conversations
-ConversationsRequest request = (ConversationsRequestBuilder()
-  ..onlyAgentic = true
-).build();
-```
-
-### User/Group Tags Filter
-
-Filter conversations by user or group tags:
-
-```dart
-ConversationsRequest request = (ConversationsRequestBuilder()
-  ..userTags = ["premium", "verified"]
-  ..groupTags = ["support"]
-).build();
-```
-
-### Enhanced User Search
-
-New search and sort options for users:
-
-```dart
-UsersRequest usersRequest = (UsersRequestBuilder()
-  ..searchKeyword = "john"
-  ..searchIn = ["name", "uid"]
-  ..sortBy = "name"
-  ..sortByOrder = "asc"
-).build();
-```
-
-### Create Group with Members
-
-Create a group and add members in one step:
-
-```dart
-List<GroupMember> members = [
-  GroupMember(uid: "uid1", scope: CometChatMemberScope.participant),
-  GroupMember(uid: "uid2", scope: CometChatMemberScope.moderator),
-];
-
-await CometChat.createGroupWithMembers(
-  group: group,
-  members: members,
-  onSuccess: (Group group, Map<String, String> failedMembers) { ... },
-  onError: (CometChatException e) { ... }
-);
-```
-
-### Group Member Status Filter
-
-Filter group members by online/offline status:
-
-```dart
-GroupMembersRequest request = (GroupMembersRequestBuilder(GUID)
-  ..status = CometChatUserStatus.online
-).build();
-```
-
-### Direct Page Navigation
-
-Jump to specific pages in paginated results:
-
-```dart
-MessagesRequest messageRequest = (MessagesRequestBuilder()
-  ..uid = UID
-  ..page = 2
-  ..limit = 30
-).build();
-```
-
-### Attachment Type Filter
-
-Filter messages by attachment types:
-
-```dart
-MessagesRequest messageRequest = (MessagesRequestBuilder()
-  ..uid = UID
-  ..attachmentTypes = ["image", "video"]
-).build();
-```
-
-### Hide Quoted Messages
-
-Exclude quoted messages from response:
-
-```dart
-MessagesRequest messageRequest = (MessagesRequestBuilder()
-  ..uid = UID
-  ..hideQuotedMessages = true
-).build();
-```
-
-## AI Features
-
-### AI Assistant Events
-
-v5 includes comprehensive AI assistant event tracking. See the [AI Agents](/sdk/flutter/5.0/ai-agents) documentation for details.
-
-### AI Moderation
-
-Real-time message moderation with status tracking. See the [AI Moderation](/sdk/flutter/5.0/ai-moderation) documentation for details.
-
-## Migration Checklist
-
-- [ ] Update SDK version in `pubspec.yaml`
-- [ ] Run `flutter pub get`
-- [ ] Replace `markAsUnread()` with `markMessageAsUnread()`
-- [ ] Replace `receaverUid` with `receiverUid` in typing methods
-- [ ] Update push notification preference methods (`fetchPushPreferences` → `fetchPreferences`, etc.)
-- [ ] Replace `PushPreferences` class with `NotificationPreferences`
-- [ ] Migrate `onTypingIndicator()` usage from `Stream<String>` to `Stream<TypingIndicator>`
-- [ ] Review default limit changes if relying on defaults
-- [ ] Test all messaging and conversation features
-- [ ] Test AI features if using AI agents or moderation
+- Removed deprecated `PushPreferences` class. Use `NotificationPreferences` instead.
