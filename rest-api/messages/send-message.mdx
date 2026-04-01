@@ -15,3 +15,16 @@ description: "Sends Message on behalf of a user."
 | Reactions | Max 25 distinct reactions, 45 characters each (UTF8mb4) | Emoji supported (may use multiple code points) |
 | Unread message count (groups) | Up to 300 members | Not updated for larger groups |
 | Message receipts (groups) | Up to 300 online users | Delivery/read receipts disabled in large groups |
+## Common errors
+
+| Error Code | HTTP Status | Cause |
+| --- | --- | --- |
+| `AUTH_ERR_EMPTY_APIKEY` | 401 | The `apikey` header is missing from the request |
+| `AUTH_ERR_APIKEY_NOT_FOUND` | 401 | The provided API key is invalid |
+| `AUTH_ERR_NO_ACCESS` | 403 | The API key doesn't have the required scope |
+| `ERR_EMPTY_RECEIVER` | 400 | The receiver field cannot be empty |
+| `ERR_INVALID_RECEIVER_TYPE` | 400 | Invalid receiver type — must be `user` or `group` |
+| `ERR_EMPTY_MESSAGE_TEXT` | 400 | Message text cannot be empty for text messages |
+| `ERR_INVALID_MESSAGE_CATEGORY` | 400 | Invalid message category |
+
+For the complete error reference, see [Error Guide](/articles/error-guide).
