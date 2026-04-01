@@ -1,5 +1,6 @@
 ---
 title: "Send A Message"
+description: "Send A Message — CometChat documentation."
 ---
 
 <Warning>
@@ -24,7 +25,7 @@ To send a text message to a single user or group, you need to use the `sendMessa
 
 <Tabs>
 <Tab title="User">
-```
+```javascript
 let receiverID = "UID";
 let messageText = "Hello world!";
 let receiverType = CometChat.RECEIVER_TYPE.USER;
@@ -47,7 +48,7 @@ CometChat.sendMessage(textMessage).then(
 </Tab>
 
 <Tab title="Group">
-```
+```javascript
 let receiverID = "GUID";
 let messageText = "Hello world!";
 let receiverType = CometChat.RECEIVER_TYPE.GROUP;
@@ -87,7 +88,7 @@ To send custom data along with a text message, you can use the `setMetadata` met
 
 <Tabs>
 <Tab title="User">
-```
+```javascript
 let receiverID = "UID";
 let messageText = "Hello World!";
 let receiverType = CometChat.RECEIVER_TYPE.USER;
@@ -117,7 +118,7 @@ CometChat.sendMessage(textMessage).then(
 </Tab>
 
 <Tab title="Group">
-```
+```javascript
 let receiverID = "GUID";
 let messageText = "Hello World!";
 let receiverType = CometChat.RECEIVER_TYPE.GROUP;
@@ -194,7 +195,7 @@ if (response.didCancel) {
 
 <Tabs>
 <Tab title="User">
-```
+```javascript
 let receiverID = "UID";
 let messageType = CometChat.MESSAGE_TYPE.FILE;
 let receiverType = CometChat.RECEIVER_TYPE.USER;
@@ -218,7 +219,7 @@ CometChat.sendMediaMessage(mediaMessage).then(
 </Tab>
 
 <Tab title="Group">
-```
+```javascript
 let receiverID = "GUID";
 let messageType = CometChat.MESSAGE_TYPE.FILE;
 let receiverType = CometChat.RECEIVER_TYPE.GROUP;
@@ -260,7 +261,7 @@ To send custom data along with a media message, you can use the `setMetadata` me
 
 <Tabs>
 <Tab title="Metadata">
-```
+```javascript
 var metadata = {
   latitude: "50.6192171633316",
   longitude: "-72.68182268750002",
@@ -279,7 +280,7 @@ To send a caption with a media message, you can use `setCaption` method and pass
 
 <Tabs>
 <Tab title="Caption">
-```
+```javascript
 var caption = "Random Caption";
 
 mediaMessage.setCaption(caption);
@@ -301,7 +302,7 @@ The `sendCustomMessage()` methods takes an object of the `CustomMessage` which c
 
 <Tabs>
 <Tab title="Custom Message">
-```
+```javascript
 var customMessage = new CometChat.CustomMessage(
   receiverID,
   receiverType,

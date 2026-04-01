@@ -1,5 +1,6 @@
 ---
 title: "Retrieve Users"
+description: "Retrieve Users — CometChat documentation."
 ---
 
 <Warning>
@@ -14,7 +15,7 @@ You can get the details of the logged-in user using the `getLoggedInUser()` meth
 
 <Tabs>
 <Tab title="Get Logged In User Details">
-```
+```javascript
 var user = CometChat.getLoggedinUser().then(
   (user) => {
     console.log("user details:", { user });
@@ -43,7 +44,7 @@ This method sets the limit i.e. the number of users that should be fetched in a 
 
 <Tabs>
 <Tab title="Set Limit">
-```
+```javascript
 let limit = 30;
 let usersRequest = new CometChat.UsersRequestBuilder().setLimit(limit).build();
 ```
@@ -58,7 +59,7 @@ This method allows you to set the search string based on which the users are to 
 
 <Tabs>
 <Tab title="Set Search Keyword">
-```
+```javascript
 let limit = 30;
 let searchKeyword = "super";
 let usersRequest = new CometChat.UsersRequestBuilder()
@@ -82,7 +83,7 @@ If this parameter is not set, will return all the available users.
 
 <Tabs>
 <Tab title="Set Status">
-```
+```javascript
 let limit = 30;
 let usersRequest = new CometChat.UsersRequestBuilder()
   .setLimit(limit)
@@ -100,7 +101,7 @@ This method is used to determine if the blocked users should be returned as a pa
 
 <Tabs>
 <Tab title="Hide Blocked Users">
-```
+```javascript
 let limit = 30;
 let usersRequest = new CometChat.UsersRequestBuilder()
   .setLimit(limit)
@@ -118,7 +119,7 @@ This method allows you to fetch the users based on multiple roles.
 
 <Tabs>
 <Tab title="Set Roles">
-```
+```javascript
 let limit = 30;
 let roles = ["default", "dev"];
 let usersRequest = new CometChat.UsersRequestBuilder()
@@ -137,7 +138,7 @@ This property when set to true will return only the friends of the logged-in use
 
 <Tabs>
 <Tab title="Friends Only">
-```
+```javascript
 let limit = 30;
 let usersRequest = new CometChat.UsersRequestBuilder()
   .setLimit(limit)
@@ -155,7 +156,7 @@ This method accepts a list of tags based on which the list of users is to be fet
 
 <Tabs>
 <Tab title="Set Tags">
-```
+```javascript
 let limit = 30;
 let tags = ["tag1", "tag2"];
 let usersRequest = new CometChat.UsersRequestBuilder()
@@ -174,7 +175,7 @@ This property when set to true will fetch tags data along with the list of users
 
 <Tabs>
 <Tab title="With Tags">
-```
+```javascript
 let limit = 30;
 let usersRequest = new CometChat.UsersRequestBuilder()
   .setLimit(limit)
@@ -192,7 +193,7 @@ This method accepts a list of UIDs based on which the list of users is fetched. 
 
 <Tabs>
 <Tab title="Set UIDs">
-```
+```javascript
 let limit = 30;
 let UIDs = ["cometchat-uid-1", "cometchat-uid-2"];
 let usersRequest = new CometChat.UsersRequestBuilder()
@@ -211,7 +212,7 @@ Once you have the object of the UsersRequest class, you need to call the fetchNe
 
 <Tabs>
 <Tab title="Users Request">
-```
+```javascript
 var limit = 30;
 var usersRequest = new CometChat.UsersRequestBuilder().setLimit(limit).build();
 
@@ -235,7 +236,7 @@ To get the information of a user, you can use the `getUser()` method.
 
 <Tabs>
 <Tab title="Retrieve Particular User's Details">
-```
+```javascript
 let UID = "UID";
 CometChat.getUser(UID).then(
   (user) => {

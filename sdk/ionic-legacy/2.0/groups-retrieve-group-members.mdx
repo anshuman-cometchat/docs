@@ -1,5 +1,6 @@
 ---
 title: "Retrieve Group Members"
+description: "Retrieve Group Members — CometChat documentation."
 ---
 
 <Warning>
@@ -22,7 +23,7 @@ This method sets the limit i.e. the number of members that should be fetched in 
 
 <Tabs>
 <Tab title="Set Limit">
-```
+```javascript
 let GUID = "GUID";
 let limit = 30;
 let groupMembersRequest = new CometChat.GroupMembersRequestBuilder(GUID)
@@ -40,7 +41,7 @@ This method allows you to set the search string based on which the group members
 
 <Tabs>
 <Tab title="Set Search Keyword">
-```
+```javascript
 let GUID = "GUID";
 let limit = 30;
 let searchKeyword = "super";
@@ -60,7 +61,7 @@ This method allows you to fetch group members based on multiple scopes.
 
 <Tabs>
 <Tab title="Set Scopes">
-```
+```javascript
 let GUID = "GUID";
 let limit = 30;
 let scopes = ["admin", "moderator"];
@@ -80,7 +81,7 @@ Once you have the object of the `GroupMembersRequest` class, you need to call th
 
 <Tabs>
 <Tab title="Group Members Request">
-```
+```javascript
 let GUID = "GUID";
 let limit = 30;
 lett groupMemberRequest = new CometChat.GroupMembersRequestBuilder(GUID)

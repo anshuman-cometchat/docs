@@ -1,5 +1,6 @@
 ---
 title: "Ban/Kick Member From A Group"
+description: "Ban/Kick Member From A Group — CometChat documentation."
 ---
 
 <Warning>
@@ -23,7 +24,7 @@ The Admin or Moderator of a group can kick a member out of the group using the `
 
 <Tabs>
 <Tab title="Kick Group Member">
-```
+```javascript
 var GUID = "GUID";
 var UID = "UID";
 
@@ -56,7 +57,7 @@ The Admin or Moderator of the group can ban a member from the group using the `b
 
 <Tabs>
 <Tab title="Ban Group Member">
-```
+```javascript
 var GUID = "GUID";
 var UID = "UID";
 
@@ -89,7 +90,7 @@ Only Admin or Moderators of the group can unban a previously banned member from 
 
 <Tabs>
 <Tab title="Unban Group Member">
-```
+```javascript
 var GUID = "GUID";
 var UID = "UID";
 
@@ -168,7 +169,7 @@ Once you have the object of the `BannedGroupMembersRequest` class, you need to c
 
 <Tabs>
 <Tab title="Banned Group Members Request">
-```
+```javascript
 let GUID = "GUID";
 let limit = 30;
 let bannedMembersRequest = new CometChat.BannedMembersRequestBuilder(GUID)
@@ -207,7 +208,7 @@ In order to get real-time events for the kick/ban/unban group members you need t
 
 <Tabs>
 <Tab title="Group Listener">
-```
+```javascript
 let listenerID = "UNIQUE_LISTENER_ID";
 
 CometChat.addGroupListener(

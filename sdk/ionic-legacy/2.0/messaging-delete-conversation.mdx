@@ -1,5 +1,6 @@
 ---
 title: "Delete A Conversation"
+description: "Delete A Conversation — CometChat documentation."
 ---
 
 <Warning>
@@ -14,7 +15,7 @@ This method takes two parameters. The unique id (UID/GUID) of the conversation t
 
 <Tabs>
 <Tab title="Delete User Conversation">
-```
+```javascript
 let UID = "UID";
 let type = "user";
 CometChat.deleteConversation(UID, type).then(
@@ -30,7 +31,7 @@ CometChat.deleteConversation(UID, type).then(
 </Tab>
 
 <Tab title="Delete Group Conversation">
-```
+```javascript
 let GUID = "GUID";
 let type = "group";
 CometChat.deleteConversation(GUID, type).then(

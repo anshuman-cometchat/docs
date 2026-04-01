@@ -1,5 +1,6 @@
 ---
 title: "Additional Message Filtering"
+description: "Additional Message Filtering — CometChat documentation."
 ---
 
 <Warning>
@@ -37,7 +38,7 @@ To achieve this, you can use the `setLimit()` method. This method takes an integ
 
 <Tabs>
 <Tab title="User">
-```
+```javascript
 let UID = "UID";
 let messagesRequest = new CometChat.MessagesRequestBuilder()
   .setUID(UID)
@@ -48,7 +49,7 @@ let messagesRequest = new CometChat.MessagesRequestBuilder()
 </Tab>
 
 <Tab title="Group">
-```
+```javascript
 let GUID = "GUID";
 let messagesRequest = new CometChat.MessagesRequestBuilder()
   .setGUID(GUID)
@@ -68,7 +69,7 @@ This can be achieved using the `setUID()` method. This method takes the UID of t
 
 <Tabs>
 <Tab title="User Conversation">
-```
+```javascript
 let UID = "UID";
 let messagesRequest = new CometChat.MessagesRequestBuilder()
   .setUID(UID)
@@ -88,7 +89,7 @@ You can achieve this using the `setGUID()` method. This method takes the GUID of
 
 <Tabs>
 <Tab title="Group Conversation">
-```
+```javascript
 let GUID = "GUID";
 let messagesRequest = new CometChat.MessagesRequestBuilder()
   .setGUID(GUID)

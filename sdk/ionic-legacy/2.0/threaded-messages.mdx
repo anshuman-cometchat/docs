@@ -1,5 +1,6 @@
 ---
 title: "Threaded Messages"
+description: "Threaded Messages — CometChat documentation."
 ---
 
 <Warning>
@@ -26,7 +27,7 @@ This can be achieved using the `setParentMessageId()` method provided by the obj
 
 <Tabs>
 <Tab title="User">
-```
+```javascript
 let textMessage = new CometChat.TextMessage(
   UID,
   "Hello",
@@ -60,7 +61,7 @@ To add a MessageListener, you can use the `addMessageListener()` method of the S
 
 <Tabs>
 <Tab title="Message Listener">
-```
+```javascript
 var listenerID = "UNIQUE_LISTENER_ID";
 var activeThreadId = 100;
 
@@ -98,7 +99,7 @@ Once you have the object of the `MessagesRequest` class, you need to call the `f
 
 <Tabs>
 <Tab title="Fetch all message for a thread">
-```
+```javascript
 let limit = 30;
 let parentMessageId = 1;
 let messagesRequest = new CometChat.MessagesRequestBuilder()

@@ -1,5 +1,6 @@
 ---
 title: "Typing Indicators"
+description: "Typing Indicators — CometChat documentation."
 ---
 
 <Warning>
@@ -18,7 +19,7 @@ You can use the `startTyping()` method to inform the receiver that the logged in
 
 <Tabs>
 <Tab title="Start Typing(User)">
-```
+```javascript
 let receiverId = "UID";
 let receiverType = CometChat.RECEIVER_TYPE.USER;
 
@@ -32,7 +33,7 @@ CometChat.startTyping(typingNotification);
 </Tab>
 
 <Tab title="Start Typing(Group)">
-```
+```javascript
 let receiverId = "GUID";
 let receiverType = CometChat.RECEIVER_TYPE.GROUP;
 
@@ -53,7 +54,7 @@ You can use the `endTyping()` method to inform the receiver that the logged in u
 
 <Tabs>
 <Tab title="Start Typing(User)">
-```
+```javascript
 let receiverId = "UID";
 let receiverType = CometChat.RECEIVER_TYPE.USER;
 
@@ -67,7 +68,7 @@ CometChat.endTyping(typingNotification);
 </Tab>
 
 <Tab title="Start Typing(Group)">
-```
+```javascript
 let receiverId = "GUID";
 let receiverType = CometChat.RECEIVER_TYPE.GROUP;
 
@@ -96,7 +97,7 @@ You will receive the typing indicators in the `onTypingStarted()` and the `onTyp
 
 <Tabs>
 <Tab title="Message Listener">
-```
+```javascript
 let listenerId = "UNIQUE_LITENER_ID";
 
 CometChat.addMessageListener(

@@ -1,5 +1,6 @@
 ---
 title: "Edit A Message"
+description: "Edit A Message — CometChat documentation."
 ---
 
 <Warning>
@@ -21,7 +22,7 @@ In order to edit a message, you can use the `editMessage()` method. This method 
 
 <Tabs>
 <Tab title="Edit Message">
-```
+```javascript
 let receiverID = "RECEIVER_UID";
 let messageText = "Hello world!";
 let receiverType = CometChat.RECEIVER_TYPE.USER;
@@ -67,7 +68,7 @@ In order to receive real-time events for message being edited, you need to overr
 
 <Tabs>
 <Tab title="Message Listener">
-```
+```javascript
 var listenerID = "UNIQUE_LISTENER_ID";
 
 CometChat.addMessageListener(

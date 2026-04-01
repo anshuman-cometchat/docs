@@ -1,5 +1,6 @@
 ---
 title: "Delivery & Read Receipts"
+description: "Delivery & Read Receipts — CometChat documentation."
 ---
 
 <Warning>
@@ -35,7 +36,7 @@ Ideally, you would like to mark all the messages as read for any conversation wh
 
 <Tabs>
 <Tab title="User Conversation">
-```
+```javascript
 var messageId = "MESSAGE_ID";
 var receiverId = "MESSAGE_SENDER_UID";
 var receiverType = "user";
@@ -45,7 +46,7 @@ CometChat.markAsRead(messageId, receiverId, receiverType);
 </Tab>
 
 <Tab title="Group Conversation">
-```
+```javascript
 var messageId = "MESSAGE_ID";
 var receiverId = "MESSAGE_RECEIVER_GUID";
 var receiverType = "group";
@@ -68,7 +69,7 @@ Real-time events for messages of a conversation being read or delivered can be o
 
 <Tabs>
 <Tab title="Message Listener">
-```
+```javascript
 let listenerId = "UNIQUE_LISTENER_ID";
 
 CometChat.addMessageListener(

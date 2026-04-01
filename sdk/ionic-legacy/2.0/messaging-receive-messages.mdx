@@ -1,5 +1,6 @@
 ---
 title: "Receive Messages"
+description: "Receive Messages — CometChat documentation."
 ---
 
 <Warning>
@@ -52,7 +53,7 @@ We recommend you remove the listener once you don't want to receive a message fo
 
 <Tabs>
 <Tab title="Remove Message Listener">
-```
+```javascript
 var listenerID = "UNIQUE_LISTENER_ID";
 
 CometChat.removeMessageListener(listenerID);
@@ -84,7 +85,7 @@ Calling the `fetchNext()` method on the same object repeatedly allows you to fet
 
 <Tabs>
 <Tab title="One-on-one Conversation">
-```
+```javascript
 let UID = "UID";
 let limit = 30;
 let latestId = await CometChat.getLastDeliveredMessageId();
@@ -113,7 +114,7 @@ messagesRequest.fetchNext().then(
 
 <Tabs>
 <Tab title="Group Conversation">
-```
+```javascript
 let GUID = "GUID";
 let limit = 30;
 let latestId = await CometChat.getLastDeliveredMessageId();
@@ -148,7 +149,7 @@ Using the `MessagesRequest` class described above, you can fetch the unread mess
 
 <Tabs>
 <Tab title="One-on-one Conversation">
-```
+```javascript
 let UID = "UID";
 let limit = 30;
 let messagesRequest = new CometChat.MessagesRequestBuilder()
@@ -175,7 +176,7 @@ messagesRequest.fetchPrevious().then(
 
 <Tabs>
 <Tab title="Group Conversation">
-```
+```javascript
 let GUID = "GUID";
 let limit = 30;
 let messagesRequest = new CometChat.MessagesRequestBuilder()
@@ -214,7 +215,7 @@ Using the `MessagesRequest` class and the filters for the `MessagesRequestBuilde
 
 <Tabs>
 <Tab title="One-on-one Conversation">
-```
+```javascript
 let UID = "UID";
 let limit = 30;
 let messagesRequest = new CometChat.MessagesRequestBuilder()
@@ -244,7 +245,7 @@ Using the `MessagesRequest` class and the filters for the `MessagesRequestBuilde
 
 <Tabs>
 <Tab title="Group Conversation">
-```
+```javascript
 let GUID = "GUID";
 let limit = 30;
 let messagesRequest = new CometChat.MessagesRequestBuilder()
@@ -276,7 +277,7 @@ Along with the other parameters mentioned above, you can use the `setSearchKeywo
 
 <Tabs>
 <Tab title="One-on-One Conversation">
-```
+```javascript
 let UID = "UID";
 let limit = 30;
 let searchKeyword = "Hello";
@@ -365,7 +366,7 @@ CometChat.getUnreadMessageCountForUser(UID, hideMessagesFromBlockedUsers);
 <Tabs>
 <Tab title="Get Unread Count For User
 ">
-```
+```javascript
 let UID = "UID";
 
 CometChat.getUnreadMessageCountForUser(UID).then(
@@ -416,7 +417,7 @@ CometChat.getUnreadMessageCountForGroup(GUID, hideMessagesFromBlockedUsers);
 
 <Tabs>
 <Tab title="Get Unread Count For Group">
-```
+```javascript
 let GUID = "GUID";
 
 CometChat.getUnreadMessageCountForGroup(GUID).then(

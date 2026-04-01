@@ -1,5 +1,6 @@
 ---
 title: "Default Calling"
+description: "Default Calling — CometChat documentation."
 ---
 
 <Warning>
@@ -29,7 +30,7 @@ The `initiateCall()` method sends a call request to a user or a group.
 
 <Tabs>
 <Tab title="User Call">
-```
+```javascript
 var receiverID = "UID";
 var callType = CometChat.CALL_TYPE.VIDEO;
 var receiverType = CometChat.RECEIVER_TYPE.USER;
@@ -50,7 +51,7 @@ CometChat.initiateCall(call).then(
 </Tab>
 
 <Tab title="Group Call">
-```
+```javascript
 var receiverID = "GUID";
 var callType = CometChat.CALL_TYPE.VIDEO;
 var receiverType = CometChat.RECEIVER_TYPE.GROUP;
