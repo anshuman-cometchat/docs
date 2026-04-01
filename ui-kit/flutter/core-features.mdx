@@ -231,6 +231,29 @@ The Threaded Conversations feature enables users to respond directly to a specif
 
 ***
 
+## Rich Text Formatting
+
+Rich Text Formatting allows users to style their messages with bold, italic, strikethrough, code, code blocks, blockquotes, ordered/unordered lists, and links. This brings richer expression to conversations and helps users emphasize key points.
+
+<Frame>
+  <img src="/images/android-rich-text-formatting.png" />
+</Frame>
+
+<Warning>
+Rich text formatting is enabled by default in the [CompactMessageComposer](/ui-kit/flutter/compact-message-composer). To disable it, set `enableRichTextFormatting: false`. When disabled, even manually typed markdown syntax (e.g., `**bold**`) will be sent as plain text. To hide the formatting toolbar while keeping markdown support, set `showRichTextFormattingOptions: false`. See the [CompactMessageComposer Rich Text Formatting](/ui-kit/flutter/compact-message-composer#rich-text-formatting) section for full configuration details.
+</Warning>
+
+<Note>
+Rich text formatting in message bubbles (rendering formatted text in the [MessageList](/ui-kit/flutter/message-list)) requires UI Kit v5 or later. Earlier versions will display the raw markdown syntax instead of formatted text.
+</Note>
+
+| Widgets | Functionality |
+| --- | --- |
+| [CompactMessageComposer](/ui-kit/flutter/compact-message-composer) | [CompactMessageComposer](/ui-kit/flutter/compact-message-composer) provides a built-in rich text editor with formatting toolbar and text selection menu items for bold, italic, strikethrough, code, links, lists, blockquotes, and code blocks. |
+| [MessageList](/ui-kit/flutter/message-list) | [MessageList](/ui-kit/flutter/message-list) renders formatted messages with the appropriate styling applied, displaying rich text formatting as intended by the sender. |
+
+***
+
 ## Group Chat
 
 CometChat facilitates Group Chats, allowing users to have conversations with multiple participants simultaneously. This feature is crucial for team collaborations, group discussions, social communities, and more.
