@@ -139,10 +139,6 @@ let messagesRequest = new CometChat.MessagesRequestBuilder()
 
 When messages are fetched successfully, the response includes an array of message objects.
 
-<Note>
-If neither `setUID()` nor `setGUID()` is used, all messages for the logged-in user across all conversations will be fetched. All parameters below can be combined with `setUID()` or `setGUID()`.
-</Note>
-
 ## Messages before/after a message
 
 Use `setMessageId()` to fetch messages before or after a specific message ID. Use `fetchNext()` to get messages after, or `fetchPrevious()` to get messages before.
