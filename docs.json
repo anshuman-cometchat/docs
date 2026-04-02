@@ -44,7 +44,9 @@
           {
             "group": "Docs MCP",
             "hidden": true,
-            "pages": ["mcp-server"]
+            "pages": [
+              "mcp-server"
+            ]
           }
         ]
       },
@@ -96,7 +98,9 @@
               {
                 "dropdown": "Kubernetes",
                 "icon": "/images/icons/kubernetes.svg",
-                "pages": ["on-premise-deployment/kubernetes/overview"]
+                "pages": [
+                  "on-premise-deployment/kubernetes/overview"
+                ]
               }
             ]
           }
@@ -220,11 +224,15 @@
               },
               {
                 "group": "User-Roles",
-                "pages": ["fundamentals/user-roles-and-permissions"]
+                "pages": [
+                  "fundamentals/user-roles-and-permissions"
+                ]
               },
               {
                 "group": "Guides",
-                "pages": ["fundamentals/user-auth"]
+                "pages": [
+                  "fundamentals/user-auth"
+                ]
               }
             ]
           },
@@ -279,7 +287,10 @@
               {
                 "dropdown": "Wix",
                 "icon": "/images/icons/wix.svg",
-                "pages": ["/widget/wix/overview", "/widget/wix/integration"]
+                "pages": [
+                  "/widget/wix/overview",
+                  "/widget/wix/integration"
+                ]
               },
               {
                 "dropdown": "Webflow",
@@ -535,6 +546,7 @@
                               "ui-kit/react/message-header",
                               "ui-kit/react/message-list",
                               "ui-kit/react/message-composer",
+                              "ui-kit/react/compact-message-composer",
                               "ui-kit/react/message-template",
                               "ui-kit/react/thread-header",
                               "ui-kit/react/incoming-call",
@@ -982,6 +994,7 @@
                               "ui-kit/react-native/message-header",
                               "ui-kit/react-native/message-list",
                               "ui-kit/react-native/message-composer",
+                              "ui-kit/react-native/compact-message-composer",
                               "ui-kit/react-native/threaded-messages-header",
                               "ui-kit/react-native/incoming-call",
                               "ui-kit/react-native/outgoing-call",
@@ -1017,9 +1030,9 @@
                           {
                             "group": "Migration Guide",
                             "pages": [
-                              "ui-kit/react-native/upgrading-from-v4" 
+                              "ui-kit/react-native/upgrading-from-v4"
                             ]
-                          }, 
+                          },
                           "ui-kit/react-native/troubleshooting",
                           "ui-kit/react-native/link/sample",
                           "ui-kit/react-native/link/changelog"
@@ -1293,6 +1306,7 @@
                               "ui-kit/ios/message-header",
                               "ui-kit/ios/message-list",
                               "ui-kit/ios/message-composer",
+                              "ui-kit/ios/compact-message-composer",
                               "ui-kit/ios/threaded-messages-header",
                               "ui-kit/ios/incoming-call",
                               "ui-kit/ios/outgoing-call",
@@ -1305,7 +1319,10 @@
                           },
                           {
                             "group": "Reference",
-                            "pages": ["ui-kit/ios/methods", "ui-kit/ios/events"]
+                            "pages": [
+                              "ui-kit/ios/methods",
+                              "ui-kit/ios/events"
+                            ]
                           },
                           {
                             "group": "Advanced",
@@ -1625,6 +1642,7 @@
                               "ui-kit/android/message-header",
                               "ui-kit/android/message-list",
                               "ui-kit/android/message-composer",
+                              "ui-kit/android/compact-message-composer",
                               "ui-kit/android/message-template",
                               "ui-kit/android/threaded-messages-header",
                               "ui-kit/android/incoming-call",
@@ -1937,6 +1955,7 @@
                               "ui-kit/flutter/message-header",
                               "ui-kit/flutter/message-list",
                               "ui-kit/flutter/message-composer",
+                              "ui-kit/flutter/compact-message-composer",
                               "ui-kit/flutter/message-template",
                               "ui-kit/flutter/threaded-messages-header",
                               "ui-kit/flutter/incoming-call",
@@ -2162,7 +2181,8 @@
                 "icon": "/images/icons/angular.svg",
                 "versions": [
                   {
-                    "version": "v4‎‎‎‎‎",
+                    "version": "v4",
+                    "default": true,
                     "groups": [
                       {
                         "group": " ",
@@ -2347,6 +2367,200 @@
                           },
                           "ui-kit/angular/link/sample",
                           "ui-kit/angular/link/changelog"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "version": "v5",
+                    "groups": [
+                      {
+                        "group": " ",
+                        "pages": [
+                          "ui-kit/angular/v5/overview",
+                          {
+                            "group": "Getting Started",
+                            "pages": [
+                              "ui-kit/angular/v5/quickstart",
+                              "ui-kit/angular/v5/integration",
+                              "ui-kit/angular/v5/angular-conversation",
+                              "ui-kit/angular/v5/angular-one-to-one-chat",
+                              "ui-kit/angular/v5/angular-tab-based-chat"
+                            ]
+                          },
+                          {
+                            "group": "Features",
+                            "pages": [
+                              {
+                                "group": "Chat",
+                                "pages": [
+                                  "ui-kit/angular/v5/core-features",
+                                  "ui-kit/angular/v5/extensions",
+                                  "ui-kit/angular/v5/ai-features"
+                                ]
+                              },
+                              "ui-kit/angular/v5/call-features"
+                            ]
+                          },
+                          {
+                            "group": "Theming",
+                            "pages": [
+                              "ui-kit/angular/v5/customization/theming",
+                              "ui-kit/angular/v5/customization/localization",
+                              "ui-kit/angular/v5/customization/global-config",
+                              "ui-kit/angular/v5/sound-manager"
+                            ]
+                          },
+                          {
+                            "group": "Components",
+                            "pages": [
+                              "ui-kit/angular/v5/components/overview",
+                              {
+                                "group": "Conversations",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-conversations",
+                                  "ui-kit/angular/v5/components/cometchat-conversation-item"
+                                ]
+                              },
+                              {
+                                "group": "Users",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-users",
+                                  "ui-kit/angular/v5/components/cometchat-user-item"
+                                ]
+                              },
+                              {
+                                "group": "Groups",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-groups",
+                                  "ui-kit/angular/v5/components/cometchat-group-item"
+                                ]
+                              },
+                              {
+                                "group": "Group Members",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-group-members",
+                                  "ui-kit/angular/v5/components/cometchat-group-member-item"
+                                ]
+                              },
+                              {
+                                "group": "Message Header",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-message-header"
+                                ]
+                              },
+                              {
+                                "group": "Message List",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-message-list"
+                                ]
+                              },
+                              {
+                                "group": "Message Composer",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-message-composer"
+                                ]
+                              },
+                              {
+                                "group": "Message Bubble",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-message-bubble"
+                                ]
+                              },
+                              {
+                                "group": "Message Information",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-message-information"
+                                ]
+                              },
+                              {
+                                "group": "Thread Header",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-thread-header"
+                                ]
+                              },
+                              {
+                                "group": "Message Bubbles",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-text-bubble",
+                                  "ui-kit/angular/v5/components/cometchat-image-bubble",
+                                  "ui-kit/angular/v5/components/cometchat-video-bubble",
+                                  "ui-kit/angular/v5/components/cometchat-audio-bubble",
+                                  "ui-kit/angular/v5/components/cometchat-file-bubble",
+                                  "ui-kit/angular/v5/components/cometchat-action-bubble",
+                                  "ui-kit/angular/v5/components/cometchat-delete-bubble",
+                                  "ui-kit/angular/v5/components/cometchat-call-bubble",
+                                  "ui-kit/angular/v5/components/cometchat-poll-bubble",
+                                  "ui-kit/angular/v5/components/cometchat-sticker-bubble",
+                                  "ui-kit/angular/v5/components/cometchat-stickers-keyboard",
+                                  "ui-kit/angular/v5/components/cometchat-collaborative-document-bubble",
+                                  "ui-kit/angular/v5/components/cometchat-collaborative-whiteboard-bubble"
+                                ]
+                              },
+                              {
+                                "group": "Reactions",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-reactions",
+                                  "ui-kit/angular/v5/components/cometchat-reaction-list",
+                                  "ui-kit/angular/v5/components/cometchat-reaction-info"
+                                ]
+                              },
+                              {
+                                "group": "Calls",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-call-buttons",
+                                  "ui-kit/angular/v5/components/cometchat-incoming-call",
+                                  "ui-kit/angular/v5/components/cometchat-outgoing-call",
+                                  "ui-kit/angular/v5/components/cometchat-call-logs"
+                                ]
+                              },
+                              {
+                                "group": "AI",
+                                "pages": [
+                                  "ui-kit/angular/v5/components/cometchat-conversation-starter",
+                                  "ui-kit/angular/v5/components/cometchat-smart-replies",
+                                  "ui-kit/angular/v5/components/cometchat-conversation-summary"
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "group": "Reference",
+                            "pages": [
+                              "ui-kit/angular/v5/events",
+                              "ui-kit/angular/v5/methods",
+                              "ui-kit/angular/v5/accessibility",
+                              "ui-kit/angular/v5/troubleshooting"
+                            ]
+                          },
+                          {
+                            "group": "Guides",
+                            "pages": [
+                              "ui-kit/angular/v5/guides/overview",
+                              "ui-kit/angular/v5/guides/threaded-messages",
+                              "ui-kit/angular/v5/guides/block-unblock-user",
+                              "ui-kit/angular/v5/guides/new-chat",
+                              "ui-kit/angular/v5/guides/message-privately",
+                              "ui-kit/angular/v5/guides/call-log-details",
+                              "ui-kit/angular/v5/guides/group-chat",
+                              "ui-kit/angular/v5/guides/custom-text-formatter",
+                              "ui-kit/angular/v5/guides/mentions-formatter",
+                              "ui-kit/angular/v5/guides/hashtag-formatter",
+                              "ui-kit/angular/v5/guides/shortcut-formatter",
+                              "ui-kit/angular/v5/guides/state-management"
+                            ]
+                          },
+                          {
+                            "group": "Services",
+                            "pages": [
+                              "ui-kit/angular/v5/api-reference/introduction",
+                              "ui-kit/angular/v5/api-reference/chat-state-service",
+                              "ui-kit/angular/v5/api-reference/templates-service",
+                              "ui-kit/angular/v5/api-reference/formatter-config-service",
+                              "ui-kit/angular/v5/api-reference/rich-text-editor-service",
+                              "ui-kit/angular/v5/api-reference/message-bubble-config-service"
+                            ]
+                          }
                         ]
                       }
                     ]
@@ -2563,7 +2777,9 @@
                           },
                           {
                             "group": "Setup",
-                            "pages": ["sdk/javascript/setup-sdk"]
+                            "pages": [
+                              "sdk/javascript/setup-sdk"
+                            ]
                           },
                           {
                             "group": "Authentication",
@@ -2621,7 +2837,9 @@
                           },
                           {
                             "group": "User Presence",
-                            "pages": ["sdk/javascript/user-presence"]
+                            "pages": [
+                              "sdk/javascript/user-presence"
+                            ]
                           },
                           {
                             "group": "Groups",
@@ -4041,6 +4259,112 @@
                     ]
                   },
                   {
+                    "version": "v5‎‎‎‎‎‎‎‎‎‎‎",
+                    "groups": [
+                      {
+                        "group": " ",
+                        "pages": [
+                          "sdk/flutter/5.0/overview",
+                          "sdk/flutter/5.0/setup",
+                          {
+                            "group": "Authentication",
+                            "pages": [
+                              "sdk/flutter/5.0/authentication-overview",
+                              "sdk/flutter/5.0/login-listeners"
+                            ]
+                          },
+                          {
+                            "group": "Messaging",
+                            "pages": [
+                              "sdk/flutter/5.0/messaging-overview",
+                              "sdk/flutter/5.0/send-message",
+                              "sdk/flutter/5.0/receive-messages",
+                              "sdk/flutter/5.0/additional-message-filtering",
+                              "sdk/flutter/5.0/retrieve-conversations",
+                              "sdk/flutter/5.0/edit-message",
+                              "sdk/flutter/5.0/flag-message",
+                              "sdk/flutter/5.0/delete-message",
+                              "sdk/flutter/5.0/delete-conversation",
+                              "sdk/flutter/5.0/typing-indicators",
+                              "sdk/flutter/5.0/interactive-messages",
+                              "sdk/flutter/5.0/transient-messages",
+                              "sdk/flutter/5.0/delivery-read-receipts",
+                              "sdk/flutter/5.0/threaded-messages",
+                              "sdk/flutter/5.0/mentions",
+                              "sdk/flutter/5.0/reactions"
+                            ]
+                          },
+                          {
+                            "group": "Calling",
+                            "pages": [
+                              "sdk/flutter/5.0/calling-overview",
+                              "sdk/flutter/5.0/calling-setup",
+                              "sdk/flutter/5.0/default-call",
+                              "sdk/flutter/5.0/direct-call",
+                              "sdk/flutter/5.0/standalone-calling",
+                              "sdk/flutter/5.0/video-view-customisation",
+                              "sdk/flutter/5.0/recording",
+                              "sdk/flutter/5.0/presenter-mode",
+                              "sdk/flutter/5.0/call-logs",
+                              "sdk/flutter/5.0/session-timeout"
+                            ]
+                          },
+                          {
+                            "group": "Users",
+                            "pages": [
+                              "sdk/flutter/5.0/users-overview",
+                              "sdk/flutter/5.0/retrieve-users",
+                              "sdk/flutter/5.0/user-management",
+                              "sdk/flutter/5.0/block-users"
+                            ]
+                          },
+                          "sdk/flutter/5.0/user-presence",
+                          {
+                            "group": "Groups",
+                            "pages": [
+                              "sdk/flutter/5.0/groups-overview",
+                              "sdk/flutter/5.0/retrieve-groups",
+                              "sdk/flutter/5.0/create-group",
+                              "sdk/flutter/5.0/update-group",
+                              "sdk/flutter/5.0/join-group",
+                              "sdk/flutter/5.0/leave-group",
+                              "sdk/flutter/5.0/delete-group",
+                              "sdk/flutter/5.0/retrieve-group-members",
+                              "sdk/flutter/5.0/group-add-members",
+                              "sdk/flutter/5.0/group-kick-member",
+                              "sdk/flutter/5.0/group-change-member-scope",
+                              "sdk/flutter/5.0/transfer-group-ownership"
+                            ]
+                          },
+                          "sdk/flutter/5.0/ai-moderation",
+                          "sdk/flutter/5.0/ai-agents",
+                          {
+                            "group": "Resources",
+                            "pages": [
+                              "sdk/flutter/5.0/resources-overview",
+                              "sdk/flutter/5.0/real-time-listeners"
+                            ]
+                          },
+                          {
+                            "group": "Advanced",
+                            "pages": [
+                              "sdk/flutter/5.0/advanced-overview",
+                              "sdk/flutter/5.0/connection-status",
+                              "sdk/flutter/5.0/connection-behaviour"
+                            ]
+                          },
+                          "sdk/flutter/5.0/upgrading-from-v4-guide",
+                          "sdk/flutter/5.0/extensions-overview",
+                          "sdk/flutter/5.0/ai-user-copilot-overview",
+                          "sdk/flutter/5.0/ai-chatbots-overview",
+                          "sdk/flutter/5.0/webhooks-overview",
+                          "sdk/flutter/5.0/flutter-overview",
+                          "sdk/flutter/5.0/changelog"
+                        ]
+                      }
+                    ]
+                  },
+                  {
                     "version": "v3‎‎‎‎‎‎‎‎‎‎‎",
                     "groups": [
                       {
@@ -4746,7 +5070,9 @@
                   },
                   {
                     "group": "Users",
-                    "pages": ["rest-api/data-import-apis/users/import-users"]
+                    "pages": [
+                      "rest-api/data-import-apis/users/import-users"
+                    ]
                   },
                   {
                     "group": "Groups",
@@ -5342,7 +5668,9 @@
         "tabs": [
           {
             "tab": "AI Agents",
-            "pages": ["ai-agents"]
+            "pages": [
+              "ai-agents"
+            ]
           },
           {
             "tab": "Agent Builder",
@@ -5405,11 +5733,15 @@
                   "/ai-agents/crew-ai-tools",
                   {
                     "group": "Guides",
-                    "pages": ["/ai-agents/crew-ai-knowledge-agent"]
+                    "pages": [
+                      "/ai-agents/crew-ai-knowledge-agent"
+                    ]
                   },
                   {
                     "group": "Tutorials",
-                    "pages": ["/ai-agents/crew-ai-product-hunt-agent"]
+                    "pages": [
+                      "/ai-agents/crew-ai-product-hunt-agent"
+                    ]
                   }
                 ]
               },
@@ -5422,11 +5754,15 @@
                   "/ai-agents/agno-tools",
                   {
                     "group": "Guides",
-                    "pages": ["/ai-agents/agno-knowledge-agent"]
+                    "pages": [
+                      "/ai-agents/agno-knowledge-agent"
+                    ]
                   },
                   {
                     "group": "Tutorials",
-                    "pages": ["/ai-agents/agno-product-hunt-agent"]
+                    "pages": [
+                      "/ai-agents/agno-product-hunt-agent"
+                    ]
                   }
                 ]
               },
@@ -5439,11 +5775,15 @@
                   "/ai-agents/vercel-tools",
                   {
                     "group": "Guides",
-                    "pages": ["/ai-agents/vercel-knowledge-agent"]
+                    "pages": [
+                      "/ai-agents/vercel-knowledge-agent"
+                    ]
                   },
                   {
                     "group": "Tutorials",
-                    "pages": ["/ai-agents/vercel-product-hunt-agent"]
+                    "pages": [
+                      "/ai-agents/vercel-product-hunt-agent"
+                    ]
                   }
                 ]
               },
@@ -5454,11 +5794,15 @@
                   "/ai-agents/langgraph",
                   {
                     "group": "Guides",
-                    "pages": ["/ai-agents/langgraph-knowledge-agent"]
+                    "pages": [
+                      "/ai-agents/langgraph-knowledge-agent"
+                    ]
                   },
                   {
                     "group": "Tutorials",
-                    "pages": ["/ai-agents/langgraph-product-hunt-agent"]
+                    "pages": [
+                      "/ai-agents/langgraph-product-hunt-agent"
+                    ]
                   }
                 ]
               },
@@ -5471,11 +5815,15 @@
                   "/ai-agents/ag2-tools",
                   {
                     "group": "Guides",
-                    "pages": ["/ai-agents/ag2-knowledge-agent"]
+                    "pages": [
+                      "/ai-agents/ag2-knowledge-agent"
+                    ]
                   },
                   {
                     "group": "Tutorials",
-                    "pages": ["/ai-agents/ag2-product-hunt-agent"]
+                    "pages": [
+                      "/ai-agents/ag2-product-hunt-agent"
+                    ]
                   }
                 ]
               },
@@ -5488,7 +5836,9 @@
                   "/ai-agents/ag-ui-tools",
                   {
                     "group": "Guides",
-                    "pages": ["/ai-agents/cometchat-ag-ui-byoa"]
+                    "pages": [
+                      "/ai-agents/cometchat-ag-ui-byoa"
+                    ]
                   },
                   {
                     "group": "Implementation",
@@ -5504,12 +5854,16 @@
           {
             "tab": "Widget Builder",
             "tab-id": "ai-agent-chat-builder",
-            "pages": ["/ai-agents/chat-widget"]
+            "pages": [
+              "/ai-agents/chat-widget"
+            ]
           },
           {
             "tab": "Custom Bots",
             "hidden": true,
-            "pages": ["/ai-chatbots/custom-bots"]
+            "pages": [
+              "/ai-chatbots/custom-bots"
+            ]
           },
           {
             "tab": "AI Bots (Legacy)",
@@ -5707,7 +6061,9 @@
         "tabs": [
           {
             "tab": "Notifications",
-            "pages": ["notifications"]
+            "pages": [
+              "notifications"
+            ]
           },
           {
             "tab": "Push",
@@ -5739,7 +6095,9 @@
               },
               {
                 "group": " ",
-                "pages": ["notifications/push-notifications-extension-legacy"]
+                "pages": [
+                  "notifications/push-notifications-extension-legacy"
+                ]
               }
             ]
           },
@@ -5753,7 +6111,9 @@
               "notifications/email-custom-providers",
               {
                 "group": " ",
-                "pages": ["notifications/email-notifications-extension-legacy"]
+                "pages": [
+                  "notifications/email-notifications-extension-legacy"
+                ]
               }
             ]
           },
@@ -5767,7 +6127,9 @@
               "notifications/sms-custom-providers",
               {
                 "group": " ",
-                "pages": ["notifications/sms-notifications-extension-legacy"]
+                "pages": [
+                  "notifications/sms-notifications-extension-legacy"
+                ]
               }
             ]
           }
@@ -5778,7 +6140,9 @@
         "tabs": [
           {
             "tab": "Insights",
-            "pages": ["insights"]
+            "pages": [
+              "insights"
+            ]
           }
         ]
       }
@@ -6523,7 +6887,7 @@
     },
     {
       "source": "/notifications/react-native-push-notifications",
-      "destination": "/notifications/react-native-push-notifications-android" 
+      "destination": "/notifications/react-native-push-notifications-android"
     },
     {
       "source": "/sdk/ionic/overview",
@@ -7151,7 +7515,7 @@
     },
     {
       "source": "/sdk/ionic/3.0/bots",
-      "destination": "/sdk/ionic-legacy/3.0/bots" 
+      "destination": "/sdk/ionic-legacy/3.0/bots"
     }
   ],
   "integrations": {
