@@ -419,24 +419,6 @@ action
 ```
 </Tab>
 
-<Tab title="JavaScript">
-```javascript
-// The message to which the reaction is related
-let message = ...;
-
-// The reaction event data received in real-time
-let messageReaction = ...;
-
-// The recieved reaction event real-time action type. Can be CometChatConstants.REACTION_ADDED or CometChatConstants.REACTION_REMOVED
-let action = CometChat.REACTION_ACTION.REACTION_ADDED;
-
-let modifiedBaseMessage = CometChat.CometChatHelper.updateMessageWithReactionInfo(
-message,
-messageReaction,
-action
-);    
-```
-</Tab>
 </Tabs>
 
 On success, this method returns a [`BaseMessage`](/sdk/reference/messages#basemessage) object
