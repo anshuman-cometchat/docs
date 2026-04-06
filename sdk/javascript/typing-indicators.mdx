@@ -30,29 +30,7 @@ CometChat.addMessageListener("LISTENER_ID", new CometChat.MessageListener({
 Use `startTyping()` with a [`TypingIndicator`](/sdk/reference/auxiliary#typingindicator) object to notify the receiver that you're typing.
 
 <Tabs>
-<Tab title="Start Typing (User)">
-```javascript
-let receiverId = "UID";
-let receiverType = CometChat.RECEIVER_TYPE.USER;
-
-let typingNotification = new CometChat.TypingIndicator(receiverId, receiverType);
-CometChat.startTyping(typingNotification);  
-```
-
-</Tab>
-
-<Tab title="Start Typing (Group)">
-```javascript
-let receiverId = "GUID";
-let receiverType = CometChat.RECEIVER_TYPE.GROUP;
-
-let typingNotification = new CometChat.TypingIndicator(receiverId,receiverType);
-CometChat.startTyping(typingNotification);
-```
-
-</Tab>
-
-<Tab title="Start User Typing (Typescript)">
+<Tab title="Start Typing User (TypeScript)">
 ```typescript
 let receiverId: string = "UID";
 let receiverType: string = CometChat.RECEIVER_TYPE.USER;
@@ -63,12 +41,34 @@ CometChat.startTyping(typingNotification);
 
 </Tab>
 
-<Tab title="Start Group Typing (Typescript)">
+<Tab title="Start Typing User (JavaScript)">
+```javascript
+let receiverId = "UID";
+let receiverType = CometChat.RECEIVER_TYPE.USER;
+
+let typingNotification = new CometChat.TypingIndicator(receiverId, receiverType);
+CometChat.startTyping(typingNotification);  
+```
+
+</Tab>
+
+<Tab title="Start Typing Group (TypeScript)">
 ```typescript
 let receiverId: string = "GUID";
 let receiverType: string = CometChat.RECEIVER_TYPE.GROUP;
 
 let typingNotification: CometChat.TypingIndicator = new CometChat.TypingIndicator(receiverId, receiverType);
+CometChat.startTyping(typingNotification);
+```
+
+</Tab>
+
+<Tab title="Start Typing Group (JavaScript)">
+```javascript
+let receiverId = "GUID";
+let receiverType = CometChat.RECEIVER_TYPE.GROUP;
+
+let typingNotification = new CometChat.TypingIndicator(receiverId,receiverType);
 CometChat.startTyping(typingNotification);
 ```
 
@@ -83,29 +83,7 @@ CometChat.startTyping(typingNotification);
 Use `endTyping()` to notify the receiver that you've stopped typing.
 
 <Tabs>
-<Tab title="Stop Typing (User)">
-```javascript
-let receiverId = "UID";
-let receiverType = CometChat.RECEIVER_TYPE.USER;
-
-let typingNotification = new CometChat.TypingIndicator(receiverId, receiverType);
-CometChat.endTyping(typingNotification);
-```
-
-</Tab>
-
-<Tab title="Stop Typing (Group)">
-```javascript
-let receiverId = "GUID";
-let receiverType = CometChat.RECEIVER_TYPE.GROUP;
-
-let typingNotification = new CometChat.TypingIndicator(receiverId, receiverType);
-CometChat.endTyping(typingNotification);
-```
-
-</Tab>
-
-<Tab title="Stop User Typing (Typescript)">
+<Tab title="Stop Typing User (TypeScript)">
 ```typescript
 let receiverId: string = "UID";
 let receiverType: string = CometChat.RECEIVER_TYPE.USER;
@@ -116,12 +94,34 @@ CometChat.endTyping(typingNotification);
 
 </Tab>
 
-<Tab title="Stop Group Typing (Typescript)">
+<Tab title="Stop Typing User (JavaScript)">
+```javascript
+let receiverId = "UID";
+let receiverType = CometChat.RECEIVER_TYPE.USER;
+
+let typingNotification = new CometChat.TypingIndicator(receiverId, receiverType);
+CometChat.endTyping(typingNotification);
+```
+
+</Tab>
+
+<Tab title="Stop Typing Group (TypeScript)">
 ```typescript
 let receiverId: string = "GUID";
 let receiverType: string = CometChat.RECEIVER_TYPE.GROUP;
 
 let typingNotification: CometChat.TypingIndicator = new CometChat.TypingIndicator(receiverId, receiverType);
+CometChat.endTyping(typingNotification);
+```
+
+</Tab>
+
+<Tab title="Stop Typing Group (JavaScript)">
+```javascript
+let receiverId = "GUID";
+let receiverType = CometChat.RECEIVER_TYPE.GROUP;
+
+let typingNotification = new CometChat.TypingIndicator(receiverId, receiverType);
 CometChat.endTyping(typingNotification);
 ```
 

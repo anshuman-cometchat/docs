@@ -78,40 +78,6 @@ CometChat.markAsDelivered(message).then(
 | `senderId` | UID of the message sender |
 
 <Tabs>
-<Tab title="User">
-```javascript
-let messageId = "MESSAGE_ID";
-let receiverId = "MESSAGE_SENDER_UID";
-let receiverType = "user";
-let senderId = "MESSAGE_SENDER_UID";
-
-CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId).then(
-  () => {
-    console.log("Marked as delivered successfully");
-  },
-  (error) => {
-    console.log("Error marking as delivered:", error);
-  }
-);
-```
-</Tab>
-<Tab title="Group">
-```javascript
-let messageId = "MESSAGE_ID";
-let receiverId = "GROUP_GUID";
-let receiverType = "group";
-let senderId = "MESSAGE_SENDER_UID";
-
-CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId).then(
-  () => {
-    console.log("Marked as delivered successfully");
-  },
-  (error) => {
-    console.log("Error marking as delivered:", error);
-  }
-);
-```
-</Tab>
 <Tab title="TypeScript (User)">
 ```typescript
 let messageId: string = "MESSAGE_ID";
@@ -129,6 +95,25 @@ CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId).then(
 );
 ```
 </Tab>
+
+<Tab title="JavaScript (User)">
+```javascript
+let messageId = "MESSAGE_ID";
+let receiverId = "MESSAGE_SENDER_UID";
+let receiverType = "user";
+let senderId = "MESSAGE_SENDER_UID";
+
+CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId).then(
+  () => {
+    console.log("Marked as delivered successfully");
+  },
+  (error) => {
+    console.log("Error marking as delivered:", error);
+  }
+);
+```
+</Tab>
+
 <Tab title="TypeScript (Group)">
 ```typescript
 let messageId: string = "MESSAGE_ID";
@@ -146,6 +131,25 @@ CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId).then(
 );
 ```
 </Tab>
+
+<Tab title="JavaScript (Group)">
+```javascript
+let messageId = "MESSAGE_ID";
+let receiverId = "GROUP_GUID";
+let receiverType = "group";
+let senderId = "MESSAGE_SENDER_UID";
+
+CometChat.markAsDelivered(messageId, receiverId, receiverType, senderId).then(
+  () => {
+    console.log("Marked as delivered successfully");
+  },
+  (error) => {
+    console.log("Error marking as delivered:", error);
+  }
+);
+```
+</Tab>
+
 </Tabs>
 
 ## Mark Conversation as Delivered
@@ -155,36 +159,6 @@ Use `markConversationAsDelivered()` to mark all messages in a conversation as de
 `markConversationAsDelivered()` resolves with a `string` on success.
 
 <Tabs>
-<Tab title="User">
-```javascript
-let conversationWith = "USER_UID";
-let conversationType = "user";
-
-CometChat.markConversationAsDelivered(conversationWith, conversationType).then(
-  (response) => {
-    console.log("Conversation marked as delivered", response);
-  },
-  (error) => {
-    console.log("Error:", error);
-  }
-);
-```
-</Tab>
-<Tab title="Group">
-```javascript
-let conversationWith = "GROUP_GUID";
-let conversationType = "group";
-
-CometChat.markConversationAsDelivered(conversationWith, conversationType).then(
-  (response) => {
-    console.log("Conversation marked as delivered", response);
-  },
-  (error) => {
-    console.log("Error:", error);
-  }
-);
-```
-</Tab>
 <Tab title="TypeScript (User)">
 ```typescript
 let conversationWith: string = "USER_UID";
@@ -200,6 +174,23 @@ CometChat.markConversationAsDelivered(conversationWith, conversationType).then(
 );
 ```
 </Tab>
+
+<Tab title="JavaScript (User)">
+```javascript
+let conversationWith = "USER_UID";
+let conversationType = "user";
+
+CometChat.markConversationAsDelivered(conversationWith, conversationType).then(
+  (response) => {
+    console.log("Conversation marked as delivered", response);
+  },
+  (error) => {
+    console.log("Error:", error);
+  }
+);
+```
+</Tab>
+
 <Tab title="TypeScript (Group)">
 ```typescript
 let conversationWith: string = "GROUP_GUID";
@@ -215,6 +206,23 @@ CometChat.markConversationAsDelivered(conversationWith, conversationType).then(
 );
 ```
 </Tab>
+
+<Tab title="JavaScript (Group)">
+```javascript
+let conversationWith = "GROUP_GUID";
+let conversationType = "group";
+
+CometChat.markConversationAsDelivered(conversationWith, conversationType).then(
+  (response) => {
+    console.log("Conversation marked as delivered", response);
+  },
+  (error) => {
+    console.log("Error:", error);
+  }
+);
+```
+</Tab>
+
 </Tabs>
 
 ## Mark as Read
@@ -253,40 +261,6 @@ CometChat.markAsRead(message).then(
 ### Using Parameters
 
 <Tabs>
-<Tab title="User">
-```javascript
-let messageId = "MESSAGE_ID";
-let receiverId = "MESSAGE_SENDER_UID";
-let receiverType = "user";
-let senderId = "MESSAGE_SENDER_UID";
-
-CometChat.markAsRead(messageId, receiverId, receiverType, senderId).then(
-  () => {
-    console.log("Marked as read successfully");
-  },
-  (error) => {
-    console.log("Error marking as read:", error);
-  }
-);
-```
-</Tab>
-<Tab title="Group">
-```javascript
-let messageId = "MESSAGE_ID";
-let receiverId = "GROUP_GUID";
-let receiverType = "group";
-let senderId = "MESSAGE_SENDER_UID";
-
-CometChat.markAsRead(messageId, receiverId, receiverType, senderId).then(
-  () => {
-    console.log("Marked as read successfully");
-  },
-  (error) => {
-    console.log("Error marking as read:", error);
-  }
-);
-```
-</Tab>
 <Tab title="TypeScript (User)">
 ```typescript
 let messageId: string = "MESSAGE_ID";
@@ -304,6 +278,25 @@ CometChat.markAsRead(messageId, receiverId, receiverType, senderId).then(
 );
 ```
 </Tab>
+
+<Tab title="JavaScript (User)">
+```javascript
+let messageId = "MESSAGE_ID";
+let receiverId = "MESSAGE_SENDER_UID";
+let receiverType = "user";
+let senderId = "MESSAGE_SENDER_UID";
+
+CometChat.markAsRead(messageId, receiverId, receiverType, senderId).then(
+  () => {
+    console.log("Marked as read successfully");
+  },
+  (error) => {
+    console.log("Error marking as read:", error);
+  }
+);
+```
+</Tab>
+
 <Tab title="TypeScript (Group)">
 ```typescript
 let messageId: string = "MESSAGE_ID";
@@ -321,6 +314,25 @@ CometChat.markAsRead(messageId, receiverId, receiverType, senderId).then(
 );
 ```
 </Tab>
+
+<Tab title="JavaScript (Group)">
+```javascript
+let messageId = "MESSAGE_ID";
+let receiverId = "GROUP_GUID";
+let receiverType = "group";
+let senderId = "MESSAGE_SENDER_UID";
+
+CometChat.markAsRead(messageId, receiverId, receiverType, senderId).then(
+  () => {
+    console.log("Marked as read successfully");
+  },
+  (error) => {
+    console.log("Error marking as read:", error);
+  }
+);
+```
+</Tab>
+
 </Tabs>
 
 ## Mark Conversation as Read
@@ -328,36 +340,6 @@ CometChat.markAsRead(messageId, receiverId, receiverType, senderId).then(
 Use `markConversationAsRead()` to mark all messages in a conversation as read.
 
 <Tabs>
-<Tab title="User">
-```javascript
-let conversationWith = "USER_UID";
-let conversationType = "user";
-
-CometChat.markConversationAsRead(conversationWith, conversationType).then(
-  (response) => {
-    console.log("Conversation marked as read", response);
-  },
-  (error) => {
-    console.log("Error:", error);
-  }
-);
-```
-</Tab>
-<Tab title="Group">
-```javascript
-let conversationWith = "GROUP_GUID";
-let conversationType = "group";
-
-CometChat.markConversationAsRead(conversationWith, conversationType).then(
-  (response) => {
-    console.log("Conversation marked as read", response);
-  },
-  (error) => {
-    console.log("Error:", error);
-  }
-);
-```
-</Tab>
 <Tab title="TypeScript (User)">
 ```typescript
 let conversationWith: string = "USER_UID";
@@ -373,6 +355,23 @@ CometChat.markConversationAsRead(conversationWith, conversationType).then(
 );
 ```
 </Tab>
+
+<Tab title="JavaScript (User)">
+```javascript
+let conversationWith = "USER_UID";
+let conversationType = "user";
+
+CometChat.markConversationAsRead(conversationWith, conversationType).then(
+  (response) => {
+    console.log("Conversation marked as read", response);
+  },
+  (error) => {
+    console.log("Error:", error);
+  }
+);
+```
+</Tab>
+
 <Tab title="TypeScript (Group)">
 ```typescript
 let conversationWith: string = "GROUP_GUID";
@@ -388,6 +387,23 @@ CometChat.markConversationAsRead(conversationWith, conversationType).then(
 );
 ```
 </Tab>
+
+<Tab title="JavaScript (Group)">
+```javascript
+let conversationWith = "GROUP_GUID";
+let conversationType = "group";
+
+CometChat.markConversationAsRead(conversationWith, conversationType).then(
+  (response) => {
+    console.log("Conversation marked as read", response);
+  },
+  (error) => {
+    console.log("Error:", error);
+  }
+);
+```
+</Tab>
+
 </Tabs>
 
 ## Real-Time Receipt Events
