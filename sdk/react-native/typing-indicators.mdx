@@ -27,7 +27,7 @@ CometChat.addMessageListener("LISTENER_ID", new CometChat.MessageListener({
 
 ### Start Typing
 
-Use `startTyping()` with a `TypingIndicator` object to notify the receiver that you're typing.
+Use `startTyping()` with a [`TypingIndicator`](/sdk/reference/auxiliary#typingindicator) object to notify the receiver that you're typing.
 
 <Tabs>
 <Tab title="Start Typing User (TypeScript)">
@@ -132,7 +132,7 @@ CometChat.endTyping(typingNotification);
 `endTyping()` returns `void` — the typing indicator is sent as a fire-and-forget operation.
 
 <Note>
-Use `setMetadata()` on `TypingIndicator` to pass additional custom data. Retrieve it with `getMetadata()` on the receiver side.
+Use `setMetadata()` on [`TypingIndicator`](/sdk/reference/auxiliary#typingindicator) to pass additional custom data. Retrieve it with `getMetadata()` on the receiver side.
 </Note>
 
 ## Real-time Typing Indicators
@@ -180,7 +180,7 @@ new CometChat.MessageListener({
 
 </Tabs>
 
-The received object is a `TypingIndicator`.
+The received object is a [`TypingIndicator`](/sdk/reference/auxiliary#typingindicator).
 
 <Warning>
 Always remove message listeners when they're no longer needed (e.g., on component unmount or page navigation). Failing to remove listeners can cause memory leaks and duplicate event handling.

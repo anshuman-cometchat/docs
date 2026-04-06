@@ -470,19 +470,19 @@ CometChat.addMessageListener(
 
 </Tabs>
 
-You will receive events in the form of `MessageReceipt` objects containing the following parameters:
+You will receive events in the form of [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) objects containing the following parameters:
 
 | Parameter      | Information                                                                                                                               |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `messageId`    | The ID of the message prior to which all the messages for that particular conversation have been marked as read.                          |
-| `sender`       | User object containing the details of the user who has marked the message as read. System User for `deliveredToAll` & `readByAll` events. |
+| `sender`       | [User](/sdk/reference/entities#user) object containing the details of the user who has marked the message as read. System User for `deliveredToAll` & `readByAll` events. |
 | `receiverId`   | ID of the receiver whose conversation has been marked as read.                                                                            |
 | `receiverType` | Type of the receiver (user/group)                                                                                                         |
 | `receiptType`  | Type of the receipt (read/delivered)                                                                                                      |
 | `deliveredAt`  | The timestamp of the time when the message was delivered. Only present if the receiptType is delivered.                                   |
 | `readAt`       | The timestamp of the time when the message was read. Only present when the receiptType is read.                                           |
 
-The `markAsDelivered()` and `markAsRead()` methods are fire-and-forget — they do not return a `MessageReceipt` object. Use the listener callbacks above to receive delivery and read confirmations.
+The `markAsDelivered()` and `markAsRead()` methods are fire-and-forget — they do not return a [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) object. Use the listener callbacks above to receive delivery and read confirmations.
 
 <Info>
 
@@ -505,12 +505,12 @@ CometChat.removeMessageListener("UNIQUE_LISTENER_ID");
 
 ### MessageReceipt Object
 
-The listener callbacks receive a `MessageReceipt` object:
+The listener callbacks receive a [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) object:
 
 | Field | Getter | Return Type | Description |
 | --- | --- | --- | --- |
 | messageId | `getMessageId()` | `string` | ID of the message |
-| sender | `getSender()` | `User` | User who triggered the receipt |
+| sender | `getSender()` | [`User`](/sdk/reference/entities#user) | User who triggered the receipt |
 | receiverId | `getReceiverId()` | `string` | ID of the receiver |
 | receiverType | `getReceiverType()` | `string` | `"user"` or `"group"` |
 | receiptType | `getReceiptType()` | `string` | `"delivery"` or `"read"` |
@@ -552,7 +552,7 @@ CometChat.getMessageReceipts(messageId).then(
 </Tab>
 </Tabs>
 
-Returns an array of `MessageReceipt` objects.
+Returns an array of [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) objects.
 
 ## Missed Receipts
 
@@ -602,7 +602,7 @@ CometChat.markMessageAsUnread(message).then(
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `message` | `BaseMessage` | The message object to mark as unread |
+| `message` | [`BaseMessage`](/sdk/reference/messages#basemessage) | The message object to mark as unread |
 
 ---
 

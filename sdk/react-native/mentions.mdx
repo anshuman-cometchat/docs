@@ -251,7 +251,7 @@ Relevant fields to access on returned messages and their mentioned users:
 
 | Field | Getter | Return Type | Description |
 |-------|--------|-------------|-------------|
-| mentionedUsers | `getMentionedUsers()` | `User[]` | Array of users mentioned in the message |
+| mentionedUsers | `getMentionedUsers()` | [`User[]`](/sdk/reference/entities#user) | Array of users mentioned in the message |
 | tags (on each mentioned user) | `getTags()` | `string[]` | Tags associated with the mentioned user |
 
 ## Mentions With Blocked Info
@@ -262,7 +262,7 @@ Relevant fields to access on returned messages and their mentioned users:
 
 | Field | Getter | Return Type | Description |
 |-------|--------|-------------|-------------|
-| mentionedUsers | `getMentionedUsers()` | `User[]` | Array of users mentioned in the message |
+| mentionedUsers | `getMentionedUsers()` | [`User[]`](/sdk/reference/entities#user) | Array of users mentioned in the message |
 | blockedByMe (on each mentioned user) | `getBlockedByMe()` | `boolean` | Whether the logged-in user has blocked this mentioned user |
 | hasBlockedMe (on each mentioned user) | `getHasBlockedMe()` | `boolean` | Whether this mentioned user has blocked the logged-in user |
 
@@ -389,7 +389,7 @@ To retrieve the list of users mentioned in the particular message, you can use t
 message.getMentionedUsers()
 ```
 
-The `getMentionedUsers()` method returns an array of `User` objects.
+The `getMentionedUsers()` method returns an array of [`User`](/sdk/reference/entities#user) objects.
 
 ---
 
