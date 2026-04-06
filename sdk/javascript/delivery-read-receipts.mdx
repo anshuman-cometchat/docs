@@ -442,6 +442,30 @@ CometChat.addMessageListener(
 ```
 </Tab>
 
+<Tab title="JavaScript">
+```javascript
+let listenerID = "UNIQUE_LISTENER_ID";
+
+CometChat.addMessageListener(
+ listenerID,
+ new CometChat.MessageListener({
+ onMessagesDelivered: (messageReceipt) => {
+ console.log("Message delivered:", messageReceipt);
+ },
+ onMessagesRead: (messageReceipt) => {
+ console.log("Message read:", messageReceipt);
+ },
+ onMessagesDeliveredToAll: (messageReceipt) => {
+ console.log("Message delivered to all group members:", messageReceipt);
+ },
+ onMessagesReadByAll: (messageReceipt) => {
+ console.log("Message read by all group members:", messageReceipt);
+ }
+ })
+);
+```
+</Tab>
+
 </Tabs>
 
 You will receive events in the form of [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) objects. The message receipt contains the below parameters:

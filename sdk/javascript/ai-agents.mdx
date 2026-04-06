@@ -91,8 +91,8 @@ Some events carry additional data:
 | Tool Call Result | `getToolCallId()`, `getContent()`, `getRole()` | Tool call ID, result content, and role |
 
 <Tabs>
-    <Tab title="TypeScript">
-        ```ts
+<Tab title="TypeScript">
+```ts
         const listnerId: string = "unique_listener_id";
 
         // Adding the AIAssistantListener
@@ -105,7 +105,24 @@ Some events carry additional data:
         // Removing the AIAssistantListener
         CometChat.removeAIAssistantListener(listnerId);
         ```
-    </Tab>
+</Tab>
+
+<Tab title="JavaScript">
+```ts
+        const listnerId: string = "unique_listener_id";
+
+        // Adding the AIAssistantListener
+        CometChat.addAIAssistantListener(listnerId, {
+            onAIAssistantEventReceived: (message: CometChat.AIAssistantBaseEvent) => {
+                console.log("AIAssistant event received successfully", message);
+            }
+        });
+
+        // Removing the AIAssistantListener
+        CometChat.removeAIAssistantListener(listnerId);
+        ```
+</Tab>
+
 </Tabs>
 
 #### Event descriptions

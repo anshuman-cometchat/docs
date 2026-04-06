@@ -186,7 +186,6 @@ Filters users by online status:
 If not set, returns all users.
 
 <Tabs>
-
 <Tab title="TypeScript">
 ```typescript
 let limit: number = 30;
@@ -195,7 +194,16 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
   .setStatus(CometChat.USER_STATUS.ONLINE)
   .build(); 
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let limit = 30;
+let usersRequest = new CometChat.UsersRequestBuilder()
+ .setLimit(limit)
+ .setStatus(CometChat.USER_STATUS.ONLINE)
+ .build(); 
+```
 </Tab>
 
 </Tabs>
@@ -249,7 +257,17 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
   .setRoles(roles)
   .build();
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let limit = 30;
+let roles = ["default", "dev"];
+let usersRequest = new CometChat.UsersRequestBuilder()
+ .setLimit(limit)
+ .setRoles(roles)
+ .build();
+```
 </Tab>
 
 </Tabs>
@@ -303,7 +321,17 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
   .setTags(tags)
   .build();
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let limit = 30;
+let tags = ["tag1", "tag2"];
+let usersRequest = new CometChat.UsersRequestBuilder()
+ .setLimit(limit)
+ .setTags(tags)
+ .build();
+```
 </Tab>
 
 </Tabs>
@@ -327,7 +355,16 @@ let usersRequest: CometChat.UsersRequest = new CometChat.UsersRequestBuilder()
   .withTags(true)
   .build();
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let limit = 30;
+let usersRequest = new CometChat.UsersRequestBuilder()
+ .setLimit(limit)
+ .withTags(true)
+ .build();
+```
 </Tab>
 
 </Tabs>

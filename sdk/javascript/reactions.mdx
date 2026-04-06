@@ -182,6 +182,27 @@ reactionRequest.fetchNext().then(
 ```
 </Tab>
 
+<Tab title="JavaScript">
+```javascript
+let limit = 10;
+let messageId = 1;
+
+let reactionRequest = new CometChat.ReactionRequestBuilder()
+.setMessageId(messageId)
+.setLimit(limit)
+.build();
+
+reactionRequest.fetchNext().then(
+ (reactions) => {
+ console.log("list fetched:", reactions);
+ },
+ (error) => {
+ console.log('list fetching failed with error:', error);
+ },
+ );
+```
+</Tab>
+
 </Tabs>
 
 The `fetchNext()` method returns an array of [`Reaction`](/sdk/reference/auxiliary#reaction) objects representing individual user reactions on the message.
@@ -189,6 +210,27 @@ The `fetchNext()` method returns an array of [`Reaction`](/sdk/reference/auxilia
 Fetch Previous The `fetchPrevious()` method fetches the previous set of reactions for the message.
 
 <Tabs>
+<Tab title="TypeScript">
+```typescript
+let limit = 10;
+let messageId = 1;
+
+let reactionRequest = new CometChat.ReactionRequestBuilder()
+.setMessageId(messageId)
+.setLimit(limit)
+.build();
+
+reactionRequest.fetchNext().then(
+    messages => {
+      console.log("list fetched:", messages);
+    },
+    error => {
+      console.log('list fetching failed with error:', error);
+    },
+  );
+```
+</Tab>
+
 <Tab title="JavaScript">
 ```javascript
 let limit = 10;
@@ -209,6 +251,7 @@ reactionRequest.fetchNext().then(
   );
 ```
 </Tab>
+
 </Tabs>
 
 ### Fetch Previous

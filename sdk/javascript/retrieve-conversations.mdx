@@ -78,7 +78,17 @@ let limit: number = 30,
     .setConversationType(conversationType)
     .build();
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let limit = 30,
+ conversationType= "group",
+ conversationRequest= new CometChat.ConversationsRequestBuilder()
+ .setLimit(limit)
+ .setConversationType(conversationType)
+ .build();
+```
 </Tab>
 
 </Tabs>
@@ -108,7 +118,16 @@ let limit: number = 30,
     .withUserAndGroupTags(true)
     .build();
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let limit = 30,
+ conversationRequest= new CometChat.ConversationsRequestBuilder()
+ .setLimit(limit)
+ .withUserAndGroupTags(true)
+ .build();
+```
 </Tab>
 
 </Tabs>
@@ -135,7 +154,17 @@ let limit: number = 30,
     .setUserTags(userTags)
     .build();  
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let limit = 30,
+ userTags= ["tag1"],
+ conversationRequest= new CometChat.ConversationsRequestBuilder()
+ .setLimit(limit)
+ .setUserTags(userTags)
+ .build(); 
+```
 </Tab>
 
 </Tabs>
@@ -162,7 +191,17 @@ let limit: number = 30,
     .setGroupTags(groupTags)
     .build();
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let limit = 30,
+ groupTags= ["tag1"],
+ conversationRequest= new CometChat.ConversationsRequestBuilder()
+ .setLimit(limit)
+ .setGroupTags(groupTags)
+ .build();
+```
 </Tab>
 
 </Tabs>
@@ -188,7 +227,16 @@ conversationRequest: CometChat.ConversationsRequest = new CometChat.Conversation
   .withTags(true)
   .build();   
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let limit = 30,
+conversationRequest= new CometChat.ConversationsRequestBuilder()
+ .setLimit(limit)
+ .withTags(true)
+ .build(); 
+```
 </Tab>
 
 </Tabs>
@@ -213,7 +261,17 @@ let limit: number = 30,
     .setTags(tags)
     .build();
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let limit = 30,
+ tags= ["archivedChat"],
+ conversationRequest= new CometChat.ConversationsRequestBuilder()
+ .setLimit(limit)
+ .setTags(tags)
+ .build();
+```
 </Tab>
 
 </Tabs>
@@ -409,7 +467,16 @@ let limit: number = 30,
     .setOnlyAgentic(true)
     .build();  
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let limit = 30,
+ conversationRequest= new CometChat.ConversationsRequestBuilder()
+ .setLimit(limit)
+ .setOnlyAgentic(true)
+ .build(); 
+```
 </Tab>
 
 </Tabs>
@@ -495,7 +562,23 @@ CometChat.tagConversation(conversationWith, conversationType, tags).then(
   }
 );
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let conversationWith = "UID",
+ tags = ["archivedChat"],
+ conversationType = "user";
+
+CometChat.tagConversation(conversationWith, conversationType, tags).then(
+ (conversation) => {
+ console.log("conversation", conversation);
+ },
+ (error) => {
+ console.log("error while fetching a conversation", error);
+ }
+);
+```
 </Tab>
 
 </Tabs>
@@ -540,7 +623,22 @@ CometChat.getConversation(conversationWith, conversationType).then(
   }
 );
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let conversationWith = "UID",
+ conversationType = "user";
+
+CometChat.getConversation(conversationWith, conversationType).then(
+ (conversation) => {
+ console.log("conversation", conversation);
+ },
+ (error) => {
+ console.log("error while fetching a conversation", error);
+ }
+);
+```
 </Tab>
 
 </Tabs>

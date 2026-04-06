@@ -107,7 +107,18 @@ let groupMembersRequest: CometChat.GroupMembersRequest = new CometChat.GroupMemb
   .setScopes(scopes)
   .build();
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let GUID = "GUID";
+let limit = 30;
+let scopes = ["admin", "moderator"];
+let groupMembersRequest = new CometChat.GroupMembersRequestBuilder(GUID)
+ .setLimit(limit)
+ .setScopes(scopes)
+ .build();
+```
 </Tab>
 
 </Tabs>

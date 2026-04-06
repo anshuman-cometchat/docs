@@ -172,6 +172,63 @@ const htmlElement = document.getElementById("call-container") as HTMLElement;
 CometChatCalls.startSession(callToken, callSettings, htmlElement);
 ```
 </Tab>
+
+<Tab title="JavaScript">
+```javascript
+const callListener = new CometChatCalls.OngoingCallListener({
+ onUserJoined: (user) => {
+ console.log("User joined:", user);
+ },
+ onUserLeft: (user) => {
+ console.log("User left:", user);
+ },
+ onUserListUpdated: (userList) => {
+ console.log("User list updated:", userList);
+ },
+ onCallEnded: () => {
+ console.log("Call ended");
+ CometChatCalls.endSession();
+ // Close calling screen
+ },
+ onCallEndButtonPressed: () => {
+ console.log("End call button pressed");
+ CometChatCalls.endSession();
+ // Close calling screen
+ },
+ onError: (error) => {
+ console.log("Call error:", error);
+ },
+ onMediaDeviceListUpdated: (deviceList) => {
+ console.log("Device list updated:", deviceList);
+ },
+ onUserMuted: (event) => {
+ console.log("User muted:", event);
+ },
+ onScreenShareStarted: () => {
+ console.log("Screen sharing started");
+ },
+ onScreenShareStopped: () => {
+ console.log("Screen sharing stopped");
+ },
+ onCallSwitchedToVideo: (event) => {
+ console.log("Call switched to video:", event);
+ },
+ onSessionTimeout: () => {
+ console.log("Session timed out");
+ }
+});
+
+const callSettings = new CometChatCalls.CallSettingsBuilder()
+ .enableDefaultLayout(true)
+ .setIsAudioOnlyCall(false)
+ .setCallListener(callListener)
+ .build();
+
+const htmlElement = document.getElementById("call-container") as HTMLElement;
+CometChatCalls.startSession(callToken, callSettings, htmlElement);
+```
+</Tab>
+
 </Tabs>
 
 | Parameter      | Description                                              |
