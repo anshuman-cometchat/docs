@@ -259,7 +259,24 @@ bannedGroupMembersRequest.fetchNext().then(
   }
 );
 ```
+</Tab>
 
+<Tab title="JavaScript">
+```javascript
+let GUID = "GUID";
+let limit = 30;
+let bannedGroupMembersRequest = new CometChat.BannedMembersRequestBuilder(GUID)
+ .setLimit(limit)
+ .build();
+
+bannedGroupMembersRequest.fetchNext().then(
+ (bannedMembers) => {
+ console.log("Banned Group Member list fetched successfully:", bannedMembers);
+ }, (error) => {
+ console.log("Banned Group Member list fetching failed with exception:", error);
+ }
+);
+```
 </Tab>
 
 </Tabs>

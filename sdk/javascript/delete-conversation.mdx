@@ -25,36 +25,6 @@ This operation is irreversible. Deleted conversations cannot be recovered for th
 Use `deleteConversation()` to delete a conversation for the logged-in user.
 
 <Tabs>
-<Tab title="Delete User Conversation">
-```javascript
-let UID = "UID";
-let type = "user";
-CometChat.deleteConversation(UID, type).then(
-  deletedConversation => {
-      console.log(deletedConversation);
-  }, error => {
-      console.log('error while deleting a conversation', error);
-  }
-); 
-```
-
-</Tab>
-
-<Tab title="Delete Group Conversation">
-```javascript
-let GUID = "GUID";
-let type = "group";
-CometChat.deleteConversation(GUID, type).then(
-  deletedConversation => {
-      console.log(deletedConversation);
-  }, error => {
-      console.log('error while deleting a conversation', error);
-  }
-);
-```
-
-</Tab>
-
 <Tab title="Delete User Conversation (TypeScript)">
 ```typescript
 let UID: string = "UID";
@@ -70,7 +40,22 @@ CometChat.deleteConversation(UID, type).then(
 
 </Tab>
 
-<Tab title="Delete Group Conversation (Typescript)">
+<Tab title="Delete User Conversation (JavaScript)">
+```javascript
+let UID = "UID";
+let type = "user";
+CometChat.deleteConversation(UID, type).then(
+  deletedConversation => {
+      console.log(deletedConversation);
+  }, error => {
+      console.log('error while deleting a conversation', error);
+  }
+); 
+```
+
+</Tab>
+
+<Tab title="Delete Group Conversation (TypeScript)">
 ```typescript
 let GUID: string = "GUID";
 let type: string = "group";
@@ -78,6 +63,21 @@ CometChat.deleteConversation(GUID, type).then(
   (deletedConversation: string) => {
       console.log(deletedConversation);
   }, (error: CometChat.CometChatException) => {
+      console.log('error while deleting a conversation', error);
+  }
+);
+```
+
+</Tab>
+
+<Tab title="Delete Group Conversation (JavaScript)">
+```javascript
+let GUID = "GUID";
+let type = "group";
+CometChat.deleteConversation(GUID, type).then(
+  deletedConversation => {
+      console.log(deletedConversation);
+  }, error => {
       console.log('error while deleting a conversation', error);
   }
 );

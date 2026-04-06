@@ -191,48 +191,6 @@ The `fetchPrevious()` method returns an array of [`BaseMessage`](/sdk/reference/
 Use `hideReplies(true)` to exclude threaded messages when fetching messages for a conversation.
 
 <Tabs>
-<Tab title="User">
-```javascript
-let UID = "UID";
-let limit = 30;
-let messagesRequest = new CometChat.MessagesRequestBuilder()
-                      .setUID(UID)
-                      .setLimit(limit)
-                      .hideReplies(true)
-                      .build();
-     
-messagesRequest.fetchPrevious().then(
-  messages => {
-      console.log("Messages fetched successfully", messages);
-  }, error => {
-      console.log("Message fetching failed with error:", error);
-  }
-);
-```
-
-</Tab>
-
-<Tab title="Group">
-```javascript
-let GUID = "GUID";
-let limit = 30;
-let messagesRequest = new CometChat.MessagesRequestBuilder()
-                      .setGUID(GUID)
-                      .setLimit(limit)
-                      .hideReplies(true)
-                      .build();
-     
-messagesRequest.fetchPrevious().then(
-  messages => {
-      console.log("Messages fetched successfully", messages);
-  }, error => {
-      console.log("Message fetching failed with error:", error);
-  }
-);
-```
-
-</Tab>
-
 <Tab title="TypeScript (User)">
 ```typescript
 let UID: string = "UID",
@@ -254,6 +212,27 @@ messagesRequest.fetchPrevious().then(
 
 </Tab>
 
+<Tab title="JavaScript (User)">
+```javascript
+let UID = "UID";
+let limit = 30;
+let messagesRequest = new CometChat.MessagesRequestBuilder()
+                      .setUID(UID)
+                      .setLimit(limit)
+                      .hideReplies(true)
+                      .build();
+     
+messagesRequest.fetchPrevious().then(
+  messages => {
+      console.log("Messages fetched successfully", messages);
+  }, error => {
+      console.log("Message fetching failed with error:", error);
+  }
+);
+```
+
+</Tab>
+
 <Tab title="TypeScript (Group)">
 ```typescript
 let GUID: string = "GUID",
@@ -268,6 +247,27 @@ messagesRequest.fetchPrevious().then(
   (messages: CometChat.BaseMessage[]) => {
       console.log("Messages fetched successfully", messages);
   }, (error: CometChat.CometChatException) => {
+      console.log("Message fetching failed with error:", error);
+  }
+);
+```
+
+</Tab>
+
+<Tab title="JavaScript (Group)">
+```javascript
+let GUID = "GUID";
+let limit = 30;
+let messagesRequest = new CometChat.MessagesRequestBuilder()
+                      .setGUID(GUID)
+                      .setLimit(limit)
+                      .hideReplies(true)
+                      .build();
+     
+messagesRequest.fetchPrevious().then(
+  messages => {
+      console.log("Messages fetched successfully", messages);
+  }, error => {
       console.log("Message fetching failed with error:", error);
   }
 );

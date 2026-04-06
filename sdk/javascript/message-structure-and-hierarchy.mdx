@@ -63,6 +63,36 @@ switch (category) {
 }
 ```
 </Tab>
+
+<Tab title="JavaScript">
+```javascript
+const category = message.getCategory();
+const type = message.getType();
+
+switch (category) {
+ case CometChat.CATEGORY_MESSAGE:
+ if (type === CometChat.MESSAGE_TYPE.TEXT) {
+ const textMsg = message as CometChat.TextMessage;
+ console.log("Text:", textMsg.getText());
+ } else if (type === CometChat.MESSAGE_TYPE.IMAGE) {
+ const mediaMsg = message as CometChat.MediaMessage;
+ console.log("Image URL:", mediaMsg.getData().url);
+ }
+ break;
+ case CometChat.CATEGORY_CUSTOM:
+ const customMsg = message as CometChat.CustomMessage;
+ console.log("Custom type:", type, "data:", customMsg.getData());
+ break;
+ case CometChat.CATEGORY_ACTION:
+ console.log("Action:", message.getAction());
+ break;
+ case CometChat.CATEGORY_CALL:
+ console.log("Call status:", message.getStatus());
+ break;
+}
+```
+</Tab>
+
 </Tabs>
 
 ## Standard Messages (`message` Category)

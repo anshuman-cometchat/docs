@@ -42,6 +42,17 @@ The default timeout is 180 seconds (3 minutes).
 
 Set a custom timeout period using `setIdleTimeoutPeriod()` in `CallSettingsBuilder`. The warning dialog will always appear 60 seconds before the configured timeout.
 
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+const callSettings: any = new CometChatCalls.CallSettingsBuilder()
+  .setIdleTimeoutPeriod(300) // 5 minutes
+  .enableDefaultLayout(true)
+  .setCallListener(callListener)
+  .build();
+```
+</Tab>
+<Tab title="JavaScript">
 ```javascript
 const callSettings = new CometChatCalls.CallSettingsBuilder()
   .setIdleTimeoutPeriod(300) // 5 minutes
@@ -49,11 +60,27 @@ const callSettings = new CometChatCalls.CallSettingsBuilder()
   .setCallListener(callListener)
   .build();
 ```
+</Tab>
+</Tabs>
 
 ## Handling the Timeout Event
 
 Listen for `onSessionTimeout` in your `OngoingCallListener` to clean up when the call auto-terminates:
 
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+const callListener = new CometChatCalls.OngoingCallListener({
+  onSessionTimeout: () => {
+    console.log("Session timed out due to inactivity");
+    CometChatCalls.endSession();
+    // Close the calling screen
+  },
+  // ... other listeners
+});
+```
+</Tab>
+<Tab title="JavaScript">
 ```javascript
 const callListener = new CometChatCalls.OngoingCallListener({
   onSessionTimeout: () => {
@@ -64,6 +91,8 @@ const callListener = new CometChatCalls.OngoingCallListener({
   // ... other listeners
 });
 ```
+</Tab>
+</Tabs>
 
 See [Call Session — Call Listeners](/sdk/javascript/direct-call#call-listeners) for the full list of events.
 

@@ -121,6 +121,24 @@ Replace `APP_ID` and `REGION` with your credentials from the [Dashboard](https:/
 
 If you're using both the Chat SDK and Calls SDK, initialize them in sequence:
 
+<Tabs>
+<Tab title="TypeScript">
+```typescript
+// 1. Chat SDK first
+await CometChat.init(appID, appSettings);
+
+// 2. Then Calls SDK
+const callAppSetting: CometChatCalls.CallAppSettings = new CometChatCalls.CallAppSettingsBuilder()
+  .setAppId(appID)
+  .setRegion(region)
+  .build();
+
+await CometChatCalls.init(callAppSetting);
+
+// 3. Now both SDKs are ready
+```
+</Tab>
+<Tab title="JavaScript">
 ```javascript
 // 1. Chat SDK first
 await CometChat.init(appID, appSettings);
@@ -135,6 +153,8 @@ await CometChatCalls.init(callAppSetting);
 
 // 3. Now both SDKs are ready
 ```
+</Tab>
+</Tabs>
 
 For [Standalone Calling](/sdk/javascript/standalone-calling), you only need `CometChatCalls.init()` — no Chat SDK required.
 

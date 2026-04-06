@@ -33,9 +33,11 @@ Every error thrown by the CometChat SDK is a [`CometChatException`](/sdk/referen
 | `message` | `string` | Human-readable description |
 | `details` | `string` | Additional context or troubleshooting info |
 
+<Tabs>
+<Tab title="TypeScript">
 ```typescript
 try {
-  const user = await CometChat.login(authToken);
+  const user: CometChat.User = await CometChat.login(authToken);
 } catch (error: CometChat.CometChatException) {
   switch (error.code) {
     case "AUTH_ERR_AUTH_TOKEN_NOT_FOUND":
@@ -49,6 +51,26 @@ try {
   }
 }
 ```
+</Tab>
+<Tab title="JavaScript">
+```javascript
+try {
+  const user = await CometChat.login(authToken);
+} catch (error) {
+  switch (error.code) {
+    case "AUTH_ERR_AUTH_TOKEN_NOT_FOUND":
+      // Token is invalid or expired — prompt re-login
+      break;
+    case "MISSING_PARAMETERS":
+      // A required parameter was not provided
+      break;
+    default:
+      console.error("Unexpected error:", error.message);
+  }
+}
+```
+</Tab>
+</Tabs>
 
 ## Initialization Errors
 

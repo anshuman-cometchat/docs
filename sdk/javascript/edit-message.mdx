@@ -38,25 +38,7 @@ Use `editMessage()` with a [`TextMessage`](/sdk/reference/messages#textmessage) 
 Use `setTags()` to update tags when editing. New tags replace existing ones.
 
 <Tabs>
-<Tab title="Text Message">
-```javascript
-let tags = ["pinnedMessage"];
-
-textMessage.setTags(tags);  
-```
-
-</Tab>
-
-<Tab title="Custom Message">
-```javascript
-let tags = ["pinnedMessage"];
-
-customMessage.setTags(tags);
-```
-
-</Tab>
-
-<Tab title="Text Message (Typescript)">
+<Tab title="Text Message (TypeScript)">
 ```typescript
 let tags: Array<String> = ["pinnedMessage"];
 
@@ -65,9 +47,27 @@ textMessage.setTags(tags);
 
 </Tab>
 
-<Tab title="Custom Message (Typescript)">
+<Tab title="Text Message (JavaScript)">
+```javascript
+let tags = ["pinnedMessage"];
+
+textMessage.setTags(tags);  
+```
+
+</Tab>
+
+<Tab title="Custom Message (TypeScript)">
 ```typescript
 let tags: Array<String> = ["pinnedMessage"];
+
+customMessage.setTags(tags);
+```
+
+</Tab>
+
+<Tab title="Custom Message (JavaScript)">
+```javascript
+let tags = ["pinnedMessage"];
 
 customMessage.setTags(tags);
 ```
@@ -97,7 +97,6 @@ CometChat.editMessage(textMessage).then(
   }
 );  
 ```
-
 </Tab>
 
 <Tab title="JavaScript">
@@ -119,9 +118,8 @@ message => {
 );
 ```
 
-</Tab>
+Alternatively, you can use the `async/await` syntax:
 
-<Tab title="Async/Await">
 ```javascript
 try {
   let receiverID = "RECEIVER_UID";
@@ -138,7 +136,6 @@ try {
   console.log("Message editing failed with error:", error);
 }
 ```
-
 </Tab>
 
 </Tabs>
