@@ -49,7 +49,28 @@ CometChat.sendMessage(textMessage).then(
   }
 );
 ```
+
+Alternatively, you can use the `async/await` syntax:
+
+```javascript
+try {
+  const receiverID = "UID";
+  const messageText = "Hello world!";
+  const receiverType = CometChat.RECEIVER_TYPE.USER;
+  const textMessage = new CometChat.TextMessage(
+    receiverID,
+    messageText,
+    receiverType
+  );
+
+  const message = await CometChat.sendMessage(textMessage);
+  console.log("Message sent successfully:", message);
+} catch (error) {
+  console.log("Message sending failed with error:", error);
+}
+```
 </Tab>
+
 <Tab title="Group">
 ```javascript
 let receiverID = "GUID";
@@ -71,6 +92,7 @@ CometChat.sendMessage(textMessage).then(
 );
 ```
 </Tab>
+
 <Tab title="TypeScript (User)">
 ```typescript
 let receiverID: string = "UID",
@@ -92,6 +114,7 @@ CometChat.sendMessage(textMessage).then(
 );
 ```
 </Tab>
+
 <Tab title="TypeScript (Group)">
 ```typescript
 let receiverID: string = "GUID",
@@ -113,25 +136,7 @@ CometChat.sendMessage(textMessage).then(
 );
 ```
 </Tab>
-<Tab title="Async/Await">
-```javascript
-try {
-  const receiverID = "UID";
-  const messageText = "Hello world!";
-  const receiverType = CometChat.RECEIVER_TYPE.USER;
-  const textMessage = new CometChat.TextMessage(
-    receiverID,
-    messageText,
-    receiverType
-  );
 
-  const message = await CometChat.sendMessage(textMessage);
-  console.log("Message sent successfully:", message);
-} catch (error) {
-  console.log("Message sending failed with error:", error);
-}
-```
-</Tab>
 </Tabs>
 
 The [`TextMessage`](/sdk/reference/messages#textmessage) class constructor takes the following parameters:
