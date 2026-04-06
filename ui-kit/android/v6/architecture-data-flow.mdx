@@ -7,63 +7,46 @@ The UI Kit is split into three modules that follow Clean Architecture principles
 
 ## Module Structure
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  chatuikit-jetpack          │  chatuikit-kotlin          │
-│  (Jetpack Compose UI)       │  (XML Views / ViewBinding) │
-│  Composables, Themes        │  Custom Views, Adapters    │
-└────────────────┬────────────┴──────────┬────────────────┘
-                 │                       │
-                 │   depends on          │
-                 ▼                       ▼
-┌─────────────────────────────────────────────────────────┐
-│                    chatuikit-core                        │
-│                                                         │
-│  domain/                                                │
-│  ├── usecase/      ← Business logic (single actions)    │
-│  ├── repository/   ← Contracts (interfaces)             │
-│  └── model/        ← Domain models                      │
-│                                                         │
-│  data/                                                  │
-│  ├── datasource/   ← SDK call wrappers (interface+impl) │
-│  └── repository/   ← Repository implementations         │
-│                                                         │
-│  viewmodel/        ← ViewModels (shared across UI)      │
-│  state/            ← Sealed UIState classes              │
-│  factory/          ← ViewModel factories (DI)           │
-│  events/           ← CometChatEvents (SharedFlow bus)   │
-│  constants/        ← Shared constants                   │
-│  formatter/        ← Rich text / markdown               │
-│  mentions/         ← @mention detection                 │
-│  resources/        ← Localization, sound manager        │
-│  utils/            ← Call utils, permissions, helpers    │
-└──────────────────────────┬──────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────┐
-│                    CometChat SDK                        │
-│         Chat SDK 4.x  •  Calls SDK 4.x                 │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    subgraph UI["UI Modules"]
+        A["<b>chatuikit-jetpack</b><br/><i>Jetpack Compose UI</i><br/>Composables, Themes"]
+        B["<b>chatuikit-kotlin</b><br/><i>XML Views / ViewBinding</i><br/>Custom Views, Adapters"]
+    end
+
+    subgraph Core["chatuikit-core"]
+        D["domain/ — usecase, repository interfaces, models"]
+        E["data/ — datasource, repository implementations"]
+        F["viewmodel/ — shared ViewModels"]
+        G["state/ — sealed UIState classes"]
+        H["events/ — CometChatEvents SharedFlow bus"]
+        I["factory/ — ViewModel factories"]
+        J["formatter, mentions, resources, utils"]
+    end
+
+    K["<b>CometChat SDK</b><br/>Chat SDK 4.x · Calls SDK 4.x"]
+
+    A -->|depends on| Core
+    B -->|depends on| Core
+    Core -->|calls| K
+
 ```
 
 ## 4-Layer Architecture
 
 Every feature follows the same layered flow: **View → ViewModel → Repository → DataSource**.
 
-```
-View / Composable  (chatuikit-kotlin or chatuikit-jetpack)
-        │
-        │  observes StateFlow<UIState>
-        ▼
-   ViewModel  (chatuikit-core)
-        │
-        │  calls UseCase
-        ▼
-   Repository  (chatuikit-core)
-        │
-        │  calls DataSource
-        ▼
-   DataSource  (chatuikit-core → CometChat SDK)
+```mermaid
+block-beta
+    columns 1
+    A["View / Composable\nchatuikit-kotlin or chatuikit-jetpack"]
+    B["ViewModel\nchatuikit-core"]
+    C["Repository\nchatuikit-core"]
+    D["DataSource\nchatuikit-core → CometChat SDK"]
+
+    A --> B
+    B --> C
+    C --> D
 ```
 
 The ViewModel lives in `chatuikit-core` and is shared by both UI modules. This means the same `CometChatConversationsViewModel` drives both the XML View and the Composable — only the rendering layer differs.
@@ -287,58 +270,36 @@ val factory = CometChatConversationsViewModelFactory(
 
 ### Fetching Conversations
 
-```
-UI (Composable/View)
-  │  collects uiState
-  ▼
-CometChatConversationsViewModel
-  │  calls getConversationsUseCase(request)
-  ▼
-GetConversationsUseCase
-  │  calls repository.getConversations(request)
-  ▼
-ConversationsRepositoryImpl
-  │  calls dataSource.fetchConversations(request)
-  │  wraps result in Result<>, tracks pagination
-  ▼
-ConversationsDataSourceImpl
-  │  calls CometChat SDK (ConversationsRequest.fetchNext())
-  ▼
-CometChat SDK → REST API → Response
+```mermaid
+graph TD
+    A["UI — Composable / View<br/><i>collects uiState</i>"] --> B["CometChatConversationsViewModel<br/><i>calls getConversationsUseCase</i>"]
+    B --> C["GetConversationsUseCase<br/><i>calls repository.getConversations</i>"]
+    C --> D["ConversationsRepositoryImpl<br/><i>calls dataSource, wraps Result, tracks pagination</i>"]
+    D --> E["ConversationsDataSourceImpl<br/><i>calls CometChat SDK</i>"]
+    E --> F["CometChat SDK → REST API → Response"]
+
 ```
 
 ### Real-Time Updates
 
-```
-CometChat SDK (WebSocket)
-  │  onTextMessageReceived / onTypingStarted / etc.
-  ▼
-ViewModel (SDK listener registered in init)
-  │  processes event → updates internal list
-  │  emits new UIState.Content(updatedList)
-  ▼
-UI recomposes / rebinds automatically
+```mermaid
+graph TD
+    A["CometChat SDK — WebSocket<br/><i>onTextMessageReceived / onTypingStarted</i>"] --> B["ViewModel — SDK listener<br/><i>processes event, updates internal list</i>"]
+    B --> C["Emits new UIState.Content — updatedList"]
+    C --> D["UI recomposes / rebinds automatically"]
+
 ```
 
 ### User Action (Delete Conversation)
 
-```
-UI → user swipes to delete
-  │
-  ▼
-ViewModel.deleteConversation(conversation)
-  │  calls deleteConversationUseCase(id, type)
-  ▼
-DeleteConversationUseCase
-  │  calls repository.deleteConversation(id, type)
-  ▼
-ConversationsRepositoryImpl
-  │  calls dataSource.deleteConversation(id, type)
-  ▼
-CometChat SDK → REST API → 200 OK
-  │
-  ▼
-ViewModel removes item from list → emits updated UIState
+```mermaid
+graph TD
+    A["UI — user swipes to delete"] --> B["ViewModel.deleteConversation"]
+    B --> C["DeleteConversationUseCase"]
+    C --> D["ConversationsRepositoryImpl"]
+    D --> E["DataSource → CometChat SDK → REST API → 200 OK"]
+    E --> F["ViewModel removes item → emits updated UIState"]
+
 ```
 
 ## Component ↔ Core Mapping
@@ -378,22 +339,12 @@ Every layer in the architecture is designed to be replaceable. You can override 
 
 ### Override Points
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  UI Component (CometChatUsers, CometChatConversations...) │
-│  ┌──────────────────────────────────────────────────────┐    │
-│  │  ViewModel  ← inject via custom Factory              │    │
-│  │  ┌──────────────────────────────────────────────┐    │    │
-│  │  │  UseCase  ← subclass (open classes)          │    │    │
-│  │  │  ┌──────────────────────────────────────┐    │    │    │
-│  │  │  │  Repository  ← implement interface   │    │    │    │
-│  │  │  │  ┌──────────────────────────────┐    │    │    │    │
-│  │  │  │  │  DataSource ← implement iface│    │    │    │    │
-│  │  │  │  └──────────────────────────────┘    │    │    │    │
-│  │  │  └──────────────────────────────────────┘    │    │    │
-│  │  └──────────────────────────────────────────────┘    │    │
-│  └──────────────────────────────────────────────────────┘    │
-└──────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    A["UI Component"] --> B["ViewModel ← inject via custom Factory"]
+    B --> C["UseCase ← subclass (open classes)"]
+    C --> D["Repository ← implement interface"]
+    D --> E["DataSource ← implement interface"]
 ```
 
 ### 1. Custom Repository

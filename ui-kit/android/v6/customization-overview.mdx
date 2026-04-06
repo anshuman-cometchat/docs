@@ -1,5 +1,5 @@
 ---
-title: "Customization Overview"
+title: "Overview"
 description: "Understand the layered architecture and discover all customization entry points in the CometChat Android UI Kit."
 ---
 
@@ -18,24 +18,17 @@ Each component is built from four layers, from outermost (UI) to innermost (data
 | Repository | Abstracts data fetching — can be swapped for custom implementations | `ConversationsRepository`, `MessageListRepository` |
 | DataSource | Direct SDK calls — the lowest layer that talks to CometChat servers | `ConversationsDataSourceImpl`, `MessageListDataSourceImpl` |
 
-```
-┌─────────────────────────────────────────┐
-│              View Layer                  │
-│  (CometChatConversations / Compose)  │
-│  UI rendering, styles, callbacks        │
-├─────────────────────────────────────────┤
-│           ViewModel Layer               │
-│  (CometChatConversationsViewModel)   │
-│  State, ListOperations, SDK listeners   │
-├─────────────────────────────────────────┤
-│          Repository Layer               │
-│  (ConversationsRepository)           │
-│  Data abstraction — swappable           │
-├─────────────────────────────────────────┤
-│          DataSource Layer               │
-│  (ConversationsDataSourceImpl)       │
-│  Direct CometChat SDK calls             │
-└─────────────────────────────────────────┘
+```mermaid
+block-beta
+    columns 1
+    A["View Layer\nCometChatConversations / Compose\nUI rendering, styles, callbacks"]
+    B["ViewModel Layer\nCometChatConversationsViewModel\nState, ListOperations, SDK listeners"]
+    C["Repository Layer\nConversationsRepository\nData abstraction — swappable"]
+    D["DataSource Layer\nConversationsDataSourceImpl\nDirect CometChat SDK calls"]
+
+    A --> B
+    B --> C
+    C --> D
 ```
 
 The ViewModel lives in `chatuikit-core` and is shared by both Kotlin XML Views and Jetpack Compose. The View layer is module-specific.
