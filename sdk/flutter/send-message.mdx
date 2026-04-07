@@ -8,7 +8,7 @@ description: "Send text, media, and custom messages to users and groups using th
 
 | Field | Value |
 | --- | --- |
-| Key Classes | `TextMessage`, `MediaMessage`, `CustomMessage` |
+| Key Classes | [`TextMessage`](/sdk/reference/messages#textmessage), [`MediaMessage`](/sdk/reference/messages#mediamessage), [`CustomMessage`](/sdk/reference/messages#custommessage) |
 | Key Methods | `CometChat.sendMessage()`, `CometChat.sendMediaMessage()`, `CometChat.sendCustomMessage()` |
 | Receiver Types | `CometChatReceiverType.user`, `CometChatReceiverType.group` |
 | Message Types | `CometChatMessageType.text`, `CometChatMessageType.image`, `CometChatMessageType.video`, `CometChatMessageType.audio`, `CometChatMessageType.file`, `CometChatMessageType.custom` |
@@ -74,7 +74,7 @@ You can also send metadata along with a text or media message. Think, for exampl
 
 *In other words, as a sender, how do I send a text message?*
 
-To send a text message to a single user or group, you need to use the `sendMessage()` method and pass a `TextMessage` object to it.
+To send a text message to a single user or group, you need to use the `sendMessage()` method and pass a [`TextMessage`](/sdk/reference/messages#textmessage) object to it.
 
 ### Add Metadata
 
@@ -440,7 +440,7 @@ When a text message is sent successfully, the response will include a `TextMessa
 
 *In other words, as a sender, how do I send a media message like photos, videos & files?*
 
-To send a media message to any user or group, you need to use the `sendMediaMessage()` method and pass a `MediaMessage` object to it.
+To send a media message to any user or group, you need to use the `sendMediaMessage()` method and pass a [`MediaMessage`](/sdk/reference/messages#mediamessage) object to it.
 
 ### Add Metadata
 
@@ -676,7 +676,7 @@ The `MediaMessage` class constructor takes the following parameters:
 
 </Accordion>
 
-2. **By providing the URL of the File:** The second way to send media messages using the CometChat SDK is to provide the SDK with the URL of any file that is hosted on your servers or any cloud storage. To achieve this you will have to make use of the Attachment class that is available in the MediaMessage class. For more information, you can refer to the below code snippet:
+2. **By providing the URL of the File:** The second way to send media messages using the CometChat SDK is to provide the SDK with the URL of any file that is hosted on your servers or any cloud storage. To achieve this you will have to make use of the [`Attachment`](/sdk/reference/auxiliary#attachment) class that is available in the MediaMessage class. For more information, you can refer to the below code snippet:
 
 <Tabs>
 <Tab title="Dart (User)">
@@ -866,7 +866,7 @@ CometChat allows you to send custom messages which are neither text nor media me
 
 In order to send a custom message, you need to use the `sendCustomMessage()` method.
 
-The `sendCustomMessage()` methods takes an object of the `CustomMessage` which can be obtained using the below constructor.
+The `sendCustomMessage()` methods takes an object of the [`CustomMessage`](/sdk/reference/messages#custommessage) which can be obtained using the below constructor.
 
 <Tabs>
 <Tab title="Dart">

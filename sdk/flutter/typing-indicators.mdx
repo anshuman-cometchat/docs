@@ -123,7 +123,7 @@ Use the `metadata` field of the `TypingIndicator` class to pass additional custo
 
 *In other words, as a recipient, how do I know when someone is typing?*
 
-Use `onTypingStarted` and `onTypingEnded` in `MessageListener` to receive typing events.
+Use `onTypingStarted` and `onTypingEnded` in `MessageListener` to receive [`TypingIndicator`](/sdk/reference/auxiliary#typingindicator) events.
 
 <Warning>
 Always remove listeners when they're no longer needed (e.g., in the `dispose()` method). Failing to remove listeners can cause memory leaks and duplicate event handling.
@@ -161,7 +161,7 @@ The received object is a `TypingIndicator` with the following fields:
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `sender` | `User` | An object of the `User` class holding all the information related to the sender of the typing indicator. |
+| `sender` | [`User`](/sdk/reference/entities#user) | An object of the `User` class holding all the information related to the sender of the typing indicator. |
 | `receiverId` | `String` | `UID` of the receiver. This is the ID of the group or the user the typing indicator is being sent to. |
 | `receiverType` | `String` | Indicates if the typing indicator is to a user or a group — `CometChatReceiverType.user` or `CometChatReceiverType.group`. |
 | `metadata` | `Map<String, String>?` | Optional metadata to provide additional data. |

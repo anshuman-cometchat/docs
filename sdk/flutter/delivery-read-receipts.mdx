@@ -64,7 +64,7 @@ You can mark the messages for a particular conversation as delivered using the `
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `message` | `BaseMessage` | The message object to mark as delivered. All messages before this message in the conversation will be marked as delivered. |
+| `message` | [`BaseMessage`](/sdk/reference/messages#basemessage) | The message object to mark as delivered. All messages before this message in the conversation will be marked as delivered. |
 | `onSuccess` | `Function(String)` | Callback triggered on success with a confirmation string. |
 | `onError` | `Function(CometChatException)` | Callback triggered on error with exception details. |
 
@@ -124,7 +124,7 @@ You can mark the messages for a particular conversation as read using the `markA
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `baseMessage` | `BaseMessage` | The message object to mark as read. All messages before this message in the conversation will be marked as read. |
+| `baseMessage` | [`BaseMessage`](/sdk/reference/messages#basemessage) | The message object to mark as read. All messages before this message in the conversation will be marked as read. |
 | `onSuccess` | `Function(String)` | Callback triggered on success with a confirmation string. |
 | `onError` | `Function(CometChatException)` | Callback triggered on error with exception details. |
 
@@ -201,7 +201,7 @@ You can mark the messages for a particular conversation as unread using the `mar
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `baseMessage` | `BaseMessage` | To mark a message as unread, pass a non-null `BaseMessage` instance. All messages below that message in the conversation will contribute to the unread messages count. |
+| `baseMessage` | [`BaseMessage`](/sdk/reference/messages#basemessage) | To mark a message as unread, pass a non-null `BaseMessage` instance. All messages below that message in the conversation will contribute to the unread messages count. |
 | `onSuccess` | `Function(Conversation)` | Callback triggered on success with the updated `Conversation` object containing the new unread count. |
 | `onError` | `Function(CometChatException)` | Callback triggered on error with exception details. |
 
@@ -311,12 +311,12 @@ void dispose() {
 ```
 </Warning>
 
-You will receive events in the form of `MessageReceipt` objects. The message receipt contains the following parameters:
+You will receive events in the form of [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) objects. The message receipt contains the following parameters:
 
 | Parameter      | Type | Description                                                                                                          |
 | -------------- | ---- | -------------------------------------------------------------------------------------------------------------------- |
 | `messageId`    | `int` | The ID of the message prior to which all the messages for that particular conversation have been marked as read.     |
-| `sender`       | `User` | User object containing the details of the user who has marked the message as read.                                   |
+| `sender`       | [`User`](/sdk/reference/entities#user) | User object containing the details of the user who has marked the message as read.                                   |
 | `receiverId`   | `String` | Id of the receiver whose conversation has been marked as read.                                                       |
 | `receiverType` | `String` | Type of the receiver (user/group)                                                                                    |
 | `receiptType`  | `String` | Type of the receipt (read/delivered)                                                                                 |

@@ -37,7 +37,7 @@ List<BaseMessage> moreMessages = await request.fetchPrevious(); // Next page
 **Key properties:** `uid`, `guid`, `limit`, `categories`, `types`, `tags`, `unread`, `parentMessageId`, `messageId`, `timestamp`, `hideReplies`, `hideDeleted`, `hideQuotedMessages`, `searchKeyword`, `updatedAfter`, `updatesOnly`, `hideMessagesFromBlockedUsers`, `withTags`, `hasMentions`, `hasLinks`, `hasAttachments`, `hasReactions`, `mentionedUids`, `attachmentTypes`, `withParent`
 </Accordion>
 
-The `MessagesRequest` class helps you fetch messages based on various parameters. It uses the Builder design pattern via `MessagesRequestBuilder`.
+The `MessagesRequest` class helps you fetch messages based on various parameters — returning [`BaseMessage`](/sdk/reference/messages#basemessage) objects that can be [`TextMessage`](/sdk/reference/messages#textmessage), [`MediaMessage`](/sdk/reference/messages#mediamessage), [`CustomMessage`](/sdk/reference/messages#custommessage), [`Action`](/sdk/reference/messages#action), or [`Call`](/sdk/reference/messages#call). It uses the Builder design pattern via `MessagesRequestBuilder`.
 
 To fetch messages:
 1. Create a `MessagesRequestBuilder` object

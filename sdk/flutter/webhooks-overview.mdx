@@ -82,20 +82,18 @@ Your webhook endpoint must meet these criteria:
 
 ## Best Practices
 
-<AccordionGroup>
-  <Accordion title="Handle Retries Gracefully">
-    Enable `retryOnFailure` when setting up webhooks. CometChat retries failed deliveries after 10 seconds, then 30 seconds. Use unique event IDs to deduplicate retries.
-  </Accordion>
-  <Accordion title="Process Asynchronously">
-    For long processing tasks, enqueue events to systems like Kafka, RabbitMQ, or AWS SQS, and process them asynchronously. Respond within 2 seconds to prevent timeouts.
-  </Accordion>
-  <Accordion title="Implement Error Handling">
-    Return appropriate HTTP status codes: `200 OK` for success, `4xx` for client errors, `5xx` for server issues.
-  </Accordion>
-  <Accordion title="Log and Monitor">
-    Maintain detailed logs of incoming webhook requests and responses. Track failures, latency, and retry attempts.
-  </Accordion>
-</AccordionGroup>
+<Accordion title="Handle Retries Gracefully">
+  Enable `retryOnFailure` when setting up webhooks. CometChat retries failed deliveries after 10 seconds, then 30 seconds. Use unique event IDs to deduplicate retries.
+</Accordion>
+<Accordion title="Process Asynchronously">
+  For long processing tasks, enqueue events to systems like Kafka, RabbitMQ, or AWS SQS, and process them asynchronously. Respond within 2 seconds to prevent timeouts.
+</Accordion>
+<Accordion title="Implement Error Handling">
+  Return appropriate HTTP status codes: `200 OK` for success, `4xx` for client errors, `5xx` for server issues.
+</Accordion>
+<Accordion title="Log and Monitor">
+  Maintain detailed logs of incoming webhook requests and responses. Track failures, latency, and retry attempts.
+</Accordion>
 
 ---
 

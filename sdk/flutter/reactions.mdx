@@ -268,7 +268,7 @@ CometChat.removeReaction(messageId, "\U0001f634", onSuccess: (message) {
 
 </Accordion>
 
-Both `addReaction()` and `removeReaction()` return a `BaseMessage` object with the updated reactions.
+Both `addReaction()` and `removeReaction()` return a [`BaseMessage`](/sdk/reference/messages#basemessage) object with the updated reactions.
 
 ## Read Reaction Data from a Message
 
@@ -276,7 +276,7 @@ Any `BaseMessage` exposes reaction data through its `reactions` property:
 
 ### Get All Reactions
 
-Use the `reactions` property to retrieve the list of reactions on a message. Returns a `List<ReactionCount>` containing the reactions, or an empty list if no one has reacted.
+Use the `reactions` property to retrieve the list of reactions on a message. Returns a `List<`[`ReactionCount`](/sdk/reference/auxiliary#reactioncount)`>` containing the reactions, or an empty list if no one has reacted.
 
 <Tabs>
 <Tab title="Dart">
