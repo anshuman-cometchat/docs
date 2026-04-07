@@ -4,28 +4,6 @@ sidebarTitle: "Setup"
 description: "Install and initialize the CometChat Calls SDK for Android applications"
 ---
 
-<Accordion title="AI Integration Quick Reference">
-
-```kotlin
-// Add dependency to build.gradle
-implementation 'com.cometchat:calls-sdk-android:4.3.3'
-
-// Initialize (run once at app start)
-val callAppSettings = CallAppSettingBuilder()
-    .setAppId("APP_ID")
-    .setRegion("REGION")
-    .build()
-
-CometChatCalls.init(context, callAppSettings, object : CometChatCalls.CallbackListener<String>() {
-    override fun onSuccess(s: String?) { }
-    override fun onError(e: CometChatException) { }
-})
-```
-
-**Required Credentials:** App ID, Region  
-**Get from:** [CometChat Dashboard](https://app.cometchat.com) → Your App → API & Auth Keys
-</Accordion>
-
 
 
 ## Prerequisites
@@ -154,46 +132,6 @@ CometChatCalls.init(
 | `callAppSettings` | An object of the CallAppSettings class |
 
 ---
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Initialize Early in App Lifecycle">
-    Call `CometChatCalls.init()` in your Application class or main activity's `onCreate()` method to ensure the SDK is ready before any calling features are accessed.
-  </Accordion>
-  <Accordion title="Verify Credentials Before Release">
-    Double-check your App ID and Region values from the CometChat Dashboard before deploying to production. Incorrect values will cause initialization failures.
-  </Accordion>
-  <Accordion title="Handle Initialization Errors">
-    Always implement the `onError()` callback to catch initialization failures. Common issues include network connectivity problems or incorrect credentials.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Initialization Failed">
-    **Symptom:** `CometChatCalls.init()` fails with "Invalid App ID" or "Invalid Region" error.
-    
-    **Cause:** Incorrect App ID or Region value in initialization code.
-    
-    **Solution:** Verify your App ID and Region in the [CometChat Dashboard](https://app.cometchat.com) under API & Auth Keys. Ensure the region is exactly "us" or "eu".
-  </Accordion>
-  <Accordion title="Dependency Resolution Failed">
-    **Symptom:** Gradle sync fails with "Could not resolve com.cometchat:calls-sdk-android" error.
-    
-    **Cause:** Maven repository URL not added to project-level build.gradle.
-    
-    **Solution:** Add the CometChat maven repository URL to the `allprojects` section in your project-level build.gradle file as shown in the setup instructions.
-  </Accordion>
-  <Accordion title="Minimum API Level Error">
-    **Symptom:** Build fails with "Requires API level 24" error.
-    
-    **Cause:** Your app's minSdkVersion is below the required API level 24 for calls SDK.
-    
-    **Solution:** Update your app-level build.gradle to set `minSdkVersion 24` or higher.
-  </Accordion>
-</AccordionGroup>
 
 ## Next Steps
 

@@ -286,7 +286,7 @@ bannedGroupMembersRequest?.fetchNext(object :CometChat.CallbackListener<List<Gro
 
 ## Real-Time Group Member Kicked/Banned Events
 
-When a member is kicked, banned, or unbanned, group members receive real-time events via the `GroupListener` class.
+When a member is kicked, banned, or unbanned, group members receive real-time events via the `GroupListener` class. The callbacks provide an [`Action`](/sdk/reference/messages#action) object, the affected [`User`](/sdk/reference/entities#user), the acting [`User`](/sdk/reference/entities#user), and the [`Group`](/sdk/reference/entities#group).
 
 <Tabs>
 <Tab title="Java">
@@ -329,73 +329,30 @@ CometChat.addGroupListener(MainActivity::class.java.simpleName, object : GroupLi
 
 ## Missed Group Member Kicked/Banned Events
 
-When fetching message history, kick/ban/unban actions appear as `Action` messages with these fields:
+When fetching message history, kick/ban/unban actions appear as [`Action`](/sdk/reference/messages#action) messages with these fields:
 
 1. `action` - `kicked`
-2. `actionBy` - User object containing the details of the user who has kicked the member
-3. `actionOn` - User object containing the details of the member that has been kicked
-4. `actionFor` - Group object containing the details of the Group from which the member was kicked
+2. `actionBy` - [`User`](/sdk/reference/entities#user) object containing the details of the user who has kicked the member
+3. `actionOn` - [`User`](/sdk/reference/entities#user) object containing the details of the member that has been kicked
+4. `actionFor` - [`Group`](/sdk/reference/entities#group) object containing the details of the Group from which the member was kicked
 
-For group member banned event, the details can be obtained using the below fields of the `Action` class-
+For group member banned event, the details can be obtained using the below fields of the [`Action`](/sdk/reference/messages#action) class-
 
 1. `action` - `banned`
-2. `actionBy` - User object containing the details of the user who has banned the member
-3. `actionOn` - User object containing the details of the member that has been banned
-4. `actionFor` - Group object containing the details of the Group from which the member was banned
+2. `actionBy` - [`User`](/sdk/reference/entities#user) object containing the details of the user who has banned the member
+3. `actionOn` - [`User`](/sdk/reference/entities#user) object containing the details of the member that has been banned
+4. `actionFor` - [`Group`](/sdk/reference/entities#group) object containing the details of the Group from which the member was banned
 
-For group member unbanned event, the details can be obtained using the below fields of the `Action` class-
+For group member unbanned event, the details can be obtained using the below fields of the [`Action`](/sdk/reference/messages#action) class-
 
 1. `action` - `unbanned`
-2. `actionBy` - User object containing the details of the user who has unbanned the member
-3. `actionOn` - User object containing the details of the member that has been unbanned
-4. `actionFor` - Group object containing the details of the Group from which the member was unbanned
+2. `actionBy` - [`User`](/sdk/reference/entities#user) object containing the details of the user who has unbanned the member
+3. `actionOn` - [`User`](/sdk/reference/entities#user) object containing the details of the member that has been unbanned
+4. `actionFor` - [`Group`](/sdk/reference/entities#group) object containing the details of the Group from which the member was unbanned
 
 <Warning>
 Always remove group listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
 </Warning>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Understand Kick vs Ban">
-    Use kick for temporary removal (user can rejoin). Use ban for permanent removal (requires unban to rejoin). Choose based on severity of violation.
-  </Accordion>
-  <Accordion title="Confirm Before Kicking/Banning">
-    Always prompt admins/moderators to confirm before kicking or banning members, as these actions immediately remove users from the group.
-  </Accordion>
-  <Accordion title="Document Ban Reasons">
-    Store ban reasons in your database or use metadata to track why members were banned for future reference and appeals.
-  </Accordion>
-  <Accordion title="Review Banned Members Periodically">
-    Use `BannedGroupMembersRequest` to review banned members list and consider unbanning users after appropriate time periods.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Kick/Ban Failed - Insufficient Permissions">
-    **Symptom:** Operation fails with "Insufficient permissions" error.
-    
-    **Cause:** User is not an admin or moderator of the group.
-    
-    **Solution:** Only admins and moderators can kick or ban members. Check the user's scope before showing these options.
-  </Accordion>
-  <Accordion title="Cannot Kick/Ban Admin">
-    **Symptom:** Operation fails when trying to kick or ban an admin.
-    
-    **Cause:** Admins have elevated permissions and cannot be kicked or banned by moderators.
-    
-    **Solution:** Only group owners or other admins can remove admin members. Consider changing their scope first using [group-change-member-scope](/sdk/android/group-change-member-scope).
-  </Accordion>
-  <Accordion title="Unban Failed - User Not Banned">
-    **Symptom:** `unbanGroupMember()` fails with "User not banned" error.
-    
-    **Cause:** The user is not currently banned from the group.
-    
-    **Solution:** Fetch the banned members list first using `BannedGroupMembersRequest` to verify the user is banned.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

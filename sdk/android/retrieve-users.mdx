@@ -51,7 +51,7 @@ val user = CometChat.getLoggedInUser()
 
 </Tabs>
 
-This method will return a `User` object containing all the information related to the logged-in user.
+This method will return a [`User`](/sdk/reference/entities#user) object containing all the information related to the logged-in user.
 
 ## Retrieve List of Users
 
@@ -508,7 +508,7 @@ The `getUser()` method takes the following parameters:
 | --------- | ---------------------------------------------------------- |
 | `UID`     | The UID of the user for whom the details are to be fetched |
 
-On success, the `User` object containing the details of the user is returned.
+On success, the [`User`](/sdk/reference/entities#user) object containing the details of the user is returned.
 
 ## Get Online User Count
 
@@ -599,22 +599,7 @@ The `User` object returned by SDK methods contains the following fields:
 
 </Accordion>
 
-## Best Practices
 
-<AccordionGroup>
-  <Accordion title="Use Pagination for Large User Lists">
-    Always set a reasonable limit (20-50 users) and use `fetchNext()` to paginate through results. This prevents memory issues and improves performance when dealing with large user bases.
-  </Accordion>
-  <Accordion title="Filter Users at Query Time">
-    Use `UsersRequestBuilder` filters (search, status, roles, tags) to fetch only the users you need rather than fetching all users and filtering client-side. This reduces bandwidth and improves response times.
-  </Accordion>
-  <Accordion title="Cache User Details Locally">
-    Store frequently accessed user details locally to reduce API calls. Use `getLoggedInUser()` to check login status without making network requests.
-  </Accordion>
-  <Accordion title="Combine Multiple Filters">
-    You can chain multiple filters like `setSearchKeyword()`, `hideBlockedUsers()`, and `setUserStatus()` to create precise queries that return exactly the users you need.
-  </Accordion>
-</AccordionGroup>
 
 ## Next Steps
 

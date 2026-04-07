@@ -23,7 +23,7 @@ CometChat.updateGroup(group, object : CometChat.CallbackListener<Group>() {
 
 ## Update Group
 
-Use `updateGroup()` with a `Group` object containing the fields you want to update.
+Use `updateGroup()` with a [`Group`](/sdk/reference/entities#group) object containing the fields you want to update.
 
 <Tabs>
 <Tab title="Java">
@@ -71,13 +71,13 @@ CometChat.updateGroup(group,object :CometChat.CallbackListener<Group>(){
 
 </Tabs>
 
-This method takes an instance of the `Group` class as a parameter, which should contain the data you wish to update.
+This method takes an instance of the [`Group`](/sdk/reference/entities#group) class as a parameter, which should contain the data you wish to update.
 
 | Parameter | Description                    |
 | --------- | ------------------------------ |
-| `group`   | An instance of the `Group` class |
+| `group`   | An instance of the [`Group`](/sdk/reference/entities#group) class |
 
-After the successful update of the group, you will receive an instance of the `Group` class containing the updated information of the group.
+After the successful update of the group, you will receive an instance of the [`Group`](/sdk/reference/entities#group) class containing the updated information of the group.
 
 <Note>
 There is no real-time event listener available to receive updated group details when the `updateGroup()` method is called. To get the latest group information, you need to fetch the group details again using the appropriate method.

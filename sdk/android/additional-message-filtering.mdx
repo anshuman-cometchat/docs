@@ -24,7 +24,7 @@ messagesRequest.fetchPrevious(callback)
 ```
 </Accordion>
 
-The `MessagesRequest` class fetches messages based on various parameters using the Builder design pattern.
+The [`MessagesRequest`](/sdk/reference/messages#basemessage) class fetches messages based on various parameters using the Builder design pattern.
 
 To fetch messages:
 1. Create a `MessagesRequestBuilder` object
@@ -1267,26 +1267,6 @@ val UID = "cometchat-uid-1"
 
 </Tabs>
 
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Use Pagination Effectively">
-    Set a reasonable limit (20-50 messages) using `setLimit()` to balance performance and user experience. Fetch more messages as users scroll using `fetchNext()` or `fetchPrevious()`.
-  </Accordion>
-  <Accordion title="Combine Filters for Specific Use Cases">
-    Combine multiple filters to create specific views (e.g., unread media messages, messages with links, messages from specific time ranges). This reduces client-side filtering.
-  </Accordion>
-  <Accordion title="Cache Filtered Results Locally">
-    Store filtered message results in local storage to provide offline access and reduce API calls. Refresh the cache when new messages arrive via listeners.
-  </Accordion>
-  <Accordion title="Use setUpdatedAfter for Sync">
-    Use `setUpdatedAfter()` with `updatesOnly(true)` to efficiently sync messages that have been edited, deleted, or marked as read/delivered since your last fetch.
-  </Accordion>
-  <Accordion title="Enable Advanced Search Features">
-    For advanced filtering (links, attachments, reactions, mentions), ensure "Conversation & Advanced Search" is enabled in your CometChat Dashboard under Chats → Settings → General Configuration.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

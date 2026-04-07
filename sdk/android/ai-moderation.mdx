@@ -141,7 +141,7 @@ When you send a text, image, or video message, check the initial moderation stat
 
 ### Step 2: Listen for Moderation Results
 
-Register a message listener to receive moderation results in real-time:
+Register a message listener to receive moderation results in real-time. The `onMessageModerated` callback provides a [`BaseMessage`](/sdk/reference/messages#basemessage) with the final moderation status:
 
 <Tabs>
   <Tab title="Kotlin">
@@ -273,20 +273,3 @@ When a message is disapproved, handle it appropriately in your UI:
     Enable and configure AI moderation in the CometChat Dashboard
   </Card>
 </CardGroup>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Show Pending Status in UI">
-    Display a visual indicator (e.g., clock icon, "Pending review" label) for messages with `PENDING` moderation status. This informs users that their message is being reviewed.
-  </Accordion>
-  <Accordion title="Handle Disapproved Messages Gracefully">
-    When a message is disapproved, show a user-friendly message explaining why it was blocked. Avoid technical jargon and provide guidance on acceptable content.
-  </Accordion>
-  <Accordion title="Configure Moderation Rules in Dashboard">
-    Set up moderation rules in the [CometChat Dashboard](https://app.cometchat.com) under Moderation > Rules. Define what content should be flagged or blocked based on your app's policies.
-  </Accordion>
-  <Accordion title="Test Moderation Before Production">
-    Test moderation with various content types (text, images, videos) in a development environment to ensure rules work as expected before deploying to production.
-  </Accordion>
-</AccordionGroup>

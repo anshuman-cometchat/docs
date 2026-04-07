@@ -223,51 +223,7 @@ Always remove call event listeners when they're no longer needed (e.g., in `onDe
 
 ---
 
-## Best Practices
 
-<AccordionGroup>
-  <Accordion title="Limit Number of Presenters">
-    Keep the number of presenters to 5 or fewer for optimal performance. More presenters increase bandwidth requirements and can degrade the experience for viewers.
-  </Accordion>
-  <Accordion title="Set Appropriate User Roles">
-    Clearly distinguish between presenters and viewers using `setIsPresenter()`. Presenters have full control (audio, video, screen share), while viewers are passive consumers.
-  </Accordion>
-  <Accordion title="Test with Maximum Capacity">
-    Test your presentation with close to 100 participants to ensure your infrastructure can handle the load. Monitor bandwidth and CPU usage during testing.
-  </Accordion>
-  <Accordion title="Provide Clear UI Indicators">
-    Show visual indicators to users about their role (presenter vs viewer) and available controls. Viewers should understand they cannot send audio/video.
-  </Accordion>
-  <Accordion title="Handle Presenter Disconnections">
-    Implement logic to handle scenarios where a presenter disconnects unexpectedly. Consider promoting another user to presenter or ending the session gracefully.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Viewer Cannot See Presenter Video">
-    **Symptom:** Viewers join the presentation but cannot see the presenter's video stream.
-    
-    **Cause:** Presenter may have started with video muted, or network issues are preventing video transmission.
-    
-    **Solution:** Ensure the presenter has `startWithVideoMuted(false)` in their settings. Check network connectivity and bandwidth for both presenter and viewers.
-  </Accordion>
-  <Accordion title="Presentation Join Failed">
-    **Symptom:** `joinPresentation()` fails with "Invalid call token" error.
-    
-    **Cause:** The call token is invalid or expired.
-    
-    **Solution:** Ensure you're using a valid call token generated for the specific session. Verify the token hasn't expired and matches the session ID.
-  </Accordion>
-  <Accordion title="Maximum Presenter Limit Reached">
-    **Symptom:** User cannot join as presenter even though `setIsPresenter(true)` is set.
-    
-    **Cause:** The maximum limit of 5 presenters has been reached.
-    
-    **Solution:** Wait for an existing presenter to leave, or join as a viewer instead. Implement logic to check presenter count before allowing users to join as presenters.
-  </Accordion>
-</AccordionGroup>
 
 ## Next Steps
 

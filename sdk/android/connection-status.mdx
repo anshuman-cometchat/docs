@@ -34,6 +34,8 @@ Use `ConnectionListener` to monitor real-time WebSocket connection state. The SD
 | `onDisconnected` | Connection lost (network fluctuation, etc.) |
 | `onFeatureThrottled` | CometChat toggled off certain features to prevent performance loss |
 
+Error callbacks receive a [`CometChatException`](/sdk/reference/auxiliary#cometchatexception) with details about the connection failure.
+
 <Tabs>
 <Tab title="Java">
 ```java
@@ -132,23 +134,6 @@ Know more about CometChat SDK connection behaviour [click here](/sdk/android/con
 
 </Info>
 
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Monitor Connection Status in UI">
-    Display connection status indicators in your UI (e.g., "Connecting...", "Connected", "Offline") to inform users about network issues. Update the UI based on connection listener callbacks.
-  </Accordion>
-  <Accordion title="Handle Reconnection Gracefully">
-    The SDK automatically attempts to reconnect when disconnected. Show a reconnecting indicator and avoid blocking the UI. Don't manually call `login()` again during reconnection.
-  </Accordion>
-  <Accordion title="Queue Actions During Disconnection">
-    Queue user actions (sending messages, making calls) when disconnected and execute them once the connection is restored. This provides a better user experience during network fluctuations.
-  </Accordion>
-  <Accordion title="Remove Connection Listeners">
-    Remove connection listeners in `onDestroy()` to prevent memory leaks. Use unique listener IDs to manage multiple listeners across different activities.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

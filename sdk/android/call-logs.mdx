@@ -196,39 +196,24 @@ CometChatCalls.getCallDetails(sessionID, new CometChatCalls.CallbackListener<Lis
 
 </Tabs>
 
-Returns a list of `CallLog` objects for the specified session.
+Returns a list of [`CallLog`](/sdk/reference/calls#calllog) objects for the specified session.
 
 ---
 
-## Best Practices
 
-<AccordionGroup>
-  <Accordion title="Use Pagination for Large Call Histories">
-    Use `setLimit()` to fetch call logs in manageable batches (e.g., 20-50 logs per request). This improves performance and reduces memory usage, especially for users with extensive call histories.
-  </Accordion>
-  <Accordion title="Filter Call Logs Appropriately">
-    Use filters like `setCallStatus()`, `setCallType()`, and `setCallDirection()` to show relevant call logs to users. For example, show only missed calls in a "Missed Calls" tab.
-  </Accordion>
-  <Accordion title="Cache Call Logs Locally">
-    Store fetched call logs in local storage (Room database or SharedPreferences) to provide offline access and reduce API calls. Refresh the cache periodically or when the app comes to the foreground.
-  </Accordion>
-  <Accordion title="Display Call Duration and Status">
-    Show call duration, status (missed, rejected, completed), and timestamps in your UI to help users quickly understand their call history.
-  </Accordion>
-</AccordionGroup>
 
 ## Call Payload Structure
 
 <Accordion title="Call Object">
 
-The `Call` object extends `BaseMessage` and contains all call-related information:
+The [`Call`](/sdk/reference/messages#call) object extends [`BaseMessage`](/sdk/reference/messages#basemessage) and contains all call-related information:
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `id` | long | Unique identifier of the call message |
 | `muid` | String | Developer-defined message ID |
-| `sender` | [User](#user-object-call-logs) | User who sent the call message |
-| `receiver` | AppEntity | Call receiver ([User](#user-object-call-logs) or [Group](#group-object-call-logs)) |
+| `sender` | [User](/sdk/reference/entities#user) | User who sent the call message |
+| `receiver` | AppEntity | Call receiver ([User](/sdk/reference/entities#user) or [Group](/sdk/reference/entities#group)) |
 | `receiverUid` | String | Receiver's unique identifier |
 | `type` | String | Call type. Values: `"audio"`, `"video"` |
 | `receiverType` | String | Type of receiver. Values: `"user"`, `"group"` |
@@ -244,7 +229,7 @@ The `Call` object extends `BaseMessage` and contains all call-related informatio
 | `rawData` | String | Raw JSON data of the call |
 | `initiatedAt` | long | Unix timestamp when call was initiated |
 | `joinedAt` | long | Unix timestamp when call was joined |
-| `callInitiator` | [User](#user-object-call-logs) | User who initiated the call |
+| `callInitiator` | [User](/sdk/reference/entities#user) | User who initiated the call |
 | `callReceiver` | AppEntity | User or Group receiving the call |
 
 **Sample Call Object:**

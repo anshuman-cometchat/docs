@@ -67,39 +67,6 @@ The `deleteGroup()` method takes the following parameters:
 | `GUID`    | The GUID of the group you want to delete |
 
 
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Confirm Before Deleting">
-    Always prompt users to confirm deletion with a clear warning that this action is permanent and will remove all group messages and data.
-  </Accordion>
-  <Accordion title="Verify Admin Permissions">
-    Check the user's scope before showing delete options. Only admins can delete groups.
-  </Accordion>
-  <Accordion title="Notify Members Before Deletion">
-    Consider sending a notification or message to group members before deleting the group to give them time to save important information.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Delete Failed - Insufficient Permissions">
-    **Symptom:** `deleteGroup()` fails with "Insufficient permissions" error.
-    
-    **Cause:** User is not an admin of the group.
-    
-    **Solution:** Only group admins can delete groups. Check the user's scope using `group.getScope()` before attempting deletion.
-  </Accordion>
-  <Accordion title="Delete Failed - Group Not Found">
-    **Symptom:** `deleteGroup()` fails with "Group not found" error.
-    
-    **Cause:** The group GUID is incorrect or the group has already been deleted.
-    
-    **Solution:** Verify the GUID is correct and the group still exists by fetching it first using [retrieve-groups](/sdk/android/retrieve-groups).
-  </Accordion>
-</AccordionGroup>
-
 ---
 
 ## Next Steps

@@ -85,7 +85,7 @@ The default scope of any member is `participant`. Only the **Admin** of the grou
 
 ## Real-Time Group Member Scope Changed Events
 
-When a member's scope changes, group members receive a real-time event in `onGroupMemberScopeChanged()` of the `GroupListener` class.
+When a member's scope changes, group members receive a real-time event in `onGroupMemberScopeChanged()` of the `GroupListener` class. The callback provides an [`Action`](/sdk/reference/messages#action) object, the updating [`User`](/sdk/reference/entities#user), the updated [`User`](/sdk/reference/entities#user), and the [`Group`](/sdk/reference/entities#group).
 
 <Tabs>
 <Tab title="Java">
@@ -115,61 +115,18 @@ CometChat.addGroupListener("ListenerID", object : CometChat.GroupListener() {
 
 ## Missed Group Member Scope Changed Events
 
-When fetching message history, scope changes appear as `Action` messages with these fields:
+When fetching message history, scope changes appear as [`Action`](/sdk/reference/messages#action) messages with these fields:
 
 1. `action` - `scopeChanged`
-2. `actionOn` - User object containing the details of the user whos scope has been changed
-3. `actionBy` - User object containing the details of the user who changed the scope of the member
-4. `actionFor` - Group object containing the details of the group in which the member scope was changed
+2. `actionOn` - [`User`](/sdk/reference/entities#user) object containing the details of the user whos scope has been changed
+3. `actionBy` - [`User`](/sdk/reference/entities#user) object containing the details of the user who changed the scope of the member
+4. `actionFor` - [`Group`](/sdk/reference/entities#group) object containing the details of the group in which the member scope was changed
 5. `oldScope` - The original scope of the member
 6. `newScope` - The updated scope of the member
 
 <Warning>
 Always remove group listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
 </Warning>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Limit Admin Count">
-    Keep the number of admins small (2-3) to maintain clear ownership and control. Too many admins can lead to conflicts and management issues.
-  </Accordion>
-  <Accordion title="Promote Trusted Members to Moderator">
-    Use the moderator role for trusted members who help manage the group without full admin privileges. This provides a middle tier of authority.
-  </Accordion>
-  <Accordion title="Confirm Before Scope Changes">
-    Prompt admins to confirm before changing member scopes, especially when promoting to admin or demoting from admin/moderator roles.
-  </Accordion>
-  <Accordion title="Track Scope Changes">
-    Listen for scope change events to maintain an audit log of permission changes for security and accountability.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Scope Change Failed - Insufficient Permissions">
-    **Symptom:** `updateGroupMemberScope()` fails with "Insufficient permissions" error.
-    
-    **Cause:** User is not an admin of the group.
-    
-    **Solution:** Only group admins can change member scopes. Moderators cannot change scopes. Check the user's scope before showing this option.
-  </Accordion>
-  <Accordion title="Cannot Change Own Scope">
-    **Symptom:** Admin cannot change their own scope.
-    
-    **Cause:** Admins cannot demote themselves to prevent accidental loss of admin access.
-    
-    **Solution:** Have another admin change your scope, or use [transfer-group-ownership](/sdk/android/transfer-group-ownership) if you want to step down.
-  </Accordion>
-  <Accordion title="Invalid Scope Value">
-    **Symptom:** Scope change fails with "Invalid scope" error.
-    
-    **Cause:** Scope value is not one of the valid constants.
-    
-    **Solution:** Use only `CometChatConstants.SCOPE_ADMIN`, `SCOPE_MODERATOR`, or `SCOPE_PARTICIPANT`.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

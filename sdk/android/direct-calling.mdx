@@ -4,29 +4,6 @@ sidebarTitle: "Call Session"
 description: "Start and manage call sessions with video and audio controls in the Android SDK"
 ---
 
-<Accordion title="AI Integration Quick Reference">
-
-```kotlin
-// Generate token
-val sessionId = "SESSION_ID"
-val userAuthToken = CometChat.getUserAuthToken()
-CometChatCalls.generateToken(sessionId, userAuthToken, object : CometChatCalls.CallbackListener<GenerateToken>() {
-    override fun onSuccess(token: GenerateToken) { /* Start session */ }
-    override fun onError(e: CometChatException) { }
-})
-
-// Start session
-val callSettings = CometChatCalls.CallSettingsBuilder(context, videoContainer)
-    .setDefaultLayoutEnable(true)
-    .setIsAudioOnly(false)
-    .build()
-CometChatCalls.startSession(token, callSettings, callback)
-
-// End session
-CometChatCalls.endSession()
-```
-</Accordion>
-
 A call session is the active media connection between participants — camera, microphone, and the call UI. Whether you arrive here from the [Ringing flow](/sdk/android/default-calling), your own custom UI, or [Standalone Calling](/sdk/android/standalone-calling), this page covers how to manage the session itself. Previously known as **Direct Calling**.
 
 Before you begin, complete the [Calls SDK Setup](/sdk/android/calling-setup).
@@ -682,59 +659,6 @@ CometChatCalls.endSession()
 
 </Tabs>
 
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Always Remove Call Event Listeners">
-    Remove call event listeners in `onDestroy()` or `onPause()` to prevent memory leaks. Use unique listener IDs to manage multiple listeners across different activities or fragments.
-  </Accordion>
-  <Accordion title="Validate Video Container">
-    Ensure the `RelativeLayout` for the video container exists in your XML layout before calling `startSession()`. The container must be visible and properly sized to display video streams.
-  </Accordion>
-  <Accordion title="Handle Token Generation Errors">
-    Always implement error handling for `generateToken()`. Token generation can fail due to network issues or invalid session IDs. Inform users and provide retry options.
-  </Accordion>
-  <Accordion title="Configure Call Settings Appropriately">
-    Set `setIsAudioOnly(true)` for audio-only calls to save bandwidth and improve performance. Use `startWithAudioMuted()` or `startWithVideoMuted()` when appropriate for user privacy.
-  </Accordion>
-  <Accordion title="End Sessions Properly">
-    Always call `endSession()` when leaving the call screen to release camera, microphone, and network resources. For ringing flow, call `CometChat.endCall()` first to notify participants.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Token Generation Failed">
-    **Symptom:** `generateToken()` fails with "Invalid session ID" or "Unauthorized" error.
-    
-    **Cause:** Invalid session ID or user not logged in.
-    
-    **Solution:** Verify the session ID is correct (from `Call` object in ringing flow or generated randomly for standalone). Ensure `CometChat.login()` was called successfully and `getUserAuthToken()` returns a valid token.
-  </Accordion>
-  <Accordion title="Black Screen During Call">
-    **Symptom:** Call starts but shows a black screen instead of video.
-    
-    **Cause:** Video container not properly configured or camera permissions denied.
-    
-    **Solution:** Verify the `RelativeLayout` exists in your XML and is visible. Check that camera permissions are granted in `AndroidManifest.xml` and at runtime. Ensure `setIsAudioOnly(false)` is set for video calls.
-  </Accordion>
-  <Accordion title="Call Session Won't Start">
-    **Symptom:** `startSession()` fails or doesn't trigger any callbacks.
-    
-    **Cause:** Invalid call token or missing calling setup.
-    
-    **Solution:** Ensure you've completed the [Calling Setup](/sdk/android/calling-setup) including adding the Calls SDK dependency. Verify the `GenerateToken` object is valid and not expired. Check that the activity context is valid.
-  </Accordion>
-  <Accordion title="Audio Not Working">
-    **Symptom:** Video works but no audio is transmitted or received.
-    
-    **Cause:** Microphone permissions denied or audio muted.
-    
-    **Solution:** Check that microphone permissions are granted. Verify `startWithAudioMuted(false)` is set. Test audio output device using `setAudioMode()` to switch between speaker and earpiece.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

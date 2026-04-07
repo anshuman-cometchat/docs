@@ -379,7 +379,7 @@ messagesRequest.fetchPrevious(object : CallbackListener<List<BaseMessage?>>() {
 </Tabs>
 
 <Note>
-The list of messages received is in the form of objects of `BaseMessage` class. A `BaseMessage` can either be an object of the `TextMessage`, `MediaMessage`, `CustomMessage`, `Action` or `Call` class. You can use the `instanceOf` operator to check the type of object.
+The list of messages received is in the form of objects of [`BaseMessage`](/sdk/reference/messages#basemessage) class. A `BaseMessage` can either be an object of the [`TextMessage`](/sdk/reference/messages#textmessage), [`MediaMessage`](/sdk/reference/messages#mediamessage), [`CustomMessage`](/sdk/reference/messages#custommessage), [`Action`](/sdk/reference/messages#action) or [`Call`](/sdk/reference/messages#call) class. You can use the `instanceOf` operator to check the type of object.
 </Note>
 
 
@@ -834,7 +834,7 @@ CometChat.getUnreadMessageCountForAllGroups(true, Callbacks)
 
 ## Get Message Details
 
-Use `getMessageDetails()` to fetch a specific message by its ID. Returns the full message object (`TextMessage`, `MediaMessage`, `CustomMessage`, or other `BaseMessage` subclass).
+Use `getMessageDetails()` to fetch a specific message by its ID. Returns the full message object ([`TextMessage`](/sdk/reference/messages#textmessage), [`MediaMessage`](/sdk/reference/messages#mediamessage), [`CustomMessage`](/sdk/reference/messages#custommessage), or other [`BaseMessage`](/sdk/reference/messages#basemessage) subclass).
 
 <Tabs>
 <Tab title="Java">

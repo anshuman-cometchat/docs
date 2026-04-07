@@ -256,7 +256,7 @@ override fun onError(p0: CometChatException?) {
 | --------- | ------------------------------------------------------------ |
 | `GUID`    | The GUID of the group for whom the details are to be fetched |
 
-On success, the `Group` object containing the details of the group is returned.
+On success, the [`Group`](/sdk/reference/entities#group) object containing the details of the group is returned.
 
 ## Get Online Group Member Count
 
@@ -361,48 +361,7 @@ The `Group` object returned by SDK methods contains the following fields:
 </Accordion>
 
 
-## Best Practices
 
-<AccordionGroup>
-  <Accordion title="Use Pagination for Large Lists">
-    Set an appropriate limit (e.g., 30) and call `fetchNext()` multiple times to load groups in batches, improving performance and user experience.
-  </Accordion>
-  <Accordion title="Filter with joinedOnly for User Groups">
-    Use `joinedOnly(true)` to fetch only groups the user has joined, reducing unnecessary data transfer and improving load times.
-  </Accordion>
-  <Accordion title="Implement Search for Better UX">
-    Use `setSearchKeyWord()` to allow users to quickly find specific groups by name, especially in apps with many groups.
-  </Accordion>
-  <Accordion title="Use Tags for Categorization">
-    Organize groups with tags and use `setTags()` to fetch groups by category (e.g., "sports", "work", "friends").
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Empty Groups List">
-    **Symptom:** `fetchNext()` returns an empty list even though groups exist.
-    
-    **Cause:** Filters may be too restrictive, or the user hasn't joined any groups (when using `joinedOnly(true)`).
-    
-    **Solution:** Remove filters temporarily to verify groups exist. Check if `joinedOnly()` is appropriate for your use case.
-  </Accordion>
-  <Accordion title="Private Groups Not Showing">
-    **Symptom:** Private groups are missing from the fetched list.
-    
-    **Cause:** Private groups only appear if the user is a member.
-    
-    **Solution:** This is expected behavior. Users must be added to private groups by admins before they can see them.
-  </Accordion>
-  <Accordion title="getGroup() Returns Null">
-    **Symptom:** `getGroup()` fails with "Group not found" error.
-    
-    **Cause:** The GUID is incorrect, or the group has been deleted.
-    
-    **Solution:** Verify the GUID is correct. Check if the group still exists by fetching the groups list first.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

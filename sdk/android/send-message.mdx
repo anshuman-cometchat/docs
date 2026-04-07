@@ -50,7 +50,7 @@ You can also send [Interactive Messages](/sdk/android/interactive-messages) for 
 
 ## Text Message
 
-Send a text message using `sendMessage()` with a `TextMessage` object.
+Send a text message using `sendMessage()` with a [`TextMessage`](/sdk/reference/messages#textmessage) object.
 
 <Tabs>
 <Tab title="Java (User)">
@@ -142,7 +142,7 @@ The `TextMessage` class constructor takes the following parameters:
 | `messageText` | The text message content | Yes |
 | `receiverType` | `CometChatConstants.RECEIVER_TYPE_USER` or `RECEIVER_TYPE_GROUP` | Yes |
 
-On success, `sendMessage()` returns a `TextMessage` object containing all information about the sent message.
+On success, `sendMessage()` returns a [`TextMessage`](/sdk/reference/messages#textmessage) object containing all information about the sent message.
 
 ### Add Metadata
 
@@ -370,7 +370,7 @@ The `MediaMessage` class constructor takes the following parameters:
 
 ### Send a URL
 
-Send media hosted on your server or cloud storage using the `Attachment` class:
+Send media hosted on your server or cloud storage using the [`Attachment`](/sdk/reference/auxiliary#attachment) class:
 
 <Tabs>
 <Tab title="Java (User)">
@@ -475,7 +475,7 @@ CometChat.sendMediaMessage(mediaMessage, object : CallbackListener<MediaMessage?
 </Tab>
 </Tabs>
 
-On success, `sendMediaMessage()` returns a `MediaMessage` object.
+On success, `sendMediaMessage()` returns a [`MediaMessage`](/sdk/reference/messages#mediamessage) object.
 
 ## Multiple Attachments
 
@@ -725,7 +725,7 @@ CometChat.sendMediaMessage(mediaMessage, object : CallbackListener<MediaMessage?
 
 </Tabs>
 
-When a media message is sent successfully, the response will include a `MediaMessage` object which includes all information related to the sent message.
+When a media message is sent successfully, the response will include a [`MediaMessage`](/sdk/reference/messages#mediamessage) object which includes all information related to the sent message.
 
 You can use the `setMetadata()`, `setCaption()` & `setTags()` methods to add metadata, caption and tags in the same way as a single attachment.
 
@@ -881,7 +881,7 @@ CometChat.sendCustomMessage(customMessage, object : CallbackListener<CustomMessa
 
 </Tabs>
 
-On success, `sendCustomMessage()` returns a `CustomMessage` object.
+On success, `sendCustomMessage()` returns a [`CustomMessage`](/sdk/reference/messages#custommessage) object.
 
 ### Control Conversation Update
 

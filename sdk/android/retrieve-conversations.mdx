@@ -462,12 +462,12 @@ The `Conversation` object consists of the following fields:
 | `conversationId`     | ID of the conversation                                               |
 | `conversationType`   | Type of conversation (user/group)                                    |
 | `lastMessage`        | Last message the conversation                                        |
-| `conversationWith`   | `User` or `Group` object containing the details of the user or group |
+| `conversationWith`   | [`User`](/sdk/reference/entities#user) or [`Group`](/sdk/reference/entities#group) object containing the details of the user or group |
 | `unreadMessageCount` | Unread message count for the conversation                            |
 
 ## Tag Conversation
 
-Use `tagConversation()` to add tags to a conversation.
+Use `tagConversation()` to add tags to a [`Conversation`](/sdk/reference/entities#conversation).
 
 | Parameter | Description |
 | --- | --- |
@@ -530,7 +530,7 @@ The tags for conversations are one-way. This means that if user A tags a convers
 
 ## Retrieve Single Conversation
 
-Use `getConversation()` to fetch a specific conversation.
+Use `getConversation()` to fetch a specific [`Conversation`](/sdk/reference/entities#conversation).
 
 | Parameter | Description |
 | --- | --- |
@@ -576,7 +576,7 @@ CometChat.getConversation(conversationWith, conversationType, new CometChat.Call
 
 ## Convert Messages to Conversations
 
-Use `CometChatHelper.getConversationFromMessage()` to convert a received message into a `Conversation` object. Useful for updating your Recent Chats list when receiving real-time messages.
+Use `CometChatHelper.getConversationFromMessage()` to convert a received message into a [`Conversation`](/sdk/reference/entities#conversation) object. Useful for updating your Recent Chats list when receiving real-time messages.
 
 <Tabs>
 <Tab title="Java">
@@ -597,7 +597,7 @@ val conversation = CometChatHelper.getConversationFromMessage(message)
 
 <Note>
 
-While converting a `Message` object to a `Conversation` object, the `unreadMessageCount` & `tags` will not be available in the `Conversation` object. The unread message count needs to be managed in your client-side code.
+While converting a [`Message`](/sdk/reference/messages#basemessage) object to a [`Conversation`](/sdk/reference/entities#conversation) object, the `unreadMessageCount` & `tags` will not be available in the `Conversation` object. The unread message count needs to be managed in your client-side code.
 
 </Note>
 
@@ -612,7 +612,7 @@ The `Conversation` object returned by SDK methods contains the following fields:
 | `conversationId` | String | Unique conversation identifier |
 | `conversationType` | String | Type of conversation. Values: `"user"`, `"group"` |
 | `conversationWith` | AppEntity | The [User](#user-object-conversation) or [Group](#group-object-conversation) in the conversation |
-| `lastMessage` | [BaseMessage](#lastmessage-object) | Last message in the conversation |
+| `lastMessage` | [BaseMessage](/sdk/reference/messages#basemessage) | Last message in the conversation |
 | `unreadMessageCount` | int | Number of unread messages in the conversation |
 | `unreadMentionsCount` | int | Number of unread mentions in the conversation |
 | `updatedAt` | long | Unix timestamp of last conversation update |
@@ -721,52 +721,6 @@ The `lastMessage` field contains a BaseMessage object with key fields:
 | `sender` | User | User who sent the message |
 
 </Accordion>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Use Pagination for Performance">
-    Set a reasonable limit (30-50) and fetch conversations in batches. Maximum limit is 50 conversations per request.
-  </Accordion>
-  <Accordion title="Filter by Conversation Type">
-    Use `setConversationType()` to fetch only user or group conversations when building separate tabs or views.
-  </Accordion>
-  <Accordion title="Implement Search for Large Lists">
-    Enable "Conversation & Advanced Search" in Dashboard and use `setSearchKeyword()` for better user experience with many conversations.
-  </Accordion>
-  <Accordion title="Use Tags for Organization">
-    Tag conversations (e.g., "archived", "pinned", "important") to organize and filter conversations based on user preferences.
-  </Accordion>
-  <Accordion title="Handle Unread Count Client-Side">
-    When converting messages to conversations, manage unread counts in your app since they're not included in the conversion.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Empty Conversations List">
-    **Symptom:** `fetchNext()` returns an empty list even though conversations exist.
-    
-    **Cause:** User hasn't sent or received any messages, or filters are too restrictive.
-    
-    **Solution:** Remove filters temporarily to verify conversations exist. Check if the user has participated in any chats.
-  </Accordion>
-  <Accordion title="Search Not Working">
-    **Symptom:** `setSearchKeyword()` doesn't filter conversations.
-    
-    **Cause:** "Conversation & Advanced Search" feature not enabled in Dashboard.
-    
-    **Solution:** Enable the feature in [CometChat Dashboard](https://app.cometchat.com) under Chats → Settings → General Configuration. Available in Advanced & Custom plans only.
-  </Accordion>
-  <Accordion title="Unread Filter Not Working">
-    **Symptom:** `setUnread(true)` doesn't filter unread conversations.
-    
-    **Cause:** "Conversation & Advanced Search" feature not enabled.
-    
-    **Solution:** Enable the feature in Dashboard. This is a premium feature available in Advanced & Custom plans.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

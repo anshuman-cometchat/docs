@@ -44,7 +44,7 @@ Every message in CometChat belongs to a category and has a specific type within 
 
 ## Checking Message Category and Type
 
-Use `getCategory()` and `getType()` to determine how to handle a received message:
+Use `getCategory()` and `getType()` on a [`BaseMessage`](/sdk/reference/messages#basemessage) to determine how to handle a received message:
 
 <Tabs>
 <Tab title="Java">
@@ -129,7 +129,7 @@ See [Interactive Messages](/sdk/android/interactive-messages) for full details.
 
 ## Action
 
-System-generated messages triggered by actions on group members or messages.
+System-generated messages triggered by actions on group members or messages. Represented as [`Action`](/sdk/reference/messages#action) objects.
 
 Types: `groupMember`, `message`.
 
@@ -141,27 +141,10 @@ The `action` property specifies what happened:
 
 ## Call
 
-Call-related messages. Types: `audio`, `video`.
+Call-related messages. Types: `audio`, `video`. Represented as [`Call`](/sdk/reference/messages#call) objects.
 
 The `status` property indicates the call state: `initiated`, `ongoing`, `canceled`, `rejected`, `unanswered`, `busy`, `ended`.
 
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Check Message Category Before Casting">
-    Always check the message category using `message.getCategory()` before casting to specific message types (TextMessage, MediaMessage, etc.) to avoid ClassCastException errors.
-  </Accordion>
-  <Accordion title="Handle All Message Types">
-    Implement handlers for all message categories and types your app supports. Use a default case to handle unknown or future message types gracefully.
-  </Accordion>
-  <Accordion title="Use Custom Messages for Special Content">
-    Use custom messages with unique types for content that doesn't fit standard categories (e.g., location sharing, polls, stickers). This keeps your implementation flexible and extensible.
-  </Accordion>
-  <Accordion title="Filter Messages by Category">
-    Use `MessagesRequest.setCategories()` to fetch only the message categories you need. This improves performance and reduces unnecessary data transfer.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

@@ -24,7 +24,7 @@ This page covers Android-specific lifecycle patterns for `LoginListener`. For th
 
 ## Android Activity/Fragment Example
 
-Register the listener in `onCreate()` and remove it in `onDestroy()` to follow the Android lifecycle:
+Register the listener in `onCreate()` and remove it in `onDestroy()` to follow the Android lifecycle. Callbacks provide [`User`](/sdk/reference/entities#user) objects on success and [`CometChatException`](/sdk/reference/auxiliary#cometchatexception) on failure:
 
 <Tabs>
 <Tab title="Java">
@@ -110,23 +110,6 @@ class MainActivity : AppCompatActivity() {
 <Warning>
 Always remove login listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
 </Warning>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Use Login Listeners for Session Management">
-    Use `loginSuccess()` to initialize user-specific data (fetch conversations, register message listeners) and `logoutSuccess()` to clean up resources and navigate to the login screen.
-  </Accordion>
-  <Accordion title="Handle Login Failures Gracefully">
-    In `loginFailure()`, parse the `CometChatException` to show user-friendly error messages (e.g., "Invalid credentials", "Network error"). Provide retry options for transient failures.
-  </Accordion>
-  <Accordion title="Register Listeners Early">
-    Register login listeners before calling `CometChat.login()` to ensure you don't miss any events. Register in `onCreate()` or before authentication attempts.
-  </Accordion>
-  <Accordion title="Remove Listeners on Logout">
-    Remove all listeners (message, user, group, call) in `logoutSuccess()` to prevent receiving events after logout. This ensures a clean session termination.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

@@ -71,7 +71,7 @@ Once a group is left, the user will no longer receive any updates or messages pe
 
 ## Real-Time Group Member Left Events
 
-When a user leaves a group, members receive a real-time event in `onGroupMemberLeft()` of the `GroupListener` class.
+When a user leaves a group, members receive a real-time event in `onGroupMemberLeft()` of the `GroupListener` class. The callback provides an [`Action`](/sdk/reference/messages#action) object, the left [`User`](/sdk/reference/entities#user), and the [`Group`](/sdk/reference/entities#group).
 
 <Tabs>
 <Tab title="Java">
@@ -101,48 +101,15 @@ CometChat.addGroupListener(UNIQUE_LISTENER_ID, object : GroupListener() {
 
 ## Missed Group Member Left Events
 
-When fetching message history, if a member left a group the logged-in user is part of, the list will contain an `Action` message with these fields:
+When fetching message history, if a member left a group the logged-in user is part of, the list will contain an [`Action`](/sdk/reference/messages#action) message with these fields:
 
 1. `action` - `left`
-2. `actionBy` - User object containing the details of the user who left the group
-3. `actionFor` - Group object containing the details of the group the user has left
+2. `actionBy` - [`User`](/sdk/reference/entities#user) object containing the details of the user who left the group
+3. `actionFor` - [`Group`](/sdk/reference/entities#group) object containing the details of the group the user has left
 
 <Warning>
 Always remove group listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
 </Warning>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Confirm Before Leaving">
-    Prompt users to confirm before leaving a group, especially for private groups where rejoining requires an invitation.
-  </Accordion>
-  <Accordion title="Clean Up Local Data">
-    After leaving a group, consider clearing cached messages and group data from local storage to free up space.
-  </Accordion>
-  <Accordion title="Handle Leave Events in UI">
-    Update your UI immediately when receiving leave events to reflect the current group membership status.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Leave Failed - Not a Member">
-    **Symptom:** `leaveGroup()` fails with "Not a member" error.
-    
-    **Cause:** User is not currently a member of the group.
-    
-    **Solution:** Check the `hasJoined` property of the Group object before attempting to leave.
-  </Accordion>
-  <Accordion title="Leave Failed - Last Admin">
-    **Symptom:** `leaveGroup()` fails when trying to leave as the last admin.
-    
-    **Cause:** Groups require at least one admin. The last admin cannot leave without transferring ownership or deleting the group.
-    
-    **Solution:** Either [transfer ownership](/sdk/android/transfer-group-ownership) to another member or [delete the group](/sdk/android/delete-group) if you want to remove it entirely.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

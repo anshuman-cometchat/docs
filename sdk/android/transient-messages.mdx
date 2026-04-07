@@ -4,29 +4,11 @@ sidebarTitle: "Transient Messages"
 description: "Send and receive ephemeral real-time messages that are not stored on the server using the CometChat Android SDK. Ideal for live reactions and temporary indicators."
 ---
 
-<Accordion title="AI Integration Quick Reference">
-
-```kotlin
-// Send transient message to user
-val data = JSONObject()
-data.put("LIVE_REACTION", "heart")
-val transientMessage = TransientMessage("UID", CometChatConstants.RECEIVER_TYPE_USER, data)
-CometChat.sendTransientMessage(transientMessage)
-
-// Receive transient messages
-CometChat.addMessageListener("LISTENER_ID", object : MessageListener() {
-    override fun onTransientMessageReceived(transientMessage: TransientMessage) {
-        Log.d(TAG, "Transient message: ${transientMessage.data}")
-    }
-})
-```
-</Accordion>
-
 Transient messages are messages that are sent in real-time only and are not saved or tracked anywhere. The receiver of the message will only receive the message if he is online and these messages cannot be retrieved later.
 
 ## Send a Transient Message
 
-You can use the `sendTransientMessage()` method to send a transient message to a user or in a group. The receiver will receive this information in the `onTransientMessageReceived()` method of the `MessageListener` class. In order to send the transient message, you need to use the `TransientMessage` class.
+You can use the `sendTransientMessage()` method to send a transient message to a user or in a group. The receiver will receive this information in the `onTransientMessageReceived()` method of the `MessageListener` class. In order to send the transient message, you need to use the [`TransientMessage`](/sdk/reference/auxiliary#transientmessage) class.
 
 <Tabs>
 <Tab title="Java">
@@ -91,7 +73,7 @@ The `TransientMessage` class consists of the below parameters:
 
 | Parameter        | Information                                                                                              |
 | ---------------- | -------------------------------------------------------------------------------------------------------- |
-| **sender**       | An object of the User class holding all the information. related to the sender of the transient message. |
+| **sender**       | An object of the [`User`](/sdk/reference/entities#user) class holding all the information. related to the sender of the transient message. |
 | **receiverId**   | Unique Id of the receiver. This can be the Id of the group or the user the transient message is sent to. |
 | **receiverType** | The type of the receiver - `CometChatConstants.RECEIVER_TYPE_USER` or `CometChatConstants.RECEIVER_TYPE_GROUP` |
 | **data**         | A JSONObject to provide data.                                                                            |
@@ -99,20 +81,6 @@ The `TransientMessage` class consists of the below parameters:
 <Warning>
 Always remove listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
 </Warning>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Use for Ephemeral Events Only">
-    Transient messages are ideal for temporary events like typing indicators, live reactions, or presence updates. For messages that need to be stored or retrieved later, use regular text or custom messages instead.
-  </Accordion>
-  <Accordion title="Keep Data Payload Small">
-    Since transient messages are sent in real-time, keep the data payload minimal to reduce network overhead and improve delivery speed. Avoid sending large objects or binary data.
-  </Accordion>
-  <Accordion title="Handle Offline Recipients Gracefully">
-    Transient messages are only delivered to online users. If delivery confirmation is critical, implement a fallback mechanism using regular messages or check user presence before sending.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

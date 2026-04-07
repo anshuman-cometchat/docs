@@ -25,7 +25,7 @@ CometChat.addMembersToGroup("GUID", members, null,
 
 ## Add Members to Group
 
-Use `addMembersToGroup()` with the group GUID, a list of `GroupMember` objects, and an optional list of UIDs to ban.
+Use `addMembersToGroup()` with the group GUID, a list of [`GroupMember`](/sdk/reference/entities#groupmember) objects, and an optional list of UIDs to ban.
 
 <Tabs>
 <Tab title="Java">
@@ -74,7 +74,7 @@ In the `onSuccess()` method of the `CallbackListener`, you will receive a HashMa
 
 ## Real-Time Group Member Added Events
 
-When a member is added to a group, existing members receive a real-time event in `onMemberAddedToGroup()` of the `GroupListener` class.
+When a member is added to a group, existing members receive a real-time event in `onMemberAddedToGroup()` of the `GroupListener` class. The callback provides an [`Action`](/sdk/reference/messages#action) object, the adding [`User`](/sdk/reference/entities#user), the added [`User`](/sdk/reference/entities#user), and the [`Group`](/sdk/reference/entities#group).
 
 <Note>
 When a member is added by another user, `onMemberAddedToGroup()` fires. When a user joins on their own, `onGroupMemberJoined()` fires instead.
@@ -108,12 +108,12 @@ CometChat.addGroupListener("UNIQUE_ID", object : CometChat.GroupListener() {
 
 ## Member Added to Group event in Message History
 
-When fetching message history, if a member was added to a group the logged-in user is part of, the list will contain an `Action` message with these fields:
+When fetching message history, if a member was added to a group the logged-in user is part of, the list will contain an [`Action`](/sdk/reference/messages#action) message with these fields:
 
 1. `action` - `added`
-2. `actionOn` - User object containing the details of the user who was added to the group
-3. `actionBy` - User object containing the details of the user who added the member to the group
-4. `actionFor` - Group object containing the details of the group to which the member was added
+2. `actionOn` - [`User`](/sdk/reference/entities#user) object containing the details of the user who was added to the group
+3. `actionBy` - [`User`](/sdk/reference/entities#user) object containing the details of the user who added the member to the group
+4. `actionFor` - [`Group`](/sdk/reference/entities#group) object containing the details of the group to which the member was added
 
 <Warning>
 Always remove group listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
@@ -123,7 +123,7 @@ Always remove group listeners when they're no longer needed (e.g., in `onDestroy
 
 <Accordion title="GroupMember Object">
 
-The `GroupMember` object extends `User` and contains all User fields plus group-specific fields:
+The [`GroupMember`](/sdk/reference/entities#groupmember) object extends [`User`](/sdk/reference/entities#user) and contains all User fields plus group-specific fields:
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -169,49 +169,6 @@ The `GroupMember` object extends `User` and contains all User fields plus group-
 ```
 
 </Accordion>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Assign Appropriate Scopes">
-    Choose member scopes carefully: ADMIN for full control, MODERATOR for moderation tasks, PARTICIPANT for regular members. Limit admin count to maintain control.
-  </Accordion>
-  <Accordion title="Batch Add Members">
-    Add multiple members in a single call instead of multiple individual calls to improve performance and reduce API overhead.
-  </Accordion>
-  <Accordion title="Handle Partial Success">
-    Check the result HashMap for each UID - some additions may succeed while others fail. Handle each case appropriately in your UI.
-  </Accordion>
-  <Accordion title="Validate UIDs Before Adding">
-    Verify user UIDs exist before attempting to add them to avoid unnecessary API errors.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Add Failed - Insufficient Permissions">
-    **Symptom:** `addMembersToGroup()` fails with "Insufficient permissions" error.
-    
-    **Cause:** User is not an admin or moderator of the group.
-    
-    **Solution:** Only admins and moderators can add members. Check the user's scope before showing add member options.
-  </Accordion>
-  <Accordion title="Some Members Not Added">
-    **Symptom:** Result HashMap shows errors for some UIDs.
-    
-    **Cause:** UIDs may not exist, users may already be members, or users may be banned.
-    
-    **Solution:** Check the error message for each UID in the result HashMap. Verify UIDs exist and users aren't already members or banned.
-  </Accordion>
-  <Accordion title="Cannot Add to Private Group">
-    **Symptom:** Adding members to private group fails.
-    
-    **Cause:** Private groups have restricted membership.
-    
-    **Solution:** Ensure you have admin or moderator permissions. Private groups require explicit member additions by authorized users.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

@@ -112,52 +112,6 @@ fun callWithRetry(apiCall: () -> Unit, maxRetries: Int = 3, attempt: Int = 0) {
 
 ---
 
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Monitor Rate Limit Headers">
-    Always check the `X-Rate-Limit-Remaining` header in API responses to track how many requests you have left in the current minute. Implement logic to slow down requests when approaching the limit.
-  </Accordion>
-  <Accordion title="Implement Exponential Backoff">
-    When you receive a 429 response, implement exponential backoff retry logic. Use the `Retry-After` header value to determine when to retry the request.
-  </Accordion>
-  <Accordion title="Batch Operations When Possible">
-    Group multiple operations into batch requests where the API supports it. This reduces the total number of API calls and helps stay within rate limits.
-  </Accordion>
-  <Accordion title="Cache Data Locally">
-    Cache user lists, group information, and other frequently accessed data locally to reduce the number of API calls. Only fetch fresh data when necessary.
-  </Accordion>
-  <Accordion title="Request Limit Increase for Production">
-    If your application consistently hits rate limits, contact CometChat support to discuss increasing limits based on your use case and plan. Rate limits can be adjusted per-need basis.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Frequent 429 Errors">
-    **Symptom:** Application frequently receives 429 (Too Many Requests) responses.
-    
-    **Cause:** Your application is making too many API requests within the rate limit window (1 minute).
-    
-    **Solution:** Implement request throttling on the client side. Monitor `X-Rate-Limit-Remaining` header and slow down requests when approaching the limit. Consider caching data locally to reduce API calls. If legitimate high volume, contact support for limit increase.
-  </Accordion>
-  <Accordion title="Rate Limit Reset Time Confusion">
-    **Symptom:** Unclear when rate limit will reset after hitting the limit.
-    
-    **Cause:** Misunderstanding the `X-Rate-Limit-Reset` header format.
-    
-    **Solution:** The `X-Rate-Limit-Reset` header contains a Unix timestamp (seconds since epoch). Convert it to a readable date/time in your timezone. The `Retry-After` header provides seconds to wait, which is often simpler to use.
-  </Accordion>
-  <Accordion title="Unexpected Rate Limit Hits">
-    **Symptom:** Rate limits are hit even though the app doesn't seem to be making many requests.
-    
-    **Cause:** Multiple instances of your app (different users, devices, or servers) share the same rate limit pool. Background sync or polling may be consuming quota.
-    
-    **Solution:** Rate limits are per app, not per user or device. Audit all API calls including background operations. Implement efficient polling strategies (use WebSocket for real-time updates instead of polling). Consider request prioritization to ensure critical operations succeed.
-  </Accordion>
-</AccordionGroup>
-
 ## Next Steps
 
 <CardGroup cols={2}>

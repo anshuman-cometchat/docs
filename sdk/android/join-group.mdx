@@ -77,11 +77,11 @@ Once you have joined a group successfully, you can send and receive messages in 
 
 CometChat keeps track of the groups you have joined, so you do not need to join the group every time you want to communicate in it.
 
-You can identify if a group is joined using the `hasJoined` parameter in the `Group` object.
+You can identify if a group is joined using the `hasJoined` parameter in the [`Group`](/sdk/reference/entities#group) object.
 
 ## Real-Time Group Member Joined Events
 
-When a user joins a group, members receive a real-time event in `onGroupMemberJoined()` of the `GroupListener` class.
+When a user joins a group, members receive a real-time event in `onGroupMemberJoined()` of the `GroupListener` class. The callback provides an [`Action`](/sdk/reference/messages#action) object, the joined [`User`](/sdk/reference/entities#user), and the [`Group`](/sdk/reference/entities#group).
 
 <Tabs>
 <Tab title="Java">
@@ -111,55 +111,15 @@ CometChat.addGroupListener(UNIQUE_LISTENER_ID, object : GroupListener() {
 
 ## Missed Group Member Joined Events
 
-When fetching message history, if a member joined a group the logged-in user is part of, the list will contain an `Action` message with these fields:
+When fetching message history, if a member joined a group the logged-in user is part of, the list will contain an [`Action`](/sdk/reference/messages#action) message with these fields:
 
 1. `action` - `joined`
-2. `actionBy` - User object containing the details of the user who joined the group
-3. `actionFor` - Group object containing the details of the group the user has joined
+2. `actionBy` - [`User`](/sdk/reference/entities#user) object containing the details of the user who joined the group
+3. `actionFor` - [`Group`](/sdk/reference/entities#group) object containing the details of the group the user has joined
 
 <Warning>
 Always remove group listeners when they're no longer needed (e.g., in `onDestroy()` or when navigating away). Failing to remove listeners can cause memory leaks and duplicate event handling.
 </Warning>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Check hasJoined Before Joining">
-    Use the `hasJoined` property of the Group object to avoid attempting to join groups you're already a member of.
-  </Accordion>
-  <Accordion title="Handle Password-Protected Groups">
-    Always prompt users for passwords when joining password-protected groups. Store passwords securely if needed for re-authentication.
-  </Accordion>
-  <Accordion title="Listen for Join Events">
-    Register group listeners to receive real-time notifications when other users join groups you're a member of.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Join Failed - Already a Member">
-    **Symptom:** `joinGroup()` fails with "Already a member" error.
-    
-    **Cause:** User is already a member of the group.
-    
-    **Solution:** Check the `hasJoined` property before calling `joinGroup()`. CometChat tracks joined groups automatically.
-  </Accordion>
-  <Accordion title="Join Failed - Incorrect Password">
-    **Symptom:** `joinGroup()` fails with "Incorrect password" error for password-protected groups.
-    
-    **Cause:** Wrong password provided for a password-protected group.
-    
-    **Solution:** Verify the password is correct. Passwords are case-sensitive.
-  </Accordion>
-  <Accordion title="Join Failed - Private Group">
-    **Symptom:** `joinGroup()` fails with "Cannot join private group" error.
-    
-    **Cause:** Attempting to join a private group without an invitation.
-    
-    **Solution:** Private groups require an admin or moderator to add members. Use the [group-add-members](/sdk/android/group-add-members) functionality instead.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

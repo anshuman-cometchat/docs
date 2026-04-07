@@ -4,79 +4,11 @@ sidebarTitle: "Reactions"
 description: "Add, remove, and fetch message reactions in real-time using the CometChat Android SDK. Includes listener events and helper methods for updating UI."
 ---
 
-<Accordion title="AI Integration Quick Reference">
-
-<Tabs>
-<Tab title="Kotlin">
-```kotlin
-// Add reaction
-CometChat.addReaction(messageId, "😊", object : CallbackListener<BaseMessage>() {
-    override fun onSuccess(message: BaseMessage) { }
-    override fun onError(e: CometChatException) { }
-})
-
-// Remove reaction
-CometChat.removeReaction(messageId, "😊", object : CallbackListener<BaseMessage>() {
-    override fun onSuccess(message: BaseMessage) { }
-    override fun onError(e: CometChatException) { }
-})
-
-// Fetch reactions for a message
-val reactionRequest = ReactionsRequest.ReactionsRequestBuilder()
-    .setMessageId(messageId)
-    .setLimit(30)
-    .build()
-reactionRequest.fetchNext(callback)
-
-// Listen for real-time reaction events
-CometChat.addMessageListener(listenerID, object : CometChat.MessageListener() {
-    override fun onMessageReactionAdded(reactionEvent: ReactionEvent) { }
-    override fun onMessageReactionRemoved(reactionEvent: ReactionEvent) { }
-})
-```
-</Tab>
-<Tab title="Java">
-```java
-// Add reaction
-CometChat.addReaction(messageId, "😊", new CallbackListener<BaseMessage>() {
-    @Override
-    public void onSuccess(BaseMessage message) { }
-    @Override
-    public void onError(CometChatException e) { }
-});
-
-// Remove reaction
-CometChat.removeReaction(messageId, "😊", new CallbackListener<BaseMessage>() {
-    @Override
-    public void onSuccess(BaseMessage message) { }
-    @Override
-    public void onError(CometChatException e) { }
-});
-
-// Fetch reactions for a message
-ReactionsRequest reactionRequest = new ReactionsRequest.ReactionsRequestBuilder()
-    .setMessageId(messageId)
-    .setLimit(30)
-    .build();
-reactionRequest.fetchNext(callback);
-
-// Listen for real-time reaction events
-CometChat.addMessageListener(listenerID, new CometChat.MessageListener() {
-    @Override
-    public void onMessageReactionAdded(ReactionEvent reactionEvent) { }
-    @Override
-    public void onMessageReactionRemoved(ReactionEvent reactionEvent) { }
-});
-```
-</Tab>
-</Tabs>
-</Accordion>
-
 Reactions let users respond to messages with emoji. You can add or remove reactions, fetch all reactions on a message, listen for reaction events in real time, and update your UI when reactions change.
 
 ## Add a Reaction
 
-Users can add a reaction to a message by calling `addReaction` with the message ID and the reaction emoji.
+Users can add a reaction to a message by calling `addReaction` with the message ID and the reaction emoji. On success, returns a [`BaseMessage`](/sdk/reference/messages#basemessage) object with updated reactions.
 
 <Tabs>
 <Tab title="Java">
@@ -396,7 +328,7 @@ message.reactions
 
 ## Check if Logged-in User has Reacted on Message
 
-To check if the logged-in user has reacted on a particular message or not, You can use the `getReactedByMe()` method on any `ReactionCount` object instance. This method will return a boolean value, `true` if the logged-in user has reacted on that message, otherwise `false`.
+To check if the logged-in user has reacted on a particular message or not, You can use the `getReactedByMe()` method on any [`ReactionCount`](/sdk/reference/auxiliary#reactioncount) object instance. This method will return a boolean value, `true` if the logged-in user has reacted on that message, otherwise `false`.
 
 <Tabs>
 <Tab title="Java">
@@ -423,7 +355,7 @@ for (reactionCount in message.reactions) {
 
 When a user adds or removes a reaction, you will receive a real-time event. Once you receive the real time event you would want to update the message with the latest reaction information. To do so you can use the `updateMessageWithReactionInfo()` method.
 
-The `updateMessageWithReactionInfo()` method provides a seamless way to update the reactions on a message instance (`BaseMessage`) in real-time. This method ensures that when a reaction is added or removed from a message, the BaseMessage object's getReactions() property reflects this change immediately.
+The `updateMessageWithReactionInfo()` method provides a seamless way to update the reactions on a message instance ([`BaseMessage`](/sdk/reference/messages#basemessage)) in real-time. This method ensures that when a reaction is added or removed from a message, the BaseMessage object's getReactions() property reflects this change immediately.
 
 When you receive a real-time reaction event (`ReactionEvent`), call the `updateMessageWithReactionInfo()` method, passing the `BaseMessage` instance (message), the inner `Reaction` from the event (for example `reactionEvent.getReaction()`), and the reaction event action type (`CometChatConstants.REACTION_ADDED` or `CometChatConstants.REACTION_REMOVED`) that corresponds to the message being reacted to.
 
@@ -553,23 +485,6 @@ When accessing reactions on a message via `message.getReactions()`, each `Reacti
 ```
 
 </Accordion>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Limit Reaction Types">
-    Define a specific set of allowed emoji reactions in your app to maintain consistency and prevent inappropriate reactions. Consider using a reaction picker UI component with predefined options.
-  </Accordion>
-  <Accordion title="Update UI Optimistically">
-    Update your UI immediately when a user adds or removes a reaction, then handle the server response. This provides instant feedback and improves perceived performance.
-  </Accordion>
-  <Accordion title="Use updateMessageWithReactionInfo()">
-    Always use `CometChatHelper.updateMessageWithReactionInfo()` when receiving real-time reaction events to keep your message objects synchronized with the latest reaction data.
-  </Accordion>
-  <Accordion title="Handle Reaction Limits">
-    Consider implementing limits on the number of reactions per message or per user to prevent spam and maintain a clean UI.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

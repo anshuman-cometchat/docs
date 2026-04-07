@@ -4,29 +4,11 @@ sidebarTitle: "Recording"
 description: "Record calls and access recordings from the Dashboard using the Android SDK"
 ---
 
-<Accordion title="AI Integration Quick Reference">
-
-```kotlin
-// Configure call settings with recording
-val callSettings = CallSettingsBuilder(this, videoContainer)
-    .setSessionId(sessionId)
-    .showCallRecordButton(true)
-    .startRecordingOnCallStart(false)
-    .build()
-
-// Start recording manually
-CallManager.getInstance().startRecording()
-
-// Stop recording
-CallManager.getInstance().stopRecording()
-```
-</Accordion>
-
 Record voice and video calls for playback, compliance, or archival purposes. Recording is built on top of the [Call Session](/sdk/android/direct-calling) — add recording listeners to your call settings and optionally control recording programmatically.
 
 ## Implementation
 
-Add `onRecordingStarted` and `onRecordingStopped` callbacks to your `OngoingCallListener` when building call settings. These fire for all participants when any user starts or stops recording.
+Add `onRecordingStarted` and `onRecordingStopped` callbacks to your `OngoingCallListener` when building call settings. These fire for all participants when any user starts or stops recording. The callbacks receive a [`User`](/sdk/reference/entities#user) object identifying who toggled recording.
 
 <Tabs>
 <Tab title="Java">
@@ -117,23 +99,6 @@ CallManager.getInstance().stopRecording()
 
 </Tabs>
 
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Inform Users About Recording">
-    Always notify participants when recording starts or stops. Use the `onRecordingStarted()` and `onRecordingStopped()` callbacks to display visual indicators (e.g., a red recording icon) in your UI.
-  </Accordion>
-  <Accordion title="Check Recording Permissions">
-    Ensure your app has the necessary permissions to record audio and video. Request permissions at runtime and handle cases where users deny recording permissions.
-  </Accordion>
-  <Accordion title="Use Auto-Recording Sparingly">
-    Only enable `startRecordingOnCallStart(true)` when required by your use case (e.g., compliance, training). For most applications, let users manually control recording to respect privacy.
-  </Accordion>
-  <Accordion title="Access Recordings from Dashboard">
-    Recordings are stored on CometChat servers and can be accessed from the [Dashboard](https://app.cometchat.com). Inform users where they can find their recordings after the call ends.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

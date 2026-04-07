@@ -25,7 +25,7 @@ CometChat.createGroupWithMembers(group, groupMembers, emptyList(), callback)
 
 ## Create a Group
 
-Use `createGroup()` with a `Group` object. The `groupType` must be one of:
+Use `createGroup()` with a [`Group`](/sdk/reference/entities#group) object. The `groupType` must be one of:
 
 1. `CometChatConstants.GROUP_TYPE_PUBLIC`
 2. `CometChatConstants.GROUP_TYPE_PASSWORD`
@@ -94,7 +94,7 @@ GUID can be alphanumeric with underscore and hyphen. Spaces, punctuation, and ot
 
 ## Add members while creating a group
 
-You can create a group and add members at the same time using the `createGroupWithMembers()` method. This method takes the `Group` object, an array of `GroupMember` objects to be added, and an array of `UIDs` to be banned.
+You can create a group and add members at the same time using the `createGroupWithMembers()` method. This method takes the [`Group`](/sdk/reference/entities#group) object, an array of [`GroupMember`](/sdk/reference/entities#groupmember) objects to be added, and an array of `UIDs` to be banned.
 
 To create an object of the `Group` class, you can use either of the following constructors:
 
@@ -107,7 +107,7 @@ The `groupType` needs to be one of the following values:
 2. `CometChat.GROUP_TYPE.PASSWORD`
 3. `CometChat.GROUP_TYPE.PRIVATE`
 
-To create an object of the `GroupMember` class, you can use the following constructor:
+To create an object of the [`GroupMember`](/sdk/reference/entities#groupmember) class, you can use the following constructor:
 
 * `new GroupMember(String UID, String scope)`
 
@@ -250,38 +250,7 @@ The `Group` object returned by SDK methods contains the following fields:
 
 </Accordion>
 
-## Best Practices
 
-<AccordionGroup>
-  <Accordion title="Use Descriptive Group Names and GUIDs">
-    Choose meaningful GUIDs and names that help identify groups. GUIDs should be alphanumeric with underscores/hyphens only - avoid spaces and special characters.
-  </Accordion>
-  <Accordion title="Set Appropriate Group Type">
-    Use PUBLIC for open communities, PRIVATE for invite-only groups, and PASSWORD for semi-private groups. Choose based on your privacy requirements.
-  </Accordion>
-  <Accordion title="Add Metadata for Custom Properties">
-    Use the metadata field to store custom group properties like categories, tags, or business-specific data without creating custom group types.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Group Creation Failed - Invalid GUID">
-    **Symptom:** `createGroup()` fails with "Invalid GUID" error.
-    
-    **Cause:** GUID contains spaces, punctuation, or special characters other than underscore and hyphen.
-    
-    **Solution:** Use only alphanumeric characters, underscores, and hyphens in GUIDs. Example: `"my_group_123"` or `"group-abc-456"`.
-  </Accordion>
-  <Accordion title="Group Already Exists">
-    **Symptom:** `createGroup()` fails with "Group already exists" error.
-    
-    **Cause:** A group with the same GUID already exists in your app.
-    
-    **Solution:** Use unique GUIDs for each group. Consider using UUIDs or timestamp-based identifiers to ensure uniqueness.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

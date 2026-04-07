@@ -77,7 +77,7 @@ CometChat.deleteMessage(messageId,object : CometChat.CallbackListener<BaseMessag
 | deletedAt | `getDeletedAt()` | `long` | Timestamp when the message was deleted |
 | deletedBy | `getDeletedBy()` | `String` | UID of the user who deleted the message |
 
-Once the message is deleted, In the `onSuccess()` callback, you get an object of the `BaseMessage` class, with the `deletedAt` field set with the timestamp of the time the message was deleted. Also, the `deletedBy` field is set. These two fields can be used to identify if the message is deleted while iterating through a list of messages.
+Once the message is deleted, In the `onSuccess()` callback, you get an object of the [`BaseMessage`](/sdk/reference/messages#basemessage) class, with the `deletedAt` field set with the timestamp of the time the message was deleted. Also, the `deletedBy` field is set. These two fields can be used to identify if the message is deleted while iterating through a list of messages.
 
 By default, CometChat allows certain roles to delete a message.
 
@@ -133,9 +133,9 @@ CometChat.removeMessageListener("LISTENER_ID")
 
 ## Missed Message Delete Events
 
-When fetching message history, deleted messages have `deletedAt` and `deletedBy` fields set. Additionally, an `Action` message is created when a message is deleted.
+When fetching message history, deleted messages have `deletedAt` and `deletedBy` fields set. Additionally, an [`Action`](/sdk/reference/messages#action) message is created when a message is deleted.
 
-For the message deleted event, in the `Action` object received, the following fields can help you get the relevant information-
+For the message deleted event, in the [`Action`](/sdk/reference/messages#action) object received, the following fields can help you get the relevant information-
 
 1. `action` - `deleted`
 2. `actionOn` - Updated message object which was deleted.
@@ -149,46 +149,6 @@ In order to delete a message, you need to be either the sender of the message or
 </Note>
 
 ---
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Verify Deletion Permissions">
-    Check user roles before allowing deletions in your UI. Only message senders, group admins, and group moderators can delete messages to prevent unauthorized deletions.
-  </Accordion>
-  <Accordion title="Handle Deleted Messages in UI">
-    Use the `deletedAt` and `deletedBy` fields to identify deleted messages when displaying message history. Consider showing a placeholder like "This message was deleted" instead of removing the message entirely.
-  </Accordion>
-  <Accordion title="Preserve Message Context">
-    When a message is deleted, the message object remains in history with `deletedAt` set. This preserves conversation flow and allows users to see that a message existed but was removed.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Delete Failed - Permission Denied">
-    **Symptom:** `deleteMessage()` fails with "Permission denied" error.
-    
-    **Cause:** User attempting to delete a message they didn't send, or lacking admin/moderator privileges in a group.
-    
-    **Solution:** Verify the logged-in user is either the message sender or has admin/moderator role in the group. Use `message.getSender().getUid()` to check message ownership before allowing deletion.
-  </Accordion>
-  <Accordion title="Delete Failed - Invalid Message ID">
-    **Symptom:** `deleteMessage()` fails with "Message not found" error.
-    
-    **Cause:** The message ID provided doesn't exist or the message was already deleted.
-    
-    **Solution:** Verify the message ID is correct and the message exists. Check if `message.getDeletedAt()` is already set, indicating the message was previously deleted.
-  </Accordion>
-  <Accordion title="Deleted Messages Still Appear">
-    **Symptom:** Deleted messages continue to show in the message list.
-    
-    **Cause:** UI not properly handling the `onMessageDeleted()` callback or not checking the `deletedAt` field when rendering messages.
-    
-    **Solution:** Implement the `onMessageDeleted()` listener to update your UI in real-time. When fetching message history, check if `message.getDeletedAt()` is set and render accordingly.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

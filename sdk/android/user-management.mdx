@@ -35,7 +35,7 @@ When a user registers in your app, create them in CometChat. When they log in, [
 
 ## Creating a user
 
-Ideally, user creation should happen on your backend using the [REST API](https://api-explorer.cometchat.com/reference/creates-user). For on-the-fly creation during development, use the `createUser()` method with a `User` object and your API Key.
+Ideally, user creation should happen on your backend using the [REST API](https://api-explorer.cometchat.com/reference/creates-user). For on-the-fly creation during development, use the `createUser()` method with a [`User`](/sdk/reference/entities#user) object and your API Key.
 
 <Tabs>
 <Tab title="Java">
@@ -94,7 +94,7 @@ UID can be alphanumeric with underscore and hyphen. Spaces, punctuation and othe
 
 ## Updating a user
 
-Use `updateUser()` with a `User` object and API Key. Ideally done on your backend via the [REST API](https://api-explorer.cometchat.com/reference/update-user).
+Use `updateUser()` with a [`User`](/sdk/reference/entities#user) object and API Key. Ideally done on your backend via the [REST API](https://api-explorer.cometchat.com/reference/update-user).
 
 <Tabs>
 <Tab title="Java">
@@ -141,7 +141,7 @@ override fun onError(e: CometChatException) {
 
 </Tabs>
 
-Please make sure the `User` object provided to the `updateUser()` method has the `UID` of the user to be updated.
+Please make sure the [`User`](/sdk/reference/entities#user) object provided to the `updateUser()` method has the `UID` of the user to be updated.
 
 ## Updating logged-in user
 
@@ -263,51 +263,7 @@ The `User` object returned by SDK methods contains the following fields:
 
 ---
 
-## Best Practices
 
-<AccordionGroup>
-  <Accordion title="Create Users on Your Backend">
-    Always create and update users on your backend server using the REST API. This keeps your API Key secure and allows you to validate user data before creating accounts in CometChat.
-  </Accordion>
-  <Accordion title="Use updateCurrentUserDetails for Logged-in Users">
-    When updating the currently logged-in user's profile, use `updateCurrentUserDetails()` instead of `updateUser()`. This method doesn't require an API Key and is more secure for client-side updates.
-  </Accordion>
-  <Accordion title="Validate UID Format">
-    Ensure UIDs are alphanumeric with only underscores and hyphens. Validate UID format before calling `createUser()` to avoid API errors.
-  </Accordion>
-  <Accordion title="Sync User Data">
-    Keep user data synchronized between your app's database and CometChat. When a user updates their profile in your app, update it in CometChat as well to maintain consistency.
-  </Accordion>
-  <Accordion title="Use Metadata for Custom Fields">
-    Store additional user information (preferences, settings, custom attributes) in the `metadata` field as JSON. This allows you to extend user profiles without modifying the core schema.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="User Creation Failed - UID Already Exists">
-    **Symptom:** `createUser()` fails with "User with this UID already exists" error.
-    
-    **Cause:** Attempting to create a user with a UID that's already registered in CometChat.
-    
-    **Solution:** Check if the user exists before creating by calling `CometChat.getUser()` first. If the user exists, use `updateUser()` instead of `createUser()`.
-  </Accordion>
-  <Accordion title="Invalid API Key Error">
-    **Symptom:** `createUser()` or `updateUser()` fails with "Invalid API Key" error.
-    
-    **Cause:** Incorrect API Key or using Auth Key instead of API Key.
-    
-    **Solution:** Verify your API Key in the [CometChat Dashboard](https://app.cometchat.com) under API & Auth Keys. Ensure you're using the API Key (for user management), not the Auth Key (for authentication).
-  </Accordion>
-  <Accordion title="Cannot Update User Role">
-    **Symptom:** `updateCurrentUserDetails()` doesn't update the user's role.
-    
-    **Cause:** The `updateCurrentUserDetails()` method cannot modify user roles for security reasons.
-    
-    **Solution:** Update user roles on your backend using the [REST API](https://api-explorer.cometchat.com/reference/update-user). Role changes should be controlled server-side.
-  </Accordion>
-</AccordionGroup>
 
 ## Next Steps
 

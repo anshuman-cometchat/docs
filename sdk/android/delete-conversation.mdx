@@ -97,49 +97,6 @@ CometChat.deleteConversation(GUID, CometChatConstants.RECEIVER_TYPE_GROUP, objec
 
 This deletes the conversation only for the logged-in user. To delete for all participants, use the [REST API](https://api-explorer.cometchat.com/reference/deletes-conversation).
 
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Confirm Before Deleting">
-    Prompt users to confirm before deleting conversations, especially for important chats, as this action removes the conversation from their list.
-  </Accordion>
-  <Accordion title="Understand Local vs Global Delete">
-    SDK deletion only removes the conversation for the logged-in user. Use REST API if you need to delete conversations for all participants.
-  </Accordion>
-  <Accordion title="Provide Archive Alternative">
-    Consider offering an "archive" feature using conversation tags instead of deletion, allowing users to hide conversations without losing them permanently.
-  </Accordion>
-  <Accordion title="Update UI Immediately">
-    Remove the conversation from your UI immediately after successful deletion to provide instant feedback to users.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Delete Failed - Conversation Not Found">
-    **Symptom:** `deleteConversation()` fails with "Conversation not found" error.
-    
-    **Cause:** The conversation doesn't exist or has already been deleted.
-    
-    **Solution:** Verify the UID/GUID is correct and the conversation exists by fetching it first using [retrieve-conversations](/sdk/android/retrieve-conversations).
-  </Accordion>
-  <Accordion title="Delete Failed - Invalid Receiver Type">
-    **Symptom:** Delete fails with "Invalid receiver type" error.
-    
-    **Cause:** Receiver type doesn't match the conversation type.
-    
-    **Solution:** Use `RECEIVER_TYPE_USER` for user conversations and `RECEIVER_TYPE_GROUP` for group conversations. Check the conversation type before deleting.
-  </Accordion>
-  <Accordion title="Conversation Reappears After Delete">
-    **Symptom:** Deleted conversation reappears when new messages arrive.
-    
-    **Cause:** Deleting a conversation only removes it from the list. New messages create a new conversation entry.
-    
-    **Solution:** This is expected behavior. If you want to prevent messages, consider [blocking the user](/sdk/android/block-users) or leaving the group instead.
-  </Accordion>
-</AccordionGroup>
-
 ---
 
 ## Next Steps

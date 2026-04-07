@@ -4,25 +4,6 @@ sidebarTitle: "Delivery & Read Receipts"
 description: "Mark messages as delivered, read, or unread and receive real-time receipt events using the CometChat Android SDK."
 ---
 
-<Accordion title="AI Integration Quick Reference">
-
-```kotlin
-// Mark messages as delivered
-CometChat.markAsDelivered(message.id, message.receiverUid, 
-    CometChatConstants.RECEIVER_TYPE_USER, message.sender.uid)
-
-// Mark messages as read
-CometChat.markAsRead(message.id, message.sender.uid,
-    CometChatConstants.RECEIVER_TYPE_USER, message.sender.uid)
-
-// Listen for receipt events
-CometChat.addMessageListener("LISTENER_ID", object : MessageListener() {
-    override fun onMessagesDelivered(receipt: MessageReceipt) { }
-    override fun onMessagesRead(receipt: MessageReceipt) { }
-})
-```
-</Accordion>
-
 ## Mark Messages as Delivered
 
 You can mark the messages for a particular conversation as read using the `markAsDelivered()` method. This method takes the following parameters as input:
@@ -391,11 +372,11 @@ Starting v3, the `markAsRead()` method working with v2.x is deprecated and will 
 
 ## Mark Messages as Unread
 
-Use `markMessageAsUnread()` to mark a message as unread. All messages below that message in the conversation will contribute to the unread count. On success, returns an updated `Conversation` object.
+Use `markMessageAsUnread()` to mark a message as unread. All messages below that message in the conversation will contribute to the unread count. On success, returns an updated [`Conversation`](/sdk/reference/entities#conversation) object.
 
 | Parameter | Information |
 | --------- | ----------- |
-| `message` | A non-null `BaseMessage` instance. All messages below this message in the conversation will be marked as unread. |
+| `message` | A non-null [`BaseMessage`](/sdk/reference/messages#basemessage) instance. All messages below this message in the conversation will be marked as unread. |
 | `listener` | A non-null `CallbackListener<Conversation>` instance. |
 
 <Tabs>
@@ -542,7 +523,7 @@ CometChat.addMessageListener("Listener 1", object : MessageListener() {
 
 </Tabs>
 
-You will receive events in the form of `MessageReceipt` objects. The message receipt contains the following parameters:
+You will receive events in the form of [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) objects. The message receipt contains the following parameters:
 
 | Parameter      | Information                                                                                                                               |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
@@ -603,7 +584,7 @@ CometChat.getMessageReceipts(messageId, object : CallbackListener<List<MessageRe
 
 </Tabs>
 
-You will receive a list of `MessageReceipt` objects in the `onSuccess()` method.
+You will receive a list of [`MessageReceipt`](/sdk/reference/auxiliary#messagereceipt) objects in the `onSuccess()` method.
 
 <Info>
 
@@ -684,52 +665,6 @@ The nested `User` object in `sender` contains:
 | `deactivatedAt` | long | Unix timestamp when user was deactivated (0 if active) |
 
 </Accordion>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Mark as Delivered on Message Fetch">
-    Call `markAsDelivered()` when fetching messages and when receiving real-time messages to ensure senders know their messages were received.
-  </Accordion>
-  <Accordion title="Mark as Read When Visible">
-    Call `markAsRead()` only when messages are actually visible to the user (e.g., when chat window is open and focused) for accurate read status.
-  </Accordion>
-  <Accordion title="Use Message Object Overload">
-    Use `markAsDelivered(message)` and `markAsRead(message)` overloads for simpler code when you have the message object available.
-  </Accordion>
-  <Accordion title="Handle Receipt Events for UI Updates">
-    Listen for receipt events to update your UI with delivery/read indicators (checkmarks) in real-time.
-  </Accordion>
-  <Accordion title="Enable Enhanced Messaging Status">
-    Enable "Enhanced Messaging Status" in Dashboard for group message receipts and advanced features like `markMessageAsUnread`.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Receipts Not Sending">
-    **Symptom:** `markAsDelivered()` or `markAsRead()` fails silently.
-    
-    **Cause:** User not logged in, or incorrect parameters provided.
-    
-    **Solution:** Verify user is logged in using `CometChat.getLoggedInUser()`. Use the callback version of methods to catch errors.
-  </Accordion>
-  <Accordion title="Group Receipts Not Working">
-    **Symptom:** `onMessagesDeliveredToAll` or `onMessagesReadByAll` not triggered.
-    
-    **Cause:** "Enhanced Messaging Status" feature not enabled in Dashboard.
-    
-    **Solution:** Enable the feature in [CometChat Dashboard](https://app.cometchat.com) under your app settings.
-  </Accordion>
-  <Accordion title="Receipt Events Not Received">
-    **Symptom:** Receipt listener methods not being called.
-    
-    **Cause:** Message listener not registered or removed prematurely.
-    
-    **Solution:** Ensure `addMessageListener()` is called before messages are sent/received. Don't remove listeners while still needed.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

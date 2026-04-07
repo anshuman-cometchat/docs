@@ -84,52 +84,6 @@ Check the link below for more details on how to create and upload an app to the 
 
 ---
 
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Test Release Build Thoroughly">
-    Always test your signed release build on multiple devices before uploading to Play Store. Release builds may behave differently than debug builds due to ProGuard/R8 optimizations.
-  </Accordion>
-  <Accordion title="Maintain Version Control">
-    Increment `versionCode` for every release (even minor updates) and update `versionName` to reflect the user-facing version. Google Play requires increasing version codes for updates.
-  </Accordion>
-  <Accordion title="Keep Signing Key Secure">
-    Store your app signing key securely and create backups. Losing your signing key means you cannot update your app on Play Store. Consider using Google Play App Signing for additional security.
-  </Accordion>
-  <Accordion title="Enable ProGuard/R8">
-    Enable code shrinking and obfuscation in your release build to reduce app size and protect your code. Test thoroughly after enabling to catch any ProGuard-related issues.
-  </Accordion>
-  <Accordion title="Prepare Quality Screenshots">
-    Provide high-quality screenshots and promotional graphics that showcase your app's key features. Good visuals significantly impact download rates.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="App Bundle Upload Failed">
-    **Symptom:** Google Play Console rejects your app bundle upload.
-    
-    **Cause:** Version code is not higher than the previous release, or the bundle is not properly signed.
-    
-    **Solution:** Ensure `versionCode` in build.gradle is higher than the current production version. Verify the bundle is signed with the correct keystore. Check for any validation errors in the Play Console.
-  </Accordion>
-  <Accordion title="App Crashes After Release">
-    **Symptom:** App works in debug mode but crashes in release build.
-    
-    **Cause:** ProGuard/R8 may be removing necessary code, or debug-specific code is causing issues.
-    
-    **Solution:** Review ProGuard rules and add keep rules for CometChat SDK classes. Remove any `android:debuggable="true"` from your manifest. Test the release build thoroughly before publishing.
-  </Accordion>
-  <Accordion title="Large App Size Warning">
-    **Symptom:** Play Console warns about large app size affecting downloads.
-    
-    **Cause:** Unused resources, large assets, or unoptimized libraries are included in the bundle.
-    
-    **Solution:** Use Android Studio's "Remove Unused Resources" feature. Enable resource shrinking in build.gradle. Consider using Android App Bundle format which automatically optimizes for different device configurations.
-  </Accordion>
-</AccordionGroup>
-
 ## Next Steps
 
 <CardGroup cols={2}>

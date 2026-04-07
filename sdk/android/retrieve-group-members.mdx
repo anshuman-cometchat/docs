@@ -23,7 +23,7 @@ groupMembersRequest.fetchNext(object : CallbackListener<List<GroupMember>>() {
 
 ## Retrieve the List of Group Members
 
-Use `GroupMembersRequestBuilder` with the group's GUID to configure filters, then call `fetchNext()`.
+Use `GroupMembersRequestBuilder` with the group's GUID to configure filters, then call `fetchNext()`. Each result is a [`GroupMember`](/sdk/reference/entities#groupmember) object.
 
 ### Set Limit
 
@@ -160,7 +160,7 @@ groupMembersRequest?.fetchNext(object:CometChat.CallbackListener<List<GroupMembe
 
 <Accordion title="GroupMember Object">
 
-The `GroupMember` object extends `User` and contains all User fields plus group-specific fields:
+The [`GroupMember`](/sdk/reference/entities#groupmember) object extends [`User`](/sdk/reference/entities#user) and contains all User fields plus group-specific fields:
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -206,49 +206,6 @@ The `GroupMember` object extends `User` and contains all User fields plus group-
 ```
 
 </Accordion>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Use Pagination for Large Groups">
-    Set an appropriate limit (e.g., 30) and call `fetchNext()` multiple times to load members in batches, especially for large groups.
-  </Accordion>
-  <Accordion title="Filter by Scope for Admin Views">
-    Use `setScopes()` to fetch only admins and moderators when building admin panels or management interfaces.
-  </Accordion>
-  <Accordion title="Implement Member Search">
-    Use `setSearchKeyword()` to allow users to quickly find specific members by name or UID in large groups.
-  </Accordion>
-  <Accordion title="Cache Member Lists">
-    Cache fetched member lists locally to reduce API calls and improve performance when users navigate back to member lists.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Empty Members List">
-    **Symptom:** `fetchNext()` returns an empty list even though the group has members.
-    
-    **Cause:** The GUID is incorrect, or filters are too restrictive.
-    
-    **Solution:** Verify the GUID is correct. Remove filters temporarily to check if members exist.
-  </Accordion>
-  <Accordion title="Cannot Fetch Members - Not a Member">
-    **Symptom:** `fetchNext()` fails with "Not a member" error.
-    
-    **Cause:** User is not a member of the group (for private groups).
-    
-    **Solution:** Ensure the user has joined the group before fetching members. Use [join-group](/sdk/android/join-group) first.
-  </Accordion>
-  <Accordion title="Scope Filter Not Working">
-    **Symptom:** `setScopes()` returns all members instead of filtered results.
-    
-    **Cause:** Scope values must be lowercase strings: "admin", "moderator", "participant".
-    
-    **Solution:** Use lowercase scope values. Check the [Group Class](/sdk/android/create-group#group-class) for valid scope constants.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

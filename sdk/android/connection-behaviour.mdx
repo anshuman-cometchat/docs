@@ -69,7 +69,7 @@ By default in manual mode, the SDK disconnects after 30 seconds in the backgroun
 
 ## Enable Manual Mode
 
-Set `autoEstablishSocketConnection(false)` during `init()` to take control of the WebSocket connection:
+Set `autoEstablishSocketConnection(false)` during `init()` to take control of the WebSocket connection. Error callbacks receive a [`CometChatException`](/sdk/reference/auxiliary#cometchatexception):
 
 <Tabs>
 <Tab title="Java">
@@ -246,59 +246,6 @@ In manual mode with the app in the foreground, the SDK auto-reconnects if the in
 </Note>
 
 ---
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Use Auto Mode for Most Apps">
-    Auto mode is recommended for most applications as it handles connection management automatically. Only use manual mode if you have specific requirements for background connectivity or custom connection logic.
-  </Accordion>
-  <Accordion title="Implement Background Service for Manual Mode">
-    If using manual mode with background connectivity, implement a foreground service or WorkManager to call `CometChat.ping()` every 30 seconds. This ensures the connection stays alive when the app is backgrounded.
-  </Accordion>
-  <Accordion title="Handle Connection State Changes">
-    Implement connection listeners to track connection state changes and update your UI accordingly. Show connection status to users so they know when messages can be sent/received.
-  </Accordion>
-  <Accordion title="Test Background Behavior">
-    Thoroughly test your app's behavior when moving between foreground and background states. Verify messages are received correctly and the connection is managed as expected.
-  </Accordion>
-  <Accordion title="Consider Battery Impact">
-    Maintaining a persistent background connection consumes battery. Balance real-time message delivery needs with battery efficiency. Consider using push notifications for background message delivery instead.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Connection Not Established">
-    **Symptom:** `CometChat.connect()` fails or times out in manual mode.
-    
-    **Cause:** User may not be logged in, or network connectivity issues.
-    
-    **Solution:** Verify the user is logged in using `CometChat.getLoggedInUser()` before calling `connect()`. Check network connectivity and ensure the SDK is initialized. Review error messages in the callback for specific issues.
-  </Accordion>
-  <Accordion title="Messages Not Received in Background">
-    **Symptom:** Real-time messages are not received when the app is in the background.
-    
-    **Cause:** In auto mode, the WebSocket disconnects immediately when the app is backgrounded. In manual mode, the connection times out after 30 seconds without a ping.
-    
-    **Solution:** For auto mode, this is expected behavior - use push notifications for background message delivery. For manual mode, implement a background service that calls `CometChat.ping()` every 30 seconds to keep the connection alive.
-  </Accordion>
-  <Accordion title="Frequent Disconnections">
-    **Symptom:** WebSocket connection drops frequently even when the app is in the foreground.
-    
-    **Cause:** Network instability, server issues, or incorrect SDK configuration.
-    
-    **Solution:** The SDK automatically handles reconnection in auto mode. Check your network stability. Ensure you're not calling `disconnect()` unintentionally. Review SDK logs for specific error messages.
-  </Accordion>
-  <Accordion title="Ping Method Not Working">
-    **Symptom:** `CometChat.ping()` doesn't keep the connection alive in manual mode.
-    
-    **Cause:** Ping is not being called frequently enough (must be within 30 seconds), or the connection was already disconnected.
-    
-    **Solution:** Ensure `ping()` is called at least every 30 seconds. Verify the connection is established before calling `ping()`. Implement a reliable background service or timer to call `ping()` consistently.
-  </Accordion>
-</AccordionGroup>
 
 ## Next Steps
 

@@ -37,7 +37,7 @@ This section explains how a user’s text message to an Agent becomes a structur
 - After the run completes, persisted Agentic Messages arrive via the **`MessageListener`**.
 
 ### Real-time Events
-Events are received via the **`onAIAssistantEventReceived`** method of the **`AIAssistantListener`** class in this general order:
+Events are received via the **`onAIAssistantEventReceived`** method of the **`AIAssistantListener`** class as [`AIAssistantBaseEvent`](/sdk/reference/messages#aiassistantbaseevent) objects in this general order:
 
 1. Run Start
 2. Zero or more tool call cycles (repeats for each tool invocation):
@@ -163,8 +163,8 @@ The `AIAssistantMessage` object contains the AI assistant's response:
 |-----------|------|-------------|
 | `id` | long | Unique message identifier |
 | `muid` | String | Developer-defined message ID |
-| `sender` | [User](#user-object-ai) | User who sent the message |
-| `receiver` | AppEntity | Message receiver ([User](#user-object-ai) or Group) |
+| `sender` | [User](/sdk/reference/entities#user) | User who sent the message |
+| `receiver` | AppEntity | Message receiver ([User](/sdk/reference/entities#user) or [Group](/sdk/reference/entities#group)) |
 | `receiverUid` | String | Receiver's unique identifier |
 | `type` | String | Message type. Value: `"assistant"` |
 | `receiverType` | String | Type of receiver. Values: `"user"`, `"group"` |
@@ -236,8 +236,8 @@ The `AIToolArgumentMessage` object contains the arguments passed to a tool:
 |-----------|------|-------------|
 | `id` | long | Unique message identifier |
 | `muid` | String | Developer-defined message ID |
-| `sender` | [User](#user-object-ai) | User who sent the message |
-| `receiver` | AppEntity | Message receiver ([User](#user-object-ai) or Group) |
+| `sender` | [User](/sdk/reference/entities#user) | User who sent the message |
+| `receiver` | AppEntity | Message receiver ([User](/sdk/reference/entities#user) or [Group](/sdk/reference/entities#group)) |
 | `receiverUid` | String | Receiver's unique identifier |
 | `type` | String | Message type. Value: `"tool_arguments"` |
 | `receiverType` | String | Type of receiver. Values: `"user"`, `"group"` |
@@ -315,8 +315,8 @@ The `AIToolResultMessage` object contains the result from a tool execution:
 |-----------|------|-------------|
 | `id` | long | Unique message identifier |
 | `muid` | String | Developer-defined message ID |
-| `sender` | [User](#user-object-ai) | User who sent the message |
-| `receiver` | AppEntity | Message receiver ([User](#user-object-ai) or Group) |
+| `sender` | [User](/sdk/reference/entities#user) | User who sent the message |
+| `receiver` | AppEntity | Message receiver ([User](/sdk/reference/entities#user) or [Group](/sdk/reference/entities#group)) |
 | `receiverUid` | String | Receiver's unique identifier |
 | `type` | String | Message type. Value: `"tool_result"` |
 | `receiverType` | String | Type of receiver. Values: `"user"`, `"group"` |
@@ -449,23 +449,6 @@ The nested `User` object in `sender` contains:
 ```
 
 </Accordion>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Always Remove AI Listeners">
-    Remove AI assistant and message listeners in `onDestroy()` or `onPause()` to prevent memory leaks. Use unique listener IDs to manage multiple listeners effectively.
-  </Accordion>
-  <Accordion title="Handle Streaming Content Progressively">
-    Use `Text Message Content` events to render AI responses incrementally as they arrive. This provides a better user experience than waiting for the complete response.
-  </Accordion>
-  <Accordion title="Display Tool Call Information">
-    Show users when the agent is invoking tools (e.g., "Searching for flights...") using `Tool Call Start` and `Tool Call End` events. This provides transparency about agent actions.
-  </Accordion>
-  <Accordion title="Store Agentic Messages for History">
-    Persist `AIAssistantMessage`, `AIToolResultMessage`, and `AIToolArgumentMessage` objects locally to display conversation history when users return to the chat.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

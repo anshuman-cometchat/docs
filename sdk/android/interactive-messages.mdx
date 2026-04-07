@@ -4,32 +4,6 @@ sidebarTitle: "Interactive Messages"
 description: "Send and receive interactive messages with embedded forms, buttons, and other UI elements using the CometChat Android SDK."
 ---
 
-<Accordion title="AI Integration Quick Reference">
-
-```kotlin
-// Create interactive message with form
-val interactiveData = JSONObject().apply {
-    put("title", "Demo Form")
-    put("formFields", JSONArray().apply {
-        put(JSONObject().apply {
-            put("elementType", "textInput")
-            put("elementId", "element1")
-            put("label", "Name")
-        })
-    })
-}
-
-val interactiveMessage = InteractiveMessage("receiverId", CometChatConstants.RECEIVER_TYPE_USER, "form", interactiveData)
-CometChat.sendInteractiveMessage(interactiveMessage, object : CallbackListener<InteractiveMessage>() {
-    override fun onSuccess(message: InteractiveMessage) { }
-    override fun onError(e: CometChatException) { }
-})
-
-// Mark as interacted
-CometChat.markAsInteracted(messageId, "elementId", callback)
-```
-</Accordion>
-
 An `InteractiveMessage` is a specialized object that encapsulates an interactive unit within a chat message, such as an embedded form that users can fill out directly within the chat interface. This enhances user engagement by making the chat experience more interactive and responsive to user input.
 
 ## InteractiveMessage
@@ -437,23 +411,6 @@ The nested `User` object in `sender` contains:
 ```
 
 </Accordion>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Validate Interactive Data Structure">
-    Always validate your JSONObject structure before sending interactive messages. Ensure all required fields (elementType, elementId, etc.) are present to avoid runtime errors.
-  </Accordion>
-  <Accordion title="Use Unique Element IDs">
-    Assign unique element IDs to each interactive component within a message. This ensures accurate tracking of user interactions and prevents conflicts when processing interaction events.
-  </Accordion>
-  <Accordion title="Set Appropriate Interaction Goals">
-    Choose the right interaction goal type based on your use case. Use `ANY` for simple acknowledgments, `ANY_OF` for optional selections, and `ALL_OF` for required form completions.
-  </Accordion>
-  <Accordion title="Handle Interaction Receipts">
-    Implement the `onInteractionGoalCompleted` listener to track when users complete interactive elements. This enables you to trigger follow-up actions or update your UI accordingly.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

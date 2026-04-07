@@ -67,49 +67,6 @@ CometChat.transferGroupOwnership(GUID, UID, object : CallbackListener<String?>()
 </Tabs>
 
 
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Choose a Trusted Member">
-    Transfer ownership only to trusted, active members who understand group management responsibilities. Consider their activity level and commitment.
-  </Accordion>
-  <Accordion title="Communicate Before Transfer">
-    Inform the new owner before transferring ownership so they're prepared for the responsibility and understand their new role.
-  </Accordion>
-  <Accordion title="Transfer Before Leaving">
-    If you plan to leave the group, transfer ownership first. Owners cannot leave without transferring ownership or deleting the group.
-  </Accordion>
-  <Accordion title="Verify Member Status">
-    Ensure the target member is an active participant (not banned or kicked) before attempting to transfer ownership.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Transfer Failed - Not the Owner">
-    **Symptom:** `transferGroupOwnership()` fails with "Not the owner" error.
-    
-    **Cause:** User is not the current owner of the group.
-    
-    **Solution:** Only the current owner can transfer ownership. Check `group.getOwner()` to verify ownership.
-  </Accordion>
-  <Accordion title="Transfer Failed - Invalid UID">
-    **Symptom:** Transfer fails with "User not found" or "Not a member" error.
-    
-    **Cause:** The target UID doesn't exist or is not a member of the group.
-    
-    **Solution:** Verify the UID is correct and the user is an active member. Use [retrieve-group-members](/sdk/android/retrieve-group-members) to confirm membership.
-  </Accordion>
-  <Accordion title="Cannot Leave as Owner">
-    **Symptom:** `leaveGroup()` fails when user is the owner.
-    
-    **Cause:** Owners must transfer ownership before leaving.
-    
-    **Solution:** Use `transferGroupOwnership()` first, then call `leaveGroup()`. Alternatively, use [delete-group](/sdk/android/delete-group) to remove the group entirely.
-  </Accordion>
-</AccordionGroup>
-
 ---
 
 ## Next Steps

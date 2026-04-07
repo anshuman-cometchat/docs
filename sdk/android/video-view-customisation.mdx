@@ -71,48 +71,7 @@ videoSettings.setUserListButtonParams(CometChatCallsConstants.POSITION_BOTTOM_RI
 
 ---
 
-## Best Practices
 
-<AccordionGroup>
-  <Accordion title="Choose Appropriate Aspect Ratio">
-    Use `ASPECT_RATIO_CONTAIN` to show the entire video without cropping (may have letterboxing). Use `ASPECT_RATIO_COVER` to fill the container completely (may crop edges). Choose based on your UI design requirements.
-  </Accordion>
-  <Accordion title="Position Controls Strategically">
-    Place UI controls (full screen, zoom, user list buttons) in positions that don't overlap with important content. Test on different screen sizes to ensure controls remain accessible.
-  </Accordion>
-  <Accordion title="Use Contrasting Background Colors">
-    Choose name label background colors that contrast well with your video content. The default `#333333` works well for most scenarios, but adjust based on your app's theme.
-  </Accordion>
-  <Accordion title="Test on Multiple Devices">
-    Test video view customizations on devices with different screen sizes and aspect ratios (phones, tablets, foldables) to ensure consistent appearance.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Video Appears Stretched or Cropped">
-    **Symptom:** Video doesn't display correctly, appearing stretched, squashed, or cropped unexpectedly.
-    
-    **Cause:** Incorrect aspect ratio setting for your use case.
-    
-    **Solution:** Switch between `ASPECT_RATIO_CONTAIN` (shows full video with possible letterboxing) and `ASPECT_RATIO_COVER` (fills container, may crop edges) to find the best fit for your layout.
-  </Accordion>
-  <Accordion title="UI Controls Not Visible">
-    **Symptom:** Full screen, zoom, or user list buttons are not showing up.
-    
-    **Cause:** Visibility is set to `false` or controls are positioned outside the visible area.
-    
-    **Solution:** Verify the visibility parameter is set to `true` in the respective button params methods. Check that the video container has sufficient dimensions to display controls.
-  </Accordion>
-  <Accordion title="Name Label Text Not Readable">
-    **Symptom:** Participant names are difficult to read on the video.
-    
-    **Cause:** Background color doesn't provide enough contrast with the text.
-    
-    **Solution:** Adjust the background color in `setNameLabelParams()` to provide better contrast. Use darker colors (#000000 to #666666) for better text readability.
-  </Accordion>
-</AccordionGroup>
 
 ## Next Steps
 

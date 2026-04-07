@@ -29,7 +29,7 @@ CometChat.addMessageListener("LISTENER_ID", object : CometChat.MessageListener()
 
 ## Edit a Message
 
-Use `editMessage()` with a `TextMessage` or `CustomMessage` object. Set the message ID using `setId()`.
+Use `editMessage()` with a [`TextMessage`](/sdk/reference/messages#textmessage) or [`CustomMessage`](/sdk/reference/messages#custommessage) object. Set the message ID using `setId()`.
 
 ### Add/Update Tags
 
@@ -162,9 +162,9 @@ CometChat.removeMessageListener("LISTENER_ID")
 
 ## Missed Message Edit Events
 
-When fetching message history, edited messages have `editedAt` and `editedBy` fields set. Additionally, an `Action` message is created when a message is edited.
+When fetching message history, edited messages have `editedAt` and `editedBy` fields set. Additionally, an [`Action`](/sdk/reference/messages#action) message is created when a message is edited.
 
-For the message edited event, in the `Action` object received, the following fields can help you get the relevant information-
+For the message edited event, in the [`Action`](/sdk/reference/messages#action) object received, the following fields can help you get the relevant information-
 
 1. `action` - `edited`
 2. `actionOn` - Updated message object with the edited details.
@@ -178,46 +178,6 @@ In order to edit a message, you need to be either the sender of the message or t
 </Note>
 
 ---
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Preserve Original Message ID">
-    Always set the message ID from the original message using `setId()` before calling `editMessage()`. Without the correct ID, the edit operation will fail.
-  </Accordion>
-  <Accordion title="Update Tags Strategically">
-    Tags set during editing completely replace the original tags. If you want to preserve existing tags, retrieve them first and merge with new tags before calling `setTags()`.
-  </Accordion>
-  <Accordion title="Handle Edit Permissions">
-    Check user roles before allowing edits in your UI. Only message senders, group owners, and group moderators can edit messages to prevent unauthorized modifications.
-  </Accordion>
-</AccordionGroup>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Edit Failed - Permission Denied">
-    **Symptom:** `editMessage()` fails with "Permission denied" error.
-    
-    **Cause:** User attempting to edit a message they didn't send, or lacking admin/moderator privileges in a group.
-    
-    **Solution:** Verify the logged-in user is either the message sender or has admin/moderator role in the group. Use `message.getSender().getUid()` to check message ownership.
-  </Accordion>
-  <Accordion title="Edit Failed - Message ID Missing">
-    **Symptom:** `editMessage()` fails with "Invalid message ID" error.
-    
-    **Cause:** The message ID was not set on the updated message object before calling `editMessage()`.
-    
-    **Solution:** Always call `updatedMessage.setId(originalMessage.getId())` before editing. The ID is required to identify which message to update.
-  </Accordion>
-  <Accordion title="Cannot Edit Media Messages">
-    **Symptom:** Attempting to edit a media message fails.
-    
-    **Cause:** CometChat only supports editing `TextMessage` and `CustomMessage` types. Media messages cannot be edited.
-    
-    **Solution:** Check the message type before allowing edits. Only enable edit functionality for text and custom messages in your UI.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

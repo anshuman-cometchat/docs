@@ -302,19 +302,7 @@ override fun onError(e: CometChatException) {
 
 </Tabs>
 
-## Best Practices
 
-<AccordionGroup>
-  <Accordion title="Batch Block Operations">
-    When blocking multiple users, use a single `blockUsers()` call with a list of UIDs instead of multiple individual calls. This reduces network overhead and improves performance.
-  </Accordion>
-  <Accordion title="Handle Partial Failures">
-    The `onSuccess()` callback returns a HashMap with individual success/fail status for each UID. Always check the result map to handle cases where some users were blocked successfully while others failed.
-  </Accordion>
-  <Accordion title="Update UI After Blocking">
-    After blocking a user, update your UI to reflect the change immediately. Remove blocked users from conversation lists and prevent message sending to blocked users on the client side for better UX.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

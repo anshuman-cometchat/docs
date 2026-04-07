@@ -64,7 +64,7 @@ Messages that are started from a particular message are called Threaded messages
 
 ## Send Message in a Thread
 
-Any message type (Text, Media, or Custom) can be sent in a thread. Set the `parentMessageId` using `setParentMessageId()` to indicate which thread the message belongs to.
+Any message type ([`TextMessage`](/sdk/reference/messages#textmessage), [`MediaMessage`](/sdk/reference/messages#mediamessage), or [`CustomMessage`](/sdk/reference/messages#custommessage)) can be sent in a thread. Set the `parentMessageId` using `setParentMessageId()` to indicate which thread the message belongs to.
 
 <Tabs>
 <Tab title="Java">
@@ -276,20 +276,6 @@ messagesRequest.fetchPrevious(object : CallbackListener<List<BaseMessage?>?>() {
 </Tabs>
 
 The above snippet will return messages between the logged in user and `cometchat-uid-1` excluding all the threaded messages belonging to the same conversation.
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Use hideReplies() for Main Conversations">
-    Always use `hideReplies(true)` when fetching messages for main user/group conversations to keep threads separate and maintain a clean conversation view. This prevents thread replies from cluttering the main message list.
-  </Accordion>
-  <Accordion title="Check parentMessageId for Thread Context">
-    When receiving real-time messages, always check the `parentMessageId` to determine if a message belongs to an active thread. This ensures proper message routing in your UI.
-  </Accordion>
-  <Accordion title="Validate Parent Message Exists">
-    Before allowing users to reply in a thread, verify that the parent message still exists and hasn't been deleted. This prevents orphaned thread messages.
-  </Accordion>
-</AccordionGroup>
 
 ---
 

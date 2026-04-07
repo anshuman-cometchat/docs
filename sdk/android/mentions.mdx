@@ -4,29 +4,11 @@ sidebarTitle: "Mentions"
 description: "Send messages with user mentions, retrieve mentioned users, and filter messages by mention metadata using the CometChat Android SDK."
 ---
 
-<Accordion title="AI Integration Quick Reference">
-
-```kotlin
-// Send message with mention to user
-val textMessage = TextMessage("UID", "Hello <@uid:cometchat-uid-1>", CometChatConstants.RECEIVER_TYPE_USER)
-CometChat.sendMessage(textMessage, object : CallbackListener<TextMessage>() {
-    override fun onSuccess(message: TextMessage) { }
-    override fun onError(e: CometChatException) { }
-})
-
-// Check if logged-in user was mentioned
-val wasMentioned = message.hasMentionedMe()
-
-// Get list of mentioned users
-val mentionedUsers = message.mentionedUsers
-```
-</Accordion>
-
 Mentions let users refer to specific individuals in a conversation using the `<@uid:UID>` format. They're especially useful in group chats for directing messages at particular participants.
 
 ## Send Mentioned Messages
 
-To mention a user, embed `<@uid:UID>` in your message text. For example: `"Hello <@uid:cometchat-uid-1>"`
+To mention a user, embed `<@uid:UID>` in your message text. For example: `"Hello <@uid:cometchat-uid-1>"`. The `sendMessage()` method returns a [`TextMessage`](/sdk/reference/messages#textmessage) object on success.
 
 <Tabs>
 <Tab title="To User">
@@ -382,7 +364,7 @@ messagesRequest.fetchPrevious(new CometChat.CallbackListener<List<BaseMessage>>(
 
 ## Get Mentioned Users from a Message
 
-Use `getMentionedUsers()` on any message object to retrieve the list of users mentioned in it. Returns an empty list if no users were mentioned.
+Use `getMentionedUsers()` on any message object to retrieve the list of [`User`](/sdk/reference/entities#user) objects mentioned in it. Returns an empty list if no users were mentioned.
 
 <Tabs>
 <Tab title="Java">
@@ -403,7 +385,7 @@ message.mentionedUsers
 
 ## Check if Logged-in user has been mentioned
 
-To check if the logged-in user has been mentioned in a particular message we can use the `hasMentionedMe()` method on any `BaseMessage`. This method will return a boolean value, `true` if the logged-in user has been mentioned, otherwise `false`.
+To check if the logged-in user has been mentioned in a particular message we can use the `hasMentionedMe()` method on any [`BaseMessage`](/sdk/reference/messages#basemessage). This method will return a boolean value, `true` if the logged-in user has been mentioned, otherwise `false`.
 
 <Tabs>
 <Tab title="Kotlin">
@@ -417,20 +399,6 @@ message.hasMentionedMe()
 ```
 </Tab>
 </Tabs>
-
-## Best Practices
-
-<AccordionGroup>
-  <Accordion title="Use Mentions for Important Notifications">
-    Mentions are ideal for drawing attention in group conversations. Use them when you need to ensure specific users see critical messages or action items.
-  </Accordion>
-  <Accordion title="Validate User IDs Before Mentioning">
-    Always verify that the user ID exists before including it in a mention. Invalid UIDs will display as plain text rather than interactive mentions.
-  </Accordion>
-  <Accordion title="Combine with Push Notifications">
-    When a user is mentioned, consider sending a push notification to ensure they're alerted even when not actively using the app. This enhances engagement and responsiveness.
-  </Accordion>
-</AccordionGroup>
 
 ---
 
