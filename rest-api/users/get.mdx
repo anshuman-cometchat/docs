@@ -3,23 +3,4 @@ openapi: get /users/{uid}
 description: "Retrieves user details for a specified UID."
 ---
 
-## Common errors
-
-| Error Code                  | HTTP Status | Cause                                                                   |
-| --------------------------- | ----------- | ----------------------------------------------------------------------- |
-| `AUTH_ERR_EMPTY_APIKEY`     | 401         | The `apikey` header is missing from the request                         |
-| `AUTH_ERR_APIKEY_NOT_FOUND` | 401         | The provided API key is invalid                                         |
-| `ERR_UID_NOT_FOUND`         | 404         | No user exists with the specified UID, or the user has been deactivated |
-
 For the complete error reference, see [Error Guide](/articles/error-guide).
-
-## Related
-
-<CardGroup cols={2}>
-  <Card title="Update User" href="/rest-api/users/update">
-    Modify this user's profile information.
-  </Card>
-  <Card title="List Auth Tokens" href="/rest-api/auth-tokens/list">
-    View all active sessions for this user.
-  </Card>
-</CardGroup>

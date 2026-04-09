@@ -3,27 +3,4 @@ openapi: delete /users/{uid}/blockedusers
 description: "Unblocks the specified user"
 ---
 
-## Common errors
-
-| Error Code                  | HTTP Status | Cause                                                                   |
-| --------------------------- | ----------- | ----------------------------------------------------------------------- |
-| `AUTH_ERR_EMPTY_APIKEY`     | 401         | The `apikey` header is missing from the request                         |
-| `AUTH_ERR_APIKEY_NOT_FOUND` | 401         | The provided API key is invalid or does not exist                       |
-| `AUTH_ERR_NO_ACCESS`        | 403         | The API key doesn't have the required scope for this operation          |
-| `ERR_UID_NOT_FOUND`         | 404         | No user exists with the specified UID, or the user has been deactivated |
-
 For the complete error reference, see [Error Guide](/articles/error-guide).
-
-## Related
-
-<CardGroup cols={2}>
-  <Card title="Block User" href="/rest-api/blocked-users/block-user">
-    Block a user again if needed.
-  </Card>
-  <Card
-    title="List Blocked Users"
-    href="/rest-api/blocked-users/list-blocked-users"
-  >
-    View the current block list.
-  </Card>
-</CardGroup>

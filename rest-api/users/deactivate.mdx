@@ -3,24 +3,4 @@ openapi: delete /users
 description: "Deactivates users for the specified UIDs"
 ---
 
-## Common errors
-
-| Error Code                  | HTTP Status | Cause                                                                             |
-| --------------------------- | ----------- | --------------------------------------------------------------------------------- |
-| `AUTH_ERR_EMPTY_APIKEY`     | 401         | The `apikey` header is missing from the request                                   |
-| `AUTH_ERR_APIKEY_NOT_FOUND` | 401         | The provided API key is invalid                                                   |
-| `AUTH_ERR_NO_ACCESS`        | 403         | The API key has `authOnly` scope — deactivating users requires a `fullAccess` key |
-| `ERR_UID_NOT_FOUND`         | 404         | One or more of the specified UIDs do not exist                                    |
-
 For the complete error reference, see [Error Guide](/articles/error-guide).
-
-## Related
-
-<CardGroup cols={2}>
-  <Card title="Reactivate Users" href="/rest-api/users/reactivate">
-    Restore deactivated users when they need access again.
-  </Card>
-  <Card title="Delete User" href="/rest-api/users/delete">
-    Permanently delete a user instead of deactivating.
-  </Card>
-</CardGroup>

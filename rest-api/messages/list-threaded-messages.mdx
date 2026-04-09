@@ -3,24 +3,4 @@ openapi: get /messages/{id}/thread
 description: "Fetches the messages list of a thread."
 ---
 
-## Common errors
-
-| Error Code | HTTP Status | Cause |
-| ---------- | ----------- | ----- |
-| `AUTH_ERR_EMPTY_APIKEY` | 401 | The `apikey` header is missing from the request |
-| `AUTH_ERR_APIKEY_NOT_FOUND` | 401 | The provided API key is invalid or does not exist |
-| `AUTH_ERR_NO_ACCESS` | 403 | The API key doesn't have the required scope for this operation |
-| `ERR_MSG_NOT_FOUND` | 404 | No message found with the specified ID |
-
 For the complete error reference, see [Error Guide](/articles/error-guide).
-
-## Related
-
-<CardGroup cols={2}>
-  <Card title="Send Threaded Message" href="/rest-api/messages/send-threaded-message">
-    Reply in this thread.
-  </Card>
-  <Card title="Get Message" href="/rest-api/messages/get-message">
-    View the parent message.
-  </Card>
-</CardGroup>

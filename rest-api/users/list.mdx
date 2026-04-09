@@ -3,23 +3,4 @@ openapi: get /users
 description: "Lists all the users of an app"
 ---
 
-## Common errors
-
-| Error Code | HTTP Status | Cause |
-| ---------- | ----------- | ----- |
-| `AUTH_ERR_EMPTY_APIKEY` | 401 | The `apikey` header is missing from the request |
-| `AUTH_ERR_APIKEY_NOT_FOUND` | 401 | The provided API key is invalid |
-| `AUTH_ERR_NO_ACCESS` | 403 | The API key doesn't have the required scope for this operation |
-
 For the complete error reference, see [Error Guide](/articles/error-guide).
-
-## Related
-
-<CardGroup cols={2}>
-  <Card title="Get User" href="/rest-api/users/get">
-    Retrieve details for a specific user by UID.
-  </Card>
-  <Card title="Create User" href="/rest-api/users/create">
-    Add a new user to your app.
-  </Card>
-</CardGroup>

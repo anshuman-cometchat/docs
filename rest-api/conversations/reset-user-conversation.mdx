@@ -3,30 +3,4 @@ openapi: delete /users/{uid}/conversation
 description: "Resetting User Conversation"
 ---
 
-## Common errors
-
-| Error Code                  | HTTP Status | Cause                                                                   |
-| --------------------------- | ----------- | ----------------------------------------------------------------------- |
-| `AUTH_ERR_EMPTY_APIKEY`     | 401         | The `apikey` header is missing from the request                         |
-| `AUTH_ERR_APIKEY_NOT_FOUND` | 401         | The provided API key is invalid or does not exist                       |
-| `AUTH_ERR_NO_ACCESS`        | 403         | The API key doesn't have the required scope for this operation          |
-| `ERR_UID_NOT_FOUND`         | 404         | No user exists with the specified UID, or the user has been deactivated |
-
 For the complete error reference, see [Error Guide](/articles/error-guide).
-
-## Related
-
-<CardGroup cols={2}>
-  <Card
-    title="List Conversations"
-    href="/rest-api/conversations/list-conversations"
-  >
-    View remaining conversations.
-  </Card>
-  <Card
-    title="Get User Conversation"
-    href="/rest-api/conversations/get-user-conversation"
-  >
-    Check conversation state before resetting.
-  </Card>
-</CardGroup>

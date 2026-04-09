@@ -19,30 +19,4 @@ description: "Creates a group."
 | Delivery and read receipts for groups        | Up to 300 online users            | Disabled in large groups to reduce server load                                                       |
 | Active presence subscriptions                | Up to 1000 online users           | Presence notifications not sent beyond this limit                                                    |
 
-## Common errors
-
-| Error Code                  | HTTP Status | Cause                                                                  |
-| --------------------------- | ----------- | ---------------------------------------------------------------------- |
-| `AUTH_ERR_EMPTY_APIKEY`     | 401         | The `apikey` header is missing from the request                        |
-| `AUTH_ERR_APIKEY_NOT_FOUND` | 401         | The provided API key is invalid or does not exist                      |
-| `AUTH_ERR_NO_ACCESS`        | 403         | The API key doesn't have the required scope for this operation         |
-| `ERR_GUID_ALREADY_EXISTS`   | 409         | A group with the same GUID already exists (GUIDs are case-insensitive) |
-
 For the complete error reference, see [Error Guide](/articles/error-guide).
-
-## Next steps
-
-<CardGroup cols={2}>
-  <Card title="Add Members" href="/rest-api/group-members/add-members">
-    Add users to the newly created group.
-  </Card>
-  <Card title="Send a Message" href="/rest-api/messages/send-message">
-    Send the first message in the group.
-  </Card>
-  <Card title="List Groups" href="/rest-api/groups/list">
-    Verify the group appears in your app's group list.
-  </Card>
-  <Card title="Update Group" href="/rest-api/groups/update">
-    Modify group settings after creation.
-  </Card>
-</CardGroup>
