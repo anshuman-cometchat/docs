@@ -9,12 +9,12 @@ This guide helps you migrate from CometChat Flutter UI Kit V5 to V6. V6 is a maj
 
 | Area | V5 | V6 |
 |---|---|---|
-| State Management | GetX (`get: ^4.6.5`) | BLoC (`flutter_bloc: ^8.1.0`) |
+| State Management | Controllers (e.g. `CometChatUsersController`) | BLoC (`flutter_bloc: ^8.1.0`) |
 | Architecture | Flat layout with controllers | Clean Architecture (bloc/data/domain/di) |
-| Data Access | DataSource decorator chain (10 layers) | `MessageTemplateUtils` static methods (1 hop) |
+| Data Access | DataSource decorator chain | `MessageTemplateUtils` static methods |
 | Extensions | Registered via `UIKitSettings` | Built-in, no registration needed |
-| Shared UI | External `cometchat_uikit_shared` package | Internalized into `lib/shared_ui/` |
-| Composite Widgets | Not available | Compose UI yourself |
+| Shared UI | External `cometchat_uikit_shared` package | Single `cometchat_chat_uikit` package |
+| Composite Widgets | `CometChatMessages`, `CometChatConversationsWithMessages` | Removed — compose UI yourself |
 
 ## Step-by-Step Migration
 
@@ -61,24 +61,7 @@ MessageTemplateUtils.getTextMessageBubble(msg, ctx, align);
 MessageTemplateUtils.getAllMessageTemplates();
 ```
 
-### 4. Widget Renames
-
-```dart
-// V5
-CometChatEditPreview(
-  editPreviewTitle: "Edit Message",
-  editPreviewSubtitle: text,
-);
-
-// V6
-CometChatMessagePreview(
-  messagePreviewTitle: "Edit Message",
-  messagePreviewSubtitle: text,
-  message: baseMessage,
-);
-```
-
-### 5. Update Dependencies
+### 4. Update Dependencies
 
 **Install V6 via CLI (hosted on Cloudsmith):**
 
@@ -93,46 +76,22 @@ dependencies:
   cometchat_chat_uikit:
     hosted: https://dart.cloudsmith.io/cometchat/cometchat/
     version: 6.0.0-beta1
-  flutter_bloc: ^8.1.0
-  equatable: ^2.0.5
-  video_player: ^2.7.2
-  http: ^1.0.0
-  flutter_image: ^4.1.0
-  image_picker: ^1.0.5
-  flutter_svg: ^2.0.17
-  flutter_cache_manager: ^3.4.1
-  cached_network_image: ^3.3.1
-  cometchat_calls_sdk: ^4.2.0
-  permission_handler: ^11.3.1
-  diffutil_dart: ^3.0.0
-  scrollview_observer: ^1.23.0
 ```
 
-**Remove from `pubspec.yaml`:**
+### 5. State Management Migration (Advanced)
 
-```yaml
-dependencies:
-  cometchat_uikit_shared:
-    path: ../shared_uikit  # internalized — no longer needed
-```
-
-### 6. State Management Migration (Advanced)
-
-If you were directly using GetX controllers:
+If you were directly using controllers:
 
 ```dart
-// V5 — GetX
-GetBuilder<CometChatConversationsController>(
-  init: CometChatConversationsController(...),
-  builder: (controller) => buildUI(controller.list),
-);
+// V5 — Controller
+CometChatUsersController controller = CometChatUsersController(...);
 
 // V6 — BLoC
 BlocProvider(
-  create: (_) => ConversationsBloc()..add(LoadConversations()),
-  child: BlocBuilder<ConversationsBloc, ConversationsState>(
+  create: (_) => UsersBloc()..add(LoadUsers()),
+  child: BlocBuilder<UsersBloc, UsersState>(
     builder: (context, state) {
-      if (state is ConversationsLoaded) return buildUI(state.conversations);
+      if (state is UsersLoaded) return buildUI(state.users);
       return const CircularProgressIndicator();
     },
   ),
@@ -150,20 +109,15 @@ BlocProvider(
 | `CometChatMessageComposerController` | `MessageComposerBloc` |
 | `CometChatMessageHeaderController` | `MessageHeaderBloc` |
 | `CometChatMessageListController` | `MessageListBloc` |
-| `CometchatMessageInformationController` | `MessageInformationBloc` |
-| `CometChatThreadedHeaderController` | `ThreadedHeaderBloc` |
-| `CometChatSearchController` | `SearchBloc` |
 
 ## Migration Checklist
 
 1. ☐ Replace all `CometChatXxxController` usage with `XxxBloc`
-2. ☐ Replace `GetBuilder<T>` with `BlocBuilder<XxxBloc, XxxState>`
-3. ☐ Replace `CometChatUIKit.getDataSource().xxx()` with `MessageTemplateUtils.xxx()`
-4. ☐ Remove `extensions` and `aiFeature` from `UIKitSettings`
-5. ☐ Update imports from `src/` to `chat_ui/src/`
-6. ☐ Replace `cometchat_uikit_shared` package import with internal `shared_ui/`
-7. ☐ Rename `CometChatEditPreview` → `CometChatMessagePreview`
-8. ☐ Test all features after migration
+2. ☐ Replace `CometChatUIKit.getDataSource().xxx()` with `MessageTemplateUtils.xxx()`
+3. ☐ Remove `extensions` and `aiFeature` from `UIKitSettings`
+4. ☐ Replace `cometchat_uikit_shared` imports with `cometchat_chat_uikit`
+5. ☐ Replace composite widgets (`CometChatMessages`, `CometChatConversationsWithMessages`) with individual widget composition
+6. ☐ Test all features after migration
 
 ---
 
@@ -175,8 +129,8 @@ This section outlines the property changes between V5 and V6. V6 introduces BLoC
 
 | Aspect | V5 | V6 |
 |---|---|---|
-| State Management | GetX | BLoC |
-| Composite Widgets | Not available | Compose individually |
+| State Management | Controllers | BLoC |
+| Composite Widgets | `CometChatMessages`, `CometChatConversationsWithMessages` | Removed — compose individually |
 | Data Source | `CometChatUIKit.getDataSource()` | `MessageTemplateUtils` |
 | Extension Registration | `UIKitSettings.extensions` | Handled internally |
 | Rich Text | Not available | Built-in rich text formatting |
