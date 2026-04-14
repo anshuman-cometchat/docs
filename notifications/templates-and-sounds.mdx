@@ -106,7 +106,7 @@ Ideally, the "Body (Fallback)" value should not contain any placeholders to prev
 | Body               | `{{message.data.entities.sender.entity.name}}` mentioned everyone: `{{message.data.text}}`      | New mention                                                                                     |
 | Body (Fallback)    | New mention                                                                                     | New mention                                                                                     |
 
-Applies to text messages (`category: "message"`, `type: "text"`) where the message contains `@all` in a group conversation. @all mentions are strictly a group concept — they do not apply to one-on-one conversations, so there are no one-on-one title or body fields.
+Applies to text messages (`category: "message"`, `type: "text"`) where the message contains `@all` in a group conversation.
 
 **Note:** The "Body (Fallback)" value is utilized when any placeholders within the "Body" fail to resolve to an appropriate substitution value.
 
