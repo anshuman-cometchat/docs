@@ -14,6 +14,7 @@ description: "Prebuilt React components for chat, voice, and video calling. Supp
 | SSR | Client-side only. Use `ssr: false` or `client:only="react"` |
 | Localization | 19 languages built-in |
 | Source | [GitHub](https://github.com/cometchat/cometchat-uikit-react/tree/v6) |
+| AI Skills | `npx skills add cometchat/cometchat-skills` — [GitHub](https://github.com/cometchat/cometchat-skills) |
 
 </Accordion>
 
@@ -22,6 +23,66 @@ The CometChat React UI Kit provides prebuilt, customizable components for adding
 <Frame>
   <img src="/images/94312eb7-intro_web_screens-7ee27b256c54ea069273e198ec2aad4e.png" />
 </Frame>
+
+---
+
+## Integrate with AI Coding Agents
+
+Use [CometChat Skills](https://github.com/cometchat/cometchat-skills) to integrate the React UI Kit using your AI coding agent. Skills auto-detect your framework, collect credentials, and scaffold a complete chat integration — multi-conversation, single thread, or full messenger — with the correct SSR pattern, TypeScript types, and error handling.
+
+Works with Claude Code, Cursor, Codex, VS Code Copilot, Windsurf, Cline, Kiro, and [30+ more agents](https://github.com/vercel-labs/skills).
+
+```bash
+npx skills add cometchat/cometchat-skills
+```
+
+Then ask your agent to "integrate CometChat" or run `/cometchat` — it handles the rest.
+
+| # | Experience | What it is | Use case |
+|---|---|---|---|
+| 1 | Multi-conversation | Two-panel: conversation list + active thread | Messaging apps, team chat, inboxes |
+| 2 | Single thread | One chat window for two known users or a group | Support widgets, marketplace chat, embedded consult |
+| 3 | Full messenger | Bottom tab bar: Chats / Calls / Users / Groups | Social apps, community platforms, dating |
+
+```
+/cometchat 1    # Multi-conversation
+/cometchat 2    # Single thread
+/cometchat 3    # Full messenger
+```
+
+After the initial integration, the skill continues with a Phase B menu: theme presets (slack / whatsapp / discord / notion), 40+ features (calls, polls, reactions, AI smart replies), component customization, floating chat widget, production auth, server-side user management, and diagnostics.
+
+<Accordion title="Recommended: CometChat Docs MCP">
+
+For the best Phase B experience (component customization, SDK events, request builders), install the docs MCP:
+
+**Claude Code:**
+```bash
+claude mcp add --transport http cometchat-docs https://www.cometchat.com/docs/mcp
+```
+
+**Cursor** (`.cursor/mcp.json`):
+```json
+{ "mcpServers": { "cometchat-docs": { "url": "https://www.cometchat.com/docs/mcp" } } }
+```
+
+**Windsurf:**
+```json
+{ "mcpServers": { "cometchat-docs": { "type": "sse", "serverUrl": "https://www.cometchat.com/docs/mcp" } } }
+```
+
+No authentication required. Not needed for the initial integration — the CLI handles Phase A without it.
+
+</Accordion>
+
+<CardGroup cols={2}>
+  <Card title="CometChat Skills" icon="wand-magic-sparkles" href="https://github.com/cometchat/cometchat-skills">
+    Auto-detect framework, scaffold chat integration
+  </Card>
+  <Card title="Supported Agents" icon="robot">
+    Claude Code · Cursor · Codex · VS Code Copilot · Windsurf · Cline · Kiro
+  </Card>
+</CardGroup>
 
 ---
 
