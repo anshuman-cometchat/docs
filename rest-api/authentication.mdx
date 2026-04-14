@@ -10,8 +10,9 @@ All CometChat REST API requests must be authenticated using an API key passed in
 **Management APIs** use a different authentication mechanism — HTTP Basic Auth with your management key and secret, not the `apikey` header. See the [Management APIs overview](/rest-api/management-apis) for details.
 
 ```bash
-curl -X GET "https://api-us.cometchat.io/v3/apps" \
-  -u "YOUR_MANAGEMENT_KEY:YOUR_MANAGEMENT_SECRET"
+curl -X GET "https://apimgmt.cometchat.io/apps" \
+  -H "key: YOUR_MANAGEMENT_KEY" \
+  -H "secret: YOUR_MANAGEMENT_SECRET"
 ```
 
 </Note>
