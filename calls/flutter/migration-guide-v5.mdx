@@ -1,0 +1,246 @@
+---
+title: "Migration Guide"
+sidebarTitle: "v4 to v5 Migration"
+---
+
+This guide covers migrating from Calls SDK v4 to v5 for Flutter.
+
+## Drop-in Compatibility
+
+Calls SDK v5 is a **drop-in replacement** for v4. All v4 APIs are preserved as deprecated methods that internally delegate to the new v5 implementations. You can update the dependency version and your existing code will compile and run without changes.
+
+```yaml
+# Update your pubspec.yaml
+dependencies:
+  cometchat_calls_sdk:
+    hosted: https://dart.cloudsmith.io/cometchat/cometchat/
+-   version: ^4.0.0
++   version: ^5.0.0
+```
+
+<Info>
+If you're using CometChat UI Kits, simply updating the Calls SDK version is sufficient. The UI Kit will continue to work with v5 through the deprecated compatibility layer.
+</Info>
+
+## Why Migrate to v5 APIs?
+
+While v4 APIs will continue to work, migrating to v5 APIs gives you:
+
+- **Lifecycle-aware listeners** that auto-cleanup — no more manual `removeCallsEventListeners()` calls
+- **Granular event listeners** — 5 focused listener interfaces instead of one monolithic callback
+- **`CallSession` singleton** for cleaner session control — all actions on a single object instead of scattered static methods
+- **Dedicated `login()` method** — the Calls SDK now handles its own authentication
+- **Strongly-typed enums** — `AudioMode`, `SessionType`, `LayoutType` instead of raw strings
+
+---
+
+## Initialization
+
+No changes required. The `init()` API is the same in v5.
+
+```dart
+CallAppSettings callAppSettings = (CallAppSettingBuilder()
+  ..appId = "APP_ID"
+  ..region = "REGION")
+  .build();
+
+CometChatCalls.init(callAppSettings, onSuccess: (String msg) {
+  debugPrint("Calls SDK initialized: $msg");
+}, onError: (CometChatCallsException e) {
+  debugPrint("Calls SDK init failed: ${e.message}");
+});
+```
+
+---
+
+## Authentication
+
+v5 introduces its own `login()` method. After calling `login()`, the SDK caches the auth token internally.
+
+<Tabs>
+<Tab title="v4">
+```dart
+// No dedicated Calls SDK login — relied on Chat SDK for auth token
+String authToken = await CometChat.getUserAuthToken();
+
+// Had to pass authToken manually
+CometChatCalls.generateToken(sessionId, authToken, onSuccess: (GenerateToken token) {
+  // Use token to start session
+}, onError: (CometChatCallsException e) {});
+```
+</Tab>
+<Tab title="v5">
+```dart
+// Login to the Calls SDK once
+CometChatCalls.login(authToken, onSuccess: (CallUser user) {
+  // Calls SDK is now authenticated — token cached internally
+}, onError: (CometChatCallsException e) {});
+```
+</Tab>
+</Tabs>
+
+---
+
+## Session Settings
+
+`CallSettings` is replaced by `SessionSettings`.
+
+<Tabs>
+<Tab title="v4">
+```dart
+CallSettings callSettings = (CallSettingsBuilder()
+  ..isAudioOnly = true
+  ..defaultLayout = true
+  ..showEndCallButton = true
+  ..showMuteAudioButton = true
+  ..showPauseVideoButton = true
+  ..showSwitchCameraButton = true
+  ..showAudioModeButton = true
+  ..startWithAudioMuted = false
+  ..startWithVideoMuted = false
+  ..defaultAudioMode = "SPEAKER")
+  .build();
+```
+</Tab>
+<Tab title="v5">
+```dart
+SessionSettings sessionSettings = (SessionSettingsBuilder()
+  ..type = SessionType.audio
+  ..startAudioMuted = false
+  ..startVideoPaused = false
+  ..layout = LayoutType.tile
+  ..audioMode = AudioMode.speaker
+  ..hideLeaveSessionButton = false
+  ..hideToggleAudioButton = false
+  ..hideToggleVideoButton = false
+  ..hideSwitchCameraButton = false
+  ..hideAudioModeButton = false
+  ..hideRecordingButton = false)
+  .build();
+```
+</Tab>
+</Tabs>
+
+---
+
+## Joining a Session
+
+`startSession()` is replaced by `joinSession()` which returns a `CallSession` object.
+
+<Tabs>
+<Tab title="v4">
+```dart
+CometChatCalls.generateToken(sessionId, authToken, onSuccess: (GenerateToken token) {
+  CometChatCalls.startSession(token.token, callSettings, onSuccess: (String msg) {
+    // Session started
+  }, onError: (CometChatCallsException e) {});
+}, onError: (CometChatCallsException e) {});
+```
+</Tab>
+<Tab title="v5">
+```dart
+// One-step with session ID (recommended)
+CometChatCalls.joinSession(sessionId, sessionSettings, onSuccess: (CallSession session) {
+  // Token generation + join handled internally
+}, onError: (CometChatCallsException e) {});
+```
+</Tab>
+</Tabs>
+
+---
+
+## Session Control (Actions)
+
+Static methods on `CometChatCalls` are replaced by instance methods on `CallSession`.
+
+<Tabs>
+<Tab title="v4">
+```dart
+CometChatCalls.endSession();
+CometChatCalls.switchCamera();
+CometChatCalls.muteAudio(true);
+CometChatCalls.pauseVideo(true);
+CometChatCalls.setAudioMode("SPEAKER");
+CometChatCalls.startRecording();
+CometChatCalls.stopRecording();
+```
+</Tab>
+<Tab title="v5">
+```dart
+CallSession session = CallSession.getInstance();
+
+session.leaveSession();
+session.switchCamera();
+session.muteAudio();       // or session.unmuteAudio()
+session.pauseVideo();      // or session.resumeVideo()
+session.setAudioMode(AudioMode.speaker);
+session.startRecording();
+session.stopRecording();
+```
+</Tab>
+</Tabs>
+
+---
+
+## Event Listeners
+
+The single monolithic listener is replaced by 5 focused, lifecycle-aware listeners on `CallSession`.
+
+```dart
+CallSession session = CallSession.getInstance();
+
+// Session lifecycle events
+session.addSessionStatusListener(SessionStatusListener(
+  onSessionJoined: () {},
+  onSessionLeft: () {},
+  onSessionTimedOut: () {},
+  onConnectionLost: () {},
+  onConnectionRestored: () {},
+));
+
+// Participant events
+session.addParticipantEventListener(ParticipantEventListener(
+  onParticipantJoined: (Participant p) {},
+  onParticipantLeft: (Participant p) {},
+  onParticipantListChanged: (List<Participant> list) {},
+  onParticipantAudioMuted: (Participant p) {},
+  onParticipantAudioUnmuted: (Participant p) {},
+  onParticipantVideoPaused: (Participant p) {},
+  onParticipantVideoResumed: (Participant p) {},
+));
+
+// Media state events
+session.addMediaEventsListener(MediaEventsListener(
+  onAudioMuted: () {},
+  onAudioUnMuted: () {},
+  onVideoPaused: () {},
+  onVideoResumed: () {},
+  onRecordingStarted: () {},
+  onRecordingStopped: () {},
+  onAudioModeChanged: (AudioMode mode) {},
+));
+
+// Button click events
+session.addButtonClickListener(ButtonClickListener(
+  onLeaveSessionButtonClicked: () {},
+  onToggleAudioButtonClicked: () {},
+  onToggleVideoButtonClicked: () {},
+));
+
+// Layout events
+session.addLayoutListener(LayoutListener(
+  onCallLayoutChanged: (LayoutType type) {},
+  onPictureInPictureLayoutEnabled: () {},
+  onPictureInPictureLayoutDisabled: () {},
+));
+```
+
+---
+
+## Deprecated Classes Summary
+
+| Deprecated Class | Replacement |
+|-----------------|-------------|
+| `CallSettings` | `SessionSettings` |
+| `CallSettingsBuilder` | `SessionSettingsBuilder` |
+| `CometChatCallsEventsListener` | 5 focused listeners on `CallSession` |
