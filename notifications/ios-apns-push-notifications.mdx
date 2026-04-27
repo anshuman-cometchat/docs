@@ -43,6 +43,10 @@ description: "Implement APNs push notifications with CometChat UIKit for iOS, in
    - Add an **APNs Device** provider (alerts) using your `.p8` key, Team ID, Key ID, and Bundle ID; copy the Provider ID.
    - Add an **APNs VoIP** provider (calls) with the same `.p8` (recommended for CallKit reliability); copy the Provider ID.
 
+<Warning>
+**`.p12` certificates are deprecated.** Apple recommends using `.p8` Auth Keys for push notifications. `.p8` keys are simpler to manage (one key works for all your apps), never expire, and are the only format actively supported going forward. If you are still using `.p12`, migrate to `.p8` at your earliest convenience.
+</Warning>
+
 <Frame>
   <img src="/images/1133421a-add-apns-credentials-f8c2fd747ab4cf3905c6d13cf215b4c1.png" alt="Add APNs credentials" />
 </Frame>
