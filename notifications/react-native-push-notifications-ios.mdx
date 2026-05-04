@@ -109,6 +109,10 @@ For iOS we use Apple Push Notification service (APNs) for both standard and VoIP
     2. Enter a key name, check **Apple Push Notification service (APNs)**, then **Continue** → **Register**.  
     3. Download the `.p8` file and note the **Key ID**, **Team ID**, and your **Bundle ID**—you’ll enter these in CometChat.  
     4. *(Optional)* If you still use `.p12`, export it from the downloaded key without an export password; keep it handy for upload.
+
+    <Warning>
+    **`.p12` certificates are deprecated.** Apple recommends using `.p8` Auth Keys for push notifications. `.p8` keys are simpler to manage (one key works for all your apps), never expire, and are the only format actively supported going forward. Migrate to `.p8` if you haven't already.
+    </Warning>
   </Step>
 </Steps>
 
