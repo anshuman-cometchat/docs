@@ -25,7 +25,6 @@ Before you begin, we recommend reading the [Key Concepts](/sdk/unreal/key-concep
 | -------- | ------ |
 | Windows (Win64) | ✅ Supported |
 | macOS | ✅ Supported |
-| Linux | ✅ Supported |
 | iOS | ✅ Supported |
 | Android | ✅ Supported |
 
@@ -33,8 +32,8 @@ Before you begin, we recommend reading the [Key Concepts](/sdk/unreal/key-concep
 
 ## Minimum Requirements
 
-- Unreal Engine **5.3** or higher
-- C++17 compatible compiler
+- Unreal Engine **5.5.4** or **5.7.2**
+- C++ development tools for your platform
 - [CometChat account](https://app.cometchat.com) with **App ID**, **Region**, and **Auth Key**
 
 ---
@@ -137,7 +136,7 @@ All callbacks fire on the **Game Thread** — safe to update UI directly.
 
 | Category | Capabilities |
 | -------- | ------------ |
-| **Authentication** | Login, Logout, session check |
+| **Authentication** | Login with Auth Key, Login with Auth Token, Logout, session check |
 | **Messaging** | Send & receive text messages (1:1 and group), message history with pagination |
 | **Users** | Fetch user profiles, real-time presence |
 | **Groups** | Create, join, leave groups, group messaging |
