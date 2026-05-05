@@ -106,6 +106,86 @@ void AMyActor::OnLoginFailed(const FString& Error)
 
 ---
 
+## Login using Auth Token
+
+<Info>
+This is the **recommended authentication method for production** apps. Auth Tokens are generated server-side using the CometChat REST API and provide enhanced security since your Auth Key is never exposed on the client.
+</Info>
+
+### How Auth Tokens Work
+
+```mermaid
+flowchart LR
+    A["Your Backend"] --> B["CometChat REST API"]
+    B -->|"Returns Auth Token"| A
+    A -->|"Sends Token to Client"| C["Unreal Client"]
+    C --> D["Login with Auth Token"]
+    D -->|"Success"| E["User Authenticated"]
+    D -->|"Failure"| F["Handle Error"]
+
+    style A fill:#333,stroke:#666,color:#fff
+    style B fill:#333,stroke:#666,color:#fff
+    style C fill:#444,stroke:#888,color:#fff
+    style D fill:#444,stroke:#888,color:#fff
+    style E fill:#333,stroke:#666,color:#fff
+    style F fill:#555,stroke:#999,color:#ccc
+```
+
+1. Your backend calls the [Create Auth Token REST API](https://api-explorer.cometchat.com/reference/create-authtoken) with the user's UID
+2. The API returns an Auth Token
+3. Your backend sends the token to the Unreal client
+4. The client calls `LoginWithAuthTokenAsync` with the token
+
+<Tabs>
+<Tab title="Blueprint">
+1. Get a reference to the **CometChat Subsystem**
+2. Call the **Login With Auth Token Async** node
+3. Wire the **On Success** and **On Failure** pins
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| Auth Token | `FString` | The auth token received from your backend |
+</Tab>
+<Tab title="C++">
+```cpp
+#include "CometChatSubsystem.h"
+#include "AsyncActions/CometChatLoginWithAuthTokenAction.h"
+
+void AMyActor::LoginWithToken(const FString& AuthToken)
+{
+    UCometChatSubsystem* Chat = GetGameInstance()->GetSubsystem<UCometChatSubsystem>();
+
+    if (!Chat->IsLoggedIn())
+    {
+        auto* Login = UCometChatLoginWithAuthTokenAction::LoginWithAuthTokenAsync(
+            this,
+            AuthToken
+        );
+        Login->OnSuccess.AddDynamic(this, &AMyActor::OnLoginSuccess);
+        Login->OnFailure.AddDynamic(this, &AMyActor::OnLoginFailed);
+        Login->Activate();
+    }
+}
+
+void AMyActor::OnLoginSuccess()
+{
+    UE_LOG(LogTemp, Log, TEXT("Auth token login successful!"));
+}
+
+void AMyActor::OnLoginFailed(const FString& Error)
+{
+    UE_LOG(LogTemp, Error, TEXT("Auth token login failed: %s"), *Error);
+}
+```
+</Tab>
+</Tabs>
+
+<Warning>
+**Security**: Never hardcode Auth Tokens in your client. Always fetch them from your backend at runtime.
+</Warning>
+
+---
+
 ## Check Login State
 
 Before performing operations, you can check whether a user is currently logged in.
