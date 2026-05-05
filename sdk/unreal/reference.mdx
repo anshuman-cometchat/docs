@@ -1,0 +1,189 @@
+---
+title: "API Reference"
+description: "Complete reference of all Blueprint nodes, structs, enums, and delegates in the CometChat Unreal SDK."
+---
+
+This page is a single-stop reference for every public API surface in the CometChat Unreal SDK plugin.
+
+---
+
+## Subsystem Methods
+
+These are called directly on `UCometChatSubsystem`.
+
+| Method | Category | Parameters | Returns | Description |
+| ------ | -------- | ---------- | ------- | ----------- |
+| `Configure` | Config | `AppId: FString`, `Region: FString` | `void` | Initialize the SDK with your CometChat credentials. Must be called before Login. |
+| `IsLoggedIn` | Auth | — | `bool` | Returns `true` if a user is currently authenticated. |
+| `Shutdown` | Lifecycle | — | `void` | Tear down the SDK and release all resources. |
+
+---
+
+## Async Action Nodes
+
+Each node is a latent Blueprint action with **On Success** and **On Failure** output pins. In C++, create via the static factory method, bind delegates, and call `Activate()`.
+
+### Authentication
+
+| Node | Parameters | Success Output | Description |
+| ---- | ---------- | -------------- | ----------- |
+| **Login Async** | `Uid: FString`, `AuthKey: FString` | — | Authenticate a user with CometChat. |
+| **Logout Async** | — | — | Log out the current user and disconnect. |
+
+### Messaging
+
+| Node | Parameters | Success Output | Description |
+| ---- | ---------- | -------------- | ----------- |
+| **Send Message Async** | `ReceiverUid: FString`, `Text: FString` | `FCometChatMessage` | Send a 1:1 text message. |
+| **Send Group Message Async** | `Guid: FString`, `Text: FString` | `FCometChatMessage` | Send a text message to a group. |
+| **Get Messages Async** | `Uid: FString`, `Limit: int32` | `TArray<FCometChatMessage>` | Fetch message history for a 1:1 conversation. |
+| **Get Group Messages Async** | `Guid: FString`, `Limit: int32`, `BeforeMessageId: int32` | `TArray<FCometChatMessage>`, `FCometChatPagination` | Fetch paginated message history for a group. |
+
+### Users
+
+| Node | Parameters | Success Output | Description |
+| ---- | ---------- | -------------- | ----------- |
+| **Get User Async** | `Uid: FString` | `FCometChatUser` | Fetch a user's profile. |
+
+### Groups
+
+| Node | Parameters | Success Output | Description |
+| ---- | ---------- | -------------- | ----------- |
+| **Create Group Async** | `Name: FString`, `MemberIds: TArray<FString>` | `FCometChatGroup` | Create a new group with initial members. |
+| **Join Group Async** | `Guid: FString` | — | Join an existing group. |
+| **Leave Group Async** | `Guid: FString` | — | Leave a group. |
+
+---
+
+## Real-Time Delegates
+
+All delegates are `UPROPERTY(BlueprintAssignable)` on `UCometChatSubsystem`. They fire on the **Game Thread**.
+
+| Delegate | Payload Type | Fires When |
+| -------- | ------------ | ---------- |
+| `OnMessageReceived` | `FCometChatMessage` | A new message arrives (1:1 or group) |
+| `OnPresenceChanged` | `FCometChatPresence` | A user goes online, offline, or away |
+| `OnTypingChanged` | `FCometChatTypingEvent` | A user starts or stops typing |
+| `OnReceiptReceived` | `FCometChatReceiptEvent` | A message is delivered or read |
+| `OnConnectionStateChanged` | `ECometChatConnectionState` | WebSocket connection state changes |
+
+---
+
+## Structs
+
+### FCometChatUser
+
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `Uid` | `FString` | Unique user identifier |
+| `Name` | `FString` | Display name |
+| `AvatarUrl` | `FString` | URL to avatar image |
+| `Status` | `FString` | Current status text |
+
+### FCometChatMessage
+
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `Id` | `FString` | Unique message identifier |
+| `SenderUid` | `FString` | UID of the sender |
+| `ReceiverUid` | `FString` | UID of the receiver (user or group) |
+| `Text` | `FString` | Message body |
+| `SentAt` | `int64` | Unix timestamp when sent |
+| `Type` | `FString` | `text`, `image`, `file`, `custom` |
+| `Category` | `FString` | `message`, `action`, `call`, `custom` |
+| `ReceiverType` | `FString` | `user` or `group` |
+| `ConversationId` | `FString` | Conversation identifier |
+| `SenderName` | `FString` | Sender's display name |
+| `SenderAvatar` | `FString` | Sender's avatar URL |
+| `UpdatedAt` | `int64` | Unix timestamp of last update |
+
+### FCometChatGroup
+
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `Guid` | `FString` | Unique group identifier |
+| `Name` | `FString` | Group display name |
+| `Description` | `FString` | Group description |
+| `MemberIds` | `TArray<FString>` | UIDs of group members |
+
+### FCometChatPagination
+
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `Total` | `int32` | Total messages available |
+| `Count` | `int32` | Messages returned in this page |
+| `PerPage` | `int32` | Page size requested |
+| `CurrentPage` | `int32` | Current page number |
+| `TotalPages` | `int32` | Total pages available |
+| `HasMore` | `bool` | Whether more pages exist |
+| `NextCursor` | `int32` | Message ID for next page (`BeforeMessageId`) |
+
+### FCometChatPresence
+
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `Uid` | `FString` | User identifier |
+| `Status` | `ECometChatPresenceStatus` | `Online`, `Offline`, or `Away` |
+| `LastActiveAt` | `int64` | Unix timestamp of last activity |
+
+### FCometChatTypingEvent
+
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `Uid` | `FString` | User who is typing |
+| `ConversationId` | `FString` | Conversation where typing occurs |
+| `bIsTyping` | `bool` | `true` = started, `false` = stopped |
+
+### FCometChatReceiptEvent
+
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `MessageId` | `FString` | The message this receipt is for |
+| `Uid` | `FString` | User who triggered the receipt |
+| `Status` | `FString` | `delivered` or `read` |
+| `Timestamp` | `int64` | Unix timestamp of the receipt |
+
+---
+
+## Enums
+
+### ECometChatConnectionState
+
+| Value | Description |
+| ----- | ----------- |
+| `Connected` | WebSocket is active |
+| `Disconnected` | WebSocket is closed |
+| `Reconnecting` | SDK is attempting to reconnect |
+
+### ECometChatPresenceStatus
+
+| Value | Description |
+| ----- | ----------- |
+| `Online` | User is currently active |
+| `Offline` | User is not connected |
+| `Away` | User is connected but idle |
+
+---
+
+## C++ Header Includes
+
+When working in C++, here are the headers you'll need:
+
+```cpp
+// Subsystem (always needed)
+#include "CometChatSubsystem.h"
+
+// Async action nodes (include as needed)
+#include "AsyncActions/CometChatLoginAction.h"
+#include "AsyncActions/CometChatLogoutAction.h"
+#include "AsyncActions/CometChatSendMessageAction.h"
+#include "AsyncActions/CometChatSendGroupMessageAction.h"
+#include "AsyncActions/CometChatGetMessagesAction.h"
+#include "AsyncActions/CometChatGetGroupMessagesAction.h"
+#include "AsyncActions/CometChatGetUserAction.h"
+#include "AsyncActions/CometChatCreateGroupAction.h"
+#include "AsyncActions/CometChatJoinGroupAction.h"
+#include "AsyncActions/CometChatLeaveGroupAction.h"
+```
+
+All types (`FCometChatUser`, `FCometChatMessage`, `FCometChatGroup`, etc.) are defined in `CometChatSubsystem.h`.
