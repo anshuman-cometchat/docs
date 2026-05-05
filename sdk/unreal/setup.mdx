@@ -10,21 +10,78 @@ description: "Install the CometChat plugin in your Unreal Engine project."
 1. Create a new app
 2. Head over to the **API & Auth Keys** section and note the **Auth Key**, **App ID**, and **Region**
 
+---
+
+## Prerequisites
+
 <Tip>
 **Minimum Requirements**
 
-- Unreal Engine **5.3** or higher
-- C++17 compatible compiler
-- Windows (Win64), macOS, Linux, iOS, or Android target
+- Unreal Engine **5.5.4** or **5.7.2**
+- C++ development tools for your platform
+- CometChat account with App ID, Auth Key, and Region
 </Tip>
+
+### Supported Platforms
+
+| Engine Version | Platforms |
+| -------------- | --------- |
+| UE 5.5.4 | Mac, Windows |
+| UE 5.7.2 | Mac |
 
 ---
 
 ## Install the Plugin
 
-### Option 1: Pre-built Plugin (Recommended)
+### Option 1: Use Precompiled Binaries (No Build Required)
 
-Copy the `CometChat` plugin folder into your project's `Plugins/` directory:
+<Steps>
+<Step title="Copy the plugin source">
+Copy `Plugins/CometChatSdk/` from the [SDK repository](https://github.com/cometchat/chat-sdk-unreal/tree/v1) into your project's `Plugins/CometChat/` directory.
+</Step>
+
+<Step title="Download precompiled binaries">
+Download the precompiled binaries for your engine version:
+
+<Tabs>
+<Tab title="UE 5.5.4 (Mac + Windows)">
+```bash
+curl -1sLf -O 'https://dl.cloudsmith.io/public/cometchat/cometchat/raw/versions/v1.0.0-beta.1/CometChat-UE5.5.4-precompiled.zip'
+```
+</Tab>
+<Tab title="UE 5.7.2 (Mac)">
+```bash
+curl -1sLf -O 'https://dl.cloudsmith.io/public/cometchat/cometchat/raw/versions/v1.0.0-beta.1/CometChat-UE5.7.2-precompiled.zip'
+```
+</Tab>
+</Tabs>
+</Step>
+
+<Step title="Extract into your plugin directory">
+Extract the zip contents into your project's `Plugins/CometChat/` directory (merging with existing files).
+</Step>
+
+<Step title="Enable the plugin">
+Add the plugin to your `.uproject` file:
+
+```json
+{
+  "Plugins": [
+    {
+      "Name": "CometChat",
+      "Enabled": true
+    }
+  ]
+}
+```
+</Step>
+
+<Step title="Open your project">
+Open your project in Unreal Editor — no compilation needed.
+</Step>
+</Steps>
+
+Your project structure should look like this:
 
 ```
 YourProject/
@@ -33,29 +90,17 @@ YourProject/
 │       ├── CometChat.uplugin
 │       ├── Source/
 │       ├── Config/
-│       └── ThirdParty/
+│       └── ThirdParty/chatsdk/    ← Prebuilt static libraries (all platforms)
 ├── Source/
 └── YourProject.uproject
 ```
 
-Then regenerate your project files:
+---
 
-<Tabs>
-<Tab title="macOS">
-```bash
-# From your project root
-/Users/Shared/Epic\ Games/UE_5.4/Engine/Build/BatchFiles/Mac/GenerateProjectFiles.sh \
-  -project="$(pwd)/YourProject.uproject" -game -engine
-```
-</Tab>
-<Tab title="Windows">
-```powershell
-# From your project root
-& "C:\Program Files\Epic Games\UE_5.4\Engine\Build\BatchFiles\GenerateProjectFiles.bat" ^
-  -project="%cd%\YourProject.uproject" -game -engine
-```
-</Tab>
-</Tabs>
+### Option 2: Build from Source
+
+1. Copy `Plugins/CometChatSdk/` from the [SDK repository](https://github.com/cometchat/chat-sdk-unreal/tree/v1) into your project's `Plugins/CometChat/` directory
+2. Regenerate project files and build
 
 ---
 
@@ -87,11 +132,11 @@ public class YourGame : ModuleRules
 
 ## Verify the Plugin
 
-After regenerating project files and building:
+After installation:
 
 1. Open your project in the Unreal Editor
 2. Go to **Edit → Plugins**
-3. Search for **CometChat** — it should appear under the **Networking** category and be enabled
+3. Search for **CometChat** — it should appear and be enabled
 
 <Info>
 The plugin loads at the **PreDefault** phase, so it's available before your game module initializes.
@@ -133,6 +178,18 @@ void AMyActor::BeginPlay()
 </Warning>
 
 Make sure you replace `YOUR_APP_ID` with your actual CometChat **App ID**.
+
+---
+
+## Plugin Architecture
+
+The plugin provides:
+
+- **`UCometChatSubsystem`** — Game instance subsystem for CometChat operations
+- **Async Blueprint actions** — for login, logout, send message, fetch messages, groups
+- **`CometChatEventBridge`** — Real-time event callbacks
+- **`CometChatGroupChatBox`** — Ready-to-use group chat UI widget
+- **Native C++ chat SDK** via `ThirdParty/chatsdk/` (prebuilt static libraries)
 
 ---
 
