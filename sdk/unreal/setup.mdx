@@ -1,0 +1,198 @@
+---
+title: "Setup"
+description: "Install the CometChat plugin in your Unreal Engine project."
+---
+
+## Get your Application Keys
+
+[Sign up for CometChat](https://app.cometchat.com) and then:
+
+1. Create a new app
+2. Head over to the **API & Auth Keys** section and note the **Auth Key**, **App ID**, and **Region**
+
+---
+
+## Prerequisites
+
+<Tip>
+**Minimum Requirements**
+
+- Unreal Engine **5.5.4** or **5.7.2**
+- C++ development tools for your platform
+- CometChat account with App ID, Auth Key, and Region
+</Tip>
+
+### Supported Platforms
+
+| Engine Version | Platforms |
+| -------------- | --------- |
+| UE 5.5.4 | Mac, Windows |
+| UE 5.7.2 | Mac |
+
+---
+
+## Install the Plugin
+
+### Option 1: Use Precompiled Binaries (No Build Required)
+
+<Steps>
+<Step title="Copy the plugin source">
+Copy `Plugins/CometChatSdk/` from the [SDK repository](https://github.com/cometchat/chat-sdk-unreal/tree/v1) into your project's `Plugins/CometChat/` directory.
+</Step>
+
+<Step title="Download precompiled binaries">
+Download the precompiled binaries for your engine version:
+
+<Tabs>
+<Tab title="UE 5.5.4 (Mac + Windows)">
+```bash
+curl -1sLf -O 'https://dl.cloudsmith.io/public/cometchat/cometchat/raw/versions/v1.0.0-beta.1/CometChat-UE5.5.4-precompiled.zip'
+```
+</Tab>
+<Tab title="UE 5.7.2 (Mac)">
+```bash
+curl -1sLf -O 'https://dl.cloudsmith.io/public/cometchat/cometchat/raw/versions/v1.0.0-beta.1/CometChat-UE5.7.2-precompiled.zip'
+```
+</Tab>
+</Tabs>
+</Step>
+
+<Step title="Extract into your plugin directory">
+Extract the zip contents into your project's `Plugins/CometChat/` directory (merging with existing files).
+</Step>
+
+<Step title="Enable the plugin">
+Add the plugin to your `.uproject` file:
+
+```json
+{
+  "Plugins": [
+    {
+      "Name": "CometChat",
+      "Enabled": true
+    }
+  ]
+}
+```
+</Step>
+
+<Step title="Open your project">
+Open your project in Unreal Editor — no compilation needed.
+</Step>
+</Steps>
+
+Your project structure should look like this:
+
+```
+YourProject/
+├── Plugins/
+│   └── CometChat/
+│       ├── CometChat.uplugin
+│       ├── Source/
+│       ├── Config/
+│       └── ThirdParty/chatsdk/    ← Prebuilt static libraries (all platforms)
+├── Source/
+└── YourProject.uproject
+```
+
+---
+
+### Option 2: Build from Source
+
+1. Copy `Plugins/CometChatSdk/` from the [SDK repository](https://github.com/cometchat/chat-sdk-unreal/tree/v1) into your project's `Plugins/CometChat/` directory
+2. Regenerate project files and build
+
+---
+
+## Add Module Dependency
+
+In your game module's `.Build.cs` file, add the `CometChat` module as a dependency:
+
+```csharp
+using UnrealBuildTool;
+
+public class YourGame : ModuleRules
+{
+    public YourGame(ReadOnlyTargetRules Target) : base(Target)
+    {
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+        PublicDependencyModuleNames.AddRange(new string[]
+        {
+            "Core",
+            "CoreUObject",
+            "Engine",
+            "CometChat"   // Add this line
+        });
+    }
+}
+```
+
+---
+
+## Verify the Plugin
+
+After installation:
+
+1. Open your project in the Unreal Editor
+2. Go to **Edit → Plugins**
+3. Search for **CometChat** — it should appear and be enabled
+
+<Info>
+The plugin loads at the **PreDefault** phase, so it's available before your game module initializes.
+</Info>
+
+---
+
+## Initialize CometChat
+
+The `CometChatSubsystem` is a `UGameInstanceSubsystem` — it's created automatically when your game starts. You just need to call **Configure** with your App ID and Region before using any other SDK methods.
+
+<Tabs>
+<Tab title="Blueprint">
+1. In any Blueprint, get a reference to the **CometChat Subsystem** via `Get Game Instance` → `Get Subsystem` → select `CometChatSubsystem`
+2. Call the **Configure** node with your **App ID** and **Region**
+
+| Parameter | Type | Description |
+| --------- | ---- | ----------- |
+| App Id | `FString` | Your CometChat App ID |
+| Region | `FString` | Your app region (`us` or `eu`) |
+</Tab>
+<Tab title="C++">
+```cpp
+#include "CometChatSubsystem.h"
+
+void AMyActor::BeginPlay()
+{
+    Super::BeginPlay();
+
+    UCometChatSubsystem* Chat = GetGameInstance()->GetSubsystem<UCometChatSubsystem>();
+    Chat->Configure(TEXT("YOUR_APP_ID"), TEXT("us"));
+}
+```
+</Tab>
+</Tabs>
+
+<Warning>
+**Configure must be called before Login.** Calling Login without configuring first will result in a failure callback.
+</Warning>
+
+Make sure you replace `YOUR_APP_ID` with your actual CometChat **App ID**.
+
+---
+
+## Plugin Architecture
+
+The plugin provides:
+
+- **`UCometChatSubsystem`** — Game instance subsystem for CometChat operations
+- **Async Blueprint actions** — for login, logout, send message, fetch messages, groups
+- **`CometChatEventBridge`** — Real-time event callbacks
+- **`CometChatGroupChatBox`** — Ready-to-use group chat UI widget
+- **Native C++ chat SDK** via `ThirdParty/chatsdk/` (prebuilt static libraries)
+
+---
+
+## Next Steps
+
+Now that the plugin is installed and configured, head to [Authentication](/sdk/unreal/authentication) to log in your first user.

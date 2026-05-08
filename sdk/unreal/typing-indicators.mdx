@@ -1,0 +1,73 @@
+---
+title: "Typing Indicators"
+description: "Show real-time typing indicators when users are composing messages."
+---
+
+Typing indicators let you show a "user is typing..." animation in your chat UI. The CometChat Unreal SDK delivers these as real-time events through the `OnTypingChanged` delegate.
+
+---
+
+## Listen for Typing Events
+
+Bind to the `OnTypingChanged` delegate on the Subsystem to receive typing start/stop notifications.
+
+<Tabs>
+<Tab title="Blueprint">
+1. Get a reference to the **CometChat Subsystem**
+2. Drag off and search for **On Typing Changed**
+3. Use **Bind Event** to connect it to a custom event
+4. The custom event receives an `FCometChatTypingEvent` parameter
+</Tab>
+<Tab title="C++">
+```cpp
+void AMyActor::BeginPlay()
+{
+    Super::BeginPlay();
+
+    UCometChatSubsystem* Chat = GetGameInstance()->GetSubsystem<UCometChatSubsystem>();
+    Chat->OnTypingChanged.AddDynamic(this, &AMyActor::HandleTyping);
+}
+
+void AMyActor::HandleTyping(const FCometChatTypingEvent& Event)
+{
+    if (Event.bIsTyping)
+    {
+        // Show typing indicator for this user/conversation
+        ShowTypingBubble(Event.Uid, Event.ConversationId);
+    }
+    else
+    {
+        // Hide typing indicator
+        HideTypingBubble(Event.Uid, Event.ConversationId);
+    }
+}
+```
+</Tab>
+</Tabs>
+
+---
+
+## FCometChatTypingEvent
+
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `Uid` | `FString` | The user who started or stopped typing |
+| `ConversationId` | `FString` | The conversation where typing is happening |
+| `bIsTyping` | `bool` | `true` when the user starts typing, `false` when they stop |
+
+<Tip>
+**UI pattern**: When `bIsTyping` is `true`, show a typing animation (e.g., three bouncing dots). When `false`, hide it. Consider adding a timeout (e.g., 5 seconds) to auto-hide the indicator in case the stop event is missed.
+</Tip>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Delivery & Read Receipts" icon="check-double" href="/sdk/unreal/delivery-read-receipts">
+    Track when messages are delivered and read.
+  </Card>
+  <Card title="Connection Status" icon="wifi" href="/sdk/unreal/connection-status">
+    Monitor the WebSocket connection state.
+  </Card>
+</CardGroup>
