@@ -50,7 +50,6 @@ class _MessageComposerScreenState extends State<MessageComposerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false, // REQUIRED — composer handles keyboard internally
       body: Column(
         children: [
           Expanded(child: CometChatMessageList(user: user)),
@@ -226,10 +225,15 @@ CometChatMessageComposer(
 | `hideSendButton` | `bool?` | Hide/display the send button. |
 | `hideStickersButton` | `bool?` | Hide/display the sticker button. |
 | `sendButtonIcon` | `Widget?` | Custom send button icon. |
-| `richTextConfiguration` | `RichTextConfiguration?` | Configuration for rich text formatting toolbar. See Rich Text section below. |
-| `richTextToolbarView` | `Widget Function(BuildContext, TextEditingController, RichTextFormatterManager)?` | Custom rich text toolbar widget. |
-| `onRichTextFormatApplied` | `void Function(RichTextFormatType)?` | Callback when a rich text format is applied. |
+| `layout` | `CometChatComposerLayout` | Composer skeleton: `singleLine` (default) or `doubleLine`. See [Layout](#layout) below. |
+| `enableRichTextFormatting` | `bool` | Master switch for rich text (markdown detection, toolbar, WYSIWYG rendering). Default `true`. |
+| `showRichTextFormattingOptions` | `bool` | Whether the rich text toolbar UI is visible. Default `true`. |
+| `hideRichTextFormattingOptions` | `Set<FormatType>` | Set of format buttons to hide from the toolbar. Default `{}`. |
+| `richTextToolbarView` | `Widget Function(BuildContext, TextEditingController)?` | Custom rich text toolbar widget. |
+| `onRichTextFormatApplied` | `void Function(FormatType)?` | Callback fired when a toolbar format is applied. |
 | `hideBottomSafeArea` | `bool` | Hide bottom safe area padding (default: `false`). |
+| `resizeToAvoidBottomInset` | `bool` | Indicates the parent `Scaffold` uses its default `resizeToAvoidBottomInset: true` and will handle keyboard insets itself. Default `true`. Flip to `false` only if you opt into the composer's internal keyboard-aware spacing and set `resizeToAvoidBottomInset: false` on your Scaffold. |
+| `onKeyboardDiagnostics` | `CometChatKeyboardDiagnosticsCallback?` | Debug hook fired on every internal keyboard-state change. Leave `null` in production. |
 
 ***
 
@@ -310,100 +314,144 @@ CometChatMessageComposer(
 
 ***
 
+## Layout
+
+The composer skeleton supports two layouts via the `layout` prop:
+
+| Value | Description |
+| --- | --- |
+| `CometChatComposerLayout.singleLine` | **Default.** Text field and all buttons share a single row. |
+| `CometChatComposerLayout.doubleLine` | Classic v5 look — text field on its own row, buttons on a second row below a divider. |
+
+All existing props (hide flags, view slots, style, mentions, rich text, voice recording, reply/edit preview, AI options) work identically in both layouts.
+
+<Tabs>
+<Tab title="Dart">
+```dart
+CometChatMessageComposer(
+  user: user,
+  layout: CometChatComposerLayout.doubleLine,
+)
+```
+</Tab>
+</Tabs>
+
+***
+
 ## Rich Text Formatting
 
-The composer includes a WYSIWYG rich text toolbar. Configure it via `richTextConfiguration`:
+The composer ships with a WYSIWYG rich-text toolbar that parses Markdown as the user types and renders formatted spans in place. Configuration is done with three flat props.
 
 ### Enable with defaults
 
+Rich text is on by default — no props required.
+
 <Tabs>
 <Tab title="Dart">
 ```dart
-CometChatMessageComposer(
-  user: user,
-  richTextConfiguration: RichTextConfiguration(),
-)
+CometChatMessageComposer(user: user)
 ```
 </Tab>
 </Tabs>
 
-### Toolbar modes
+### Show or hide the toolbar UI
 
-| Mode | Description |
+`showRichTextFormattingOptions` controls toolbar visibility. When `false`, markdown is still parsed in typed text but no toolbar is rendered.
+
+| Layout | Toolbar placement |
 | --- | --- |
-| `RichTextToolbarMode.alwaysVisible` | Toolbar always shown (default) |
-| `RichTextToolbarMode.onSelection` | Toolbar shown when text is selected |
-| `RichTextToolbarMode.disabled` | Rich text formatting disabled |
+| `singleLine` | Persistent row directly below the text input |
+| `doubleLine` | Behind an `Aa` toggle in the button row — tapping swaps in the toolbar |
 
 <Tabs>
 <Tab title="Dart">
 ```dart
 CometChatMessageComposer(
   user: user,
-  richTextConfiguration: RichTextConfiguration(
-    toolbarMode: RichTextToolbarMode.onSelection,
-  ),
+  showRichTextFormattingOptions: false, // parses markdown, no toolbar
 )
 ```
 </Tab>
 </Tabs>
 
-### Disable specific formats
+### Hide specific format buttons
+
+Pass a `Set<FormatType>` listing the buttons to remove from the toolbar.
 
 <Tabs>
 <Tab title="Dart">
 ```dart
 CometChatMessageComposer(
   user: user,
-  richTextConfiguration: RichTextConfiguration(
-    enableCodeBlock: false,
-    enableBlockquote: false,
-    enableOrderedList: false,
-  ),
+  hideRichTextFormattingOptions: const {
+    FormatType.strikethrough,
+    FormatType.codeBlock,
+    FormatType.blockquote,
+  },
 )
 ```
 </Tab>
 </Tabs>
 
-### RichTextConfiguration properties
+### Disable rich text entirely
 
-| Property | Type | Default | Description |
-| --- | --- | --- | --- |
-| `toolbarMode` | `RichTextToolbarMode` | `alwaysVisible` | How the toolbar is displayed |
-| `previewMode` | `RichTextPreviewMode` | `onFormatting` | How the preview is displayed |
-| `enableAutoFormatting` | `bool` | `true` | Auto-detect and format Markdown as user types |
-| `enableBold` | `bool` | `true` | Bold (`**text**`) |
-| `enableItalic` | `bool` | `true` | Italic (`_text_`) |
-| `enableUnderline` | `bool` | `true` | Underline (`<u>text</u>`) |
-| `enableStrikethrough` | `bool` | `true` | Strikethrough (`~~text~~`) |
-| `enableInlineCode` | `bool` | `true` | Inline code (`` `code` ``) |
-| `enableCodeBlock` | `bool` | `true` | Code block (` ```code``` `) |
-| `enableLinks` | `bool` | `true` | Links (`[text](url)`) |
-| `enableBulletList` | `bool` | `true` | Bullet list (`- item`) |
-| `enableOrderedList` | `bool` | `true` | Ordered list (`1. item`) |
-| `enableBlockquote` | `bool` | `true` | Blockquote (`> text`) |
+Set `enableRichTextFormatting: false` to behave as a plain text field — no markdown parsing, no toolbar, regardless of the other two props.
+
+<Tabs>
+<Tab title="Dart">
+```dart
+CometChatMessageComposer(
+  user: user,
+  enableRichTextFormatting: false,
+)
+```
+</Tab>
+</Tabs>
+
+### FormatType values
+
+| Value | Markdown |
+| --- | --- |
+| `FormatType.bold` | `**text**` |
+| `FormatType.italic` | `_text_` or `*text*` |
+| `FormatType.underline` | `<u>text</u>` |
+| `FormatType.strikethrough` | `~~text~~` |
+| `FormatType.inlineCode` | `` `code` `` |
+| `FormatType.codeBlock` | ` ```code``` ` |
+| `FormatType.link` | `[text](url)` |
+| `FormatType.bulletList` | `- item` |
+| `FormatType.orderedList` | `1. item` |
+| `FormatType.blockquote` | `> quote` |
 
 ### Custom toolbar view
 
+`richTextToolbarView` receives the active controller. Because the controller is a `RichTextEditingController` under the hood, apply formats directly via `applyFormat`.
+
 <Tabs>
 <Tab title="Dart">
 ```dart
 CometChatMessageComposer(
   user: user,
-  richTextConfiguration: RichTextConfiguration(),
-  richTextToolbarView: (context, controller, manager) {
+  richTextToolbarView: (context, controller) {
     return Row(
       children: [
         IconButton(
-          icon: Icon(Icons.format_bold),
-          onPressed: () => manager.applyFormat(RichTextFormatType.bold),
+          icon: const Icon(Icons.format_bold),
+          onPressed: () {
+            (controller as RichTextEditingController).applyFormat(FormatType.bold);
+          },
         ),
         IconButton(
-          icon: Icon(Icons.format_italic),
-          onPressed: () => manager.applyFormat(RichTextFormatType.italic),
+          icon: const Icon(Icons.format_italic),
+          onPressed: () {
+            (controller as RichTextEditingController).applyFormat(FormatType.italic);
+          },
         ),
       ],
     );
+  },
+  onRichTextFormatApplied: (formatType) {
+    debugPrint('Applied ${formatType.name}');
   },
 )
 ```

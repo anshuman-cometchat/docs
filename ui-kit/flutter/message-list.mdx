@@ -231,6 +231,9 @@ The component listens to SDK message events internally. No manual setup needed.
 | `startFromUnreadMessages` | `bool` | `false` | Scroll to first unread on open |
 | `showMarkAsUnreadOption` | `bool` | `false` | Show "Mark as Unread" in long-press options |
 | `goToMessageId` | `int?` | `null` | Scroll to a specific message after load |
+| `hideFlagOption` | `bool` | `false` | Hide the Flag/Report option from message long-press actions |
+| `hideFlagRemarkField` | `bool` | `false` | Hide the optional remark/context text field in the flag dialog |
+| `flagReasonLocalizer` | `String Function(String reasonId)?` | `null` | Custom localizer that converts a flag-reason ID into a display string |
 
 \* One of `user` or `group` is required.
 
@@ -397,6 +400,50 @@ CometChatMessageList(
 CometChatMessageList(
   user: user,
   startFromUnreadMessages: true,
+)
+```
+</Tab>
+</Tabs>
+
+### Flag / Report a message
+
+Flag/report is available by default from the message long-press menu. Toggle its visibility and customize the dialog:
+
+<Tabs>
+<Tab title="Dart">
+```dart
+CometChatMessageList(
+  user: user,
+  // hide the Flag option entirely
+  hideFlagOption: false,
+  // hide the optional "Remark" text field in the flag dialog
+  hideFlagRemarkField: false,
+  // localize reason IDs to your own display strings
+  flagReasonLocalizer: (reasonId) {
+    switch (reasonId) {
+      case 'spam':
+        return 'Spam or unsolicited';
+      case 'inappropriate':
+        return 'Inappropriate content';
+      default:
+        return reasonId;
+    }
+  },
+)
+```
+</Tab>
+</Tabs>
+
+### Mark a message as unread
+
+Expose the "Mark as Unread" option in the long-press menu:
+
+<Tabs>
+<Tab title="Dart">
+```dart
+CometChatMessageList(
+  user: user,
+  showMarkAsUnreadOption: true,
 )
 ```
 </Tab>
