@@ -53,16 +53,35 @@
         else if (saved === 'denied') applyConsent(false);
     } catch (_) {}
 
-    // 3) Bridge the HubSpot cookie banner. HubSpot tracking (loaded by GTM)
-    //    fires _hsp privacy events on Accept All / Decline All / X, and when
-    //    a prior __hs_opt_out cookie is read. This is HubSpot's documented
-    //    privacy API — survives banner-markup changes.
-    window._hsp = window._hsp || [];
-    window._hsp.push(['addPrivacyConsentListener', function (consent) {
-        var granted = !!(consent && (consent.allowed ||
-            (consent.categories && consent.categories.analytics)));
-        applyConsent(granted);
-    }]);
+    // 3) Bridge the cookie banner via DOM click events. We intentionally do
+    //    NOT use HubSpot's _hsp.addPrivacyConsentListener: it fires immediately
+    //    on registration with HubSpot's *implicit* consent state, which on
+    //    domains where HubSpot decides no banner is needed (e.g. preview
+    //    deployments) means allowed:true — auto-granting without any user
+    //    action. Listening for actual button clicks is the only way to gate
+    //    consent on user intent.
+    function classifyClick(target) {
+        if (!target || !target.closest) return null;
+
+        // HubSpot stock banner selectors (id-based, most reliable when present)
+        if (target.closest('#hs-eu-confirmation-button, [data-hs-eu-confirmation-button]')) return true;
+        if (target.closest('#hs-eu-decline-button, [data-hs-eu-decline-button]'))           return false;
+
+        // Text-based fallback for any banner whose buttons match the
+        // visible labels rendered today.
+        var btn = target.closest('button, [role="button"]');
+        if (!btn) return null;
+        var txt = (btn.textContent || '').trim().toLowerCase();
+        if (txt === 'accept all' || txt === 'accept all cookies' || txt === 'allow all') return true;
+        if (txt === 'decline all' || txt === 'reject all' || txt === 'decline')          return false;
+        return null;
+    }
+
+    document.addEventListener('click', function (e) {
+        var result = classifyClick(e.target);
+        if (result === true)  applyConsent(true);
+        if (result === false) applyConsent(false);
+    }, true);
 
     // 4) Load GTM AFTER default-deny is registered.
     (function (w, d, s, l, i) {
