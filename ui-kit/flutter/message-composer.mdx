@@ -471,7 +471,7 @@ The composer can stage several media/file attachments and send them as one messa
 
 Files can also arrive by **clipboard paste** (images, video, audio, documents) and, on web, by **drag-and-drop** onto the composer.
 
-A selection spanning several kinds is split and sent as one message per kind, in the order image → video → audio → file. They share a `batchId`, so the [Message List](/ui-kit/flutter/message-list#multiple-attachments) renders them as one group.
+A selection spanning several kinds is split by kind and sent as one message per kind, in the order image → video → audio → file. Every message therefore carries a single kind and renders with that kind's bubble — pick three photos and a PDF and the photos still arrive as an image grid, the PDF as a file card. They share a `batchId`, so the [Message List](/ui-kit/flutter/message-list#multiple-attachments) groups them as one block.
 
 <Note>
 Voice notes are never staged — a recording is always its own message and sends immediately. While the tray holds any tile, the mic button is hidden.

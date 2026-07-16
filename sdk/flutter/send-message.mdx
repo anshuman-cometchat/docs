@@ -531,7 +531,11 @@ Use `maxFileCount` to cap your picker so the user cannot select more than the me
 
 #### Send the uploaded attachments
 
-Attach the `Attachment` objects from `onFileUploaded` to one `MediaMessage`. Use `attachments` (not `files` — the bytes are already on storage). Set `type` to `image`/`video`/`audio` when every attachment is that kind, and `file` for a mixed batch.
+Attach the `Attachment` objects from `onFileUploaded` to one `MediaMessage`. Use `attachments` (not `files` — the bytes are already on storage), and set `type` to the kind those attachments are.
+
+<Note>
+Keep one message to a single kind. `type` is what a receiving UI picks its bubble from, so images in a message typed `file` render as file cards rather than a grid. If the user picked a mix, group the attachments by kind and send one message per kind — this is exactly what the UI Kit's composer does, tagging each message with a shared `batchId` so they display as one group.
+</Note>
 
 <Tabs>
 <Tab title="Dart">

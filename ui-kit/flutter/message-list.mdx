@@ -367,7 +367,7 @@ Tapping any image/video cell opens the full-screen media viewer, paged across th
 A **voice note** always renders as the classic single audio bubble, whatever the flag below — it is single by nature. Only picked audio *files* use the multi-attachment bubble.
 </Note>
 
-A selection spanning several kinds does not produce one mixed message: the composer sends one message per kind, so images still arrive as a grid and documents as a card stack. They share a `batchId` and are grouped as described below.
+A message always carries attachments of a single kind, so each one renders with the bubble for that kind. Picking a mix — say three photos and a PDF — sends an `image` message and a `file` message: the photos render as a grid, the PDF as a card. They share a `batchId` and group as described below.
 
 ### Grouping
 
