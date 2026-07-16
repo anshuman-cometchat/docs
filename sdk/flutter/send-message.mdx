@@ -392,6 +392,191 @@ await CometChat.sendMediaMessage(mediaMessage,
 
 </Tabs>
 
+### Upload Files Before Sending
+
+Passing `files` uploads them as part of the send, so you learn the outcome only when the whole message succeeds or fails. Upload the files **first** when you need per-file progress, a retry of one failed file, or the ability to drop one file without disturbing the rest — this is what the UI Kit's attachment tray does.
+
+`CometChat.uploadFiles()` takes a list of `UploadFile` and returns a **`muid`** (the id of the upload *group*) plus one **`fileId`** per file, in the order you passed them. Use the `fileId`s to correlate progress and errors back to your own UI.
+
+<Tabs>
+<Tab title="Dart">
+```dart
+final files = [
+  UploadFile.fromPath("/storage/emulated/0/Download/image1.jpg", size: 482113),
+  UploadFile.fromPath("/storage/emulated/0/Download/clip.mp4", size: 8552499),
+];
+
+final result = await CometChat.uploadFiles(
+  files,
+  options: UploadOptions(
+    receiverId: "cometchat-uid-1",
+    receiverType: CometChatConversationType.user,
+  ),
+);
+
+debugPrint(result.muid);    // muid_1784198153336581_1
+debugPrint("${result.fileIds}"); // [muid_..._f0, muid_..._f1]
+```
+
+</Tab>
+
+</Tabs>
+
+On web — or anywhere you only hold bytes, such as a clipboard paste — build the file from bytes instead:
+
+<Tabs>
+<Tab title="Dart">
+```dart
+UploadFile.fromBytes(pickedBytes, name: "image1.jpg", mimeType: "image/jpeg");
+```
+
+</Tab>
+
+</Tabs>
+
+<Warning>
+`size` must be accurate — the storage upload policy allows only a ±10% tolerance, and a file with an unknown or zero size is rejected before any upload starts.
+</Warning>
+
+#### UploadOptions
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `receiverId` | — | The uid/guid the message is for. **Required** once role-based access control is enabled: the server authorizes the upload against the conversation. |
+| `receiverType` | — | `user` or `group`. |
+| `muid` | new group | Pass an existing `muid` to **add** files to that group, e.g. the user picks more files. Omit to start a new group. |
+| `concurrency` | `1` | How many files upload at once. Sequential by default — parallel large uploads on a cellular link tend to stall each other. |
+| `maxTotalSize` | 250 MB | Client-side aggregate cap for the group, fixed when the group is created. |
+
+#### Track progress and completion
+
+Register a listener before uploading. `MediaUploadListener` is a mixin, so implement only the callbacks you need.
+
+<Tabs>
+<Tab title="Dart">
+```dart
+class MyUploader with MediaUploadListener {
+  @override
+  void onProgress(String fileId, int loaded, int total, int percent) {
+    debugPrint("$fileId — $percent%");
+  }
+
+  @override
+  void onFileUploaded(String fileId, Attachment attachment) {
+    // Keep `attachment` — you attach it to the message on send.
+  }
+
+  @override
+  void onFileError(String fileId, CometChatException error) {
+    // Rejected. NOT retryable (too large, wrong type, over the count).
+  }
+
+  @override
+  void onFileFailure(String fileId, CometChatException error) {
+    // Transient. Retryable (network dropped, storage hiccup).
+  }
+
+  @override
+  void onComplete(UploadResult result) {
+    // result.successful / result.rejected / result.failed
+  }
+}
+
+CometChat.addMediaUploadListener("my_uploader", MyUploader());
+// ...
+CometChat.removeMediaUploadListener("my_uploader");
+```
+
+</Tab>
+
+</Tabs>
+
+`onFileError` and `onFileFailure` are deliberately different: an **error** will never succeed as-is, so surface it and let the user remove the file; a **failure** is worth a retry.
+
+#### Retry, cancel, and clear
+
+<Tabs>
+<Tab title="Dart">
+```dart
+// Retry one transiently-failed file.
+await CometChat.retryFileUpload(result.muid, fileId);
+
+// Remove one file from the group (aborts it if still in flight).
+await CometChat.cancelFileUpload(result.muid, fileId);
+
+// Abandon the whole group, e.g. the user closed the composer.
+await CometChat.clearUploadGroup(result.muid);
+```
+
+</Tab>
+
+</Tabs>
+
+`cancelFileUpload` is safe in any state and frees the file's slot against `file.count.max`, so the user can pick a replacement.
+
+#### Read the limits
+
+<Tabs>
+<Tab title="Dart">
+```dart
+final limits = CometChat.getAttachmentLimits();
+limits.maxFileCount; // file.count.max — default 10
+limits.maxFileSize;  // file.size.max  — default 100 MB (bytes)
+limits.maxTotalSize; // client-only aggregate — default 250 MB (bytes)
+```
+
+</Tab>
+
+</Tabs>
+
+Use `maxFileCount` to cap your picker so the user cannot select more than the message allows, and `maxFileSize` to reject an over-sized file before uploading it.
+
+#### Send the uploaded attachments
+
+Attach the `Attachment` objects from `onFileUploaded` to one `MediaMessage`. Use `attachments` (not `files` — the bytes are already on storage). Set `type` to `image`/`video`/`audio` when every attachment is that kind, and `file` for a mixed batch.
+
+<Tabs>
+<Tab title="Dart">
+```dart
+MediaMessage mediaMessage = MediaMessage(
+  receiverUid: "cometchat-uid-1",
+  receiverType: CometChatConversationType.user,
+  type: CometChatMessageType.image,
+  attachments: uploadedAttachments, // collected from onFileUploaded
+  caption: "From the trip",         // optional
+);
+
+await CometChat.sendMediaMessage(mediaMessage,
+  onSuccess: (MediaMessage message) {
+    debugPrint("Sent with ${message.attachments?.length} attachments");
+  },
+  onError: (CometChatException e) {
+    debugPrint("Sending failed: ${e.message}");
+  }
+);
+```
+
+</Tab>
+
+</Tabs>
+
+#### Upload error codes
+
+| Code | Retryable | Meaning |
+| --- | --- | --- |
+| `ERR_FILE_SIZE_EXCEEDED` | No | Larger than `file.size.max`. |
+| `ERR_FILE_COUNT_EXCEEDED` | No | The group is already at `file.count.max`. |
+| `ERR_FILE_TOTAL_SIZE_EXCEEDED` | No | The group exceeds the aggregate cap. |
+| `ERR_INVALID_FILE_OBJECT` | No | Missing/zero size, or an unreadable source. |
+| `ERR_S3_UPLOAD_FAILED` | Yes | Storage rejected the transfer. |
+| `ERR_CONNECTION` | Yes | Network error while uploading. |
+
+The non-retryable codes arrive via `onFileError`, the retryable ones via `onFileFailure`.
+
+<Warning>
+Upload state is in-memory and does not survive the app being killed — a group cannot be resumed after a restart. A file with no progress for 30 seconds is treated as stalled and failed (retryable).
+</Warning>
+
 ## Custom Message
 
 *In other words, as a sender, how do I send a custom message like location co-ordinates?*
