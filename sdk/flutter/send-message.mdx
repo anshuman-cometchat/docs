@@ -446,7 +446,6 @@ UploadFile.fromBytes(pickedBytes, name: "image1.jpg", mimeType: "image/jpeg");
 | `receiverType` | — | `user` or `group`. |
 | `muid` | new group | Pass an existing `muid` to **add** files to that group, e.g. the user picks more files. Omit to start a new group. |
 | `concurrency` | `1` | How many files upload at once. Sequential by default — parallel large uploads on a cellular link tend to stall each other. |
-| `maxTotalSize` | 250 MB | Client-side aggregate cap for the group, fixed when the group is created. |
 
 #### Track progress and completion
 
@@ -522,7 +521,6 @@ await CometChat.clearUploadGroup(result.muid);
 final limits = CometChat.getAttachmentLimits();
 limits.maxFileCount; // file.count.max — default 10
 limits.maxFileSize;  // file.size.max  — default 100 MB (bytes)
-limits.maxTotalSize; // client-only aggregate — default 250 MB (bytes)
 ```
 
 </Tab>
@@ -566,7 +564,6 @@ await CometChat.sendMediaMessage(mediaMessage,
 | --- | --- | --- |
 | `ERR_FILE_SIZE_EXCEEDED` | No | Larger than `file.size.max`. |
 | `ERR_FILE_COUNT_EXCEEDED` | No | The group is already at `file.count.max`. |
-| `ERR_FILE_TOTAL_SIZE_EXCEEDED` | No | The group exceeds the aggregate cap. |
 | `ERR_INVALID_FILE_OBJECT` | No | Missing/zero size, or an unreadable source. |
 | `ERR_S3_UPLOAD_FAILED` | Yes | Storage rejected the transfer. |
 | `ERR_CONNECTION` | Yes | Network error while uploading. |
